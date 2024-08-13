@@ -15,9 +15,9 @@ import Registro from "./components/pages/registro";
 export function App() {
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex h-screen font-semibold">
         <SideBar />
-        <div className="flex flex-col flex-grow bg-slate-400">
+        <div className="flex flex-col flex-grow bg-slate-200">
           <Navbar />
           <div className="flex-grow overflow-auto">
             <Layout>
