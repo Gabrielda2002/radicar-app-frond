@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        color: "#00776f",
+      },
       screens: {
         tablet: "900px",
       },
