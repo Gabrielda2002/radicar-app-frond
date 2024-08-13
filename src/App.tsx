@@ -15,22 +15,24 @@ import Registro from "./components/pages/registro";
 export function App() {
   return (
     <>
-      <div>
-        <div className="bg-slate-400">
-          <SideBar />
+      <div className="flex h-screen">
+        <SideBar />
+        <div className="flex flex-col flex-grow bg-slate-400">
           <Navbar />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Inicio></Inicio>}></Route>
-              <Route path="/modulos" element={<Modulos></Modulos>}></Route>
-              <Route path="/login" element={<Login></Login>}></Route>
-              <Route path="/registro" element={<Registro></Registro>}></Route>
-              <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
-            </Routes>
-          </Layout>
-          <Footer />
+          <div className="flex-grow overflow-auto">
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Inicio />} />
+                <Route path="/modulos" element={<Modulos />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/registro" element={<Registro />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Layout>
+          </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
