@@ -6,8 +6,8 @@ const Navbar = () => {
   const activeLink = "inline-block py-1 text-accent mr-4";
 
   const user = {
-    name: "Tom Cook",
-    email: "tom@example.com",
+    name: "Jostin Gomez",
+    email: "jostingomez03@gmail.com",
     imageUrl: "https://unavatar.io/josting62",
   };
 
@@ -18,8 +18,8 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+    <header className="text-gray-900 body-font">
+      <div className="mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center bg-white">
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
           <NavLink
             to="/"
@@ -47,7 +47,7 @@ const Navbar = () => {
           </NavLink>
         </nav>
         <Menu as="div" className="relative">
-          <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base text-white hover:text-black">
+          <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-color rounded text-base text-white hover:text-black">
             <img
               alt=""
               src={user.imageUrl}
@@ -77,7 +77,7 @@ const Navbar = () => {
               <MenuItem key={item.name}>
                 <a
                   href={item.href}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 hover:rounded"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-color hover:text-white hover:rounded"
                 >
                   {item.name}
                 </a>
