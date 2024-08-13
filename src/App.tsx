@@ -29,10 +29,10 @@ export function App() {
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Layout>
+            <Footer />
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }
