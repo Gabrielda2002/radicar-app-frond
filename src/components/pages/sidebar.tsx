@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 const SideBar: FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -11,11 +11,11 @@ const SideBar: FC = () => {
     <aside
       className={`flex flex-col ${
         isCollapsed ? "w-20" : "w-64"
-      } h-full px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700 transition-all duration-300`}
+      } h-full px-5 py-8 overflow-y-auto border-r  rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700 transition-all duration-300`}
     >
       <button
         onClick={toggleSideBar}
-        className="text-gray-600 dark:text-gray-200 mb-4"
+        className="text-gray-600 dark:text-gray-900 mb-4"
       >
         {isCollapsed ? (
           <svg
@@ -54,12 +54,12 @@ const SideBar: FC = () => {
         <nav className="-mx-3 space-y-6">
           <div className="space-y-3">
             {!isCollapsed && (
-              <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
+              <label className="px-3 text-semibold text-gray-900 uppercase dark:text-gray-900">
                 analytics
               </label>
             )}
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -82,7 +82,7 @@ const SideBar: FC = () => {
             </a>
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -107,13 +107,13 @@ const SideBar: FC = () => {
 
           <div className="space-y-3 ">
             {!isCollapsed && (
-              <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
+              <label className="px-3 text-semibold text-gray-900 uppercase dark:text-gray-900">
                 content
               </label>
             )}
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -136,7 +136,7 @@ const SideBar: FC = () => {
             </a>
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -159,7 +159,7 @@ const SideBar: FC = () => {
             </a>
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -183,13 +183,13 @@ const SideBar: FC = () => {
           </div>
           <div className="space-y-3 ">
             {!isCollapsed && (
-              <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
+              <label className="px-3 text-semibold text-gray-500 uppercase dark:text-gray-900">
                 Customization
               </label>
             )}
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
@@ -212,7 +212,7 @@ const SideBar: FC = () => {
             </a>
 
             <a
-              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
               href="#"
             >
               <svg
