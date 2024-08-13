@@ -4,12 +4,10 @@ import { App } from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
-import SideBar from "./components/pages/sidebar.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <SideBar />
       <App />
     </BrowserRouter>
   </React.StrictMode>
