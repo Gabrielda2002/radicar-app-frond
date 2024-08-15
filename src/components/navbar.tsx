@@ -1,10 +1,6 @@
-import { NavLink } from "react-router-dom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-const Navbar = () => {
-  const btnLink =
-    "inline-block py-1 text-white hover:text-lime-400 cursor-pointer mr-4";
-  const activeLink = "inline-block py-1 text-accent mr-4";
 
+const Navbar = () => {
   const user = {
     name: "Jostin Gomez",
     email: "jostingomez03@gmail.com",
@@ -12,41 +8,17 @@ const Navbar = () => {
   };
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Sign out", href: "#" },
+    { name: "Perfil", href: "#" },
+    { name: "Cerrar Seccion", href: "#" },
   ];
 
   return (
     <header className="text-gray-900 body-font">
-      <div className="mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center bg-white">
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? activeLink : btnLink)}
-          >
-            Inicio
-          </NavLink>
-          <NavLink
-            to="/Modulos"
-            className={({ isActive }) => (isActive ? activeLink : btnLink)}
-          >
-            Modulos
-          </NavLink>
-          <NavLink
-            to="/Login"
-            className={({ isActive }) => (isActive ? activeLink : btnLink)}
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/Registro"
-            className={({ isActive }) => (isActive ? activeLink : btnLink)}
-          >
-            Registro
-          </NavLink>
+      <div className="mx-auto flex flex-wrap p-5 bg-white border-b-2 border-black">
+        <nav className="flex flex-wrap items-center text-base">
+          <img src="./src/imgs/logo-navbar.png" className="w-10 h-10" />
         </nav>
-        <Menu as="div" className="relative">
+        <Menu as="div" className="relative ml-auto">
           <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-color rounded text-base text-white hover:text-black">
             <img
               alt=""
@@ -71,13 +43,13 @@ const Navbar = () => {
           </MenuButton>
           <MenuItems
             transition
-            className="absolute right-0 mt-2 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            className="absolute right-0  z-50 w-56 p-2 bg-white border rounded-lg top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
             {userNavigation.map((item) => (
               <MenuItem key={item.name}>
                 <a
                   href={item.href}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-color hover:text-white hover:rounded"
+                  className="block px-4 py-2 text-sm text-gray-800 hover:bg-color hover:text-white rounded-lg transition-colors duration-300"
                 >
                   {item.name}
                 </a>

@@ -1,5 +1,5 @@
 const Registro = () => {
-  return <div>registro</div>;
+  return <div>Radicador</div>;
 };
 
 export default Registro;
