@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
 
+import folder from "/assets/folder.svg";
 import user2 from "/assets/user2.svg";
 import user1 from "/assets/user1.svg";
 import userMain from "/assets/userMain.svg";
@@ -12,9 +13,12 @@ import audit from "/assets/audit.svg";
 import flag from "/assets/flag.svg";
 import taskList from "/assets/task-list.svg";
 import table from "/assets/table.svg";
+import arrowMain2 from "/assets/arrowMain2.svg";
+import arrowMain from "/assets/arrowMain.svg";
 import arrowUp from "/assets/arrow-up.svg";
 import settings from "/assets/settings.svg";
 import home from "/assets/home.svg";
+import services from "/assets/services.svg";
 
 const SideBar: FC = () => {
   //constante para slide del sidebar
@@ -61,38 +65,20 @@ const SideBar: FC = () => {
     >
       <button
         onClick={toggleSideBar}
-        className="text-gray-600 dark:text-gray-900 mb-4"
+        className="text-gray-600 dark:text-gray-900 mb-4 transition-all duration-300"
       >
         {isCollapsed ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 12h18m-6-6l6 6m0 0l-6 6"
-            />
-          </svg>
+          <img
+            src={arrowMain}
+            alt=""
+            className="w-4 h-4 mx-1 transition-all duration-500"
+          />
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 12H3m6-6l-6 6m0 0l6 6"
-            />
-          </svg>
+          <img
+            src={arrowMain2}
+            alt=""
+            className="w-4 h-4 mx-1 transition-all duration-500"
+          />
         )}
       </button>
 
@@ -120,20 +106,11 @@ const SideBar: FC = () => {
                 onClick={toggleAccordion1}
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6"
-                  />
-                </svg>
+                <img
+                  src={services}
+                  alt=""
+                  className="w-5 h-5 group-hover:invert"
+                />
                 {!isCollapsed && (
                   <span className="mx-2 text-sm font-medium">
                     Gestion de Servicios
@@ -214,20 +191,11 @@ const SideBar: FC = () => {
                   className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
                 >
                   {/* Icono y texto para el segundo acordeón */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072c0 .355-.14.696-.389.948l-5.25 5.25a1.312 1.312 0 000 1.856l1.79 1.79zm0 0L5.67 18.92a1.5 1.5 0 01.707-2.636l5.88.588a.75.75 0 00.713-.713l.588-5.88a1.5 1.5 0 00-2.636-.707L6.75 12.75zM12.75 12.75l4.5-4.5a3 3 0 010 4.5l-4.5 4.5a3 3 0 01-4.5-4.5l4.5-4.5"
-                    />
-                  </svg>
+                  <img
+                    src={folder}
+                    alt=""
+                    className="w-5 h-5 group-hover:invert"
+                  />
                   {!isCollapsed && (
                     <span className="mx-2 text-sm font-medium">
                       Gestion de calidad
