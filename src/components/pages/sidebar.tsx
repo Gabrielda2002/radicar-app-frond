@@ -69,13 +69,13 @@ const SideBar: FC = () => {
       >
         {isCollapsed ? (
           <img
-            src={arrowMain}
+            src={arrowMain2}
             alt=""
             className="w-4 h-4 mx-1 transition-all duration-500"
           />
         ) : (
           <img
-            src={arrowMain2}
+            src={arrowMain}
             alt=""
             className="w-4 h-4 mx-1 transition-all duration-500"
           />
