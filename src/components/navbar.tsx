@@ -8,9 +8,8 @@ const Navbar = () => {
   };
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Sign out", href: "#" },
+    { name: "Perfil", href: "#" },
+    { name: "Cerrar Seccion", href: "#" },
   ];
 
   return (
