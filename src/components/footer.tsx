@@ -28,7 +28,7 @@ const Footer = () => {
                   className="w-7 h-7 mr-3 group-hover:invert"
                 />
                 <a
-                  className="text-gray-800 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
                   href="mailto:contacto@nordvitalips.com"
                 >
                   contacto@nordvitalips.com
@@ -51,7 +51,7 @@ const Footer = () => {
                   className="w-7 h-7 mr-3 group-hover:invert"
                 />
                 <a
-                  className="text-gray-800 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
                   href="https://api.whatsapp.com/send?phone=573174309873&text=Hola%20sean%20bienvenidos%20a%20Nordvital%20ips,%20una%20ips%20comprometida%20con%20sus%20usuarios."
                   target="_blank"
                 >
@@ -86,7 +86,7 @@ const Footer = () => {
             <li className="max-w-md mx-full">
               {" "}
               {/* max-w-md limita el ancho máximo */}
-              <p className="text-justify text-gray-800">
+              <p className="text-justify text-gray-900">
                 En 2024, buscamos ser líderes regionales y reconocidos
                 nacionalmente como una IPS que cumple con altos estándares de
                 calidad. Nos comprometemos a proporcionar atención amable,
@@ -112,20 +112,19 @@ const Footer = () => {
           </p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
             <a
-              className="text-gray-500"
+              className="text-gray-500 hover:text-white"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
             >
               <img src={facebook} alt="" className="w-5 h-5" />
             </a>
             <a
-              className="ml-3 text-gray-500"
+              className="ml-3 text-gray-500 hover:text-white"
               href="https://www.youtube.com/@ipsnordvital7237"
             >
               <img src={youtube} alt="" className="w-5 h-5" />
             </a>
-
             <a
-              className="ml-3 text-gray-500"
+              className="ml-3 text-gray-500 hover:text-white"
               href="https://www.instagram.com/nordvital_ips/"
             >
               <img src={instagram} alt="" className="w-5 h-5" />
