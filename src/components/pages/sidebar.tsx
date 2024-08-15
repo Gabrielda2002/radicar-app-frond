@@ -1,6 +1,15 @@
 import { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
 
+import user2 from "/assets/user2.svg";
+import user1 from "/assets/user1.svg";
+import userMain from "/assets/userMain.svg";
+import user from "/assets/user.svg";
+import report from "/assets/report.svg";
+import filing from "/assets/filing.svg";
+import surgery from "/assets/surgery.svg";
+import audit from "/assets/audit.svg";
+import flag from "/assets/flag.svg";
 import taskList from "/assets/task-list.svg";
 import table from "/assets/table.svg";
 import arrowUp from "/assets/arrow-up.svg";
@@ -22,6 +31,7 @@ const SideBar: FC = () => {
   const [isAccordionOpen2, setIsAccordionOpen2] = useState(false);
   const [isAccordionOpen3, setIsAccordionOpen3] = useState(false);
   const [isAccordionOpen4, setIsAccordionOpen4] = useState(false);
+  const [isAccordionOpen5, setIsAccordionOpen5] = useState(false);
 
   const toggleAccordion1 = () => {
     setIsAccordionOpen1(!isAccordionOpen1);
@@ -37,6 +47,10 @@ const SideBar: FC = () => {
 
   const toggleAccordion4 = () => {
     setIsAccordionOpen4(!isAccordionOpen4);
+  };
+
+  const toggleAccordion5 = () => {
+    setIsAccordionOpen5(!isAccordionOpen5);
   };
 
   return (
@@ -84,10 +98,10 @@ const SideBar: FC = () => {
 
       <div className="flex flex-col justify-between flex-1 mt-6">
         <nav className="-mx-3 space-y-6">
-          <div className="space-y-3">
+          <div className="space-y-4">
             {!isCollapsed && (
-              <label className="px-3 text-semibold text-gray-900 uppercase dark:text-gray-900">
-                analytics
+              <label className="px-4 text-lg font-bold text-[#049AE7] uppercase">
+                Servicios
               </label>
             )}
             <NavLink to="/">
@@ -137,7 +151,7 @@ const SideBar: FC = () => {
                 <div className="mt-2 space-y-3">
                   <NavLink to="/Registro">
                     <a
-                      className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color hover:text-white group"
+                      className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"
                     >
                       <img
@@ -155,26 +169,17 @@ const SideBar: FC = () => {
 
                   <NavLink to="/Registro">
                     <a
-                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
+                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16.5 4.5l-9 15M3.75 14.25h16.5"
-                        />
-                      </svg>
+                      <img
+                        src={surgery}
+                        alt=""
+                        className="w-5 h-5 mx-2 group-hover:invert"
+                      />
                       {!isCollapsed && (
                         <span className="mx-2 text-sm font-medium">
-                          Auditoria
+                          Cirugia
                         </span>
                       )}
                     </a>
@@ -182,23 +187,14 @@ const SideBar: FC = () => {
 
                   <NavLink to="/Registro">
                     <a
-                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
+                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16.5 4.5l-9 15M3.75 14.25h16.5"
-                        />
-                      </svg>
+                      <img
+                        src={audit}
+                        alt=""
+                        className="w-5 h-5 mx-2 group-hover:invert"
+                      />
                       {!isCollapsed && (
                         <span className="mx-2 text-sm font-medium">
                           Auditoria
@@ -249,23 +245,14 @@ const SideBar: FC = () => {
                   <div className="mt-2 space-y-3">
                     <NavLink to="/ContentPage1">
                       <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-5 h-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.5 4.5l-9 15M3.75 14.25h16.5"
-                          />
-                        </svg>
+                        <img
+                          src={flag}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
                         {!isCollapsed && (
                           <span className="mx-2 text-sm font-medium">
                             Norte de Santander
@@ -286,20 +273,11 @@ const SideBar: FC = () => {
                   className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
                 >
                   {/* Icono y texto para el tercer acordeón */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072c0 .355-.14.696-.389.948l-5.25 5.25a1.312 1.312 0 000 1.856l1.79 1.79zm0 0L5.67 18.92a1.5 1.5 0 01.707-2.636l5.88.588a.75.75 0 00.713-.713l.588-5.88a1.5 1.5 0 00-2.636-.707L6.75 12.75zM12.75 12.75l4.5-4.5a3 3 0 010 4.5l-4.5 4.5a3 3 0 01-4.5-4.5l4.5-4.5"
-                    />
-                  </svg>
+                  <img
+                    src={filing}
+                    alt=""
+                    className="w-5 h-5 group-hover:invert"
+                  />
                   {!isCollapsed && (
                     <span className="mx-2 text-sm font-medium">
                       Gestion de Reportes
@@ -317,23 +295,14 @@ const SideBar: FC = () => {
                   <div className="mt-2 space-y-3">
                     <NavLink to="/ContentPage1">
                       <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-5 h-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.5 4.5l-9 15M3.75 14.25h16.5"
-                          />
-                        </svg>
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
                         {!isCollapsed && (
                           <span className="mx-2 text-sm font-medium">
                             Reporte de Radicacion
@@ -374,28 +343,199 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen4 && (
                   <div className="mt-2 space-y-3">
+                    {/*Tabla radicacion Cups */}
                     <NavLink to="/ContentPage1">
                       <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white"
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-5 h-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.5 4.5l-9 15M3.75 14.25h16.5"
-                          />
-                        </svg>
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">Cups</span>
+                        )}
+                      </a>
+                    </NavLink>
+
+                    {/*Tabla radicacion Pacientes*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
                         {!isCollapsed && (
                           <span className="mx-2 text-sm font-medium">
-                            Reporte de Radicacion
+                            Pacientes
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Radicadores*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Radicadores
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Municipios*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Municipios
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Convenios*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Convenios
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Tipo Documento*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Tipo Documento
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion IPS Primaria*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            IPS Primaria
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Lugar Radicacion*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Lugar Radicacion
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion IPS Remitente*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            IPS Remitente
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Especialidad*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Especialidad
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                    {/*Tabla radicacion Tipo Servicio*/}
+                    <NavLink to="/ContentPage1">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Tipo Servicio
                           </span>
                         )}
                       </a>
@@ -406,12 +546,14 @@ const SideBar: FC = () => {
             </div>
           </div>
 
+          {/*Tabla Configuraciones*/}
           <div className="flex flex-col mx-3 space-y-3">
             {!isCollapsed && (
-              <label className="px-3 text-semibold text-gray-900 uppercase dark:text-gray-900">
-                settings
+              <label className="px-1 text-lg font-bold text-[#049AE7] uppercase">
+                Configuraciones
               </label>
             )}
+            {/*Tabla Configuraciones 1*/}
             <div className="flex flex-col -mx-3 space-y-3">
               <NavLink to="/Inicio">
                 <a
@@ -425,11 +567,95 @@ const SideBar: FC = () => {
                   />
                   {!isCollapsed && (
                     <span className="mx-2 text-sm font-medium group-hover:text-white">
-                      Setting
+                      Configuracion
                     </span>
                   )}
                 </a>
               </NavLink>
+            </div>
+            {/*Tabla Configuraciones 2*/}
+            <div className="flex flex-col -mx-3 space-y-3">
+              <div>
+                <button
+                  onClick={toggleAccordion5}
+                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                >
+                  <img
+                    src={userMain}
+                    alt=""
+                    className="w-5 h-5 group-hover:invert"
+                  />
+                  {!isCollapsed && (
+                    <span className="mx-2 text-sm font-medium group-hover:text-white">
+                      Administrador
+                    </span>
+                  )}
+                  <img
+                    src={arrowUp}
+                    alt=""
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert ${
+                      isAccordionOpen5 ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {isAccordionOpen5 && (
+                  <div className="mt-2 space-y-3">
+                    <NavLink to="/Registro">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={user1}
+                          alt=""
+                          className="w-5.8 h-5.5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Mi Perfil
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+
+                    <NavLink to="/Registro">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={user}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="mx-2 text-sm font-medium">
+                            Usuarios
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+
+                    <NavLink to="/Registro">
+                      <a
+                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
+                        href="#"
+                      >
+                        <img
+                          src={user2}
+                          alt=""
+                          className="w-5.5 h-5.5 mx-2 group-hover:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="text-sm font-medium">
+                            Registrar Usuarios
+                          </span>
+                        )}
+                      </a>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </nav>
