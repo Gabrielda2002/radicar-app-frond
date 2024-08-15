@@ -4,6 +4,7 @@ import Layout from "./components/layout";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import SideBar from "./components/pages/sidebar";
+import Perfil from "./components/pages/perfil";
 
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -26,6 +27,7 @@ export function App() {
                 <Route path="/modulos" element={<Modulos />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/registro" element={<Registro />} />
+                <Route path="/perfil" element={<Perfil />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Layout>
