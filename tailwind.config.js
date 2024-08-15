@@ -10,6 +10,7 @@ export default {
     extend: {
       colors: {
         color: "#00776f",
+        color2: "#049AE7",
       },
       screens: {
         tablet: "900px",
