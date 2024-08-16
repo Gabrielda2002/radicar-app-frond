@@ -126,7 +126,7 @@ const SideBar: FC = () => {
               </button>
               {isAccordionOpen1 && (
                 <div className="mt-2 space-y-3">
-                  <NavLink to="/Registro">
+                  <NavLink to="/tabla">
                     <a
                       className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"
@@ -144,7 +144,7 @@ const SideBar: FC = () => {
                     </a>
                   </NavLink>
 
-                  <NavLink to="/Registro">
+                  <NavLink to="/tabla-cirugias">
                     <a
                       className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"
@@ -162,7 +162,7 @@ const SideBar: FC = () => {
                     </a>
                   </NavLink>
 
-                  <NavLink to="/Registro">
+                  <NavLink to="/tabla-auditoria">
                     <a
                       className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                       href="#"

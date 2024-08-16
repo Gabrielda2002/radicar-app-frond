@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+   /* <-- STYLE ELEMENTS TABLE --> -*/
+
+@layer base{
+    th{
+        @apply pr-[8px];
+    }
+    tbody tr {
+        @apply border-solid border-y-2;
+      }
+      tbody td {
+        @apply p-2;
+    }
+
+}
