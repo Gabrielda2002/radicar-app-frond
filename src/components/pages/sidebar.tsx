@@ -312,7 +312,7 @@ const SideBar: FC = () => {
                 {isAccordionOpen4 && (
                   <div className="mt-2 space-y-3">
                     {/*Tabla radicacion Cups */}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-cups">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -329,7 +329,7 @@ const SideBar: FC = () => {
                     </NavLink>
 
                     {/*Tabla radicacion Pacientes*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-pacientes">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -347,7 +347,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Radicadores*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-radicadores">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -365,7 +365,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Municipios*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-municipios">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -383,7 +383,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Convenios*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-convenios">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -401,7 +401,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Tipo Documento*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-tipo-documento">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -419,7 +419,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion IPS Primaria*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-ips-primaria">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -437,7 +437,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Lugar Radicacion*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-lugar-radicacion">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -455,7 +455,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion IPS Remitente*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-ips-remite">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -473,7 +473,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Especialidad*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-especialidad">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
@@ -491,7 +491,7 @@ const SideBar: FC = () => {
                       </a>
                     </NavLink>
                     {/*Tabla radicacion Tipo Servicio*/}
-                    <NavLink to="/ContentPage1">
+                    <NavLink to="/tabla-tipo-servicio">
                       <a
                         className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
                         href="#"
