@@ -13,9 +13,8 @@ import audit from "/assets/audit.svg";
 import flag from "/assets/flag.svg";
 import taskList from "/assets/task-list.svg";
 import table from "/assets/table.svg";
-import arrowMain2 from "/assets/arrowMain2.svg";
-import arrowMain from "/assets/arrowMain.svg";
 import arrowUp from "/assets/arrow-up.svg";
+import arrow from "/assets/arrow.svg";
 import settings from "/assets/settings.svg";
 import home from "/assets/home.svg";
 import services from "/assets/services.svg";
@@ -69,15 +68,15 @@ const SideBar: FC = () => {
       >
         {isCollapsed ? (
           <img
-            src={arrowMain2}
+            src={arrow}
             alt=""
-            className="w-4 h-4 mx-1 transition-all duration-500"
+            className="w-7 h-7 mx-1 transition-all duration-500 rotate-180"
           />
         ) : (
           <img
-            src={arrowMain}
+            src={arrow}
             alt=""
-            className="w-4 h-4 mx-1 transition-all duration-500"
+            className="w-7 h-7 mx-1 transition-all duration-500"
           />
         )}
       </button>
