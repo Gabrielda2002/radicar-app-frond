@@ -1,104 +1,100 @@
+import logoFooter from "../imgs/logo-footer.png";
+import mail from "/assets/mail.svg";
+import phone from "/assets/phone.svg";
+import flask from "/assets/flask.svg";
+import facebook from "/assets/facebook.svg";
+import instagram from "/assets/instagram.svg";
+import youtube from "/assets/youtube.svg";
+
 const Footer = () => {
   return (
-    <footer className="text-gray-600 body-font bg-color">
-      <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-        <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left md:mt-0 mt-10">
-          <a className="flex title-font font-medium items-center md:justify-start justify-center text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              className="w-10 h-10 text-white p-2 bg-yellow-500 rounded-full"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-            <span className="ml-3 text-xl">Tailblocks</span>
+    <footer className="text-gray-600 body-font bg-color font-sans">
+      <div className="container px-10 py-20 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+        <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+          <a className="flex title-font font-lg items-center md:justify-start justify-center text-gray-900">
+            <img src={logoFooter} alt="" className="w-30 h-28 text-white" />
           </a>
-          <p className="mt-2 text-sm text-gray-500">
-            Air plant banjo lyft occupy retro adaptogen indego
-          </p>
         </div>
-        <div className="flex-grow flex flex-wrap md:pr-20 -mb-10 md:text-left text-center order-first">
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">
-              CATEGORIES
+        <div className="flex-grow flex md:pl-0 -mb-10 md:mt-0 mt-10 md:text-center text-center border-l-4 border-white">
+          <div className="md:w-1/7 w-full px-2">
+            <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-base mb-3 pr-36">
+              contáctenos:
             </h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">First Link</a>
+            <nav className="list-none mb-0">
+              <li className="flex items-center mb-2 group pl-2 max-w-md">
+                <img
+                  src={mail}
+                  alt=""
+                  className="w-7 h-7 mr-3 group-hover:invert"
+                />
+                <a
+                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  href="mailto:contacto@nordvitalips.com"
+                >
+                  contacto@nordvitalips.com
+                </a>
               </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
+              <li className="flex items-center mb-2 group pl-2">
+                <img
+                  src={phone}
+                  alt=""
+                  className="w-7 h-7 mr-3 group-hover:invert"
+                />
+                <a className="flex text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8">
+                  Telefono: 5892750
+                </a>
               </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
+              <li className="flex items-center mb-3 group pl-2">
+                <img
+                  src={flask}
+                  alt=""
+                  className="w-7 h-7 mr-3 group-hover:invert"
+                />
+                <a
+                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  href="https://api.whatsapp.com/send?phone=573174309873&text=Hola%20sean%20bienvenidos%20a%20Nordvital%20ips,%20una%20ips%20comprometida%20con%20sus%20usuarios."
+                  target="_blank"
+                >
+                  Resultados Laboratorio
+                </a>
               </li>
             </nav>
           </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-              CATEGORIES
-            </h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-              </li>
-            </nav>
-          </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-              CATEGORIES
-            </h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-              </li>
-            </nav>
-          </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-              CATEGORIES
-            </h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-              </li>
-            </nav>
-          </div>
+        </div>
+        <div className="md:w-1/3 w-full px-2">
+          <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-base mb-3">
+            Misión:
+          </h2>
+          <nav className="list-none mb-10">
+            <li className="max-w-md mx-full">
+              {" "}
+              {/* max-w-md limita el ancho máximo */}
+              <p className="text-justify text-gray-900">
+                Nordvital IPS SAS proporciona atención integral de salud con un
+                enfoque social, humano y de seguridad a sus usuarios. Estamos
+                dedicados a la actualización constante de nuestro personal, la
+                renovación tecnológica y la innovación en la atención médica.
+              </p>
+            </li>
+          </nav>
+        </div>
+        <div className="w-96">
+          <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-sm mb-3">
+            Visión:
+          </h2>
+          <nav className="list-none mb-2">
+            <li className="max-w-md mx-full">
+              {" "}
+              {/* max-w-md limita el ancho máximo */}
+              <p className="text-justify text-gray-900">
+                En 2024, buscamos ser líderes regionales y reconocidos
+                nacionalmente como una IPS que cumple con altos estándares de
+                calidad. Nos comprometemos a proporcionar atención amable,
+                segura y confiable, con el objetivo de alcanzar la plena
+                satisfacción de nuestros usuarios.
+              </p>
+            </li>
+          </nav>
         </div>
       </div>
       <div className="bg-gray-100">
@@ -116,52 +112,22 @@ const Footer = () => {
           </p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
             <a
-              className="text-gray-500"
+              className="text-gray-500 hover:text-white"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
             >
-              <svg
-                fill="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-              </svg>
+              <img src={facebook} alt="" className="w-5 h-5" />
             </a>
             <a
-              className="ml-3 text-gray-500"
+              className="ml-3 text-gray-500 hover:text-white"
               href="https://www.youtube.com/@ipsnordvital7237"
             >
-              <svg
-                fill="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="w-7 h-7"
-                viewBox="0 0 24 24"
-              >
-                <path d="M19.615 3.184c-.186-.702-.73-1.253-1.439-1.447C16.8 1.372 12 1.372 12 1.372s-4.8 0-6.176.365c-.71.194-1.254.745-1.439 1.447C4 5.012 4 8.586 4 8.586s0 3.575.385 5.402c.186.702.73 1.253 1.439 1.447C7.2 15.629 12 15.629 12 15.629s4.8 0 6.176-.365c.71-.194 1.254-.745 1.439-1.447.386-1.827.386-5.402.386-5.402s0-3.575-.386-5.402zM9.545 10.794V6.378l5.455 2.208-5.455 2.208z"></path>
-              </svg>
+              <img src={youtube} alt="" className="w-5 h-5" />
             </a>
-
             <a
-              className="ml-3 text-gray-500"
+              className="ml-3 text-gray-500 hover:text-white"
               href="https://www.instagram.com/nordvital_ips/"
             >
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-              >
-                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-              </svg>
+              <img src={instagram} alt="" className="w-5 h-5" />
             </a>
           </span>
         </div>

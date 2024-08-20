@@ -60,8 +60,8 @@ const SideBar: FC = () => {
   return (
     <aside
       className={`flex flex-col ${
-        isCollapsed ? "w-20" : "w-64"
-      } h-full px-4 py-8 overflow-y-auto border-r  rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700 transition-all duration-300`}
+        isCollapsed ? "w-20" : "w-64 transition-all duration-500"
+      } h-full px-4 py-8 overflow-y-auto border-r  rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700 transition-all duration-500`}
     >
       <button
         onClick={toggleSideBar}
@@ -69,13 +69,13 @@ const SideBar: FC = () => {
       >
         {isCollapsed ? (
           <img
-            src={arrowMain}
+            src={arrowMain2}
             alt=""
             className="w-4 h-4 mx-1 transition-all duration-500"
           />
         ) : (
           <img
-            src={arrowMain2}
+            src={arrowMain}
             alt=""
             className="w-4 h-4 mx-1 transition-all duration-500"
           />
