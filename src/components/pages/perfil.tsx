@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useEditProfileForm from "../../hooks/useEditProfile";
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
