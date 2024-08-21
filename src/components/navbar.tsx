@@ -1,18 +1,15 @@
+// src/components/Navbar.tsx
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
-
+import { useUserProfile } from "../context/userProfileContext";
 import userLogo from "/assets/user-logo.svg";
 
 const Navbar = () => {
-  const user = {
-    name: "Jostin Gomez",
-    email: "jostingomez03@gmail.com",
-    imageUrl: "https://unavatar.io/josting62",
-  };
+  const { userProfile } = useUserProfile();
 
   const userNavigation = [
     { name: "Perfil", href: "/Perfil" },
-    { name: "Cerrar Seccion", href: "/Login" },
+    { name: "Cerrar Sección", href: "/Login" },
   ];
 
   return (
@@ -26,8 +23,8 @@ const Navbar = () => {
         <Menu as="div" className="relative ml-auto">
           <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-color rounded text-base text-white hover:text-white group">
             <img
-              alt=""
-              src={user.imageUrl}
+              alt="User"
+              src={userProfile.imageUrl} // Usa la imagen del contexto
               className="h-8 w-8 rounded-full mr-2"
             />
             <img src={userLogo} alt="" className="w-8 h-8 group-hover:invert" />
