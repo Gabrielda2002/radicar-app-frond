@@ -55,9 +55,9 @@ const TablaCups = () => {
                 </div>
             </section>
 
-            <table className="text-sm ">
+            <table className="text-sm flex-1-1">
                 <thead>
-                    <tr>
+                    <tr >
                         <th>ID</th>
                         <th>Codigo</th>
                         <th>Descripcion del Cup</th>
@@ -70,28 +70,28 @@ const TablaCups = () => {
                     <tr>
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
+                        <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
                     <tr>
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
+                        <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
                     <tr>
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
+                        <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
                     <tr>
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
+                        <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>

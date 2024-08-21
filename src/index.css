@@ -2,17 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-   /* <-- STYLE ELEMENTS TABLE --> -*/
+   /* <-- STYLE BASE TABLE --> -*/
 
 @layer base{
     th{
-        @apply pr-[8px];
+        @apply p-0 px-[5px] ;
     }
     tbody tr {
-        @apply border-solid border-y-2;
+        @apply border-solid border-y-2 text-center;
       }
       tbody td {
-        @apply p-2;
+        @apply p-2 ;
     }
 
 }
+    /* <-- STYLE COMPENENTES TABLE --> -*/
+
+/* @layer components {
+    .container-tabla{
+        @apply max-w-[1120px];
+    }
+    @media (max-width: 1120px) {
+        .container-tabla{
+            & .table{
+                @apply w-[1120px]
+            }
+        }
+    }
+} */
+ 

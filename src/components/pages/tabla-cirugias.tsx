@@ -25,7 +25,7 @@ const TablaCirugias = () => {
         </nav>
       </section>
 
-      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1200px] ">
+      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/*header-table*/}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -52,7 +52,7 @@ const TablaCirugias = () => {
           </div>
         </section>
 
-        <table className="text-sm">
+        <table className="text-sm ">
           <thead>
             <tr>
               <th>Fecha - Hora del Radicado</th>

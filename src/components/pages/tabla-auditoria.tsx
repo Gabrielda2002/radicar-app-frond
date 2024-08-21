@@ -25,7 +25,7 @@ const TablaAuditoria = () => {
         </nav>
       </section>
 
-      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1200px] ">
+      <div className="container-tabla bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md  w-[1220px]">
         {/*header-table*/}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -55,7 +55,7 @@ const TablaAuditoria = () => {
           </div>
         </section>
 
-        <table className="text-sm">
+        <table className="text-sm ">
           <thead>
             <tr>
               <th>Fecha Radicado</th>
