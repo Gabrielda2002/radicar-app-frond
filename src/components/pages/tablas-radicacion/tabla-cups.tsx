@@ -23,8 +23,9 @@ const TablaCups = () => {
                 </div>
             </nav>
         </section>
-
-        <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md">
+        
+        {/* container-table */}
+        <section className=" bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md w-full overflow-hidden">
             {/* header-tale */}
 
             <section className="header-tabla pb-6 flex justify-between items-center">
@@ -55,45 +56,31 @@ const TablaCups = () => {
                 </div>
             </section>
 
-            <table className="text-sm flex-1-1">
+            <table className="text-sm w-full  table-fixed ">
                 <thead>
-                    <tr >
-                        <th>ID</th>
-                        <th>Codigo</th>
-                        <th>Descripcion del Cup</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                    <tr>
+                        <th className="break-words w-[80px]">ID</th>
+                        <th className="break-words w-[80px]">Codigo</th>
+                        <th className="break-words w-auto">Descripcion del Cup</th>
+                        <th className="break-words w-[120px]">Estado</th>
+                        <th className="break-words w-[80px]">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words w-[50px]">9</td>
+                        <td className="break-words w-[60px]">57255287 </td>
+                        <td className="break-words w-auto">...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</td>
+                        <td className="break-words w-[120px]">ACTIVO</td>
+                        <td className="break-words w-[80px]">"icon"</td>
                     </tr>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words whitespace-normal overflow-auto text-clip w-[50px]">...texto alusivo </td>
+                        <td className="break-words whitespace-normal overflow-auto text-clip w-[60px]">...texto alusivo </td>
+                        <td className="break-words whitespace-normal overflow-auto text-clip w-auto">...texto alusivo </td>
+                        <td className="break-words whitespace-normal overflow-auto text-clip w-[120px]">...texto alusivo </td>
+                        <td className="break-words whitespace-normal overflow-auto text-clip w-[80px]">"icon"</td>
                     </tr>
                 </tbody>
             </table>

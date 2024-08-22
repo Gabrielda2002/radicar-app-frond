@@ -25,7 +25,7 @@ const TablaAuditoria = () => {
         </nav>
       </section>
 
-      <div className="container-tabla bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md  w-[1220px]">
+      <div className="container-tabla bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1400px]">
         {/*header-table*/}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -55,25 +55,25 @@ const TablaAuditoria = () => {
           </div>
         </section>
 
-        <table className="text-sm ">
+        <table className="text-sm  max-w-fulll table-fixed">
           <thead>
             <tr>
-              <th>Fecha Radicado</th>
-              <th>Tipo Documento </th>
-              <th>Identificacion</th>
-              <th>Nombre Completo</th>
-              <th>Convenio</th>
-              <th>IPS Primaria</th>
-              <th>Fecha Orden</th>
-              <th>Lugar Radicacion</th>
-              <th>IPS Remite</th>
-              <th>Profesional</th>
-              <th>Especialidad</th>
-              <th>Tipo Servicio</th>
-              <th>Quien Radica</th>
-              <th>Soporte</th>
-              <th>Ver Servicio</th>
-              <th>Autorizar Servicios</th>
+              <th className="break-words">Fecha Radicado</th>
+              <th className="break-words">Tipo Documento </th>
+              <th className="break-words">Identificacion</th>
+              <th className="break-words">Nombre Completo</th>
+              <th className="break-words">Convenio</th>
+              <th className="break-words">IPS Primaria</th>
+              <th className="break-words">Fecha Orden</th>
+              <th className="break-words">Lugar Radicacion</th>
+              <th className="break-words">IPS Remite</th>
+              <th className="break-words">Profesional</th>
+              <th className="break-words">Especialidad</th>
+              <th className="break-words">Tipo Servicio</th>
+              <th className="break-words">Quien Radica</th>
+              <th className="break-words">Soporte</th>
+              <th className="break-words">Soporte</th>
+              <th className="break-words">Ver Servicio</th>
             </tr>
           </thead>
 
