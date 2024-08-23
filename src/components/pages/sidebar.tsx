@@ -56,6 +56,13 @@ const SideBar: FC = () => {
     setIsAccordionOpen5(!isAccordionOpen5);
   };
 
+  //Funcion para hacer el color de los botones del sidebar
+  const getLinkClass = (path: string) => {
+    return location.pathname === path
+      ? "bg-color2 text-white"
+      : "text-gray-600 hover:bg-color2 hover:text-white";
+  };
+
   return (
     <aside
       className={`flex flex-col ${
@@ -90,29 +97,56 @@ const SideBar: FC = () => {
               </label>
             )}
             <NavLink to="/">
-              <a className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color group">
-                <img src={home} alt="" className="w-5 h-5 group-hover:invert" />
-                {!isCollapsed && (
-                  <span className="mx-2 text-sm font-medium group-hover:text-white">
-                    Inicio
-                  </span>
-                )}
-              </a>
+              {({ isActive }) => (
+                <a
+                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 group ${
+                    isActive
+                      ? "bg-color2 text-white"
+                      : "hover:bg-color2 hover:text-white"
+                  }`}
+                >
+                  <img
+                    src={home}
+                    alt=""
+                    className="w-5 h-5 group-hover:invert"
+                  />
+                  {!isCollapsed && (
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        isActive ? "text-white" : "group-hover:text-white"
+                      }`}
+                    >
+                      Inicio
+                    </span>
+                  )}
+                </a>
+              )}
             </NavLink>
+
             {/* Modulo de acordion 1*/}
             <div>
               <button
                 onClick={toggleAccordion1}
-                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                  isAccordionOpen1
+                    ? "bg-color text-white"
+                    : "hover:bg-color hover:text-white"
+                } w-full group`}
               >
                 <img
                   src={services}
                   alt=""
-                  className="w-5 h-5 group-hover:invert"
+                  className={`w-5 h-5 group-hover:invert ${
+                    isAccordionOpen1 ? "invert" : ""
+                  }`}
                 />
                 {!isCollapsed && (
-                  <span className="mx-2 text-sm font-medium">
-                    Gestion de Servicios
+                  <span
+                    className={`mx-2 text-sm font-medium ${
+                      isAccordionOpen1 ? "text-white" : ""
+                    }`}
+                  >
+                    Gestión de Servicios
                   </span>
                 )}
                 <img
@@ -126,57 +160,90 @@ const SideBar: FC = () => {
               {isAccordionOpen1 && (
                 <div className="mt-2 space-y-3">
                   <NavLink to="/tabla">
-                    <a
-                      className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                      href="#"
-                    >
-                      <img
-                        src={taskList}
-                        alt=""
-                        className="w-5 h-5 mx-2 group-hover:invert"
-                      />
-                      {!isCollapsed && (
-                        <span className="mx-2 text-sm font-medium">
-                          Radicador
-                        </span>
-                      )}
-                    </a>
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white"
+                            : "text-gray-600 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={taskList}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white" : ""
+                            }`}
+                          >
+                            Radicador
+                          </span>
+                        )}
+                      </a>
+                    )}
                   </NavLink>
 
                   <NavLink to="/tabla-cirugias">
-                    <a
-                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                      href="#"
-                    >
-                      <img
-                        src={surgery}
-                        alt=""
-                        className="w-5 h-5 mx-2 group-hover:invert"
-                      />
-                      {!isCollapsed && (
-                        <span className="mx-2 text-sm font-medium">
-                          Cirugia
-                        </span>
-                      )}
-                    </a>
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white"
+                            : "text-gray-600 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={surgery}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white" : ""
+                            }`}
+                          >
+                            Cirugía
+                          </span>
+                        )}
+                      </a>
+                    )}
                   </NavLink>
 
                   <NavLink to="/tabla-auditoria">
-                    <a
-                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                      href="#"
-                    >
-                      <img
-                        src={audit}
-                        alt=""
-                        className="w-5 h-5 mx-2 group-hover:invert"
-                      />
-                      {!isCollapsed && (
-                        <span className="mx-2 text-sm font-medium">
-                          Auditoria
-                        </span>
-                      )}
-                    </a>
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white"
+                            : "text-gray-600 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={audit}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white" : ""
+                            }`}
+                          >
+                            Auditoría
+                          </span>
+                        )}
+                      </a>
+                    )}
                   </NavLink>
                 </div>
               )}
@@ -187,17 +254,27 @@ const SideBar: FC = () => {
               <div>
                 <button
                   onClick={toggleAccordion2}
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                    isAccordionOpen2
+                      ? "bg-color text-white"
+                      : "hover:bg-color hover:text-white"
+                  } w-full group`}
                 >
                   {/* Icono y texto para el segundo acordeón */}
                   <img
                     src={folder}
                     alt=""
-                    className="w-5 h-5 group-hover:invert"
+                    className={`w-5 h-5 ${
+                      isAccordionOpen2 ? "invert" : "group-hover:invert"
+                    }`}
                   />
                   {!isCollapsed && (
-                    <span className="mx-2 text-sm font-medium">
-                      Gestion de calidad
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        isAccordionOpen2 ? "text-white" : ""
+                      }`}
+                    >
+                      Gestión de Calidad
                     </span>
                   )}
                   <img
@@ -210,22 +287,34 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen2 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/ContentPage1">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={flag}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Norte de Santander
-                          </span>
-                        )}
-                      </a>
+                    <NavLink to="/perfil">
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "text-gray-600 hover:bg-color2 hover:text-white"
+                          }`}
+                          href="#"
+                        >
+                          <img
+                            src={flag}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Norte de Santander
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
                   </div>
                 )}
@@ -237,17 +326,27 @@ const SideBar: FC = () => {
               <div>
                 <button
                   onClick={toggleAccordion3}
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                    isAccordionOpen3
+                      ? "bg-color text-white"
+                      : "hover:bg-color hover:text-white"
+                  } w-full group`}
                 >
                   {/* Icono y texto para el tercer acordeón */}
                   <img
                     src={filing}
                     alt=""
-                    className="w-5 h-5 group-hover:invert"
+                    className={`w-5 h-5 ${
+                      isAccordionOpen3 ? "invert" : "group-hover:invert"
+                    }`}
                   />
                   {!isCollapsed && (
-                    <span className="mx-2 text-sm font-medium">
-                      Gestion de Reportes
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        isAccordionOpen3 ? "text-white" : ""
+                      }`}
+                    >
+                      Gestión de Reportes
                     </span>
                   )}
                   <img
@@ -260,22 +359,34 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen3 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/ContentPage1">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Reporte de Radicacion
-                          </span>
-                        )}
-                      </a>
+                    <NavLink to="/perfil">
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "text-gray-600 hover:bg-color2 hover:text-white"
+                          }`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Reporte de Radicación
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
                   </div>
                 )}
@@ -287,225 +398,380 @@ const SideBar: FC = () => {
               <div>
                 <button
                   onClick={toggleAccordion4}
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                    isAccordionOpen4
+                      ? "bg-color text-white"
+                      : "hover:bg-color hover:text-white"
+                  } w-full group`}
                 >
                   {/* Icono y texto para el cuarto acordeón */}
                   <img
                     src={table}
                     alt=""
-                    className="w-5 h-5 group-hover:invert"
+                    className={`w-5 h-5 ${
+                      isAccordionOpen4 ? "invert" : "group-hover:invert"
+                    }`}
                   />
                   {!isCollapsed && (
-                    <span className="mx-2 text-sm font-medium group-hover:text-white">
-                      Tabla Radicacion
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        isAccordionOpen4
+                          ? "text-white"
+                          : "group-hover:text-white"
+                      }`}
+                    >
+                      Tabla Radicación
                     </span>
                   )}
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen4 ? "rotate-180" : ""
-                    }`}
+                    } group-hover:invert`}
                   />
                 </button>
                 {isAccordionOpen4 && (
                   <div className="mt-2 space-y-3">
-                    {/*Tabla radicacion Cups */}
+                    {/* Tabla radicación Cups */}
                     <NavLink to="/tabla-cups">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">Cups</span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Cups
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
 
-                    {/*Tabla radicacion Pacientes*/}
+                    {/* Tabla radicación Pacientes */}
                     <NavLink to="/tabla-pacientes">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Pacientes
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Pacientes
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Radicadores*/}
+
+                    {/* Tabla radicación Radicadores */}
                     <NavLink to="/tabla-radicadores">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Radicadores
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Radicadores
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Municipios*/}
+
+                    {/* Tabla radicación Municipios */}
                     <NavLink to="/tabla-municipios">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Municipios
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Municipios
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Convenios*/}
+
+                    {/* Tabla radicación Convenios */}
                     <NavLink to="/tabla-convenios">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Convenios
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Convenios
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Tipo Documento*/}
+
+                    {/* Tabla radicación Tipo Documento */}
                     <NavLink to="/tabla-tipo-documento">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Tipo Documento
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Tipo Documento
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion IPS Primaria*/}
+
+                    {/* Tabla radicación IPS Primaria */}
                     <NavLink to="/tabla-ips-primaria">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            IPS Primaria
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              IPS Primaria
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Lugar Radicacion*/}
+
+                    {/* Tabla radicación Lugar Radicación */}
                     <NavLink to="/tabla-lugar-radicacion">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Lugar Radicacion
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Lugar Radicación
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion IPS Remitente*/}
+
+                    {/* Tabla radicación IPS Remitente */}
                     <NavLink to="/tabla-ips-remite">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            IPS Remitente
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              IPS Remitente
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Especialidad*/}
+
+                    {/* Tabla radicación Especialidad */}
                     <NavLink to="/tabla-especialidad">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Especialidad
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Especialidad
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
-                    {/*Tabla radicacion Tipo Servicio*/}
+
+                    {/* Tabla radicación Tipo Servicio */}
                     <NavLink to="/tabla-tipo-servicio">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Tipo Servicio
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={report}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Tipo Servicio
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
                   </div>
                 )}
@@ -522,103 +788,164 @@ const SideBar: FC = () => {
             )}
             {/*Tabla Configuraciones 1*/}
             <div className="flex flex-col -mx-3 space-y-3">
-              <NavLink to="/Inicio">
-                <a
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white group"
-                  href="#"
-                >
-                  <img
-                    src={settings}
-                    alt=""
-                    className="w-5 h-5 group-hover:invert"
-                  />
-                  {!isCollapsed && (
-                    <span className="mx-2 text-sm font-medium group-hover:text-white">
-                      Configuracion
-                    </span>
-                  )}
-                </a>
+              <NavLink to="/Perfil">
+                {({ isActive }) => (
+                  <a
+                    className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                      isActive
+                        ? "bg-color2 text-white"
+                        : "hover:bg-color hover:text-white"
+                    } group`}
+                    href="#"
+                  >
+                    <img
+                      src={settings}
+                      alt=""
+                      className={`w-5 h-5 ${
+                        isActive ? "invert" : "group-hover:invert"
+                      }`}
+                    />
+                    {!isCollapsed && (
+                      <span
+                        className={`mx-2 text-sm font-medium ${
+                          isActive ? "text-white" : ""
+                        }`}
+                      >
+                        Configuración
+                      </span>
+                    )}
+                  </a>
+                )}
               </NavLink>
             </div>
+
             {/*Tabla Configuraciones 2*/}
             <div className="flex flex-col -mx-3 space-y-3">
               <div>
                 <button
                   onClick={toggleAccordion5}
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color hover:text-white w-full group"
+                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                    isAccordionOpen5
+                      ? "bg-color text-white"
+                      : "hover:bg-color hover:text-white"
+                  } w-full group`}
                 >
                   <img
                     src={userMain}
                     alt=""
-                    className="w-5 h-5 group-hover:invert"
+                    className={`w-5 h-5 ${
+                      isAccordionOpen5 ? "invert" : "group-hover:invert"
+                    }`}
                   />
                   {!isCollapsed && (
-                    <span className="mx-2 text-sm font-medium group-hover:text-white">
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        isAccordionOpen5
+                          ? "text-white"
+                          : "group-hover:text-white"
+                      }`}
+                    >
                       Administrador
                     </span>
                   )}
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen5 ? "rotate-180" : ""
-                    }`}
+                    } group-hover:invert`}
                   />
                 </button>
                 {isAccordionOpen5 && (
                   <div className="mt-2 space-y-3">
                     <NavLink to="/Registro">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={user1}
-                          alt=""
-                          className="w-5.8 h-5.5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Mi Perfil
-                          </span>
-                        )}
-                      </a>
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={user1}
+                            alt=""
+                            className={`w-5.8 h-5.5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Mi Perfil
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
 
-                    <NavLink to="/Registro">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={user}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="mx-2 text-sm font-medium">
-                            Usuarios
-                          </span>
-                        )}
-                      </a>
+                    <NavLink to="/Usuarios">
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={user}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Usuarios
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
 
-                    <NavLink to="/Registro">
-                      <a
-                        className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 hover:bg-color2 hover:text-white group"
-                        href="#"
-                      >
-                        <img
-                          src={user2}
-                          alt=""
-                          className="w-5.5 h-5.5 mx-2 group-hover:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="text-sm font-medium">
-                            Registrar Usuarios
-                          </span>
-                        )}
-                      </a>
+                    <NavLink to="/Registrar-Usuarios">
+                      {({ isActive }) => (
+                        <a
+                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                            isActive
+                              ? "bg-color2 text-white"
+                              : "hover:bg-color2 hover:text-white"
+                          } group`}
+                          href="#"
+                        >
+                          <img
+                            src={user2}
+                            alt=""
+                            className={`w-5.5 h-5.5 mx-2 ${
+                              isActive ? "invert" : "group-hover:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`text-sm font-medium ${
+                                isActive ? "text-white" : ""
+                              }`}
+                            >
+                              Registrar Usuarios
+                            </span>
+                          )}
+                        </a>
+                      )}
                     </NavLink>
                   </div>
                 )}
