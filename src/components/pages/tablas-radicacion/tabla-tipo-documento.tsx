@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaTipoDocumento = () => {
   return(
@@ -16,7 +17,7 @@ const TablaTipoDocumento = () => {
                         Servicio Tipo Documento
                     </li>
                 </ol>
-                <div  className="pb-2">
+                <div  className="pb-2 w-10">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -34,7 +35,7 @@ const TablaTipoDocumento = () => {
                     </label> 
                    <input
                         placeholder=" Consultar Tipo Documento..."
-                        className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
                    >
                    </input>
                 </div>
@@ -49,7 +50,7 @@ const TablaTipoDocumento = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
                         Agregar Tipo Documento
                     </button>
                 </div>
@@ -58,37 +59,33 @@ const TablaTipoDocumento = () => {
             <table className="text-sm ">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tipo Documento</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Tipo Documento</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words"> 23</td>
+                        <td className="break-words">CC </td>
+                        <td className="break-words">...texto alusivo </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words">5 </td>
+                        <td className="break-words">TI</td>
+                        <td className="break-words">...texto alusivo </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

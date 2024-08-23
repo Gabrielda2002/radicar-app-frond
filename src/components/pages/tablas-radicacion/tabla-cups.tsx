@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaCups = () => {
   return(
@@ -16,7 +17,7 @@ const TablaCups = () => {
                         Servicio Cups
                     </li>
                 </ol>
-                <div  className="pb-2">
+                <div  className="pb-2 w-10 ">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -34,8 +35,8 @@ const TablaCups = () => {
                         Buscar Cup :
                     </label> 
                    <input
-                        placeholder=" Consultar Cup..."
-                        className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+                        placeholder=" Buscar..."
+                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 "
                    >
                    </input>
                 </div>
@@ -43,44 +44,52 @@ const TablaCups = () => {
                     <select
                         name=""
                         id=""
-                        className="border-2 h-[40px] w-[90px] rounded-md"
+                        className="border-2 border-stone-300 h-[40px] w-[100px] rounded-md  focus:outline-none text-stone-600 "
                     >
                         <option value="">PAGES</option>
                         <option value="10">10 PAGES</option>
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
                         Agregar Cup
                     </button>
                 </div>
             </section>
 
-            <table className="text-sm w-full  table-fixed ">
+            <table>
                 <thead>
                     <tr>
-                        <th className="break-words w-[80px]">ID</th>
-                        <th className="break-words w-[80px]">Codigo</th>
-                        <th className="break-words w-auto">Descripcion del Cup</th>
-                        <th className="break-words w-[120px]">Estado</th>
-                        <th className="break-words w-[80px]">Acciones</th>
+                        <th className=" w-[70px]">ID</th>
+                        <th className=" ">Codigo</th>
+                        <th className=" w-[600px]">Descripcion del Cup</th>
+                        <th className=" ">Estado</th>
+                        <th className=" ">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
                     <tr>
-                        <td className="break-words w-[50px]">9</td>
-                        <td className="break-words w-[60px]">57255287 </td>
-                        <td className="break-words w-auto">...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</td>
-                        <td className="break-words w-[120px]">ACTIVO</td>
-                        <td className="break-words w-[80px]">"icon"</td>
+                        <td className="break-words ">9</td>
+                        <td className="break-words ">5725528</td>
+                        <td className="break-words ">EXPLORACION Y DESCOMPRESION DEL CANAL RAQUIDEO Y RAICES ESPINAL...</td>
+                        <td className="break-words ">INACTIVO</td>
+                        <td className="break-words ">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <td className="break-words whitespace-normal overflow-auto text-clip w-[50px]">...texto alusivo </td>
-                        <td className="break-words whitespace-normal overflow-auto text-clip w-[60px]">...texto alusivo </td>
-                        <td className="break-words whitespace-normal overflow-auto text-clip w-auto">...texto alusivo </td>
-                        <td className="break-words whitespace-normal overflow-auto text-clip w-[120px]">...texto alusivo </td>
-                        <td className="break-words whitespace-normal overflow-auto text-clip w-[80px]">"icon"</td>
+                        <td className="break-words ">17 </td>
+                        <td className="break-words ">09756272 </td>
+                        <td className="break-words ">MANOMETRIA DE LIQUIDO CEFALORRAQUIDEO</td>
+                        <td className="break-words ">ACTIVO </td>
+                        <td className="break-words ">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

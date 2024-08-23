@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaPacientes = () => {
   return(
@@ -16,7 +17,7 @@ const TablaPacientes = () => {
                         Servicio Pacientes
                     </li>
                 </ol>
-                <div  className="pb-2">
+                <div  className="pb-2 w-10">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -34,7 +35,7 @@ const TablaPacientes = () => {
                     </label> 
                    <input
                         placeholder=" Consultar Paciente..."
-                        className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
                    >
                    </input>
                 </div>
@@ -49,7 +50,7 @@ const TablaPacientes = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
                         Agregar Paciente
                     </button>
                 </div>
@@ -58,67 +59,51 @@ const TablaPacientes = () => {
             <table className="text-sm ">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Identificación</th>
-                        <th>Tipo de Documento</th>
-                        <th>Nombre Completo</th>
-                        <th>Número Celular</th>
-                        <th>Telefono Fijo</th>
-                        <th>Correo</th>
-                        <th>Convenio</th>
-                        <th>Estado </th>
-                        <th>Acciones</th>
+                        <th className=" w-[70px]">ID</th>
+                        <th className=" ">Identificación</th>
+                        <th className=" ">Tipo de Documento</th>
+                        <th className=" ">Nombre Completo</th>
+                        <th className=" w-[120px]">Número Celular</th>
+                        <th className=" w-[130px]">Telefono Fijo</th>
+                        <th className=" ">Correo</th>
+                        <th className=" ">Convenio</th>
+                        <th className=" w-[90px]">Estado </th>
+                        <th className=" w-[80px]">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
                     <tr>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words">222</td>
+                        <td className="break-words">1045256363</td>
+                        <td className="break-words">CC</td>
+                        <td className="break-words">LAURA ANDREA CASTRO BARBOSA</td>
+                        <td className="break-words">30420192872</td>
+                        <td className="break-words">30420197582222</td>
+                        <td className="break-words">noregistra@notiene.com</td>
+                        <td className="break-words">Compensar EPS</td>
+                        <td className="break-words">INACTIVO2</td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>....texto alusivo</td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words">10</td>
+                        <td className="break-words">2782665572</td>
+                        <td className="break-words">CC</td>
+                        <td className="break-words">JESSICA LIZBETH BRICE O AGUIN</td>
+                        <td className="break-words">30287662778</td>
+                        <td className="break-words"> 092767276662</td>
+                        <td className="break-words">noregistra@notiene.com</td>
+                        <td className="break-words">Ferrocarriles </td>
+                        <td className="break-words">INACTIVO2 </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

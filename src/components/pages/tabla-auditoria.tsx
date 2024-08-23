@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 import soporte from "/assets/soporte.svg";
+import mostrar from "/assets/mostrar.svg";
+import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 
 const TablaAuditoria = () => {
@@ -17,7 +19,7 @@ const TablaAuditoria = () => {
               Servicio Auditoria
             </li>
           </ol>
-          <div className="pb-2">
+          <div className="pb-2 w-10">
             <Link to="/inicio">
               <img src={salir} alt=""></img>
             </Link>
@@ -25,7 +27,7 @@ const TablaAuditoria = () => {
         </nav>
       </section>
 
-      <div className="container-tabla bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1400px]">
+      <div className="container-tabla bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1450px]">
         {/*header-table*/}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -35,7 +37,7 @@ const TablaAuditoria = () => {
             </label>
             <input
               placeholder=" Consultar registro..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
+              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -49,92 +51,62 @@ const TablaAuditoria = () => {
               <option value="2">20 PAGES</option>
               <option value="3">30 PAGES</option>
             </select>
-            <button className="border-2  w-[130px] h-[50px] rounded-md bg-color text-white active:bg-emerald-900 ">
+            <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
               Ver Autorizaciones
             </button>
           </div>
         </section>
 
-        <table className="text-sm  max-w-fulll table-fixed">
+        <table className="">
           <thead>
             <tr>
-              <th className="break-words">Fecha Radicado</th>
-              <th className="break-words">Tipo Documento </th>
-              <th className="break-words">Identificacion</th>
-              <th className="break-words">Nombre Completo</th>
-              <th className="break-words">Convenio</th>
-              <th className="break-words">IPS Primaria</th>
-              <th className="break-words">Fecha Orden</th>
-              <th className="break-words">Lugar Radicacion</th>
-              <th className="break-words">IPS Remite</th>
-              <th className="break-words">Profesional</th>
-              <th className="break-words">Especialidad</th>
-              <th className="break-words">Tipo Servicio</th>
-              <th className="break-words">Quien Radica</th>
-              <th className="break-words">Soporte</th>
-              <th className="break-words">Soporte</th>
-              <th className="break-words">Ver Servicio</th>
+              <th className=" w-[90px]">Fecha Radicados</th>
+              <th className=" w-[90px]">Tipo Documento </th>
+              <th className=" w-[100px]">Identificacion</th>
+              <th className=" w-[90px]">Nombre Completo</th>
+              <th className=" w-[90px]">Convenio</th>
+              <th className=" w-[70px]">IPS Primaria</th>
+              <th className=" w-[90px]">Fecha Orden</th>
+              <th className=" w-[100px]">Lugar Radicacion</th>
+              <th className=" w-[100px]">IPS Remite</th>
+              <th className=" w-[90px]">Profesional</th>
+              <th className=" w-[90px]">Especialidad</th>
+              <th className=" w-[100px]">Tipo Servicio</th>
+              <th className=" w-[90px]">Quien Radica</th>
+              <th className=" w-[65px]">Soporte</th>
+              <th className=" w-[65px]">Ver Servicios</th>
+              <th className=" w-[65px]">Autorizar Servicios</th>
             </tr>
           </thead>
 
           <tbody>
           <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
+              <td className="break-words">2024-05-31 11:36:15</td>
+              <td className="break-words">CC</td>
+              <td className="break-words">1149456844</td>
+              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
+              <td className="break-words">Compensar EPS</td>
+              <td className="break-words">LA CALERA</td>
+              <td className="break-words">2024-04-12</td>
+              <td className="break-words">Cúcuta/Torre Compensar</td>
+              <td className="break-words">Fundación el Principio de una Esperanza</td>
+              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
+              <td className="break-words">Dolor y cuidados paliativos</td>
+              <td className="break-words">PARTICULAR</td>
+              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
+              <td >
                 <button>
                   <img src={soporte}></img>
                 </button>
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
+                  <img src={mostrar}></img>
                 </button>
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-          <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={autorizar}></img>
                 </button>
               </td>
             </tr>
@@ -159,12 +131,12 @@ const TablaAuditoria = () => {
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
+                  <img src={mostrar}></img>
                 </button>
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
+                  <img src={autorizar}></img>
                 </button>
               </td>
             </tr>
@@ -189,165 +161,16 @@ const TablaAuditoria = () => {
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
+                  <img src={mostrar}></img>
                 </button>
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
+                  <img src={autorizar}></img>
                 </button>
               </td>
             </tr>
-          <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-          <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-          <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-          <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
+
           </tbody>
         </table>
 
