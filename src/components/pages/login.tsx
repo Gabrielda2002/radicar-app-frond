@@ -21,7 +21,7 @@ const Login: React.FC = () => {
 
       localStorage.setItem('rol', rol); // Guardar el rol en localStorage
 
-      login(token) // Llamar a la función login del contexto para actualizar el estado de autenticación
+      login(token, rol) // Llamar a la función login del contexto para actualizar el estado de autenticación
 
       // Redirigir al usuario según su rol
       if (rol == 1) {

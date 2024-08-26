@@ -25,7 +25,7 @@ import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-s
 
 import Login from "./components/pages/login";
 import Navbar from "./components/navbar";
-import { AuthProvider } from "./contexts/authContext";
+import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/privateRoutes";
 
 function AppRoutes() {

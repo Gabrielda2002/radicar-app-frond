@@ -11,3 +11,21 @@ export const api = axios.create({
     }
 })
 
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token')
+        const rol = localStorage.getItem('rol')
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`
+        }else if(rol){
+            config.headers['Authorization'] = `Bearer ${rol}`
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+)
+
