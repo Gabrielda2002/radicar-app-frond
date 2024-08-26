@@ -1,18 +1,17 @@
+import React from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
-import { useUserProfile } from "../context/userProfileContext";
 import userLogo from "/assets/user-logo.svg";
+import { useAuth } from '../contexts/authContext';
+import { useUserProfile } from '../context/userProfileContext';
 
-interface NavbarProps {
-  onLogout: () => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
-  const { userProfile } = useUserProfile();
+const Navbar: React.FC = () => {
+  const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
+  const { logout } = useAuth();
 
   const userNavigation = [
     { name: "Perfil", href: "/perfil" },
-    { name: "Cerrar Sección", action: onLogout },
+    { name: "Cerrar Sesión", action: logout },
   ];
 
   return (
@@ -20,25 +19,15 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
       <div className="mx-auto flex flex-wrap p-5 bg-white border-b-2 border-black">
         <nav className="flex flex-wrap items-center text-base">
           <NavLink to="/">
-            <img
-              src="./src/imgs/logo-navbar.png"
-              className="w-10 h-10"
-              alt="Logo"
-            />
+            <img src="./src/imgs/logo-navbar.png" className="w-10 h-10" alt="Logo" />
           </NavLink>
         </nav>
         <Menu as="div" className="relative ml-auto">
           <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-color rounded text-base text-white hover:text-white group">
-            <img
-              alt="User"
-              src={userProfile.imageUrl}
-              className="h-8 w-8 rounded-full mr-2"
-            />
-            <img
-              src={userLogo}
-              alt="User Logo"
-              className="w-8 h-8 group-hover:invert"
-            />
+            {userProfile?.imageUrl && (
+              <img alt="User" src={userProfile.imageUrl} className="h-8 w-8 rounded-full mr-2" />
+            )}
+            <img src={userLogo} alt="User Logo" className="w-8 h-8 group-hover:invert" />
           </MenuButton>
           <MenuItems
             transition
