@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import userLogo from "/assets/user-logo.svg";
-import { useAuth } from '../contexts/authContext';
+import { useAuth } from '../context/authContext';
 import { useUserProfile } from '../context/userProfileContext';
 
 const Navbar: React.FC = () => {
