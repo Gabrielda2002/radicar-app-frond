@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 const ExternalScriptComponent = () => {
   useEffect(() => {
     // Crear el script y agregarlo al documento
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = "https://static.elfsight.com/platform/platform.js";
     script.dataset.useServiceCore = "true";
     script.defer = true;
@@ -16,9 +16,9 @@ const ExternalScriptComponent = () => {
   }, []);
 
   return (
-    <div 
-      className="elfsight-app-c90bcdd4-e72b-4b3b-b1b3-ef1fb91ea085" 
-      data-elfsight-app-lazy 
+    <div
+      className="elfsight-app-c90bcdd4-e72b-4b3b-b1b3-ef1fb91ea085"
+      data-elfsight-app-lazy
     ></div>
   );
 };
