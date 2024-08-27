@@ -15,7 +15,6 @@ import taskList from "/assets/task-list.svg";
 import table from "/assets/table.svg";
 import arrowUp from "/assets/arrow-up.svg";
 import arrow from "/assets/arrow.svg";
-import settings from "/assets/settings.svg";
 import home from "/assets/home.svg";
 import services from "/assets/services.svg";
 
@@ -59,15 +58,15 @@ const SideBar: FC = () => {
   //Funcion para hacer el color de los botones del sidebar
   const getLinkClass = (path: string) => {
     return location.pathname === path
-      ? "bg-color2 text-white"
-      : "text-gray-600 hover:bg-color2 hover:text-white";
+      ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-gray-200";
   };
 
   return (
     <aside
       className={`flex flex-col ${
-        isCollapsed ? "w-20" : "w-64 transition-all duration-500"
-      } h-full px-4 py-8 overflow-y-auto border-r  rtl:border-r-0 rtl:border-l bg-white dark:border-gray-700 transition-all duration-500`}
+        isCollapsed ? "w-20" : "w-64"
+      } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 transition-all duration-200`}
     >
       <button
         onClick={toggleSideBar}
@@ -99,10 +98,12 @@ const SideBar: FC = () => {
             <NavLink to="/">
               {({ isActive }) => (
                 <a
-                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 group ${
+                  className={`flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg group ${getLinkClass(
+                    "/"
+                  )} ${
                     isActive
-                      ? "bg-color2 text-white"
-                      : "hover:bg-color2 hover:text-white"
+                      ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                      : ""
                   }`}
                 >
                   <img
@@ -113,7 +114,9 @@ const SideBar: FC = () => {
                   {!isCollapsed && (
                     <span
                       className={`mx-2 text-sm font-medium ${
-                        isActive ? "text-white" : "group-hover:text-white"
+                        isActive
+                          ? "text-white dark:text-gray-200"
+                          : "group-hover:text-white dark:group-hover:text-gray-200"
                       }`}
                     >
                       Inicio
@@ -786,40 +789,8 @@ const SideBar: FC = () => {
                 Configuraciones
               </label>
             )}
-            {/*Tabla Configuraciones 1*/}
-            <div className="flex flex-col -mx-3 space-y-3">
-              <NavLink to="/Perfil">
-                {({ isActive }) => (
-                  <a
-                    className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
-                      isActive
-                        ? "bg-color2 text-white"
-                        : "hover:bg-color hover:text-white"
-                    } group`}
-                    href="#"
-                  >
-                    <img
-                      src={settings}
-                      alt=""
-                      className={`w-5 h-5 ${
-                        isActive ? "invert" : "group-hover:invert"
-                      }`}
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`mx-2 text-sm font-medium ${
-                          isActive ? "text-white" : ""
-                        }`}
-                      >
-                        Configuración
-                      </span>
-                    )}
-                  </a>
-                )}
-              </NavLink>
-            </div>
 
-            {/*Tabla Configuraciones 2*/}
+            {/*Tabla Configuraciones 1*/}
             <div className="flex flex-col -mx-3 space-y-3">
               <div>
                 <button
@@ -858,7 +829,7 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen5 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/Registro">
+                    <NavLink to="/Perfil">
                       {({ isActive }) => (
                         <a
                           className={`flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 ${
@@ -918,7 +889,7 @@ const SideBar: FC = () => {
                       )}
                     </NavLink>
 
-                    <NavLink to="/Registrar-Usuarios">
+                    <NavLink to="/RegistrarUsuarios">
                       {({ isActive }) => (
                         <a
                           className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
