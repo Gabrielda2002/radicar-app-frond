@@ -72,7 +72,7 @@ const TablaPacientes = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200 text-center">
                     <tr>
                         <td className="break-words">222</td>
                         <td className="break-words">1045256363</td>

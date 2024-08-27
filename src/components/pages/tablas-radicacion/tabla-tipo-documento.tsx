@@ -66,7 +66,7 @@ const TablaTipoDocumento = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200 text-center">
                     <tr>
                         <td className="break-words"> 23</td>
                         <td className="break-words">CC </td>
