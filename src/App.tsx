@@ -30,7 +30,7 @@ import RegistrarUsuarios from "./components/pages/registrar-usuarios";
 
 export function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { theme, toggleTheme } = useTheme(); // Obtén el tema y la función de alternancia
+  const { theme } = useTheme(); // Obtén el tema y la función de alternancia
 
   const handleLogout = () => {
     setIsAuthenticated(false);
