@@ -8,7 +8,7 @@ import youtube from "/assets/youtube.svg";
 
 const Footer = () => {
   return (
-    <footer className="text-gray-600 body-font bg-color font-sans">
+    <footer className="text-gray-600 body-font bg-color dark:bg-gray-800 font-sans">
       <div className="container px-10 py-20 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
         <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a className="flex title-font font-lg items-center md:justify-start justify-center text-gray-900">
@@ -28,7 +28,7 @@ const Footer = () => {
                   className="w-7 h-7 mr-3 group-hover:invert"
                 />
                 <a
-                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
                   href="mailto:contacto@nordvitalips.com"
                 >
                   contacto@nordvitalips.com
@@ -40,7 +40,7 @@ const Footer = () => {
                   alt=""
                   className="w-7 h-7 mr-3 group-hover:invert"
                 />
-                <a className="flex text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8">
+                <a className="flex text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8">
                   Telefono: 5892750
                 </a>
               </li>
@@ -51,7 +51,7 @@ const Footer = () => {
                   className="w-7 h-7 mr-3 group-hover:invert"
                 />
                 <a
-                  className="text-gray-900 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
                   href="https://api.whatsapp.com/send?phone=573174309873&text=Hola%20sean%20bienvenidos%20a%20Nordvital%20ips,%20una%20ips%20comprometida%20con%20sus%20usuarios."
                   target="_blank"
                 >
@@ -69,7 +69,7 @@ const Footer = () => {
             <li className="max-w-md mx-full">
               {" "}
               {/* max-w-md limita el ancho máximo */}
-              <p className="text-justify text-gray-900">
+              <p className="text-justify text-gray-900 dark:text-gray-100">
                 Nordvital IPS SAS proporciona atención integral de salud con un
                 enfoque social, humano y de seguridad a sus usuarios. Estamos
                 dedicados a la actualización constante de nuestro personal, la
@@ -86,7 +86,7 @@ const Footer = () => {
             <li className="max-w-md mx-full">
               {" "}
               {/* max-w-md limita el ancho máximo */}
-              <p className="text-justify text-gray-900">
+              <p className="text-justify text-gray-900 dark:text-gray-100">
                 En 2024, buscamos ser líderes regionales y reconocidos
                 nacionalmente como una IPS que cumple con altos estándares de
                 calidad. Nos comprometemos a proporcionar atención amable,
