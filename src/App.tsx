@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useTheme } from "./context/blackWhiteContext"; // Importa el hook useTheme
+import { useTheme } from "./context/blackWhiteContext";
 
+// Importar componentes principales
 import SideBar from "./components/pages/sidebar";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -41,7 +42,11 @@ export function App() {
   };
 
   return (
-    <div className={`flex h-screen font-semibold ${theme === 'dark' ? 'dark' : ''}`}>
+    <div
+      className={`flex h-screen font-semibold ${
+        theme === "dark" ? "dark" : ""
+      }`}
+    >
       <Routes>
         {isAuthenticated ? (
           <>
@@ -57,22 +62,61 @@ export function App() {
                         <Routes>
                           <Route path="/" element={<Inicio />} />
                           <Route path="/tabla" element={<Tabla />} />
-                          <Route path="/tabla-auditoria" element={<TablaAuditoria />} />
-                          <Route path="/tabla-cirugias" element={<TablaCirugias />} />
+                          <Route
+                            path="/tabla-auditoria"
+                            element={<TablaAuditoria />}
+                          />
+                          <Route
+                            path="/tabla-cirugias"
+                            element={<TablaCirugias />}
+                          />
                           <Route path="/tabla-cups" element={<TablaCups />} />
-                          <Route path="/tabla-pacientes" element={<TablaPacientes />} />
-                          <Route path="/tabla-radicadores" element={<TablaRadicadores />} />
-                          <Route path="/tabla-municipios" element={<TablaMunicipios />} />
-                          <Route path="/tabla-convenios" element={<TablaConvenios />} />
-                          <Route path="/tabla-tipo-documento" element={<TablaTipoDocumento />} />
-                          <Route path="/tabla-ips-primaria" element={<TablaIpsPrimaria />} />
-                          <Route path="/tabla-lugar-radicacion" element={<TablaLugarRadicacion />} />
-                          <Route path="/tabla-ips-remite" element={<TablaIpsRemite />} />
-                          <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />
-                          <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
+                          <Route
+                            path="/tabla-pacientes"
+                            element={<TablaPacientes />}
+                          />
+                          <Route
+                            path="/tabla-radicadores"
+                            element={<TablaRadicadores />}
+                          />
+                          <Route
+                            path="/tabla-municipios"
+                            element={<TablaMunicipios />}
+                          />
+                          <Route
+                            path="/tabla-convenios"
+                            element={<TablaConvenios />}
+                          />
+                          <Route
+                            path="/tabla-tipo-documento"
+                            element={<TablaTipoDocumento />}
+                          />
+                          <Route
+                            path="/tabla-ips-primaria"
+                            element={<TablaIpsPrimaria />}
+                          />
+                          <Route
+                            path="/tabla-lugar-radicacion"
+                            element={<TablaLugarRadicacion />}
+                          />
+                          <Route
+                            path="/tabla-ips-remite"
+                            element={<TablaIpsRemite />}
+                          />
+                          <Route
+                            path="/tabla-especialidad"
+                            element={<TablaEspecialidad />}
+                          />
+                          <Route
+                            path="/tabla-tipo-servicio"
+                            element={<TablaTipoServicio />}
+                          />
                           <Route path="/perfil" element={<Perfil />} />
                           <Route path="/Usuarios" element={<Usuarios />} />
-                          <Route path="/RegistrarUsuarios" element={<RegistrarUsuarios />} />
+                          <Route
+                            path="/RegistrarUsuarios"
+                            element={<RegistrarUsuarios />}
+                          />
                           <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                       </Layout>
@@ -85,7 +129,10 @@ export function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </>
         ) : (
-          <Route path="*" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+          <Route
+            path="*"
+            element={<Login onLoginSuccess={handleLoginSuccess} />}
+          />
         )}
       </Routes>
     </div>
