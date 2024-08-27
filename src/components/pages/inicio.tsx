@@ -2,8 +2,8 @@ const Inicio = () => {
   return (
     <section className="text-gray-600 body-font">
       <div className="container mx-auto">
-        <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+        <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center border-2 rounded-full border-rose-500">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900 ">
             Bienvenidos a Nordvital
           </h1>
         </div>
@@ -115,9 +115,6 @@ const Inicio = () => {
             </div>
           </div>
         </div>
-        <button className="flex mx-auto mt-16 text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">
-          Button
-        </button>
       </div>
     </section>
   );
