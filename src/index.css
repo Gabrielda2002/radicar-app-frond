@@ -47,7 +47,7 @@ body.dark .border-black {
     @apply p-2;
   }
 }
-    /* <-- STYLE COMPENENTES TABLE --> -*/
+/* <-- STYLE COMPENENTES TABLE --> -*/
 
 /* @layer components {
     .container-tabla{
@@ -61,4 +61,3 @@ body.dark .border-black {
         }
     }
 } */
- 
