@@ -1,7 +1,7 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import { useUserProfile } from "../context/userProfileContext";
-import { useTheme } from "../context/blackWhiteContext"; // Asegúrate de que el hook useTheme esté importado
+import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import userLogo from "/assets/user-logo.svg";
 
 interface NavbarProps {
@@ -18,7 +18,11 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
   ];
 
   return (
-    <header className={`text-gray-900 body-font ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+    <header
+      className={`text-gray-900 body-font ${
+        theme === "dark" ? "bg-gray-800 dark-mode" : "bg-white light-mode"
+      }`}
+    >
       <div className="mx-auto flex flex-wrap p-5 border-b-2 border-black dark:border-gray-700">
         <nav className="flex flex-wrap items-center text-base">
           <NavLink to="/">
@@ -51,32 +55,42 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
               className="w-8 h-8 group-hover:invert"
             />
           </MenuButton>
-          <MenuItems
+          <Menu.Items
             transition
-            className={`absolute right-0 z-50 w-56 p-2 border rounded-lg top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+            className={`absolute right-0 z-50 w-56 p-2 border rounded-lg top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
           >
             {userNavigation.map((item) => (
-              <MenuItem key={item.name}>
+              <Menu.Item key={item.name}>
                 {item.action ? (
                   <button
                     onClick={() => {
                       item.action();
                     }}
-                    className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'} rounded-lg transition-colors duration-300`}
+                    className={`block px-4 py-2 text-sm ${
+                      theme === "dark"
+                        ? "text-gray-200 hover:bg-gray-700"
+                        : "text-gray-800 hover:bg-gray-200"
+                    } rounded-lg transition-colors duration-300`}
                   >
                     {item.name}
                   </button>
                 ) : (
                   <NavLink
                     to={item.href}
-                    className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'} rounded-lg transition-colors duration-300`}
+                    className={`block px-4 py-2 text-sm ${
+                      theme === "dark"
+                        ? "text-gray-200 hover:bg-gray-700"
+                        : "text-gray-800 hover:bg-gray-200"
+                    } rounded-lg transition-colors duration-300`}
                   >
                     {item.name}
                   </NavLink>
                 )}
-              </MenuItem>
+              </Menu.Item>
             ))}
-          </MenuItems>
+          </Menu.Items>
         </Menu>
       </div>
     </header>
