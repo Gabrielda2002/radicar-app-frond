@@ -1,18 +1,17 @@
 import { Link } from "react-router-dom";
 
 /* <-- ICONS TABLE --> */
-
 import soporte from "/assets/soporte.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
 
+
 const Tabla = () => {
   return (
     <>
       {/* nav-table */}
-
       <section className="">
         <h1 className="text-color text-4xl mb-4">Módulo Radicación</h1>
         <nav className="">
@@ -33,11 +32,11 @@ const Tabla = () => {
       <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/* header-table */}
 
+        <label className="font-bold text-lg text-stone-600">
+          Buscar registro Radicacion :
+        </label>
         <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter">
-            <label className="font-bold text-lg text-stone-600">
-              Buscar registro Radicacion :
-            </label>
+          <div className="container-filter flex items-center space-x-2">
             <input
               placeholder=" Consultar registro..."
               className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
@@ -49,10 +48,10 @@ const Tabla = () => {
               id=""
               className="border-2 h-[40px] w-[90px] rounded-md"
             >
-              <option value="">PAGES</option>
-              <option value="1">10 PAGES</option>
-              <option value="2">20 PAGES</option>
-              <option value="3">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="1">10 Paginas</option>
+              <option value="2">20 PAginas</option>
+              <option value="3">30 Paginas</option>
             </select>
             <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 ">
               Radicar
@@ -60,16 +59,15 @@ const Tabla = () => {
           </div>
         </section>
 
-        <table className="text-sm ">
+        <table className="text-sm mx-auto">
           <thead>
-            <tr className="">
-              <th>Fecha - Hora del Radicado</th>
+            <tr className="text-center">
+              <th>Fecha/Hora Radicado</th>
               <th>N.º Radicado</th>
               <th>Convenio</th>
               <th>N.º Documento</th>
               <th>Nombre Paciente</th>
               <th>Fecha Auditoria</th>
-              {/* <th>    </th> */}
               <th>Nombre Auditora</th>
               <th>Soporte</th>
               <th>Gestión Auxiliar</th>
@@ -79,7 +77,7 @@ const Tabla = () => {
           </thead>
 
           <tbody>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -112,7 +110,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -145,7 +143,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -178,7 +176,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -211,7 +209,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -244,7 +242,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -277,7 +275,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -310,7 +308,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -343,7 +341,7 @@ const Tabla = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
