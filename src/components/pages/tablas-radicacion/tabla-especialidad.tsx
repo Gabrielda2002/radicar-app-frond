@@ -49,15 +49,15 @@ const TablaEspecialidad = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[150px] h-[48px] rounded-md bg-color text-white active:bg-emerald-900">
                         Agregar Especialidad
                     </button>
                 </div>
             </section>
 
-            <table className="text-sm ">
+            <table className="text-sm mx-auto">
                 <thead>
-                    <tr>
+                    <tr className="text-center">
                         <th>ID</th>
                         <th>Nombre Especialidad</th>
                         <th>Estado</th>
@@ -66,25 +66,28 @@ const TablaEspecialidad = () => {
                 </thead>
                     
                 <tbody>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+
+                    <tr className="text-center"> 
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>

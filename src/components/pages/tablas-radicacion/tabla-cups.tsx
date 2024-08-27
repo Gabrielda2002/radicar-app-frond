@@ -42,22 +42,22 @@ const TablaCups = () => {
                     <select
                         name=""
                         id=""
-                        className="border-2 h-[40px] w-[90px] rounded-md"
+                        className="border-2 h-[40px] w-[100px] rounded-md"
                     >
                         <option value="">PAGES</option>
                         <option value="10">10 PAGES</option>
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[100px] h-[40px] rounded-md bg-color text-white active:bg-emerald-900">
                         Agregar Cup
                     </button>
                 </div>
             </section>
 
-            <table className="text-sm ">
+            <table className="text-sm mx-auto">
                 <thead>
-                    <tr>
+                    <tr className="text-center">
                         <th>ID</th>
                         <th>Codigo</th>
                         <th>Descripcion del Cup</th>
@@ -67,28 +67,28 @@ const TablaCups = () => {
                 </thead>
                     
                 <tbody>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>

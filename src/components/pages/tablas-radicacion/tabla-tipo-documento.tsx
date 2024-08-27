@@ -44,18 +44,18 @@ const TablaTipoDocumento = () => {
                         id=""
                         className="border-2 h-[40px] w-[90px] rounded-md"
                     >
-                        <option value="">PAGES</option>
-                        <option value="10">10 PAGES</option>
-                        <option value="20">20 PAGES</option>
-                        <option value="30">30 PAGES</option>
+                        <option value="">Paginas</option>
+                        <option value="10">10 Paginas</option>
+                        <option value="20">20 Paginas</option>
+                        <option value="30">30 Paginas</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[200px] h-[40px] rounded-md bg-color text-white active:bg-emerald-900">
                         Agregar Tipo Documento
                     </button>
                 </div>
             </section>
 
-            <table className="text-sm ">
+            <table className="text-sm mx-auto">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -66,25 +66,28 @@ const TablaTipoDocumento = () => {
                 </thead>
                     
                 <tbody>
-                    <tr>
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
                         <td>"icon"</td>
                     </tr>
-                    <tr>
+                    
+                    <tr className="text-center">
                         <td>...texto alusivo </td>
                         <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
                         <td>...texto alusivo </td>
