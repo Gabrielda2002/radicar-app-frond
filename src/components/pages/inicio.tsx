@@ -1,5 +1,4 @@
-import ExternalScriptComponent from "../ExternalScriptComponent"; // Asegúrate de que la ruta sea correcta
-
+import ExternalScriptComponent from "../ExternalScriptComponent";
 const Inicio = () => {
   return (
     <section className="text-gray-600 body-font">
@@ -12,7 +11,6 @@ const Inicio = () => {
 
         {/* Aquí es donde insertas el componente que carga el script externo */}
         <ExternalScriptComponent />
-
       </div>
     </section>
   );
