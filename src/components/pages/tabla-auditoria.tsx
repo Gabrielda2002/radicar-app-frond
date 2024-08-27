@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
 
+
 const TablaAuditoria = () => {
   return (
     <>
       {/*nav-auditoria*/}
 
       <section>
-      <h1 className="text-color text-4xl mb-4">Módulo Auditoria</h1>
+        <h1 className="text-color text-4xl mb-4">Módulo Auditoria</h1>
         <nav className="">
           <ol className="mb-2 flex">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
@@ -25,16 +26,15 @@ const TablaAuditoria = () => {
         </nav>
       </section>
 
-      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1200px] ">
+      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-full">
         {/*header-table*/}
-
+        <label className="font-bold text-lg text-stone-600">
+          Buscar registro Auditoria :
+        </label>
         <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter">
-            <label className="font-bold text-lg text-stone-600">
-              Buscar registro Auditoria :
-            </label>
+          <div className="container-filter flex items-center space-x-2">
             <input
-              placeholder=" Consultar registro..."
+              placeholder=" Consultar Auditoria..."
               className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
             ></input>
           </div>
@@ -44,20 +44,20 @@ const TablaAuditoria = () => {
               id=""
               className="border-2 h-[40px] w-[90px] rounded-md"
             >
-              <option value="">PAGES</option>
-              <option value="1">10 PAGES</option>
-              <option value="2">20 PAGES</option>
-              <option value="3">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="1">10 Paginas</option>
+              <option value="2">20 Paginas</option>
+              <option value="3">30 Paginas</option>
             </select>
-            <button className="border-2  w-[130px] h-[50px] rounded-md bg-color text-white active:bg-emerald-900 ">
+            <button className="border-2  w-[160px] h-[40px] rounded-md bg-color text-white active:bg-emerald-900 ">
               Ver Autorizaciones
             </button>
           </div>
         </section>
 
-        <table className="text-sm">
+        <table className="text-sm mx-auto">
           <thead>
-            <tr>
+            <tr className="text-center">
               <th>Fecha Radicado</th>
               <th>Tipo Documento </th>
               <th>Identificacion</th>
@@ -78,7 +78,7 @@ const TablaAuditoria = () => {
           </thead>
 
           <tbody>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -108,7 +108,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -138,7 +138,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -168,7 +168,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -198,7 +198,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -228,7 +228,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -258,7 +258,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -288,7 +288,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-          <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
@@ -318,7 +318,7 @@ const TablaAuditoria = () => {
                 </button>
               </td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
