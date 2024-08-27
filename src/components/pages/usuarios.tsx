@@ -6,7 +6,7 @@ const Usuarios = () => {
   return (
     <>
       <section className="p-5">
-        <h1 className="text-color text-4xl mb-4">Módulo Usuarios</h1>
+        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">Módulo Usuarios</h1>
         <nav>
           <ol className="mb-2 flex">
             <li className="text-slate-400 after:mr-2">Inicio</li>
