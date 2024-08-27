@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaMunicipios = () => {
   return(
@@ -16,7 +17,7 @@ const TablaMunicipios = () => {
                         Servicio Municipios
                     </li>
                 </ol>
-                <div  className="pb-2">
+                <div  className="pb-2 w-10">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -34,7 +35,7 @@ const TablaMunicipios = () => {
                     </label> 
                    <input
                         placeholder=" Consultar Municipio..."
-                        className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
                    >
                    </input>
                 </div>
@@ -49,7 +50,7 @@ const TablaMunicipios = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
                         Agregar Municipio
                     </button>
                 </div>
@@ -58,42 +59,36 @@ const TablaMunicipios = () => {
             <table className="text-sm ">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre Municipio</th>
-                        <th>Nit Municipio</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th className=" w-[70px]">ID</th>
+                        <th className=" ">Nombre Municipio</th>
+                        <th className=" ">Nit Municipio</th>
+                        <th className=" w-[150px]">Estado</th>
+                        <th className=" w-[150px]">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words">1 </td>
+                        <td className="break-words">CUNDINAMARCA</td>
+                        <td className="break-words">111-21243423 </td>
+                        <td className="break-words">INACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-                    <tr>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                        <td className="break-words">2 </td>
+                        <td className="break-words">...texto alusivo </td>
+                        <td className="break-words">21243423222 </td>
+                        <td className="break-words">ACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

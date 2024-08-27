@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
-import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
+import soporte from "/assets/mostrar.svg";
+import programar from "/assets/programar.svg";
 
 const TablaCirugias = () => {
   return (
@@ -17,7 +18,7 @@ const TablaCirugias = () => {
               Servicio Cirugias
             </li>
           </ol>
-          <div className="pb-2">
+          <div className="pb-2 w-10">
             <Link to="/inicio">
               <img src={salir} alt=""></img>
             </Link>
@@ -25,7 +26,7 @@ const TablaCirugias = () => {
         </nav>
       </section>
 
-      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1200px] ">
+      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/*header-table*/}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -35,7 +36,7 @@ const TablaCirugias = () => {
             </label>
             <input
               placeholder=" Consultar registro..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
+              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -52,7 +53,7 @@ const TablaCirugias = () => {
           </div>
         </section>
 
-        <table className="text-sm">
+        <table className="text-sm ">
           <thead>
             <tr>
               <th>Fecha - Hora del Radicado</th>
@@ -79,6 +80,7 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
+              <td>....texto alussivo</td>
               <td>
                 <button>
                   <img src={soporte}></img>
@@ -86,12 +88,7 @@ const TablaCirugias = () => {
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={programar}></img>
                 </button>
               </td>
             </tr>
@@ -104,6 +101,7 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
+              <td>....texto alussivo</td>
               <td>
                 <button>
                   <img src={soporte}></img>
@@ -111,12 +109,7 @@ const TablaCirugias = () => {
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={programar}></img>
                 </button>
               </td>
             </tr>
@@ -129,30 +122,6 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>
                 <button>
@@ -161,87 +130,7 @@ const TablaCirugias = () => {
               </td>
               <td>
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={programar} alt="" />
                 </button>
               </td>
             </tr>

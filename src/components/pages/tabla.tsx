@@ -37,7 +37,7 @@ const Tabla = () => {
         </nav>
       </section>
 
-      <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
+      <section className="container-tabla bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/* header-table */}
 
         <section className="header-tabla pb-6 flex justify-between items-center">
@@ -67,7 +67,7 @@ const Tabla = () => {
           </div>
         </section>
 
-        <table className="text-sm ">
+        <table className="text-sm">
           <thead>
             <tr className="">
               <th>Fecha - Hora del Radicado</th>

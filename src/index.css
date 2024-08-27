@@ -2,17 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-   /* <-- STYLE ELEMENTS TABLE --> -*/
+   /* <-- STYLE BASE TABLE --> -*/
 
 @layer base{
+    table{
+        @apply text-sm w-full table-fixed;
+    }
     th{
-        @apply pr-[8px];
+        @apply p-0 px-[5px] pb-2 ;
     }
     tbody tr {
-        @apply border-solid border-y-2;
+        @apply border-solid border-y-2 text-center hover:bg-emerald-100 ;
       }
       tbody td {
-        @apply p-2;
+        @apply p-2 ;/*posible colocar el salto de linea para todas */
     }
 
 }
+    /* <-- STYLE COMPENENTES TABLE --> -*/
+
+/* @layer components {
+    .container-tabla{
+        @apply max-w-[1120px];
+    }
+    @media (max-width: 1120px) {
+        .container-tabla{
+            & .table{
+                @apply w-[1120px]
+            }
+        }
+    }
+} */
+ 
