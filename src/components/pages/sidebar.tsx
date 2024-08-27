@@ -59,7 +59,7 @@ const SideBar: FC = () => {
   const getLinkClass = (path: string) => {
     return location.pathname === path
       ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-gray-200";
+      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
   };
 
   return (
@@ -126,142 +126,16 @@ const SideBar: FC = () => {
               )}
             </NavLink>
 
-            {/* Modulo de acordion 1*/}
-            <div>
-              <button
-                onClick={toggleAccordion1}
-                className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
-                  isAccordionOpen1
-                    ? "bg-color text-white"
-                    : "hover:bg-color hover:text-white"
-                } w-full group`}
-              >
-                <img
-                  src={services}
-                  alt=""
-                  className={`w-5 h-5 group-hover:invert ${
-                    isAccordionOpen1 ? "invert" : ""
-                  }`}
-                />
-                {!isCollapsed && (
-                  <span
-                    className={`mx-2 text-sm font-medium ${
-                      isAccordionOpen1 ? "text-white" : ""
-                    }`}
-                  >
-                    Gestión de Servicios
-                  </span>
-                )}
-                <img
-                  src={arrowUp}
-                  alt=""
-                  className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert group-hover:text-white ${
-                    isAccordionOpen1 ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isAccordionOpen1 && (
-                <div className="mt-2 space-y-3">
-                  <NavLink to="/tabla">
-                    {({ isActive }) => (
-                      <a
-                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white"
-                            : "text-gray-600 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={taskList}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white" : ""
-                            }`}
-                          >
-                            Radicador
-                          </span>
-                        )}
-                      </a>
-                    )}
-                  </NavLink>
-
-                  <NavLink to="/tabla-cirugias">
-                    {({ isActive }) => (
-                      <a
-                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white"
-                            : "text-gray-600 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={surgery}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white" : ""
-                            }`}
-                          >
-                            Cirugía
-                          </span>
-                        )}
-                      </a>
-                    )}
-                  </NavLink>
-
-                  <NavLink to="/tabla-auditoria">
-                    {({ isActive }) => (
-                      <a
-                        className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white"
-                            : "text-gray-600 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={audit}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white" : ""
-                            }`}
-                          >
-                            Auditoría
-                          </span>
-                        )}
-                      </a>
-                    )}
-                  </NavLink>
-                </div>
-              )}
-            </div>
-
             {/* Modulo de acordion 2*/}
             <div className="space-y-3">
               <div>
                 <button
                   onClick={toggleAccordion2}
-                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                     isAccordionOpen2
-                      ? "bg-color text-white"
-                      : "hover:bg-color hover:text-white"
-                  } w-full group`}
+                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                  } w-full`}
                 >
                   {/* Icono y texto para el segundo acordeón */}
                   <img
@@ -274,7 +148,7 @@ const SideBar: FC = () => {
                   {!isCollapsed && (
                     <span
                       className={`mx-2 text-sm font-medium ${
-                        isAccordionOpen2 ? "text-white" : ""
+                        isAccordionOpen2 ? "text-white dark:text-gray-200" : ""
                       }`}
                     >
                       Gestión de Calidad
@@ -283,7 +157,7 @@ const SideBar: FC = () => {
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen2 ? "rotate-180" : ""
                     }`}
                   />
@@ -293,10 +167,10 @@ const SideBar: FC = () => {
                     <NavLink to="/perfil">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "text-gray-600 hover:bg-color2 hover:text-white"
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
                           href="#"
                         >
@@ -310,7 +184,7 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
                               Norte de Santander
@@ -324,16 +198,142 @@ const SideBar: FC = () => {
               </div>
             </div>
 
+            {/* Modulo de acordion 1*/}
+            <div>
+              <button
+                onClick={toggleAccordion1}
+                className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                  isAccordionOpen1
+                    ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                    : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                } w-full`}
+              >
+                <img
+                  src={services}
+                  alt=""
+                  className={`w-5 h-5 ${
+                    isAccordionOpen1 ? "invert" : "group-hover:invert"
+                  }`}
+                />
+                {!isCollapsed && (
+                  <span
+                    className={`mx-2 text-sm font-medium ${
+                      isAccordionOpen1 ? "text-white dark:text-gray-200" : ""
+                    }`}
+                  >
+                    Gestión de Servicios
+                  </span>
+                )}
+                <img
+                  src={arrowUp}
+                  alt=""
+                  className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                    isAccordionOpen1 ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isAccordionOpen1 && (
+                <div className="mt-2 space-y-3">
+                  <NavLink to="/tabla">
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={taskList}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white dark:text-gray-200" : ""
+                            }`}
+                          >
+                            Radicador
+                          </span>
+                        )}
+                      </a>
+                    )}
+                  </NavLink>
+
+                  <NavLink to="/tabla-cirugias">
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={surgery}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white dark:text-gray-200" : ""
+                            }`}
+                          >
+                            Cirugía
+                          </span>
+                        )}
+                      </a>
+                    )}
+                  </NavLink>
+
+                  <NavLink to="/tabla-auditoria">
+                    {({ isActive }) => (
+                      <a
+                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                          isActive
+                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                        }`}
+                      >
+                        <img
+                          src={audit}
+                          alt=""
+                          className={`w-5 h-5 mx-2 ${
+                            isActive ? "invert" : "group-hover:invert"
+                          }`}
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`mx-2 text-sm font-medium ${
+                              isActive ? "text-white dark:text-gray-200" : ""
+                            }`}
+                          >
+                            Auditoría
+                          </span>
+                        )}
+                      </a>
+                    )}
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
             {/* Modulo de acordion 3*/}
             <div className="space-y-3">
               <div>
                 <button
                   onClick={toggleAccordion3}
-                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                     isAccordionOpen3
-                      ? "bg-color text-white"
-                      : "hover:bg-color hover:text-white"
-                  } w-full group`}
+                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                  } w-full`}
                 >
                   {/* Icono y texto para el tercer acordeón */}
                   <img
@@ -346,7 +346,7 @@ const SideBar: FC = () => {
                   {!isCollapsed && (
                     <span
                       className={`mx-2 text-sm font-medium ${
-                        isAccordionOpen3 ? "text-white" : ""
+                        isAccordionOpen3 ? "text-white dark:text-gray-200" : ""
                       }`}
                     >
                       Gestión de Reportes
@@ -355,7 +355,7 @@ const SideBar: FC = () => {
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 group-hover:invert ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen3 ? "rotate-180" : ""
                     }`}
                   />
@@ -365,10 +365,10 @@ const SideBar: FC = () => {
                     <NavLink to="/perfil">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 rounded-lg dark:text-gray-900 transition-colors duration-300 transform group ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "text-gray-600 hover:bg-color2 hover:text-white"
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
                           href="#"
                         >
@@ -382,7 +382,7 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
                               Reporte de Radicación
@@ -401,11 +401,11 @@ const SideBar: FC = () => {
               <div>
                 <button
                   onClick={toggleAccordion4}
-                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                     isAccordionOpen4
-                      ? "bg-color text-white"
-                      : "hover:bg-color hover:text-white"
-                  } w-full group`}
+                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                  } w-full`}
                 >
                   {/* Icono y texto para el cuarto acordeón */}
                   <img
@@ -419,8 +419,8 @@ const SideBar: FC = () => {
                     <span
                       className={`mx-2 text-sm font-medium ${
                         isAccordionOpen4
-                          ? "text-white"
-                          : "group-hover:text-white"
+                          ? "text-white dark:text-gray-200"
+                          : "group-hover:text-white dark:group-hover:text-gray-200"
                       }`}
                     >
                       Tabla Radicación
@@ -434,17 +434,18 @@ const SideBar: FC = () => {
                     } group-hover:invert`}
                   />
                 </button>
+
                 {isAccordionOpen4 && (
                   <div className="mt-2 space-y-3">
                     {/* Tabla radicación Cups */}
                     <NavLink to="/tabla-cups">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -457,7 +458,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Cups
@@ -471,11 +474,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-pacientes">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -488,7 +491,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Pacientes
@@ -502,11 +507,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-radicadores">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -519,7 +524,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Radicadores
@@ -533,11 +540,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-municipios">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -550,7 +557,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Municipios
@@ -564,11 +573,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-convenios">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -581,7 +590,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Convenios
@@ -595,11 +606,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-tipo-documento">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -612,7 +623,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Tipo Documento
@@ -626,11 +639,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-ips-primaria">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -643,7 +656,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               IPS Primaria
@@ -657,11 +672,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-lugar-radicacion">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -674,7 +689,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Lugar Radicación
@@ -688,11 +705,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-ips-remite">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -705,7 +722,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               IPS Remitente
@@ -719,11 +738,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-especialidad">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -736,7 +755,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Especialidad
@@ -750,11 +771,11 @@ const SideBar: FC = () => {
                     <NavLink to="/tabla-tipo-servicio">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
                           href="#"
                         >
                           <img
@@ -767,7 +788,9 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive
+                                  ? "text-white dark:text-gray-200"
+                                  : "group-hover:text-white dark:group-hover:text-gray-200"
                               }`}
                             >
                               Tipo Servicio
@@ -785,21 +808,21 @@ const SideBar: FC = () => {
           {/*Tabla Configuraciones*/}
           <div className="flex flex-col mx-3 space-y-3">
             {!isCollapsed && (
-              <label className="px-1 text-lg font-bold text-[#049AE7] uppercase">
+              <label className="px-1 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
                 Configuraciones
               </label>
             )}
 
-            {/*Tabla Configuraciones 1*/}
+            {/* Tabla Configuraciones 1 */}
             <div className="flex flex-col -mx-3 space-y-3">
               <div>
                 <button
                   onClick={toggleAccordion5}
-                  className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                     isAccordionOpen5
-                      ? "bg-color text-white"
-                      : "hover:bg-color hover:text-white"
-                  } w-full group`}
+                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white dark:hover:bg-gray-600"
+                  } w-full`}
                 >
                   <img
                     src={userMain}
@@ -812,8 +835,8 @@ const SideBar: FC = () => {
                     <span
                       className={`mx-2 text-sm font-medium ${
                         isAccordionOpen5
-                          ? "text-white"
-                          : "group-hover:text-white"
+                          ? "text-white dark:text-gray-200"
+                          : "group-hover:text-white dark:group-hover:text-gray-200"
                       }`}
                     >
                       Administrador
@@ -832,11 +855,11 @@ const SideBar: FC = () => {
                     <NavLink to="/Perfil">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
+                          }`}
                           href="#"
                         >
                           <img
@@ -849,7 +872,7 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
                               Mi Perfil
@@ -862,11 +885,11 @@ const SideBar: FC = () => {
                     <NavLink to="/Usuarios">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
+                          }`}
                           href="#"
                         >
                           <img
@@ -879,7 +902,7 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
                               Usuarios
@@ -892,11 +915,11 @@ const SideBar: FC = () => {
                     <NavLink to="/RegistrarUsuarios">
                       {({ isActive }) => (
                         <a
-                          className={`flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-900 ${
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
-                              ? "bg-color2 text-white"
-                              : "hover:bg-color2 hover:text-white"
-                          } group`}
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
+                          }`}
                           href="#"
                         >
                           <img
@@ -909,7 +932,7 @@ const SideBar: FC = () => {
                           {!isCollapsed && (
                             <span
                               className={`text-sm font-medium ${
-                                isActive ? "text-white" : ""
+                                isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
                               Registrar Usuarios

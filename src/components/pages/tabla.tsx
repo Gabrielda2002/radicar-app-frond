@@ -12,10 +12,10 @@ const Tabla = () => {
   return (
     <>
       {/* nav-table */}
-      <section className="">
-        <h1 className="text-color text-4xl mb-4">Módulo Radicación</h1>
+      <section className="dark:bg-gray-900 p-4">
+        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">Módulo Radicación</h1>
         <nav className="">
-          <ol className="mb-2 flex">
+          <ol className="mb-2 flex dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Radicación
@@ -29,39 +29,39 @@ const Tabla = () => {
         </nav>
       </section>
 
-      <section className="container-tabla bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
+      <section className="container-tabla dark:bg-gray-800 bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/* header-table */}
 
-        <label className="font-bold text-lg text-stone-600">
+        <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
           Buscar registro Radicacion :
         </label>
         <section className="header-tabla pb-6 flex justify-between items-center">
           <div className="container-filter flex items-center space-x-2">
             <input
               placeholder=" Consultar registro..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
+              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
             <select
               name=""
               id=""
-              className="border-2 h-[40px] w-[90px] rounded-md"
+              className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="1">10 Paginas</option>
               <option value="2">20 PAginas</option>
               <option value="3">30 Paginas</option>
             </select>
-            <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 ">
+            <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Radicar
             </button>
           </div>
         </section>
 
-        <table className="text-sm mx-auto">
+        <table className="text-sm mx-auto divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-center">
+            <tr className="text-center bg-gray-50 dark:bg-gray-700">
               <th>Fecha/Hora Radicado</th>
               <th>N.º Radicado</th>
               <th>Convenio</th>
@@ -76,7 +76,7 @@ const Tabla = () => {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             <tr className="text-center">
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>

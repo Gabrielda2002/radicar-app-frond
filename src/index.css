@@ -32,7 +32,7 @@ body.dark .text-gray-900 {
 }
 
 body.dark .border-black {
-  border-color: #374151; /* Borde gris oscuro en modo oscuro */
+  border-color: #424151; /* Borde gris oscuro en modo oscuro */
 }
 
 /* Estilos para elementos de tabla */

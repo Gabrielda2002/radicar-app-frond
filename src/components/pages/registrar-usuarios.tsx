@@ -22,8 +22,8 @@ const RegistrarUsuarios: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <div className="flex justify-center items-center min-h-screen dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-lg w-full">
         <div className="mb-4 text-center">
           <img
             src={logo}
@@ -36,10 +36,12 @@ const RegistrarUsuarios: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             {/* Municipio */}
             <div>
-              <label className="block mb-1 text-gray-700">Municipio</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Municipio
+              </label>
               <select
                 name="municipio"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.municipio}
                 onChange={handleChange}
               >
@@ -54,10 +56,12 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Rol */}
             <div>
-              <label className="block mb-1 text-gray-700">Rol</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Rol
+              </label>
               <select
                 name="rol"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.rol}
                 onChange={handleChange}
               >
@@ -72,10 +76,12 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Tipo de Documento */}
             <div>
-              <label className="block mb-1 text-gray-700">Tipo de Documento</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Tipo de Documento
+              </label>
               <select
                 name="tipoDocumento"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.tipoDocumento}
                 onChange={handleChange}
               >
@@ -90,11 +96,13 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Número Documento */}
             <div>
-              <label className="block mb-1 text-gray-700">Número Documento</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Número Documento
+              </label>
               <input
                 type="text"
                 name="numeroDocumento"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.numeroDocumento}
                 onChange={handleChange}
               />
@@ -102,11 +110,13 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Nombres Completos */}
             <div>
-              <label className="block mb-1 text-gray-700">Nombres Completos</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Nombres Completos
+              </label>
               <input
                 type="text"
                 name="nombresCompletos"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.nombresCompletos}
                 onChange={handleChange}
               />
@@ -114,11 +124,13 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Apellidos Completos */}
             <div>
-              <label className="block mb-1 text-gray-700">Apellidos Completos</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Apellidos Completos
+              </label>
               <input
                 type="text"
                 name="apellidosCompletos"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.apellidosCompletos}
                 onChange={handleChange}
               />
@@ -126,11 +138,13 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Correo */}
             <div>
-              <label className="block mb-1 text-gray-700">Correo</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Correo
+              </label>
               <input
                 type="email"
                 name="correo"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.correo}
                 onChange={handleChange}
               />
@@ -138,11 +152,13 @@ const RegistrarUsuarios: React.FC = () => {
 
             {/* Contraseña */}
             <div>
-              <label className="block mb-1 text-gray-700">Contraseña</label>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Contraseña
+              </label>
               <input
                 type="password"
                 name="contraseña"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 value={formValues.contraseña}
                 onChange={handleChange}
               />
@@ -152,7 +168,7 @@ const RegistrarUsuarios: React.FC = () => {
             <div className="col-span-2">
               <button
                 type="button"
-                className="flex items-center justify-between w-full text-gray-700 cursor-pointer focus:outline-none"
+                className="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 cursor-pointer focus:outline-none"
                 onClick={toggleAccordion}
               >
                 <span className="text-lg font-medium">Permisos</span>
@@ -160,7 +176,7 @@ const RegistrarUsuarios: React.FC = () => {
                   src={arrowUp}
                   alt="Toggle"
                   className={`w-5 h-5 transform ${
-                    isAccordionOpen ? 'rotate-180' : 'rotate-0'
+                    isAccordionOpen ? "rotate-180" : "rotate-0"
                   } transition-transform duration-300`}
                 />
               </button>
@@ -173,10 +189,13 @@ const RegistrarUsuarios: React.FC = () => {
                         value={permiso}
                         checked={formValues.permisos.includes(permiso)}
                         onChange={handleCheckboxChange}
-                        className="form-checkbox h-4 w-4 text-blue-600"
+                        className="form-checkbox h-4 w-4 text-blue-600 dark:bg-gray-700"
                         id={`permiso-${permiso}`}
                       />
-                      <label htmlFor={`permiso-${permiso}`} className="ml-2 text-gray-700">
+                      <label
+                        htmlFor={`permiso-${permiso}`}
+                        className="ml-2 text-gray-700 dark:text-gray-300"
+                      >
                         {permiso}
                       </label>
                     </div>
