@@ -13,7 +13,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
 
     // Aquí debes reemplazar con lógica de autenticación real
-    if (email === "admin@example.com" && password === "12345") {
+    if (email === "admin@example.com" && password === "1") {
       onLoginSuccess();
     } else {
       setError("Credenciales inválidas");
