@@ -4,6 +4,7 @@ import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import defaultUserPicture from "../../../public/assets/icon-user.svg";
+import { api } from "../../utils/api-config";
 
 const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -16,7 +17,8 @@ const Perfil = () => {
     status : "",
     municipio: "",
     date: "",
-    dniNumber: ""
+    dniNumber: "",
+    id: "",
   });
   console.log(profile);
 
@@ -42,13 +44,54 @@ const Perfil = () => {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) =>  {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       // Aquí podrías manejar la carga del archivo, o guardar el archivo en el estado
       setFormData({ ...formData, photo: URL.createObjectURL(file) });
+
+      const formDataUpload = new FormData();
+      formDataUpload.append("photo", file);
+
+      try {
+        
+        const response = await api.put(`/upload-photo/${profile.id}` , formDataUpload, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const updatedPhoto = response.data.photo;
+        setFormData({ ...formData, photo: updatedPhoto });
+        setProfile({ ...profile, photo: updatedPhoto });
+
+        // * actualiza el usuario en localStorage
+        const updatedData = {...profile, photo: updatedPhoto};
+        localStorage.setItem("user", JSON.stringify(updatedData));
+
+      } catch (error) {
+        console.error("Error al subir la foto de perfil", error);
+        
+      }
+
     }
   };
+
+  const handleDeletePhoto = async () => {
+    try {
+      
+      await api.delete(`/delete-photo/${profile.id}`);
+
+      setFormData({ ...formData, photo: "" });
+      setProfile({ ...profile, photo: "" });
+
+      const updatedData = {...profile, photo: ""};
+      localStorage.setItem("user", JSON.stringify(updatedData));
+
+    } catch (error) {
+      console.log("Error al eliminar la foto de perfil", error);
+    }
+  }
 
   const handleSaveChanges = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +111,6 @@ const Perfil = () => {
               <div className="max-w-md p-8 sm:flex sm:space-x-6 bg-stone-200 text-gray-800 rounded shadow-md">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
-                  // falta la imagen de perfil
                     src={profile.photo || defaultUserPicture }
                     alt="User Icon"
                     className="w-full h-full object-cover rounded-full"
@@ -92,10 +134,14 @@ const Perfil = () => {
                     </span>
                   </div>
                   <div className="flex justify-center space-x-4 mt-4">
-                    <button className="py-2 px-4 rounded shadow hover:bg-red-500">
+                    <button className="py-2 px-4 rounded shadow hover:bg-red-500"
+                    onClick={() => document.getElementById("photo")?.click()}
+                    >
                       <img src={upload} alt="Upload Icon" className="w-6 h-6" />
                     </button>
-                    <button className="py-2 px-4 rounded shadow hover:bg-blue-500">
+                    <button className="py-2 px-4 rounded shadow hover:bg-blue-500"
+                    onClick={handleDeletePhoto}
+                    >
                       <img src={trash} alt="Trash Icon" className="w-6 h-6" />
                     </button>
                   </div>
