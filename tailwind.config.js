@@ -14,7 +14,7 @@ export default {
         color2: "#049AE7",
       },
       screens: {
-        tablet: "1100px",
+        tabletMx: "1140px",
       },
     },
   },

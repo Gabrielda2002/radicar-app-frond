@@ -47,3 +47,18 @@ body.dark .border-black {
     @apply p-2;
   }
 }
+    /* <-- STYLE COMPENENTES TABLE --> -*/
+
+/* @layer components {
+    .container-tabla{
+        @apply max-w-[1120px];
+    }
+    @media (max-width: 1120px) {
+        .container-tabla{
+            & .table{
+                @apply w-[1120px]
+            }
+        }
+    }
+} */
+ 

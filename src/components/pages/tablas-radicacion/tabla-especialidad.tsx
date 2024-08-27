@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaEspecialidad = () => {
   return(
@@ -16,7 +17,7 @@ const TablaEspecialidad = () => {
                         Servicio Especialidad
                     </li>
                 </ol>
-                <div  className="pb-2">
+                <div  className="pb-2 w-10">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -34,7 +35,7 @@ const TablaEspecialidad = () => {
                     </label> 
                    <input
                         placeholder=" Consultar Especialidad..."
-                        className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
                    >
                    </input>
                 </div>
@@ -49,7 +50,7 @@ const TablaEspecialidad = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[150px] h-[48px] rounded-md bg-color text-white active:bg-emerald-900">
+                    <button className="borde-2 w-[150px] h-[48px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
                         Agregar Especialidad
                     </button>
                 </div>
@@ -57,41 +58,34 @@ const TablaEspecialidad = () => {
 
             <table className="text-sm mx-auto">
                 <thead>
-                    <tr className="text-center">
-                        <th>ID</th>
-                        <th>Nombre Especialidad</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                    <tr>
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Nombre Especialidad</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody>
-                    <tr className="text-center">
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                    <tr>
+                        <td className="break-words">34</td>
+                        <td className="break-words">Cirugía oral y maxilofacial </td>
+                        <td className="break-words">.ACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
-
-                    <tr className="text-center">
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-
-                    <tr className="text-center">
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
-                    </tr>
-
-                    <tr className="text-center"> 
-                        <td>...texto alusivo </td>
-                        <td>...texto alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww </td>
-                        <td>...texto alusivo </td>
-                        <td>"icon"</td>
+                    <tr>
+                        <td className="break-words">2</td>
+                        <td className="break-words">Cardiología </td>
+                        <td className="break-words">INACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

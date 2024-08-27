@@ -29,7 +29,7 @@ const Tabla = () => {
         </nav>
       </section>
 
-      <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
+      <section className="container-tabla bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
         {/* header-table */}
 
         <label className="font-bold text-lg text-stone-600">

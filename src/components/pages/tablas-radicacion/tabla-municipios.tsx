@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
+import onOff from "/assets/on-off.svg";
 
 const TablaMunicipios = () => {
   return (
     <>
       {/* nav-table */}
 
-      <section>
-        <h1 className="text-color text-4xl mb-4 ">Módulo Municipios</h1>
-        <nav>
-          <ol className="mb-2 flex">
-            <li className="text-slate-400 after:mr-4">Inicio</li>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Municipios
-            </li>
-          </ol>
-          <div className="pb-2">
-            <Link to="/inicio">
-              <img src={salir} alt="" />
-            </Link>
-          </div>
-        </nav>
-      </section>
+        <section> 
+            <h1 className="text-color text-4xl mb-4 ">Módulo Municipios</h1>
+            <nav>
+                <ol className="mb-2 flex">
+                    <li className="text-slate-400 after:mr-4">Inicio</li>
+                    <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
+                        Servicio Municipios
+                    </li>
+                </ol>
+                <div  className="pb-2 w-10">
+                    <Link to="/inicio">
+                        <img src={salir} alt="" />
+                    </Link>
+                </div>
+            </nav>
+        </section>
 
       <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md">
         {/* header-tale */}
@@ -34,7 +35,7 @@ const TablaMunicipios = () => {
             </label>
             <input
               placeholder=" Consultar Municipio..."
-              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring"
+              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1">
@@ -48,70 +49,49 @@ const TablaMunicipios = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            <button className="borde-2 w-[150px] h-[40px] rounded-md bg-color text-white active:bg-emerald-900">
+            <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
               Agregar Municipio
             </button>
           </div>
         </section>
 
-        <table className="text-sm mx-auto">
-          <thead>
-            <tr className="text-center">
-              <th>ID</th>
-              <th>Nombre Municipio</th>
-              <th>Nit Municipio</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr className="text-center">
-              <td>...texto alusivo </td>
-              <td>...texto alusivo </td>
-              <td>
-                ...texto
-                alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww{" "}
-              </td>
-              <td>...texto alusivo </td>
-              <td>"icon"</td>
-            </tr>
-
-            <tr className="text-center">
-              <td>...texto alusivo </td>
-              <td>...texto alusivo </td>
-              <td>
-                ...texto
-                alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww{" "}
-              </td>
-              <td>...texto alusivo </td>
-              <td>"icon"</td>
-            </tr>
-            
-            <tr className="text-center">
-              <td>...texto alusivo </td>
-              <td>...texto alusivo </td>
-              <td>
-                ...texto
-                alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww{" "}
-              </td>
-              <td>...texto alusivo </td>
-              <td>"icon"</td>
-            </tr>
-
-            <tr className="text-center">
-              <td>...texto alusivo </td>
-              <td>...texto alusivo </td>
-              <td>
-                ...texto
-                alusivowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww{" "}
-              </td>
-              <td>...texto alusivo </td>
-              <td>"icon"</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+            <table className="text-sm ">
+                <thead>
+                    <tr>
+                        <th className=" w-[70px]">ID</th>
+                        <th className=" ">Nombre Municipio</th>
+                        <th className=" ">Nit Municipio</th>
+                        <th className=" w-[150px]">Estado</th>
+                        <th className=" w-[150px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    <tr>
+                        <td className="break-words">1 </td>
+                        <td className="break-words">CUNDINAMARCA</td>
+                        <td className="break-words">111-21243423 </td>
+                        <td className="break-words">INACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="break-words">2 </td>
+                        <td className="break-words">...texto alusivo </td>
+                        <td className="break-words">21243423222 </td>
+                        <td className="break-words">ACTIVO </td>
+                        <td className="break-words">
+                            <button>
+                                <img src={onOff} alt="" />
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };
