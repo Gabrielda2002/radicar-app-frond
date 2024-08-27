@@ -1,10 +1,11 @@
 import { Route, Routes, Navigate } from "react-router-dom";
+import { useTheme } from "./context/blackWhiteContext";
 
+// Importar componentes principales
 import SideBar from "./components/pages/sidebar";
 import Footer from "./components/footer";
 import Layout from "./components/layout";
 import Inicio from "./components/pages/inicio";
-import Modulos from "./components/pages/modulos";
 import Perfil from "./components/pages/perfil";
 
 // Importar los componentes de tablas
@@ -22,101 +23,121 @@ import TablaLugarRadicacion from "./components/pages/tablas-radicacion/tabla-lug
 import TablaIpsRemite from "./components/pages/tablas-radicacion/tabla-ips-remite";
 import TablaEspecialidad from "./components/pages/tablas-radicacion/tabla-especialidad";
 import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-servicio";
-
+import Usuarios from "./components/pages/usuarios";
 import Login from "./components/pages/login";
 import Navbar from "./components/navbar";
 import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 
 function AppRoutes() {
-  return (
-    <Routes>
-      {/* Rutas públicas */}
-      <Route path="/" element={<Login />} />
-
-      {/* Rutas protegidas */}
-      <Route element={<PrivateRoutes />}>
-        <Route
-          path="/*"
-          element={
-            <div className="flex flex-row h-full w-full">
-              <SideBar />
-              <div className="flex flex-col flex-grow bg-slate-200">
-                <div className="flex-grow overflow-auto">
-                  <Layout>
-                    <Navbar />
-                    <Routes>
-                      <Route path="/home" element={<Inicio />} />
-                      <Route path="/modulos" element={<Modulos />} />
-                      <Route path="/tabla" element={<Tabla />} />
-                      <Route
-                        path="/tabla-auditoria"
-                        element={<TablaAuditoria />}
-                      />
-                      <Route path="/tabla-cirugias" element={<TablaCirugias />} />
-                      <Route path="/tabla-cups" element={<TablaCups />} />
-                      <Route
-                        path="/tabla-pacientes"
-                        element={<TablaPacientes />}
-                      />
-                      <Route
-                        path="/tabla-radicadores"
-                        element={<TablaRadicadores />}
-                      />
-                      <Route
-                        path="/tabla-municipios"
-                        element={<TablaMunicipios />}
-                      />
-                      <Route
-                        path="/tabla-convenios"
-                        element={<TablaConvenios />}
-                      />
-                      <Route
-                        path="/tabla-tipo-documento"
-                        element={<TablaTipoDocumento />}
-                      />
-                      <Route
-                        path="/tabla-ips-primaria"
-                        element={<TablaIpsPrimaria />}
-                      />
-                      <Route
-                        path="/tabla-lugar-radicacion"
-                        element={<TablaLugarRadicacion />}
-                      />
-                      <Route
-                        path="/tabla-ips-remite"
-                        element={<TablaIpsRemite />}
-                      />
-                      <Route
-                        path="/tabla-especialidad"
-                        element={<TablaEspecialidad />}
-                      />
-                      <Route
-                        path="/tabla-tipo-servicio"
-                        element={<TablaTipoServicio />}
-                      />
-                      <Route path="/perfil" element={<Perfil />} />
-                      <Route path="*" element={<Navigate to="/" />} />
-                    </Routes>
-                  </Layout>
-                  <Footer />
-                </div>
-              </div>
-            </div>
-          }
-        />
-      </Route>
-
-      {/* Ruta por defecto para redirigir a la página de inicio */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
-  );
-}
+import RegistrarUsuarios from "./components/pages/registrar-usuarios";
 
 export function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { theme } = useTheme(); // Obtén el tema y la función de alternancia
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <div
+      className={`flex h-screen font-semibold ${
+        theme === "dark" ? "dark" : ""
+      }`}
+    >
+      <Routes>
+        {isAuthenticated ? (
+          <>
+            <Route
+              path="/*"
+              element={
+                <div className="flex flex-row h-full w-full">
+                  <SideBar />
+                  <div className="flex flex-col flex-grow bg-slate-200 dark:bg-gray-900">
+                    <Navbar onLogout={handleLogout} />
+                    <div className="flex-grow overflow-auto">
+                      <Layout>
+                        <Routes>
+                          <Route path="/" element={<Inicio />} />
+                          <Route path="/tabla" element={<Tabla />} />
+                          <Route
+                            path="/tabla-auditoria"
+                            element={<TablaAuditoria />}
+                          />
+                          <Route
+                            path="/tabla-cirugias"
+                            element={<TablaCirugias />}
+                          />
+                          <Route path="/tabla-cups" element={<TablaCups />} />
+                          <Route
+                            path="/tabla-pacientes"
+                            element={<TablaPacientes />}
+                          />
+                          <Route
+                            path="/tabla-radicadores"
+                            element={<TablaRadicadores />}
+                          />
+                          <Route
+                            path="/tabla-municipios"
+                            element={<TablaMunicipios />}
+                          />
+                          <Route
+                            path="/tabla-convenios"
+                            element={<TablaConvenios />}
+                          />
+                          <Route
+                            path="/tabla-tipo-documento"
+                            element={<TablaTipoDocumento />}
+                          />
+                          <Route
+                            path="/tabla-ips-primaria"
+                            element={<TablaIpsPrimaria />}
+                          />
+                          <Route
+                            path="/tabla-lugar-radicacion"
+                            element={<TablaLugarRadicacion />}
+                          />
+                          <Route
+                            path="/tabla-ips-remite"
+                            element={<TablaIpsRemite />}
+                          />
+                          <Route
+                            path="/tabla-especialidad"
+                            element={<TablaEspecialidad />}
+                          />
+                          <Route
+                            path="/tabla-tipo-servicio"
+                            element={<TablaTipoServicio />}
+                          />
+                          <Route path="/perfil" element={<Perfil />} />
+                          <Route path="/Usuarios" element={<Usuarios />} />
+                          <Route
+                            path="/RegistrarUsuarios"
+                            element={<RegistrarUsuarios />}
+                          />
+                          <Route path="*" element={<Navigate to="/" />} />
+                        </Routes>
+                      </Layout>
+                      <Footer />
+                    </div>
+                  </div>
+                </div>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        ) : (
+          <Route
+            path="*"
+            element={<Login onLoginSuccess={handleLoginSuccess} />}
+          />
+        )}
+      </Routes>
+    </div>
   );
 }
