@@ -114,18 +114,21 @@ const Footer = () => {
             <a
               className="text-gray-500 hover:text-white"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
+              target="_blank"
             >
               <img src={facebook} alt="" className="w-5 h-5" />
             </a>
             <a
               className="ml-3 text-gray-500 hover:text-white"
               href="https://www.youtube.com/@ipsnordvital7237"
+              target="_blank"
             >
               <img src={youtube} alt="" className="w-5 h-5" />
             </a>
             <a
               className="ml-3 text-gray-500 hover:text-white"
               href="https://www.instagram.com/nordvital_ips/"
+              target="_blank"
             >
               <img src={instagram} alt="" className="w-5 h-5" />
             </a>
