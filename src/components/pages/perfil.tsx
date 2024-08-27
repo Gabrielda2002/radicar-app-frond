@@ -1,30 +1,61 @@
-import { useState } from "react";
-import useEditProfileForm from "../../hooks/useEditProfile";
+import { useEffect, useState } from "react";
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
+import defaultUserPicture from "../../../public/assets/icon-user.svg";
 
 const Perfil = () => {
-  const { formData, handleInputChange, handleFileChange, handleSubmit } =
-    useEditProfileForm();
-
   const [profile, setProfile] = useState({
-    firstName: "User",
-    lastName: "Default",
-    email: "userdefault@example.com",
-    phone: "123-456-7890",
-    role: "User",
-    photo: "https://via.placeholder.com/150", // Imagen por defecto
+    nombre: "",
+    apellido: "",
+    email: "",
+    phone: "",
+    photo: "",
+    rol: "",
+    status : "",
+    municipio: "",
+    date: "",
+    dniNumber: ""
   });
+  console.log(profile);
 
-  // Actualiza el perfil con los cambios del formulario
-  const handleSaveChanges = () => {
-    setProfile({
-      ...profile,
-      ...formData,
-      photo: formData.photo || profile.photo,
-    });
+  const [formData, setFormData] = useState(profile);
+
+  useEffect(() => {
+
+    const baseUrl = "http://localhost:3600/api/v1";
+
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    if (userData) {
+      setProfile(userData);
+
+      if (userData.photo) userData.photo = `${baseUrl}/${userData.photo}`;
+
+      // userData.photo = `${baseUrl}/${userData.photo}`;
+      setFormData(userData);  // Inicializa el formulario con los datos del perfil
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      // Aquí podrías manejar la carga del archivo, o guardar el archivo en el estado
+      setFormData({ ...formData, photo: URL.createObjectURL(file) });
+    }
+  };
+
+  const handleSaveChanges = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí puedes enviar los datos actualizados al servidor
+    // Actualiza el perfil en localStorage (o haz una petición al backend)
+    localStorage.setItem("user", JSON.stringify(formData));
+    setProfile(formData);
   };
 
   return (
@@ -37,7 +68,8 @@ const Perfil = () => {
               <div className="max-w-md p-8 sm:flex sm:space-x-6 bg-stone-200 text-gray-800 rounded shadow-md">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
-                    src={profile.photo}
+                  // falta la imagen de perfil
+                    src={profile.photo || defaultUserPicture }
                     alt="User Icon"
                     className="w-full h-full object-cover rounded-full"
                   />
@@ -45,11 +77,9 @@ const Perfil = () => {
                 <div className="flex flex-col space-y-4">
                   <div>
                     <h2 className="text-2xl font-semibold">
-                      {profile.firstName} {profile.lastName}
+                      {profile.nombre} {profile.apellido}
                     </h2>
-                    <span className="text-sm text-gray-600">
-                      {profile.role}
-                    </span>
+                    <span className="text-sm text-gray-600">{profile.rol}</span>
                   </div>
                   <div className="space-y-1">
                     <span className="flex items-center space-x-2">
@@ -76,13 +106,11 @@ const Perfil = () => {
             {/* Formulario Section */}
             <div className="w-full lg:w-1/2 p-4">
               <div className="bg-stone-200 p-8 rounded shadow-md">
-                <h2 className="text-2xl font-semibold mb-6">
-                  Editar Información
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <h2 className="text-2xl font-semibold mb-6">Editar Información</h2>
+                <form onSubmit={handleSaveChanges} className="space-y-4">
                   {[
-                    { id: "firstName", label: "Nombre", type: "text" },
-                    { id: "lastName", label: "Apellido", type: "text" },
+                    { id: "nombre", label: "Nombre", type: "text" },
+                    { id: "apellido", label: "Apellido", type: "text" },
                     { id: "email", label: "Correo Electrónico", type: "email" },
                     { id: "phone", label: "Teléfono", type: "text" },
                     { id: "role", label: "Rol", type: "text" },
@@ -98,9 +126,7 @@ const Perfil = () => {
                         type={input.type}
                         id={input.id}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        value={
-                          formData[input.id as keyof typeof formData] || ""
-                        }
+                        value={formData[input.id as keyof typeof formData]}
                         onChange={handleInputChange}
                         aria-label={input.label}
                       />
@@ -124,7 +150,6 @@ const Perfil = () => {
                   <div className="flex justify-end mt-6">
                     <button
                       type="submit"
-                      onClick={handleSaveChanges}
                       className="bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300"
                     >
                       Guardar Cambios
