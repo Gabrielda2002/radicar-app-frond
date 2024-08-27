@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
 
+
 const TablaCirugias = () => {
   return (
     <>
@@ -25,16 +26,16 @@ const TablaCirugias = () => {
         </nav>
       </section>
 
-      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-[1200px] ">
+      <div className=" bg-white p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-full">
         {/*header-table*/}
 
+        <label className="font-bold text-lg text-stone-600">
+          Buscar registro Cirugia :
+        </label>
         <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter">
-            <label className="font-bold text-lg text-stone-600">
-              Buscar registro Cirugia :
-            </label>
+          <div className="container-filter flex items-center space-x-2">
             <input
-              placeholder=" Consultar registro..."
+              placeholder=" Consultar Cirugia..."
               className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
             ></input>
           </div>
@@ -42,206 +43,206 @@ const TablaCirugias = () => {
             <select
               name=""
               id=""
-              className="border-2 h-[40px] w-[90px] rounded-md"
+              className="border-2 h-[40px] w-[100px] rounded-md"
             >
-              <option value="">PAGES</option>
-              <option value="1">10 PAGES</option>
-              <option value="2">20 PAGES</option>
-              <option value="3">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="1">10 Paginas</option>
+              <option value="2">20 Paginas</option>
+              <option value="3">30 Paginas</option>
             </select>
           </div>
         </section>
 
-        <table className="text-sm">
+        <table className="text-sm mx-auto">
           <thead>
-            <tr>
-              <th>Fecha - Hora del Radicado</th>
-              <th>N.º Radicado</th>
-              <th>N.º Documento</th>
-              <th>Nombre Completo</th>
-              <th>Nombre Paciente</th>
-              <th>Servicio de Radicado</th>
-              <th>Fecha Auditoria</th>
-              <th>Justificacion Auditoria</th>
-              <th>Especialidad</th>
-              <th>Mostrar</th>
-              <th>Servicio Solicitado</th>
+            <tr className="text-center">
+              <th className="px-4 py-2">Fecha - Hora del Radicado</th>
+              <th className="px-4 py-2">N.º Radicado</th>
+              <th className="px-4 py-2">N.º Documento</th>
+              <th className="px-4 py-2">Nombre Completo</th>
+              <th className="px-4 py-2">Nombre Paciente</th>
+              <th className="px-4 py-2">Servicio de Radicado</th>
+              <th className="px-4 py-2">Fecha Auditoria</th>
+              <th className="px-4 py-2">Justificación Auditoria</th>
+              <th className="px-4 py-2">Especialidad</th>
+              <th className="px-4 py-2">Mostrar</th>
+              <th className="px-4 py-2">Servicio Solicitado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
             </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
             </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
             </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
-              <td>
+              <td className="px-4 py-2">
                 <button>
-                  <img src={soporte}></img>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+            </tr>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+            </tr>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+            </tr>
+            <tr className="text-center">
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">....texto alusivo</td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
+                </button>
+              </td>
+              <td className="px-4 py-2">
+                <button>
+                  <img src={soporte} alt="Mostrar" />
                 </button>
               </td>
             </tr>
