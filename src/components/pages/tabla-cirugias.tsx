@@ -10,7 +10,9 @@ const TablaCirugias = () => {
       {/*nav-auditoria*/}
 
       <section className="dark:bg-gray-900">
-        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">Módulo Cirugias</h1>
+        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">
+          Módulo Cirugias
+        </h1>
         <nav className="">
           <ol className="mb-2 flex dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
@@ -70,7 +72,7 @@ const TablaCirugias = () => {
             </tr>
           </thead>
 
-          <tbody className="bg-white dark:bg-gray-800 dark:text-gray-200">
+          <tbody className="bg-white dark:bg-gray-800 dark:text-gray-200 text-center">
             <tr>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
