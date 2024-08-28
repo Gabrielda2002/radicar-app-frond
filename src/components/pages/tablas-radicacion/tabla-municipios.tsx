@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 
 const TablaMunicipios = () => {
+
+  const {data, loading, error} = useFetchMunicipio();
+
+  if(loading) return <h1>Cargando...</h1>;
+  if(error) return <h1>{error}</h1>;
+
   return (
     <>
       {/* nav-table */}
@@ -67,28 +74,18 @@ const TablaMunicipios = () => {
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    <tr>
-                        <td className="break-words">1 </td>
-                        <td className="break-words">CUNDINAMARCA</td>
-                        <td className="break-words">111-21243423 </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
+                    {data.map((municipio) => (
+                      <tr>  
+                      <td>{municipio.id}</td>
+                      <td>{municipio.name}</td>
+                      <td>{municipio.nitMunicipio}</td>
+                      <td>{municipio.status ? "Activo" : "Inactivo"}</td>
+                      <td>
+                        <img src={onOff } alt="" />
+                      </td>
                     </tr>
-                    <tr>
-                        <td className="break-words">2 </td>
-                        <td className="break-words">...texto alusivo </td>
-                        <td className="break-words">21243423222 </td>
-                        <td className="break-words">ACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
+                    ))}
+                        
                 </tbody>
             </table>
         </section>

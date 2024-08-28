@@ -1,5 +1,6 @@
 import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
+import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
@@ -44,4 +45,14 @@ export const fetchRadicador = async (): Promise<IRadicador[]> => {
     }));
     return radicadores;
 
+}
+
+export const fetchMunicipio = async (): Promise<IMunicipios[]> => {
+    const response = await api.get('/municipios');
+    const municipios = response.data.map((municipio: IMunicipios) => ({
+        ...municipio,
+        updatedAt: new Date(municipio.updatedAt),
+        createdAt: new Date(municipio.createdAt)
+    }));
+    return municipios;
 }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { IRadicacion } from "../models/TableRadicacion";
-import { fetchAuditoria, fetchCups, fetchRadicador, fetchUsers } from "../services/apiService";
+import { fetchAuditoria, fetchCups, fetchMunicipio, fetchRadicador, fetchUsers } from "../services/apiService";
 import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
+import { IMunicipios } from "../models/IMunicipios";
 
 export const useFetchUsers = () => {
     const [data, setData] = useState<IRadicacion[]>([]);
@@ -84,6 +85,29 @@ export const useFetchRadicador = () => {
             try {
                 const radicadores = await fetchRadicador();
                 setData(radicadores);
+            } catch (error) {
+                setError("Error al obtener los datos de los usuarios" + error);
+            }finally{
+                setLoading(false);
+            }
+        };
+
+        getData();
+    } , []);
+
+    return {data, loading, error};
+}
+
+export const useFetchMunicipio = () => {
+    const [data, setData] = useState<IMunicipios[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const municipios = await fetchMunicipio();
+                setData(municipios);
             } catch (error) {
                 setError("Error al obtener los datos de los usuarios" + error);
             }finally{
