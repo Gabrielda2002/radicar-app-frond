@@ -1,5 +1,6 @@
 import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
+import { IRadicador } from "../models/IRadicador";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
@@ -31,4 +32,16 @@ export const fetchCups = async (): Promise<ICups[]> => {
         createdAt: new Date(cup.createdAt)
     }));
     return cups;
+}
+
+export const fetchRadicador = async (): Promise<IRadicador[]> => {
+
+    const response = await api.get('/radicador');
+    const radicadores = response.data.map((radicador: IRadicador) => ({
+        ...radicador,
+        createdAt: new Date(radicador.createdAt),
+        updatedAt: new Date(radicador.updatedAt)
+    }));
+    return radicadores;
+
 }
