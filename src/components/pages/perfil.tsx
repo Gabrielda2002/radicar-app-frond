@@ -129,8 +129,7 @@ const Perfil = () => {
                         {profile.email}
                       </span>
                     </span>
-                    a{" "}
-                    <span className="flex items-center space-x-2">
+a                    <span className="flex items-center space-x-2">
                       <img src={phone} alt="Phone Icon" className="w-5 h-5" />
                       <span className="text-gray-600 dark:text-gray-400">
                         {profile.phone}
