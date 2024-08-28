@@ -7,6 +7,7 @@ import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
 const TablaAuditoria = () => {
+
   const { data, loading, error } = useFetchAuditoria();
 
   if (loading) return <h2>Cargando...</h2>;
@@ -15,7 +16,6 @@ const TablaAuditoria = () => {
   return (
     <>
       {/*nav-auditoria*/}
-
       <section className="p-4 dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
@@ -87,6 +87,36 @@ const TablaAuditoria = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((auditoria) => (
+              <tr>
+                <td>
+                  {auditoria.radicadoDate
+                    ? auditoria.radicadoDate.getTime()
+                    : "N/A"}
+                </td>
+                <td>{auditoria.documentType}</td>
+                <td>{auditoria.documentNumber}</td>
+                <td>{auditoria.namePatient}</td>
+                <td>{auditoria.convenio}</td>
+                <td>{auditoria.ipsPrimary}</td>
+                <td>{auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"  }</td>
+                <td>{auditoria.place  }</td>
+                <td>{auditoria.ipsRemitente  }</td>
+                <td>{auditoria.profetional}</td>
+                <td>{auditoria.speciality}</td>
+                <td>{auditoria.typeServices}</td>
+                <td>{auditoria.radicador}</td>
+                <td>
+                  <img src={soporte} alt="soporte-icon" />
+                </td>
+                <td>
+                  <img src={mostrar} alt="mostrar-icon" />
+                </td>
+                <td>
+                  <img src={autorizar} alt="autorizar-icon" />
+                </td>
+              </tr>
+            ))}
             {data.map((auditoria) => (
               <tr>
                 <td>

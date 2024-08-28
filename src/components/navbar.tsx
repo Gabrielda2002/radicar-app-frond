@@ -2,8 +2,8 @@ import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import userLogo from "/assets/user-logo.svg";
-import { useAuth } from '../context/authContext';
-import { useUserProfile } from '../context/userProfileContext';
+import { useAuth } from "../context/authContext";
+import { useUserProfile } from "../context/userProfileContext";
 
 const Navbar: React.FC = () => {
   const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
@@ -24,7 +24,11 @@ const Navbar: React.FC = () => {
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-gray-700">
         <nav className="flex flex-wrap items-center text-base">
           <NavLink to="/">
-            <img src="./src/imgs/logo-navbar.png" className="w-10 h-10" alt="Logo" />
+            <img
+              src="./src/imgs/logo-navbar.png"
+              className="w-10 h-10"
+              alt="Logo"
+            />
           </NavLink>
         </nav>
 
@@ -38,10 +42,16 @@ const Navbar: React.FC = () => {
 
         <Menu as="div" className="relative">
           <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
-            {userProfile?.imageUrl && (
-              <img alt="User" src={userProfile.imageUrl} className="w-8 h-8 mr-2 rounded-full" />
-            )}
-            <img src={userLogo} alt="User Logo" className="w-8 h-8 group-hover:invert" />
+            <img
+              alt="User"
+              src={userProfile.imageUrl}
+              className="w-8 h-8 mr-2 rounded-full"
+            />
+            <img
+              src={userLogo}
+              alt="User Logo"
+              className="w-8 h-8 group-hover:invert"
+            />
           </MenuButton>
           <Menu.Items
             transition

@@ -105,7 +105,7 @@ const SideBar: FC = () => {
                 Servicios
               </label>
             )}
-            <NavLink to="/">
+            <NavLink to="/home">
               {({ isActive }) => (
                 <a
                   className={`flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg group ${getLinkClass(
