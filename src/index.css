@@ -2,24 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-   /* <-- STYLE BASE TABLE --> -*/
-
-@layer base{
-    table{
-        @apply text-sm w-full table-fixed;
-    }
-    th{
-        @apply p-0 px-[5px] pb-2 ;
-    }
-    tbody tr {
-        @apply border-solid border-y-2 text-center hover:bg-emerald-100 ;
-      }
-      tbody td {
-        @apply p-2 ;/*posible colocar el salto de linea para todas */
-    }
-
+body {
+  @apply bg-white text-gray-900; /* Estilos predeterminados */
 }
-    /* <-- STYLE COMPENENTES TABLE --> -*/
+
+body.dark {
+  @apply bg-gray-800 text-gray-200; /* Estilos en modo oscuro */
+}
+
+.bg-gray-200 {
+  background-color: #e5e7eb; /* Fondo gris claro */
+}
+
+.text-gray-900 {
+  color: #111827; /* Texto gris oscuro */
+}
+
+.border-black {
+  border-color: #000000; /* Borde negro */
+}
+
+/* Estilos para el modo oscuro */
+body.dark .bg-gray-200 {
+  background-color: #1f2937; /* Fondo gris oscuro en modo oscuro */
+}
+
+body.dark .text-gray-900 {
+  color: #d1d5db; /* Texto gris claro en modo oscuro */
+}
+
+body.dark .border-black {
+  border-color: #424151; /* Borde gris oscuro en modo oscuro */
+}
+
+/* Estilos para elementos de tabla */
+@layer base {
+  th {
+    @apply pr-[8px];
+  }
+  tbody tr {
+    @apply border-solid border-y-2;
+  }
+  tbody td {
+    @apply p-2;
+  }
+}
+/* <-- STYLE COMPENENTES TABLE --> -*/
 
 /* @layer components {
     .container-tabla{
@@ -33,4 +61,3 @@
         }
     }
 } */
- 

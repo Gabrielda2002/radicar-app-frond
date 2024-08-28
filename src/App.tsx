@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import { useTheme } from "./context/blackWhiteContext";
 
+// Importar componentes principales
 import SideBar from "./components/pages/sidebar";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import Layout from "./components/layout";
 import Inicio from "./components/pages/inicio";
-import Modulos from "./components/pages/modulos";
 import Perfil from "./components/pages/perfil";
 
 // Importar los componentes de tablas
@@ -24,11 +25,13 @@ import TablaLugarRadicacion from "./components/pages/tablas-radicacion/tabla-lug
 import TablaIpsRemite from "./components/pages/tablas-radicacion/tabla-ips-remite";
 import TablaEspecialidad from "./components/pages/tablas-radicacion/tabla-especialidad";
 import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-servicio";
-
+import Usuarios from "./components/pages/usuarios";
 import Login from "./components/pages/login";
+import RegistrarUsuarios from "./components/pages/registrar-usuarios";
 
 export function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Inicializa en false para mostrar el login primero
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { theme } = useTheme(); // Obtén el tema y la función de alternancia
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -39,7 +42,11 @@ export function App() {
   };
 
   return (
-    <div className="flex h-screen font-semibold">
+    <div
+      className={`flex h-screen font-semibold ${
+        theme === "dark" ? "dark" : ""
+      }`}
+    >
       <Routes>
         {isAuthenticated ? (
           <>
@@ -48,13 +55,12 @@ export function App() {
               element={
                 <div className="flex flex-row h-full w-full">
                   <SideBar />
-                  <div className="flex flex-col flex-grow bg-slate-200">
+                  <div className="flex flex-col flex-grow bg-slate-200 dark:bg-gray-900">
                     <Navbar onLogout={handleLogout} />
                     <div className="flex-grow overflow-auto">
                       <Layout>
                         <Routes>
                           <Route path="/" element={<Inicio />} />
-                          <Route path="/modulos" element={<Modulos />} />
                           <Route path="/tabla" element={<Tabla />} />
                           <Route
                             path="/tabla-auditoria"
@@ -106,6 +112,11 @@ export function App() {
                             element={<TablaTipoServicio />}
                           />
                           <Route path="/perfil" element={<Perfil />} />
+                          <Route path="/Usuarios" element={<Usuarios />} />
+                          <Route
+                            path="/RegistrarUsuarios"
+                            element={<RegistrarUsuarios />}
+                          />
                           <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                       </Layout>

@@ -4,14 +4,14 @@ import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 
 const TablaMunicipios = () => {
-  return(
+  return (
     <>
-        {/* nav-table */}
+      {/* nav-table */}
 
-        <section> 
-            <h1 className="text-color text-4xl mb-4 ">Módulo Municipios</h1>
+        <section className="dark:bg-gray-900 p-4"> 
+            <h1 className="text-color dark:text-gray-100 text-4xl mb-4 ">Módulo Municipios</h1>
             <nav>
-                <ol className="mb-2 flex">
+                <ol className="mb-2 flex dark:text-gray-300">
                     <li className="text-slate-400 after:mr-4">Inicio</li>
                     <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
                         Servicio Municipios
@@ -25,40 +25,39 @@ const TablaMunicipios = () => {
             </nav>
         </section>
 
-        <section className="container-table bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md">
-            {/* header-tale */}
+      <section className="container-table dark:bg-gray-800 bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md">
+        {/* header-tale */}
 
-            <section className="header-tabla pb-6 flex justify-between items-center">
-                <div className="container-filter">
-                    <label className="font-bold text-lg text-stone-600">
-                        Buscar Municipio :
-                    </label> 
-                   <input
-                        placeholder=" Consultar Municipio..."
-                        className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100"
-                   >
-                   </input>
-                </div>
-                <div className="flex items-center space-x-2 pt-1">
-                    <select
-                        name=""
-                        id=""
-                        className="border-2 h-[40px] w-[90px] rounded-md"
-                    >
-                        <option value="">PAGES</option>
-                        <option value="10">10 PAGES</option>
-                        <option value="20">20 PAGES</option>
-                        <option value="30">30 PAGES</option>
-                    </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
-                        Agregar Municipio
-                    </button>
-                </div>
-            </section>
+        <section className="header-tabla pb-6 flex justify-between items-center">
+          <div className="container-filter">
+            <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
+              Buscar Municipio :
+            </label>
+            <input
+              placeholder=" Consultar Municipio..."
+              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            ></input>
+          </div>
+          <div className="flex items-center space-x-2 pt-1">
+            <select
+              name=""
+              id=""
+              className="border-2 h-[40px] w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="">PAGES</option>
+              <option value="10">10 PAGES</option>
+              <option value="20">20 PAGES</option>
+              <option value="30">30 PAGES</option>
+            </select>
+            <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+              Agregar Municipio
+            </button>
+          </div>
+        </section>
 
-            <table className="text-sm ">
+            <table className="text-sm mx-auto divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
-                    <tr>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200">
                         <th className=" w-[70px]">ID</th>
                         <th className=" ">Nombre Municipio</th>
                         <th className=" ">Nit Municipio</th>
@@ -67,7 +66,7 @@ const TablaMunicipios = () => {
                     </tr>
                 </thead>
                     
-                <tbody>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200 text-center">
                     <tr>
                         <td className="break-words">1 </td>
                         <td className="break-words">CUNDINAMARCA</td>
@@ -94,8 +93,7 @@ const TablaMunicipios = () => {
             </table>
         </section>
     </>
-  ); 
-
+  );
 };
 
 export default TablaMunicipios;
