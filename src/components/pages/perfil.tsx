@@ -1,30 +1,104 @@
-import { useState } from "react";
-import useEditProfileForm from "../../hooks/useEditProfile";
+import { useEffect, useState } from "react";
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
+import defaultUserPicture from "../../../public/assets/icon-user.svg";
+import { api } from "../../utils/api-config";
 
 const Perfil = () => {
-  const { formData, handleInputChange, handleFileChange, handleSubmit } =
-    useEditProfileForm();
-
   const [profile, setProfile] = useState({
-    firstName: "User",
-    lastName: "Default",
-    email: "userdefault@example.com",
-    phone: "123-456-7890",
-    role: "User",
-    photo: "https://via.placeholder.com/150", // Imagen por defecto
+    nombre: "",
+    apellido: "",
+    email: "",
+    phone: "",
+    photo: "",
+    rol: "",
+    status : "",
+    municipio: "",
+    date: "",
+    dniNumber: "",
+    id: "",
   });
+  console.log(profile);
 
-  // Actualiza el perfil con los cambios del formulario
-  const handleSaveChanges = () => {
-    setProfile({
-      ...profile,
-      ...formData,
-      photo: formData.photo || profile.photo,
-    });
+  const [formData, setFormData] = useState(profile);
+
+  useEffect(() => {
+
+    const baseUrl = "http://localhost:3600/api/v1";
+
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    if (userData) {
+      setProfile(userData);
+
+      if (userData.photo) userData.photo = `${baseUrl}/${userData.photo}`;
+
+      // userData.photo = `${baseUrl}/${userData.photo}`;
+      setFormData(userData);  // Inicializa el formulario con los datos del perfil
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) =>  {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      // Aquí podrías manejar la carga del archivo, o guardar el archivo en el estado
+      setFormData({ ...formData, photo: URL.createObjectURL(file) });
+
+      const formDataUpload = new FormData();
+      formDataUpload.append("photo", file);
+
+      try {
+        
+        const response = await api.put(`/upload-photo/${profile.id}` , formDataUpload, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const updatedPhoto = response.data.photo;
+        setFormData({ ...formData, photo: updatedPhoto });
+        setProfile({ ...profile, photo: updatedPhoto });
+
+        // * actualiza el usuario en localStorage
+        const updatedData = {...profile, photo: updatedPhoto};
+        localStorage.setItem("user", JSON.stringify(updatedData));
+
+      } catch (error) {
+        console.error("Error al subir la foto de perfil", error);
+        
+      }
+
+    }
+  };
+
+  const handleDeletePhoto = async () => {
+    try {
+      
+      await api.delete(`/delete-photo/${profile.id}`);
+
+      setFormData({ ...formData, photo: "" });
+      setProfile({ ...profile, photo: "" });
+
+      const updatedData = {...profile, photo: ""};
+      localStorage.setItem("user", JSON.stringify(updatedData));
+
+    } catch (error) {
+      console.log("Error al eliminar la foto de perfil", error);
+    }
+  }
+
+  const handleSaveChanges = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí puedes enviar los datos actualizados al servidor
+    // Actualiza el perfil en localStorage (o haz una petición al backend)
+    localStorage.setItem("user", JSON.stringify(formData));
+    setProfile(formData);
   };
 
   return (
@@ -37,7 +111,7 @@ const Perfil = () => {
               <div className="max-w-md p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
-                    src={profile.photo}
+                    src={profile.photo || defaultUserPicture }
                     alt="User Icon"
                     className="object-cover w-full h-full rounded-full"
                   />
@@ -45,11 +119,9 @@ const Perfil = () => {
                 <div className="flex flex-col space-y-4">
                   <div>
                     <h2 className="text-2xl font-semibold">
-                      {profile.firstName} {profile.lastName}
+                      {profile.nombre} {profile.apellido}
                     </h2>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {profile.role}
-                    </span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{profile.rol}</span>
                   </div>
                   <div className="space-y-1">
                     <span className="flex items-center space-x-2">
@@ -80,13 +152,11 @@ const Perfil = () => {
             {/* Formulario Section */}
             <div className="w-full p-4 lg:w-1/2">
               <div className="p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800">
-                <h2 className="mb-6 text-2xl font-semibold">
-                  Editar Información
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <h2 className="mb-6 text-2xl font-semibold">Editar Información</h2>
+                <form onSubmit={handleSaveChanges} className="space-y-4">
                   {[
-                    { id: "firstName", label: "Nombre", type: "text" },
-                    { id: "lastName", label: "Apellido", type: "text" },
+                    { id: "nombre", label: "Nombre", type: "text" },
+                    { id: "apellido", label: "Apellido", type: "text" },
                     { id: "email", label: "Correo Electrónico", type: "email" },
                     { id: "phone", label: "Teléfono", type: "text" },
                     { id: "role", label: "Rol", type: "text" },
@@ -128,7 +198,6 @@ const Perfil = () => {
                   <div className="flex justify-end mt-6">
                     <button
                       type="submit"
-                      onClick={handleSaveChanges}
                       className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
                       Guardar Cambios
