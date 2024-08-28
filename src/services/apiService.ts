@@ -1,3 +1,4 @@
+import { IAuditoria } from "../models/IAuditoria";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
@@ -9,4 +10,14 @@ export const fetchUsers = async (): Promise<IRadicacion[]> => {
         auditDate: radicacion.auditDate ? new Date(radicacion.auditDate) : null
     }));
     return radicaciones;
+}
+
+export const fetchAuditoria = async (): Promise<IAuditoria[]> => {
+    const response = await api.get('/auditoria-table');
+    const auditorias = response.data.map((auditoria: IAuditoria) => ({
+        ...auditoria,
+        radicadoDate: new Date(auditoria.radicadoDate),
+        orderDate: new Date(auditoria.orderDate)
+    }));
+    return auditorias;
 }

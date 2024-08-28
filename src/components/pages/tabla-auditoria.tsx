@@ -4,15 +4,22 @@ import soporte from "/assets/soporte.svg";
 import mostrar from "/assets/mostrar.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
-
+import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
 const TablaAuditoria = () => {
+  const { data, loading, error } = useFetchAuditoria();
+
+  if (loading) return <h2>Cargando...</h2>;
+  if (error) return <h2>{error}</h2>;
+
   return (
     <>
       {/*nav-auditoria*/}
 
       <section className="dark:bg-gray-900 p-4">
-        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">Módulo Auditoria</h1>
+        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">
+          Módulo Auditoria
+        </h1>
         <nav className="">
           <ol className="mb-2 flex text-gray-700 dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
@@ -80,97 +87,36 @@ const TablaAuditoria = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-          <tr>
-              <td className="break-words">2024-05-31 11:36:15</td>
-              <td className="break-words">CC</td>
-              <td className="break-words">1149456844</td>
-              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
-              <td className="break-words">Compensar EPS</td>
-              <td className="break-words">LA CALERA</td>
-              <td className="break-words">2024-04-12</td>
-              <td className="break-words">Cúcuta/Torre Compensar</td>
-              <td className="break-words">Fundación el Principio de una Esperanza</td>
-              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
-              <td className="break-words">Dolor y cuidados paliativos</td>
-              <td className="break-words">PARTICULAR</td>
-              <td className="break-words">CARLOS ALONSO GALVIS BRICE?O</td>
-              <td >
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={autorizar}></img>
-                </button>
-              </td>
-            </tr>
-            <tr className="text-center">
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={autorizar}></img>
-                </button>
-              </td>
-            </tr>
-            <tr className="text-center">
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  <img src={autorizar}></img>
-                </button>
-              </td>
-            </tr>
-
+            {data.map((auditoria) => (
+              <tr>
+                <td>
+                  {auditoria.radicadoDate
+                    ? auditoria.radicadoDate.getTime()
+                    : "N/A"}
+                </td>
+                <td>{auditoria.documentType}</td>
+                <td>{auditoria.documentNumber}</td>
+                <td>{auditoria.namePatient}</td>
+                <td>{auditoria.convenio}</td>
+                <td>{auditoria.ipsPrimary}</td>
+                <td>{auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"  }</td>
+                <td>{auditoria.place  }</td>
+                <td>{auditoria.ipsRemitente  }</td>
+                <td>{auditoria.profetional}</td>
+                <td>{auditoria.speciality}</td>
+                <td>{auditoria.typeServices}</td>
+                <td>{auditoria.radicador}</td>
+                <td>
+                  <img src={soporte} alt="soporte-icon" />
+                </td>
+                <td>
+                  <img src={mostrar} alt="mostrar-icon" />
+                </td>
+                <td>
+                  <img src={autorizar} alt="autorizar-icon" />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
