@@ -74,7 +74,7 @@ const SideBar: FC = () => {
 
   return (
     <aside
-      className={`flex flex-col ${
+      className={`flex flex-col test-sm ${
         isCollapsed ? "w-20" : "w-64"
       } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 transition-all duration-200`}
     >

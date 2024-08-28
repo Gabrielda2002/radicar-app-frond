@@ -61,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${
+      className={`fixed z-50 flex items-center justify-center bg-black -inset-2 bg-opacity-50 transition-opacity duration-300 backdrop-blur-sm ${
         showAnimation ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOutsideClick}

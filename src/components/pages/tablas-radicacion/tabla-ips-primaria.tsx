@@ -58,7 +58,7 @@ const TablaIpsPrimaria = () => {
 
             <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200">
+                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
                         <th className=" w-[60px]">ID</th>
                         <th className=" w-[200px]">Nombre IPS Primaria</th>
                         <th className=" w-[100px]">Estado</th>

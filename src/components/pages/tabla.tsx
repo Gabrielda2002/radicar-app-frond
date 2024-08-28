@@ -11,20 +11,19 @@ import salir from "/assets/back.svg";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 
 const Tabla = () => {
+  const { data, loading, error } = useFetchUsers();
 
-  const {data, loading, error} = useFetchUsers();
-
-  if(loading) return <h2>Cargando...</h2>
-  if(error) return <h2>{error}</h2>
+  if (loading) return <h2>Cargando...</h2>;
+  if (error) return <h2>{error}</h2>;
 
   return (
     <>
       {/* nav-table */}
 
-      <section className="">
-        <h1 className="text-color text-4xl mb-4">Módulo Radicación</h1>
+      <section className="dark:bg-gray-900">
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-200">Módulo Radicación</h1>
         <nav className="">
-          <ol className="mb-2 flex">
+          <ol className="flex mb-2 dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Radicación
@@ -38,40 +37,37 @@ const Tabla = () => {
         </nav>
       </section>
 
-      <section className="container-tabla bg-white p-5 mb-11 shadow-lg shadow-indigo-500/40  rounded-md">
+      <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
         {/* header-table */}
 
-        <section className="header-tabla pb-6 flex justify-between items-center">
+        <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
-            <label className="font-bold text-lg text-stone-600">
+            <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
               Buscar registro Radicacion :
             </label>
             <input
               placeholder=" Consultar registro..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring"
+              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
             <select
               name=""
               id=""
-              className="border-2 h-[40px] w-[90px] rounded-md"
+              className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
               <option value="1">10 PAGES</option>
               <option value="2">20 PAGES</option>
               <option value="3">30 PAGES</option>
             </select>
-            {/* <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 ">
-              Radicar
-            </button> */}
             <ModalRadicacion></ModalRadicacion>
           </div>
         </section>
 
         <table className="text-sm">
           <thead>
-            <tr className="">
+            <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50">
               <th>Fecha - Hora del Radicado</th>
               <th>N.º Radicado</th>
               <th>Convenio</th>
@@ -86,16 +82,24 @@ const Tabla = () => {
               <th>Servicio Solicitado</th>
             </tr>
           </thead>
-            
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+
+          <tbody className="text-sm divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((radicacion) => (
               <tr className="text-center" key={radicacion.id}>
-                <td>{radicacion.createdAt ? radicacion.createdAt.toISOString() : "N/A"}</td>
+                <td>
+                  {radicacion.createdAt
+                    ? radicacion.createdAt.toISOString()
+                    : "N/A"}
+                </td>
                 <td>{radicacion.id}</td>
                 <td>{radicacion.convenio}</td>
                 <td>{radicacion.document}</td>
                 <td>{radicacion.patientName}</td>
-                <td>{radicacion.auditDate ? radicacion.auditDate.toISOString() : "N/A"}</td>
+                <td>
+                  {radicacion.auditDate
+                    ? radicacion.auditDate.toISOString()
+                    : "N/A"}
+                </td>
                 <td>{radicacion.management}</td>
                 <td>
                   <img src={soporte} alt="" />
@@ -111,7 +115,6 @@ const Tabla = () => {
                 </td>
               </tr>
             ))}
-
           </tbody>
         </table>
 
