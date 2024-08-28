@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import ModalRadicacion from "./modals/modal-radicacion";
 /* <-- ICONS TABLE --> */
 
 import soporte from "/assets/soporte.svg";
@@ -54,9 +55,10 @@ const Tabla = () => {
               <option value="2">20 PAGES</option>
               <option value="3">30 PAGES</option>
             </select>
-            <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 ">
+            {/* <button className="border-2  w-[90px] h-11 rounded-md bg-color text-white active:bg-emerald-900 ">
               Radicar
-            </button>
+            </button> */}
+            <ModalRadicacion></ModalRadicacion>
           </div>
         </section>
 
