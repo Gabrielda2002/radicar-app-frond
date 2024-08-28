@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import ModalCups from "../modals/modal-cups";
+
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 
@@ -51,9 +53,10 @@ const TablaCups = () => {
                         <option value="20">20 PAGES</option>
                         <option value="30">30 PAGES</option>
                     </select>
-                    <button className="borde-2 w-[100px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                    {/*<button className="borde-2 w-[100px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                         Agregar Cup
-                    </button>
+                    </button> */}
+                    <ModalCups></ModalCups>
                 </div>
             </section>
 
