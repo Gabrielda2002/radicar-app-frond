@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
+import Modal from "./modals/modal-reportes";
 
 import folder from "/assets/folder.svg";
 import user2 from "/assets/user2.svg";
@@ -19,13 +20,22 @@ import home from "/assets/home.svg";
 import services from "/assets/services.svg";
 
 const SideBar: FC = () => {
-  //constante para slide del sidebar
+  //constante para slide del sidebar y funciones
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //constante para el acordion del sidebar
 
   //constantes y modulos
   const toggleSideBar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   //constantes para los acordiones del sidebar
@@ -70,19 +80,19 @@ const SideBar: FC = () => {
     >
       <button
         onClick={toggleSideBar}
-        className="text-gray-600 dark:text-gray-900 mb-4 transition-all duration-300"
+        className="mb-4 text-gray-600 transition-all duration-300 dark:text-gray-900"
       >
         {isCollapsed ? (
           <img
             src={arrow}
             alt=""
-            className="w-7 h-7 mx-1 transition-all duration-500 rotate-180"
+            className="mx-1 transition-all duration-500 rotate-180 w-7 h-7"
           />
         ) : (
           <img
             src={arrow}
             alt=""
-            className="w-7 h-7 mx-1 transition-all duration-500"
+            className="mx-1 transition-all duration-500 w-7 h-7"
           />
         )}
       </button>
@@ -95,7 +105,7 @@ const SideBar: FC = () => {
                 Servicios
               </label>
             )}
-            <NavLink to="/">
+            <NavLink to="/home">
               {({ isActive }) => (
                 <a
                   className={`flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg group ${getLinkClass(
@@ -362,40 +372,28 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen3 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/perfil">
-                      {({ isActive }) => (
-                        <a
-                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                            isActive
-                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                          }`}
-                          href="#"
-                        >
-                          <img
-                            src={report}
-                            alt=""
-                            className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
-                            }`}
-                          />
-                          {!isCollapsed && (
-                            <span
-                              className={`mx-2 text-sm font-medium ${
-                                isActive ? "text-white dark:text-gray-200" : ""
-                              }`}
-                            >
-                              Reporte de Radicación
-                            </span>
-                          )}
-                        </a>
+                    <button
+                      onClick={openModal}
+                      className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg group dark:text-gray-200 hover:bg-color2 hover:text-white"
+                    >
+                      <img
+                        src={report}
+                        alt=""
+                        className="w-5 h-5 mx-2 group-hover:invert"
+                      />
+                      {!isCollapsed && (
+                        <span className="mx-2 text-sm font-medium">
+                          Reporte de Radicación
+                        </span>
                       )}
-                    </NavLink>
+                    </button>
                   </div>
                 )}
               </div>
             </div>
 
+            {/* Modal Component */}
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
             {/* Modulo de acordion 4*/}
             <div className="space-y-3">
               <div>

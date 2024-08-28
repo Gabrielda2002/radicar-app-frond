@@ -10,17 +10,17 @@ const TablaCirugias = () => {
       {/*nav-auditoria*/}
 
       <section className="dark:bg-gray-900">
-        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Cirugias
         </h1>
         <nav className="">
-          <ol className="mb-2 flex dark:text-gray-300">
+          <ol className="flex mb-2 dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Cirugias
             </li>
           </ol>
-          <div className="pb-2 w-10">
+          <div className="w-10 pb-2">
             <Link to="/inicio">
               <img src={salir} alt=""></img>
             </Link>
@@ -28,17 +28,17 @@ const TablaCirugias = () => {
         </nav>
       </section>
 
-      <div className=" bg-white dark:bg-gray-800 p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-full">
+      <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/*header-table*/}
 
-        <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
+        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
           Buscar registro Cirugia :
         </label>
-        <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter flex items-center space-x-2">
+        <section className="flex items-center justify-between pb-6 header-tabla">
+          <div className="flex items-center space-x-2 container-filter">
             <input
               placeholder=" Consultar Cirugia..."
-              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 dark:border-gray-600 text-stone-700 dark:text-white rounded-md bg-blue-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:bg-blue-300"
+              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring border-stone-300 dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -55,9 +55,9 @@ const TablaCirugias = () => {
           </div>
         </section>
 
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm mx-auto">
+        <table className="min-w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-700 text-center">
+            <tr className="text-center bg-gray-50 dark:bg-gray-700">
               <th className="px-4 py-2">Fecha - Hora del Radicado</th>
               <th className="px-4 py-2">N.º Radicado</th>
               <th className="px-4 py-2">N.º Documento</th>
@@ -72,7 +72,7 @@ const TablaCirugias = () => {
             </tr>
           </thead>
 
-          <tbody className="bg-white dark:bg-gray-800 dark:text-gray-200 text-center">
+          <tbody className="text-center bg-white dark:bg-gray-800 dark:text-gray-200">
             <tr>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>

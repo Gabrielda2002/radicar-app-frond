@@ -8,8 +8,15 @@ import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
 
 const Tabla = () => {
+
+  const {data, loading, error} = useFetchUsers();
+
+  if(loading) return <h2>Cargando...</h2>
+  if(error) return <h2>{error}</h2>
+
   return (
     <>
       {/* nav-table */}
@@ -79,305 +86,32 @@ const Tabla = () => {
               <th>Servicio Solicitado</th>
             </tr>
           </thead>
+            
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((radicacion) => (
+              <tr className="text-center" key={radicacion.id}>
+                <td>{radicacion.createdAt ? radicacion.createdAt.toISOString() : "N/A"}</td>
+                <td>{radicacion.id}</td>
+                <td>{radicacion.convenio}</td>
+                <td>{radicacion.document}</td>
+                <td>{radicacion.patientName}</td>
+                <td>{radicacion.auditDate ? radicacion.auditDate.toISOString() : "N/A"}</td>
+                <td>{radicacion.management}</td>
+                <td>
+                  <img src={soporte} alt="" />
+                </td>
+                <td>
+                  <img src={gestion} alt="" />
+                </td>
+                <td>
+                  <img src={mostrar} alt="" />
+                </td>
+                <td>
+                  <img src={servicio} alt="" />
+                </td>
+              </tr>
+            ))}
 
-          <tbody>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  {/*icon soporte*/}
-                  <img src={soporte}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon gestion*/}
-                  <img src={gestion}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon mostrar*/}
-                  <img src={mostrar}></img>
-                </button>
-              </td>
-              <td>
-                <button>
-                  {/*icon servicio*/}
-                  <img src={servicio}></img>
-                </button>
-              </td>
-            </tr>
           </tbody>
         </table>
 
