@@ -1,6 +1,5 @@
 import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
-import { useUserProfile } from "../context/userProfileContext";
 import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import userLogo from "/assets/user-logo.svg";
 import { useAuth } from '../context/authContext';

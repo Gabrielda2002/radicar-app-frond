@@ -82,9 +82,9 @@ const Tabla = () => {
             </tr>
           </thead>
             
-          <tbody>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((radicacion) => (
-              <tr key={radicacion.id}>
+              <tr className="text-center" key={radicacion.id}>
                 <td>{radicacion.createdAt ? radicacion.createdAt.toISOString() : "N/A"}</td>
                 <td>{radicacion.id}</td>
                 <td>{radicacion.convenio}</td>
