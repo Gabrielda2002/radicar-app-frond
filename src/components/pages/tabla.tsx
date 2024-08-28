@@ -45,7 +45,7 @@ const Tabla = () => {
           <div className="container-filter flex items-center space-x-2">
             <input
               placeholder=" Consultar registro..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">

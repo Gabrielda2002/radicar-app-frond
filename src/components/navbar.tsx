@@ -2,8 +2,8 @@ import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import userLogo from "/assets/user-logo.svg";
-import { useAuth } from '../context/authContext';
-import { useUserProfile } from '../context/userProfileContext';
+import { useAuth } from "../context/authContext";
+import { useUserProfile } from "../context/userProfileContext";
 
 const Navbar: React.FC = () => {
   const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
@@ -21,27 +21,37 @@ const Navbar: React.FC = () => {
         theme === "dark" ? "bg-gray-800 dark-mode" : "bg-white light-mode"
       }`}
     >
-      <div className="mx-auto flex flex-wrap p-5 border-b-2 border-black dark:border-gray-700">
+      <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-gray-700">
         <nav className="flex flex-wrap items-center text-base">
           <NavLink to="/">
-            <img src="./src/imgs/logo-navbar.png" className="w-10 h-10" alt="Logo" />
+            <img
+              src="./src/imgs/logo-navbar.png"
+              className="w-10 h-10"
+              alt="Logo"
+            />
           </NavLink>
         </nav>
 
         {/* Botón de Modo Oscuro */}
         <button
           onClick={toggleTheme}
-          className="ml-auto mr-4 p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none"
+          className="p-2 ml-auto mr-4 text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-200 focus:outline-none"
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
 
         <Menu as="div" className="relative">
-          <MenuButton className="flex items-center bg-gray-900 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base text-white hover:text-white group">
-            {userProfile?.imageUrl && (
-              <img alt="User" src={userProfile.imageUrl} className="h-8 w-8 rounded-full mr-2" />
-            )}
-            <img src={userLogo} alt="User Logo" className="w-8 h-8 group-hover:invert" />
+          <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
+            <img
+              alt="User"
+              src={userProfile.imageUrl}
+              className="w-8 h-8 mr-2 rounded-full"
+            />
+            <img
+              src={userLogo}
+              alt="User Logo"
+              className="w-8 h-8 group-hover:invert"
+            />
           </MenuButton>
           <Menu.Items
             transition

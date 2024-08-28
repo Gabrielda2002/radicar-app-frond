@@ -8,50 +8,50 @@ import youtube from "/assets/youtube.svg";
 
 const Footer = () => {
   return (
-    <footer className="text-gray-600 body-font bg-color dark:bg-gray-800 font-sans">
-      <div className="container px-10 py-20 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-        <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-          <a className="flex title-font font-lg items-center md:justify-start justify-center text-gray-900">
-            <img src={logoFooter} alt="" className="w-30 h-28 text-white" />
+    <footer className="font-sans text-gray-600 body-font bg-color dark:bg-gray-800">
+      <div className="container flex flex-col flex-wrap px-10 py-20 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">
+        <div className="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-left">
+          <a className="flex items-center justify-center text-gray-900 title-font font-lg md:justify-start">
+            <img src={logoFooter} alt="" className="text-white w-30 h-28" />
           </a>
         </div>
-        <div className="flex-grow flex md:pl-0 -mb-10 md:mt-0 mt-10 md:text-center text-center border-l-4 border-white">
-          <div className="md:w-1/7 w-full px-2">
-            <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-base mb-3 pr-36">
+        <div className="flex flex-grow mt-10 -mb-10 text-center border-l-4 border-white md:pl-0 md:mt-0 md:text-center">
+          <div className="w-full px-2 md:w-1/7">
+            <h2 className="mb-3 text-base font-semibold tracking-widest text-gray-100 underline uppercase underline-offset-4 pr-36">
               contáctenos:
             </h2>
-            <nav className="list-none mb-0">
-              <li className="flex items-center mb-2 group pl-2 max-w-md">
+            <nav className="mb-0 list-none">
+              <li className="flex items-center max-w-md pl-2 mb-2 group">
                 <img
                   src={mail}
                   alt=""
-                  className="w-7 h-7 mr-3 group-hover:invert"
+                  className="mr-3 w-7 h-7 group-hover:invert"
                 />
                 <a
-                  className="text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 cursor-pointer dark:text-gray-100 hover:text-white hover:underline hover:underline-offset-8"
                   href="mailto:contacto@nordvitalips.com"
                 >
                   contacto@nordvitalips.com
                 </a>
               </li>
-              <li className="flex items-center mb-2 group pl-2">
+              <li className="flex items-center pl-2 mb-2 group">
                 <img
                   src={phone}
                   alt=""
-                  className="w-7 h-7 mr-3 group-hover:invert"
+                  className="mr-3 w-7 h-7 group-hover:invert"
                 />
-                <a className="flex text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8">
+                <a className="flex text-gray-900 cursor-pointer dark:text-gray-100 hover:text-white hover:underline hover:underline-offset-8">
                   Telefono: 5892750
                 </a>
               </li>
-              <li className="flex items-center mb-3 group pl-2">
+              <li className="flex items-center pl-2 mb-3 group">
                 <img
                   src={flask}
                   alt=""
-                  className="w-7 h-7 mr-3 group-hover:invert"
+                  className="mr-3 w-7 h-7 group-hover:invert"
                 />
                 <a
-                  className="text-gray-900 dark:text-gray-100 hover:text-white cursor-pointer hover:underline hover:underline-offset-8"
+                  className="text-gray-900 cursor-pointer dark:text-gray-100 hover:text-white hover:underline hover:underline-offset-8"
                   href="https://api.whatsapp.com/send?phone=573174309873&text=Hola%20sean%20bienvenidos%20a%20Nordvital%20ips,%20una%20ips%20comprometida%20con%20sus%20usuarios."
                   target="_blank"
                 >
@@ -61,11 +61,11 @@ const Footer = () => {
             </nav>
           </div>
         </div>
-        <div className="md:w-1/3 w-full px-2">
-          <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-base mb-3">
+        <div className="w-full px-2 md:w-1/3">
+          <h2 className="mb-3 text-base font-semibold tracking-widest text-gray-100 underline uppercase underline-offset-4">
             Misión:
           </h2>
-          <nav className="list-none mb-10">
+          <nav className="mb-10 list-none">
             <li className="max-w-md mx-full">
               {" "}
               {/* max-w-md limita el ancho máximo */}
@@ -79,10 +79,10 @@ const Footer = () => {
           </nav>
         </div>
         <div className="w-96">
-          <h2 className="font-semibold uppercase text-gray-100 tracking-widest underline underline-offset-4 text-sm mb-3">
+          <h2 className="mb-3 text-sm font-semibold tracking-widest text-gray-100 underline uppercase underline-offset-4">
             Visión:
           </h2>
-          <nav className="list-none mb-2">
+          <nav className="mb-2 list-none">
             <li className="max-w-md mx-full">
               {" "}
               {/* max-w-md limita el ancho máximo */}
@@ -98,19 +98,19 @@ const Footer = () => {
         </div>
       </div>
       <div className="bg-gray-100">
-        <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-          <p className="text-gray-500 text-sm text-center sm:text-left">
+        <div className="container flex flex-col flex-wrap px-5 py-4 mx-auto sm:flex-row">
+          <p className="text-sm text-center text-gray-500 sm:text-left">
             © 2024
             <a
               href="https://nordvitalips.com/Pagina-nordvitalips/index.php"
               rel="noopener noreferrer"
-              className="text-gray-600 ml-1"
+              className="ml-1 text-gray-600"
               target="_blank"
             >
               Nordvital IPS
             </a>
           </p>
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
+          <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start">
             <a
               className="text-gray-500 hover:text-white"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"

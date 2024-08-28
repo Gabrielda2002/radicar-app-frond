@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 body {
-  @apply bg-white text-gray-900; /* Estilos predeterminados */
+  @apply text-gray-900 bg-white; /* Estilos predeterminados */
 }
 
 body.dark {
-  @apply bg-gray-800 text-gray-200; /* Estilos en modo oscuro */
+  @apply text-gray-200 bg-gray-800; /* Estilos en modo oscuro */
 }
 
 .bg-gray-200 {

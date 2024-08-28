@@ -6,9 +6,9 @@ const Usuarios = () => {
   return (
     <>
       <section className="p-5">
-        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">Módulo Usuarios</h1>
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">Módulo Usuarios</h1>
         <nav>
-          <ol className="mb-2 flex">
+          <ol className="flex mb-2">
             <li className="text-slate-400 after:mr-2">Inicio</li>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Usuarios
@@ -21,13 +21,13 @@ const Usuarios = () => {
           </div>
         </nav>
       </section>
-      <section className="container-table bg-white dark:bg-gray-800 p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md">
+      <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-table */}
-        <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
+        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
           Buscar Usuarios:
         </label>
-        <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter flex items-center space-x-2">
+        <section className="flex items-center justify-between pb-6 header-tabla">
+          <div className="flex items-center space-x-2 container-filter">
             <input
               placeholder="Consultar Usuarios"
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -50,7 +50,7 @@ const Usuarios = () => {
 
         {/* Users Table Body */}
 
-        <table className="text-sm mx-auto w-full text-center dark:bg-gray-800 dark:text-gray-300">
+        <table className="w-full mx-auto text-sm text-center dark:bg-gray-800 dark:text-gray-300">
           <thead className="bg-gray-200 dark:bg-gray-700">
             <tr>
               <th className="px-4 py-2">ID</th>

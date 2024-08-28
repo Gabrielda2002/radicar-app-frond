@@ -7,6 +7,7 @@ import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
 const TablaAuditoria = () => {
+
   const { data, loading, error } = useFetchAuditoria();
 
   if (loading) return <h2>Cargando...</h2>;
@@ -15,19 +16,18 @@ const TablaAuditoria = () => {
   return (
     <>
       {/*nav-auditoria*/}
-
-      <section className="dark:bg-gray-900 p-4">
-        <h1 className="text-color dark:text-gray-100 text-4xl mb-4">
+      <section className="p-4 dark:bg-gray-900">
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
         </h1>
         <nav className="">
-          <ol className="mb-2 flex text-gray-700 dark:text-gray-300">
+          <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
             <li className="text-slate-400 after:mr-2 ">Inicio</li>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Auditoria
             </li>
           </ol>
-          <div className="pb-2 w-10">
+          <div className="w-10 pb-2">
             <Link to="/inicio">
               <img src={salir} alt=""></img>
             </Link>
@@ -35,13 +35,13 @@ const TablaAuditoria = () => {
         </nav>
       </section>
 
-      <div className=" bg-white dark:bg-gray-800 p-5 ml-0  mb-11 shadow-lg shadow-indigo-500/40  rounded-md w-full">
+      <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/*header-table*/}
-        <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
+        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
           Buscar registro Auditoria :
         </label>
-        <section className="header-tabla pb-6 flex justify-between items-center">
-          <div className="container-filter flex items-center space-x-2">
+        <section className="flex items-center justify-between pb-6 header-tabla">
+          <div className="flex items-center space-x-2 container-filter">
             <input
               placeholder=" Consultar Auditoria..."
               className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -66,7 +66,7 @@ const TablaAuditoria = () => {
 
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-700 text-center">
+            <tr className="text-center bg-gray-50 dark:bg-gray-700">
               <th className=" w-[90px]">Fecha Radicados</th>
               <th className=" w-[90px]">Tipo Documento </th>
               <th className=" w-[100px]">Identificacion</th>
@@ -87,6 +87,36 @@ const TablaAuditoria = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((auditoria) => (
+              <tr>
+                <td>
+                  {auditoria.radicadoDate
+                    ? auditoria.radicadoDate.getTime()
+                    : "N/A"}
+                </td>
+                <td>{auditoria.documentType}</td>
+                <td>{auditoria.documentNumber}</td>
+                <td>{auditoria.namePatient}</td>
+                <td>{auditoria.convenio}</td>
+                <td>{auditoria.ipsPrimary}</td>
+                <td>{auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"  }</td>
+                <td>{auditoria.place  }</td>
+                <td>{auditoria.ipsRemitente  }</td>
+                <td>{auditoria.profetional}</td>
+                <td>{auditoria.speciality}</td>
+                <td>{auditoria.typeServices}</td>
+                <td>{auditoria.radicador}</td>
+                <td>
+                  <img src={soporte} alt="soporte-icon" />
+                </td>
+                <td>
+                  <img src={mostrar} alt="mostrar-icon" />
+                </td>
+                <td>
+                  <img src={autorizar} alt="autorizar-icon" />
+                </td>
+              </tr>
+            ))}
             {data.map((auditoria) => (
               <tr>
                 <td>
