@@ -8,16 +8,16 @@ const TablaCups = () => {
     <>
         {/* nav-table */}
 
-        <section className="dark:bg-gray-900 p-4"> 
-            <h1 className="text-color dark:text-gray-100 text-4xl mb-4 ">Módulo Cups</h1>
+        <section className="p-4 dark:bg-gray-900"> 
+            <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">Módulo Cups</h1>
             <nav>
-                <ol className="mb-2 flex dark:text-gray-300">
+                <ol className="flex mb-2 dark:text-gray-300">
                     <li className="text-slate-400 after:mr-4">Inicio</li>
                     <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
                         Servicio Cups
                     </li>
                 </ol>
-                <div  className="pb-2 w-10 ">
+                <div  className="w-10 pb-2 ">
                     <Link to="/inicio">
                         <img src={salir} alt="" />
                     </Link>
@@ -26,12 +26,12 @@ const TablaCups = () => {
         </section>
         
         {/* container-table */}
-        <section className=" bg-white dark:bg-gray-800 p-5 mb-11 shadow-lg shadow-indigo-500/40 rounded-md w-full overflow-hidden">
+        <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
             {/* header-tale */}
 
-            <section className="header-tabla pb-6 flex justify-between items-center">
+            <section className="flex items-center justify-between pb-6 header-tabla">
                 <div className="container-filter">
-                    <label className="font-bold text-lg text-stone-600 dark:text-stone-300">
+                    <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
                         Buscar Cup :
                     </label> 
                    <input
@@ -40,7 +40,7 @@ const TablaCups = () => {
                    >
                    </input>
                 </div>
-                <div className="flex items-center space-x-2 pt-1">
+                <div className="flex items-center pt-1 space-x-2">
                     <select
                         name=""
                         id=""
@@ -61,14 +61,14 @@ const TablaCups = () => {
                 <thead>
                     <tr className="dark:bg-gray-700 dark:text-gray-200">
                         <th className=" w-[70px]">ID</th>
-                        <th className=" ">Codigo</th>
+                        <th className="">Codigo</th>
                         <th className=" w-[600px]">Descripcion del Cup</th>
-                        <th className=" ">Estado</th>
-                        <th className=" ">Acciones</th>
+                        <th className="">Estado</th>
+                        <th className="">Acciones</th>
                     </tr>
                 </thead>
                     
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200 text-center">
+                <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     <tr>
                         <td className="break-words ">9</td>
                         <td className="break-words ">5725528</td>

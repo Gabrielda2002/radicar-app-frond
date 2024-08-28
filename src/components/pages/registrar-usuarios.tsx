@@ -22,8 +22,8 @@ const RegistrarUsuarios: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <div className="flex items-center justify-center min-h-screen dark:bg-gray-900">
+      <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg dark:bg-gray-800">
         <div className="mb-4 text-center">
           <img
             src={logo}
@@ -168,7 +168,7 @@ const RegistrarUsuarios: React.FC = () => {
             <div className="col-span-2">
               <button
                 type="button"
-                className="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 cursor-pointer focus:outline-none"
+                className="flex items-center justify-between w-full text-gray-700 cursor-pointer dark:text-gray-300 focus:outline-none"
                 onClick={toggleAccordion}
               >
                 <span className="text-lg font-medium">Permisos</span>
@@ -189,7 +189,7 @@ const RegistrarUsuarios: React.FC = () => {
                         value={permiso}
                         checked={formValues.permisos.includes(permiso)}
                         onChange={handleCheckboxChange}
-                        className="form-checkbox h-4 w-4 text-blue-600 dark:bg-gray-700"
+                        className="w-4 h-4 text-blue-600 form-checkbox dark:bg-gray-700"
                         id={`permiso-${permiso}`}
                       />
                       <label
@@ -209,7 +209,7 @@ const RegistrarUsuarios: React.FC = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-300"
+              className="w-full py-2 text-white transition-colors duration-300 bg-blue-500 rounded hover:bg-blue-600"
             >
               Crear
             </button>

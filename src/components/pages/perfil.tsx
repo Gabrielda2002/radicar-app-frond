@@ -28,18 +28,18 @@ const Perfil = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <section className="text-gray-900 dark:text-gray-300 body-font p-10">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <section className="p-10 text-gray-900 dark:text-gray-300 body-font">
         <div className="container mx-auto">
           <div className="flex flex-wrap">
             {/* Perfil Section */}
-            <div className="w-full lg:w-1/2 p-4">
-              <div className="max-w-md p-8 sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded shadow-md">
+            <div className="w-full p-4 lg:w-1/2">
+              <div className="max-w-md p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
                     src={profile.photo}
                     alt="User Icon"
-                    className="w-full h-full object-cover rounded-full"
+                    className="object-cover w-full h-full rounded-full"
                   />
                 </div>
                 <div className="flex flex-col space-y-4">
@@ -65,11 +65,11 @@ const Perfil = () => {
                       </span>
                     </span>
                   </div>
-                  <div className="flex justify-center space-x-4 mt-4">
-                    <button className="py-2 px-4 rounded shadow hover:bg-red-500 dark:hover:bg-red-600">
+                  <div className="flex justify-center mt-4 space-x-4">
+                    <button className="px-4 py-2 rounded shadow hover:bg-red-500 dark:hover:bg-red-600">
                       <img src={upload} alt="Upload Icon" className="w-6 h-6" />
                     </button>
-                    <button className="py-2 px-4 rounded shadow hover:bg-blue-500 dark:hover:bg-blue-600">
+                    <button className="px-4 py-2 rounded shadow hover:bg-blue-500 dark:hover:bg-blue-600">
                       <img src={trash} alt="Trash Icon" className="w-6 h-6" />
                     </button>
                   </div>
@@ -78,9 +78,9 @@ const Perfil = () => {
             </div>
 
             {/* Formulario Section */}
-            <div className="w-full lg:w-1/2 p-4">
-              <div className="bg-stone-200 dark:bg-gray-800 p-8 rounded shadow-md">
-                <h2 className="text-2xl font-semibold mb-6">
+            <div className="w-full p-4 lg:w-1/2">
+              <div className="p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800">
+                <h2 className="mb-6 text-2xl font-semibold">
                   Editar Información
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -101,7 +101,7 @@ const Perfil = () => {
                       <input
                         type={input.type}
                         id={input.id}
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                        className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                         value={
                           formData[input.id as keyof typeof formData] || ""
                         }
@@ -120,7 +120,7 @@ const Perfil = () => {
                     <input
                       type="file"
                       id="photo"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                       onChange={handleFileChange}
                       aria-label="Foto de Perfil"
                     />
@@ -129,7 +129,7 @@ const Perfil = () => {
                     <button
                       type="submit"
                       onClick={handleSaveChanges}
-                      className="bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
                       Guardar Cambios
                     </button>

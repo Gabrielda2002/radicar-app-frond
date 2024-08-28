@@ -53,7 +53,7 @@ export function App() {
             <Route
               path="/*"
               element={
-                <div className="flex flex-row h-full w-full">
+                <div className="flex flex-row w-full h-full">
                   <SideBar />
                   <div className="flex flex-col flex-grow bg-slate-200 dark:bg-gray-900">
                     <Navbar onLogout={handleLogout} />
