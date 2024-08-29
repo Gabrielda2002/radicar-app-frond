@@ -2,6 +2,7 @@ import { IAuditoria } from "../models/IAuditoria";
 import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IDocumento } from "../models/IDocumento";
+import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
 import { IRadicacion } from "../models/TableRadicacion";
@@ -77,4 +78,14 @@ export const fetchDocumento = async (): Promise<IDocumento[]> => {
         createdAt: new Date(documento.createdAt)
     }));
     return documentos;
+}
+
+export const fetchIpsPrimaria = async (): Promise<IIPSPrimaria[]> => {
+    const response = await api.get('/ips-primaria');
+    const ipsPrimaria = response.data.map((ips: IIPSPrimaria) => ({
+        ...ips,
+        updatedAt: new Date(ips.updatedAt),
+        createdAt: new Date(ips.createdAt)
+    }));
+    return ipsPrimaria;
 }

@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 
 const TablaIpsPrimaria = () => {
+
+    const {data, loading, error} = useFetchIpsPrimaria();
+
+    if(loading) return <h1>Cargando...</h1>;
+    if(error) return <h1>{error}</h1>;
+
   return(
     <>
         {/* nav-table */}
@@ -67,25 +74,17 @@ const TablaIpsPrimaria = () => {
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((ips) => (
+                        <tr key={ips.id}>
+                            <td className="py-2">{ips.id}</td>
+                            <td className="py-2">{ips.name}</td>
+                            <td className="py-2">{ips.status ? "Activo" : "Inactivo"}</td>
+                            <td className="py-2">
+                                <img src={onOff} alt="on-off" className="w-8 h-8 mx-auto"/>
+                            </td>
+                        </tr>
+                    ))}
                     <tr>
-                        <td className="break-words">4 </td>
-                        <td className="break-words">La Calera </td>
-                        <td className="break-words">ACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="break-words"> 6 </td>
-                        <td className="break-words">CAJICA </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
                     </tr>
                 </tbody>
             </table>

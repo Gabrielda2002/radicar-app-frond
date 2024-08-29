@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { IRadicacion } from "../models/TableRadicacion";
-import { fetchAuditoria, fetchConvenio, fetchCups, fetchDocumento, fetchMunicipio, fetchRadicador, fetchUsers } from "../services/apiService";
+import { fetchAuditoria, fetchConvenio, fetchCups, fetchDocumento, fetchIpsPrimaria, fetchMunicipio, fetchRadicador, fetchUsers } from "../services/apiService";
 import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
 import { IMunicipios } from "../models/IMunicipios";
 import { IConvenios } from "../models/IConvenios";
 import { IDocumento } from "../models/IDocumento";
+import { IIPSPrimaria } from "../models/IIpsPrimaria";
 
 export const useFetchUsers = () => {
     const [data, setData] = useState<IRadicacion[]>([]);
@@ -156,6 +157,29 @@ export const useFetchDocumento = () => {
             try {
                 const users = await fetchDocumento();
                 setData(users);
+            } catch (error) {
+                setError("Error al obtener los datos de los usuarios" + error);
+            }finally{
+                setLoading(false);
+            }
+        };
+
+        getData();
+    } , []);
+
+    return {data, loading, error};
+}
+
+export const useFetchIpsPrimaria = () => {
+    const [data, setData] = useState<IIPSPrimaria[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const ipsPrimaria = await fetchIpsPrimaria();
+                setData(ipsPrimaria);
             } catch (error) {
                 setError("Error al obtener los datos de los usuarios" + error);
             }finally{
