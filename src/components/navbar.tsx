@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-gray-700">
         <nav className="flex flex-wrap items-center text-base">
-          <NavLink to="/">
+          <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"
               className="w-10 h-10"

@@ -74,42 +74,36 @@ const SideBar: FC = () => {
 
   return (
     <aside
-      className={`flex flex-col ${
-        isCollapsed ? "w-20" : "w-64"
-      } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 transition-all duration-200`}
+      className={`flex flex-col transition-all duration-700 ${
+        isCollapsed ? "w-18" : "w-62"
+      } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700`}
     >
       <button
         onClick={toggleSideBar}
         className="mb-4 text-gray-600 transition-all duration-300 dark:text-gray-900"
       >
-        {isCollapsed ? (
-          <img
-            src={arrow}
-            alt=""
-            className="mx-1 transition-all duration-500 rotate-180 w-7 h-7"
-          />
-        ) : (
-          <img
-            src={arrow}
-            alt=""
-            className="mx-1 transition-all duration-500 w-7 h-7"
-          />
-        )}
+        <img
+          src={arrow}
+          alt=""
+          className={`mx-1 transition-all duration-500 w-7 h-7 ${
+            isCollapsed ? "rotate-180" : ""
+          }`}
+        />
       </button>
 
       <div className="flex flex-col justify-between flex-1 mt-6">
         <nav className="-mx-3 space-y-6">
           <div className="space-y-4">
             {!isCollapsed && (
-              <label className="px-4 text-lg font-bold text-[#049AE7] uppercase">
+              <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                 Servicios
               </label>
             )}
             <NavLink to="/home">
               {({ isActive }) => (
                 <a
-                  className={`flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg group ${getLinkClass(
-                    "/"
+                  className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
+                    "/home"
                   )} ${
                     isActive
                       ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
@@ -128,6 +122,14 @@ const SideBar: FC = () => {
                           ? "text-white dark:text-gray-200"
                           : "group-hover:text-white dark:group-hover:text-gray-200"
                       }`}
+                    >
+                      Inicio
+                    </span>
+                  )}
+                  {isCollapsed && (
+                    <span
+                      className="absolute px-2 py-1 text-xs font-semibold text-black transition-opacity duration-300 bg-white rounded-md shadow-md opacity-0 left-12 group-hover:opacity-100 dark:bg-gray-700 dark:text-white"
+                      style={{ whiteSpace: "nowrap" }}
                     >
                       Inicio
                     </span>
@@ -806,7 +808,7 @@ const SideBar: FC = () => {
           {/*Tabla Configuraciones*/}
           <div className="flex flex-col mx-3 space-y-3">
             {!isCollapsed && (
-              <label className="px-1 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
+              <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
                 Configuraciones
               </label>
             )}

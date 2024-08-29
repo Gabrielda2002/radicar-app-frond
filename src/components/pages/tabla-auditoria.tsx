@@ -7,7 +7,6 @@ import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
 const TablaAuditoria = () => {
-
   const { data, loading, error } = useFetchAuditoria();
 
   if (loading) return <h2>Cargando...</h2>;
@@ -44,7 +43,7 @@ const TablaAuditoria = () => {
           <div className="flex items-center space-x-2 container-filter">
             <input
               placeholder=" Consultar Auditoria..."
-              className="block  w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="block w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -66,7 +65,7 @@ const TablaAuditoria = () => {
 
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700">
+            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
               <th className=" w-[90px]">Fecha Radicados</th>
               <th className=" w-[90px]">Tipo Documento </th>
               <th className=" w-[100px]">Identificacion</th>
@@ -86,7 +85,7 @@ const TablaAuditoria = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-sm divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((auditoria) => (
               <tr>
                 <td>
@@ -99,9 +98,11 @@ const TablaAuditoria = () => {
                 <td>{auditoria.namePatient}</td>
                 <td>{auditoria.convenio}</td>
                 <td>{auditoria.ipsPrimary}</td>
-                <td>{auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"  }</td>
-                <td>{auditoria.place  }</td>
-                <td>{auditoria.ipsRemitente  }</td>
+                <td>
+                  {auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"}
+                </td>
+                <td>{auditoria.place}</td>
+                <td>{auditoria.ipsRemitente}</td>
                 <td>{auditoria.profetional}</td>
                 <td>{auditoria.speciality}</td>
                 <td>{auditoria.typeServices}</td>
@@ -129,9 +130,11 @@ const TablaAuditoria = () => {
                 <td>{auditoria.namePatient}</td>
                 <td>{auditoria.convenio}</td>
                 <td>{auditoria.ipsPrimary}</td>
-                <td>{auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"  }</td>
-                <td>{auditoria.place  }</td>
-                <td>{auditoria.ipsRemitente  }</td>
+                <td>
+                  {auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"}
+                </td>
+                <td>{auditoria.place}</td>
+                <td>{auditoria.ipsRemitente}</td>
                 <td>{auditoria.profetional}</td>
                 <td>{auditoria.speciality}</td>
                 <td>{auditoria.typeServices}</td>
