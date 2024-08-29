@@ -8,7 +8,6 @@ const TablaCirugias = () => {
   return (
     <>
       {/*nav-auditoria*/}
-
       <section className="dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Cirugias
