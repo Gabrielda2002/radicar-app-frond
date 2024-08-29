@@ -2,6 +2,7 @@ import { IAuditoria } from "../models/IAuditoria";
 import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IDocumento } from "../models/IDocumento";
+import { IEspecialidad } from "../models/IEspecialidad";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { IIPSRemite } from "../models/IIpsRemite";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
@@ -110,4 +111,14 @@ export const fetchIpsRemite = async (): Promise<IIPSRemite[]> => {
         createdAt: new Date(ips.createdAt)
     }));
     return ipsRemite;
+}
+
+export const fetchEspecialidad = async (): Promise<IEspecialidad[]> => {
+    const response = await api.get('/especialidades');
+    const especialidad = response.data.map((especialidad: IEspecialidad) => ({
+        ...especialidad,
+        updatedAt: new Date(especialidad.updatedAt),
+        createdAt: new Date(especialidad.createdAt)
+    }));
+    return especialidad;
 }
