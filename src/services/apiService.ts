@@ -9,6 +9,7 @@ import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
+import { IUsuarios } from "../models/IUsuarios";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
@@ -132,4 +133,15 @@ export const fetchServicio = async (): Promise<IServicios[]> => {
         createdAt: new Date(servicio.createdAt)
     }));
     return servicios;
+}
+
+export const fetchUsuario = async (): Promise<IUsuarios[]> => {
+    const response = await api.get('/usuarios-table');
+    const usuarios = response.data.map((usuario: IUsuarios) => ({
+        ...usuario,
+        updatedAt: new Date(usuario.updatedAt),
+        createdAt: new Date(usuario.createdAt)
+    }));
+    return usuarios;
+
 }
