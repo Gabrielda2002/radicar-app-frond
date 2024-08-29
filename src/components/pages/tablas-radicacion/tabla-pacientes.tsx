@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import ModalPaciente from "../modals/modal-paciente";
 
 const TablaPacientes = () => {
   return(
@@ -50,9 +50,10 @@ const TablaPacientes = () => {
                         <option value="20">20 Paginas</option>
                         <option value="30">30 Paginas</option>
                     </select>
-                    <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                    {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                         Agregar Paciente
-                    </button>
+                    </button> */}
+                    <ModalPaciente></ModalPaciente>
                 </div>
             </section>
 
