@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 
 const TablaIpsRemite = () => {
+
+    const {data, loading, error} = useFetchIpsRemite(); 
+
+    if(loading) return <h1>Cargando...</h1>;
+    if(error) return <h1>{error}</h1>;
+
   return(
     <>
         {/* nav-table */}
@@ -67,26 +74,17 @@ const TablaIpsRemite = () => {
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+
+                    {data.map((ips) => (
                     <tr>
-                        <td className="break-words">5 </td>
-                        <td className="break-words">Fundación el Principio de una Esperanza </td>
-                        <td className="break-words">ACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
+                        <td>{ips.id}</td>
+                        <td>{ips.name}</td>
+                        <td>{ips.status ? "Activo" : "Inactivo"} </td>
+                        <td>
+                            <img src={onOff} alt="" />
+                        </td>  
                     </tr>
-                    <tr>
-                        <td className="break-words">2 </td>
-                        <td className="break-words">Clínica los Andes </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
+                    ))}
                 </tbody>
             </table>
         </section>

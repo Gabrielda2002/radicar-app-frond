@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 
 const TablaConvenios = () => {
+
+    const {data, loading, error} = useFetchConvenio();
+
+    if(loading) return <h1>Cargando...</h1>;
+    if(error) return <h1>{error}</h1>;
+
   return(
     <>
         {/* nav-table */}
@@ -67,26 +74,17 @@ const TablaConvenios = () => {
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    <tr>
-                        <td className="break-words">2014 </td>
-                        <td className="break-words">Compensar EPS </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
+                    {data.map((convenio) => (
+                        <tr>
+                            <td>{convenio.id}</td>
+                            <td>{convenio.name}</td>
+                            <td>{convenio.status ? "Activo" : "Inactivo"} </td>
+                            <td>
                                 <img src={onOff} alt="" />
-                            </button>
-                        </td>
+                            </td>
                     </tr>
-                    <tr>
-                        <td className="break-words">8 </td>
-                        <td className="break-words">Compensar EPS </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
+                    ))}
+                        
                 </tbody>
             </table>
         </section>

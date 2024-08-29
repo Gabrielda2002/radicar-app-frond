@@ -1,5 +1,14 @@
 import { IAuditoria } from "../models/IAuditoria";
+import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
+import { IDocumento } from "../models/IDocumento";
+import { IEspecialidad } from "../models/IEspecialidad";
+import { IIPSPrimaria } from "../models/IIpsPrimaria";
+import { IIPSRemite } from "../models/IIpsRemite";
+import { ILugarRadicacion } from "../models/ILugarRadicado";
+import { IMunicipios } from "../models/IMunicipios";
+import { IRadicador } from "../models/IRadicador";
+import { IServicios } from "../models/IServicio";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
@@ -31,4 +40,96 @@ export const fetchCups = async (): Promise<ICups[]> => {
         createdAt: new Date(cup.createdAt)
     }));
     return cups;
+}
+
+export const fetchRadicador = async (): Promise<IRadicador[]> => {
+
+    const response = await api.get('/radicador');
+    const radicadores = response.data.map((radicador: IRadicador) => ({
+        ...radicador,
+        createdAt: new Date(radicador.createdAt),
+        updatedAt: new Date(radicador.updatedAt)
+    }));
+    return radicadores;
+
+}
+
+export const fetchMunicipio = async (): Promise<IMunicipios[]> => {
+    const response = await api.get('/municipios');
+    const municipios = response.data.map((municipio: IMunicipios) => ({
+        ...municipio,
+        updatedAt: new Date(municipio.updatedAt),
+        createdAt: new Date(municipio.createdAt)
+    }));
+    return municipios;
+}
+
+export const fetchConvenio = async (): Promise<IConvenios[]> => {
+    const response = await api.get('/convenio');
+    const convenios = response.data.map((convenio: IConvenios) => ({
+        ...convenio,
+        updatedAt: new Date(convenio.updatedAt),
+        createdAt: new Date(convenio.createdAt)
+    }));
+    return convenios;
+}
+
+export const fetchDocumento = async (): Promise<IDocumento[]> => {
+    const response = await api.get('/documento');
+    const documentos = response.data.map((documento: IDocumento) => ({
+        ...documento,
+        updatedAt: new Date(documento.updatedAt),
+        createdAt: new Date(documento.createdAt)
+    }));
+    return documentos;
+}
+
+export const fetchIpsPrimaria = async (): Promise<IIPSPrimaria[]> => {
+    const response = await api.get('/ips-primaria');
+    const ipsPrimaria = response.data.map((ips: IIPSPrimaria) => ({
+        ...ips,
+        updatedAt: new Date(ips.updatedAt),
+        createdAt: new Date(ips.createdAt)
+    }));
+    return ipsPrimaria;
+}
+
+export const fetchLugarRadicado = async (): Promise<ILugarRadicacion[]> => {
+    const response = await api.get('/lugares-radicacion');
+    const lugarRadicado = response.data.map((lugar: ILugarRadicacion) => ({
+        ...lugar,
+        updatedAt: new Date(lugar.updatedAt),
+        createdAt: new Date(lugar.createdAt)
+    }));
+    return lugarRadicado;
+}
+
+export const fetchIpsRemite = async (): Promise<IIPSRemite[]> => {
+    const response = await api.get('/ips-remite');
+    const ipsRemite = response.data.map((ips: IIPSRemite) => ({
+        ...ips,
+        updatedAt: new Date(ips.updatedAt),
+        createdAt: new Date(ips.createdAt)
+    }));
+    return ipsRemite;
+}
+
+export const fetchEspecialidad = async (): Promise<IEspecialidad[]> => {
+    const response = await api.get('/especialidades');
+    const especialidad = response.data.map((especialidad: IEspecialidad) => ({
+        ...especialidad,
+        updatedAt: new Date(especialidad.updatedAt),
+        createdAt: new Date(especialidad.createdAt)
+    }));
+    return especialidad;
+}
+
+export const fetchServicio = async (): Promise<IServicios[]> => {
+    const response = await api.get('/servicios');
+    const servicios = response.data.map((servicio: IServicios) => ({
+        ...servicio,
+        updatedAt: new Date(servicio.updatedAt),
+        createdAt: new Date(servicio.createdAt)
+    }));
+    return servicios;
 }
