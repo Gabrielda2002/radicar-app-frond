@@ -1,7 +1,7 @@
 const Layout = (props: any) => {
   return (
     <>
-      <section className="px-12 pt-10 mx-auto max-w-screen">
+      <section className="w-full px-12 pt-10 mx-auto">
         {props.children}
       </section>
     </>
