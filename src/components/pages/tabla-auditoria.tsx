@@ -85,7 +85,7 @@ const TablaAuditoria = () => {
             </tr>
           </thead>
 
-          <tbody className="text-sm divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((auditoria) => (
               <tr>
                 <td>

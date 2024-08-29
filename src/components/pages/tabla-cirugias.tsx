@@ -71,7 +71,7 @@ const TablaCirugias = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center bg-white dark:bg-gray-800 dark:text-gray-200">
+          <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
             <tr>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>

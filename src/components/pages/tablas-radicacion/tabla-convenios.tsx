@@ -75,7 +75,7 @@ const TablaConvenios = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     {data.map((convenio) => (
                         <tr>
                             <td>{convenio.id}</td>
