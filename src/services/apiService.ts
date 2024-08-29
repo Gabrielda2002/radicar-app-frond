@@ -8,6 +8,7 @@ import { IIPSRemite } from "../models/IIpsRemite";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
+import { IServicios } from "../models/IServicio";
 import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
@@ -121,4 +122,14 @@ export const fetchEspecialidad = async (): Promise<IEspecialidad[]> => {
         createdAt: new Date(especialidad.createdAt)
     }));
     return especialidad;
+}
+
+export const fetchServicio = async (): Promise<IServicios[]> => {
+    const response = await api.get('/servicios');
+    const servicios = response.data.map((servicio: IServicios) => ({
+        ...servicio,
+        updatedAt: new Date(servicio.updatedAt),
+        createdAt: new Date(servicio.createdAt)
+    }));
+    return servicios;
 }
