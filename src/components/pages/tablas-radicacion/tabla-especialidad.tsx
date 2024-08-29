@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 
 const TablaEspecialidad = () => {
+
+    const {data, loading, error} = useFetchEspecialidad();
+
+    if(loading) return <h1>Cargando...</h1>;
+    if(error) return <h1>{error}</h1>;
+
   return(
     <>
         {/* nav-table */}
@@ -67,26 +74,16 @@ const TablaEspecialidad = () => {
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((especialidad) => (
                     <tr>
-                        <td className="break-words">34</td>
-                        <td className="break-words">Cirugía oral y maxilofacial </td>
-                        <td className="break-words">.ACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
+                        <td>{especialidad.id}</td>
+                        <td>{especialidad.name}</td>
+                        <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
+                        <td>
+                            <img src={onOff} alt="" />
                         </td>
                     </tr>
-                    <tr>
-                        <td className="break-words">2</td>
-                        <td className="break-words">Cardiología </td>
-                        <td className="break-words">INACTIVO </td>
-                        <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
+                    ))}
                 </tbody>
             </table>
         </section>

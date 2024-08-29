@@ -4,8 +4,15 @@ import ModalCups from "../modals/modal-cups";
 
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
+import { useFetchCups } from "../../../hooks/useFetchUsers";
 
 const TablaCups = () => {
+
+    const {data, loading, error} = useFetchCups();
+
+    if(loading) return <h2>Cargando...</h2>
+    if(error) return <h2>{error}</h2>
+
   return(
     <>
         {/* nav-table */}
@@ -62,37 +69,29 @@ const TablaCups = () => {
 
             <table className="mx-auto divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-                        <th className=" w-[70px]">ID</th>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200">
+                        <th className=" w-[fit-content]">ID</th>
                         <th className="">Codigo</th>
-                        <th className=" w-[600px]">Descripcion del Cup</th>
+                        <th className=" w-[fit-content]">Descripcion del Cup</th>
                         <th className="">Estado</th>
                         <th className="">Acciones</th>
                     </tr>
                 </thead>
                     
                 <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((cups) => (
+                        <tr key={cups.id}>
+                            <td>{cups.id}</td>
+                            <td>{cups.code}</td>
+                            <td>{cups.name}</td>
+                            <td>{cups.status ? "Activo" : "Inactivo"}</td>
+                            <td>
+                                <img src={onOff} alt="on-off" className="w-5 h-5" />
+                            </td>
+                        </tr>
+                    ))}
                     <tr>
-                        <td className="break-words ">9</td>
-                        <td className="break-words ">5725528</td>
-                        <td className="break-words ">EXPLORACION Y DESCOMPRESION DEL CANAL RAQUIDEO Y RAICES ESPINAL...</td>
-                        <td className="break-words ">INACTIVO</td>
-                        <td className="break-words ">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="break-words ">17 </td>
-                        <td className="break-words ">09756272 </td>
-                        <td className="break-words ">MANOMETRIA DE LIQUIDO CEFALORRAQUIDEO</td>
-                        <td className="break-words ">ACTIVO </td>
-                        <td className="break-words ">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
-                        </td>
+
                     </tr>
                 </tbody>
             </table>
