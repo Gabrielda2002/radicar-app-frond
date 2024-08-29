@@ -3,6 +3,7 @@ import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IDocumento } from "../models/IDocumento";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
+import { IIPSRemite } from "../models/IIpsRemite";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
@@ -99,4 +100,14 @@ export const fetchLugarRadicado = async (): Promise<ILugarRadicacion[]> => {
         createdAt: new Date(lugar.createdAt)
     }));
     return lugarRadicado;
+}
+
+export const fetchIpsRemite = async (): Promise<IIPSRemite[]> => {
+    const response = await api.get('/ips-remite');
+    const ipsRemite = response.data.map((ips: IIPSRemite) => ({
+        ...ips,
+        updatedAt: new Date(ips.updatedAt),
+        createdAt: new Date(ips.createdAt)
+    }));
+    return ipsRemite;
 }
