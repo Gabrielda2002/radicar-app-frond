@@ -13,7 +13,7 @@ const TablaAuditoria = () => {
   if (error) return <h2>{error}</h2>;
 
   return (
-    <>
+    <> 
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
