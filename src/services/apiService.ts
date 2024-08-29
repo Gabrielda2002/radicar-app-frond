@@ -3,6 +3,7 @@ import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IDocumento } from "../models/IDocumento";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
+import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IMunicipios } from "../models/IMunicipios";
 import { IRadicador } from "../models/IRadicador";
 import { IRadicacion } from "../models/TableRadicacion";
@@ -88,4 +89,14 @@ export const fetchIpsPrimaria = async (): Promise<IIPSPrimaria[]> => {
         createdAt: new Date(ips.createdAt)
     }));
     return ipsPrimaria;
+}
+
+export const fetchLugarRadicado = async (): Promise<ILugarRadicacion[]> => {
+    const response = await api.get('/lugares-radicacion');
+    const lugarRadicado = response.data.map((lugar: ILugarRadicacion) => ({
+        ...lugar,
+        updatedAt: new Date(lugar.updatedAt),
+        createdAt: new Date(lugar.createdAt)
+    }));
+    return lugarRadicado;
 }
