@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
+import ModalConvenio from "../modals/modal-convenio";
 
 const TablaConvenios = () => {
 
@@ -57,9 +58,10 @@ const TablaConvenios = () => {
                         <option value="20">20 Paginas</option>
                         <option value="30">30 Paginas</option>
                     </select>
-                    <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                    {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                         Agregar Convenio
-                    </button>
+                    </button> */}
+                    <ModalConvenio></ModalConvenio>
                 </div>
             </section>
 

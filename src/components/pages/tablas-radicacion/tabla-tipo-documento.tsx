@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
+import ModalTipoDocumento from "../modals/modal-tipo-documento";
 
 const TablaTipoDocumento = () => {
   const { data, loading, error } = useFetchDocumento();
@@ -57,9 +58,10 @@ const TablaTipoDocumento = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <button className="borde-2 w-[200px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            {/* <button className="borde-2 w-[200px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Agregar Tipo Documento
-            </button>
+            </button> */}
+            <ModalTipoDocumento></ModalTipoDocumento>
           </div>
         </section>
 
