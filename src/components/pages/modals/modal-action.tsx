@@ -13,41 +13,42 @@ const ModalAction = (props: any) => {
 
       {/* init event modal */}
       {stadopen && (
-        <section className="fixed flex justify-center  pt-12 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
+        <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
           <section className="">
-            <div className="w-full bg-slate-50 overflow-hidden rounded-xl">
+            <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded">
               {/* container-header */}
-              <div className="w-full flex p-2 text-3xl border-b-2 bg-slate-50 ps-4 text-color">
+              <div className="w-full flex py-4 ps-4 text-xl font-semibold bg-white text-color dark:text-gray-200 dark:bg-gray-900 ">
                 Modulo Estado
               </div>
 
               {/* init form */}
               <form
                 action=""
-                className=" p-5 max-h-[70Vh] overflow-y-auto flex"
+                className="max-h-[70Vh] overflow-y-auto flex"
               >
-                <div className="">
-                  <section className=" grid grid-cols-2 gap-16">
+                <div className="p-8">
+                  <section className=" grid grid-cols-2 gap-x-16">
                     <div className="">
                       <label htmlFor="">
-                        <span className="flex pb-2">ID {props.nom}</span>
+                        <span className="flex mb-2 font-bold text-gray-700 dark:bg-gray-700">ID {props.nom}</span>
                         <input
                           type="text"
                           id=""
                           name=""
-                          className=" block p-1 border-2 rounded-md text-stone-700"
+                          className="w-full px-3 p-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          disabled
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className="flex pb-2 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200 dark:bg-gray-700">
                           Estado
                         </span>
                         <select
                           id=""
                           name=""
-                          className=" block p-1 border-2 rounded-md text-stone-700 w-40"
+                          className="w-full px-3 py-2 p-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-700"
                         >
                           <option value="">- SELECT -</option>
                           <option value="1">Activo</option>
@@ -60,14 +61,14 @@ const ModalAction = (props: any) => {
               </form>
 
               {/* container-footer */}
-              <div className="flex  items-center justify-end w-full h-16 gap-4 p-4 text-xl border-t-2 bg-slate-50">
+              <div className="flex  items-center justify-end w-full h-14 gap-4 px-4 py-4 text-lg font-semibold  bg-white dark-bg-gray-800">
                 <button
-                  className="w-24 h-12 text-blue-400 rounded-md hover:text-red-500 active:text-red-600"
+                  className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800"
                   onClick={() => setStadopen(false)}
                 >
                   Cancelar
                 </button>
-                <button className="w-24 h-12 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950">
+                <button className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600">
                   Actualizar
                 </button>
               </div>

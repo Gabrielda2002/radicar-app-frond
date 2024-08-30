@@ -47,7 +47,7 @@ const ModalRadicacion = () => {
                       {/*gap-4*/}
                       <div>
                         <label htmlFor="" className="">
-                          <span className="block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700  dark:text-gray-200">
                             Tipo Documento
                           </span>
                           <input
@@ -75,7 +75,7 @@ const ModalRadicacion = () => {
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
                             Nombre Completo
                           </span>
                           <input
@@ -90,7 +90,7 @@ const ModalRadicacion = () => {
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
                             Convevio
                           </span>
                           <input
@@ -98,13 +98,14 @@ const ModalRadicacion = () => {
                             id=" "
                             name=""
                             className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            disabled
                           />
                           {/*sin modificar*/}
                         </label>
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
                             IPS Primaria
                           </span>
                           <input
@@ -281,7 +282,7 @@ const ModalRadicacion = () => {
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
                             N° Radicado
                           </span>
                           <input

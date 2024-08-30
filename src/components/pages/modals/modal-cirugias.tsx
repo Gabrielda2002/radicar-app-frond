@@ -46,7 +46,7 @@ const ModalCirugias = () => {
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" mb-2 font-bold text-gray-700  dark:text-white dark:bg-gray-700">
                           Nombre Completo
                         </span>
                         <input
