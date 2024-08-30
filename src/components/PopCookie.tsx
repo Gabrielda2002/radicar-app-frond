@@ -32,7 +32,7 @@ const CookieConsent: React.FC = () => {
         </h2>
         <p>
           Este sitio utiliza cookies para mejorar la experiencia del usuario.
-          <p className="font-semibold">Atte: Nordvital IPS 🔬💊</p>
+          <p className="font-semibold">Atte: Vital TECH 🔬💊</p>
         </p>
         <div className="flex items-center justify-between mt-4 gap-x-4 shrink-0">
           <button
