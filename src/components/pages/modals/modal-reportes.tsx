@@ -11,9 +11,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
-  const { formValues, handleChange, handleSubmit } = useModalReport();
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { formValues, opcionesReportes, handleChange } =
+  const { formValues, handleChange } =
     useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -186,11 +184,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 setCupsCode(e.target.value);
               }
                 }
-              placeholder="Ingrese código"
-              type="number"
-              name="Numcups"
-              value={formValues.Numcups}
-              onChange={handleChange}
               placeholder="Ingrese código..."
               className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
