@@ -26,13 +26,12 @@ const CookieConsent: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="p-6 text-center bg-white rounded-md shadow-md">
-        <img src={cookie} alt="cookie" className="w-10 h-10 animate-spin" />
+        <img src={cookie} alt="cookie" className="w-20 h-15 animate-spin" />
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
           Alerta de Cookies
         </h2>
         <p>
           Este sitio utiliza cookies para mejorar la experiencia del usuario.
-          <p className="font-semibold">Atte: Vital TECH 🔬💊</p>
         </p>
         <div className="flex items-center justify-between mt-4 gap-x-4 shrink-0">
           <button
@@ -49,6 +48,9 @@ const CookieConsent: React.FC = () => {
               Leer políticas de cookies
             </a>
           </p>
+        </div>
+        <div className="text-sm font-semibold text-color">
+            <p>VITAL TECH.©</p>
         </div>
       </div>
     </div>
