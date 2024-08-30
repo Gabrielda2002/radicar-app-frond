@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useModalReport } from "../../../hooks/useReport";
 import close from "/assets/close.svg";
 import back from "/assets/back.svg";
+import { useDownloadReport } from "../../../hooks/useDownloadReport";
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,10 +10,31 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { formValues, opcionesReportes, handleChange, handleSubmit } =
+  const { formValues, opcionesReportes, handleChange } =
     useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
+
+  const [dateStartRadicado, setDateStartRadicado] = useState("");
+  const [dateEndRadicado, setDateEndRadicado] = useState("");
+  const [cupsCode, setCupsCode] = useState("");
+
+  const { downloadReport,error } = useDownloadReport();
+
+  // * funcion para descargar el archivo y enviar datos al servidor
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  }
+
+  const handleDownloadReport = async () => {
+    try {
+      await downloadReport(dateStartRadicado, dateEndRadicado, cupsCode);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   useEffect(() => {
     if (isOpen) {
@@ -123,6 +145,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <label className="block mb-5 text-lg font-medium text-blue-500 dark:text-white">
                   {/* Añadir texto según el estado */}
                 </label>
+
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-2 text-gray-700 dark:text-gray-300">
@@ -130,7 +154,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="date"
-                      name="startDate"
+                      name="dateStartRadicado"
+                      onChange={(e) => setDateStartRadicado(e.target.value)}
                       className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     />
                   </div>
@@ -140,11 +165,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="date"
-                      name="endDate"
+                      name="dateEndRadicado"
+                      onChange={(e) => setDateEndRadicado(e.target.value)}
                       className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     />
                   </div>
                 </div>
+
+
               </div>
             </div>
           )}
@@ -154,9 +182,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             </label>
             <input
               type="text"
-              name="Numcups"
-              value={formValues.Numcups}
-              onChange={handleChange}
+              name="cupsCode"
+              onChange={(e) => {
+                handleChange(e);
+                setCupsCode(e.target.value);
+              }
+                }
               placeholder="Ingrese código"
               className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
@@ -189,11 +220,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
+                onClick={handleDownloadReport}
               >
                 Descargar
               </button>
             )}
           </div>
+          {error && <p className="mt-4 text-red-500">{error}</p>}
         </form>
       </div>
     </div>

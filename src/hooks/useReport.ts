@@ -34,18 +34,18 @@ export const useModalReport = () => {
     }
   };
 
-  // Función para manejar el envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Usuario registrado:", formValues);
-    // Aquí se puede agregar lógica para los datos al backend
-  };
+  // // Función para manejar el envío del formulario
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log("Usuario registrado:", formValues);
+  //   // Aquí se puede agregar lógica para los datos al backend
+  // };
 
   return {
     formValues,
     opcionesReportes,
     currentStep,
     handleChange,
-    handleSubmit,
+    // handleSubmit,
   };
 };

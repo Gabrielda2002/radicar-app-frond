@@ -13,6 +13,7 @@ import {
   fetchRadicador,
   fetchServicio,
   fetchUsers,
+  fetchUsuario,
 } from "../services/apiService";
 import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
@@ -25,6 +26,7 @@ import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IIPSRemite } from "../models/IIpsRemite";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
+import { IUsuarios } from "../models/IUsuarios";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicacion[]>([]);
@@ -289,6 +291,29 @@ export const useFetchServicios = () => {
         try {
             const servicios = await fetchServicio();
             setData(servicios);
+        } catch (error) {
+            setError("Error al obtener los datos de los usuarios" + error);
+        } finally {
+            setLoading(false);
+        }
+        };
+    
+        getData();
+    }, []);
+    
+    return { data, loading, error };
+}
+
+export const useFetchUsuarios = () => {
+    const [data, setData] = useState<IUsuarios[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    useEffect(() => {
+        const getData = async () => {
+        try {
+            const usuarios = await fetchUsuario();
+            setData(usuarios);
         } catch (error) {
             setError("Error al obtener los datos de los usuarios" + error);
         } finally {
