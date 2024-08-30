@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
+import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 
 const Usuarios = () => {
+
+  const {data, loading, error} = useFetchUsuarios();
+
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <>
       <section className="p-5">
@@ -66,22 +73,19 @@ const Usuarios = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <tr key={index} className="border-b dark:border-gray-600">
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
-                <td className="px-4 py-2">....texto alusivo</td>
+            {data.map((usuario) => (
+              <tr className="border-b dark:border-gray-600">
+                <td>{usuario.id}</td>
+                <td>{usuario.dniNumber}</td>
+                <td>{usuario.name}</td>
+                <td>{usuario.lastName}</td>
+                <td>{usuario.documento}</td>
+                <td>{usuario.email}</td>
+                <td>{usuario.status ? "Activo" : "Inactivo"}</td>
+                <td>{usuario.roles}</td>
+                <td>{usuario.municipio}</td>
                 <td>
-                  <button>
-                    {/* icon mostrar */}
-                    <img src={mostrar} alt="Mostrar" className="dark:invert" />
-                  </button>
+                  <img src={mostrar} alt="" />
                 </td>
               </tr>
             ))}
