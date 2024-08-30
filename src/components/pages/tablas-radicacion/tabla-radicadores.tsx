@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
+import ModalRadicador from "../modals/modal-radicador";
 
 const TablaRadicadores = () => {
   const { data, loading, error } = useFetchRadicador();
@@ -57,9 +58,10 @@ const TablaRadicadores = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Agregar Radicador
-            </button>
+            </button> */}
+            <ModalRadicador></ModalRadicador>
           </div>
         </section>
 
@@ -73,7 +75,7 @@ const TablaRadicadores = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((radicador) => (
               <tr>
                 <td>{radicador.id}</td>

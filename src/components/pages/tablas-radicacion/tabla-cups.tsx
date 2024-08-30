@@ -16,7 +16,6 @@ const TablaCups = () => {
   return(
     <>
         {/* nav-table */}
-
         <section className="p-4 dark:bg-gray-900"> 
             <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">Módulo Cups</h1>
             <nav>
@@ -78,7 +77,7 @@ const TablaCups = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     {data.map((cups) => (
                         <tr key={cups.id}>
                             <td>{cups.id}</td>

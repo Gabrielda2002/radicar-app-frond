@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import defaultUserPicture from "../../../public/assets/icon-user.svg";
 import { api } from "../../utils/api-config";
+import ConfirmDeletePopup from "../ConfirmDeletePopup";
 
 const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -20,21 +21,20 @@ const Perfil = () => {
     dniNumber: "",
     id: "",
   });
-  console.log(profile);
 
   const [formData, setFormData] = useState(profile);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const baseUrl = "http://localhost:3600/api/v1";
-
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
     if (userData) {
       setProfile(userData);
 
       if (userData.photo) userData.photo = `${baseUrl}/${userData.photo}`;
 
-      // userData.photo = `${baseUrl}/${userData.photo}`;
-      setFormData(userData); // Inicializa el formulario con los datos del perfil
+      setFormData(userData);
     }
   }, []);
 
@@ -46,7 +46,6 @@ const Perfil = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // Aquí podrías manejar la carga del archivo, o guardar el archivo en el estado
       setFormData({ ...formData, photo: URL.createObjectURL(file) });
 
       const formDataUpload = new FormData();
@@ -67,7 +66,6 @@ const Perfil = () => {
         setFormData({ ...formData, photo: updatedPhoto });
         setProfile({ ...profile, photo: updatedPhoto });
 
-        // * actualiza el usuario en localStorage
         const updatedData = { ...profile, photo: updatedPhoto };
         localStorage.setItem("user", JSON.stringify(updatedData));
       } catch (error) {
@@ -92,20 +90,37 @@ const Perfil = () => {
 
   const handleSaveChanges = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos actualizados al servidor
-    // Actualiza el perfil en localStorage (o haz una petición al backend)
     localStorage.setItem("user", JSON.stringify(formData));
     setProfile(formData);
   };
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const openDeletePopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closeDeletePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const confirmDeletePhoto = () => {
+    handleDeletePhoto();
+    closeDeletePopup();
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <section className="p-10 text-gray-900 dark:text-gray-300 body-font">
+      <section className="p-10 text-gray-900 dark:text-gray-100 body-font">
         <div className="container mx-auto">
-          <div className="flex flex-wrap">
+          <div className="flex flex-row">
             {/* Perfil Section */}
-            <div className="w-full p-4 lg:w-1/2">
-              <div className="max-w-md p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
+            <div className="w-full max-w-lg p-4">
+              <div className="min-w-[300px] max-w-full p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
                     src={profile.photo || defaultUserPicture}
@@ -118,44 +133,68 @@ const Perfil = () => {
                     <h2 className="text-2xl font-semibold">
                       {profile.nombre} {profile.apellido}
                     </h2>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {profile.rol}
-                    </span>
                   </div>
+                  {/* Información de Rol */}
                   <div className="space-y-1">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Rol: {profile.rol}
+                    </span>
                     <span className="flex items-center space-x-2">
-                      <img src={mail} alt="Mail Icon" className="w-5 h-5" />
-                      <span className="text-gray-600 dark:text-gray-400">
+                      <img
+                        src={mail}
+                        alt="Mail Icon"
+                        className="w-5 h-5 dark:invert"
+                      />
+                      <span className="text-gray-600 break-words dark:text-gray-400">
                         {profile.email}
                       </span>
                     </span>
-a                    <span className="flex items-center space-x-2">
-                      <img src={phone} alt="Phone Icon" className="w-5 h-5" />
+                    {/* Información de Teléfono */}
+                    <span className="flex items-center space-x-2">
+                      <img
+                        src={phone}
+                        alt="Phone Icon"
+                        className="w-5 h-5 dark:invert"
+                      />
                       <span className="text-gray-600 dark:text-gray-400">
-                        {profile.phone}
+                        Teléfono: {profile.phone}
                       </span>
                     </span>
                   </div>
                   <div className="flex justify-center mt-4 space-x-4">
                     <button
-                      className="px-4 py-2 rounded shadow hover:bg-red-500 dark:hover:bg-red-600"
-                      onClick={() => document.getElementById("photo")?.click()}
+                      className="px-4 py-2 rounded shadow hover:bg-blue-500 dark:hover:bg-blue-600 dark:bg-gray-700"
+                      onClick={triggerFileInput}
                     >
-                      <img src={upload} alt="Upload Icon" className="w-6 h-6" />
+                      <img
+                        src={upload}
+                        alt="Upload Icon"
+                        className="w-6 h-6 dark:invert"
+                      />
                     </button>
                     <button
-                      className="px-4 py-2 rounded shadow hover:bg-blue-500 dark:hover:bg-blue-600"
-                      onClick={handleDeletePhoto}
+                      className="px-4 py-2 rounded shadow hover:bg-red-500 dark:hover:bg-red-600 dark:bg-gray-700"
+                      onClick={openDeletePopup}
                     >
-                      <img src={trash} alt="Trash Icon" className="w-6 h-6" />
+                      <img
+                        src={trash}
+                        alt="Trash Icon"
+                        className="w-6 h-6 dark:invert"
+                      />
                     </button>
                   </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
 
             {/* Formulario Section */}
-            <div className="w-full p-4 lg:w-1/2">
+            <div className="w-[480px] p-4">
               <div className="p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800">
                 <h2 className="mb-6 text-2xl font-semibold">
                   Editar Información
@@ -165,45 +204,28 @@ a                    <span className="flex items-center space-x-2">
                     { id: "nombre", label: "Nombre", type: "text" },
                     { id: "apellido", label: "Apellido", type: "text" },
                     { id: "email", label: "Correo Electrónico", type: "email" },
-                    { id: "phone", label: "Teléfono", type: "text" },
-                    { id: "role", label: "Rol", type: "text" },
                   ].map((input) => (
                     <div key={input.id}>
                       <label
                         htmlFor={input.id}
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="block text-sm text-gray-700 dark:text-gray-300"
                       >
                         {input.label}
                       </label>
                       <input
                         type={input.type}
                         id={input.id}
-                        className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                        value={formData[input.id as keyof typeof formData]}
+                        value={(formData as any)[input.id]}
                         onChange={handleInputChange}
-                        aria-label={input.label}
+                        className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
                       />
                     </div>
                   ))}
+
                   <div>
-                    <label
-                      htmlFor="photo"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      Foto de Perfil
-                    </label>
-                    <input
-                      type="file"
-                      id="photo"
-                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                      onChange={handleFileChange}
-                      aria-label="Foto de Perfil"
-                    />
-                  </div>
-                  <div className="flex justify-end mt-6">
                     <button
                       type="submit"
-                      className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:ring focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
                     >
                       Guardar Cambios
                     </button>
@@ -214,6 +236,11 @@ a                    <span className="flex items-center space-x-2">
           </div>
         </div>
       </section>
+      <ConfirmDeletePopup
+        isOpen={isPopupOpen}
+        onClose={closeDeletePopup}
+        onConfirm={confirmDeletePhoto}
+      />
     </div>
   );
 };

@@ -6,14 +6,14 @@ const ModalRadicacion = () => {
   return (
     <>
       <button
-        className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+        className="borde-2 w-[100px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
         onClick={() => setStadopen(true)}
       >
         Radicar
       </button>
 
       {stadopen && (
-        <section className="fixed flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 container-full -inset-2 backdrop-blur-sm">
+        <section className="fixed flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-40 container-full -inset-2 backdrop-blur-sm">
           <section className="">
             <div className="w-full overflow-hidden bg-slate-50 dark:bg-gray-900 rounded-xl">
               {/* container-header */}
