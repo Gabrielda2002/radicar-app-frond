@@ -14,21 +14,20 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       // Hacer la solicitud al servidor para el login
-      const response = await api.post('/login', { dniNumber, password });
+      const response = await api.post("/login", { dniNumber, password });
 
       // Si la autorización es correcta, guardar el token en el contexto de autenticación y el rol en localStorage
       const { token, rol, user } = response.data;
 
-      localStorage.setItem('rol', rol); // Guardar el rol en localStorage
-      localStorage.setItem('user', JSON.stringify(user)); //* Guardar datos del usuario en localStorage
+      localStorage.setItem("rol", rol); // Guardar el rol en localStorage
+      localStorage.setItem("user", JSON.stringify(user)); //* Guardar datos del usuario en localStorage
 
-      login(token, rol) // Llamar a la función login del contexto para actualizar el estado de autenticación
+      login(token, rol); // Llamar a la función login del contexto para actualizar el estado de autenticación
 
       // Redirigir al usuario según su rol
       if (rol == 1) {
-        navigate('/home');
-      }else if(rol == 5) navigate('/home');
-
+        navigate("/home");
+      } else if (rol == 5) navigate("/home");
     } catch (error) {
       setError("Error al iniciar sesión, verifica tus credenciales" + error);
     }
@@ -68,8 +67,8 @@ const Login: React.FC = () => {
                   type="text"
                   name="dniNumber"
                   onChange={(e) => setDniNumber(e.target.value)}
-                  className="bg-gray-300 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-300 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-700 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="tu-nombre@nordvital.com"
+                  className="bg-gray-300 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="tu-documento"
                   id="number-document"
                 />
               </div>
@@ -84,20 +83,20 @@ const Login: React.FC = () => {
                   type="password"
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-gray-300 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-300 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-700 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-300 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="**********"
                   id="password-login"
                 />
               </div>
-              
+
               <button
                 type="submit"
-                className="w-full text-white bg-color hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-color hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:-translate-y-1 hover:scale-110 hover:bg-emerald-900 duration-300"
               >
                 Iniciar Sesión
               </button>
-              
-              <p className="text-sm font-light text-gray-800 dark:text-gray-800">
+
+              <p className="text-sm font-light text-gray-800">
                 ¿No tienes una cuenta?{" "}
                 <a
                   href="#"
@@ -106,7 +105,6 @@ const Login: React.FC = () => {
                   Contáctanos
                 </a>
               </p>
-
             </form>
           </div>
         </div>
