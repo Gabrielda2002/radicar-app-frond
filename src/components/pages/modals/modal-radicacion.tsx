@@ -30,20 +30,20 @@ const ModalRadicacion = () => {
             <section className="">
               <div className="z-10 w-[950px]  overflow-hidden bg-white shadow-lg transform transition-transform duration-300 dark:bg-gray-900 rounded">
                 {/* container-header */}
-                <div className="w-full py-4 text-xl font-semibold bg-white   ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
+                <div className="w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
                   Radicacion de Servicios
                 </div>
 
                 {/* init form */}
-                <form className="flex-1 p-5 max-h-[70Vh] overflow-y-auto">
-                  <div className="">
+                <form className="flex max-h-[70Vh] overflow-y-auto">
+                  <div className="px-5">
                     <div>
                       <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
                         Datos Paciente
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-10 mb-10 ms-2">
+                    <section className="grid grid-cols-3 gap-x-10 gap-y-2 mb-6 ms-2">
                       {/*gap-4*/}
                       <div>
                         <label htmlFor="" className="">
@@ -111,7 +111,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -125,7 +125,7 @@ const ModalRadicacion = () => {
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-2 gap-x-40 mb-10 ms-2">
+                    <section className="grid grid-cols-2 gap-x-40 gap-y-2 mb-6 ms-2">
                       <div>
                         <label htmlFor="">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -135,7 +135,7 @@ const ModalRadicacion = () => {
                             type="number"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -186,7 +186,7 @@ const ModalRadicacion = () => {
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-10 mb-10 ps-2 border-2 border-transparent">
+                    <section className="grid grid-cols-3 gap-x-10 gap-y-0 mb-6 ps-2 border-2 border-transparent">
                       <div>
                         <label htmlFor="cantidad">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -213,7 +213,7 @@ const ModalRadicacion = () => {
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-10 mb-10 ps-2">
+                    <section className="grid grid-cols-3 gap-x-10 gap-y-2 mb-6 ps-2">
                       <div>
                         <label htmlFor="">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -385,14 +385,14 @@ const ModalRadicacion = () => {
                 </form>
 
                 {/* container-footer */}
-                <div className="flex items-center justify-end w-full h-16 gap-4 px-4 py-4 text-lg font-medium  bg-white dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full h-14 gap-4 px-4 py-4 text-lg font-medium  bg-white dark:bg-gray-800">
                   <button
                     onClick={() => setStadopen(false)}
-                    className="w-24 h-12 text-blue-400 rounded-md hover:text-red-500 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >
                     Cancelar
                   </button>
-                  <button className="w-24 h-12 text-white rounded-lg bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+                  <button className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
                     Radicar
                   </button>
                 </div>

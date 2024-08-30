@@ -246,7 +246,7 @@ const SideBar: FC = () => {
               </button>
               {isAccordionOpen1 && (
                 <div className="mt-2 space-y-3">
-                  <NavLink to="/tabla">
+                  <NavLink to="/tabla-radicacion">
                     {({ isActive }) => (
                       <a
                         className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${

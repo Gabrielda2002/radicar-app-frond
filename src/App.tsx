@@ -8,7 +8,7 @@ import Navbar from "./components/navbar";
 import Login from "./components/pages/login";
 import Perfil from "./components/pages/perfil";
 import Inicio from "./components/pages/inicio";
-import Tabla from "./components/pages/tabla";
+import TablaRadicacion from "./components/pages/tabla-radicacion";
 import TablaAuditoria from "./components/pages/tabla-auditoria";
 import TablaCirugias from "./components/pages/tabla-cirugias";
 import TablaCups from "./components/pages/tablas-radicacion/tabla-cups";
@@ -55,7 +55,7 @@ function AppRoutes() {
                     <Layout>
                       <Routes>
                         <Route path="/home" element={<Inicio />} />
-                        <Route path="/tabla" element={<Tabla />} />
+                        <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
                         <Route
                           path="/tabla-auditoria"
                           element={<TablaAuditoria />}
