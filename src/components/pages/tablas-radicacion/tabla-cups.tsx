@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 
 import ModalCups from "../modals/modal-cups";
+import ModalAction from "../modals/modal-action";
+
 
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchCups } from "../../../hooks/useFetchUsers";
 
 const TablaCups = () => {
@@ -86,7 +88,9 @@ const TablaCups = () => {
                             <td>{cups.name}</td>
                             <td>{cups.status ? "Activo" : "Inactivo"}</td>
                             <td>
-                                <img src={onOff} alt="on-off" className="w-5 h-5" />
+                                <ModalAction 
+                                nom="Cups"
+                                />                                      
                             </td>
                         </tr>
                     ))}

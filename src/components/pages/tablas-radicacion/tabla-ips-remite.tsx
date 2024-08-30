@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 
 const TablaIpsRemite = () => {
@@ -81,7 +83,9 @@ const TablaIpsRemite = () => {
                         <td>{ips.name}</td>
                         <td>{ips.status ? "Activo" : "Inactivo"} </td>
                         <td>
-                            <img src={onOff} alt="" />
+                            <ModalAction
+                                nom="IPS Remite"
+                            />
                         </td>  
                     </tr>
                     ))}

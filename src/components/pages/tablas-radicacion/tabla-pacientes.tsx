@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
 
 const TablaPacientes = () => {
   return(
@@ -84,9 +85,9 @@ const TablaPacientes = () => {
                         <td className="break-words">Compensar EPS</td>
                         <td className="break-words">INACTIVO2</td>
                         <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
+                            <ModalAction 
+                                nom="Paciente"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -100,9 +101,9 @@ const TablaPacientes = () => {
                         <td className="break-words">Ferrocarriles </td>
                         <td className="break-words">INACTIVO2 </td>
                         <td className="break-words">
-                            <button>
-                                <img src={onOff} alt="" />
-                            </button>
+                            <ModalAction 
+                                nom="Pacientes"
+                            />
                         </td>
                     </tr>
                 </tbody>

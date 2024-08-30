@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
 
 const TablaLugarRadicacion = () => {
@@ -80,7 +82,9 @@ const TablaLugarRadicacion = () => {
                 <td>{lugar.name}</td>
                 <td>{lugar.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <img src={onOff} alt="" />
+                  <ModalAction 
+                    nom="Lugar Radicacion"
+                  />
                 </td>
               </tr>
             ))}

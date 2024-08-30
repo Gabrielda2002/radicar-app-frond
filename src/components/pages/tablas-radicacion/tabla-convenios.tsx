@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 
 const TablaConvenios = () => {
@@ -80,7 +82,9 @@ const TablaConvenios = () => {
                             <td>{convenio.name}</td>
                             <td>{convenio.status ? "Activo" : "Inactivo"} </td>
                             <td>
-                                <img src={onOff} alt="" />
+                                <ModalAction 
+                                    nom="Convenios"
+                                />
                             </td>
                     </tr>
                     ))}

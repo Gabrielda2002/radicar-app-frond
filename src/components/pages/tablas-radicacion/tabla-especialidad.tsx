@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 
 const TablaEspecialidad = () => {
@@ -80,7 +82,9 @@ const TablaEspecialidad = () => {
                         <td>{especialidad.name}</td>
                         <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
                         <td>
-                            <img src={onOff} alt="" />
+                            <ModalAction 
+                                nom="Especialidad"
+                            />
                         </td>
                     </tr>
                     ))}

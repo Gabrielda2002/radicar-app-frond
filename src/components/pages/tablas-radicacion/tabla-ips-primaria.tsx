@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 
 const TablaIpsPrimaria = () => {
@@ -80,7 +82,9 @@ const TablaIpsPrimaria = () => {
                             <td className="py-2">{ips.name}</td>
                             <td className="py-2">{ips.status ? "Activo" : "Inactivo"}</td>
                             <td className="py-2">
-                                <img src={onOff} alt="on-off" className="w-8 h-8 mx-auto"/>
+                                <ModalAction
+                                    nom="IPS Primaria"
+                                />
                             </td>
                         </tr>
                     ))}

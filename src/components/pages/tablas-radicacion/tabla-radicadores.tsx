@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 
 const TablaRadicadores = () => {
@@ -80,7 +82,9 @@ const TablaRadicadores = () => {
                 <td>{radicador.name}</td>
                 <td>{radicador.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                    <img src={onOff} alt="" />
+                    <ModalAction 
+                      nom="Radicadores"
+                    />
                 </td>
               </tr>
             ))}

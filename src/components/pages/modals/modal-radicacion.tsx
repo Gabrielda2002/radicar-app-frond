@@ -15,7 +15,7 @@ const ModalRadicacion = () => {
       {stadopen && (
         <section className="fixed flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 container-full -inset-2 backdrop-blur-sm">
           <section className="">
-            <div className="w-full overflow-hidden bg-slate-50 dark:bg-gray-900 rounded-xl">
+            <div className="w-full overflow-hidden bg-slate-50 dark:bg-gray-900 rounded">
               {/* container-header */}
               <div className="w-full p-2 text-3xl border-b-2 bg-slate-50 ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
                 Radicacion de Servicios
@@ -164,6 +164,31 @@ const ModalRadicacion = () => {
                           className="block p-1 m-2 border-2 rounded-md dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                         />
                       </label>
+                    </div>
+                  </section>
+
+                  <div>
+                    <h5 className="text-2xl text-blue-500 dark:text-gray-200 pb-2">Cups</h5>
+                  </div>
+
+                  <section className="grid grid-cols-3 border-2 border-transparent">
+                    <div>
+                        <label htmlFor="">
+                            <span className="after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">Cantidad de Servicios Solicitados</span>
+                            <input type="text" id="" name="" className="block p-1 m-2 border-2 rounded-md dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700" />
+                        </label>
+                    </div>
+                    <div>
+                        <label htmlFor="">
+                            <span className="after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">Servicio Solicitado</span>
+                            <input type="" id="" name="" className="block p-1 m-2 border-2 rounded-md dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700" />
+                        </label>
+                    </div>
+                    <div>
+                        <label htmlFor="">
+                            <span className=" dark:text-gray-200">Descripcion Servicio</span>
+                            <textarea  id="" name="" className="block p-1 m-2 border-2 rounded-md dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700" ></textarea>
+                        </label>
                     </div>
                   </section>
 

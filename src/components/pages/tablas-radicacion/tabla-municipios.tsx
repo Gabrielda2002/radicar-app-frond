@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 
 const TablaMunicipios = () => {
@@ -81,7 +83,9 @@ const TablaMunicipios = () => {
                       <td>{municipio.nitMunicipio}</td>
                       <td>{municipio.status ? "Activo" : "Inactivo"}</td>
                       <td>
-                        <img src={onOff } alt="" />
+                        <ModalAction
+                          nom="Municipios"
+                        />
                       </td>
                     </tr>
                     ))}

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 const TablaTipoServicio = () => {
 
@@ -79,7 +81,9 @@ const TablaTipoServicio = () => {
                             <td className="py-2">{servicio.name}</td>
                             <td className="py-2">{servicio.status ? "Activo" : "Inactivo"}</td>
                             <td className="py-2">
-                                <img src={onOff} alt="" />
+                                <ModalAction 
+                                    nom="Tipo Servicio"
+                                />
                             </td>
                         </tr>
                     ))}
