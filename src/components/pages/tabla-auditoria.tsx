@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import soporte from "/assets/soporte.svg";
-import mostrar from "/assets/mostrar.svg";
+
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";

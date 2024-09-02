@@ -19,7 +19,7 @@ const FormularioAutorizacion = () => {
               <li className="text-slate-400 after:mr-2">Inicio</li>
             </Link>
             <Link to="/tabla-auditoria">
-              <li className="text-slate-400 before:content-['/'] before:mr-2 before:text-slate-400">
+              <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
                 Auditoría
               </li>
             </Link>
