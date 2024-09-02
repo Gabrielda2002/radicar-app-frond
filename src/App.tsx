@@ -10,6 +10,7 @@ import Perfil from "./components/pages/perfil";
 import Inicio from "./components/pages/inicio";
 import TablaRadicacion from "./components/pages/tabla-radicacion";
 import TablaAuditoria from "./components/pages/tabla-auditoria";
+import TablaRegistrosAuditados from "./components/pages/tablas-radicacion/tabla-registros-auditados";
 import TablaCirugias from "./components/pages/tabla-cirugias";
 import TablaCups from "./components/pages/tablas-radicacion/tabla-cups";
 import TablaPacientes from "./components/pages/tablas-radicacion/tabla-pacientes";
@@ -61,6 +62,7 @@ function AppRoutes() {
                           path="/tabla-auditoria"
                           element={<TablaAuditoria />}
                         />
+                        <Route path="/tabla-registros-auditados" element={<TablaRegistrosAuditados></TablaRegistrosAuditados>}></Route>
                         <Route
                           path="/tabla-cirugias"
                           element={<TablaCirugias />}

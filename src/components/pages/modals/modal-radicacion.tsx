@@ -19,7 +19,7 @@ const ModalRadicacion = () => {
   return (
     <>
       <button
-        className="borde-2 w-[100px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+        className="borde-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
         onClick={() => setStadopen(true)}
       >
         Radicar
@@ -35,7 +35,7 @@ const ModalRadicacion = () => {
               </div>
 
                 {/* init form */}
-                <form className="flex max-h-[70Vh] overflow-y-auto">
+                <form className="flex max-h-[70Vh] overflow-y-auto text-sm">
                   <div className="px-5">
                     <div>
                       <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
@@ -386,14 +386,14 @@ const ModalRadicacion = () => {
                 </form>
 
                 {/* container-footer */}
-                <div className="flex items-center justify-end w-full h-14 gap-4 px-4 py-4 text-lg font-medium  bg-white dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full h-14 gap-1 px-4 py-4 text-sm font-medium  bg-white dark:bg-gray-800">
                   <button
                     onClick={() => setStadopen(false)}
-                    className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >
                     Cancelar
                   </button>
-                  <button className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+                  <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
                     Radicar
                   </button>
                 </div>

@@ -174,14 +174,14 @@ const ModalCirugias = () => {
               </form>
 
               {/* container-footer */}
-              <div className="flex items-center justify-end w-full h-14 gap-4 px-4 py-4 text-lg font-semibold bg-white dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full h-14  px-4 py-4 text-sm font-semibold bg-white dark:bg-gray-800">
                 <button
                   className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   onClick={() => setStadopen(false)}
                 >
                   Cancelar
                 </button>
-                <button className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600">
+                <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600">
                   Agregar
                 </button>
               </div>
