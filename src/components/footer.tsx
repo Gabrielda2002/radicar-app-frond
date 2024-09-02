@@ -6,7 +6,7 @@ import facebook from "/assets/facebook.svg";
 import instagram from "/assets/instagram.svg";
 import youtube from "/assets/youtube.svg";
 
-const Footer = () => {
+const Footer = () => {  
   return (
     <footer className="font-sans text-gray-600 body-font bg-color dark:bg-gray-800">
       <div className="container flex flex-col flex-wrap px-10 py-20 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">

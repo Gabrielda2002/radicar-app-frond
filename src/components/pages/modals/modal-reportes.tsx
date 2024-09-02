@@ -7,10 +7,11 @@ import { useDownloadReport } from "../../../hooks/useDownloadReport";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  formType: "Autorizacion" | "Radicacion";
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { formValues, opcionesReportes, handleChange } =
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
+  const { formValues, handleChange } =
     useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -75,15 +76,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   };
 
   const modalTitle =
-    formValues.reportOptions === "Autorizacion"
-      ? "Autorizacion Reporte"
-      : formValues.reportOptions === "Radicacion"
-      ? "Radicacion Reporte"
-      : "Reporte Excel";
+    formType === "Autorizacion" ? "Autorizacion Reporte" : "Reporte Excel";
 
   return (
     <div
-      className={`fixed z-50 flex items-center justify-center bg-black -inset-2 bg-opacity-50 transition-opacity duration-300 backdrop-blur-sm ${
+      className={`fixed z-50 flex items-center justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
         showAnimation ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOutsideClick}
@@ -124,11 +121,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 >
                   <option value="">SELECCIONE</option>
-                  {opcionesReportes.map((opcion, index) => (
-                    <option key={index} value={opcion}>
-                      {opcion}
-                    </option>
-                  ))}
+                  <option value="Autorizacion">Autorizacion</option>
+                  <option value="Radicacion">Radicacion</option>
                 </select>
               </div>
             </>
@@ -143,7 +137,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               </button>
               <div className="mb-10">
                 <label className="block mb-5 text-lg font-medium text-blue-500 dark:text-white">
-                  {/* Añadir texto según el estado */}
+                  {formValues.reportOptions === "Autorizacion"
+                    ? "Código de Autorizacion"
+                    : "Código de Radicacion"}
                 </label>
 
 
@@ -188,7 +184,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 setCupsCode(e.target.value);
               }
                 }
-              placeholder="Ingrese código"
+              placeholder="Ingrese código..."
               className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>

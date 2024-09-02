@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import onOff from "/assets/on-off.svg";
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
+import ModalIpsRemitente from "../modals/modal-ips-remitente";
 
 const TablaIpsRemite = () => {
 
@@ -57,9 +58,10 @@ const TablaIpsRemite = () => {
                         <option value="20">20 Paginas</option>
                         <option value="30">30 Paginas</option>
                     </select>
-                    <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                    {/* <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                         Agregar IPS Primaria
-                    </button>
+                    </button> */}
+                        <ModalIpsRemitente></ModalIpsRemitente>
                 </div>
             </section>
 
@@ -73,7 +75,7 @@ const TablaIpsRemite = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
 
                     {data.map((ips) => (
                     <tr>
