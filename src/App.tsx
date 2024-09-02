@@ -24,6 +24,7 @@ import TablaEspecialidad from "./components/pages/tablas-radicacion/tabla-especi
 import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-servicio";
 import Usuarios from "./components/pages/usuarios";
 import RegistrarUsuarios from "./components/pages/registrar-usuarios";
+import CookieConsent from "./components/PopCookie";
 
 // Contextos
 import { AuthProvider } from "./context/authContext";
@@ -132,6 +133,7 @@ function AppRoutes() {
 export function App() {
   return (
     <AuthProvider>
+      <CookieConsent /> {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
       <AppRoutes />
     </AuthProvider>
   );

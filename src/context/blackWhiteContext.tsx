@@ -1,5 +1,5 @@
-// context/blackWhiteContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, ReactNode } from "react";
+import useDarkMode from "../hooks/useDarkmode";
 
 interface ThemeContextType {
   theme: string;
@@ -8,14 +8,8 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [theme, setTheme] = useState<string>("light");
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { theme, toggleTheme } = useDarkMode();
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
