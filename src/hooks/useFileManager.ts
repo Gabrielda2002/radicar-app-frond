@@ -26,7 +26,9 @@ interface FolderContents {
 
 export const useFileManager = (initialFolderId?: string) => {
     const [currentFolderId, setCurrentFolderId] = useState<string | null>(initialFolderId || null);
-    console.log(currentFolderId)
+    const [ path, setPath] = useState<{id: string; name: string}[]>([
+        {id: "", name: "Inicio"}
+    ])
     const [contents, setContents] = useState<FolderContents | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -37,8 +39,6 @@ export const useFileManager = (initialFolderId?: string) => {
         try {
 
             const response = await getFolderContent(currentFolderId || undefined);
-            console.log("data",response.data)
-            
             setContents(response.data);
             setError(null);
         } catch (err) {
@@ -51,7 +51,6 @@ export const useFileManager = (initialFolderId?: string) => {
     useEffect(() => {
         fetchContents();
     }, [currentFolderId]);
-    console.log( "current folder id" ,currentFolderId)
 
     // Function to create a new folder
     const createNewFolder = async (name: string) => {
@@ -105,6 +104,19 @@ export const useFileManager = (initialFolderId?: string) => {
         }
     };
 
+    const navigateToFolder = (folderId: string, folderName:string) => {
+        setCurrentFolderId(folderId);
+        setPath((prevPath) => [...prevPath, {id: folderId, name: folderName}])
+    }
+
+    const navigateBackToFolder = (folderId: string) => {
+        setCurrentFolderId(folderId);
+        setPath((prevPath) => {
+            const newPath = prevPath.slice(0, prevPath.findIndex(f => f.id === folderId ) + 1);
+            return newPath;
+        })
+    }
+
     return {
         contents,
         loading,
@@ -113,6 +125,8 @@ export const useFileManager = (initialFolderId?: string) => {
         uploadNewFile,
         deleteItemById,
         downloadFileById,
-        setCurrentFolderId
+        setCurrentFolderId: navigateToFolder,
+        navigateBackToFolder,
+        path
     };
 };
