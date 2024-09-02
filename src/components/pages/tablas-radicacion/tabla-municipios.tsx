@@ -5,6 +5,7 @@ import ModalAction from "../modals/modal-action";
 import salir from "/assets/back.svg";
 
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
+import ModalMunicipios from "../modals/modal-municipios";
 
 const TablaMunicipios = () => {
 
@@ -58,9 +59,10 @@ const TablaMunicipios = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Agregar Municipio
-            </button>
+            </button> */}
+            <ModalMunicipios></ModalMunicipios>
           </div>
         </section>
 
@@ -75,7 +77,7 @@ const TablaMunicipios = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     {data.map((municipio) => (
                       <tr>  
                       <td>{municipio.id}</td>

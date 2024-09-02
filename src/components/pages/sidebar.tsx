@@ -912,7 +912,7 @@ const SideBar: FC = () => {
                       )}
                     </NavLink>
 
-                    <NavLink to="/RegistrarUsuarios">
+                    <NavLink to="/registrar-usuarios">
                       {({ isActive }) => (
                         <a
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${

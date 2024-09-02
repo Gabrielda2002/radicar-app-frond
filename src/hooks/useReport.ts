@@ -1,37 +1,16 @@
 import { useState } from "react";
 
-interface ModalReport {
-  Numcups: string;
-  reportOptions: string;
-}
-
 export const useModalReport = () => {
-  // Estado para manejar el formulario
-  const [formValues, setFormValues] = useState<ModalReport>({
-    Numcups: "",
+  const [formValues, setFormValues] = useState({
     reportOptions: "",
+    startDate: "",
+    endDate: "",
+    Numcups: "",
   });
 
-  // Estado para manejar el tipo de modal
-  const [currentStep, setCurrentStep] = useState(1);
-
-  // Array de opciones modal
-  const opcionesReportes = ["Autorizacion", "Radicacion"];
-
-  // Función para manejar los cambios en los Inputs y Selects
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-
-    // Cambiar el contenido del modal cuando se selecciona una opción
-    if (name === "reportOptions") {
-      setCurrentStep(value === "Autorizacion" ? 2 : 3);
-    }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   // // Función para manejar el envío del formulario
@@ -43,8 +22,6 @@ export const useModalReport = () => {
 
   return {
     formValues,
-    opcionesReportes,
-    currentStep,
     handleChange,
     // handleSubmit,
   };

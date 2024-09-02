@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+// Script para agregar el script de Elfsight en el Inicio para que se muestre el instagram
 const ExternalScriptComponent = () => {
   useEffect(() => {
     // Crear el script y agregarlo al documento

@@ -16,23 +16,23 @@ const ModalRadicacion = () => {
       }
     };
 
-    return (
-      <>
-        <button
-          className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
-          onClick={() => setStadopen(true)}
-        >
-          Radicar
-        </button>
+  return (
+    <>
+      <button
+        className="borde-2 w-[100px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+        onClick={() => setStadopen(true)}
+      >
+        Radicar
+      </button>
 
-        {stadopen && (
-          <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 container-full -inset-2 backdrop-blur-sm">
-            <section className="">
-              <div className="z-10 w-[950px]  overflow-hidden bg-white shadow-lg transform transition-transform duration-300 dark:bg-gray-900 rounded">
-                {/* container-header */}
-                <div className="w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
-                  Radicacion de Servicios
-                </div>
+      {stadopen && (
+        <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-40 container-full -inset-2 backdrop-blur-sm">
+          <section className="">
+            <div className="z-10 w-[950px] overflow-hidden bg-white shadow-lg transform transition-transform duration-300 dark:bg-gray-900 rounded-xl">
+              {/* container-header */}
+              <div className="w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
+                Radicacion de Servicios
+              </div>
 
                 {/* init form */}
                 <form className="flex max-h-[70Vh] overflow-y-auto">

@@ -5,6 +5,7 @@ import ModalAction from "../modals/modal-action";
 import salir from "/assets/back.svg";
 
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
+import ModalLugarRadicacion from "../modals/modal-lugar-radicacion";
 
 const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();
@@ -59,9 +60,11 @@ const TablaLugarRadicacion = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
+            {/* <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
               Agregar Lugar
-            </button>
+            </button> */}
+
+            <ModalLugarRadicacion></ModalLugarRadicacion>
           </div>
         </section>
 
@@ -75,7 +78,7 @@ const TablaLugarRadicacion = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((lugar) => (
               <tr>
                 <td>{lugar.id}</td>
