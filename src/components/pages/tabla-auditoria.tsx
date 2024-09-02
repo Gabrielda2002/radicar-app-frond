@@ -22,7 +22,9 @@ const TablaAuditoria = () => {
         </h1>
         <nav className="">
           <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
-            <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Auditoria
             </li>
@@ -58,7 +60,7 @@ const TablaAuditoria = () => {
               <option value="2">20 Paginas</option>
               <option value="3">30 Paginas</option>
             </select>
-            <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Ver Autorizaciones
             </button>
           </div>
@@ -119,9 +121,9 @@ const TablaAuditoria = () => {
                   </button>
                 </td>
                 <td>
-                  <button>
+                  <Link to="/tabla-autorizar-servicios">
                     <img src={autorizar} alt="autorizar-icon" />
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -150,7 +152,7 @@ const TablaAuditoria = () => {
                   <img src={soporte} alt="soporte-icon" />
                 </td>
                 <td>
-                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
+                  <ModalAuditoriaServicio></ModalAuditoriaServicio>
                 </td>
                 <td>
                   <img src={autorizar} alt="autorizar-icon" />

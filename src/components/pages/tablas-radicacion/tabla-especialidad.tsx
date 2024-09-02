@@ -21,7 +21,9 @@ const TablaEspecialidad = () => {
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
-            <li className="text-slate-400 after:mr-4">Inicio</li>
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-4">Inicio</li>
+            </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Especialidad
             </li>
@@ -58,9 +60,6 @@ const TablaEspecialidad = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[48px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar Especialidad
-                    </button> */}
             <ModalEspecialidad></ModalEspecialidad>
           </div>
         </section>

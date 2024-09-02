@@ -21,7 +21,9 @@ const TablaCups = () => {
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
-            <li className="text-slate-400 after:mr-4">Inicio</li>
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-4">Inicio</li>
+            </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Cups
             </li>

@@ -28,7 +28,7 @@ const ModalAuditoriaServicio = () => {
               <h2 className="text-lg font-semibold text-color">Servicios</h2>
               <button
                 onClick={toggleModal}
-                className="text-gray-500 hover-gray-700"
+                className="text-xl text-gray-500 hover-gray-700"
               >
                 &times;
               </button>
@@ -59,10 +59,10 @@ const ModalAuditoriaServicio = () => {
 
             {/* Botones */}
 
-            <div className="flex justify-end mt-6 space-x-3">
+            <div className="flex justify-end mt-6 space-x-3 text-sm">
               <button
                 onClick={toggleModal}
-                className="px-4 py-2 text-white bg-gray-500 rounded-lg round hover:bg-gray-600"
+                className="px-6 py-3 text-white bg-gray-500 rounded-lg round hover:bg-gray-600"
               >
                 Cerrar
               </button>
