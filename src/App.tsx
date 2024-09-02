@@ -58,12 +58,20 @@ function AppRoutes() {
                     <Layout>
                       <Routes>
                         <Route path="/home" element={<Inicio />} />
-                        <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
+                        <Route
+                          path="/tabla-radicacion"
+                          element={<TablaRadicacion />}
+                        />
                         <Route
                           path="/tabla-auditoria"
                           element={<TablaAuditoria />}
                         />
-                        <Route path="/tabla-registros-auditados" element={<TablaRegistrosAuditados></TablaRegistrosAuditados>}></Route>
+                        <Route
+                          path="/tabla-registros-auditados"
+                          element={
+                            <TablaRegistrosAuditados></TablaRegistrosAuditados>
+                          }
+                        ></Route>
                         <Route
                           path="/tabla-cirugias"
                           element={<TablaCirugias />}
