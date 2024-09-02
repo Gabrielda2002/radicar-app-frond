@@ -57,7 +57,7 @@ const TablaPacientes = () => {
                 </div>
             </section>
 
-            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="mx-auto text-xs divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
                     <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
                         <th className=" w-[70px]">ID</th>
@@ -73,7 +73,7 @@ const TablaPacientes = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     <tr>
                         <td className="break-words">222</td>
                         <td className="break-words">1045256363</td>
@@ -86,7 +86,7 @@ const TablaPacientes = () => {
                         <td className="break-words">INACTIVO2</td>
                         <td className="break-words">
                             <button>
-                                <img src={onOff} alt="" />
+                                <img className="w-8 h-8" src={onOff} alt="" />
                             </button>
                         </td>
                     </tr>
@@ -102,7 +102,7 @@ const TablaPacientes = () => {
                         <td className="break-words">INACTIVO2 </td>
                         <td className="break-words">
                             <button>
-                                <img src={onOff} alt="" />
+                                <img className="w-8 h-8" src={onOff} alt="" />
                             </button>
                         </td>
                     </tr>

@@ -76,14 +76,16 @@ const TablaLugarRadicacion = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((lugar) => (
               <tr>
                 <td>{lugar.id}</td>
                 <td>{lugar.name}</td>
                 <td>{lugar.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <img src={onOff} alt="" />
+                  <button>
+                    <img src={onOff} alt="" />
+                  </button>
                 </td>
               </tr>
             ))}

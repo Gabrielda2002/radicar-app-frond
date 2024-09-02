@@ -83,7 +83,9 @@ const TablaTipoServicio = () => {
                   {servicio.status ? "Activo" : "Inactivo"}
                 </td>
                 <td className="py-2">
-                  <img src={onOff} alt="" />
+                  <button>
+                    <img src={onOff} alt="" />
+                  </button>
                 </td>
               </tr>
             ))}

@@ -75,14 +75,16 @@ const TablaEspecialidad = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((especialidad) => (
               <tr>
                 <td>{especialidad.id}</td>
                 <td>{especialidad.name}</td>
                 <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <img src={onOff} alt="" />
+                  <button>
+                    <img src={onOff} alt="" />
+                  </button>
                 </td>
               </tr>
             ))}

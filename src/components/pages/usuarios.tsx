@@ -4,8 +4,7 @@ import salir from "/assets/back.svg";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 
 const Usuarios = () => {
-
-  const {data, loading, error} = useFetchUsuarios();
+  const { data, loading, error } = useFetchUsuarios();
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;
@@ -13,7 +12,9 @@ const Usuarios = () => {
   return (
     <>
       <section className="p-5">
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">Módulo Usuarios</h1>
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
+          Módulo Usuarios
+        </h1>
         <nav>
           <ol className="flex mb-2">
             <li className="text-slate-400 after:mr-2">Inicio</li>
@@ -56,41 +57,44 @@ const Usuarios = () => {
         </section>
 
         {/* Users Table Body */}
-
-        <table className="w-full mx-auto text-sm text-center dark:bg-gray-800 dark:text-gray-300">
-          <thead className="bg-gray-200 dark:bg-gray-700">
-            <tr>
-              <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">N.º Documento</th>
-              <th className="px-4 py-2">Nombres</th>
-              <th className="px-4 py-2">Apellidos</th>
-              <th className="px-4 py-2">Tipo Documento</th>
-              <th className="px-4 py-2">Mail</th>
-              <th className="px-4 py-2">Estado</th>
-              <th className="px-4 py-2">Rol</th>
-              <th className="px-4 py-2">Municipio</th>
-              <th className="px-4 py-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((usuario) => (
-              <tr className="border-b dark:border-gray-600">
-                <td>{usuario.id}</td>
-                <td>{usuario.dniNumber}</td>
-                <td>{usuario.name}</td>
-                <td>{usuario.lastName}</td>
-                <td>{usuario.documento}</td>
-                <td>{usuario.email}</td>
-                <td>{usuario.status ? "Activo" : "Inactivo"}</td>
-                <td>{usuario.roles}</td>
-                <td>{usuario.municipio}</td>
-                <td>
-                  <img src={mostrar} alt="" />
-                </td>
+        <div>
+          <table className="w-full mx-auto text-xs text-center dark:bg-gray-800 dark:text-gray-300">
+            <thead className="bg-gray-200 dark:bg-gray-700">
+              <tr>
+                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">N.º Documento</th>
+                <th className="px-4 py-2">Nombres</th>
+                <th className="px-4 py-2">Apellidos</th>
+                <th className="px-4 py-2">Tipo Documento</th>
+                <th className="px-4 py-2">Mail</th>
+                <th className="px-4 py-2">Estado</th>
+                <th className="px-4 py-2">Rol</th>
+                <th className="px-4 py-2">Municipio</th>
+                <th className="px-4 py-2">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((usuario) => (
+                <tr className="border-b dark:border-gray-600">
+                  <td>{usuario.id}</td>
+                  <td>{usuario.dniNumber}</td>
+                  <td>{usuario.name}</td>
+                  <td>{usuario.lastName}</td>
+                  <td>{usuario.documento}</td>
+                  <td>{usuario.email}</td>
+                  <td>{usuario.status ? "Activo" : "Inactivo"}</td>
+                  <td>{usuario.roles}</td>
+                  <td>{usuario.municipio}</td>
+                  <td>
+                    <button>
+                      <img className="text-center" src={mostrar} alt="" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* posible pagination */}
       </section>

@@ -75,14 +75,16 @@ const TablaRadicadores = () => {
             </tr>
           </thead>
 
-          <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((radicador) => (
               <tr>
                 <td>{radicador.id}</td>
                 <td>{radicador.name}</td>
                 <td>{radicador.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                    <img src={onOff} alt="" />
+                  <button>
+                    <img className="w-8 h-8" src={onOff} alt="" />
+                  </button>
                 </td>
               </tr>
             ))}
