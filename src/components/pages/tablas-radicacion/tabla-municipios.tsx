@@ -8,32 +8,35 @@ import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 import ModalMunicipios from "../modals/modal-municipios";
 
 const TablaMunicipios = () => {
+  const { data, loading, error } = useFetchMunicipio();
 
-  const {data, loading, error} = useFetchMunicipio();
-
-  if(loading) return <h1>Cargando...</h1>;
-  if(error) return <h1>{error}</h1>;
+  if (loading) return <h1>Cargando...</h1>;
+  if (error) return <h1>{error}</h1>;
 
   return (
     <>
       {/* nav-table */}
 
-        <section className="p-4 dark:bg-gray-900"> 
-            <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">Módulo Municipios</h1>
-            <nav>
-                <ol className="flex mb-2 dark:text-gray-300">
-                    <li className="text-slate-400 after:mr-4">Inicio</li>
-                    <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-                        Servicio Municipios
-                    </li>
-                </ol>
-                <div  className="w-10 pb-2">
-                    <Link to="/inicio">
-                        <img src={salir} alt="" />
-                    </Link>
-                </div>
-            </nav>
-        </section>
+      <section className="p-4 dark:bg-gray-900">
+        <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
+          Módulo Municipios
+        </h1>
+        <nav>
+          <ol className="flex mb-2 dark:text-gray-300">
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-4">Inicio</li>
+            </Link>
+            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
+              Servicio Municipios
+            </li>
+          </ol>
+          <div className="w-10 pb-2">
+            <Link to="/inicio">
+              <img src={salir} alt="" />
+            </Link>
+          </div>
+        </nav>
+      </section>
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
@@ -59,9 +62,6 @@ const TablaMunicipios = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-              Agregar Municipio
-            </button> */}
             <ModalMunicipios></ModalMunicipios>
           </div>
         </section>

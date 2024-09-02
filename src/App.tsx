@@ -25,6 +25,7 @@ import TablaEspecialidad from "./components/pages/tablas-radicacion/tabla-especi
 import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-servicio";
 import Usuarios from "./components/pages/usuarios";
 import RegistrarUsuarios from "./components/pages/registrar-usuarios";
+import TablaAutorizarServicios from "./components/pages/tablas-radicacion/tabla-autorizar-servicios";
 import CookieConsent from "./components/PopCookie";
 
 // Contextos
@@ -114,6 +115,10 @@ function AppRoutes() {
                           path="/registrar-usuarios"
                           element={<RegistrarUsuarios />}
                         />
+                        <Route
+                          path="/tabla-autorizar-servicios"
+                          element={<TablaAutorizarServicios />}
+                        />
                         <Route path="*" element={<Navigate to="/home" />} />
                       </Routes>
                     </Layout>
@@ -135,7 +140,8 @@ function AppRoutes() {
 export function App() {
   return (
     <AuthProvider>
-      <CookieConsent /> {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
+      <CookieConsent />{" "}
+      {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
       <AppRoutes />
     </AuthProvider>
   );

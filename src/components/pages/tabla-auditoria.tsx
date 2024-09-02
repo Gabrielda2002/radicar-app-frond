@@ -5,6 +5,7 @@ import mostrar from "/assets/mostrar.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import ModalAuditoriaServicio from "./modals/modal-auditoria-servicios.tsx";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
@@ -13,7 +14,7 @@ const TablaAuditoria = () => {
   if (error) return <h2>{error}</h2>;
 
   return (
-    <> 
+    <>
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900 ps-0">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
@@ -21,7 +22,9 @@ const TablaAuditoria = () => {
         </h1>
         <nav className="">
           <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
-            <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Auditoria
             </li>
@@ -57,7 +60,7 @@ const TablaAuditoria = () => {
               <option value="2">20 Paginas</option>
               <option value="3">30 Paginas</option>
             </select>
-            <button className="borde-2 w-[120px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Ver Autorizaciones
             </button>
               <Link to={"/tabla-registros-auditados"}>
@@ -91,7 +94,7 @@ const TablaAuditoria = () => {
             </tr>
           </thead>
 
-          <tbody className="text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((auditoria) => (
               <tr>
                 <td>
@@ -114,13 +117,19 @@ const TablaAuditoria = () => {
                 <td>{auditoria.typeServices}</td>
                 <td>{auditoria.radicador}</td>
                 <td>
-                  <img src={soporte} alt="soporte-icon" />
+                  <button>
+                    <img src={soporte} alt="soporte-icon" />
+                  </button>
                 </td>
                 <td>
-                  <img src={mostrar} alt="mostrar-icon" />
+                  <button>
+                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
+                  </button>
                 </td>
                 <td>
-                  <img src={autorizar} alt="autorizar-icon" />
+                  <Link to="/tabla-autorizar-servicios">
+                    <img src={autorizar} alt="autorizar-icon" />
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -149,7 +158,7 @@ const TablaAuditoria = () => {
                   <img src={soporte} alt="soporte-icon" />
                 </td>
                 <td>
-                  <img src={mostrar} alt="mostrar-icon" />
+                  <ModalAuditoriaServicio></ModalAuditoriaServicio>
                 </td>
                 <td>
                   <img src={autorizar} alt="autorizar-icon" />
