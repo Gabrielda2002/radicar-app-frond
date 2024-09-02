@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 import ModalTipoServicio from "../modals/modal-tipo-servicio";
 const TablaTipoServicio = () => {
@@ -66,34 +68,32 @@ const TablaTipoServicio = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Tipo Servicio</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((servicio) => (
-              <tr key={servicio.id}>
-                <td className="py-2">{servicio.id}</td>
-                <td className="py-2">{servicio.name}</td>
-                <td className="py-2">
-                  {servicio.status ? "Activo" : "Inactivo"}
-                </td>
-                <td className="py-2">
-                  <button>
-                    <img src={onOff} alt="" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Nombre Tipo Servicio</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((servicio) => (
+                        <tr key={servicio.id}>
+                            <td className="py-2">{servicio.id}</td>
+                            <td className="py-2">{servicio.name}</td>
+                            <td className="py-2">{servicio.status ? "Activo" : "Inactivo"}</td>
+                            <td className="py-2">
+                              <ModalAction 
+                                      nom="Tipo Servicio"
+                                  />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };

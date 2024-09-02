@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 
+import ModalCirugias from "./modals/modal-cirugias";
+
+
 import salir from "/assets/back.svg";
 import soporte from "/assets/mostrar.svg";
-import programar from "/assets/programar.svg";
+
 
 const TablaCirugias = () => {
   return (
@@ -91,7 +94,7 @@ const TablaCirugias = () => {
               </td>
               <td className="px-4 py-2">
                 <button>
-                  <img src={programar}></img>
+                  <ModalCirugias />
                 </button>
               </td>
             </tr>
@@ -112,28 +115,7 @@ const TablaCirugias = () => {
               </td>
               <td className="px-4 py-2">
                 <button>
-                  <img src={programar}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
-                </button>
-              </td>
-              <td className="px-4 py-2">
-                <button>
-                  <img src={programar} alt="" />
+                  <ModalCirugias />
                 </button>
               </td>
             </tr>

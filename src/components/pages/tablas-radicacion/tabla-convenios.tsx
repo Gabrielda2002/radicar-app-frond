@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 import ModalConvenio from "../modals/modal-convenio";
 
@@ -67,32 +69,33 @@ const TablaConvenios = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Convenio</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((convenio) => (
-              <tr>
-                <td>{convenio.id}</td>
-                <td>{convenio.name}</td>
-                <td>{convenio.status ? "Activo" : "Inactivo"} </td>
-                <td>
-                  <button>
-                    <img className="w-8 h-8" src={onOff} alt="" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                    <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Nombre Convenio</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((convenio) => (
+                        <tr>
+                            <td>{convenio.id}</td>
+                            <td>{convenio.name}</td>
+                            <td>{convenio.status ? "Activo" : "Inactivo"} </td>
+                            <td>
+                                <ModalAction 
+                                    nom="Convenios"
+                                />
+                            </td>
+                    </tr>
+                    ))}
+                        
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };

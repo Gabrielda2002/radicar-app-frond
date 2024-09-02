@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 import ModalTipoDocumento from "../modals/modal-tipo-documento";
 
@@ -84,15 +86,9 @@ const TablaTipoDocumento = () => {
                 <td className="py-3">{documento.name}</td>
                 <td>{documento.status ? "Activo" : "Inactivo"}</td>
                 <td className="py-3">
-                  <button>
-                    <img
-                      src={onOff}
-                      alt="on-off"
-                      className={`${
-                        documento.status ? "bg-green-500" : "bg-red-500"
-                      } w-8 h-8 rounded-full`}
-                    />
-                  </button>
+                  <ModalAction 
+                    nom="Tipo Documento"
+                  />  
                 </td>
               </tr>
             ))}

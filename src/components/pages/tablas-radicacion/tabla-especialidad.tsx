@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 import ModalEspecialidad from "../modals/modal-especialidad";
 
@@ -64,32 +66,32 @@ const TablaEspecialidad = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Especialidad</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((especialidad) => (
-              <tr>
-                <td>{especialidad.id}</td>
-                <td>{especialidad.name}</td>
-                <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <button>
-                    <img src={onOff} alt="" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Nombre Especialidad</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((especialidad) => (
+                    <tr>
+                        <td>{especialidad.id}</td>
+                        <td>{especialidad.name}</td>
+                        <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
+                        <td>
+                          <ModalAction 
+                            nom="Especialidad"
+                          />
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };

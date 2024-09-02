@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
+import ModalAction from "../modals/modal-action";
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
 import ModalPaciente from "../modals/modal-paciente";
 
 const TablaPacientes = () => {
@@ -60,58 +60,58 @@ const TablaPacientes = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-xs divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[70px]">ID</th>
-              <th className="">Identificación</th>
-              <th className="">Tipo de Documento</th>
-              <th className="">Nombre Completo</th>
-              <th className=" w-[120px]">Número Celular</th>
-              <th className=" w-[130px]">Telefono Fijo</th>
-              <th className="">Correo</th>
-              <th className="">Convenio</th>
-              <th className=" w-[90px]">Estado </th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            <tr>
-              <td className="break-words">222</td>
-              <td className="break-words">1045256363</td>
-              <td className="break-words">CC</td>
-              <td className="break-words">LAURA ANDREA CASTRO BARBOSA</td>
-              <td className="break-words">30420192872</td>
-              <td className="break-words">30420197582222</td>
-              <td className="break-words">noregistra@notiene.com</td>
-              <td className="break-words">Compensar EPS</td>
-              <td className="break-words">INACTIVO2</td>
-              <td className="break-words">
-                <button>
-                  <img className="w-8 h-8" src={onOff} alt="" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td className="break-words">10</td>
-              <td className="break-words">2782665572</td>
-              <td className="break-words">CC</td>
-              <td className="break-words">JESSICA LIZBETH BRICE O AGUIN</td>
-              <td className="break-words">30287662778</td>
-              <td className="break-words"> 092767276662</td>
-              <td className="break-words">noregistra@notiene.com</td>
-              <td className="break-words">Ferrocarriles </td>
-              <td className="break-words">INACTIVO2 </td>
-              <td className="break-words">
-                <button>
-                  <img className="w-8 h-8" src={onOff} alt="" />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                        <th className=" w-[70px]">ID</th>
+                        <th className="">Identificación</th>
+                        <th className="">Tipo de Documento</th>
+                        <th className="">Nombre Completo</th>
+                        <th className=" w-[120px]">Número Celular</th>
+                        <th className=" w-[130px]">Telefono Fijo</th>
+                        <th className="">Correo</th>
+                        <th className="">Convenio</th>
+                        <th className=" w-[90px]">Estado </th>
+                        <th className=" w-[80px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    <tr>
+                        <td className="break-words">222</td>
+                        <td className="break-words">1045256363</td>
+                        <td className="break-words">CC</td>
+                        <td className="break-words">LAURA ANDREA CASTRO BARBOSA</td>
+                        <td className="break-words">30420192872</td>
+                        <td className="break-words">30420197582222</td>
+                        <td className="break-words">noregistra@notiene.com</td>
+                        <td className="break-words">Compensar EPS</td>
+                        <td className="break-words">INACTIVO2</td>
+                        <td className="break-words">
+                            <ModalAction 
+                                nom="Paciente"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="break-words">10</td>
+                        <td className="break-words">2782665572</td>
+                        <td className="break-words">CC</td>
+                        <td className="break-words">JESSICA LIZBETH BRICE O AGUIN</td>
+                        <td className="break-words">30287662778</td>
+                        <td className="break-words"> 092767276662</td>
+                        <td className="break-words">noregistra@notiene.com</td>
+                        <td className="break-words">Ferrocarriles </td>
+                        <td className="break-words">INACTIVO2 </td>
+                        <td className="break-words">
+                            <ModalAction 
+                                nom="Pacientes"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };

@@ -9,7 +9,7 @@ import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 
-const Tabla = () => {
+const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
 
   if (loading) return <h2>Cargando...</h2>;
@@ -126,5 +126,4 @@ const Tabla = () => {
     </>
   );
 };
-
-export default Tabla;
+export default TablaRadicacion;

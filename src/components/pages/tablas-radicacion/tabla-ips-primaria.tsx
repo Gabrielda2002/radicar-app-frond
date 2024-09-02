@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 import ModalIpsPrimaria from "../modals/modal-ips-primaria";
 
@@ -68,33 +70,34 @@ const TablaIpsPrimaria = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre IPS Primaria</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((ips) => (
-              <tr key={ips.id}>
-                <td className="py-2">{ips.id}</td>
-                <td className="py-2">{ips.name}</td>
-                <td className="py-2">{ips.status ? "Activo" : "Inactivo"}</td>
-                <td className="py-2">
-                  <button>
-                    <img src={onOff} alt="on-off" className="w-8 h-8 mx-auto" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            <tr></tr>
-          </tbody>
-        </table>
-      </section>
+            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                        <th className=" w-[60px]">ID</th>
+                        <th className=" w-[200px]">Nombre IPS Primaria</th>
+                        <th className=" w-[100px]">Estado</th>
+                        <th className=" w-[80px]">Acciones</th>
+                    </tr>
+                </thead>
+                    
+                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                    {data.map((ips) => (
+                        <tr key={ips.id}>
+                            <td className="py-2">{ips.id}</td>
+                            <td className="py-2">{ips.name}</td>
+                            <td className="py-2">{ips.status ? "Activo" : "Inactivo"}</td>
+                            <td className="py-2">
+                                <ModalAction
+                                    nom="IPS Primaria"
+                                />
+                            </td>
+                        </tr>
+                    ))}
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };

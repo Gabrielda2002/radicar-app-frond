@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import ModalAction from "../modals/modal-action";
+
 import salir from "/assets/back.svg";
-import onOff from "/assets/on-off.svg";
+
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 import ModalIpsRemitente from "../modals/modal-ips-remitente";
 
@@ -77,22 +79,21 @@ const TablaIpsRemite = () => {
             </tr>
           </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((ips) => (
-              <tr>
-                <td>{ips.id}</td>
-                <td>{ips.name}</td>
-                <td>{ips.status ? "Activo" : "Inactivo"} </td>
-                <td>
-                  <button>
-                    <img className="w-8 h-8" src={onOff} alt="" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+                    {data.map((ips) => (
+                    <tr>
+                        <td>{ips.id}</td>
+                        <td>{ips.name}</td>
+                        <td>{ips.status ? "Activo" : "Inactivo"} </td>
+                        <td>
+                            <ModalAction
+                                nom="IPS Remite"
+                            />
+                        </td>  
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
     </>
   );
 };
