@@ -19,6 +19,7 @@ const TablaEspecialidad = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
+      if (loading) return <LoadingSpinner duration={500} />;
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Especialidad
         </h1>

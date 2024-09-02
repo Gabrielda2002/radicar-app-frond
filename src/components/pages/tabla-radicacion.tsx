@@ -19,6 +19,7 @@ const TablaRadicacion = () => {
     <>
       {/* nav-table */}
       <section className="dark:bg-gray-900">
+      if (loading) return <LoadingSpinner duration={500} />;
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
           Módulo Radicación
         </h1>
@@ -77,7 +78,7 @@ const TablaRadicacion = () => {
                 <th>N.º Documento</th>
                 <th>Nombre Paciente</th>
                 <th>Fecha Auditoria</th>
-                <th>Nombre Auditora</th>
+                <th className="w-[150px]">Nombre Auditora</th>
                 <th>Soporte</th>
                 <th>Gestión Auxiliar</th>
                 <th>Mostrar</th>

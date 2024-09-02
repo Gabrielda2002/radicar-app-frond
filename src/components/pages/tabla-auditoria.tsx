@@ -17,6 +17,7 @@ const TablaAuditoria = () => {
     <>
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900 ps-0">
+      if (loading) return <LoadingSpinner duration={500} />;
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
         </h1>
