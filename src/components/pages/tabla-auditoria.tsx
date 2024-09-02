@@ -5,6 +5,7 @@ import mostrar from "/assets/mostrar.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import ModalAuditoriaServicio from "./modals/modal-auditoria-servicios.tsx";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
@@ -13,7 +14,7 @@ const TablaAuditoria = () => {
   if (error) return <h2>{error}</h2>;
 
   return (
-    <> 
+    <>
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
@@ -85,7 +86,7 @@ const TablaAuditoria = () => {
             </tr>
           </thead>
 
-          <tbody className="text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((auditoria) => (
               <tr>
                 <td>
@@ -108,13 +109,19 @@ const TablaAuditoria = () => {
                 <td>{auditoria.typeServices}</td>
                 <td>{auditoria.radicador}</td>
                 <td>
-                  <img src={soporte} alt="soporte-icon" />
+                  <button>
+                    <img src={soporte} alt="soporte-icon" />
+                  </button>
                 </td>
                 <td>
-                  <img src={mostrar} alt="mostrar-icon" />
+                  <button>
+                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
+                  </button>
                 </td>
                 <td>
-                  <img src={autorizar} alt="autorizar-icon" />
+                  <button>
+                    <img src={autorizar} alt="autorizar-icon" />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -143,7 +150,7 @@ const TablaAuditoria = () => {
                   <img src={soporte} alt="soporte-icon" />
                 </td>
                 <td>
-                  <img src={mostrar} alt="mostrar-icon" />
+                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
                 </td>
                 <td>
                   <img src={autorizar} alt="autorizar-icon" />
