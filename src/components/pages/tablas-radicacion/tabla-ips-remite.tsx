@@ -78,22 +78,20 @@ const TablaIpsRemite = () => {
               <th className=" w-[80px]">Acciones</th>
             </tr>
           </thead>
-
-                    {data.map((ips) => (
-                    <tr>
-                        <td>{ips.id}</td>
-                        <td>{ips.name}</td>
-                        <td>{ips.status ? "Activo" : "Inactivo"} </td>
-                        <td>
-                            <ModalAction
-                                nom="IPS Remite"
-                            />
-                        </td>  
-                    </tr>
-                    ))}
-                </tbody>
-            </table>
-        </section>
+          <tbody>
+            {data.map((ips) => (
+              <tr>
+                <td>{ips.id}</td>
+                <td>{ips.name}</td>
+                <td>{ips.status ? "Activo" : "Inactivo"} </td>
+                <td>
+                  <ModalAction nom="IPS Remite" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 };
