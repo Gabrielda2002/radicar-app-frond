@@ -6,11 +6,12 @@ import salir from "/assets/back.svg";
 
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 import ModalConvenio from "../modals/modal-convenio";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaConvenios = () => {
   const { data, loading, error } = useFetchConvenio();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (

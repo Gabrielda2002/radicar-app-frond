@@ -6,11 +6,12 @@ import salir from "/assets/back.svg";
 
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 import ModalEspecialidad from "../modals/modal-especialidad";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -76,7 +77,7 @@ const TablaEspecialidad = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     {data.map((especialidad) => (
                     <tr>
                         <td>{especialidad.id}</td>

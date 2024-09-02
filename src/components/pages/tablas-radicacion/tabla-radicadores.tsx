@@ -6,11 +6,12 @@ import salir from "/assets/back.svg";
 
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 import ModalRadicador from "../modals/modal-radicador";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaRadicadores = () => {
   const { data, loading, error } = useFetchRadicador();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (

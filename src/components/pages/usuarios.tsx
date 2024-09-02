@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
+import LoadingSpinner from "../loading-spinner";
 
 const Usuarios = () => {
   const { data, loading, error } = useFetchUsuarios();
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <p>{error}</p>;
 
   return (

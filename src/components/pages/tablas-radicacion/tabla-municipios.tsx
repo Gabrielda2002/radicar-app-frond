@@ -6,11 +6,12 @@ import salir from "/assets/back.svg";
 
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 import ModalMunicipios from "../modals/modal-municipios";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaMunicipios = () => {
   const { data, loading, error } = useFetchMunicipio();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -77,7 +78,7 @@ const TablaMunicipios = () => {
                     </tr>
                 </thead>
                     
-                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
                     {data.map((municipio) => (
                       <tr>  
                       <td>{municipio.id}</td>

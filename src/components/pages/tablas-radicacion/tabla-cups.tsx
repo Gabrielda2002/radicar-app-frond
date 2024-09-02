@@ -6,11 +6,12 @@ import ModalAction from "../modals/modal-action";
 import salir from "/assets/back.svg";
 
 import { useFetchCups } from "../../../hooks/useFetchUsers";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
 
-  if (loading) return <h2>Cargando...</h2>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
 
   return (

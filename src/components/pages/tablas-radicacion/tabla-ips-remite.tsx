@@ -6,11 +6,12 @@ import salir from "/assets/back.svg";
 
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 import ModalIpsRemitente from "../modals/modal-ips-remitente";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaIpsRemite = () => {
   const { data, loading, error } = useFetchIpsRemite();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (

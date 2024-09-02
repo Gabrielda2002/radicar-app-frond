@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import ModalAction from "../modals/modal-action";
 
 import salir from "/assets/back.svg";
+import LoadingSpinner from "../../loading-spinner";
 
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 import ModalTipoServicio from "../modals/modal-tipo-servicio";
 const TablaTipoServicio = () => {
   const { data, loading, error } = useFetchServicios();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
