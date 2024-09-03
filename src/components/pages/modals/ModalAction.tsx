@@ -22,49 +22,37 @@ const ModalAction = (props: any) => {
               </div>
 
               {/* init form */}
-              <form action="" className="max-h-[70Vh] overflow-y-auto flex">
+              <form action="" className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200">
                 <div className="p-8">
-                  <section className="grid grid-cols-3 gap-x-16">
+                  <section className="grid grid-cols-2 gap-x-16 ">
                     <div className="">
                       <label htmlFor="">
-                        <span className="flex mb-2 font-bold text-gray-700 dark:bg-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                        <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
                           ID {props.nom}
                         </span>
                         <input
                           type="text"
                           id=""
                           name=""
-                          className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           disabled
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200 dark:bg-gray-700">
+                        <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Estado
                         </span>
                         <select
                           id=""
                           name=""
-                          className="w-full p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-700"
+                          className="w-full p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                         >
                           <option value="">- SELECT -</option>
                           <option value="1">Activo</option>
                           <option value="2">Inactivo</option>
                         </select>
-                      </label>
-                    </div>
-                    <div>
-                      <label htmlFor="">
-                        <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200 dark:bg-gray-700">
-                          Nombre CUPS
-                        </span>
-                        <input
-                          className="w-full p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:text-gray-700"
-                          type="text"
-                          placeholder="Ingrese nuevo nombre de CUP"
-                        />
                       </label>
                     </div>
                   </section>
@@ -74,7 +62,7 @@ const ModalAction = (props: any) => {
               {/* container-footer */}
               <div className="flex items-center justify-end w-full gap-4 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                 <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800"
+                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   onClick={() => setStadopen(false)}
                 >
                   Cancelar
