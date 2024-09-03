@@ -1,15 +1,28 @@
 import { Link } from "react-router-dom";
-
 import ModalAction from "../modals/ModalAction";
-
 import salir from "/assets/back.svg";
-
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 import ModalRadicador from "../modals/ModalRadicador";
 import LoadingSpinner from "../../loading-spinner";
+import Pagination from "../../Pagination";
+import usePagination from "../../../hooks/usePagination";
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
   const { data, loading, error } = useFetchRadicador();
+  const [itemPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -57,6 +70,8 @@ const TablaRadicadores = () => {
             <select
               name=""
               id=""
+              value={itemPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
@@ -82,8 +97,8 @@ const TablaRadicadores = () => {
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((radicador) => (
-              <tr>
+            {currentData().map((radicador) => (
+              <tr key={radicador.id}>
                 <td>{radicador.id}</td>
                 <td>{radicador.name}</td>
                 <td>{radicador.status ? "Activo" : "Inactivo"}</td>
@@ -94,6 +109,12 @@ const TablaRadicadores = () => {
             ))}
           </tbody>
         </table>
+        {/* Controles de Paginacion */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );
