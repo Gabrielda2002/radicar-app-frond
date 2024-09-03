@@ -42,7 +42,7 @@ export const useFileManager = (initialFolderId?: string) => {
             setContents(response.data);
             setError(null);
         } catch (err) {
-            setError("Error fetching folder contents");
+            setError(`Error fetching folder contents${err}`);
         } finally {
             setLoading(false);
         }
@@ -59,7 +59,7 @@ export const useFileManager = (initialFolderId?: string) => {
             await createFolder(currentFolderId, name);
             await fetchContents(); // Reload contents after creating a folder
         } catch (err) {
-            setError("Error creating folder");
+            setError(`Error creating folder${err}`);
         }
     };
 
@@ -70,7 +70,7 @@ export const useFileManager = (initialFolderId?: string) => {
             await uploadFile(currentFolderId, file);
             await fetchContents(); // Reload contents after uploading a file
         } catch (err) {
-            setError("Error uploading file");
+            setError(`Error uploading file ${err}`);
         }
     };
 
@@ -80,7 +80,7 @@ export const useFileManager = (initialFolderId?: string) => {
             await deleteItem(id, type);
             await fetchContents(); // Reload contents after deleting an item
         } catch (err) {
-            setError(`Error deleting ${type === "carpetas" ? "folder" : "file"}`);
+            setError(`Error deleting ${type === "carpetas" ? "folder" : "file"} ${err}`);
         }
     };
 
@@ -100,7 +100,7 @@ export const useFileManager = (initialFolderId?: string) => {
             // Limpia el objeto URL creado
             window.URL.revokeObjectURL(url);
         } catch (err) {
-            setError("Error downloading file");
+            setError(`Error downloading file ${err}`);
         }
     };
 

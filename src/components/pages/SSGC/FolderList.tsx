@@ -15,7 +15,6 @@ interface FolderListProps {
 const FolderList: React.FC<FolderListProps> = ({
   folders,
   onFolderClick,
-  onDelete,
 }) => {
   return (
     <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">

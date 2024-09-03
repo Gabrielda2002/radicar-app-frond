@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useFileManager } from "../../hooks/useFileManager";
 import FolderList from "./SSGC/FolderList";
 import FileList from "./SSGC/FileList";
@@ -10,15 +9,13 @@ import DropDownManu from "./SSGC/DropDownManu";
 
 const FileManager: React.FC = () => {
 
-  const [showModal, setShowModal] = useState<string | null>(null);
+  // const [showModal, setShowModal] = useState<string | null>(null);
 
   const {
     contents,
     loading,
     path,
     error,
-    createNewFolder,
-    uploadNewFile,
     deleteItemById,
     downloadFileById,
     navigateBackToFolder,

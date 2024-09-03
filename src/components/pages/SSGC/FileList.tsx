@@ -16,7 +16,7 @@ interface FileListProps {
   onDownload: (id: string, fileName: string) => void;
 }
 
-const FileList: React.FC<FileListProps> = ({ files, onDelete, onDownload }) => {
+const FileList: React.FC<FileListProps> = ({ files }) => {
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
       case "application/pdf":
