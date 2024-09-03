@@ -1,25 +1,27 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
-import { useFetchRadicador } from "../../../hooks/useFetchUsers";
-import ModalRadicador from "../modals/modal-radicador";
+import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
+import ModalIpsPrimaria from "../modals/ModalIpsPrimaria";
+import LoadingSpinner from "../../loading-spinner";
 
-const TablaRadicadores = () => {
-  const { data, loading, error } = useFetchRadicador();
+const TablaIpsPrimaria = () => {
+  const { data, loading, error } = useFetchIpsPrimaria();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
     <>
       {/* nav-table */}
 
-      <section className="p-4 dark:bg-gray-900">
+      <section className="dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Radicadores
+          Módulo IPS Primaria
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -27,7 +29,7 @@ const TablaRadicadores = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Radicadores
+              Servicio IPS Primaria
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -44,10 +46,10 @@ const TablaRadicadores = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Radicador :
+              Buscar IPS Primaria :
             </label>
             <input
-              placeholder=" Consultar Radicador..."
+              placeholder=" Consultar IPS Primaria..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
@@ -62,36 +64,36 @@ const TablaRadicadores = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-              Agregar Radicador
-            </button> */}
-            <ModalRadicador></ModalRadicador>
+            {/* <button className="borde-2 w-[150px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                        Agregar IPS Primaria
+                    </button> */}
+
+            <ModalIpsPrimaria></ModalIpsPrimaria>
           </div>
         </section>
 
         <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[80px]">ID</th>
-              <th className=" w-[600px] ">Nombre Prestador</th>
-              <th className=" w-[150px]">Estado</th>
-              <th className=" w-[150px]">Acciones</th>
+              <th className=" w-[60px]">ID</th>
+              <th className=" w-[200px]">Nombre IPS Primaria</th>
+              <th className=" w-[100px]">Estado</th>
+              <th className=" w-[80px]">Acciones</th>
             </tr>
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((radicador) => (
-              <tr>
-                <td>{radicador.id}</td>
-                <td>{radicador.name}</td>
-                <td>{radicador.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                    <ModalAction 
-                      nom="Radicadores"
-                    />
+            {data.map((ips) => (
+              <tr key={ips.id}>
+                <td className="py-2">{ips.id}</td>
+                <td className="py-2">{ips.name}</td>
+                <td className="py-2">{ips.status ? "Activo" : "Inactivo"}</td>
+                <td className="py-2">
+                  <ModalAction nom="IPS Primaria" />
                 </td>
               </tr>
             ))}
+            <tr></tr>
           </tbody>
         </table>
       </section>
@@ -99,4 +101,4 @@ const TablaRadicadores = () => {
   );
 };
 
-export default TablaRadicadores;
+export default TablaIpsPrimaria;

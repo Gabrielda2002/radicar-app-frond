@@ -1,24 +1,25 @@
 import { Link } from "react-router-dom";
-import ModalRadicacion from "./modals/modal-radicacion";
+import ModalRadicacion from "./modals/ModalRadicacion";
+import LoadingSpinner from "../loading-spinner";
 
 /* <-- ICONS TABLE --> */
 import soporte from "/assets/soporte.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
-import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 
 const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
 
-  if (loading) return <h2>Cargando...</h2>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
 
   return (
     <>
       {/* nav-table */}
       <section className="dark:bg-gray-900">
+      <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
           Módulo Radicación
         </h1>
@@ -77,15 +78,14 @@ const TablaRadicacion = () => {
                 <th>N.º Documento</th>
                 <th>Nombre Paciente</th>
                 <th>Fecha Auditoria</th>
-                <th>Nombre Auditora</th>
+                <th className="w-[150px]">Nombre Auditora</th>
                 <th>Soporte</th>
                 <th>Gestión Auxiliar</th>
                 <th>Mostrar</th>
-                <th>Servicio Solicitado</th>
               </tr>
             </thead>
 
-            <tbody className="text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
               {data.map((radicacion) => (
                 <tr className="text-center" key={radicacion.id}>
                   <td>
@@ -104,16 +104,19 @@ const TablaRadicacion = () => {
                   </td>
                   <td>{radicacion.management}</td>
                   <td>
-                    <img src={soporte} alt="Soporte" />
+                    <button>
+                      <img src={soporte} alt="Soporte" />
+                    </button>
                   </td>
                   <td>
-                    <img src={gestion} alt="Gestión Auxiliar" />
+                    <button>
+                      <img src={gestion} alt="Gestión Auxiliar" />
+                    </button>
                   </td>
                   <td>
-                    <img src={mostrar} alt="Mostrar" />
-                  </td>
-                  <td>
-                    <img src={servicio} alt="Servicio Solicitado" />
+                    <button>
+                      <img src={mostrar} alt="Mostrar" />
+                    </button>
                   </td>
                 </tr>
               ))}

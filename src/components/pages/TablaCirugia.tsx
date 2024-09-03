@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import ModalCirugias from "./modals/modal-cirugias";
+import ModalCirugias from "./modals/ModalCirugias";
 
 
 import salir from "/assets/back.svg";

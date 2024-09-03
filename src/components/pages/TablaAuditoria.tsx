@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
 
 import soporte from "/assets/soporte.svg";
-import mostrar from "/assets/mostrar.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalAuditoriaServicio from "./modals/modal-auditoria-servicios.tsx";
+import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
+import LoadingSpinner from "../loading-spinner";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
 
-  if (loading) return <h2>Cargando...</h2>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
 
   return (
     <>
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900 ps-0">
+       <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
         </h1>
@@ -64,7 +65,7 @@ const TablaAuditoria = () => {
               Ver Autorizaciones
             </button>
               <Link to={"/tabla-registros-auditados"}>
-                <button className=" w-[90px] h-12 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                <button className=" w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                   Auditados
                 </button>
               </Link>

@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
-import ModalMunicipios from "../modals/modal-municipios";
+import ModalMunicipios from "../modals/ModalMunicipios";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaMunicipios = () => {
   const { data, loading, error } = useFetchMunicipio();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -18,6 +19,7 @@ const TablaMunicipios = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Municipios
         </h1>
@@ -66,35 +68,32 @@ const TablaMunicipios = () => {
           </div>
         </section>
 
-            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-                        <th className=" w-[70px]">ID</th>
-                        <th className="">Nombre Municipio</th>
-                        <th className="">Nit Municipio</th>
-                        <th className=" w-[150px]">Estado</th>
-                        <th className=" w-[150px]">Acciones</th>
-                    </tr>
-                </thead>
-                    
-                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    {data.map((municipio) => (
-                      <tr>  
-                      <td>{municipio.id}</td>
-                      <td>{municipio.name}</td>
-                      <td>{municipio.nitMunicipio}</td>
-                      <td>{municipio.status ? "Activo" : "Inactivo"}</td>
-                      <td>
-                        <ModalAction
-                          nom="Municipios"
-                        />
-                      </td>
-                    </tr>
-                    ))}
-                        
-                </tbody>
-            </table>
-        </section>
+        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+              <th className=" w-[70px]">ID</th>
+              <th className="">Nombre Municipio</th>
+              <th className="">Nit Municipio</th>
+              <th className=" w-[150px]">Estado</th>
+              <th className=" w-[150px]">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((municipio) => (
+              <tr>
+                <td>{municipio.id}</td>
+                <td>{municipio.name}</td>
+                <td>{municipio.nitMunicipio}</td>
+                <td>{municipio.status ? "Activo" : "Inactivo"}</td>
+                <td>
+                  <ModalAction nom="Municipios" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 };

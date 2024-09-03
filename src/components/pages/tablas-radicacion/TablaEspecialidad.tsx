@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
-import ModalEspecialidad from "../modals/modal-especialidad";
+import ModalEspecialidad from "../modals/ModalEspecialidad";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -18,6 +19,7 @@ const TablaEspecialidad = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Especialidad
         </h1>
@@ -66,32 +68,30 @@ const TablaEspecialidad = () => {
           </div>
         </section>
 
-            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-                        <th className=" w-[60px]">ID</th>
-                        <th className=" w-[200px]">Nombre Especialidad</th>
-                        <th className=" w-[100px]">Estado</th>
-                        <th className=" w-[80px]">Acciones</th>
-                    </tr>
-                </thead>
-                    
-                <tbody className="text-center text-xs divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    {data.map((especialidad) => (
-                    <tr>
-                        <td>{especialidad.id}</td>
-                        <td>{especialidad.name}</td>
-                        <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
-                        <td>
-                          <ModalAction 
-                            nom="Especialidad"
-                          />
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-            </table>
-        </section>
+        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+              <th className=" w-[60px]">ID</th>
+              <th className=" w-[200px]">Nombre Especialidad</th>
+              <th className=" w-[100px]">Estado</th>
+              <th className=" w-[80px]">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((especialidad) => (
+              <tr>
+                <td>{especialidad.id}</td>
+                <td>{especialidad.name}</td>
+                <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
+                <td>
+                  <ModalAction nom="Especialidad" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 };

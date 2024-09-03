@@ -1,30 +1,31 @@
 import { Link } from "react-router-dom";
 
-import ModalCups from "../modals/modal-cups";
-import ModalAction from "../modals/modal-action";
-
+import ModalCups from "../modals/ModalCups";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
 import { useFetchCups } from "../../../hooks/useFetchUsers";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
 
-  if (loading) return <h2>Cargando...</h2>;
+  if (loading) return <LoadingSpinner duration={500} />;
   if (error) return <h2>{error}</h2>;
 
   return (
     <>
       {/* nav-table */}
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Cups
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
             <Link to="/inicio">
-              <li className="text-slate-400 after:mr-4">Inicio</li>
+              <li className="text-slate-400 after:mr-2">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Cups
@@ -69,33 +70,16 @@ const TablaCups = () => {
             <ModalCups></ModalCups>
           </div>
         </section>
-
-            <table className="mx-auto divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200">
-                        <th className=" w-[fit-content]">ID</th>
-                        <th className="">Codigo</th>
-                        <th className=" w-[fit-content]">Descripcion del Cup</th>
-                        <th className="">Estado</th>
-                        <th className="">Acciones</th>
-                    </tr>
-                </thead>
-                    
-                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    {data.map((cups) => (
-                        <tr key={cups.id}>
-                            <td>{cups.id}</td>
-                            <td>{cups.code}</td>
-                            <td>{cups.name}</td>
-                            <td>{cups.status ? "Activo" : "Inactivo"}</td>
-                            <td>
-                                <ModalAction 
-                                nom="Cups"
-                                />                                      
-                            </td>
-                        </tr>
-                    ))}
-                    <tr>
+        <table className="divide-gray-200 ivide-y Wmx-auto dark:divide-gray-700">
+          <thead>
+            <tr className="dark:bg-gray-700 dark:text-gray-200">
+              <th className=" w-[fit-content]">ID</th>
+              <th className="">Codigo</th>
+              <th className=" w-[fit-content]">Descripcion del Cup</th>
+              <th className="">Estado</th>
+              <th className="">Acciones</th>
+            </tr>
+          </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {data.map((cups) => (
@@ -105,13 +89,10 @@ const TablaCups = () => {
                 <td>{cups.name}</td>
                 <td>{cups.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <button>
-                    <img src={onOff} alt="on-off" className="w-8 h-8" />
-                  </button>
+                  <ModalAction nom="Cups" />
                 </td>
               </tr>
             ))}
-            <tr></tr>
           </tbody>
         </table>
       </section>
