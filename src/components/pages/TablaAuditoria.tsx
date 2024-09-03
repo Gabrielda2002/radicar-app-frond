@@ -4,7 +4,7 @@ import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalAuditoriaServicio from "./modals/modal-auditoria-servicios.tsx";
+import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
 import LoadingSpinner from "../loading-spinner";
 
 const TablaAuditoria = () => {

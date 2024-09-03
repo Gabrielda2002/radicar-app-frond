@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ServicioForm from "../../servicio-form-radicacion";
+import ServicioForm from "../../ServicioForm";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);

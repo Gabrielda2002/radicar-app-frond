@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import ModalCups from "../modals/modal-cups";
-import ModalAction from "../modals/modal-action";
+import ModalCups from "../modals/ModalCups";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
@@ -18,14 +18,14 @@ const TablaCups = () => {
     <>
       {/* nav-table */}
       <section className="p-4 dark:bg-gray-900">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Cups
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
             <Link to="/inicio">
-              <li className="text-slate-400 after:mr-4">Inicio</li>
+              <li className="text-slate-400 after:mr-2">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Cups

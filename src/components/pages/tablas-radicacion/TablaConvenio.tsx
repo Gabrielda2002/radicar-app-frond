@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
-import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
-import ModalLugarRadicacion from "../modals/modal-lugar-radicacion";
+import { useFetchConvenio } from "../../../hooks/useFetchUsers";
+import ModalConvenio from "../modals/ModalConvenio";
 import LoadingSpinner from "../../loading-spinner";
 
-const TablaLugarRadicacion = () => {
-  const { data, loading, error } = useFetchLugarRadicado();
+const TablaConvenios = () => {
+  const { data, loading, error } = useFetchConvenio();
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -19,9 +19,9 @@ const TablaLugarRadicacion = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Lugar Radicacion
+          Módulo Convenios
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -29,7 +29,7 @@ const TablaLugarRadicacion = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Lugar Radicacion
+              Servicio Convenios
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -46,10 +46,10 @@ const TablaLugarRadicacion = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Lugar Radicacion :
+              Buscar Convenio :
             </label>
             <input
-              placeholder=" Consultar Lugar Radicacion..."
+              placeholder=" Consultar Convenio..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
@@ -64,34 +64,31 @@ const TablaLugarRadicacion = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
-              Agregar Lugar
-            </button> */}
-
-            <ModalLugarRadicacion></ModalLugarRadicacion>
+            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                        Agregar Convenio
+                    </button> */}
+            <ModalConvenio></ModalConvenio>
           </div>
         </section>
 
         <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
               <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Lugar</th>
+              <th className=" w-[200px]">Nombre Convenio</th>
               <th className=" w-[100px]">Estado</th>
               <th className=" w-[80px]">Acciones</th>
             </tr>
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((lugar) => (
+            {data.map((convenio) => (
               <tr>
-                <td>{lugar.id}</td>
-                <td>{lugar.name}</td>
-                <td>{lugar.status ? "Activo" : "Inactivo"}</td>
+                <td>{convenio.id}</td>
+                <td>{convenio.name}</td>
+                <td>{convenio.status ? "Activo" : "Inactivo"} </td>
                 <td>
-                  <ModalAction 
-                    nom="Lugar Radicacion"
-                  />
+                  <ModalAction nom="Convenios" />
                 </td>
               </tr>
             ))}
@@ -102,4 +99,4 @@ const TablaLugarRadicacion = () => {
   );
 };
 
-export default TablaLugarRadicacion;
+export default TablaConvenios;

@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
 
-import { useFetchDocumento } from "../../../hooks/useFetchUsers";
-import ModalTipoDocumento from "../modals/modal-tipo-documento";
+import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
+import ModalLugarRadicacion from "../modals/ModalLugarRadicacion";
 import LoadingSpinner from "../../loading-spinner";
 
-const TablaTipoDocumento = () => {
-  const { data, loading, error } = useFetchDocumento();
+const TablaLugarRadicacion = () => {
+  const { data, loading, error } = useFetchLugarRadicado();
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -19,9 +19,9 @@ const TablaTipoDocumento = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Tipo Documento
+          Módulo Lugar Radicacion
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -29,7 +29,7 @@ const TablaTipoDocumento = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Tipo Documento
+              Servicio Lugar Radicacion
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -46,10 +46,10 @@ const TablaTipoDocumento = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Tipo Documento :
+              Buscar Lugar Radicacion :
             </label>
             <input
-              placeholder=" Consultar Tipo Documento..."
+              placeholder=" Consultar Lugar Radicacion..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
@@ -64,10 +64,11 @@ const TablaTipoDocumento = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[200px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-              Agregar Tipo Documento
+            {/* <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
+              Agregar Lugar
             </button> */}
-            <ModalTipoDocumento></ModalTipoDocumento>
+
+            <ModalLugarRadicacion></ModalLugarRadicacion>
           </div>
         </section>
 
@@ -75,22 +76,20 @@ const TablaTipoDocumento = () => {
           <thead>
             <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
               <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Tipo Documento</th>
+              <th className=" w-[200px]">Nombre Lugar</th>
               <th className=" w-[100px]">Estado</th>
               <th className=" w-[80px]">Acciones</th>
             </tr>
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((documento) => (
+            {data.map((lugar) => (
               <tr>
-                <td className="py-3">{documento.id}</td>
-                <td className="py-3">{documento.name}</td>
-                <td>{documento.status ? "Activo" : "Inactivo"}</td>
-                <td className="py-3">
-                  <ModalAction 
-                    nom="Tipo Documento"
-                  />  
+                <td>{lugar.id}</td>
+                <td>{lugar.name}</td>
+                <td>{lugar.status ? "Activo" : "Inactivo"}</td>
+                <td>
+                  <ModalAction nom="Lugar Radicacion" />
                 </td>
               </tr>
             ))}
@@ -101,4 +100,4 @@ const TablaTipoDocumento = () => {
   );
 };
 
-export default TablaTipoDocumento;
+export default TablaLugarRadicacion;

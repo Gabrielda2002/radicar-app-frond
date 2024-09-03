@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
-
-import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
-import ModalIpsRemitente from "../modals/modal-ips-remitente";
 import LoadingSpinner from "../../loading-spinner";
 
-const TablaIpsRemite = () => {
-  const { data, loading, error } = useFetchIpsRemite();
+import { useFetchServicios } from "../../../hooks/useFetchUsers";
+import ModalTipoServicio from "../modals/ModalTipoServicio";
+const TablaTipoServicio = () => {
+  const { data, loading, error } = useFetchServicios();
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -19,9 +18,9 @@ const TablaIpsRemite = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo IPS Remite
+          Módulo Tipo Servicio
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -29,7 +28,7 @@ const TablaIpsRemite = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio IPS Remite
+              Servicio Tipo Servicio
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -46,10 +45,10 @@ const TablaIpsRemite = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar IPS Remite :
+              Buscar Tipo Servicio :
             </label>
             <input
-              placeholder=" Consultar IPS Remite..."
+              placeholder=" Consultar Tipo Servicio..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
@@ -64,30 +63,33 @@ const TablaIpsRemite = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar IPS Primaria
+            {/* <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                        Agregar Tipo Servicio
                     </button> */}
-            <ModalIpsRemitente></ModalIpsRemitente>
+            <ModalTipoServicio></ModalTipoServicio>
           </div>
         </section>
 
         <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
               <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre IPS Remite</th>
+              <th className=" w-[200px]">Nombre Tipo Servicio</th>
               <th className=" w-[100px]">Estado</th>
               <th className=" w-[80px]">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((ips) => (
-              <tr>
-                <td>{ips.id}</td>
-                <td>{ips.name}</td>
-                <td>{ips.status ? "Activo" : "Inactivo"} </td>
-                <td>
-                  <ModalAction nom="IPS Remite" />
+
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((servicio) => (
+              <tr key={servicio.id}>
+                <td className="py-2">{servicio.id}</td>
+                <td className="py-2">{servicio.name}</td>
+                <td className="py-2">
+                  {servicio.status ? "Activo" : "Inactivo"}
+                </td>
+                <td className="py-2">
+                  <ModalAction nom="Tipo Servicio" />
                 </td>
               </tr>
             ))}
@@ -98,4 +100,4 @@ const TablaIpsRemite = () => {
   );
 };
 
-export default TablaIpsRemite;
+export default TablaTipoServicio;

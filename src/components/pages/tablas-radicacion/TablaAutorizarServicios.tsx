@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import LoadingSpinner from "../../loading-spinner";
+
 import back from "/assets/back.svg";
 
 const FormularioAutorizacion = () => {
@@ -10,6 +12,7 @@ const FormularioAutorizacion = () => {
   return (
     <>
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Autorización
         </h1>
@@ -19,8 +22,8 @@ const FormularioAutorizacion = () => {
               <li className="text-slate-400 after:mr-2">Inicio</li>
             </Link>
             <Link to="/tabla-auditoria">
-              <li className="text-slate-400 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Auditoria
+              <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
+                Servicio Auditoria
               </li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">

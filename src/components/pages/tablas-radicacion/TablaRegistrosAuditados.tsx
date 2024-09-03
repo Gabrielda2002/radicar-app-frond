@@ -2,13 +2,16 @@ import { Link } from "react-router-dom";
 
 import salir from "/assets/back.svg";
 
-import ModalActualizarCupsAuditoria from "../modals/modal-actualizar-cups-auditados";
+import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
+import LoadingSpinner from "../../loading-spinner";
 
 const TablaRegistrosAuditados = () => {
+  
   return (
     <>
       {/* nav-container */}
       <section className="p-4 dark:bg-gray-900 ps-0">
+      <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Modulo Registro Auditados
         </h1>

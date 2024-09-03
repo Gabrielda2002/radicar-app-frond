@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Modal from "./modals/modal-reportes";
+import Modal from "./modals/ModalReporte";
 
 import folder from "/assets/folder.svg";
 import user2 from "/assets/user2.svg";

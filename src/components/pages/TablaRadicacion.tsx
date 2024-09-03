@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ModalRadicacion from "./modals/modal-radicacion";
+import ModalRadicacion from "./modals/ModalRadicacion";
 import LoadingSpinner from "../loading-spinner";
 
 /* <-- ICONS TABLE --> */
