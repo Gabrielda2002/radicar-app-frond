@@ -18,7 +18,7 @@ const FolderList: React.FC<FolderListProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 ">
+    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
       {folders.map((folder) => (
         <div
           key={folder.id}
@@ -28,7 +28,7 @@ const FolderList: React.FC<FolderListProps> = ({
           {/* <h1>Carpetas</h1> */}
           <img src={folderIcon} alt="folder-icon" className="w-16 h-16 mb-2" />
           <span onClick={() => onFolderClick(folder.id, "carpetas")}>
-            <p className="text-sm font-medium text-center text-gray-700 dark:">{folder.name}</p>
+            <p className="text-sm font-medium text-center text-gray-700 dark:text-gray-300">{folder.name}</p>
           </span>
           {/* <button onClick={() => onDelete(folder.id, "carpetas")}>Eliminar</button> */}
         </div>

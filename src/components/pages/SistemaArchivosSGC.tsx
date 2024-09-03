@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFileManager } from "../../hooks/useFileManager";
 import FolderList from "./SSGC/FolderList";
 import FileList from "./SSGC/FileList";
 import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
-import BreadCrumb from "./SSGC/breadcrumb";
+import BreadCrumb from "./SSGC/BreadCrumb";
+import DropDownManu from "./SSGC/DropDownManu";
 // import path from "path";
 
 const FileManager: React.FC = () => {
+
+  const [showModal, setShowModal] = useState<string | null>(null);
+
   const {
     contents,
     loading,
@@ -33,7 +37,7 @@ const FileManager: React.FC = () => {
       {/* navbar table */}
       <section className="dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
-          Módulo Radicación
+          Módulo Sistema Gestion Calidad
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -61,6 +65,10 @@ const FileManager: React.FC = () => {
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
           </div>
+          {/* Modal para crear carpetas */}
+
+          <DropDownManu setCurrentFolderId={setCurrentFolderId}/>
+
         </section>
         <div>
           <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
@@ -81,7 +89,7 @@ const FileManager: React.FC = () => {
               {hasFolder && (
                 <div>
                   <h2 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
-                    Carpetas.
+                    Carpetas:
                   </h2>
                   <FolderList
                     folders={contents?.folders || []}
@@ -94,7 +102,7 @@ const FileManager: React.FC = () => {
               {hasFiles && (
                 <div>
                   <h2 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
-                    Carpetas.
+                    Archivos:
                   </h2>
                   <FileList
                     files={contents?.files || []}
