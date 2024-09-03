@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import ModalRadicacion from "./modals/modal-radicacion";
+import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 
 /* <-- ICONS TABLE --> */
 import soporte from "/assets/soporte.svg";
-import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
@@ -107,7 +107,7 @@ const TablaRadicacion = () => {
                     <img src={soporte} alt="Soporte" />
                   </td>
                   <td>
-                    <img src={gestion} alt="Gestión Auxiliar" />
+                    <ModalGestionAuxiliar></ModalGestionAuxiliar>
                   </td>
                   <td>
                     <img src={mostrar} alt="Mostrar" />
