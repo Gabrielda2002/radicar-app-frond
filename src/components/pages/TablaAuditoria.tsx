@@ -73,9 +73,9 @@ const TablaAuditoria = () => {
           </div>
         </section>
 
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
+            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
               <th className=" w-[90px]">Fecha Radicados</th>
               <th className=" w-[90px]">Tipo Documento </th>
               <th className=" w-[100px]">Identificacion</th>
@@ -119,7 +119,7 @@ const TablaAuditoria = () => {
                 <td>{auditoria.radicador}</td>
                 <td>
                   <button>
-                    <img src={soporte} alt="soporte-icon" />
+                    <img className="dark:invert" src={soporte} alt="soporte-icon" />
                   </button>
                 </td>
                 <td>
@@ -129,7 +129,7 @@ const TablaAuditoria = () => {
                 </td>
                 <td>
                   <Link to="/tabla-autorizar-servicios">
-                    <img src={autorizar} alt="autorizar-icon" />
+                    <img className="dark:invert" src={autorizar} alt="autorizar-icon" />
                   </Link>
                 </td>
               </tr>

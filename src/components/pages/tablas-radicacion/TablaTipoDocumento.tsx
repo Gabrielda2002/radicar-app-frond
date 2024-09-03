@@ -71,7 +71,7 @@ const TablaTipoDocumento = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
               <th className=" w-[60px]">ID</th>

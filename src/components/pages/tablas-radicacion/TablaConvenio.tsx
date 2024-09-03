@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/ModalAction";
+import Modal from "../modals/ModalReporte";
 
 import salir from "/assets/back.svg";
 
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 import ModalConvenio from "../modals/ModalConvenio";
 import LoadingSpinner from "../../loading-spinner";
+import ModalAction from "../modals/ModalAction";
 
 const TablaConvenios = () => {
   const { data, loading, error } = useFetchConvenio();
@@ -71,7 +72,7 @@ const TablaConvenios = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
               <th className=" w-[60px]">ID</th>

@@ -1,16 +1,30 @@
 import { Link } from "react-router-dom";
-
 import ModalAction from "../modals/ModalAction";
-
 import salir from "/assets/back.svg";
-
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 import ModalEspecialidad from "../modals/ModalEspecialidad";
 import LoadingSpinner from "../../loading-spinner";
+import usePagination from "../../../hooks/usePagination";
+import Pagination from "../../Pagination";
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10;
 
 const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemsPerPage
+  );
 
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+
+  
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
@@ -57,6 +71,8 @@ const TablaEspecialidad = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
@@ -68,7 +84,7 @@ const TablaEspecialidad = () => {
           </div>
         </section>
 
-        <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
               <th className=" w-[60px]">ID</th>
@@ -79,8 +95,8 @@ const TablaEspecialidad = () => {
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((especialidad) => (
-              <tr>
+            {currentData().map((especialidad) => (
+              <tr key={especialidad.id}>
                 <td>{especialidad.id}</td>
                 <td>{especialidad.name}</td>
                 <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
@@ -91,6 +107,11 @@ const TablaEspecialidad = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );

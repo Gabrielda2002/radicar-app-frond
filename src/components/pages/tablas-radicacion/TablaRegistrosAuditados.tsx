@@ -21,7 +21,7 @@ const TablaRegistrosAuditados = () => {
               <li className="text-slate-400 after:mr-2">Inicio</li>
             </Link>
             <Link to="/tabla-auditoria">
-              <li className="text-slate-400 before:content-['/'] before:mr-2 before:text-slate-400">
+              <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
                 Servicio Auditoria
               </li>
             </Link>
@@ -69,7 +69,7 @@ const TablaRegistrosAuditados = () => {
         </section>
 
         {/* init-tabla */}
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-100">
           <thead>
             <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
               <th>ID CUP</th>

@@ -1,15 +1,28 @@
 import { Link } from "react-router-dom";
-
 import ModalCups from "../modals/ModalCups";
 import ModalAction from "../modals/ModalAction";
-
 import salir from "/assets/back.svg";
-
 import { useFetchCups } from "../../../hooks/useFetchUsers";
 import LoadingSpinner from "../../loading-spinner";
+import usePagination from "../../../hooks/usePagination";
+import Pagination from "../../Pagination"; // Ajusta la ruta según tu estructura
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemsPerPage
+  )
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={500} />;
   if (error) return <h2>{error}</h2>;
@@ -40,9 +53,7 @@ const TablaCups = () => {
       </section>
 
       {/* container-table */}
-      <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        {/* header-tale */}
-
+      <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
@@ -58,31 +69,29 @@ const TablaCups = () => {
               name=""
               id=""
               className="border-2 border-stone-300 h-[40px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
             >
-              <option value="">PAGES</option>
               <option value="10">10 PAGES</option>
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            {/*<button className="borde-2 w-[100px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar Cup
-                    </button> */}
             <ModalCups></ModalCups>
           </div>
         </section>
-        <table className="divide-gray-200 ivide-y Wmx-auto dark:divide-gray-700">
+        <table className="w-full mx-auto divide-gray-200 ivide-y dark:divide-gray-700 ">
           <thead>
             <tr className="dark:bg-gray-700 dark:text-gray-200">
-              <th className=" w-[fit-content]">ID</th>
+              <th className="w-[fit-content]">ID</th>
               <th className="">Codigo</th>
-              <th className=" w-[fit-content]">Descripcion del Cup</th>
+              <th className="w-[fit-content]">Descripcion del Cup</th>
               <th className="">Estado</th>
               <th className="">Acciones</th>
             </tr>
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((cups) => (
+            {currentData().map((cups) => (
               <tr key={cups.id}>
                 <td>{cups.id}</td>
                 <td>{cups.code}</td>
@@ -95,6 +104,12 @@ const TablaCups = () => {
             ))}
           </tbody>
         </table>
+        {/* Controles de paginación */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );

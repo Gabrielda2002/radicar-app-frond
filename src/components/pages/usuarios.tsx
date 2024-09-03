@@ -2,10 +2,26 @@ import { Link } from "react-router-dom";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
+import usePagination from "../../hooks/usePagination";
 import LoadingSpinner from "../loading-spinner";
+import Pagination from "../Pagination";
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10;
 
 const Usuarios = () => {
   const { data, loading, error } = useFetchUsuarios();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <p>{error}</p>;
@@ -13,7 +29,7 @@ const Usuarios = () => {
   return (
     <>
       <section className="p-5">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Usuarios
         </h1>
@@ -48,6 +64,8 @@ const Usuarios = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[100px] rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             >
               <option value="">Páginas</option>
@@ -76,8 +94,8 @@ const Usuarios = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((usuario) => (
-                <tr className="border-b dark:border-gray-600">
+              {currentData().map((usuario) => (
+                <tr className="border-b dark:border-gray-600" key={usuario.id}>
                   <td>{usuario.id}</td>
                   <td>{usuario.dniNumber}</td>
                   <td>{usuario.name}</td>
@@ -97,8 +115,12 @@ const Usuarios = () => {
             </tbody>
           </table>
         </div>
-
-        {/* posible pagination */}
+        {/* Controles de de Paginacion */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );
