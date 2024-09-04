@@ -78,18 +78,20 @@ const SideBar: FC = () => {
         isCollapsed ? "w-18" : "w-62"
       } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700`}
     >
-      <button
-        onClick={toggleSideBar}
-        className="mb-4 text-gray-600 transition-all duration-300 dark:text-gray-900"
-      >
-        <img
-          src={arrow}
-          alt=""
-          className={`mx-1 transition-all duration-500 w-7 h-7 ${
-            isCollapsed ? "rotate-180" : ""
-          }`}
-        />
-      </button>
+      <div>
+        <button
+          onClick={toggleSideBar}
+          className="mb-4 text-gray-600 transition-all duration-300 dark:text-gray-900 group"
+        >
+          <img
+            src={arrow}
+            alt=""
+            className={`mx-1 transition-all duration-500 dark:bg-white dark:rounded-xl dark:px-1 dark:py-1 bg-gray-300 px-1 py-1 rounded-xl ${
+              isCollapsed ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+      </div>
 
       <div className="flex flex-col justify-between flex-1 mt-6">
         <nav className="-mx-3 space-y-6">
@@ -101,7 +103,7 @@ const SideBar: FC = () => {
             )}
             <NavLink to="/home">
               {({ isActive }) => (
-                <a
+                <div
                   className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
                     "/home"
                   )} ${
@@ -113,7 +115,7 @@ const SideBar: FC = () => {
                   <img
                     src={home}
                     alt=""
-                    className="w-5 h-5 group-hover:invert"
+                    className="w-5 h-5 group-hover:invert dark:invert"
                   />
                   {!isCollapsed && (
                     <span
@@ -126,15 +128,7 @@ const SideBar: FC = () => {
                       Inicio
                     </span>
                   )}
-                  {isCollapsed && (
-                    <span
-                      className="absolute px-2 py-1 text-xs font-semibold text-black transition-opacity duration-300 bg-white rounded-md shadow-md opacity-0 left-12 group-hover:opacity-100 dark:bg-gray-700 dark:text-white"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      Inicio
-                    </span>
-                  )}
-                </a>
+                </div>
               )}
             </NavLink>
 
@@ -154,7 +148,9 @@ const SideBar: FC = () => {
                     src={folder}
                     alt=""
                     className={`w-5 h-5 ${
-                      isAccordionOpen2 ? "invert" : "group-hover:invert"
+                      isAccordionOpen2
+                        ? "invert"
+                        : "group-hover:invert dark:invert"
                     }`}
                   />
                   {!isCollapsed && (
@@ -178,19 +174,20 @@ const SideBar: FC = () => {
                   <div className="mt-2 space-y-3">
                     <NavLink to="/perfil">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={flag}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -202,7 +199,7 @@ const SideBar: FC = () => {
                               Norte de Santander
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
                   </div>
@@ -224,7 +221,9 @@ const SideBar: FC = () => {
                   src={services}
                   alt=""
                   className={`w-5 h-5 ${
-                    isAccordionOpen1 ? "invert" : "group-hover:invert"
+                    isAccordionOpen1
+                      ? "invert"
+                      : "group-hover:invert dark:invert"
                   }`}
                 />
                 {!isCollapsed && (
@@ -248,7 +247,7 @@ const SideBar: FC = () => {
                 <div className="mt-2 space-y-3">
                   <NavLink to="/tabla-radicacion">
                     {({ isActive }) => (
-                      <a
+                      <div
                         className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                           isActive
                             ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
@@ -259,7 +258,9 @@ const SideBar: FC = () => {
                           src={taskList}
                           alt=""
                           className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
+                            isActive
+                              ? "invert"
+                              : "group-hover:invert dark:invert"
                           }`}
                         />
                         {!isCollapsed && (
@@ -271,13 +272,13 @@ const SideBar: FC = () => {
                             Radicador
                           </span>
                         )}
-                      </a>
+                      </div>
                     )}
                   </NavLink>
 
                   <NavLink to="/tabla-cirugias">
                     {({ isActive }) => (
-                      <a
+                      <div
                         className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                           isActive
                             ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
@@ -288,7 +289,9 @@ const SideBar: FC = () => {
                           src={surgery}
                           alt=""
                           className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
+                            isActive
+                              ? "invert"
+                              : "group-hover:invert dark:invert"
                           }`}
                         />
                         {!isCollapsed && (
@@ -300,13 +303,13 @@ const SideBar: FC = () => {
                             Cirugía
                           </span>
                         )}
-                      </a>
+                      </div>
                     )}
                   </NavLink>
 
                   <NavLink to="/tabla-auditoria">
                     {({ isActive }) => (
-                      <a
+                      <div
                         className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                           isActive
                             ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
@@ -317,7 +320,9 @@ const SideBar: FC = () => {
                           src={audit}
                           alt=""
                           className={`w-5 h-5 mx-2 ${
-                            isActive ? "invert" : "group-hover:invert"
+                            isActive
+                              ? "invert"
+                              : "group-hover:invert dark:invert"
                           }`}
                         />
                         {!isCollapsed && (
@@ -329,7 +334,7 @@ const SideBar: FC = () => {
                             Auditoría
                           </span>
                         )}
-                      </a>
+                      </div>
                     )}
                   </NavLink>
                 </div>
@@ -352,7 +357,9 @@ const SideBar: FC = () => {
                     src={filing}
                     alt=""
                     className={`w-5 h-5 ${
-                      isAccordionOpen3 ? "invert" : "group-hover:invert"
+                      isAccordionOpen3
+                        ? "invert"
+                        : "group-hover:invert dark:invert"
                     }`}
                   />
                   {!isCollapsed && (
@@ -381,7 +388,7 @@ const SideBar: FC = () => {
                       <img
                         src={report}
                         alt=""
-                        className="w-5 h-5 mx-2 group-hover:invert"
+                        className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                       />
                       {!isCollapsed && (
                         <span className="mx-2 text-sm font-medium">
@@ -412,7 +419,9 @@ const SideBar: FC = () => {
                     src={table}
                     alt=""
                     className={`w-5 h-5 ${
-                      isAccordionOpen4 ? "invert" : "group-hover:invert"
+                      isAccordionOpen4
+                        ? "invert"
+                        : "group-hover:invert dark:invert"
                     }`}
                   />
                   {!isCollapsed && (
@@ -440,19 +449,20 @@ const SideBar: FC = () => {
                     {/* Tabla radicación Cups */}
                     <NavLink to="/tabla-cups">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -466,26 +476,27 @@ const SideBar: FC = () => {
                               Cups
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Pacientes */}
                     <NavLink to="/tabla-pacientes">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -499,26 +510,27 @@ const SideBar: FC = () => {
                               Pacientes
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Radicadores */}
                     <NavLink to="/tabla-radicadores">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -532,26 +544,27 @@ const SideBar: FC = () => {
                               Radicadores
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Municipios */}
                     <NavLink to="/tabla-municipios">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -565,26 +578,27 @@ const SideBar: FC = () => {
                               Municipios
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Convenios */}
                     <NavLink to="/tabla-convenios">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -598,26 +612,27 @@ const SideBar: FC = () => {
                               Convenios
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Tipo Documento */}
                     <NavLink to="/tabla-tipo-documento">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -631,26 +646,27 @@ const SideBar: FC = () => {
                               Tipo Documento
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación IPS Primaria */}
                     <NavLink to="/tabla-ips-primaria">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -664,26 +680,27 @@ const SideBar: FC = () => {
                               IPS Primaria
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Lugar Radicación */}
                     <NavLink to="/tabla-lugar-radicacion">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -697,26 +714,27 @@ const SideBar: FC = () => {
                               Lugar Radicación
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación IPS Remitente */}
                     <NavLink to="/tabla-ips-remite">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -730,26 +748,27 @@ const SideBar: FC = () => {
                               IPS Remitente
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Especialidad */}
                     <NavLink to="/tabla-especialidad">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -763,26 +782,27 @@ const SideBar: FC = () => {
                               Especialidad
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     {/* Tabla radicación Tipo Servicio */}
                     <NavLink to="/tabla-tipo-servicio">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                           }`}
-                          href="#"
                         >
                           <img
                             src={report}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -796,7 +816,7 @@ const SideBar: FC = () => {
                               Tipo Servicio
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
                   </div>
@@ -828,7 +848,9 @@ const SideBar: FC = () => {
                     src={userMain}
                     alt=""
                     className={`w-5 h-5 ${
-                      isAccordionOpen5 ? "invert" : "group-hover:invert"
+                      isAccordionOpen5
+                        ? "invert"
+                        : "group-hover:invert dark:invert"
                     }`}
                   />
                   {!isCollapsed && (
@@ -854,19 +876,20 @@ const SideBar: FC = () => {
                   <div className="mt-2 space-y-3">
                     <NavLink to="/Perfil">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
                           }`}
-                          href="#"
                         >
                           <img
                             src={user1}
                             alt=""
                             className={`w-5.8 h-5.5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -878,25 +901,26 @@ const SideBar: FC = () => {
                               Mi Perfil
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     <NavLink to="/Usuarios">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
                           }`}
-                          href="#"
                         >
                           <img
                             src={user}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -908,25 +932,26 @@ const SideBar: FC = () => {
                               Usuarios
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
 
                     <NavLink to="/registrar-usuarios">
                       {({ isActive }) => (
-                        <a
+                        <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                             isActive
                               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
                               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
                           }`}
-                          href="#"
                         >
                           <img
                             src={user2}
                             alt=""
                             className={`w-5.5 h-5.5 mx-2 ${
-                              isActive ? "invert" : "group-hover:invert"
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
                             }`}
                           />
                           {!isCollapsed && (
@@ -938,7 +963,7 @@ const SideBar: FC = () => {
                               Registrar Usuarios
                             </span>
                           )}
-                        </a>
+                        </div>
                       )}
                     </NavLink>
                   </div>

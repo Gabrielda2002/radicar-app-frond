@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+//*Funciones y Hooks
 import Cookies from "js-cookie";
+import React, { useState, useEffect } from "react";
+//*Icons
 import cookie from "/assets/cookie.svg";
 
 const CookieConsent: React.FC = () => {

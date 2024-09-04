@@ -1,13 +1,13 @@
-//Funciones y Hooks
+//*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
-import usePagination from "../../hooks/usePagination";
-import useSearch from "../../hooks/useSearch";
-import ModalRadicacion from "./modals/ModalRadicacion";
-import LoadingSpinner from "../LoadingSpinner";
 import Pagination from "../Pagination";
-//Iconos
+import { Link } from "react-router-dom";
+import useSearch from "../../hooks/useSearch";
+import LoadingSpinner from "../LoadingSpinner";
+import usePagination from "../../hooks/usePagination";
+import ModalRadicacion from "./modals/ModalRadicacion";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+//*Iconos
 import soporte from "/assets/soporte.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";

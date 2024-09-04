@@ -1,11 +1,13 @@
+//*Funciones y Hooks
+import { api } from "../../utils/api-config";
 import { useEffect, useState, useRef } from "react";
+import ConfirmDeletePopup from "../ConfirmDeletePopup";
+import defaultUserPicture from "../../../public/assets/icon-user.svg";
+//*Icons
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
-import defaultUserPicture from "../../../public/assets/icon-user.svg";
-import { api } from "../../utils/api-config";
-import ConfirmDeletePopup from "../ConfirmDeletePopup";
 
 const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -114,7 +116,7 @@ const Perfil = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex items-center justify-center min-h-screen mb-8 bg-gray-700 rounded-lg dark:bg-gray-500">
       <section className="p-10 text-gray-900 dark:text-gray-100 body-font">
         <div className="container mx-auto">
           <div className="flex flex-row">

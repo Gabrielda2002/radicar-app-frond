@@ -11,7 +11,7 @@ import { useFetchCups } from "../../../hooks/useFetchUsers";
 //*Iconos
 import salir from "/assets/back.svg";
 
-const ITEMS_PER_PAGE = 10; // Puedes ajustar el número de ítems por página
+const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
