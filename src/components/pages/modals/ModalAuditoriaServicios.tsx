@@ -1,6 +1,5 @@
 import { useState } from "react";
 import mostrar from "/assets/mostrar.svg";
-import { useFetchUsers } from "../../../hooks/useFetchUsers";
 
 interface ThProps {
   wdCondic?: false;
@@ -94,7 +93,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
   return (
     <>
       <div onClick={toggleModal}>
-        <img src={mostrar} alt="" />
+        <img className="dark:invert" src={mostrar} alt="" />
       </div>
       {isOpen && (
         <div className="fixed z-50 flex items-center justify-center w-screen transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">

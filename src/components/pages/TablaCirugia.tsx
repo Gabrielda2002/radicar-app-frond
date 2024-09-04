@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
-import ModalCirugias from "./modals/modal-cirugias";
-import ModalMostarDatos from "./modals/modal-auditoria-servicios.tsx";
+import ModalCirugias from "./modals/ModalCirugias";
+import ModalMostarDatos from "./modals/ModalAuditoriaServicios.tsx";
+
 
 import salir from "/assets/back.svg";
 
@@ -86,7 +87,7 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>
-                <button >
+                <button>
                   <ModalMostarDatos
                     // Table Col 1 (6)
                     numRadi={true}//

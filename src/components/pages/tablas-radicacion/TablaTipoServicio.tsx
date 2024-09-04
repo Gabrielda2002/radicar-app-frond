@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
+import LoadingSpinner from "../../loading-spinner";
 
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
-import ModalTipoServicio from "../modals/modal-tipo-servicio";
+import ModalTipoServicio from "../modals/ModalTipoServicio";
 const TablaTipoServicio = () => {
   const { data, loading, error } = useFetchServicios();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -17,6 +18,7 @@ const TablaTipoServicio = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Tipo Servicio
         </h1>
@@ -68,32 +70,32 @@ const TablaTipoServicio = () => {
           </div>
         </section>
 
-            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-                        <th className=" w-[60px]">ID</th>
-                        <th className=" w-[200px]">Nombre Tipo Servicio</th>
-                        <th className=" w-[100px]">Estado</th>
-                        <th className=" w-[80px]">Acciones</th>
-                    </tr>
-                </thead>
-                    
-                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    {data.map((servicio) => (
-                        <tr key={servicio.id}>
-                            <td className="py-2">{servicio.id}</td>
-                            <td className="py-2">{servicio.name}</td>
-                            <td className="py-2">{servicio.status ? "Activo" : "Inactivo"}</td>
-                            <td className="py-2">
-                              <ModalAction 
-                                      nom="Tipo Servicio"
-                                  />
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </section>
+        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+              <th className=" w-[60px]">ID</th>
+              <th className=" w-[200px]">Nombre Tipo Servicio</th>
+              <th className=" w-[100px]">Estado</th>
+              <th className=" w-[80px]">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((servicio) => (
+              <tr key={servicio.id}>
+                <td className="py-2">{servicio.id}</td>
+                <td className="py-2">{servicio.name}</td>
+                <td className="py-2">
+                  {servicio.status ? "Activo" : "Inactivo"}
+                </td>
+                <td className="py-2">
+                  <ModalAction nom="Tipo Servicio" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 };

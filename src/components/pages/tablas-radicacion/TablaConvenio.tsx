@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom";
 
-import ModalAction from "../modals/modal-action";
+import Modal from "../modals/ModalReporte";
 
 import salir from "/assets/back.svg";
 
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
-import ModalConvenio from "../modals/modal-convenio";
+import ModalConvenio from "../modals/ModalConvenio";
+import LoadingSpinner from "../../loading-spinner";
+import ModalAction from "../modals/ModalAction";
 
 const TablaConvenios = () => {
   const { data, loading, error } = useFetchConvenio();
 
-  if (loading) return <h1>Cargando...</h1>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -18,6 +20,7 @@ const TablaConvenios = () => {
       {/* nav-table */}
 
       <section className="p-4 dark:bg-gray-900">
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Convenios
         </h1>
@@ -69,33 +72,30 @@ const TablaConvenios = () => {
           </div>
         </section>
 
-            <table className="mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
-                        <th className=" w-[60px]">ID</th>
-                        <th className=" w-[200px]">Nombre Convenio</th>
-                        <th className=" w-[100px]">Estado</th>
-                        <th className=" w-[80px]">Acciones</th>
-                    </tr>
-                </thead>
-                    
-                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-                    {data.map((convenio) => (
-                        <tr>
-                            <td>{convenio.id}</td>
-                            <td>{convenio.name}</td>
-                            <td>{convenio.status ? "Activo" : "Inactivo"} </td>
-                            <td>
-                                <ModalAction 
-                                    nom="Convenios"
-                                />
-                            </td>
-                    </tr>
-                    ))}
-                        
-                </tbody>
-            </table>
-        </section>
+        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+              <th className=" w-[60px]">ID</th>
+              <th className=" w-[200px]">Nombre Convenio</th>
+              <th className=" w-[100px]">Estado</th>
+              <th className=" w-[80px]">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+            {data.map((convenio) => (
+              <tr>
+                <td>{convenio.id}</td>
+                <td>{convenio.name}</td>
+                <td>{convenio.status ? "Activo" : "Inactivo"} </td>
+                <td>
+                  <ModalAction nom="Convenios" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 };

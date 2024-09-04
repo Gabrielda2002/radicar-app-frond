@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ServicioForm from "../../servicio-form-radicacion";
+import ServicioForm from "../../ServicioForm";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -38,23 +38,23 @@ const ModalRadicacion = () => {
                 <form className="flex max-h-[70Vh] overflow-y-auto text-sm">
                   <div className="px-5">
                     <div>
-                      <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                         Datos Paciente
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-x-10 gap-y-2 mb-6 ms-2">
+                    <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2">
                       {/*gap-4*/}
                       <div>
                         <label htmlFor="" className="">
-                          <span className="block mb-2 font-bold text-gray-700  dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
                             Tipo Documento
                           </span>
                           <input
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -69,20 +69,20 @@ const ModalRadicacion = () => {
                             type="number"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
                             Nombre Completo
                           </span>
                           <input
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -90,14 +90,14 @@ const ModalRadicacion = () => {
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
                             Convevio
                           </span>
                           <input
                             type="text"
                             id=" "
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -105,14 +105,14 @@ const ModalRadicacion = () => {
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
                             IPS Primaria
                           </span>
                           <input
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -121,12 +121,12 @@ const ModalRadicacion = () => {
                     </section>
 
                     <div>
-                      <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                         Datos Contacto Paciente
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-2 gap-x-40 gap-y-2 mb-6 ms-2">
+                    <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2">
                       <div>
                         <label htmlFor="">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -136,7 +136,7 @@ const ModalRadicacion = () => {
                             type="number"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -149,7 +149,7 @@ const ModalRadicacion = () => {
                             type="number"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -162,7 +162,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -175,19 +175,19 @@ const ModalRadicacion = () => {
                             type="email"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
                     </section>
 
                     <div>
-                      <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200 ">
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
                         Cups
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-x-10 gap-y-0 mb-6 ps-2 border-2 border-transparent">
+                    <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2">
                       <div>
                         <label htmlFor="cantidad">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -201,7 +201,7 @@ const ModalRadicacion = () => {
                             value={cantidad}
                             onChange={CantidadInput}
                             onKeyDown={EventEnter}
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -209,12 +209,12 @@ const ModalRadicacion = () => {
                     </section>
 
                     <div>
-                      <h5 className="text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                         Informacion del Servicio a Radicar
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-3 gap-x-10 gap-y-2 mb-6 ps-2">
+                    <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2">
                       <div>
                         <label htmlFor="">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -224,7 +224,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700y-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -237,7 +237,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -250,7 +250,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -263,7 +263,7 @@ const ModalRadicacion = () => {
                             type="date"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -276,20 +276,20 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700  dark:text-gray-200">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
                             N° Radicado
                           </span>
                           <input
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -303,7 +303,7 @@ const ModalRadicacion = () => {
                           <select
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           >
                             <option value="">SELECT</option>
                             <option value="">1</option>
@@ -320,7 +320,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -333,7 +333,7 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -348,7 +348,7 @@ const ModalRadicacion = () => {
                           <textarea
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-gray-700 "
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           ></textarea>
                         </label>
                       </div>
@@ -360,7 +360,7 @@ const ModalRadicacion = () => {
                           <select
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           >
                             <option value="">SELECT</option>
                             <option value="">..texto</option>
@@ -377,7 +377,7 @@ const ModalRadicacion = () => {
                             type="file"
                             id=""
                             name=""
-                            className=" w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                           />
                         </label>
                       </div>
@@ -386,7 +386,7 @@ const ModalRadicacion = () => {
                 </form>
 
                 {/* container-footer */}
-                <div className="flex items-center justify-end w-full h-14 gap-1 px-4 py-4 text-sm font-medium  bg-white dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
                   <button
                     onClick={() => setStadopen(false)}
                     className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"

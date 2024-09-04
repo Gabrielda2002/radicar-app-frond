@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 
 import soporte from "/assets/soporte.svg";
-
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalMostarDatos from "./modals/modal-auditoria-servicios.tsx";
+import ModalMostarDatos from "./modals/ModalAuditoriaServicios.tsx";
+import LoadingSpinner from "../loading-spinner";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
 
-  if (loading) return <h2>Cargando...</h2>;
+  if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
 
   return (
@@ -64,16 +64,16 @@ const TablaAuditoria = () => {
               Ver Autorizaciones
             </button>
             <Link to={"/tabla-registros-auditados"}>
-              <button className=" w-[90px] h-12 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+              <button className=" w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                 Auditados
               </button>
             </Link>
           </div>
         </section>
 
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
+            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
               <th className=" w-[90px]">Fecha Radicados</th>
               <th className=" w-[90px]">Tipo Documento </th>
               <th className=" w-[100px]">Identificacion</th>
@@ -117,7 +117,11 @@ const TablaAuditoria = () => {
                 <td>{auditoria.radicador}</td>
                 <td>
                   <button>
-                    <img src={soporte} alt="soporte-icon" />
+                    <img
+                      className="dark:invert"
+                      src={soporte}
+                      alt="soporte-icon"
+                    />
                   </button>
                 </td>
                 <td>
@@ -145,16 +149,16 @@ const TablaAuditoria = () => {
                       // lugRadi={false}
                       // ipsRem={false}
                       // Table Col 2
-                      obserAuditoria={true}//observacion cups |
+                      obserAuditoria={true} //observacion cups |
                       nomCiru1="Obseracion Cups"
                       // justConcepto={false}
-                      unidadFunciona={true}//estado cups
+                      unidadFunciona={true} //estado cups
                       nomCiru2="Estado cups"
                       // feAuditoria={false}
                       // nomAuditor={false}
                       // auxiRadi={false}
-                      descripCup={true}//
-                      codCup={true}//
+                      descripCup={true} //
+                      codCup={true} //
                       // tipoServicio={false}
                       // grupoServicio={false}
                       // descripDiagn={false}

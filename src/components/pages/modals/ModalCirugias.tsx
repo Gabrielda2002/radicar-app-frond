@@ -17,7 +17,7 @@ const ModalCirugias = () => {
           <section>
             <div className=" w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-900 overflow-hidden rounded">
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900 rounded">
+              <div className="flex w-full py-4 text-xl font-semibold bg-white rounded ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
                 Modulo Ciugias
               </div>
 
@@ -25,12 +25,12 @@ const ModalCirugias = () => {
               <form action="" className="max-h-[70Vh] overflow-y-auto ">
                 <div className="px-5">
                   <div>
-                    <h5 className="flex text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                    <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                       Información Usuario
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 gap-x-20 gap-y-4 mb-6 ms-2">
+                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2">
                     <div className="">
                       <label htmlFor="">
                         <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
@@ -46,7 +46,7 @@ const ModalCirugias = () => {
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700  dark:text-white dark:bg-gray-700">
+                        <span className="mb-2 font-bold text-gray-700 dark:text-white dark:bg-gray-700">
                           Nombre Completo
                         </span>
                         <input
@@ -61,12 +61,12 @@ const ModalCirugias = () => {
                   </section>
 
                   <div>
-                    <h5 className="flex text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                    <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                       Información Cirugía
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 gap-x-20 gap-y-4 mb-6 ms-2">
+                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2">
                     <div className="">
                       <label htmlFor="">
                         <span className="pb-4 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
@@ -151,7 +151,7 @@ const ModalCirugias = () => {
                   </section>
 
                   <div>
-                    <h5 className="flex text-xl font-normal mb-2 text-blue-500 dark:text-gray-200">
+                    <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                       Observaciones
                     </h5>
                   </div>
@@ -174,7 +174,7 @@ const ModalCirugias = () => {
               </form>
 
               {/* container-footer */}
-              <div className="flex items-center justify-end w-full h-14  px-4 py-4 text-sm font-semibold bg-white dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                 <button
                   className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   onClick={() => setStadopen(false)}
