@@ -8,9 +8,9 @@ import { useState } from "react";
 import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
 import Pagination from "../Pagination.tsx";
 import usePagination from "../../hooks/usePagination.ts";
-import LoadingSpinner from "../loading-spinner";
+import LoadingSpinner from "../LoadingSpinner.tsx";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
@@ -90,7 +90,7 @@ const TablaAuditoria = () => {
           </div>
         </section>
 
-        <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="w-full text-center divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
               <th className=" w-[90px]">Fecha Radicados</th>
@@ -156,38 +156,6 @@ const TablaAuditoria = () => {
                       alt="autorizar-icon"
                     />
                   </Link>
-                </td>
-              </tr>
-            ))}
-            {currentData().map((auditoria) => (
-              <tr>
-                <td>
-                  {auditoria.radicadoDate
-                    ? auditoria.radicadoDate.getTime()
-                    : "N/A"}
-                </td>
-                <td>{auditoria.documentType}</td>
-                <td>{auditoria.documentNumber}</td>
-                <td>{auditoria.namePatient}</td>
-                <td>{auditoria.convenio}</td>
-                <td>{auditoria.ipsPrimary}</td>
-                <td>
-                  {auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"}
-                </td>
-                <td>{auditoria.place}</td>
-                <td>{auditoria.ipsRemitente}</td>
-                <td>{auditoria.profetional}</td>
-                <td>{auditoria.speciality}</td>
-                <td>{auditoria.typeServices}</td>
-                <td>{auditoria.radicador}</td>
-                <td>
-                  <img src={soporte} alt="soporte-icon" />
-                </td>
-                <td>
-                  <ModalAuditoriaServicio></ModalAuditoriaServicio>
-                </td>
-                <td>
-                  <img src={autorizar} alt="autorizar-icon" />
                 </td>
               </tr>
             ))}

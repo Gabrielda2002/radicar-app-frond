@@ -6,7 +6,7 @@ import salir from "/assets/back.svg";
 
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 import ModalMunicipios from "../modals/ModalMunicipios";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const TablaMunicipios = () => {
   const { data, loading, error } = useFetchMunicipio();

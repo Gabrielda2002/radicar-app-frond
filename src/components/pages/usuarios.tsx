@@ -3,7 +3,7 @@ import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 import usePagination from "../../hooks/usePagination";
-import LoadingSpinner from "../loading-spinner";
+import LoadingSpinner from "../LoadingSpinner";
 import Pagination from "../Pagination";
 import { useState } from "react";
 

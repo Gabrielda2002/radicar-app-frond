@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import ModalRadicacion from "./modals/ModalRadicacion";
-import LoadingSpinner from "../loading-spinner";
+import LoadingSpinner from "../LoadingSpinner";
 
 /* <-- ICONS TABLE --> */
 import soporte from "/assets/soporte.svg";

@@ -6,7 +6,7 @@ import salir from "/assets/back.svg";
 
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 import ModalTipoDocumento from "../modals/ModalTipoDocumento";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const TablaTipoDocumento = () => {
   const { data, loading, error } = useFetchDocumento();

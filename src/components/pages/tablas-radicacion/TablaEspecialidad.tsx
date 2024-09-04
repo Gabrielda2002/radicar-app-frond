@@ -3,7 +3,7 @@ import ModalAction from "../modals/ModalAction";
 import salir from "/assets/back.svg";
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 import ModalEspecialidad from "../modals/ModalEspecialidad";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import Pagination from "../../Pagination";
 import { useState } from "react";
@@ -24,7 +24,6 @@ const TablaEspecialidad = () => {
     setItemsPerPage(Number(e.target.value));
   };
 
-  
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
 

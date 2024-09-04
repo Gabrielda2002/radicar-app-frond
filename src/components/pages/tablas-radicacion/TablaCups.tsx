@@ -3,7 +3,7 @@ import ModalCups from "../modals/ModalCups";
 import ModalAction from "../modals/ModalAction";
 import salir from "/assets/back.svg";
 import { useFetchCups } from "../../../hooks/useFetchUsers";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import Pagination from "../../Pagination"; // Ajusta la ruta según tu estructura
 import { useState } from "react";
@@ -16,7 +16,7 @@ const TablaCups = () => {
   const { currentPage, totalPages, paginate, currentData } = usePagination(
     data,
     itemsPerPage
-  )
+  );
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>

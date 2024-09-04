@@ -3,7 +3,7 @@ import ModalAction from "../modals/ModalAction";
 import salir from "/assets/back.svg";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 import ModalRadicador from "../modals/ModalRadicador";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import Pagination from "../../Pagination";
 import usePagination from "../../../hooks/usePagination";
 import { useState } from "react";

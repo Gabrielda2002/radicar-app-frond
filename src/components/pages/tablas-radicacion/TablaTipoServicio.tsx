@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ModalAction from "../modals/ModalAction";
 
 import salir from "/assets/back.svg";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 import ModalTipoServicio from "../modals/ModalTipoServicio";

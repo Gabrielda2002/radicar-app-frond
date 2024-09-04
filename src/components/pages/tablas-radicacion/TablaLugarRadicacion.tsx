@@ -6,7 +6,7 @@ import salir from "/assets/back.svg";
 
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
 import ModalLugarRadicacion from "../modals/ModalLugarRadicacion";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();

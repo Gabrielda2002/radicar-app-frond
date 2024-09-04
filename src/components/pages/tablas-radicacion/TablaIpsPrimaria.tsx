@@ -6,7 +6,7 @@ import salir from "/assets/back.svg";
 
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 import ModalIpsPrimaria from "../modals/ModalIpsPrimaria";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const TablaIpsPrimaria = () => {
   const { data, loading, error } = useFetchIpsPrimaria();

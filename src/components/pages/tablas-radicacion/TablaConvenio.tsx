@@ -6,7 +6,7 @@ import salir from "/assets/back.svg";
 
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 import ModalConvenio from "../modals/ModalConvenio";
-import LoadingSpinner from "../../loading-spinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import ModalAction from "../modals/ModalAction";
 
 const TablaConvenios = () => {
