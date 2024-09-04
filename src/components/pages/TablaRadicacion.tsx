@@ -8,9 +8,25 @@ import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
+import usePagination from "../../hooks/usePagination";
+import Pagination from "../Pagination";
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10;
 
 const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -19,7 +35,7 @@ const TablaRadicacion = () => {
     <>
       {/* nav-table */}
       <section className="dark:bg-gray-900">
-      <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
           Módulo Radicación
         </h1>
@@ -56,6 +72,8 @@ const TablaRadicacion = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
@@ -86,7 +104,7 @@ const TablaRadicacion = () => {
             </thead>
 
             <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-              {data.map((radicacion) => (
+              {currentData().map((radicacion) => (
                 <tr className="text-center" key={radicacion.id}>
                   <td>
                     {radicacion.createdAt
@@ -123,8 +141,12 @@ const TablaRadicacion = () => {
             </tbody>
           </table>
         </div>
-
-        {/* posible paginación */}
+        {/* Controles de la Paginacion */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );

@@ -4,11 +4,27 @@ import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import { useState } from "react";
 import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
+import Pagination from "../Pagination.tsx";
+import usePagination from "../../hooks/usePagination.ts";
 import LoadingSpinner from "../loading-spinner";
+
+const ITEMS_PER_PAGE = 5;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    data,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -17,7 +33,7 @@ const TablaAuditoria = () => {
     <>
       {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900 ps-0">
-       <LoadingSpinner duration={500} />
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
         </h1>
@@ -54,6 +70,8 @@ const TablaAuditoria = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-12 w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
@@ -64,12 +82,11 @@ const TablaAuditoria = () => {
             <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Ver Autorizaciones
             </button>
-              <Link to={"/tabla-registros-auditados"}>
-                <button className=" w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                  Auditados
-                </button>
-              </Link>
-          
+            <Link to={"/tabla-registros-auditados"}>
+              <button className=" w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                Auditados
+              </button>
+            </Link>
           </div>
         </section>
 
@@ -96,7 +113,7 @@ const TablaAuditoria = () => {
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((auditoria) => (
+            {currentData().map((auditoria) => (
               <tr>
                 <td>
                   {auditoria.radicadoDate
@@ -119,7 +136,11 @@ const TablaAuditoria = () => {
                 <td>{auditoria.radicador}</td>
                 <td>
                   <button>
-                    <img className="dark:invert" src={soporte} alt="soporte-icon" />
+                    <img
+                      className="dark:invert"
+                      src={soporte}
+                      alt="soporte-icon"
+                    />
                   </button>
                 </td>
                 <td>
@@ -129,12 +150,16 @@ const TablaAuditoria = () => {
                 </td>
                 <td>
                   <Link to="/tabla-autorizar-servicios">
-                    <img className="dark:invert" src={autorizar} alt="autorizar-icon" />
+                    <img
+                      className="dark:invert"
+                      src={autorizar}
+                      alt="autorizar-icon"
+                    />
                   </Link>
                 </td>
               </tr>
             ))}
-            {data.map((auditoria) => (
+            {currentData().map((auditoria) => (
               <tr>
                 <td>
                   {auditoria.radicadoDate
@@ -169,7 +194,12 @@ const TablaAuditoria = () => {
           </tbody>
         </table>
 
-        {/* pagination */}
+        {/* Configuracion de la Paginacion*/}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </div>
     </>
   );
