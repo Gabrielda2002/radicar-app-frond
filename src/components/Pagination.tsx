@@ -69,7 +69,7 @@ const Pagination: React.FC<PaginationProps> = ({
           title={`Pagina ${page}`}
           className={`inline-flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded shadow-md dark:bg-gray-700 dark:text-gray-200 ${
             page === currentPage
-              ? "dark:text-gray-200 dark:border-indigo-600 dark:bg-indigo-400 hover:bg-indigo-400 border-indigo-600 bg-indigo-400"
+              ? "dark:text-gray-200 text-gray-200 dark:border-indigo-600 dark:bg-indigo-400 hover:bg-indigo-400 border-indigo-600 bg-indigo-400"
               : "dark:border-gray-100 dark:hover:text-gray-200 hover:text-gray-200 dark:hover:bg-indigo-400 dark:hover:border-indigo-600 hover:bg-indigo-400 border-indigo-600"
           }`}
           onClick={() => handleClick(page)}

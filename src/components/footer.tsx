@@ -1,10 +1,11 @@
-import logoFooter from "../imgs/logo-footer.png";
+//*Icons
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import flask from "/assets/flask.svg";
+import youtube from "/assets/youtube.svg";
 import facebook from "/assets/facebook.svg";
 import instagram from "/assets/instagram.svg";
-import youtube from "/assets/youtube.svg";
+import logoFooter from "../imgs/logo-footer.png";
 
 const Footer = () => {  
   return (

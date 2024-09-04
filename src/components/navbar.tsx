@@ -1,9 +1,11 @@
-import { Menu, MenuButton } from "@headlessui/react";
+//*Funciones y Hooks
 import { NavLink } from "react-router-dom";
-import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
-import userLogo from "/assets/user-logo.svg";
 import { useAuth } from "../context/authContext";
+import { Menu, MenuButton } from "@headlessui/react";
+import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import { useUserProfile } from "../context/userProfileContext";
+//*Icons
+import userLogo from "/assets/user-logo.svg";
 
 const Navbar: React.FC = () => {
   const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
