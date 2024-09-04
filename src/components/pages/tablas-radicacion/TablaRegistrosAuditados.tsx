@@ -1,9 +1,9 @@
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
-
-import salir from "/assets/back.svg";
-
 import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
 import LoadingSpinner from "../../LoadingSpinner";
+//*Icons
+import salir from "/assets/back.svg";
 
 const TablaRegistrosAuditados = () => {
   return (

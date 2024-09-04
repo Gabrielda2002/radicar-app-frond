@@ -1,4 +1,4 @@
-//Funciones y Hooks
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
 
 import ModalCirugias from "./modals/ModalCirugias";
