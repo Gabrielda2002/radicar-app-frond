@@ -96,7 +96,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
         <img className="dark:invert" src={mostrar} alt="" />
       </div>
       {isOpen && (
-        <div className="fixed z-50 flex items-center justify-center w-screen transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div className="fixed z-50 flex items-center justify-center  transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
             onClick={toggleModal}
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"

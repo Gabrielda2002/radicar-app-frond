@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+
 import ModalRadicacion from "./modals/ModalRadicacion";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import ModalMostarDatos from "./modals/ModalAuditoriaServicios.tsx";
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
+import ModalSoporte from "./modals/ModalSoporte.tsx";
 import LoadingSpinner from "../loading-spinner";
 
 /* <-- ICONS TABLE --> */
-import soporte from "/assets/soporte.svg";
+
 import salir from "/assets/back.svg";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
 
 const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
@@ -105,9 +107,7 @@ const TablaRadicacion = () => {
                   </td>
                   <td>{radicacion.management}</td>
                   <td>
-                    <button>
-                      <img src={soporte} alt="Soporte" />
-                    </button>
+                      <ModalSoporte></ModalSoporte>
                   </td>
                   <td>
                     <button>

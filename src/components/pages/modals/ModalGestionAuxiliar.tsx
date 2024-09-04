@@ -20,7 +20,7 @@ const ModalGestionAuxiliar = () => {
 
       {stadOpen && (
         <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
-          <section>
+          <section  onClick={() => setStadOpen(false)} >
             {/* container-full */}
             <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded">
               {/* container-header */}

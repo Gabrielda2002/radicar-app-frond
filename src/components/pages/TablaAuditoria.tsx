@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
+import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
-import soporte from "/assets/soporte.svg";
+
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
-import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalMostarDatos from "./modals/ModalAuditoriaServicios.tsx";
+
+
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 import LoadingSpinner from "../loading-spinner";
+import ModalSoporte from "./modals/ModalSoporte.tsx";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
@@ -116,13 +119,7 @@ const TablaAuditoria = () => {
                 <td>{auditoria.typeServices}</td>
                 <td>{auditoria.radicador}</td>
                 <td>
-                  <button>
-                    <img
-                      className="dark:invert"
-                      src={soporte}
-                      alt="soporte-icon"
-                    />
-                  </button>
+                    <ModalSoporte></ModalSoporte>
                 </td>
                 <td>
                   <button>

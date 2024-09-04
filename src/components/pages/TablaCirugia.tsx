@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import ModalCirugias from "./modals/ModalCirugias";
-import ModalMostarDatos from "./modals/ModalAuditoriaServicios.tsx";
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 
 
 import salir from "/assets/back.svg";
