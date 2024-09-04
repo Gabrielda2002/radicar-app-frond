@@ -5,7 +5,7 @@ import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 import salir from "/assets/back.svg";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalAuditoriaServicio from "./modals/modal-auditoria-servicios.tsx";
+import ModalMostarDatos from "./modals/modal-auditoria-servicios.tsx";
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
@@ -63,12 +63,11 @@ const TablaAuditoria = () => {
             <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Ver Autorizaciones
             </button>
-              <Link to={"/tabla-registros-auditados"}>
-                <button className=" w-[90px] h-12 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                  Auditados
-                </button>
-              </Link>
-          
+            <Link to={"/tabla-registros-auditados"}>
+              <button className=" w-[90px] h-12 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+                Auditados
+              </button>
+            </Link>
           </div>
         </section>
 
@@ -123,45 +122,52 @@ const TablaAuditoria = () => {
                 </td>
                 <td>
                   <button>
-                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
+                    <ModalMostarDatos
+                      // wdCondic={true}
+                      // gdCondic={true}
+                      // Table Col 1
+                      // numRadi={false}
+                      // feRadi={false}
+                      // nomCiru3=""
+                      // tipoDoc={false}
+                      // nomCiru4=""
+                      // numDoc={false}
+                      // nomCiru6=""
+                      // nomPac={false}
+                      // numCel={false}
+                      // telFijo={false}
+                      // email={false}
+                      // direccion={false}
+                      // convenio={false}
+                      // ipsPri={false}
+                      // nomCiru5=""
+                      // feOrden={false}
+                      // lugRadi={false}
+                      // ipsRem={false}
+                      // Table Col 2
+                      obserAuditoria={true}//observacion cups |
+                      nomCiru1="Obseracion Cups"
+                      // justConcepto={false}
+                      unidadFunciona={true}//estado cups
+                      nomCiru2="Estado cups"
+                      // feAuditoria={false}
+                      // nomAuditor={false}
+                      // auxiRadi={false}
+                      descripCup={true}//
+                      codCup={true}//
+                      // tipoServicio={false}
+                      // grupoServicio={false}
+                      // descripDiagn={false}
+                      // codDiagn={false}
+                      // especialidad={false}
+                      // profecional={false}
+                    ></ModalMostarDatos>
                   </button>
                 </td>
                 <td>
                   <Link to="/tabla-autorizar-servicios">
                     <img src={autorizar} alt="autorizar-icon" />
                   </Link>
-                </td>
-              </tr>
-            ))}
-            {data.map((auditoria) => (
-              <tr>
-                <td>
-                  {auditoria.radicadoDate
-                    ? auditoria.radicadoDate.getTime()
-                    : "N/A"}
-                </td>
-                <td>{auditoria.documentType}</td>
-                <td>{auditoria.documentNumber}</td>
-                <td>{auditoria.namePatient}</td>
-                <td>{auditoria.convenio}</td>
-                <td>{auditoria.ipsPrimary}</td>
-                <td>
-                  {auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"}
-                </td>
-                <td>{auditoria.place}</td>
-                <td>{auditoria.ipsRemitente}</td>
-                <td>{auditoria.profetional}</td>
-                <td>{auditoria.speciality}</td>
-                <td>{auditoria.typeServices}</td>
-                <td>{auditoria.radicador}</td>
-                <td>
-                  <img src={soporte} alt="soporte-icon" />
-                </td>
-                <td>
-                  <ModalAuditoriaServicio></ModalAuditoriaServicio>
-                </td>
-                <td>
-                  <img src={autorizar} alt="autorizar-icon" />
                 </td>
               </tr>
             ))}

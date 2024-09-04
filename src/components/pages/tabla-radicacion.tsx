@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import ModalRadicacion from "./modals/modal-radicacion";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+import ModalMostarDatos from "./modals/modal-auditoria-servicios.tsx";
 
 /* <-- ICONS TABLE --> */
 import soporte from "/assets/soporte.svg";
-import mostrar from "/assets/mostrar.svg";
-import servicio from "/assets/servicio.svg";
 import salir from "/assets/back.svg";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 
@@ -81,7 +80,7 @@ const TablaRadicacion = () => {
                 <th>Soporte</th>
                 <th>Gestión Auxiliar</th>
                 <th>Mostrar</th>
-                <th>Servicio Solicitado</th>
+                
               </tr>
             </thead>
 
@@ -110,10 +109,46 @@ const TablaRadicacion = () => {
                     <ModalGestionAuxiliar></ModalGestionAuxiliar>
                   </td>
                   <td>
-                    <img src={mostrar} alt="Mostrar" />
-                  </td>
-                  <td>
-                    <img src={servicio} alt="Servicio Solicitado" />
+                    <ModalMostarDatos
+                      wdCondic={false}
+                      gdCondic={false}
+                      // Tabla Col 1
+                      numRadi={true}
+                      feRadi={true}
+                      // nomCiru1=""
+                      tipoDoc={true}
+                      numDoc={true}
+                      nomPac={true}
+                      numCel={true}
+                      // nomCiru2=""
+                      telFijo={true}
+                      email={true}
+                      direccion={true}
+                      // nomCiru3=""
+                      convenio={true}
+                      // nomCiru4=""
+                      ipsPri={true}
+                      // nomCiru5=""
+                      feOrden={true}
+                      // nomCiru6=""
+                      lugRadi={true}
+                      ipsRem={true}
+                      // Tabla Col 2
+                      obserAuditoria={true}
+                      justConcepto={true}
+                      unidadFunciona={true}
+                      feAuditoria={true}
+                      nomAuditor={true}
+                      auxiRadi={true}
+                      descripCup={true}
+                      codCup={true}
+                      tipoServicio={true}
+                      grupoServicio={true}
+                      descripDiagn={true}
+                      codDiagn={true}
+                      especialidad={true}
+                      profecional={true}
+                    ></ModalMostarDatos>
                   </td>
                 </tr>
               ))}

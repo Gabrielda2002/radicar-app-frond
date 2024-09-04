@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 
 import ModalCirugias from "./modals/modal-cirugias";
-
+import ModalMostarDatos from "./modals/modal-auditoria-servicios.tsx";
 
 import salir from "/assets/back.svg";
-import soporte from "/assets/mostrar.svg";
-
 
 const TablaCirugias = () => {
   return (
@@ -88,29 +86,46 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
-                </button>
-              </td>
-              <td className="px-4 py-2">
-                <button>
-                  <ModalCirugias />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
+                <button >
+                  <ModalMostarDatos
+                    // Table Col 1 (6)
+                    numRadi={true}//
+                    feRadi={true}//fecha paraclinicos
+                    nomCiru1="Paraclinicos"
+                    tipoDoc={true}//Numero programacion
+                    nomCiru7="Numero Programacion"
+                    numDoc={true}//
+                    nomPac={true}//
+                    numCel={true}//hora programada
+                    nomCiru2="Hora Programada"
+                    // telFijo={false}
+                    // email={false}
+                    direccion={true}//observaciones
+                    nomCiru3="Observaciones"
+                    convenio={true}//fecha valoracion
+                    nomCiru4="Fecha Valoracion"
+                    ipsPri={true}//fecha cirugia
+                    nomCiru5="Fecha Cirugia"
+                    feOrden={true}//fecha ordenamiento
+                    nomCiru6="Ordenamiento"
+                    // lugRadi={false}
+                    ipsRem={true}//dejaste esta ips
+                    // Table Col 2 (5)
+                    // obserAuditoria={false}
+                    // justConcepto={false}
+                    // unidadFunciona={false}
+                    // feAuditoria={false}
+                    // nomAuditor={false}
+                    // auxiRadi={false}
+                    // descripCup={false}
+                    // codCup={false}
+                    // tipoServicio={false}
+                    // grupoServicio={false}
+                    // descripDiagn={false}
+                    // codDiagn={false}
+                    // especialidad={false}
+                    // profecional={false}
+                  ></ModalMostarDatos>
                 </button>
               </td>
               <td className="px-4 py-2">
