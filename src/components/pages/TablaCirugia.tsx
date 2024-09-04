@@ -88,9 +88,8 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <ModalMostarDatos
+              <td className="flex justify-center">
+                <ModalMostarDatos
                     // Table Col 1 (6)
                     numRadi={true}//
                     feRadi={true}//fecha paraclinicos
@@ -128,13 +127,10 @@ const TablaCirugias = () => {
                     // codDiagn={false}
                     // especialidad={false}
                     // profecional={false}
-                  ></ModalMostarDatos>
-                </button>
+                ></ModalMostarDatos>
               </td>
               <td className="px-4 py-2">
-                <button>
-                  <ModalCirugias />
-                </button>
+                <ModalCirugias />
               </td>
             </tr>
           </tbody>

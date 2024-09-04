@@ -161,7 +161,7 @@ const TablaAuditoria = () => {
                   <ModalSoporte></ModalSoporte>
                 </td>
                 <td>
-                <ModalMostarDatos
+                  <ModalMostarDatos
                       // wdCondic={true}
                       // gdCondic={true}
                       // Table Col 1
@@ -200,7 +200,7 @@ const TablaAuditoria = () => {
                       // codDiagn={false}
                       // especialidad={false}
                       // profecional={false}
-                    ></ModalMostarDatos>
+                  ></ModalMostarDatos>
                 </td>
                 <td>
                   <Link to="/tabla-autorizar-servicios">
