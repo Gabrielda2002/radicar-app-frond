@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useFetchCups } from "../../../hooks/useFetchUsers";
 
 import ModalCups from "../modals/ModalCups";
-import ModalAction from "../modals/ModalAction";
+import ModalActionCups from "../modals/ModalActionCups";
 
 import LoadingSpinner from "../../loading-spinner";
 import usePagination from "../../../hooks/usePagination";
@@ -105,7 +105,7 @@ const TablaCups = () => {
                 <td>{cups.name}</td>
                 <td>{cups.status ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <ModalAction nom="Cups" />
+                  <ModalActionCups />
                 </td>
               </tr>
             ))}
