@@ -1,15 +1,37 @@
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
-
 import ModalAction from "../modals/ModalAction";
-
-import salir from "/assets/back.svg";
-
-import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
-import ModalMunicipios from "../modals/ModalMunicipios";
+import useSearch from "../../../hooks/useSearch";
+import Pagination from "../../Pagination";
+import usePagination from "../../../hooks/usePagination";
 import LoadingSpinner from "../../LoadingSpinner";
+import ModalMunicipios from "../modals/ModalMunicipios";
+import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
+//*Icons
+import salir from "/assets/back.svg";
+import { useState } from "react";
+
+const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
   const { data, loading, error } = useFetchMunicipio();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "nitMunicipio",
+    "status",
+  ]);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    filteredData,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -49,6 +71,8 @@ const TablaMunicipios = () => {
               Buscar Municipio :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Municipio..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -57,6 +81,8 @@ const TablaMunicipios = () => {
             <select
               name=""
               id=""
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
               className="border-2 h-[40px] w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
@@ -80,7 +106,7 @@ const TablaMunicipios = () => {
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((municipio) => (
+            {currentData().map((municipio) => (
               <tr>
                 <td>{municipio.id}</td>
                 <td>{municipio.name}</td>
@@ -93,6 +119,11 @@ const TablaMunicipios = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          totalPages={totalPages}
+          onPageChange={paginate}
+          currentPage={currentPage}
+        />
       </section>
     </>
   );

@@ -1,16 +1,38 @@
+//*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import Pagination from "../../Pagination";
 import Modal from "../modals/ModalReporte";
-
+import ModalAction from "../modals/ModalAction";
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import ModalConvenio from "../modals/ModalConvenio";
+import usePagination from "../../../hooks/usePagination";
+import { useFetchConvenio } from "../../../hooks/useFetchUsers";
+//*Icons
 import salir from "/assets/back.svg";
 
-import { useFetchConvenio } from "../../../hooks/useFetchUsers";
-import ModalConvenio from "../modals/ModalConvenio";
-import LoadingSpinner from "../../LoadingSpinner";
-import ModalAction from "../modals/ModalAction";
+const ITEMS_PER_PAGE = 10;
 
 const TablaConvenios = () => {
   const { data, loading, error } = useFetchConvenio();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status",
+  ]);
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    filteredData,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -50,6 +72,8 @@ const TablaConvenios = () => {
               Buscar Convenio :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Convenio..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -58,6 +82,8 @@ const TablaConvenios = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
@@ -83,7 +109,7 @@ const TablaConvenios = () => {
           </thead>
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((convenio) => (
+            {currentData().map((convenio) => (
               <tr>
                 <td>{convenio.id}</td>
                 <td>{convenio.name}</td>
@@ -95,6 +121,11 @@ const TablaConvenios = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );

@@ -1,20 +1,30 @@
+//*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
-import salir from "/assets/back.svg";
-import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
-import ModalEspecialidad from "../modals/ModalEspecialidad";
+import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import Pagination from "../../Pagination";
-import { useState } from "react";
+import ModalEspecialidad from "../modals/ModalEspecialidad";
+import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
+//*Icons
+import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 10;
 
 const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status",
+  ]);
+
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemsPerPage
   );
 
@@ -62,6 +72,8 @@ const TablaEspecialidad = () => {
               Buscar Especialidad :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Especialidad..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -95,7 +107,7 @@ const TablaEspecialidad = () => {
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {currentData().map((especialidad) => (
-              <tr key={especialidad.id}>
+              <tr>
                 <td>{especialidad.id}</td>
                 <td>{especialidad.name}</td>
                 <td>{especialidad.status ? "Activo" : "Inactivo"}</td>

@@ -1,24 +1,35 @@
+//Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+import usePagination from "../../hooks/usePagination";
+import useSearch from "../../hooks/useSearch";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import LoadingSpinner from "../LoadingSpinner";
-
-/* <-- ICONS TABLE --> */
+import Pagination from "../Pagination";
+//Iconos
 import soporte from "/assets/soporte.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
-import usePagination from "../../hooks/usePagination";
-import Pagination from "../Pagination";
-import { useState } from "react";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 8;
 
 const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const {query, setQuery, filteredData} =useSearch(data, [
+    "createdAt",
+    "id",
+    "convenio",
+    "document",
+    "patientName",
+    "auditDate",
+    "management"
+  ])
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemsPerPage
   );
 
@@ -64,6 +75,8 @@ const TablaRadicacion = () => {
               Buscar registro Radicacion :
             </label>
             <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar registro..."
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />

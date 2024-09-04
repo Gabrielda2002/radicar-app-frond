@@ -1,13 +1,13 @@
+//Funciones y Hooks
 import { Link } from "react-router-dom";
-
 import ModalCirugias from "./modals/ModalCirugias";
-
-
+//iconos
 import salir from "/assets/back.svg";
 import soporte from "/assets/mostrar.svg";
 
 
 const TablaCirugias = () => {
+ 
   return (
     <>
       {/*nav-auditoria*/}

@@ -1,22 +1,40 @@
+//Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import Pagination from "../Pagination.tsx";
+import useSearch from "../../hooks/useSearch.ts";
+import LoadingSpinner from "../LoadingSpinner.tsx";
+import usePagination from "../../hooks/usePagination.ts";
+import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
+//Iconos
+import salir from "/assets/back.svg";
 import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
-import salir from "/assets/back.svg";
-import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import { useState } from "react";
-import ModalAuditoriaServicio from "./modals/ModalAuditoriaServicios.tsx";
-import Pagination from "../Pagination.tsx";
-import usePagination from "../../hooks/usePagination.ts";
-import LoadingSpinner from "../LoadingSpinner.tsx";
+
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "documentNumber",
+    "namePatient",
+    "convenio",
+    "ipsPrimary",
+    "documentType",
+    "place",
+    "ipsRemitente",
+    "profetional",
+    "speciality",
+    "typeServices",
+    "radicador",
+  ]);
+
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemsPerPage
   );
 
@@ -31,7 +49,6 @@ const TablaAuditoria = () => {
 
   return (
     <>
-      {/*nav-auditoria*/}
       <section className="p-4 dark:bg-gray-900 ps-0">
         <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
@@ -55,16 +72,17 @@ const TablaAuditoria = () => {
       </section>
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        {/*header-table*/}
         <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
           Buscar registro Auditoria :
         </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
             <input
-              placeholder=" Consultar Auditoria..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Consultar Auditoria..."
               className="block w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
-            ></input>
+            />
           </div>
           <div className="flex items-center space-x-[10px] pt-1-">
             <select
@@ -75,9 +93,9 @@ const TablaAuditoria = () => {
               className="border-2 h-12 w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
-              <option value="1">10 Paginas</option>
-              <option value="2">20 Paginas</option>
-              <option value="3">30 Paginas</option>
+              <option value="8">8 Páginas</option>
+              <option value="16">16 Páginas</option>
+              <option value="24">24 Páginas</option>
             </select>
             <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
               Ver Autorizaciones
@@ -136,33 +154,23 @@ const TablaAuditoria = () => {
                 <td>{auditoria.radicador}</td>
                 <td>
                   <button>
-                    <img
-                      className="dark:invert"
-                      src={soporte}
-                      alt="soporte-icon"
-                    />
+                    <img src={soporte} className="w-8 h-8" alt="Soporte" />
                   </button>
                 </td>
                 <td>
                   <button>
-                    <ModalAuditoriaServicio></ModalAuditoriaServicio>
+                    <ModalAuditoriaServicio />
                   </button>
                 </td>
                 <td>
-                  <Link to="/tabla-autorizar-servicios">
-                    <img
-                      className="dark:invert"
-                      src={autorizar}
-                      alt="autorizar-icon"
-                    />
-                  </Link>
+                  <button>
+                    <img src={autorizar} className="w-8 h-8" alt="Autorizar" />
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        {/* Configuracion de la Paginacion*/}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

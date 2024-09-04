@@ -1,20 +1,31 @@
+//*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
 import ModalCups from "../modals/ModalCups";
 import ModalAction from "../modals/ModalAction";
-import salir from "/assets/back.svg";
-import { useFetchCups } from "../../../hooks/useFetchUsers";
+import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import Pagination from "../../Pagination"; // Ajusta la ruta según tu estructura
-import { useState } from "react";
+import { useFetchCups } from "../../../hooks/useFetchUsers";
+//*Iconos
+import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 10; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "code",
+    "name",
+    "status",
+  ]);
+
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemsPerPage
   );
 
@@ -60,6 +71,8 @@ const TablaCups = () => {
               Buscar Cup :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Buscar..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>

@@ -1,15 +1,37 @@
+//*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
-
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import usePagination from "../../../hooks/usePagination";
+import ModalIpsRemitente from "../modals/ModalIpsRemitente";
+import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
+//*Icons
 import salir from "/assets/back.svg";
 
-import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
-import ModalIpsRemitente from "../modals/ModalIpsRemitente";
-import LoadingSpinner from "../../LoadingSpinner";
+const ITEMS_PER_PAGE = 8;
 
 const TablaIpsRemite = () => {
   const { data, loading, error } = useFetchIpsRemite();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status",
+  ]);
+
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    filteredData,
+    itemsPerPage
+  );
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -49,12 +71,16 @@ const TablaIpsRemite = () => {
               Buscar IPS Remite :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar IPS Remite..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center pt-1 space-x-2">
             <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               name=""
               id=""
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -81,7 +107,7 @@ const TablaIpsRemite = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((ips) => (
+            {currentData().map((ips) => (
               <tr>
                 <td>{ips.id}</td>
                 <td>{ips.name}</td>
@@ -93,6 +119,11 @@ const TablaIpsRemite = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={paginate}
+        />
       </section>
     </>
   );

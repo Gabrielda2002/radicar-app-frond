@@ -1,22 +1,31 @@
-import { Link } from "react-router-dom";
-import ModalAction from "../modals/ModalAction";
-import salir from "/assets/back.svg";
-import { useFetchRadicador } from "../../../hooks/useFetchUsers";
-import ModalRadicador from "../modals/ModalRadicador";
-import LoadingSpinner from "../../LoadingSpinner";
-import Pagination from "../../Pagination";
-import usePagination from "../../../hooks/usePagination";
+//*Funciones y Hooks
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
+import ModalAction from "../modals/ModalAction";
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import ModalRadicador from "../modals/ModalRadicador";
+import usePagination from "../../../hooks/usePagination";
+import { useFetchRadicador } from "../../../hooks/useFetchUsers";
+//*Icons
+import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
   const { data, loading, error } = useFetchRadicador();
   const [itemPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status"
+  ]);
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemPerPage
   );
+
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -62,6 +71,8 @@ const TablaRadicadores = () => {
               Buscar Radicador :
             </label>
             <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Radicador..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -98,7 +109,7 @@ const TablaRadicadores = () => {
 
           <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
             {currentData().map((radicador) => (
-              <tr key={radicador.id}>
+              <tr>
                 <td>{radicador.id}</td>
                 <td>{radicador.name}</td>
                 <td>{radicador.status ? "Activo" : "Inactivo"}</td>
