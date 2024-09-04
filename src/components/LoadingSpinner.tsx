@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { OrbitProgress } from "react-loading-indicators";
 
 interface LoadingSpinnerProps {
   duration?: number;
@@ -28,14 +27,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ duration = 5000 }) => {
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
     >
-      <OrbitProgress
-        variant="track-disc"
-        dense
-        color="#31cca9"
-        size="large"
-        text=""
-        textColor="#000000"
-      />
+      <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-indigo-600 border-color"></div>
     </div>
   );
 };

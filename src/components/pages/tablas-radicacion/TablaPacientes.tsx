@@ -1,7 +1,37 @@
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
 import ModalAction from "../modals/ModalAction";
-import salir from "/assets/back.svg";
 import ModalPaciente from "../modals/ModalPaciente";
+//*Iconos
+import salir from "/assets/back.svg";
+
+//! NO BORRAR
+/*
+Componentes para la paginacion y busqueda y filtrado
+
+import usePagination from "../../../hooks/usePagination";
+import useSearch from "../../../hooks/useSearch";
+import Pagination from "../../Pagination";
+
+const ITEMS_PER_PAGE = 10;
+const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+const {query, setQuery, filteredData} = useSearch(data,[
+  "id",
+  "document",
+  "TypeDocument",
+  "full name",
+  "phone",
+  "mail",
+  "convenio",
+  "Status"
+  ] '
+
+  const {currentPage, totalPages, paginate, currentData} = usePagination(
+    filteredData,
+    itemsPerPage
+  )
+*/
+//! NO BORRAR
 
 const TablaPacientes = () => {
   return (

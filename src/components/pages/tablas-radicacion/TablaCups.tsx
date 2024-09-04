@@ -1,14 +1,17 @@
-import { Link } from "react-router-dom";
+//*Funciones y Hooks
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useFetchCups } from "../../../hooks/useFetchUsers";
+
+import Pagination from "../../Pagination";
+import LoadingSpinner from "../../LoadingSpinner";
+import usePagination from "../../../hooks/usePagination";
+import useSearch from "../../../hooks/useSearch";
 
 import ModalCups from "../modals/ModalCups";
 import ModalActionCups from "../modals/ModalActionCups";
 
-import LoadingSpinner from "../../loading-spinner";
-import usePagination from "../../../hooks/usePagination";
-import Pagination from "../../Pagination"; // Ajusta la ruta según tu estructura
-
+//*Iconos
 import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 10; // Puedes ajustar el número de ítems por página
@@ -16,8 +19,16 @@ const ITEMS_PER_PAGE = 10; // Puedes ajustar el número de ítems por página
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "code",
+    "name",
+    "status",
+  ]);
+
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemsPerPage
   );
 
@@ -65,6 +76,8 @@ const TablaCups = () => {
               Buscar Cup :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Buscar..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -86,37 +99,45 @@ const TablaCups = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto divide-y divide-gray-200 dark:divide-gray-700 ">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200">
-              <th className="w-[fit-content]">ID</th>
-              <th className="">Codigo</th>
-              <th className="w-[fit-content]">Descripcion del Cup</th>
-              <th className="">Estado</th>
-              <th className="">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto divide-gray-200 divide-y dark:divide-gray-700 ">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200">
+                  <th className="w-[fit-content]">ID</th>
+                  <th className="">Codigo</th>
+                  <th className="w-[fit-content]">Descripcion del Cup</th>
+                  <th className="">Estado</th>
+                  <th className="">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((cups) => (
-              <tr key={cups.id}>
-                <td>{cups.id}</td>
-                <td>{cups.code}</td>
-                <td>{cups.name}</td>
-                <td>{cups.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <ModalActionCups />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* Controles de paginación */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((cups) => (
+                  <tr key={cups.id}>
+                    <td>{cups.id}</td>
+                    <td>{cups.code}</td>
+                    <td>{cups.name}</td>
+                    <td>{cups.status ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <ModalActionCups />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* Controles de paginación */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );
