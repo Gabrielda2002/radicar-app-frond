@@ -1,15 +1,38 @@
+//*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
-
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import usePagination from "../../../hooks/usePagination";
+import ModalLugarRadicacion from "../modals/ModalLugarRadicacion";
+import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
+//*Icons
 import salir from "/assets/back.svg";
 
-import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
-import ModalLugarRadicacion from "../modals/ModalLugarRadicacion";
-import LoadingSpinner from "../../loading-spinner";
+const ITEMS_PER_PAGE = 8;
 
 const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status",
+  ]);
+
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    filteredData,
+    itemsPerPage
+  );
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h1>{error}</h1>;
@@ -49,6 +72,8 @@ const TablaLugarRadicacion = () => {
               Buscar Lugar Radicacion :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Lugar Radicacion..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -57,6 +82,8 @@ const TablaLugarRadicacion = () => {
             <select
               name=""
               id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
@@ -72,29 +99,42 @@ const TablaLugarRadicacion = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Lugar</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                  <th className=" w-[60px]">ID</th>
+                  <th className=" w-[200px]">Nombre Lugar</th>
+                  <th className=" w-[100px]">Estado</th>
+                  <th className=" w-[80px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {data.map((lugar) => (
-              <tr>
-                <td>{lugar.id}</td>
-                <td>{lugar.name}</td>
-                <td>{lugar.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <ModalAction nom="Lugar Radicacion" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((lugar) => (
+                  <tr>
+                    <td>{lugar.id}</td>
+                    <td>{lugar.name}</td>
+                    <td>{lugar.status ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <ModalAction nom="Lugar Radicacion" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );

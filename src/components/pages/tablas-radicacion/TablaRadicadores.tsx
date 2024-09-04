@@ -1,20 +1,28 @@
-import { Link } from "react-router-dom";
-import ModalAction from "../modals/ModalAction";
-import salir from "/assets/back.svg";
-import { useFetchRadicador } from "../../../hooks/useFetchUsers";
-import ModalRadicador from "../modals/ModalRadicador";
-import LoadingSpinner from "../../loading-spinner";
-import Pagination from "../../Pagination";
-import usePagination from "../../../hooks/usePagination";
+//*Funciones y Hooks
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
+import ModalAction from "../modals/ModalAction";
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import ModalRadicador from "../modals/ModalRadicador";
+import usePagination from "../../../hooks/usePagination";
+import { useFetchRadicador } from "../../../hooks/useFetchUsers";
+//*Icons
+import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
   const { data, loading, error } = useFetchRadicador();
   const [itemPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "name",
+    "status",
+  ]);
   const { currentPage, totalPages, paginate, currentData } = usePagination(
-    data,
+    filteredData,
     itemPerPage
   );
 
@@ -62,6 +70,8 @@ const TablaRadicadores = () => {
               Buscar Radicador :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar Radicador..."
               className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -86,35 +96,43 @@ const TablaRadicadores = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[80px]">ID</th>
-              <th className=" w-[600px] ">Nombre Prestador</th>
-              <th className=" w-[150px]">Estado</th>
-              <th className=" w-[150px]">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                  <th className=" w-[80px]">ID</th>
+                  <th className=" w-[600px] ">Nombre Prestador</th>
+                  <th className=" w-[150px]">Estado</th>
+                  <th className=" w-[150px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((radicador) => (
-              <tr key={radicador.id}>
-                <td>{radicador.id}</td>
-                <td>{radicador.name}</td>
-                <td>{radicador.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <ModalAction nom="Radicadores" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* Controles de Paginacion */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((radicador) => (
+                  <tr>
+                    <td>{radicador.id}</td>
+                    <td>{radicador.name}</td>
+                    <td>{radicador.status ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <ModalAction nom="Radicadores" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* Controles de Paginacion */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );
