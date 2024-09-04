@@ -1,8 +1,8 @@
-//Funciones y Hooks
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
 import ModalAction from "../modals/ModalAction";
 import ModalPaciente from "../modals/ModalPaciente";
-//Iconos
+//*Iconos
 import salir from "/assets/back.svg";
 
 //! NO BORRAR

@@ -97,34 +97,42 @@ const TablaTipoDocumento = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Tipo Documento</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                  <th className=" w-[60px]">ID</th>
+                  <th className=" w-[200px]">Tipo Documento</th>
+                  <th className=" w-[100px]">Estado</th>
+                  <th className=" w-[80px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((documento) => (
-              <tr>
-                <td className="py-3">{documento.id}</td>
-                <td className="py-3">{documento.name}</td>
-                <td>{documento.status ? "Activo" : "Inactivo"}</td>
-                <td className="py-3">
-                  <ModalAction nom="Tipo Documento" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((documento) => (
+                  <tr>
+                    <td className="py-3">{documento.id}</td>
+                    <td className="py-3">{documento.name}</td>
+                    <td>{documento.status ? "Activo" : "Inactivo"}</td>
+                    <td className="py-3">
+                      <ModalAction nom="Tipo Documento" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );

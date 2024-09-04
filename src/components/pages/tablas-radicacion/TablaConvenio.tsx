@@ -91,41 +91,46 @@ const TablaConvenios = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar Convenio
-                    </button> */}
             <ModalConvenio></ModalConvenio>
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre Convenio</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                  <th className=" w-[60px]">ID</th>
+                  <th className=" w-[200px]">Nombre Convenio</th>
+                  <th className=" w-[100px]">Estado</th>
+                  <th className=" w-[80px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((convenio) => (
-              <tr>
-                <td>{convenio.id}</td>
-                <td>{convenio.name}</td>
-                <td>{convenio.status ? "Activo" : "Inactivo"} </td>
-                <td>
-                  <ModalAction nom="Convenios" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((convenio) => (
+                  <tr>
+                    <td>{convenio.id}</td>
+                    <td>{convenio.name}</td>
+                    <td>{convenio.status ? "Activo" : "Inactivo"} </td>
+                    <td>
+                      <ModalAction nom="Convenios" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );

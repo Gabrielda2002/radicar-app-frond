@@ -58,7 +58,7 @@ const TablaCirugias = () => {
             </select>
           </div>
         </section>
-
+        
         <table className="min-w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-300">

@@ -92,37 +92,46 @@ const TablaCups = () => {
             <ModalCups></ModalCups>
           </div>
         </section>
-        <table className="w-full mx-auto divide-gray-200 ivide-y dark:divide-gray-700 ">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200">
-              <th className="w-[fit-content]">ID</th>
-              <th className="">Codigo</th>
-              <th className="w-[fit-content]">Descripcion del Cup</th>
-              <th className="">Estado</th>
-              <th className="">Acciones</th>
-            </tr>
-          </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((cups) => (
-              <tr key={cups.id}>
-                <td>{cups.id}</td>
-                <td>{cups.code}</td>
-                <td>{cups.name}</td>
-                <td>{cups.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <ModalAction nom="Cups" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* Controles de paginación */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto divide-gray-200 ivide-y dark:divide-gray-700 ">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200">
+                  <th className="w-[fit-content]">ID</th>
+                  <th className="">Codigo</th>
+                  <th className="w-[fit-content]">Descripcion del Cup</th>
+                  <th className="">Estado</th>
+                  <th className="">Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((cups) => (
+                  <tr key={cups.id}>
+                    <td>{cups.id}</td>
+                    <td>{cups.code}</td>
+                    <td>{cups.name}</td>
+                    <td>{cups.status ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <ModalAction nom="Cups" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* Controles de paginación */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );

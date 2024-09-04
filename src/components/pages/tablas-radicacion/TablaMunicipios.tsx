@@ -94,36 +94,44 @@ const TablaMunicipios = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
-              <th className=" w-[70px]">ID</th>
-              <th className="">Nombre Municipio</th>
-              <th className="">Nit Municipio</th>
-              <th className=" w-[150px]">Estado</th>
-              <th className=" w-[150px]">Acciones</th>
-            </tr>
-          </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                  <th className=" w-[70px]">ID</th>
+                  <th className="">Nombre Municipio</th>
+                  <th className="">Nit Municipio</th>
+                  <th className=" w-[150px]">Estado</th>
+                  <th className=" w-[150px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((municipio) => (
-              <tr>
-                <td>{municipio.id}</td>
-                <td>{municipio.name}</td>
-                <td>{municipio.nitMunicipio}</td>
-                <td>{municipio.status ? "Activo" : "Inactivo"}</td>
-                <td>
-                  <ModalAction nom="Municipios" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          totalPages={totalPages}
-          onPageChange={paginate}
-          currentPage={currentPage}
-        />
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((municipio) => (
+                  <tr>
+                    <td>{municipio.id}</td>
+                    <td>{municipio.name}</td>
+                    <td>{municipio.nitMunicipio}</td>
+                    <td>{municipio.status ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <ModalAction nom="Municipios" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              totalPages={totalPages}
+              onPageChange={paginate}
+              currentPage={currentPage}
+            />
+          </>
+        )}
       </section>
     </>
   );

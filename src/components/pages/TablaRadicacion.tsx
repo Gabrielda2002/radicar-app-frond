@@ -19,15 +19,15 @@ const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const {query, setQuery, filteredData} =useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(data, [
     "createdAt",
     "id",
     "convenio",
     "document",
     "patientName",
     "auditDate",
-    "management"
-  ])
+    "management",
+  ]);
   const { currentPage, totalPages, paginate, currentData } = usePagination(
     filteredData,
     itemsPerPage
@@ -75,8 +75,8 @@ const TablaRadicacion = () => {
               Buscar registro Radicacion :
             </label>
             <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder=" Consultar registro..."
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
@@ -98,68 +98,76 @@ const TablaRadicacion = () => {
           </div>
         </section>
 
-        {/* Contenedor para la tabla con overflow-x-auto */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50">
-                <th>Fecha - Hora del Radicado</th>
-                <th>N.º Radicado</th>
-                <th>Convenio</th>
-                <th>N.º Documento</th>
-                <th>Nombre Paciente</th>
-                <th>Fecha Auditoria</th>
-                <th className="w-[150px]">Nombre Auditora</th>
-                <th>Soporte</th>
-                <th>Gestión Auxiliar</th>
-                <th>Mostrar</th>
-              </tr>
-            </thead>
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la busqueda.
+          </div>
+        ) : (
+          <>
+            {/* Contenedor para la tabla con overflow-x-auto */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50">
+                    <th>Fecha - Hora del Radicado</th>
+                    <th>N.º Radicado</th>
+                    <th>Convenio</th>
+                    <th>N.º Documento</th>
+                    <th>Nombre Paciente</th>
+                    <th>Fecha Auditoria</th>
+                    <th className="w-[150px]">Nombre Auditora</th>
+                    <th>Soporte</th>
+                    <th>Gestión Auxiliar</th>
+                    <th>Mostrar</th>
+                  </tr>
+                </thead>
 
-            <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-              {currentData().map((radicacion) => (
-                <tr className="text-center" key={radicacion.id}>
-                  <td>
-                    {radicacion.createdAt
-                      ? radicacion.createdAt.toISOString()
-                      : "N/A"}
-                  </td>
-                  <td>{radicacion.id}</td>
-                  <td>{radicacion.convenio}</td>
-                  <td>{radicacion.document}</td>
-                  <td>{radicacion.patientName}</td>
-                  <td>
-                    {radicacion.auditDate
-                      ? radicacion.auditDate.toISOString()
-                      : "N/A"}
-                  </td>
-                  <td>{radicacion.management}</td>
-                  <td>
-                    <button>
-                      <img src={soporte} alt="Soporte" />
-                    </button>
-                  </td>
-                  <td>
-                    <button>
-                      <img src={gestion} alt="Gestión Auxiliar" />
-                    </button>
-                  </td>
-                  <td>
-                    <button>
-                      <img src={mostrar} alt="Mostrar" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Controles de la Paginacion */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
-        />
+                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                  {currentData().map((radicacion) => (
+                    <tr className="text-center" key={radicacion.id}>
+                      <td>
+                        {radicacion.createdAt
+                          ? radicacion.createdAt.toISOString()
+                          : "N/A"}
+                      </td>
+                      <td>{radicacion.id}</td>
+                      <td>{radicacion.convenio}</td>
+                      <td>{radicacion.document}</td>
+                      <td>{radicacion.patientName}</td>
+                      <td>
+                        {radicacion.auditDate
+                          ? radicacion.auditDate.toISOString()
+                          : "N/A"}
+                      </td>
+                      <td>{radicacion.management}</td>
+                      <td>
+                        <button>
+                          <img src={soporte} alt="Soporte" />
+                        </button>
+                      </td>
+                      <td>
+                        <button>
+                          <img src={gestion} alt="Gestión Auxiliar" />
+                        </button>
+                      </td>
+                      <td>
+                        <button>
+                          <img src={mostrar} alt="Mostrar" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Controles de la Paginacion */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );

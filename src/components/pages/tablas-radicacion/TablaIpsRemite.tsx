@@ -97,33 +97,41 @@ const TablaIpsRemite = () => {
           </div>
         </section>
 
-        <table className="w-full mx-auto text-sm text-center divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
-              <th className=" w-[60px]">ID</th>
-              <th className=" w-[200px]">Nombre IPS Remite</th>
-              <th className=" w-[100px]">Estado</th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentData().map((ips) => (
-              <tr>
-                <td>{ips.id}</td>
-                <td>{ips.name}</td>
-                <td>{ips.status ? "Activo" : "Inactivo"} </td>
-                <td>
-                  <ModalAction nom="IPS Remite" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={paginate}
-        />
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            <table className="w-full mx-auto text-sm text-center divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                  <th className=" w-[60px]">ID</th>
+                  <th className=" w-[200px]">Nombre IPS Remite</th>
+                  <th className=" w-[100px]">Estado</th>
+                  <th className=" w-[80px]">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentData().map((ips) => (
+                  <tr>
+                    <td>{ips.id}</td>
+                    <td>{ips.name}</td>
+                    <td>{ips.status ? "Activo" : "Inactivo"} </td>
+                    <td>
+                      <ModalAction nom="IPS Remite" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );
