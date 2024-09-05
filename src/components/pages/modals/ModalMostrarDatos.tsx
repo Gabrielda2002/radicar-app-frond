@@ -117,7 +117,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
             {/* Contenido del Formulario */}
 
-            <div className={`max-h-[70Vh] overflow-y-auto text-sm divide-y grid ${gdCondic ? 'grid-cols-1' : 'grid-cols-2'} px-6 gap-x-4 py-2 divide-gray-200 dark:divide-gray-700 `}>
+            <div className={`max-h-[70Vh] overflow-y-auto text-sm  grid ${gdCondic ? 'grid-cols-1' : 'grid-cols-2'} px-6 gap-x-4 py-2  `}>
               {/* INIT-"TABLE"-COL-1 */}
               <section className=" grid grid-cols-2 gap-2 ">
                 {numRadi && (

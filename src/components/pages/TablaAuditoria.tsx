@@ -113,7 +113,7 @@ const TablaAuditoria = () => {
           </div>
         ) : (
           <>
-            <table className="w-full text-center divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="w-full text-center">
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[90px]">Fecha Radicados</th>
@@ -135,7 +135,7 @@ const TablaAuditoria = () => {
                 </tr>
               </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+          <tbody className="text-xs text-center  dark:text-gray-200">
             {currentData().map((auditoria) => (
               <tr>
                 <td>

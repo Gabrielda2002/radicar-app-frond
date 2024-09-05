@@ -99,7 +99,7 @@ const TablaIpsPrimaria = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="w-full mx-auto text-sm ">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[60px]">ID</th>
@@ -109,7 +109,7 @@ const TablaIpsPrimaria = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((ips) => (
                   <tr>
                     <td className="py-2">{ips.id}</td>

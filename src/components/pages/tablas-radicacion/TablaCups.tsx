@@ -105,7 +105,7 @@ const TablaCups = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto divide-gray-200 divide-y dark:divide-gray-700 ">
+            <table className="w-full mx-auto ">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className="w-[fit-content]">ID</th>
@@ -116,7 +116,7 @@ const TablaCups = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+              <tbody className="text-xs text-center  dark:text-gray-200">
                 {currentData().map((cups) => (
                   <tr key={cups.id}>
                     <td>{cups.id}</td>

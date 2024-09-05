@@ -111,7 +111,7 @@ const TablaRadicacion = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
-                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50">
+                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-200">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
                     <th>Convenio</th>
