@@ -29,3 +29,36 @@ api.interceptors.request.use(
     }
 )
 
+export const getFolderContent = async (folderId?: string) => {
+    const path = folderId ? `/sistema-calidad/${folderId}` : '/sistema-calidad';
+    console.log(path)
+    return api.get(path);
+};
+
+
+export const createFolder = async (parentFolderId: string, folderName: string) => {
+    return api.post('/sistema-calidad', {parentFolderId, folderName})
+}
+
+export const uploadFile = async (formData: FormData, id: number | string) => {
+    return api.post(`/archivo`, formData, {
+        params: {
+            parentFolderId: id, // Pasar el ID de la carpeta en los parámetros de la URL
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
+
+
+export const deleteItem = (id: string, type: "carpetas" | "archivo") => {
+    return api.delete(`/${type}/${id}`);
+};
+
+
+export const downloadFile = (id: string) => {
+    return api.get(`/archivo/${id}/descargar`, {
+        responseType: 'blob'
+    })
+}

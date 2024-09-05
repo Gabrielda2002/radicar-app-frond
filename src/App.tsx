@@ -32,6 +32,7 @@ import CookieConsent from "./components/PopCookie";
 import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { useTheme } from "./context/blackWhiteContext";
+import FileManager from "./components/pages/SistemaArchivosSGC";
 
 function AppRoutes() {
   const { theme } = useTheme();
@@ -126,6 +127,10 @@ function AppRoutes() {
                         <Route
                           path="/tabla-autorizar-servicios"
                           element={<TablaAutorizarServicios />}
+                        />
+                        <Route
+                          path="/SistemGestionCalidad"
+                          element={<FileManager />}
                         />
                         <Route path="*" element={<Navigate to="/home" />} />
                       </Routes>
