@@ -4,15 +4,17 @@ import FileList from "./SSGC/FileList";
 import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import BreadCrumb from "./SSGC/BreadCrumb";
-import { useState } from "react";
+// import { useState } from "react";
+import DropDownManu from "./SSGC/DropDownManu";
+import ModalSubirArchivo from "./modals/ModalSubirArchivo";
+import { useUploadFile } from "../../hooks/useUploadFile";
 // import DropDownManu from "./SSGC/DropDownManu";
 // import path from "path";
 
 const FileManager: React.FC = () => {
   // const [showModal, setShowModal] = useState<string | null>(null);
 
-  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-
+  // const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   const {
     contents,
@@ -26,6 +28,11 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
   } = useFileManager();
 
+  const currentFolderId = path[path.length - 1].id;
+
+  const { selectedFiles, uploading, handleFileChange, handleUpload } =
+    useUploadFile(uploadNewFile, currentFolderId);
+
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
 
@@ -33,27 +40,25 @@ const FileManager: React.FC = () => {
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
 
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     setSelectedFiles(e.target.files);
+  //   }
+  // };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setSelectedFiles(e.target.files);
-    }
-  };
+  // const handleUpload = async () => {
+  //   if (selectedFiles) {
+  //     const formData = new FormData();
 
-  const handleUpload = async () => {
-    if (selectedFiles) {
-      const formData = new FormData();
+  //     Array.from(selectedFiles).forEach((file) => {
+  //       formData.append("files", file);
+  //     })
+  //     const  id = path[path.length - 1].id;
 
-      Array.from(selectedFiles).forEach((file) => {
-        formData.append("files", file);
-      })
-      const  id = path[path.length - 1].id;
-      
-      await uploadNewFile(formData, id);
-      setSelectedFiles(null);
-    }
-  };
-
+  //     await uploadNewFile(formData, id);
+  //     setSelectedFiles(null);
+  //   }
+  // };
 
   return (
     <>
@@ -84,13 +89,18 @@ const FileManager: React.FC = () => {
               Buscar Carpeta:
             </label>
             <input
-              placeholder=" Consultar registro..."
+              placeholder="Consultar registro..."
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
           </div>
           {/* Modal para crear carpetas */}
 
-          {/* <DropDownManu/> */}
+          <ModalSubirArchivo
+            onFileChange={handleFileChange}
+            onUpload={handleUpload}
+            uploading={uploading}
+          />
+          <DropDownManu/>
         </section>
         <div>
           <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
@@ -99,7 +109,7 @@ const FileManager: React.FC = () => {
         {/* <button onClick={() => createNewFolder("Nueva Carpeta")}>Nueva Carpeta</button> */}
         {/* <input type="file" onChange={(e) => e.target.files && uploadNewFile(e.target.files[0])} /> */}
 
-        <div className="flex items-center justify-between pb-6 header-tabla">
+        {/* <div className="flex items-center justify-between pb-6 header-tabla">
           <input
             type="file"
             multiple
@@ -112,7 +122,7 @@ const FileManager: React.FC = () => {
           >
             Subir Archivo
           </button>
-        </div>
+        </div> */}
 
         <div>
           {isEmpty ? (

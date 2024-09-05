@@ -1,29 +1,45 @@
 // ModalSubirArchivo.js
-import  { useEffect, useState } from "react";
+import  React, { useEffect, useState } from "react";
 import upload from "/assets/upload.svg";
 
+interface FileUploaderProps {
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUpload: () => void;
+  uploading: boolean;
+}
 
-const ModalSubirArchivo = ({ standOpen, toggleModal}) => {
+
+const ModalSubirArchivo: React.FC<FileUploaderProps> = ({  onFileChange, uploading, onUpload}) => {
 
 
   const [showAnimation, setShowAnimation] = useState(false);
+  const [stadopen, setStadopen] = useState(false);
+  const toggleModal = () => {
+    setStadopen(!stadopen);
+  };
 
   // Se agrega useEffect para controlar la animación de la ventana emergente
 
   useEffect(() => {
-    if (standOpen) {
+    if (stadopen) {
       setShowAnimation(true);
       setTimeout(() => {
         setShowAnimation(false);
       }, 800);
     }
-  }, [standOpen]);
+  }, [stadopen]);
 
 
 
   return (
     <>
-      {standOpen && (
+    <button
+        className="borde-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 "
+        onClick={() => setStadopen(true)}
+      >
+        Agregar Cups
+      </button>
+      {stadopen && (
         <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-50 backdrop-blur-sm "
@@ -56,6 +72,8 @@ const ModalSubirArchivo = ({ standOpen, toggleModal}) => {
                   type="file"
                   id="files"
                   className="hidden"
+                  multiple
+                  onChange={onFileChange}
                 />
                 <button
                   className="py-2 px-4 rounded shadow hover:bg-blue-500"
@@ -76,8 +94,10 @@ const ModalSubirArchivo = ({ standOpen, toggleModal}) => {
                 Cerrar
               </button>
               <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
+              disabled={uploading}
+              onClick={onUpload}
               >
-                Crear
+                {uploading ? "Subiendo..." : "Subir"}
               </button>
             </div>
           </div>

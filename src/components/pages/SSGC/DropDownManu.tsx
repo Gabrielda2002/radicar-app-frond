@@ -67,7 +67,7 @@ const DropDownManu = () => {
       </MenuItems>
 
       {<ModalCrearCarpeta standOpen={stadOpenFolder} toggleModal={toggleModalFolder} />}
-      {<ModalSubirArchivo standOpen={stadOpenFile} toggleModal={toggleModalFile}/>}
+      {/* {<ModalSubirArchivo standOpen={stadOpenFile} toggleModal={toggleModalFile}/>} */}
     </Menu>
   );
 };
