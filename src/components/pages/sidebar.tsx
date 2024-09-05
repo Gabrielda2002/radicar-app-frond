@@ -165,7 +165,7 @@ const SideBar: FC = () => {
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
                       isAccordionOpen2 ? "rotate-180" : ""
                     }`}
                   />
@@ -238,7 +238,7 @@ const SideBar: FC = () => {
                 <img
                   src={arrowUp}
                   alt=""
-                  className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                  className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
                     isAccordionOpen1 ? "rotate-180" : ""
                   }`}
                 />
@@ -374,7 +374,7 @@ const SideBar: FC = () => {
                   <img
                     src={arrowUp}
                     alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
                       isAccordionOpen3 ? "rotate-180" : ""
                     }`}
                   />
@@ -402,7 +402,7 @@ const SideBar: FC = () => {
             </div>
 
             {/* Modal Component */}
-            <Modal isOpen={isModalOpen} onClose={closeModal} />
+            <Modal isOpen={isModalOpen} onClose={closeModal} formType={"Autorizacion"} />
             {/* Modulo de acordion 4*/}
             <div className="space-y-3">
               <div>
@@ -440,7 +440,7 @@ const SideBar: FC = () => {
                     alt=""
                     className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen4 ? "rotate-180" : ""
-                    } group-hover:invert`}
+                    } dark:invert`}
                   />
                 </button>
 
@@ -869,7 +869,7 @@ const SideBar: FC = () => {
                     alt=""
                     className={`w-6 h-6 ml-auto transition-transform duration-300 ${
                       isAccordionOpen5 ? "rotate-180" : ""
-                    } group-hover:invert`}
+                    } dark:invert`}
                   />
                 </button>
                 {isAccordionOpen5 && (
