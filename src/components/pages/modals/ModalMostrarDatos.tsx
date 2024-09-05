@@ -106,7 +106,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
           <div className={`z-10 ${wdCondic ? 'w-[750px]' : 'w-[950px]'} p-2 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800`}>
             <div className="flex items-center justify-between mb-4 px-2">
-              <h2 className="text-lg font-semibold text-color">Servicios</h2>
+              <h2 className="text-lg font-semibold text-color dark:text-gray-200">Servicios</h2>
               <button
                 onClick={toggleModal}
                 className="text-xl text-gray-500 hover-gray-700"
@@ -119,13 +119,13 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
             <div className={`max-h-[70Vh] overflow-y-auto text-sm divide-y grid ${gdCondic ? 'grid-cols-1' : 'grid-cols-2'} px-6 gap-x-4 py-2 divide-gray-200 dark:divide-gray-700 `}>
               {/* INIT-"TABLE"-COL-1 */}
-              <section className=" grid grid-cols-2 gap-2">
+              <section className=" grid grid-cols-2 gap-2 ">
                 {numRadi && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
-                      Numero Radicado : {/*! no prop de nombre !*/}
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
+                      Numero Radicado : {/* ! POSIBLE dark:text-slate-200 ! */}
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -133,10 +133,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {feRadi && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Fecha {nomCiru1} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -144,10 +144,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {tipoDoc && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       {nomCiru7} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -155,10 +155,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {numDoc && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Numero Documento :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -166,10 +166,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {nomPac && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Nombre Paciente :{/*! no prop nombre ! */}
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -177,10 +177,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {numCel && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       {nomCiru2} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -188,10 +188,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {telFijo && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Telefono Fijo :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -199,10 +199,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {email && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Email :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -210,10 +210,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {direccion && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       {nomCiru3} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -221,10 +221,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {convenio && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       {nomCiru4} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -232,10 +232,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {ipsPri && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       {nomCiru5} :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -243,10 +243,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {feOrden && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Fecha {nomCiru6} : {/* posible no prop nombre */}
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end  dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -254,10 +254,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {lugRadi && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       Lugar Radicacion :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -265,10 +265,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {ipsRem && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
                       IPS Remite :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -279,10 +279,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
               <section className=" grid grid-cols-2 gap-2 mr-2 border-none">
                 {profecional && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Profecional :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -290,10 +290,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {especialidad && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Especialidad :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -301,10 +301,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {codDiagn && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Cod Diagnostico :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -312,10 +312,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {descripDiagn && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Descripcion Diagnostico :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -323,10 +323,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {grupoServicio && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Grupo Servicio :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -334,10 +334,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {tipoServicio && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Tipo Servicio :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -345,10 +345,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {codCup && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Cod Cup : {/* no prop de nombre */}
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -356,10 +356,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {descripCup && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Descripcion Cups : {/* no prop de nombre */}
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -367,10 +367,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {auxiRadi && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Auxiliar Radicador :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -378,10 +378,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {nomAuditor && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Nombre Auditor :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -389,10 +389,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {feAuditoria && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Fecha Auditoria :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -400,10 +400,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {unidadFunciona && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Unidad Funcional :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -411,10 +411,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {justConcepto && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Justificacion Concepto :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -422,10 +422,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
                 {obserAuditoria && (
                   <>
-                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start ">
+                    <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
                       Observacion Auditoria :
                     </div>
-                    <div className="text-right border pr-2 h-8 flex items-center justify-end">
+                    <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
                     </div>
                   </>
@@ -435,10 +435,10 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
             {/* Botones */}
 
-            <div className="flex justify-end mt-6 space-x-3 text-sm">
+            <div className="flex  items-center justify-end w-full h-12 gap-2 px-4 py-4 text-sm font-semibold  bg-white dark:bg-gray-800">
               <button
                 onClick={toggleModal}
-                className="px-6 py-3 text-white bg-gray-500 rounded-lg round hover:bg-gray-600"
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700 dark:bg-gray-900"
               >
                 Cerrar
               </button>

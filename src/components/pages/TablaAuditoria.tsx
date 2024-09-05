@@ -80,8 +80,8 @@ const TablaAuditoria = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar Auditoria..."
-              className="block w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              placeholder="Consultar..."
+              className="block ps-2 w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
           </div>
           <div className="flex items-center space-x-[10px] pt-1-">
@@ -97,11 +97,11 @@ const TablaAuditoria = () => {
               <option value="16">16 Páginas</option>
               <option value="24">24 Páginas</option>
             </select>
-            <button className="borde-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+            <button className="border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:border-gray-200">
               Ver Autorizaciones
             </button>
             <Link to={"/tabla-registros-auditados"}>
-              <button className=" w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+              <button className="border-2 w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                 Auditados
               </button>
             </Link>

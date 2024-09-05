@@ -80,8 +80,8 @@ const TablaRadicacion = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder=" Consultar registro..."
-              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              placeholder="Consultar..."
+              className="block ps-2 w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -125,7 +125,7 @@ const TablaRadicacion = () => {
                   </tr>
                 </thead>
 
-                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center dark:text-gray-200">
                   {currentData().map((radicacion) => (
                     <tr className="text-center" key={radicacion.id}>
                       <td>

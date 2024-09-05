@@ -73,8 +73,8 @@ const TablaIpsRemite = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder=" Consultar IPS Remite..."
-              className="block w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Consultar..."
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center pt-1 space-x-2">
@@ -103,7 +103,7 @@ const TablaIpsRemite = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto text-sm text-center divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="w-full mx-auto text-sm text-center dark:text-gray-200">
               <thead>
                 <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[60px]">ID</th>
