@@ -4,12 +4,15 @@ import FileList from "./SSGC/FileList";
 import { Link } from "react-router-dom";
 import salir from "/assets/back.svg";
 import BreadCrumb from "./SSGC/BreadCrumb";
-import DropDownManu from "./SSGC/DropDownManu";
+import { useState } from "react";
+// import DropDownManu from "./SSGC/DropDownManu";
 // import path from "path";
 
 const FileManager: React.FC = () => {
-
   // const [showModal, setShowModal] = useState<string | null>(null);
+
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+
 
   const {
     contents,
@@ -19,6 +22,7 @@ const FileManager: React.FC = () => {
     deleteItemById,
     downloadFileById,
     navigateBackToFolder,
+    uploadNewFile,
     setCurrentFolderId,
   } = useFileManager();
 
@@ -28,6 +32,28 @@ const FileManager: React.FC = () => {
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
+
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFiles(e.target.files);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedFiles) {
+      const formData = new FormData();
+
+      Array.from(selectedFiles).forEach((file) => {
+        formData.append("files", file);
+      })
+      const  id = path[path.length - 1].id;
+      
+      await uploadNewFile(formData, id);
+      setSelectedFiles(null);
+    }
+  };
+
 
   return (
     <>
@@ -64,8 +90,7 @@ const FileManager: React.FC = () => {
           </div>
           {/* Modal para crear carpetas */}
 
-          <DropDownManu setCurrentFolderId={setCurrentFolderId}/>
-
+          {/* <DropDownManu/> */}
         </section>
         <div>
           <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
@@ -73,6 +98,21 @@ const FileManager: React.FC = () => {
 
         {/* <button onClick={() => createNewFolder("Nueva Carpeta")}>Nueva Carpeta</button> */}
         {/* <input type="file" onChange={(e) => e.target.files && uploadNewFile(e.target.files[0])} /> */}
+
+        <div className="flex items-center justify-between pb-6 header-tabla">
+          <input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray50 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <button
+            onClick={handleUpload}
+            className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Subir Archivo
+          </button>
+        </div>
 
         <div>
           {isEmpty ? (

@@ -64,10 +64,10 @@ export const useFileManager = (initialFolderId?: string) => {
     };
 
     // Function to upload a new file
-    const uploadNewFile = async (file: File) => { // Usa el tipo global File ahora
-        if (!currentFolderId) return;
+    const uploadNewFile = async (formData: FormData, id: number | string) => { // Usa el tipo global File ahora
+        // if (!currentFolderId) return;
         try {
-            await uploadFile(currentFolderId, file);
+            await uploadFile(formData, id);
             await fetchContents(); // Reload contents after uploading a file
         } catch (err) {
             setError(`Error uploading file ${err}`);

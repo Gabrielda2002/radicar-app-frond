@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import ModalCrearCarpeta from "../modals/ModalCrearCarpeta";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import ModalSubirArchivo from "../modals/ModalSubirArchivo";
 
-const DropDownManu = ({setCurrentFolderId}) => {
+const DropDownManu = () => {
   //   const [isOpen, setIsOpen] = useState(false);
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
@@ -67,7 +67,7 @@ const DropDownManu = ({setCurrentFolderId}) => {
       </MenuItems>
 
       {<ModalCrearCarpeta standOpen={stadOpenFolder} toggleModal={toggleModalFolder} />}
-      {<ModalSubirArchivo standOpen={stadOpenFile} toggleModal={toggleModalFile} folderId={setCurrentFolderId}/>}
+      {<ModalSubirArchivo standOpen={stadOpenFile} toggleModal={toggleModalFile}/>}
     </Menu>
   );
 };

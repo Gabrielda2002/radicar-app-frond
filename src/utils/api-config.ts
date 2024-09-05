@@ -40,16 +40,17 @@ export const createFolder = async (parentFolderId: string, folderName: string) =
     return api.post('/sistema-calidad', {parentFolderId, folderName})
 }
 
-export const uploadFile = async (folderId: string, file: File) => {
-    const formData = new FormData()
-    formData.append('file', file)
-
-    return api.post(`/archivo/${folderId}/archivos`, formData, {
+export const uploadFile = async (formData: FormData, id: number | string) => {
+    return api.post(`/archivo`, formData, {
+        params: {
+            parentFolderId: id, // Pasar el ID de la carpeta en los parámetros de la URL
+        },
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-}
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
+
 
 export const deleteItem = (id: string, type: "carpetas" | "archivo") => {
     return api.delete(`/${type}/${id}`);
