@@ -1,13 +1,16 @@
 //*Funciones y Hooks
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFetchCups } from "../../../hooks/useFetchUsers";
+
 import Pagination from "../../Pagination";
-import ModalCups from "../modals/ModalCups";
-import ModalAction from "../modals/ModalAction";
-import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import { useFetchCups } from "../../../hooks/useFetchUsers";
+import useSearch from "../../../hooks/useSearch";
+
+import ModalCups from "../modals/ModalCups";
+import ModalActionCups from "../modals/ModalActionCups";
+
 //*Iconos
 import salir from "/assets/back.svg";
 
@@ -65,6 +68,8 @@ const TablaCups = () => {
 
       {/* container-table */}
       <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">
+        {/* header-tale */}
+
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
@@ -85,6 +90,7 @@ const TablaCups = () => {
               onChange={handleItemsPerPageChange}
               value={itemsPerPage}
             >
+              <option value="">PAGES</option>
               <option value="10">10 PAGES</option>
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
@@ -99,7 +105,7 @@ const TablaCups = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto divide-gray-200 ivide-y dark:divide-gray-700 ">
+            <table className="w-full mx-auto divide-gray-200 divide-y dark:divide-gray-700 ">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className="w-[fit-content]">ID</th>
@@ -118,7 +124,7 @@ const TablaCups = () => {
                     <td>{cups.name}</td>
                     <td>{cups.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Cups" />
+                      <ModalActionCups />
                     </td>
                   </tr>
                 ))}

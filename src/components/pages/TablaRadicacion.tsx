@@ -1,16 +1,19 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+
+import Pagination from "../Pagination";
+import usePagination from "../../hooks/usePagination";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-import usePagination from "../../hooks/usePagination";
+
+
 import ModalRadicacion from "./modals/ModalRadicacion";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
-//*Iconos
-import soporte from "/assets/soporte.svg";
-import gestion from "/assets/gestion.svg";
-import mostrar from "/assets/mostrar.svg";
+import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
+import ModalSoporte from "./modals/ModalSoporte.tsx";
+//Iconos
 import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 8;
@@ -141,25 +144,59 @@ const TablaRadicacion = () => {
                       </td>
                       <td>{radicacion.management}</td>
                       <td>
-                        <button>
-                          <img src={soporte} alt="Soporte" />
-                        </button>
+                        <ModalSoporte></ModalSoporte>
                       </td>
                       <td>
-                        <button>
-                          <img src={gestion} alt="Gestión Auxiliar" />
-                        </button>
+                        <ModalGestionAuxiliar></ModalGestionAuxiliar>
                       </td>
                       <td>
-                        <button>
-                          <img src={mostrar} alt="Mostrar" />
-                        </button>
+                        <ModalMostarDatos
+                          wdCondic={false}
+                          gdCondic={false}
+                          // Tabla Col 1
+                          numRadi={true}
+                          feRadi={true}
+                          // nomCiru1=""
+                          tipoDoc={true}
+                          numDoc={true}
+                          nomPac={true}
+                          numCel={true}
+                          // nomCiru2=""
+                          telFijo={true}
+                          email={true}
+                          direccion={true}
+                          // nomCiru3=""
+                          convenio={true}
+                          // nomCiru4=""
+                          ipsPri={true}
+                          // nomCiru5=""
+                          feOrden={true}
+                          // nomCiru6=""
+                          lugRadi={true}
+                          ipsRem={true}
+                          // Tabla Col 2
+                          obserAuditoria={true}
+                          justConcepto={true}
+                          unidadFunciona={true}
+                          feAuditoria={true}
+                          nomAuditor={true}
+                          auxiRadi={true}
+                          descripCup={true}
+                          codCup={true}
+                          tipoServicio={true}
+                          grupoServicio={true}
+                          descripDiagn={true}
+                          codDiagn={true}
+                          especialidad={true}
+                          profecional={true}
+                        ></ModalMostarDatos>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
             {/* Controles de la Paginacion */}
             <Pagination
               currentPage={currentPage}
