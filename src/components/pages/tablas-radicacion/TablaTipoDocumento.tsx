@@ -105,7 +105,7 @@ const TablaTipoDocumento = () => {
           <>
             <table className="w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
-                <tr className="dark:bg-gray-700 dark:text-gray-200 bg-gray-50">
+                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[60px]">ID</th>
                   <th className=" w-[200px]">Tipo Documento</th>
                   <th className=" w-[100px]">Estado</th>

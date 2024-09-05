@@ -115,7 +115,7 @@ const TablaAuditoria = () => {
           <>
             <table className="w-full text-center divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
-                <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[90px]">Fecha Radicados</th>
                   <th className=" w-[90px]">Tipo Documento </th>
                   <th className=" w-[100px]">Identificacion</th>
