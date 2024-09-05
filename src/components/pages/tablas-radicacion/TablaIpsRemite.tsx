@@ -105,7 +105,7 @@ const TablaIpsRemite = () => {
           <>
             <table className="w-full mx-auto text-sm text-center dark:text-gray-200">
               <thead>
-                <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                <tr className="text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" w-[60px]">ID</th>
                   <th className=" w-[200px]">Nombre IPS Remite</th>
                   <th className=" w-[100px]">Estado</th>
