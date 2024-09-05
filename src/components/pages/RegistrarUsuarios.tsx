@@ -1,5 +1,7 @@
+//*Funciones y Hooks
 import React, { useState } from "react";
 import { useRegistrarUsuarios } from "../../hooks/useRegisterUser";
+//*Icons
 import logo from "/src/imgs/logo.png";
 import arrowUp from "/assets/arrow-up.svg";
 

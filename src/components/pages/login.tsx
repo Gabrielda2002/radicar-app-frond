@@ -1,3 +1,4 @@
+//*Funciones y hooks
 import React, { useState } from "react";
 import { api } from "../../utils/api-config";
 import { useNavigate } from "react-router-dom";

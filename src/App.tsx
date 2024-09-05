@@ -8,22 +8,24 @@ import Navbar from "./components/navbar";
 import Login from "./components/pages/login";
 import Perfil from "./components/pages/perfil";
 import Inicio from "./components/pages/inicio";
-import Tabla from "./components/pages/tabla";
-import TablaAuditoria from "./components/pages/tabla-auditoria";
-import TablaCirugias from "./components/pages/tabla-cirugias";
-import TablaCups from "./components/pages/tablas-radicacion/tabla-cups";
-import TablaPacientes from "./components/pages/tablas-radicacion/tabla-pacientes";
-import TablaRadicadores from "./components/pages/tablas-radicacion/tabla-radicadores";
-import TablaMunicipios from "./components/pages/tablas-radicacion/tabla-municipios";
-import TablaConvenios from "./components/pages/tablas-radicacion/tabla-convenios";
-import TablaTipoDocumento from "./components/pages/tablas-radicacion/tabla-tipo-documento";
-import TablaIpsPrimaria from "./components/pages/tablas-radicacion/tabla-ips-primaria";
-import TablaLugarRadicacion from "./components/pages/tablas-radicacion/tabla-lugar-radicacion";
-import TablaIpsRemite from "./components/pages/tablas-radicacion/tabla-ips-remite";
-import TablaEspecialidad from "./components/pages/tablas-radicacion/tabla-especialidad";
-import TablaTipoServicio from "./components/pages/tablas-radicacion/tabla-tipo-servicio";
+import TablaRadicacion from "./components/pages/TablaRadicacion";
+import TablaAuditoria from "./components/pages/TablaAuditoria";
+import TablaRegistrosAuditados from "./components/pages/tablas-radicacion/TablaRegistrosAuditados";
+import TablaCirugias from "./components/pages/TablaCirugia";
+import TablaCups from "./components/pages/tablas-radicacion/TablaCups";
+import TablaPacientes from "./components/pages/tablas-radicacion/TablaPacientes";
+import TablaRadicadores from "./components/pages/tablas-radicacion/TablaRadicadores";
+import TablaMunicipios from "./components/pages/tablas-radicacion/TablaMunicipios";
+import TablaConvenios from "./components/pages/tablas-radicacion/TablaConvenio";
+import TablaTipoDocumento from "./components/pages/tablas-radicacion/TablaTipoDocumento";
+import TablaIpsPrimaria from "./components/pages/tablas-radicacion/TablaIpsPrimaria";
+import TablaLugarRadicacion from "./components/pages/tablas-radicacion/TablaLugarRadicacion";
+import TablaIpsRemite from "./components/pages/tablas-radicacion/TablaIpsRemite";
+import TablaEspecialidad from "./components/pages/tablas-radicacion/TablaEspecialidad";
+import TablaTipoServicio from "./components/pages/tablas-radicacion/TablaTipoServicio";
 import Usuarios from "./components/pages/usuarios";
-import RegistrarUsuarios from "./components/pages/registrar-usuarios";
+import RegistrarUsuarios from "./components/pages/RegistrarUsuarios";
+import TablaAutorizarServicios from "./components/pages/tablas-radicacion/TablaAutorizarServicios";
 import CookieConsent from "./components/PopCookie";
 
 // Contextos
@@ -56,11 +58,20 @@ function AppRoutes() {
                     <Layout>
                       <Routes>
                         <Route path="/home" element={<Inicio />} />
-                        <Route path="/tabla" element={<Tabla />} />
+                        <Route
+                          path="/tabla-radicacion"
+                          element={<TablaRadicacion />}
+                        />
                         <Route
                           path="/tabla-auditoria"
                           element={<TablaAuditoria />}
                         />
+                        <Route
+                          path="/tabla-registros-auditados"
+                          element={
+                            <TablaRegistrosAuditados></TablaRegistrosAuditados>
+                          }
+                        ></Route>
                         <Route
                           path="/tabla-cirugias"
                           element={<TablaCirugias />}
@@ -112,6 +123,10 @@ function AppRoutes() {
                           path="/registrar-usuarios"
                           element={<RegistrarUsuarios />}
                         />
+                        <Route
+                          path="/tabla-autorizar-servicios"
+                          element={<TablaAutorizarServicios />}
+                        />
                         <Route path="*" element={<Navigate to="/home" />} />
                       </Routes>
                     </Layout>
@@ -133,7 +148,8 @@ function AppRoutes() {
 export function App() {
   return (
     <AuthProvider>
-      <CookieConsent /> {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
+      <CookieConsent />{" "}
+      {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
       <AppRoutes />
     </AuthProvider>
   );

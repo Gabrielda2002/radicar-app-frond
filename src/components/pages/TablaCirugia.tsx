@@ -1,10 +1,14 @@
+//*Funciones y Hooks
 import { Link } from "react-router-dom";
 
+import ModalCirugias from "./modals/ModalCirugias";
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
+
+//iconos
 import salir from "/assets/back.svg";
-import soporte from "/assets/mostrar.svg";
-import programar from "/assets/programar.svg";
 
 const TablaCirugias = () => {
+ 
   return (
     <>
       {/*nav-auditoria*/}
@@ -14,7 +18,9 @@ const TablaCirugias = () => {
         </h1>
         <nav className="">
           <ol className="flex mb-2 dark:text-gray-300">
-            <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            <Link to="/inicio">
+              <li className="text-slate-400 after:mr-2 ">Inicio</li>
+            </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
               Servicio Cirugias
             </li>
@@ -53,10 +59,10 @@ const TablaCirugias = () => {
             </select>
           </div>
         </section>
-
+        
         <table className="min-w-full mx-auto text-sm divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className="text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+            <tr className="text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
               <th className="px-4 py-2">Fecha - Hora del Radicado</th>
               <th className="px-4 py-2">N.º Radicado</th>
               <th className="px-4 py-2">N.º Documento</th>
@@ -82,57 +88,49 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
-                </button>
+              <td className="flex justify-center">
+                <ModalMostarDatos
+                    // Table Col 1 (6)
+                    numRadi={true}//
+                    feRadi={true}//fecha paraclinicos
+                    nomCiru1="Paraclinicos"
+                    tipoDoc={true}//Numero programacion
+                    nomCiru7="Numero Programacion"
+                    numDoc={true}//
+                    nomPac={true}//
+                    numCel={true}//hora programada
+                    nomCiru2="Hora Programada"
+                    // telFijo={false}
+                    // email={false}
+                    direccion={true}//observaciones
+                    nomCiru3="Observaciones"
+                    convenio={true}//fecha valoracion
+                    nomCiru4="Fecha Valoracion"
+                    ipsPri={true}//fecha cirugia
+                    nomCiru5="Fecha Cirugia"
+                    feOrden={true}//fecha ordenamiento
+                    nomCiru6="Ordenamiento"
+                    // lugRadi={false}
+                    ipsRem={true}//dejaste esta ips
+                    // Table Col 2 (5)
+                    // obserAuditoria={false}
+                    // justConcepto={false}
+                    // unidadFunciona={false}
+                    // feAuditoria={false}
+                    // nomAuditor={false}
+                    // auxiRadi={false}
+                    // descripCup={false}
+                    // codCup={false}
+                    // tipoServicio={false}
+                    // grupoServicio={false}
+                    // descripDiagn={false}
+                    // codDiagn={false}
+                    // especialidad={false}
+                    // profecional={false}
+                ></ModalMostarDatos>
               </td>
               <td className="px-4 py-2">
-                <button>
-                  <img src={programar}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
-                </button>
-              </td>
-              <td className="px-4 py-2">
-                <button>
-                  <img src={programar}></img>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>
-                <button>
-                  <img src={soporte} alt="Mostrar" />
-                </button>
-              </td>
-              <td className="px-4 py-2">
-                <button>
-                  <img src={programar} alt="" />
-                </button>
+                <ModalCirugias />
               </td>
             </tr>
           </tbody>
