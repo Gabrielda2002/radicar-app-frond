@@ -6,17 +6,19 @@ interface FileUploaderProps {
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onUpload: () => void;
   uploading: boolean;
+  stadopen: boolean;
+  toggleModal: () => void;
 }
 
 
-const ModalSubirArchivo: React.FC<FileUploaderProps> = ({  onFileChange, uploading, onUpload}) => {
+const ModalSubirArchivo: React.FC<FileUploaderProps> = ({  stadopen,toggleModal,onFileChange, uploading, onUpload}) => {
 
 
   const [showAnimation, setShowAnimation] = useState(false);
-  const [stadopen, setStadopen] = useState(false);
-  const toggleModal = () => {
-    setStadopen(!stadopen);
-  };
+  // const [stadopen, setStadopen] = useState(false);
+  // const toggleModal = () => {
+  //   setStadopen(!stadopen);
+  // };
 
   // Se agrega useEffect para controlar la animación de la ventana emergente
 
@@ -33,12 +35,12 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({  onFileChange, uploadi
 
   return (
     <>
-    <button
+    {/* <button
         className="borde-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 "
         onClick={() => setStadopen(true)}
       >
         Agregar Cups
-      </button>
+      </button> */}
       {stadopen && (
         <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div

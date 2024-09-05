@@ -1,14 +1,23 @@
-import  { useState } from "react";
+import  React, { useState } from "react";
 import ModalCrearCarpeta from "../modals/ModalCrearCarpeta";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import ModalSubirArchivo from "../modals/ModalSubirArchivo";
+import { useUploadFile } from "../../../hooks/useUploadFile";
 
-const DropDownManu = () => {
+interface DropDownManuProps {
+  currentFolderId: string;
+  uploadNewFile: (formData: FormData, id: string | number) => Promise<void>;
+}
+
+const DropDownManu: React.FC<DropDownManuProps> = ({uploadNewFile, currentFolderId}) => {
   //   const [isOpen, setIsOpen] = useState(false);
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
+  
+  const { selectedFiles, uploading, handleFileChange, handleUpload } =
+  useUploadFile(uploadNewFile, currentFolderId)
 
   const toggleModalFolder = () => {
     setStadOpenFolder(!stadOpenFolder);
@@ -67,7 +76,13 @@ const DropDownManu = () => {
       </MenuItems>
 
       {<ModalCrearCarpeta standOpen={stadOpenFolder} toggleModal={toggleModalFolder} />}
-      {/* {<ModalSubirArchivo standOpen={stadOpenFile} toggleModal={toggleModalFile}/>} */}
+      {<ModalSubirArchivo
+            onFileChange={handleFileChange}
+            onUpload={handleUpload}
+            uploading={uploading}
+            stadopen={stadOpenFile}
+            toggleModal={toggleModalFile}
+          />}
     </Menu>
   );
 };
