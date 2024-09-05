@@ -101,7 +101,7 @@ const TablaCups = () => {
           <>
             <table className="w-full mx-auto divide-gray-200 ivide-y dark:divide-gray-700 ">
               <thead>
-                <tr className="dark:bg-gray-700 dark:text-gray-200">
+                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className="w-[fit-content]">ID</th>
                   <th className="">Codigo</th>
                   <th className="w-[fit-content]">Descripcion del Cup</th>
