@@ -14,7 +14,7 @@ const ModalGestionAuxiliar = () => {
 
   return (
     <>
-      <button className="" onClick={() => setStadOpen(true)}>
+      <button className="focus:outline-none" onClick={() => setStadOpen(true)}>
         <img className="dark:invert" src={gestion} alt="" />
       </button>
 

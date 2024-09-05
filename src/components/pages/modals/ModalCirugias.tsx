@@ -7,7 +7,7 @@ const ModalCirugias = () => {
 
   return (
     <>
-      <button className="" onClick={() => setStadopen(true)}>
+      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
         <img className="dark:invert" src={programar} alt="" />
       </button>
 

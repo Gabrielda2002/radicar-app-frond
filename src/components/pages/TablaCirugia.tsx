@@ -42,15 +42,15 @@ const TablaCirugias = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
             <input
-              placeholder=" Consultar Cirugia..."
-              className="block ps-2 w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring border-stone-300 dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              placeholder="Consultar..."
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
             <select
               name=""
               id=""
-              className="border-2 h-[40px] w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="border-2 h-[40px] w-[100px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="1">10 Paginas</option>
@@ -88,7 +88,7 @@ const TablaCirugias = () => {
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
               <td>....texto alussivo</td>
-              <td className="flex justify-center">
+              <td className="">
                 <ModalMostarDatos
                     // Table Col 1 (6)
                     numRadi={true}//

@@ -49,7 +49,7 @@ const TablaAuditoria = () => {
 
   return (
     <>
-      <section className="p-4 dark:bg-gray-900 ps-0">
+      <section className=" dark:bg-gray-900 ps-0">
         <LoadingSpinner duration={500}/>
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
@@ -81,7 +81,7 @@ const TablaAuditoria = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10  border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="flex items-center space-x-[10px] pt-1-">
@@ -90,7 +90,7 @@ const TablaAuditoria = () => {
               id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-12 w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="border-2 h-12 w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="8">8 Páginas</option>
@@ -101,9 +101,9 @@ const TablaAuditoria = () => {
               Ver Autorizaciones
             </button>
             <Link to={"/tabla-registros-auditados"}>
-              <button className="border-2 w-[100px] h-10 rounded-md focus:outline-none bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+              <button className="border-2 w-[100px] h-10 focus:outline-none rounded-md bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
                 Auditados
-              </button>
+              </button>{/* ! no se funciona | focus:outline-none | ! */}
             </Link>
           </div>
         </section>
@@ -204,8 +204,8 @@ const TablaAuditoria = () => {
                 </td>
                 <td>
                   <Link to="/tabla-autorizar-servicios">
-                    <img className="dark:invert" src={autorizar} alt="autorizar-icon" />
-                  </Link>
+                    <img className="dark:invert " src={autorizar} alt="autorizar-icon" />
+                  </Link>{/* ! no se le puede colocar | focus:outline-none | ! */}
                 </td>
               </tr>
             ))}

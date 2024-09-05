@@ -7,8 +7,8 @@ const ModalSoporte = () => {
 
   return (
     <>
-      <button className="dark:invert" onClick={() => setStadOpen(true)}>
-        <img src={soporte} alt="" />
+      <button className="focus:outline-none" onClick={() => setStadOpen(true)}>
+        <img className="dark:invert" src={soporte} alt="" />
       </button>
 
       {stadOpen && (

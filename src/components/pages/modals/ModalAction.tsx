@@ -7,8 +7,8 @@ const ModalAction = (props: any) => {
 
   return (
     <>
-      <button className="" onClick={() => setStadopen(true)}>
-        <img className="dark:invert" src={onOff} alt="" />
+      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
+        <img className="dark:invert " src={onOff} alt="" />
       </button>
 
       {/* init event modal */}
