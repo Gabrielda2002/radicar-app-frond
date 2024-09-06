@@ -45,10 +45,10 @@ const TablaRegistrosAuditados = () => {
           Buscar registos Auditados:
         </label>
         <section className="flex justify-between pb-6 ">
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <input
               type="text"
-              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark-text-white dark:bg-gray-700 "
+              className="block ps-2 w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-stone-300 dark:bg-gray-700 "
               placeholder=" Consultar..."
             />
           </div>
@@ -68,9 +68,9 @@ const TablaRegistrosAuditados = () => {
         </section>
 
         {/* init-tabla */}
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-100">
-          <thead>
-            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
+        <table className="min-w-full  dark:text-gray-100">
+          <thead className="">
+            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 ">
               <th>ID CUP</th>
               <th>ID Radicación</th>
               <th>Número Documento</th>
@@ -84,7 +84,7 @@ const TablaRegistrosAuditados = () => {
           </thead>
 
           <tbody>
-            <tr className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700">
+            <tr className="text-xs text-center mt-2">
               <td>..texto alusivo</td>
               <td>..texto alusivo</td>
               <td>..texto alusivo</td>

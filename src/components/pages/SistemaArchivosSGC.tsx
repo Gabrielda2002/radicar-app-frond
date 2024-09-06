@@ -22,6 +22,8 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
   } = useFileManager();
 
+  console.log(contents);
+
   const currentFolderId = path[path.length - 1].id;
 
   if (loading) return <div>Cargando...</div>;

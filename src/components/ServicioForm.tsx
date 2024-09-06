@@ -17,7 +17,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({ cantidad }) => {
             type="text"
             id={`servicio-${index}`}
             name={`servicio-${index}`}
-            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
           />
         </label>
       </div>
@@ -29,7 +29,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({ cantidad }) => {
           <textarea
             id={`descripcion-${index}`}
             name={`descripcion-${index}`}
-            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
           ></textarea>
         </label>
       </div>

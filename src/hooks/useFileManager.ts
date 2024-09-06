@@ -8,6 +8,7 @@ interface FileItem { // Renombrado de File a FileItem
     mimeType: string;
     createdAt: string;
     updatedAt: string;
+    path: string;
 }
 
 interface Folder {

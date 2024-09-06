@@ -8,6 +8,7 @@ interface File {
   name: string;
   size: number;
   mimeType: string;
+  path: string;
 }
 
 interface FileListProps {
@@ -16,7 +17,7 @@ interface FileListProps {
   onDownload: (id: string, fileName: string) => void;
 }
 
-const FileList: React.FC<FileListProps> = ({ files }) => {
+const FileList: React.FC<FileListProps> = ({ files, onDownload }) => {
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
       case "application/pdf":
@@ -30,6 +31,17 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
     }
   };
 
+  const handleFileOpen = (file: File) => {
+
+    // * validar que solo se puedan abrir archivos pdf
+    if (file.mimeType == "application/pdf") {
+      window.open(`http://localhost:3600/api/v1/uploads/${file.path}`, "_blank");
+      return
+    }else{
+      onDownload(file.id, file.name)
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
       {/*  ({(file.size / 1024).toFixed(2)} KB) */}
@@ -38,6 +50,7 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
         <div key={file.id}
         className="flex flex-col items-center p-4 bg-gray-100 rounded-md dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer"
         title={`${file.name} - ${file.size / 1024} KB`}
+        onClick={() => handleFileOpen(file)}
         >
           <img
             src={getIcon(file.mimeType)}
