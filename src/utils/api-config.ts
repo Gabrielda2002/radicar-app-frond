@@ -58,7 +58,8 @@ export const deleteItem = (id: string, type: "carpetas" | "archivo") => {
 
 
 export const downloadFile = (id: string) => {
-    return api.get(`/archivo/${id}/descargar`, {
+    console.log(id)
+    return api.get(`/download-file/${id}`, {
         responseType: 'blob'
     })
 }
