@@ -30,9 +30,13 @@ api.interceptors.request.use(
 )
 
 export const getFolderContent = async (folderId?: string) => {
+    const idMunicipio = localStorage.getItem('Municipio')
     const path = folderId ? `/sistema-calidad/${folderId}` : '/sistema-calidad';
-    console.log(path)
-    return api.get(path);
+    return api.get(path, {
+        params: {
+            Municipio: idMunicipio
+        },
+    });
 };
 
 
