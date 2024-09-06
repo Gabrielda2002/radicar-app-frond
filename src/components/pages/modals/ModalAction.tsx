@@ -26,7 +26,11 @@ const ModalAction = (props: any) => {
           }`}
         >
           <section className="">
-            <div className="w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg">
+            <div
+              className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg ${
+                showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+              }`}
+            >
               {/* container-header */}
               <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
                 Modulo Estado
@@ -35,11 +39,7 @@ const ModalAction = (props: any) => {
               {/* init form */}
               <form
                 action=""
-                className={`max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200 ${
-                  showAnimation && !closing
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-10 opacity-0"
-                }`}
+                className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-8">
                   <section className="grid grid-cols-2 gap-x-16 ">
