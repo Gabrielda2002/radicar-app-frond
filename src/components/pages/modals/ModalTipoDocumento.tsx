@@ -1,23 +1,15 @@
-import { useEffect, useState } from "react";
-
+//*Funciones y Hooks
+import { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 const ModalTipoDocumento = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
+  const { showAnimation, closing } = useAnimation(isOpen, () =>
+    setIsOpen(false)
+  );
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      setShowAnimation(true);
-    } else {
-      setShowAnimation(false);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 300);
-    }
-  }, [isOpen]);
 
   return (
     <>
@@ -28,15 +20,21 @@ const ModalTipoDocumento = () => {
         Agregar Tipo Documento
       </button>
       {isOpen && (
-        <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div
+          className={`fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div
             onClick={toggleModal}
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"
           ></div>
-
           {/* Contenido del Formulario */}
-
-          <div className="z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div
+            className={`z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+            }`}
+          >
             <div className="flex items-center justify-between mb-10">
               <h2 className="text-lg font-semibold text-color">
                 Agregar Tipo de Documento

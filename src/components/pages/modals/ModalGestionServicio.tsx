@@ -1,13 +1,13 @@
+//*Funciones y Hooks
 interface ModalGestionServicioProps {
   onClose: () => void;
 }
-
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   onClose,
 }) => {
   return (
     <>
-      <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
+      <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
         <section>
           {/* container-full */}
           <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded  dark:bg-gray-800">

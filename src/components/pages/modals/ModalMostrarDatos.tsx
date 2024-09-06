@@ -85,7 +85,6 @@ const ModalMostarDatos: React.FC<ThProps> = ({
   profecional,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAnimation, setIsAnimation] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -96,7 +95,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
         <img className="dark:invert" src={mostrar} alt="" />
       </button>
       {isOpen && (
-        <div className="fixed z-50 flex items-center justify-center  transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
             onClick={toggleModal}
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"
@@ -286,7 +285,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
               </section>
 
               {/* INIT-"TABLE"-COL-2 */}
-              <section className=" grid grid-cols-2 gap-2 mr-2 border-none">
+              <section className="grid grid-cols-2 gap-2 mr-2 border-none ">
                 {profecional && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">

@@ -1,11 +1,18 @@
+//*Funciones y Hooks
 import { useState } from "react";
-
-import gestion from "/assets/gestion.svg";
+import useAnimation from "../../../hooks/useAnimations";
 import ModalGestionServicio from "./ModalGestionServicio";
+//*Icons
+import gestion from "/assets/gestion.svg";
 
 const ModalGestionAuxiliar = () => {
   const [stadOpen, setStadOpen] = useState(false); // Estados Auxiliar
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
+  const { showAnimation, closing } = useAnimation(
+    stadOpen,
+    () => setStadOpen(false),
+    300
+  );
 
   const EventServicio = () => {
     setStadOpen(false); // Cierra el primer modal
@@ -22,7 +29,13 @@ const ModalGestionAuxiliar = () => {
         <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
           <section onClick={() => setStadOpen(false)}>
             {/* container-full */}
-            <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded dark:bg-gray-800">
+            <div
+              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-900 ${
+                showAnimation && !closing
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-10 opacity-0"
+              }`}
+            >
               {/* container-header */}
               <div className="flex items-center justify-between px-2 py-2 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
@@ -154,7 +167,7 @@ const ModalGestionAuxiliar = () => {
               </section>
 
               {/* container-footer */}
-              <div className="flex  items-center justify-end w-full h-14 gap-2 px-4 py-4 text-sm font-semibold  bg-white dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                 <button
                   className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
                   onClick={() => setStadOpen(false)}

@@ -1,23 +1,15 @@
-import { useEffect, useState } from "react";
-
+//*Funciones y Hooks
+import { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 const ModalEspecialidad = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
+  const { showAnimation, closing } = useAnimation(isOpen, () =>
+    setIsOpen(false)
+  );
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      setShowAnimation(true);
-    } else {
-      setShowAnimation(false);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 300);
-    }
-  }, [isOpen]);
 
   return (
     <>
@@ -36,7 +28,13 @@ const ModalEspecialidad = () => {
 
           {/* Contenido del Formulario */}
 
-          <div className="z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div
+            className={`z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800  ${
+              showAnimation && !closing
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
             <div className="flex items-center justify-between mb-10">
               <h2 className="text-lg font-semibold text-color">
                 Agregar Especialidad
