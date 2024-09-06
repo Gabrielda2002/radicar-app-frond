@@ -14,10 +14,18 @@ const ModalSoporte = () => {
       {stadOpen && (
         <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
           <section className="">
-            <div className="w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ">
+            <div className="w-full overflow-hidden  transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ">
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-800 ">
-                Modulo Soporte
+              <div className="flex items-center justify-between  px-2 py-2  ">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+                  Modulo Soporte
+                </h1>
+                <button
+                  onClick={() => setStadOpen(false)}
+                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                >
+                  &times;
+                </button>
               </div>
 
               {/* init form */}
@@ -25,10 +33,9 @@ const ModalSoporte = () => {
                 action=""
                 className="max-h-[70Vh] overflow-y-auto overflow-x-hidden flex dark:bg-gray-800 dark:text-gray-200"
               >
-                <div className="p-8">{/* ! ajustar haci informacion ! */}
-                  <section className="grid h-[600px] w-[600px]">
-
-                  </section>
+                <div className="p-8">
+                  {/* ! ajustar haci informacion ! */}
+                  <section className="grid h-[600px] w-[600px]"></section>
                 </div>
               </form>
 

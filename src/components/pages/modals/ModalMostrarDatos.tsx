@@ -49,23 +49,23 @@ const ModalMostarDatos: React.FC<ThProps> = ({
   // Table Col 1
   numRadi,
   feRadi,
-  nomCiru1 = 'Radicacion',
+  nomCiru1 = "Radicacion",
   tipoDoc,
-  nomCiru7 = 'Tipo Documento',
+  nomCiru7 = "Tipo Documento",
   numDoc,
   nomPac,
   numCel,
-  nomCiru2 = 'Numero Celular',
+  nomCiru2 = "Numero Celular",
   telFijo,
   email,
   direccion,
-  nomCiru3 = 'Direccion',
+  nomCiru3 = "Direccion",
   convenio,
-  nomCiru4 = 'convenio',
+  nomCiru4 = "convenio",
   ipsPri,
-  nomCiru5 = 'IPS Primaria',
+  nomCiru5 = "IPS Primaria",
   feOrden,
-  nomCiru6 = 'Orden',
+  nomCiru6 = "Orden",
   lugRadi,
   ipsRem,
   // Table Col 2
@@ -82,7 +82,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
   descripDiagn,
   codDiagn,
   especialidad,
-  profecional
+  profecional,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimation, setIsAnimation] = useState(false);
@@ -104,12 +104,18 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
           {/* Contenido del Formulario */}
 
-          <div className={`z-10 ${wdCondic ? 'w-[750px]' : 'w-[950px]'} p-2 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800`}>
-            <div className="flex items-center justify-between mb-4 px-2">
-              <h2 className="text-lg font-semibold text-color dark:text-gray-200">Servicios</h2>
+          <div
+            className={`z-10 ${
+              wdCondic ? "w-[750px]" : "w-[950px]"
+            }  bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800`}
+          >
+            <div className="flex items-center justify-between  px-2 py-2">
+              <h2 className="text-xl font-semibold text-color dark:text-gray-200">
+                Servicios
+              </h2>
               <button
                 onClick={toggleModal}
-                className="text-xl text-gray-500 hover-gray-700"
+                className="text-xl text-gray-500 hover-gray-700 pr-2"
               >
                 &times;
               </button>
@@ -117,7 +123,11 @@ const ModalMostarDatos: React.FC<ThProps> = ({
 
             {/* Contenido del Formulario */}
 
-            <div className={`max-h-[70Vh] overflow-y-auto text-sm  grid ${gdCondic ? 'grid-cols-1' : 'grid-cols-2'} px-6 gap-x-4 py-2  `}>
+            <div
+              className={`max-h-[70Vh] overflow-y-auto text-sm  grid ${
+                gdCondic ? "grid-cols-1" : "grid-cols-2"
+              } px-6 gap-x-4 py-2  `}
+            >
               {/* INIT-"TABLE"-COL-1 */}
               <section className=" grid grid-cols-2 gap-2 ">
                 {numRadi && (
