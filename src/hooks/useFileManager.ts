@@ -86,24 +86,25 @@ export const useFileManager = (initialFolderId?: string) => {
     };
 
     // Function to download a file
-    const downloadFileById = async (fileId: string, fileName: string) => { // Agregado fileName para el nombre real
+    const downloadFileById = async (fileId: string, fileName: string) => { 
         try {
             const response = await downloadFile(fileId);
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
             const link = document.createElement('a');
             link.href = url;
-
+    
             // Set the download attribute with the real file name
-            link.setAttribute('download', fileName || `file_${fileId}`); // Usa el nombre real del archivo si está disponible
+            link.setAttribute('download', fileName || `file_${fileId}`);
             document.body.appendChild(link);
             link.click();
-
-            // Limpia el objeto URL creado
+    
+            // Clean up the URL object
             window.URL.revokeObjectURL(url);
         } catch (err) {
             setError(`Error downloading file ${err}`);
         }
     };
+    
 
     const navigateToFolder = (folderId: string, folderName:string) => {
         setCurrentFolderId(folderId);
