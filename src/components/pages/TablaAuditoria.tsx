@@ -50,7 +50,7 @@ const TablaAuditoria = () => {
   return (
     <>
       <section className="p-4 dark:bg-gray-900 ps-0">
-        <LoadingSpinner duration={500}/>
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
           Módulo Auditoria
         </h1>
@@ -135,93 +135,100 @@ const TablaAuditoria = () => {
                 </tr>
               </thead>
 
-          <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
-            {currentData().map((auditoria) => (
-              <tr>
-                <td>
-                  {auditoria.radicadoDate
-                    ? auditoria.radicadoDate.getTime()
-                    : "N/A"}
-                </td>
-                <td>{auditoria.documentType}</td>
-                <td>{auditoria.documentNumber}</td>
-                <td>{auditoria.namePatient}</td>
-                <td>{auditoria.convenio}</td>
-                <td>{auditoria.ipsPrimary}</td>
-                <td>
-                  {auditoria.orderDate ? auditoria.orderDate.getTime() : "N/A"}
-                </td>
-                <td>{auditoria.place}</td>
-                <td>{auditoria.ipsRemitente}</td>
-                <td>{auditoria.profetional}</td>
-                <td>{auditoria.speciality}</td>
-                <td>{auditoria.typeServices}</td>
-                <td>{auditoria.radicador}</td>
-                <td>
-                  <ModalSoporte></ModalSoporte>
-                </td>
-                <td>
-                  <ModalMostarDatos
-                      // wdCondic={true}
-                      // gdCondic={true}
-                      // Table Col 1
-                      // numRadi={false}
-                      // feRadi={false}
-                      // nomCiru3=""
-                      // tipoDoc={false}
-                      // nomCiru4=""
-                      // numDoc={false}
-                      // nomCiru6=""
-                      // nomPac={false}
-                      // numCel={false}
-                      // telFijo={false}
-                      // email={false}
-                      // direccion={false}
-                      // convenio={false}
-                      // ipsPri={false}
-                      // nomCiru5=""
-                      // feOrden={false}
-                      // lugRadi={false}
-                      // ipsRem={false}
-                      // Table Col 2
-                      obserAuditoria={true} //observacion cups |
-                      nomCiru1="Obseracion Cups"
-                      // justConcepto={false}
-                      unidadFunciona={true} //estado cups
-                      nomCiru2="Estado cups"
-                      // feAuditoria={false}
-                      // nomAuditor={false}
-                      // auxiRadi={false}
-                      descripCup={true} //
-                      codCup={true} //
-                      // tipoServicio={false}
-                      // grupoServicio={false}
-                      // descripDiagn={false}
-                      // codDiagn={false}
-                      // especialidad={false}
-                      // profecional={false}
-                  ></ModalMostarDatos>
-                </td>
-                <td>
-                  <Link to="/tabla-autorizar-servicios">
-                    <img className="dark:invert" src={autorizar} alt="autorizar-icon" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
- 
-          </tbody>
-        </table>
+              <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                {currentData().map((auditoria) => (
+                  <tr>
+                    <td>
+                      {auditoria.radicadoDate
+                        ? auditoria.radicadoDate.getTime()
+                        : "N/A"}
+                    </td>
+                    <td>{auditoria.documentType}</td>
+                    <td>{auditoria.documentNumber}</td>
+                    <td>{auditoria.namePatient}</td>
+                    <td>{auditoria.convenio}</td>
+                    <td>{auditoria.ipsPrimary}</td>
+                    <td>
+                      {auditoria.orderDate
+                        ? auditoria.orderDate.getTime()
+                        : "N/A"}
+                    </td>
+                    <td>{auditoria.place}</td>
+                    <td>{auditoria.ipsRemitente}</td>
+                    <td>{auditoria.profetional}</td>
+                    <td>{auditoria.speciality}</td>
+                    <td>{auditoria.typeServices}</td>
+                    <td>{auditoria.radicador}</td>
+                    <td>
+                      <ModalSoporte></ModalSoporte>
+                    </td>
+                    <td>
+                      <button>
+                        <ModalMostarDatos
+                          // wdCondic={true}
+                          // gdCondic={true}
+                          // Table Col 1
+                          // numRadi={false}
+                          // feRadi={false}
+                          // nomCiru3=""
+                          // tipoDoc={false}
+                          // nomCiru4=""
+                          // numDoc={false}
+                          // nomCiru6=""
+                          // nomPac={false}
+                          // numCel={false}
+                          // telFijo={false}
+                          // email={false}
+                          // direccion={false}
+                          // convenio={false}
+                          // ipsPri={false}
+                          // nomCiru5=""
+                          // feOrden={false}
+                          // lugRadi={false}
+                          // ipsRem={false}
+                          // Table Col 2
+                          obserAuditoria={true} //observacion cups |
+                          nomCiru1="Obseracion Cups"
+                          // justConcepto={false}
+                          unidadFunciona={true} //estado cups
+                          nomCiru2="Estado cups"
+                          // feAuditoria={false}
+                          // nomAuditor={false}
+                          // auxiRadi={false}
+                          descripCup={true} //
+                          codCup={true} //
+                          // tipoServicio={false}
+                          // grupoServicio={false}
+                          // descripDiagn={false}
+                          // codDiagn={false}
+                          // especialidad={false}
+                          // profecional={false}
+                        ></ModalMostarDatos>
+                      </button>
+                    </td>
+                    <td>
+                      <Link to="/tabla-autorizar-servicios">
+                        <img
+                          className="dark:invert"
+                          src={autorizar}
+                          alt="autorizar-icon"
+                        />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-        {/* pagination */}
-        <Pagination
+            {/* pagination */}
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={paginate}
             />
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
     </>
   );
 };

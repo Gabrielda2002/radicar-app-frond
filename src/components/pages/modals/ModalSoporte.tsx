@@ -1,10 +1,18 @@
+//*Funciones y Hooks
 import { useState } from "react";
-
+import useAnimation from "../../../hooks/useAnimations";
+//*Icons
 import soporte from "/assets/soporte.svg";
 
 const ModalSoporte = () => {
   const [stadOpen, setStadOpen] = useState(false);
+  const { showAnimation, closing } = useAnimation(stadOpen, () =>
+    setStadOpen(false)
+  );
 
+  const closeModal = () => {
+    setStadOpen(false);
+  };
   return (
     <>
       <button className="dark:invert" onClick={() => setStadOpen(true)}>
@@ -14,9 +22,15 @@ const ModalSoporte = () => {
       {stadOpen && (
         <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
           <section className="">
-            <div className="w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg">
+            <div
+              className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg  ${
+                showAnimation && !closing
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-10 opacity-0"
+              }`}
+            >
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900 ">
+              <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
                 Modulo Soporte
               </div>
 
@@ -25,10 +39,9 @@ const ModalSoporte = () => {
                 action=""
                 className="max-h-[70Vh] overflow-y-auto overflow-x-hidden flex dark:bg-gray-800 dark:text-gray-200"
               >
-                <div className="p-8">{/* ! ajustar haci informacion ! */}
-                  <section className="grid h-[600px] w-[600px]">
-
-                  </section>
+                <div className="p-8">
+                  {/* ! ajustar haci informacion ! */}
+                  <section className="grid h-[600px] w-[600px]"></section>
                 </div>
               </form>
 
@@ -36,7 +49,7 @@ const ModalSoporte = () => {
               <div className="flex items-center justify-end w-full gap-4 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                 <button
                   className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                  onClick={() => setStadOpen(false)}
+                  onClick={closeModal}
                 >
                   Cerrar
                 </button>

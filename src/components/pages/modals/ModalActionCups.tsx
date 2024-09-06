@@ -1,9 +1,16 @@
+//*Funciones y Hooks
 import { useState } from "react";
-
+import useAnimation from "../../../hooks/useAnimations";
+//*Icons
 import onOff from "/assets/on-off.svg";
 
 const ModalActionCups = () => {
   const [stadopen, setStadopen] = useState(false);
+  const { showAnimation, closing } = useAnimation(
+    stadopen,
+    () => setStadopen(false),
+    300
+  );
 
   return (
     <>
@@ -13,16 +20,29 @@ const ModalActionCups = () => {
 
       {/* init event modal */}
       {stadopen && (
-        <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
+        <section
+          className={`fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <section className="">
-            <div className="w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg">
+            <div
+              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg ${
+                showAnimation && !closing
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-10 opacity-0"
+              }`}
+            >
               {/* container-header */}
               <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900 ">
                 Modulo Estado
               </div>
 
               {/* init form */}
-              <form action="" className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200">
+              <form
+                action=""
+                className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
+              >
                 <div className="p-4">
                   <section className="grid grid-cols-3">
                     <div className="flex">

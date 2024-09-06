@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
-
+//*Funciones y Hooks
+import { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 const ModalCups = () => {
   const [stadopen, setStadopen] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
+  const { showAnimation, closing } = useAnimation(stadopen, () =>
+    setStadopen(false)
+  );
+
   const toggleModal = () => {
     setStadopen(!stadopen);
   };
   // Se agrega useEffect para controlar la animación de la ventana emergente
-
-  useEffect(() => {
-    if (stadopen) {
-      setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 800);
-    }
-    [stadopen];
-  });
 
   return (
     <>
@@ -28,7 +22,11 @@ const ModalCups = () => {
       </button>
 
       {stadopen && (
-        <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div
+          className={`fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-50 backdrop-blur-sm "
             onClick={toggleModal}
@@ -36,7 +34,11 @@ const ModalCups = () => {
 
           {/* Contenido del formulario */}
 
-          <div className="z-10 w-[800px] p-6 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div
+            className={`z-10 w-[800px] p-6 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+            }`}
+          >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-color">Agregar CUPS</h2>
               <button
