@@ -63,17 +63,17 @@ const TablaCirugias = () => {
         <table className="min-w-full mx-auto text-sm ">
           <thead>
             <tr className="text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
-              <th className="px-4 py-2">Fecha - Hora del Radicado</th>
-              <th className="px-4 py-2">N.º Radicado</th>
-              <th className="px-4 py-2">N.º Documento</th>
-              <th className="px-4 py-2">Nombre Completo</th>
-              <th className="px-4 py-2">Nombre Paciente</th>
-              <th className="px-4 py-2">Servicio de Radicado</th>
-              <th className="px-4 py-2">Fecha Auditoria</th>
-              <th className="px-4 py-2">Justificación Auditoria</th>
-              <th className="px-4 py-2">Especialidad</th>
-              <th className="px-4 py-2">Mostrar</th>
-              <th className="px-4 py-2">Servicio Solicitado</th>
+              <th className="">Fecha - Hora del Radicado</th>
+              <th className="">N.º Radicado</th>
+              <th className="">N.º Documento</th>
+              <th className="">Nombre Completo</th>
+              <th className="">Nombre Paciente</th>
+              <th className="">Servicio de Radicado</th>
+              <th className="">Fecha Auditoria</th>
+              <th className="">Justificación Auditoria</th>
+              <th className="">Especialidad</th>
+              <th className="">Mostrar</th>
+              <th className="">Servicio Solicitado</th>
             </tr>
           </thead>
 

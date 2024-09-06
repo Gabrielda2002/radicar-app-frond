@@ -17,12 +17,23 @@ const ModalCirugias = () => {
           <section>
             <div className=" w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-800 overflow-hidden rounded">
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white rounded ps-4 text-color dark:text-gray-200 dark:bg-gray-800">
-                Modulo Ciugias
+              <div className="flex items-center justify-between px-2 py-2 ">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+                  Modulo Ciugias
+                </h1>
+                <button
+                  onClick={() => setStadopen(false)}
+                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                >
+                  &times;
+                </button>
               </div>
 
               {/* init-form */}
-              <form action="" className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800">
+              <form
+                action=""
+                className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
+              >
                 <div className="px-5">
                   <div>
                     <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">

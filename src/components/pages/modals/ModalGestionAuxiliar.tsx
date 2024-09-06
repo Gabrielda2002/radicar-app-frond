@@ -1,11 +1,11 @@
-import  { useState } from "react";
+import { useState } from "react";
 
 import gestion from "/assets/gestion.svg";
 import ModalGestionServicio from "./ModalGestionServicio";
 
 const ModalGestionAuxiliar = () => {
-  const [stadOpen, setStadOpen] = useState(false);// Estados Auxiliar
-  const [openServicio, setOpenServicio] = useState(false);// Estados Servicios
+  const [stadOpen, setStadOpen] = useState(false); // Estados Auxiliar
+  const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
 
   const EventServicio = () => {
     setStadOpen(false); // Cierra el primer modal
@@ -20,12 +20,20 @@ const ModalGestionAuxiliar = () => {
 
       {stadOpen && (
         <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
-          <section  onClick={() => setStadOpen(false)} >
+          <section onClick={() => setStadOpen(false)}>
             {/* container-full */}
             <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded dark:bg-gray-800">
               {/* container-header */}
-              <div className="w-full flex py-4 ps-4 text-xl font-semibold bg-white text-color dark:text-gray-200 dark:bg-gray-800 ">
-                Seguimiento Auxiliar
+              <div className="flex items-center justify-between px-2 py-2 ">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+                  Seguimiento Auxiliar
+                </h1>
+                <button
+                  onClick={() => setStadOpen(false)}
+                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                >
+                  &times;
+                </button>
               </div>
 
               {/* init-table */}
@@ -33,7 +41,7 @@ const ModalGestionAuxiliar = () => {
                 <table className="min-w-full text-sm">
                   {/* posible scroll "70Vh" */}
                   <thead className="">
-                    <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50 border-none">
+                    <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-100 border-none">
                       <th>Número Radicado</th>
                       <th>Código</th>
                       <th>Fecha</th>
@@ -165,11 +173,9 @@ const ModalGestionAuxiliar = () => {
         </section>
       )}
 
-        {/* init-modal-second */}
+      {/* init-modal-second */}
       {openServicio && (
-        <ModalGestionServicio
-          onClose={() => setOpenServicio(false)}
-        />
+        <ModalGestionServicio onClose={() => setOpenServicio(false)} />
       )}
     </>
   );

@@ -8,7 +8,6 @@ import usePagination from "../../hooks/usePagination";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 
-
 import ModalRadicacion from "./modals/ModalRadicacion";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
