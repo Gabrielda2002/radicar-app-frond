@@ -1,13 +1,25 @@
+//*Funciones y Hooks
 import { useState } from "react";
 import ServicioForm from "../../ServicioForm";
+import useAnimation from "../../../hooks/useAnimations";
+//*Icons
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
+  const { showAnimation, closing } = useAnimation(
+    stadopen,
+    () => setStadopen(false),
+    300
+  );
   const [cantidad, setCantidad] = useState<string>("");
 
+  const closeModal = () => {
+    setStadopen(false);
+  };
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCantidad(value === "" ? "" : Number(value).toString());
+    setTimeout(() => closeModal(), 300);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -24,23 +36,23 @@ const ModalRadicacion = () => {
       >
         Radicar
       </button>
-
       {stadopen && (
-        <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-40 container-full -inset-2 backdrop-blur-sm ">
-          <section className="">
-            <div className="z-10 w-[950px] overflow-hidden bg-white shadow-lg transform transition-transform duration-300 dark:bg-gray-800 rounded">
-              {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
-                  Radicacion de Servicios
-                </h1>
-                <button
-                  onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
-                >
-                  &times;
-                </button>
-              </div>
+        <div
+          className={`fixed z-50 flex items-center justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        > 
+          <div
+            className={`w-auto p-10 bg-white rounded-lg shadow-lg dark:bg-gray-900 transform transition-transform duration-300 ${
+              stadopen && !closing
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
+            {/* container-header */}
+            <div className="w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
+              Radicacion de Servicios
+            </div>
 
               {/* init form */}
               <form className="flex max-h-[70Vh] overflow-y-auto  dark:bg-gray-800">
@@ -393,21 +405,20 @@ const ModalRadicacion = () => {
                 </div>
               </form>
 
-              {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
-                <button
-                  onClick={() => setStadopen(false)}
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
-                >
-                  Cerrar
-                </button>
-                <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-700">
-                  Radicar
-                </button>
-              </div>
+            {/* container-footer */}
+            <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+              <button
+                onClick={() => setTimeout(closeModal, 250)}
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+              >
+                Cancelar
+              </button>
+              <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+                Radicar
+              </button>
             </div>
-          </section>
-        </section>
+          </div>
+        </div>
       )}
     </>
   );

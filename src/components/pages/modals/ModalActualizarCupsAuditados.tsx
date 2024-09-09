@@ -1,9 +1,14 @@
+//*Funciones y Hooks
 import { useState } from "react";
-
+import useAnimation from "../../../hooks/useAnimations";
+//*Icons
 import editar from "/assets/editar.svg";
 
 const ModalActualizarCupsAuditoria = () => {
   const [stadopen, setStadopen] = useState(false);
+  const { showAnimation, closing } = useAnimation(stadopen, () =>
+    setStadopen(false)
+  );
 
   return (
     <>
@@ -15,7 +20,11 @@ const ModalActualizarCupsAuditoria = () => {
       {stadopen && (
         <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
           <section className="">
-            <div className="w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg container-modal bg dark:bg-gray-800">
+            <div
+              className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg container-modal bg dark:bg-gray-800 ${
+                showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+              }`}
+            >
               {/* container-header */}
               <div className="flex items-center justify-between px-2 py-2 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">

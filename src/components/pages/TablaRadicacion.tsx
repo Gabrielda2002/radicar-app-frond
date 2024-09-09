@@ -1,18 +1,16 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
-
 import Pagination from "../Pagination";
-import usePagination from "../../hooks/usePagination";
+import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-
-import ModalRadicacion from "./modals/ModalRadicacion";
-import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalSoporte from "./modals/ModalSoporte.tsx";
-//Iconos
+import usePagination from "../../hooks/usePagination";
+import ModalRadicacion from "./modals/ModalRadicacion";
+import { useFetchUsers } from "../../hooks/useFetchUsers";
+import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
+import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+//*Iconos
 import salir from "/assets/back.svg";
 
 const ITEMS_PER_PAGE = 8;
@@ -149,46 +147,48 @@ const TablaRadicacion = () => {
                         <ModalGestionAuxiliar></ModalGestionAuxiliar>
                       </td>
                       <td>
-                        <ModalMostarDatos
-                          wdCondic={false}
-                          gdCondic={false}
-                          // Tabla Col 1
-                          numRadi={true}
-                          feRadi={true}
-                          // nomCiru1=""
-                          tipoDoc={true}
-                          numDoc={true}
-                          nomPac={true}
-                          numCel={true}
-                          // nomCiru2=""
-                          telFijo={true}
-                          email={true}
-                          direccion={true}
-                          // nomCiru3=""
-                          convenio={true}
-                          // nomCiru4=""
-                          ipsPri={true}
-                          // nomCiru5=""
-                          feOrden={true}
-                          // nomCiru6=""
-                          lugRadi={true}
-                          ipsRem={true}
-                          // Tabla Col 2
-                          obserAuditoria={true}
-                          justConcepto={true}
-                          unidadFunciona={true}
-                          feAuditoria={true}
-                          nomAuditor={true}
-                          auxiRadi={true}
-                          descripCup={true}
-                          codCup={true}
-                          tipoServicio={true}
-                          grupoServicio={true}
-                          descripDiagn={true}
-                          codDiagn={true}
-                          especialidad={true}
-                          profecional={true}
-                        ></ModalMostarDatos>
+                        <button>
+                          <ModalMostarDatos
+                            wdCondic={false}
+                            gdCondic={false}
+                            // Tabla Col 1
+                            numRadi={true}
+                            feRadi={true}
+                            // nomCiru1=""
+                            tipoDoc={true}
+                            numDoc={true}
+                            nomPac={true}
+                            numCel={true}
+                            // nomCiru2=""
+                            telFijo={true}
+                            email={true}
+                            direccion={true}
+                            // nomCiru3=""
+                            convenio={true}
+                            // nomCiru4=""
+                            ipsPri={true}
+                            // nomCiru5=""
+                            feOrden={true}
+                            // nomCiru6=""
+                            lugRadi={true}
+                            ipsRem={true}
+                            // Tabla Col 2
+                            obserAuditoria={true}
+                            justConcepto={true}
+                            unidadFunciona={true}
+                            feAuditoria={true}
+                            nomAuditor={true}
+                            auxiRadi={true}
+                            descripCup={true}
+                            codCup={true}
+                            tipoServicio={true}
+                            grupoServicio={true}
+                            descripDiagn={true}
+                            codDiagn={true}
+                            especialidad={true}
+                            profecional={true}
+                          ></ModalMostarDatos>
+                        </button>
                       </td>
                     </tr>
                   ))}

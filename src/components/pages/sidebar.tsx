@@ -86,7 +86,7 @@ const SideBar: FC = () => {
           <img
             src={arrow}
             alt=""
-            className={`mx-1 transition-all duration-500 dark:bg-white dark:rounded-xl dark:px-1 dark:py-1 bg-gray-300 px-1 py-1 rounded-xl ${
+            className={`mx-1 transition-all duration-500 dark:bg-white dark:rounded-full dark:px-1 dark:py-1 bg-gray-300 px-1 py-1 rounded-full ${
               isCollapsed ? "rotate-180" : ""
             }`}
           />

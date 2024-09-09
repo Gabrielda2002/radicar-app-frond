@@ -1,9 +1,16 @@
+//*Funciones y Hooks
 import { useState } from "react";
-
+import useAnimation from "../../../hooks/useAnimations";
+//*Icons
 import programar from "/assets/programar.svg";
 
 const ModalCirugias = () => {
   const [stadopen, setStadopen] = useState(false);
+  const { showAnimation, closing } = useAnimation(
+    stadopen,
+    () => setStadopen(false),
+    300
+  );
 
   return (
     <>
@@ -13,9 +20,19 @@ const ModalCirugias = () => {
 
       {/* init-modal */}
       {stadopen && (
-        <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm">
+        <section
+          className={` fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <section>
-            <div className=" w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-800 overflow-hidden rounded">
+            <div
+              className={` w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-900 overflow-hidden rounded ${
+                showAnimation && !closing
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-10 opacity-0"
+              }`}
+            >
               {/* container-header */}
               <div className="flex items-center justify-between px-2 py-2 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
@@ -185,7 +202,7 @@ const ModalCirugias = () => {
               </form>
 
               {/* container-footer */}
-              <div className="flex items-center justify-end w-full px-4 py-4 gap-x-2 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-white gap-x-2 h-14 dark:bg-gray-800">
                 <button
                   className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
                   onClick={() => setStadopen(false)}
