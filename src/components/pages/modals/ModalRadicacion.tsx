@@ -8,8 +8,7 @@ const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
     stadopen,
-    () => setStadopen(false),
-    300
+    () => setStadopen(false)
   );
   const [cantidad, setCantidad] = useState<string>("");
 
@@ -19,7 +18,6 @@ const ModalRadicacion = () => {
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCantidad(value === "" ? "" : Number(value).toString());
-    setTimeout(() => closeModal(), 300);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
