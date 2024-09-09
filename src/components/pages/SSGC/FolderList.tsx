@@ -11,12 +11,14 @@ interface FolderListProps {
   folders: Folder[];
   onFolderClick: (folderId: string, folderName: string) => void;
   onDelete: (id: string, type: "carpetas" | "archivo") => void;
+  renameItem: (id: string, newName: string, type: "carpetas" | "archivo") => void;
 }
 
 const FolderList: React.FC<FolderListProps> = ({
   folders,
   onFolderClick,
-  onDelete
+  onDelete,
+  renameItem
 }) => {
   return (
     <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
@@ -31,7 +33,7 @@ const FolderList: React.FC<FolderListProps> = ({
           <span onClick={() => onFolderClick(folder.id, folder.name)}>
             <p className="text-sm font-medium text-center text-gray-700 dark:text-gray-300">{folder.name}</p>
           </span>
-          <ItemManu onDelete={() => onDelete(folder.id, "carpetas")}/>
+          <ItemManu onDelete={() => onDelete(folder.id, "carpetas")} renameItem={(newName: string) => renameItem(folder.id, newName, "carpetas")}/>
           {/* <button onClick={() => onDelete(folder.id, "carpetas")}>Eliminar</button> */}
         </div>
       ))}

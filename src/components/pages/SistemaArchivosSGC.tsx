@@ -93,6 +93,7 @@ const FileManager: React.FC = () => {
                     folders={contents?.folders || []}
                     onFolderClick={setCurrentFolderId}
                     onDelete={deleteItemById}
+                    renameItem={renameItem}
                   />
                 </div>
               )}
