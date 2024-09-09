@@ -18,12 +18,13 @@ const Login: React.FC = () => {
       const response = await api.post("/login", { dniNumber, password });
 
       // Si la autorización es correcta, guardar el token en el contexto de autenticación y el rol en localStorage
-      const { token, rol, user } = response.data;
+      const { token, rol, user, Municipio } = response.data;
 
       localStorage.setItem("rol", rol); // Guardar el rol en localStorage
+      localStorage.setItem("Municipio", Municipio); // Guardar el municipio en el localstorage
       localStorage.setItem("user", JSON.stringify(user)); //* Guardar datos del usuario en localStorage
 
-      login(token, rol); // Llamar a la función login del contexto para actualizar el estado de autenticación
+      login(token, rol, Municipio); // Llamar a la función login del contexto para actualizar el estado de autenticación
 
       // Redirigir al usuario según su rol
       if (rol == 1) {

@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const ModalCrearCarpeta = ({standOpen, toggleModal}) => {
+type ModalCrearCarpetaProps = {
+  standOpen: boolean;
+  toggleModal: () => void;
+  createNewFolder: (name: string) => void;
+};
+
+const ModalCrearCarpeta = ({standOpen, toggleModal, createNewFolder}: ModalCrearCarpetaProps) => {
 
   const [showAnimation, setShowAnimation] = useState(false);
+  const [ Error, setError ] = useState('');
+  const [ folderName, setFolderName ] = useState('');
 
   // Se agrega useEffect para controlar la animación de la ventana emergente
 
@@ -14,6 +22,30 @@ useEffect(() => {
       }, 800);
     }
   }, [standOpen]);
+
+  const handleCreateFolder = () => {
+    if (folderName.trim()) {
+      createNewFolder(folderName);
+      toggleModal();
+    }else{
+      alert('El nombre de la carpeta es requerido');
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const regex = /^[a-zA-Z0-9\s]{1,60}$/;
+
+    const inputValue = e.target.value;
+
+    if (!regex.test(inputValue)) {
+      setError('Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales');
+    } else {
+      setError('');
+    }
+    console.log(Error)
+    setFolderName(inputValue);
+  }
   
   return (
     <>
@@ -50,8 +82,12 @@ useEffect(() => {
                 <input
                   type="text"
                   placeholder="Ingrese el nombre..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  className={`w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white ${
+                    Error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                  onChange={handleInputChange}
                 />
+                {Error && <p className="text-red-500">{Error}</p>}
               </div>
             </div>
 
@@ -64,7 +100,10 @@ useEffect(() => {
               >
                 Cerrar
               </button>
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800">
+              <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
+                onClick={handleCreateFolder}
+                disabled={!!Error || !folderName.trim()}
+              >
                 Crear
               </button>
             </div>
