@@ -1,12 +1,26 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/16/solid"
-import React from "react";
+import React, { useState } from "react";
+import ModalRenombrarItem from "../modals/ModalRenombrarItem";
 
 interface ItemManuProps {
     onDelete: () => void;
+    renameItem: (newName: string) => void;
 }
 
-const ItemManu: React.FC<ItemManuProps> = ({onDelete}) => {
+const ItemManu: React.FC<ItemManuProps> = ({onDelete, renameItem}) => {
+
+  const [stadOpenRename, setStadOpenRename] = useState(false);
+
+    const toggleModalRename = () => {
+        setStadOpenRename(!stadOpenRename);
+    };
+
+    const handleModalOpenRename = () => {
+        setStadOpenRename(true);
+    };
+
+
   return (
     <>
       <Menu as="div" className="relative inline-block text-left">
@@ -27,13 +41,24 @@ const ItemManu: React.FC<ItemManuProps> = ({onDelete}) => {
                   <MenuItem>
                     <button
                       className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-                      onClick={ onDelete}
+                      onClick={onDelete}
                     >
                       Eliminar
                     </button>
                   </MenuItem>
+                  <MenuItem>
+                    <button
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                      onClick={handleModalOpenRename}
+                    >
+                      Renombrar.
+                    </button>
+                  </MenuItem>
                 </div>
               </MenuItems>
+
+                {<ModalRenombrarItem toggleModal={toggleModalRename} standOpen={stadOpenRename} renameItem={renameItem}/>}
+
             </Menu>
     </>
   )

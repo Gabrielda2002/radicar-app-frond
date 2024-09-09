@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createFolder, deleteItem, downloadFile, getFolderContent, uploadFile } from "../utils/api-config";
+import { createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "../utils/api-config";
 
 interface FileItem { // Renombrado de File a FileItem
     id: string;
@@ -119,6 +119,17 @@ export const useFileManager = (initialFolderId?: string) => {
         })
     }
 
+    // * renombrar items del sgc
+
+    const renameItem = async (id: string, name: string, type: "carpetas" | "archivo") => {
+        try {
+            await renameItems(id, currentFolderId || null, name, type);
+            await fetchContents(); // Reload contents after renaming an item
+        } catch (err) {
+            setError(`Error renaming ${type === "carpetas" ? "folder" : "file"} ${err}`);
+        }
+    }
+
     return {
         contents,
         loading,
@@ -129,6 +140,7 @@ export const useFileManager = (initialFolderId?: string) => {
         downloadFileById,
         setCurrentFolderId: navigateToFolder,
         navigateBackToFolder,
-        path
+        path,
+        renameItem
     };
 };

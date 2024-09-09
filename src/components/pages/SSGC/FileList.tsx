@@ -16,9 +16,10 @@ interface FileListProps {
   files: File[];
   onDelete: (id: string, type: "carpetas" | "archivo") => void;
   onDownload: (id: string, fileName: string) => void;
+  renameItem: (id: string, newName: string , type: "carpetas" | "archivo" ) => void;
 }
 
-const FileList: React.FC<FileListProps> = ({ files, onDownload, onDelete }) => {
+const FileList: React.FC<FileListProps> = ({ files, onDownload, onDelete, renameItem }) => {
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
       case "application/pdf":
@@ -31,6 +32,8 @@ const FileList: React.FC<FileListProps> = ({ files, onDownload, onDelete }) => {
         return pdfIcon;
     }
   };
+
+  
 
   const handleFileOpen = (file: File) => {
     // * validar que solo se puedan abrir archivos pdf
@@ -65,7 +68,7 @@ const FileList: React.FC<FileListProps> = ({ files, onDownload, onDelete }) => {
             </p>
           </div>
 
-          <ItemManu onDelete={() => onDelete(file.id, "archivo")}/>
+          <ItemManu onDelete={() => onDelete(file.id, "archivo") } renameItem={(newName: string) => renameItem(file.id, newName ,"archivo")}/>
 
           {/* <button onClick={() => onDownload(file.id, file.name)}>Descargar</button>
                     <button onClick={() => onDelete(file.id, "archivo")}>Eliminar</button> */}
