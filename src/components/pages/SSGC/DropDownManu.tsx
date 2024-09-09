@@ -17,7 +17,7 @@ const DropDownManu: React.FC<DropDownManuProps> = ({uploadNewFile, currentFolder
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
   
-  const { selectedFiles, uploading, handleFileChange, handleUpload } =
+  const {  uploading, handleFileChange, handleUpload } =
   useUploadFile(uploadNewFile, currentFolderId)
 
   const toggleModalFolder = () => {
