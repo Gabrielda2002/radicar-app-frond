@@ -55,9 +55,9 @@ export const useFileManager = (initialFolderId?: string) => {
 
     // Function to create a new folder
     const createNewFolder = async (name: string) => {
-        if (!currentFolderId) return;
+        // if (!currentFolderId) return;
         try {
-            await createFolder(currentFolderId, name);
+            await createFolder(currentFolderId || null, name);
             await fetchContents(); // Reload contents after creating a folder
         } catch (err) {
             setError(`Error creating folder${err}`);

@@ -40,7 +40,8 @@ export const getFolderContent = async (folderId?: string) => {
 };
 
 
-export const createFolder = async (parentFolderId: string, name: string) => {
+export const createFolder = async (parentFolderId: string | null, name: string) => {
+    console.log(name)
     const idMunicipio = localStorage.getItem('Municipio')
 
     const datosUsuario = JSON.parse(localStorage.getItem('user') || '{}');
