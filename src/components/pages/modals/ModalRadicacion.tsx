@@ -29,27 +29,39 @@ const ModalRadicacion = () => {
   return (
     <>
       <button
-        className="borde-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+        className="border-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
         onClick={() => setStadopen(true)}
       >
         Radicar
       </button>
       {stadopen && (
-        <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black -inset-5 bg-opacity-40 backdrop-blur-sm">
+        <div
+          className={`fixed z-50 flex items-center justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div
-            className={`w-auto p-10 bg-white rounded-lg shadow-lg dark:bg-gray-900 transform transition-transform duration-300 ${
-              showAnimation && !closing
+            className={`w-[900px] bg-white overflow-hidden rounded shadow-lg  transform transition-transform duration-300 dark:bg-gray-800 ${
+              stadopen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
             }`}
           >
             {/* container-header */}
-            <div className="w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
-              Radicacion de Servicios
+            <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
+              <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
+                Radicacion de Servicios
+              </h1>
+              <button
+                onClick={() => setStadopen(false)}
+                className="text-xl text-gray-500 hover-gray-700 pr-2"
+              >
+                &times;
+              </button>
             </div>
 
             {/* init form */}
-            <form className="flex max-h-[70Vh] overflow-y-auto text-sm">
+            <form className="flex max-h-[70Vh] overflow-y-auto  dark:bg-gray-800">
               <div className="px-5">
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
@@ -57,8 +69,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2">
-                  {/*gap-4*/}
+                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2 text-sm">
                   <div>
                     <label htmlFor="" className="">
                       <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
@@ -68,7 +79,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                         disabled
                       />
                       {/*sin modificar*/}
@@ -83,7 +94,7 @@ const ModalRadicacion = () => {
                         type="number"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
                       />
                     </label>
                   </div>
@@ -96,7 +107,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                         disabled
                       />
                       {/*sin modificar*/}
@@ -111,7 +122,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=" "
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                         disabled
                       />
                       {/*sin modificar*/}
@@ -126,7 +137,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                         disabled
                       />
                       {/*sin modificar*/}
@@ -140,7 +151,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2">
+                <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -150,7 +161,7 @@ const ModalRadicacion = () => {
                         type="number"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -163,7 +174,7 @@ const ModalRadicacion = () => {
                         type="number"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -176,7 +187,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -189,7 +200,7 @@ const ModalRadicacion = () => {
                         type="email"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -201,7 +212,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2">
+                <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2 text-sm">
                   <div>
                     <label htmlFor="cantidad">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -215,7 +226,8 @@ const ModalRadicacion = () => {
                         value={cantidad}
                         onChange={CantidadInput}
                         onKeyDown={EventEnter}
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                        placeholder="Digite número . . . ."
                       />
                     </label>
                   </div>
@@ -228,7 +240,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2">
+                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -238,7 +250,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -251,7 +263,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -264,7 +276,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -277,7 +289,7 @@ const ModalRadicacion = () => {
                         type="date"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -290,7 +302,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -303,7 +315,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                         disabled
                       />
                       {/*sin modificar*/}
@@ -317,7 +329,7 @@ const ModalRadicacion = () => {
                       <select
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       >
                         <option value="">SELECT</option>
                         <option value="">1</option>
@@ -334,7 +346,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -347,7 +359,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -362,7 +374,7 @@ const ModalRadicacion = () => {
                       <textarea
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       ></textarea>
                     </label>
                   </div>
@@ -374,7 +386,7 @@ const ModalRadicacion = () => {
                       <select
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       >
                         <option value="">SELECT</option>
                         <option value="">..texto</option>
@@ -391,7 +403,7 @@ const ModalRadicacion = () => {
                         type="file"
                         id=""
                         name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
@@ -402,8 +414,8 @@ const ModalRadicacion = () => {
             {/* container-footer */}
             <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
               <button
-                onClick={() => setTimeout(closeModal)}
-                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+                onClick={() => setTimeout(closeModal, 250)}
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 Cancelar
               </button>

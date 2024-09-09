@@ -59,7 +59,7 @@ const TablaRadicacion = () => {
               Servicio Radicación
             </li>
           </ol>
-          <div className="pb-2">
+          <div className="w-10 pb-2">
             <Link to="/inicio">
               <img src={salir} alt="" />
             </Link>
@@ -77,8 +77,8 @@ const TablaRadicacion = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder=" Consultar registro..."
-              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              placeholder="Consultar..."
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50  focus:outline-none focus:ring-2  focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="flex items-center space-x-2 pt-1-">
@@ -87,7 +87,7 @@ const TablaRadicacion = () => {
               id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-[40px] w-[90px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">PAGES</option>
               <option value="1">10 PAGES</option>
@@ -108,7 +108,7 @@ const TablaRadicacion = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
-                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-50">
+                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-200">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
                     <th>Convenio</th>
@@ -122,7 +122,7 @@ const TablaRadicacion = () => {
                   </tr>
                 </thead>
 
-                <tbody className="text-xs text-center divide-y divide-gray-200 dark:divide-gray-700 dark:text-gray-200">
+                <tbody className="text-xs text-center dark:text-gray-200">
                   {currentData().map((radicacion) => (
                     <tr className="text-center" key={radicacion.id}>
                       <td>

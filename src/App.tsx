@@ -32,6 +32,10 @@ import CookieConsent from "./components/PopCookie";
 import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { useTheme } from "./context/blackWhiteContext";
+import FileManager from "./components/pages/SistemaArchivosSGC";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function AppRoutes() {
   const { theme } = useTheme();
@@ -127,6 +131,10 @@ function AppRoutes() {
                           path="/tabla-autorizar-servicios"
                           element={<TablaAutorizarServicios />}
                         />
+                        <Route
+                          path="/SistemGestionCalidad"
+                          element={<FileManager />}
+                        />
                         <Route path="*" element={<Navigate to="/home" />} />
                       </Routes>
                     </Layout>
@@ -151,6 +159,17 @@ export function App() {
       <CookieConsent />{" "}
       {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
       <AppRoutes />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </AuthProvider>
   );
 }

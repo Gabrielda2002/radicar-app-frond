@@ -172,7 +172,7 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen2 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/perfil">
+                    <NavLink to="/SistemGestionCalidad">
                       {({ isActive }) => (
                         <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${

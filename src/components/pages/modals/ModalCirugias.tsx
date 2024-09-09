@@ -14,8 +14,8 @@ const ModalCirugias = () => {
 
   return (
     <>
-      <button className="" onClick={() => setStadopen(true)}>
-        <img src={programar} alt="" />
+      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
+        <img className="dark:invert" src={programar} alt="" />
       </button>
 
       {/* init-modal */}
@@ -27,19 +27,30 @@ const ModalCirugias = () => {
         >
           <section>
             <div
-              className={` w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-900 overflow-hidden rounded ${
+              className={` w-auto bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-800 overflow-hidden rounded ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
               }`}
             >
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white rounded ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
-                Modulo Ciugias
+              <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
+                  Modulo Ciugias
+                </h1>
+                <button
+                  onClick={() => setStadopen(false)}
+                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                >
+                  &times;
+                </button>
               </div>
 
               {/* init-form */}
-              <form action="" className="max-h-[70Vh] overflow-y-auto ">
+              <form
+                action=""
+                className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
+              >
                 <div className="px-5">
                   <div>
                     <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
@@ -47,30 +58,30 @@ const ModalCirugias = () => {
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2">
+                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2 text-sm">
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white">
                           Documento
                         </span>
                         <input
                           type="number"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className="mb-2 font-bold text-gray-700 dark:text-white dark:bg-gray-700">
+                        <span className="flex mb-2 font-bold text-gray-700 dark:text-white">
                           Nombre Completo
                         </span>
                         <input
                           type="text"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                           disabled
                         />
                       </label>
@@ -83,55 +94,55 @@ const ModalCirugias = () => {
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2">
+                  <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2 text-sm">
                     <div className="">
                       <label htmlFor="">
-                        <span className="pb-4 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className="flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Fecha Ordenamiento de Cirugía
                         </span>
                         <input
                           type="date"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Fecha Paraclínicos
                         </span>
                         <input
                           type="date"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Fecha de Valoración Anestesiologia
                         </span>
                         <input
                           type="date"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           IPS donde se realizará Cirugía
                         </span>
                         <select
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         >
                           <option value="">SELECT</option>
                           <option value="1">CUCUTA</option>
@@ -141,27 +152,27 @@ const ModalCirugias = () => {
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Fecha Cirugía
                         </span>
                         <input
                           type="date"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Hora Programada
                         </span>
                         <input
                           type="date"
                           id=""
                           name=""
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
@@ -173,16 +184,16 @@ const ModalCirugias = () => {
                     </h5>
                   </div>
 
-                  <section className="flex justify-center">
+                  <section className="flex justify-center text-sm">
                     <div className="">
                       <label htmlFor="">
-                        <span className=" mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white dark:bg-gray-700">
+                        <span className="flex justify-center mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
                           Observación
                         </span>
                         <textarea
                           name=""
                           id=""
-                          className="block w-[500px] h-28 px-3  mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="block w-[500px] h-28 px-3 pt-2 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         ></textarea>
                       </label>
                     </div>
@@ -193,12 +204,12 @@ const ModalCirugias = () => {
               {/* container-footer */}
               <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-white gap-x-2 h-14 dark:bg-gray-800">
                 <button
-                  className="w-24 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-600"
+                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
                   onClick={() => setStadopen(false)}
                 >
-                  Cancelar
+                  Cerrar
                 </button>
-                <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600">
+                <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700">
                   Agregar
                 </button>
               </div>

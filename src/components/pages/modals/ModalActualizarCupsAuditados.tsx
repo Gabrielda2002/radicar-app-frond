@@ -13,7 +13,7 @@ const ModalActualizarCupsAuditoria = () => {
   return (
     <>
       <button className="" onClick={() => setStadopen(true)}>
-        <img src={editar} alt="icon-editar" />
+        <img className="dark:invert" src={editar} alt="icon-editar" />
       </button>
 
       {/* init-event-modal */}
@@ -26,12 +26,23 @@ const ModalActualizarCupsAuditoria = () => {
               }`}
             >
               {/* container-header */}
-              <div className="flex w-full py-4 text-xl font-semibold bg-white ps-4 text-color dark:text-gray-200 dark:bg-gray-900">
-                Actualizar CUPS Auditados
+              <div className="flex items-center justify-between px-2 py-2 ">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+                  Actualizar CUPS Auditados
+                </h1>
+                <button
+                  onClick={() => setStadopen(false)}
+                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                >
+                  &times;
+                </button>
               </div>
 
               {/* init-form */}
-              <form action="" className="max-h-[70Vh] overflow-y-auto ">
+              <form
+                action=""
+                className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
+              >
                 <div className="p-8">
                   <section className="grid grid-cols-3 gap-x-16 ">
                     <div>
@@ -42,7 +53,7 @@ const ModalActualizarCupsAuditoria = () => {
                         <textarea
                           id=""
                           name=""
-                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         ></textarea>
                       </label>
                     </div>
@@ -54,9 +65,9 @@ const ModalActualizarCupsAuditoria = () => {
                         <select
                           id=""
                           name=""
-                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         >
-                          <option value=""></option>
+                          <option value="">- SELECT -</option>
                           <option value="1">Activo</option>
                           <option value="2">..?..</option>
                           <option value="3">Inactivo</option>
@@ -71,7 +82,7 @@ const ModalActualizarCupsAuditoria = () => {
                         <textarea
                           id=""
                           name=""
-                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         ></textarea>
                       </label>
                     </div>
@@ -80,12 +91,12 @@ const ModalActualizarCupsAuditoria = () => {
               </form>
 
               {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                 <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800"
+                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
                   onClick={() => setStadopen(false)}
                 >
-                  Cancelar
+                  Cerrar
                 </button>
                 <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
                   Actualizar

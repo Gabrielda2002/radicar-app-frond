@@ -15,7 +15,7 @@ const ModalCups = () => {
   return (
     <>
       <button
-        className="borde-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 "
+        className="border-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 "
         onClick={() => setStadopen(true)}
       >
         Agregar Cups

@@ -38,10 +38,10 @@ body.dark .border-black {
 /* Estilos para elementos de tabla */
 @layer base {
   th {
-    @apply pr-[8px];
+    @apply py-2 ;
   }
   tbody tr {
-    @apply border-solid border-y-2;
+    @apply border-y hover:bg-blue-100 dark:hover:bg-gray-600;
   }
   tbody td {
     @apply p-2;
