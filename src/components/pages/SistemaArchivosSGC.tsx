@@ -7,9 +7,7 @@ import BreadCrumb from "./SSGC/BreadCrumb";
 // import { useState } from "react";
 import DropDownManu from "./SSGC/DropDownManu";
 
-
 const FileManager: React.FC = () => {
-
   const {
     contents,
     loading,
@@ -20,9 +18,12 @@ const FileManager: React.FC = () => {
     navigateBackToFolder,
     uploadNewFile,
     setCurrentFolderId,
+    createNewFolder,
+    renameItem
   } = useFileManager();
 
   const currentFolderId = path[path.length - 1].id;
+  
 
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
@@ -30,7 +31,6 @@ const FileManager: React.FC = () => {
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
-
 
   return (
     <>
@@ -65,13 +65,15 @@ const FileManager: React.FC = () => {
               className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
             />
           </div>
-          <DropDownManu uploadNewFile={uploadNewFile} currentFolderId={currentFolderId}/>
+          <DropDownManu
+            uploadNewFile={uploadNewFile}
+            currentFolderId={currentFolderId}
+            createNewFolder={createNewFolder}
+          />
         </section>
         <div>
           <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
         </div>
-
-
 
         <div>
           {isEmpty ? (
@@ -91,6 +93,7 @@ const FileManager: React.FC = () => {
                     folders={contents?.folders || []}
                     onFolderClick={setCurrentFolderId}
                     onDelete={deleteItemById}
+                    renameItem={renameItem}
                   />
                 </div>
               )}
@@ -104,6 +107,7 @@ const FileManager: React.FC = () => {
                     files={contents?.files || []}
                     onDelete={deleteItemById}
                     onDownload={downloadFileById}
+                    renameItem={renameItem}
                   />
                 </div>
               )}

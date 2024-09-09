@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createFolder, deleteItem, downloadFile, getFolderContent, uploadFile } from "../utils/api-config";
+import { createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "../utils/api-config";
 
 interface FileItem { // Renombrado de File a FileItem
     id: string;
@@ -8,6 +8,7 @@ interface FileItem { // Renombrado de File a FileItem
     mimeType: string;
     createdAt: string;
     updatedAt: string;
+    path: string;
 }
 
 interface Folder {
@@ -54,9 +55,9 @@ export const useFileManager = (initialFolderId?: string) => {
 
     // Function to create a new folder
     const createNewFolder = async (name: string) => {
-        if (!currentFolderId) return;
+        // if (!currentFolderId) return;
         try {
-            await createFolder(currentFolderId, name);
+            await createFolder(currentFolderId || null, name);
             await fetchContents(); // Reload contents after creating a folder
         } catch (err) {
             setError(`Error creating folder${err}`);
@@ -85,24 +86,25 @@ export const useFileManager = (initialFolderId?: string) => {
     };
 
     // Function to download a file
-    const downloadFileById = async (fileId: string, fileName: string) => { // Agregado fileName para el nombre real
+    const downloadFileById = async (fileId: string, fileName: string) => { 
         try {
             const response = await downloadFile(fileId);
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
             const link = document.createElement('a');
             link.href = url;
-
+    
             // Set the download attribute with the real file name
-            link.setAttribute('download', fileName || `file_${fileId}`); // Usa el nombre real del archivo si está disponible
+            link.setAttribute('download', fileName || `file_${fileId}`);
             document.body.appendChild(link);
             link.click();
-
-            // Limpia el objeto URL creado
+    
+            // Clean up the URL object
             window.URL.revokeObjectURL(url);
         } catch (err) {
             setError(`Error downloading file ${err}`);
         }
     };
+    
 
     const navigateToFolder = (folderId: string, folderName:string) => {
         setCurrentFolderId(folderId);
@@ -117,6 +119,17 @@ export const useFileManager = (initialFolderId?: string) => {
         })
     }
 
+    // * renombrar items del sgc
+
+    const renameItem = async (id: string, name: string, type: "carpetas" | "archivo") => {
+        try {
+            await renameItems(id, currentFolderId || null, name, type);
+            await fetchContents(); // Reload contents after renaming an item
+        } catch (err) {
+            setError(`Error renaming ${type === "carpetas" ? "folder" : "file"} ${err}`);
+        }
+    }
+
     return {
         contents,
         loading,
@@ -127,6 +140,7 @@ export const useFileManager = (initialFolderId?: string) => {
         downloadFileById,
         setCurrentFolderId: navigateToFolder,
         navigateBackToFolder,
-        path
+        path,
+        renameItem
     };
 };

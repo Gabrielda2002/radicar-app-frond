@@ -1,55 +1,56 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-type ModalCrearCarpetaProps = {
+type ModalRenombrarItemProps = {
   standOpen: boolean;
   toggleModal: () => void;
-  createNewFolder: (name: string) => void;
+  renameItem: (newName: string) => void;
 };
 
-const ModalCrearCarpeta = ({standOpen, toggleModal, createNewFolder}: ModalCrearCarpetaProps) => {
+const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({standOpen, toggleModal, renameItem}) => {
 
-  const [showAnimation, setShowAnimation] = useState(false);
-  const [ Error, setError ] = useState('');
-  const [ folderName, setFolderName ] = useState('');
-
-  // Se agrega useEffect para controlar la animación de la ventana emergente
-
-useEffect(() => {
-    if (standOpen) {
-      setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 800);
-    }
-  }, [standOpen]);
-
-  const handleCreateFolder = () => {
-    if (folderName.trim()) {
-      createNewFolder(folderName);
-      toggleModal();
-    }else{
-      alert('El nombre de la carpeta es requerido');
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    const regex = /^[a-zA-Z0-9\s]{1,60}$/;
-
-    const inputValue = e.target.value;
-
-    if (!regex.test(inputValue)) {
-      setError('Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales');
-    } else {
-      setError('');
-    }
-    console.log(Error)
-    setFolderName(inputValue);
-  }
+    const [showAnimation, setShowAnimation] = useState(false);
+    const [ Error, setError ] = useState('');
+    const [ folderNewName, setFolderNewName ] = useState('');
   
-  return (
-    <>
+    // Se agrega useEffect para controlar la animación de la ventana emergente
+  
+  useEffect(() => {
+      if (standOpen) {
+        setShowAnimation(true);
+        setTimeout(() => {
+          setShowAnimation(false);
+        }, 800);
+      }
+    }, [standOpen]);
+  
+    const handleRename = () => {
+        if (folderNewName.trim()) {
+            renameItem(folderNewName);
+            toggleModal();
+        }else{
+            alert('El nombre de la carpeta es requerido');
+        }
+    }
 
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+        const regex = /^[a-zA-Z0-9\s]{1,60}$/;
+    
+        const inputValue = e.target.value;
+    
+        if (!regex.test(inputValue)) {
+          setError('Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales');
+        } else {
+          setError('');
+        }
+        console.log(Error)
+        setFolderNewName(inputValue);
+      }
+
+  return (
+    <div>
+      
       {standOpen && (
         <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
@@ -62,7 +63,7 @@ useEffect(() => {
           <div className="z-10 w-[800px] p-6 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-color">
-                Crear Carpeta
+                Renombrar.
               </h2>
               <button
                 onClick={toggleModal}
@@ -101,8 +102,8 @@ useEffect(() => {
                 Cerrar
               </button>
               <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
-                onClick={handleCreateFolder}
-                disabled={!!Error || !folderName.trim()}
+                onClick={handleRename}
+                disabled={!!Error || !folderNewName.trim()}
               >
                 Crear
               </button>
@@ -110,8 +111,8 @@ useEffect(() => {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
-export default ModalCrearCarpeta;
+export default ModalRenombrarItem

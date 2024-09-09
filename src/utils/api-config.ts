@@ -30,14 +30,26 @@ api.interceptors.request.use(
 )
 
 export const getFolderContent = async (folderId?: string) => {
+    const idMunicipio = localStorage.getItem('Municipio')
     const path = folderId ? `/sistema-calidad/${folderId}` : '/sistema-calidad';
-    console.log(path)
-    return api.get(path);
+    return api.get(path, {
+        params: {
+            Municipio: idMunicipio
+        },
+    });
 };
 
 
-export const createFolder = async (parentFolderId: string, folderName: string) => {
-    return api.post('/sistema-calidad', {parentFolderId, folderName})
+export const createFolder = async (parentFolderId: string | null, name: string) => {
+    console.log(name)
+    const idMunicipio = localStorage.getItem('Municipio')
+
+    const datosUsuario = JSON.parse(localStorage.getItem('user') || '{}');
+    const idUsuario = datosUsuario.id;
+
+    const folderName = name;
+
+    return api.post('/carpetas', {parentFolderId, folderName, municipio: idMunicipio, user_id: idUsuario});
 }
 
 export const uploadFile = async (formData: FormData, id: number | string) => {
@@ -58,7 +70,15 @@ export const deleteItem = (id: string, type: "carpetas" | "archivo") => {
 
 
 export const downloadFile = (id: string) => {
-    return api.get(`/archivo/${id}/descargar`, {
+    console.log(id)
+    return api.get(`/download-file/${id}`, {
         responseType: 'blob'
     })
 }
+
+// * funciones para cambiar el nombre de carpetas y archivos
+
+export const renameItems = async (folderId: string, parentFolderId: string  | null , newName: string, type: "carpetas" | "archivo" ) => {
+    console.log(folderId, parentFolderId, newName, type)
+    return api.put(`/${type}/${folderId}`, { name: newName, parentFolderId });
+};

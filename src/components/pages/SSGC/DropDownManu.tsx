@@ -9,14 +9,15 @@ import { useUploadFile } from "../../../hooks/useUploadFile";
 interface DropDownManuProps {
   currentFolderId: string;
   uploadNewFile: (formData: FormData, id: string | number) => Promise<void>;
+  createNewFolder: (name: string) => void;
 }
 
-const DropDownManu: React.FC<DropDownManuProps> = ({uploadNewFile, currentFolderId}) => {
+const DropDownManu: React.FC<DropDownManuProps> = ({uploadNewFile, currentFolderId, createNewFolder}) => {
   //   const [isOpen, setIsOpen] = useState(false);
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
   
-  const { selectedFiles, uploading, handleFileChange, handleUpload } =
+  const {  uploading, handleFileChange, handleUpload } =
   useUploadFile(uploadNewFile, currentFolderId)
 
   const toggleModalFolder = () => {
@@ -75,7 +76,7 @@ const DropDownManu: React.FC<DropDownManuProps> = ({uploadNewFile, currentFolder
         </div>
       </MenuItems>
 
-      {<ModalCrearCarpeta standOpen={stadOpenFolder} toggleModal={toggleModalFolder} />}
+      {<ModalCrearCarpeta standOpen={stadOpenFolder} toggleModal={toggleModalFolder} createNewFolder={createNewFolder} />}
       {<ModalSubirArchivo
             onFileChange={handleFileChange}
             onUpload={handleUpload}
