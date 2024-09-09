@@ -8,8 +8,7 @@ const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
     stadopen,
-    () => setStadopen(false),
-    300
+    () => setStadopen(false)
   );
   const [cantidad, setCantidad] = useState<string>("");
 
@@ -19,7 +18,6 @@ const ModalRadicacion = () => {
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCantidad(value === "" ? "" : Number(value).toString());
-    setTimeout(() => closeModal(), 300);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -37,14 +35,10 @@ const ModalRadicacion = () => {
         Radicar
       </button>
       {stadopen && (
-        <div
-          className={`fixed z-50 flex items-center justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
-            showAnimation && !closing ? "opacity-100" : "opacity-0"
-          }`}
-        > 
+        <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black -inset-5 bg-opacity-40 backdrop-blur-sm">
           <div
             className={`w-auto p-10 bg-white rounded-lg shadow-lg dark:bg-gray-900 transform transition-transform duration-300 ${
-              stadopen && !closing
+              showAnimation && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
             }`}
@@ -408,7 +402,7 @@ const ModalRadicacion = () => {
             {/* container-footer */}
             <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
               <button
-                onClick={() => setTimeout(closeModal, 250)}
+                onClick={() => setTimeout(closeModal)}
                 className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
               >
                 Cancelar
