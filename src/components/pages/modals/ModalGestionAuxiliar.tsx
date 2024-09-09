@@ -30,7 +30,7 @@ const ModalGestionAuxiliar = () => {
           <section onClick={() => setStadOpen(false)}>
             {/* container-full */}
             <div
-              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-900 ${
+              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"

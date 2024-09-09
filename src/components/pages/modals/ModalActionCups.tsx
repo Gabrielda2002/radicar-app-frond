@@ -27,15 +27,15 @@ const ModalActionCups = () => {
         >
           <section className="">
             <div
-              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg ${
+              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between  px-2 py-2  ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+              <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
                   Modulo Estado
                 </h1>
                 <button
