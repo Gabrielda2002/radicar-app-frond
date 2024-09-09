@@ -19,9 +19,11 @@ const FileManager: React.FC = () => {
     uploadNewFile,
     setCurrentFolderId,
     createNewFolder,
+    renameItem
   } = useFileManager();
 
   const currentFolderId = path[path.length - 1].id;
+  
 
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
@@ -91,6 +93,7 @@ const FileManager: React.FC = () => {
                     folders={contents?.folders || []}
                     onFolderClick={setCurrentFolderId}
                     onDelete={deleteItemById}
+                    renameItem={renameItem}
                   />
                 </div>
               )}
@@ -104,6 +107,7 @@ const FileManager: React.FC = () => {
                     files={contents?.files || []}
                     onDelete={deleteItemById}
                     onDownload={downloadFileById}
+                    renameItem={renameItem}
                   />
                 </div>
               )}

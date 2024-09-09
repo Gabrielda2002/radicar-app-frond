@@ -75,3 +75,10 @@ export const downloadFile = (id: string) => {
         responseType: 'blob'
     })
 }
+
+// * funciones para cambiar el nombre de carpetas y archivos
+
+export const renameItems = async (folderId: string, parentFolderId: string  | null , newName: string, type: "carpetas" | "archivo" ) => {
+    console.log(folderId, parentFolderId, newName, type)
+    return api.put(`/${type}/${folderId}`, { name: newName, parentFolderId });
+};
