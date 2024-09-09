@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
-const ModalCrearCarpeta = ({standOpen, toggleModal}) => {
+type ModalCrearCarpetaProps = {
+  standOpen: boolean;
+  toggleModal: () => void;
+  createNewFolder: (name: string) => void;
+};
+
+const ModalCrearCarpeta = ({standOpen, toggleModal, createNewFolder}: ModalCrearCarpetaProps) => {
 
   const [showAnimation, setShowAnimation] = useState(false);
+
+  const [ folderName, setFolderName ] = useState('');
 
   // Se agrega useEffect para controlar la animación de la ventana emergente
 
@@ -14,6 +22,15 @@ useEffect(() => {
       }, 800);
     }
   }, [standOpen]);
+
+  const handleCreateFolder = () => {
+    if (folderName.trim()) {
+      createNewFolder(folderName);
+      toggleModal();
+    }else{
+      alert('El nombre de la carpeta es requerido');
+    }
+  }
   
   return (
     <>
@@ -51,6 +68,7 @@ useEffect(() => {
                   type="text"
                   placeholder="Ingrese el nombre..."
                   className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  onChange={(e) => setFolderName(e.target.value)}
                 />
               </div>
             </div>
@@ -64,7 +82,9 @@ useEffect(() => {
               >
                 Cerrar
               </button>
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800">
+              <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
+                onClick={handleCreateFolder}
+              >
                 Crear
               </button>
             </div>

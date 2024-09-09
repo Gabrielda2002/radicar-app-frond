@@ -40,8 +40,15 @@ export const getFolderContent = async (folderId?: string) => {
 };
 
 
-export const createFolder = async (parentFolderId: string, folderName: string) => {
-    return api.post('/sistema-calidad', {parentFolderId, folderName})
+export const createFolder = async (parentFolderId: string, name: string) => {
+    const idMunicipio = localStorage.getItem('Municipio')
+
+    const datosUsuario = JSON.parse(localStorage.getItem('user') || '{}');
+    const idUsuario = datosUsuario.id;
+
+    const folderName = name;
+
+    return api.post('/carpetas', {parentFolderId, folderName, municipio: idMunicipio, user_id: idUsuario});
 }
 
 export const uploadFile = async (formData: FormData, id: number | string) => {
