@@ -32,7 +32,7 @@ const ModalSoporte = () => {
               {/* container-header */}
               <div className="flex items-center justify-between  px-2 py-2  dark:bg-gray-800">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
-                  Modulo Soporte
+                  Módulo Soporte
                 </h1>
                 <button
                   onClick={() => setStadOpen(false)}

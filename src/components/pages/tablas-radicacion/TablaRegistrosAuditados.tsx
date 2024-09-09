@@ -12,7 +12,7 @@ const TablaRegistrosAuditados = () => {
       <section className="p-4 dark:bg-gray-900 ps-0">
         <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Modulo Registro Auditados
+          Módulo Registro Auditados
         </h1>
         <nav>
           <ol className="flex mb-3 text-gray-700 dark:text-gray-300">
@@ -21,7 +21,7 @@ const TablaRegistrosAuditados = () => {
             </Link>
             <Link to="/tabla-auditoria">
               <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
-                Servicio Auditoria
+                Servicio Auditoría
               </li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">

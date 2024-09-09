@@ -14,7 +14,7 @@ const TablaCirugias = () => {
       {/*nav-auditoria*/}
       <section className="dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Módulo Cirugias
+          Módulo Cirugías
         </h1>
         <nav className="">
           <ol className="flex mb-2 dark:text-gray-300">
@@ -22,7 +22,7 @@ const TablaCirugias = () => {
               <li className="text-slate-400 after:mr-2 ">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Cirugias
+              Servicio Cirugías
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -37,7 +37,7 @@ const TablaCirugias = () => {
         {/*header-table*/}
 
         <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar registro Cirugia :
+          Buscar registro Cirugía :
         </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
@@ -69,8 +69,8 @@ const TablaCirugias = () => {
               <th className="">Nombre Completo</th>
               <th className="">Nombre Paciente</th>
               <th className="">Servicio de Radicado</th>
-              <th className="">Fecha Auditoria</th>
-              <th className="">Justificación Auditoria</th>
+              <th className="">Fecha Auditoría</th>
+              <th className="">Justificación Auditoría</th>
               <th className="">Especialidad</th>
               <th className="">Mostrar</th>
               <th className="">Servicio Solicitado</th>
@@ -93,9 +93,9 @@ const TablaCirugias = () => {
                     // Table Col 1 (6)
                     numRadi={true}//
                     feRadi={true}//fecha paraclinicos
-                    nomCiru1="Paraclinicos"
+                    nomCiru1="Paraclínicos"
                     tipoDoc={true}//Numero programacion
-                    nomCiru7="Numero Programacion"
+                    nomCiru7="Número Programación"
                     numDoc={true}//
                     nomPac={true}//
                     numCel={true}//hora programada
@@ -105,9 +105,9 @@ const TablaCirugias = () => {
                     direccion={true}//observaciones
                     nomCiru3="Observaciones"
                     convenio={true}//fecha valoracion
-                    nomCiru4="Fecha Valoracion"
+                    nomCiru4="Fecha Valoración"
                     ipsPri={true}//fecha cirugia
-                    nomCiru5="Fecha Cirugia"
+                    nomCiru5="Fecha Cirugía"
                     feOrden={true}//fecha ordenamiento
                     nomCiru6="Ordenamiento"
                     // lugRadi={false}

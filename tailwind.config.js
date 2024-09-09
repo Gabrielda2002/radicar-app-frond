@@ -16,6 +16,9 @@ export default {
       screens: {
         tabletMx: "1140px",
       },
+      fontFamily:{
+        roboto:['Roboto']
+      }
     },
   },
   plugins: [],

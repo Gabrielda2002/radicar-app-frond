@@ -69,7 +69,7 @@ const ModalPaciente = () => {
 
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Correo Electronico
+                  Correo Electrónico
                 </label>
                 <input
                   type="mail"
@@ -80,11 +80,11 @@ const ModalPaciente = () => {
 
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Identificacion
+                  Identificación
                 </label>
                 <input
                   type="number"
-                  placeholder="Ingrese Identificacion..."
+                  placeholder="Ingrese Identificación..."
                   className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>
@@ -93,11 +93,11 @@ const ModalPaciente = () => {
             <div className="grid grid-cols-2 gap-2 mb-10">
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Telefono Fijo
+                  Teléfono Fijo
                 </label>
                 <input
                   type="number"
-                  placeholder="Ingrese Telefono Fijo..."
+                  placeholder="Ingrese Teléfono Fijo..."
                   className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>
@@ -124,11 +124,11 @@ const ModalPaciente = () => {
 
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Numero de Celular
+                  Número de Celular
                 </label>
                 <input
                   type="number"
-                  placeholder="Ingrese Numero..."
+                  placeholder="Ingrese Número..."
                   className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>

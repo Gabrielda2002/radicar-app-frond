@@ -98,7 +98,7 @@ const TablaPacientes = () => {
               <th className="">Tipo de Documento</th>
               <th className="">Nombre Completo</th>
               <th className=" w-[120px]">Número Celular</th>
-              <th className=" w-[130px]">Telefono Fijo</th>
+              <th className=" w-[130px]">Teléfono Fijo</th>
               <th className="">Correo</th>
               <th className="">Convenio</th>
               <th className=" w-[90px]">Estado </th>
