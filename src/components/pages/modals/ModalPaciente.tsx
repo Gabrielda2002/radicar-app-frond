@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
-
+//*Funciones y Hooks
+import { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 const ModalPaciente = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
+
+  const { showAnimation, closing } = useAnimation(
+    isOpen,
+    () => setIsOpen(false),
+    300
+  );
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 1000);
-    }
-    [isOpen];
-  });
-
   return (
     <>
       <button
-        className="border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800"
+        className={`border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800 ${
+          showAnimation && !closing ? "opacity-100" : "opacity-100"
+        }`}
         onClick={toggleModal}
       >
         Agregar Paciente
@@ -34,7 +32,13 @@ const ModalPaciente = () => {
 
           {/* Contenido del Formulario */}
 
-          <div className="z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div
+            className={`z-10 w-[900px] p-10 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              showAnimation && !closing
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
             <div className="flex justify-between mb-10 items center">
               <h2 className="text-lg font-semibold text-color">
                 Agregar Paciente

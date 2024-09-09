@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+//*Funciones y Hooks
+import React, { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 import { useModalReport } from "../../../hooks/useReport";
-import close from "/assets/close.svg";
-import back from "/assets/back.svg";
 import { useDownloadReport } from "../../../hooks/useDownloadReport";
+//*Icons
+import back from "/assets/back.svg";
+import close from "/assets/close.svg";
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,22 +14,19 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
-  const { formValues, handleChange } =
-    useModalReport();
+  const { formValues, handleChange } = useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
-
   const [dateStartRadicado, setDateStartRadicado] = useState("");
   const [dateEndRadicado, setDateEndRadicado] = useState("");
   const [cupsCode, setCupsCode] = useState("");
 
-  const { downloadReport,error } = useDownloadReport();
-
-  // * funcion para descargar el archivo y enviar datos al servidor
+  const { downloadReport, error } = useDownloadReport();
+  const { showAnimation, closing } = useAnimation(isOpen, onClose); // Hook con estado de cierre
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  }
+    // lógica de envío
+  };
 
   const handleDownloadReport = async () => {
     try {
@@ -34,68 +34,38 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-
-
-  useEffect(() => {
-    if (isOpen) {
-      setShowAnimation(true);
-    } else {
-      setShowAnimation(false);
-      setTimeout(() => onClose(), 300);
-    }
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [onClose]);
-
-  if (!isOpen && !showAnimation) return null;
+  };
 
   const handleOutsideClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      setShowSecondModal(false);
       setTimeout(() => onClose(), 300);
     }
-  };
-
-  const handleGenerateClick = () => {
-    setShowSecondModal(true);
-  };
-
-  const handleBackClick = () => {
-    setShowSecondModal(false);
   };
 
   const modalTitle =
     formType === "Autorizacion" ? "Autorizacion Reporte" : "Reporte Excel";
 
+  if (!isOpen && !showAnimation) return null;
+
   return (
     <div
       className={`fixed z-50 flex items-center justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
-        showAnimation ? "opacity-100" : "opacity-0"
+        showAnimation && !closing ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOutsideClick}
     >
       <div
         className={`w-auto p-10 bg-white rounded-lg shadow-lg dark:bg-gray-900 transform transition-transform duration-300 ${
-          showAnimation
+          showAnimation && !closing
             ? "translate-y-0 opacity-100"
-            : "-translate-y-10 opacity-0"
+            : "translate-y-10 opacity-0"
         }`}
       >
         <div className="flex justify-end">
           <button
             onClick={() => {
-              setShowAnimation(false);
+              setShowSecondModal(false);
               setTimeout(onClose, 300);
             }}
           >
@@ -130,7 +100,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             <div className="px-4">
               <button
                 type="button"
-                onClick={handleBackClick}
+                onClick={() => setShowSecondModal(false)}
                 className="flex items-center mb-6"
               >
                 <img className="w-8 h-8 dark:invert" src={back} alt="back" />
@@ -141,8 +111,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
                     ? "Código de Autorizacion"
                     : "Código de Radicacion"}
                 </label>
-
-
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-2 text-gray-700 dark:text-gray-300">
@@ -167,8 +135,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
                     />
                   </div>
                 </div>
-
-
               </div>
             </div>
           )}
@@ -182,8 +148,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               onChange={(e) => {
                 handleChange(e);
                 setCupsCode(e.target.value);
-              }
-                }
+              }}
               placeholder="Ingrese código..."
               className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
@@ -192,7 +157,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             <button
               type="button"
               onClick={() => {
-                setShowAnimation(false);
+                setShowSecondModal(false);
                 setTimeout(onClose, 300);
               }}
               className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
@@ -201,8 +166,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             </button>
             {!showSecondModal ? (
               <button
-                type="button"
-                onClick={handleGenerateClick}
+                onClick={() => setShowSecondModal(true)}
                 className={`px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700 ${
                   !formValues.reportOptions
                     ? "opacity-50 cursor-not-allowed"
