@@ -74,8 +74,8 @@ const SideBar: FC = () => {
 
   return (
     <aside
-      className={`flex flex-col transition-all duration-700 ${
-        isCollapsed ? "w-18" : "w-62"
+      className={`flex flex-col h-full transition-transform duration-500 ease-in-out overflow-y-auto border-r border-gray-900 ${
+        isCollapsed ? "w-20 translate-x-0" : "w-62"
       } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700`}
     >
       <div>
@@ -402,7 +402,11 @@ const SideBar: FC = () => {
             </div>
 
             {/* Modal Component */}
-            <Modal isOpen={isModalOpen} onClose={closeModal} formType={"Autorizacion"} />
+            <Modal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              formType={"Autorizacion"}
+            />
             {/* Modulo de acordion 4*/}
             <div className="space-y-3">
               <div>

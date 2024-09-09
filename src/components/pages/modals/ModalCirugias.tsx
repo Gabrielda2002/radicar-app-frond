@@ -27,15 +27,15 @@ const ModalCirugias = () => {
         >
           <section>
             <div
-              className={` w-[700px] bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-900 overflow-hidden rounded ${
+              className={` w-auto bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-800 overflow-hidden rounded ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+              <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
+                <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
                   Modulo Ciugias
                 </h1>
                 <button

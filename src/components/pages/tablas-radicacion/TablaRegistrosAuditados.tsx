@@ -48,7 +48,7 @@ const TablaRegistrosAuditados = () => {
           <div className="flex items-center">
             <input
               type="text"
-              className="block ps-2 w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-stone-300 dark:bg-gray-700 "
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               placeholder=" Consultar..."
             />
           </div>

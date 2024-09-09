@@ -6,6 +6,8 @@ import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useT
 import { useUserProfile } from "../context/userProfileContext";
 //*Icons
 import userLogo from "/assets/user-logo.svg";
+import sun from "/assets/sun.svg";
+import moon from "/assets/moon.svg";
 
 const Navbar: React.FC = () => {
   const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
@@ -37,9 +39,13 @@ const Navbar: React.FC = () => {
         {/* Botón de Modo Oscuro */}
         <button
           onClick={toggleTheme}
-          className="p-2 ml-auto mr-4 text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-200 focus:outline-none"
+          className="p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 rounded-full hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:outline-none group hover:-translate-y-2"
         >
-          {theme === "light" ? "🌙" : "☀️"}
+          {theme === "light" ? (
+            <img src={moon} alt="Moon Icon" className="w-6 h-6 group-hover:invert" />
+          ) : (
+            <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
+          )}
         </button>
 
         <Menu as="div" className="relative">
