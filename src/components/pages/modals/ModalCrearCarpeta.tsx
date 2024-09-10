@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from "react";
 
 type ModalCrearCarpetaProps = {
   standOpen: boolean;
@@ -6,50 +6,41 @@ type ModalCrearCarpetaProps = {
   createNewFolder: (name: string) => void;
 };
 
-const ModalCrearCarpeta = ({standOpen, toggleModal, createNewFolder}: ModalCrearCarpetaProps) => {
-
-  const [showAnimation, setShowAnimation] = useState(false);
-  const [ Error, setError ] = useState('');
-  const [ folderName, setFolderName ] = useState('');
-
-  // Se agrega useEffect para controlar la animación de la ventana emergente
-
-useEffect(() => {
-    if (standOpen) {
-      setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 800);
-    }
-  }, [standOpen]);
+const ModalCrearCarpeta = ({
+  standOpen,
+  toggleModal,
+  createNewFolder,
+}: ModalCrearCarpetaProps) => {
+  const [Error, setError] = useState("");
+  const [folderName, setFolderName] = useState("");
 
   const handleCreateFolder = () => {
     if (folderName.trim()) {
       createNewFolder(folderName);
       toggleModal();
-    }else{
-      alert('El nombre de la carpeta es requerido');
+    } else {
+      alert("El nombre de la carpeta es requerido");
     }
-  }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
     const regex = /^[a-zA-Z0-9\s]{1,60}$/;
 
     const inputValue = e.target.value;
 
     if (!regex.test(inputValue)) {
-      setError('Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales');
+      setError(
+        "Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales"
+      );
     } else {
-      setError('');
+      setError("");
     }
-    console.log(Error)
+    console.log(Error);
     setFolderName(inputValue);
-  }
-  
+  };
+
   return (
     <>
-
       {standOpen && (
         <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
@@ -83,7 +74,9 @@ useEffect(() => {
                   type="text"
                   placeholder="Ingrese el nombre..."
                   className={`w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white ${
-                    Error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    Error
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
                   }`}
                   onChange={handleInputChange}
                 />
@@ -100,7 +93,8 @@ useEffect(() => {
               >
                 Cerrar
               </button>
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
+              <button
+                className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-800"
                 onClick={handleCreateFolder}
                 disabled={!!Error || !folderName.trim()}
               >
@@ -111,7 +105,7 @@ useEffect(() => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default ModalCrearCarpeta;
