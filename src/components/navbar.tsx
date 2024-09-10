@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
                     onClick={() => {
                       item.action();
                     }}
-                    className={`block px-4 py-2 text-sm ${
+                    className={`block px-4 py-2 text-sm w-full text-left ${
                       theme === "dark"
                         ? "text-gray-200 hover:bg-gray-700"
                         : "text-gray-800 hover:bg-gray-200"
