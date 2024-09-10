@@ -34,7 +34,7 @@ const ModalAction = (props: any) => {
               {/* container-header */}
               <div className="flex items-center justify-between  px-2 py-2  ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
-                  Modulo Estado
+                  Módulo Estado
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
