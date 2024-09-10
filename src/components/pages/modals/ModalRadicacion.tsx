@@ -2,15 +2,35 @@
 import { useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
-//*Icons
+import useFetchPaciente from "../../../hooks/useFetchPaciente";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
-  const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false)
+
+  const navigate = useNavigate();
+
+
+  const { data, loading, error, getData } = useFetchPaciente();
+  const [identificacion, setIdentificacion] = useState<string>("");
+
+  const { showAnimation, closing } = useAnimation(stadopen, () =>
+    setStadopen(false)
   );
   const [cantidad, setCantidad] = useState<string>("");
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (identificacion) {
+        getData(identificacion);
+      }
+    }
+  };
+  
+  
+  const handleRegisterPaciente = () => {
+      navigate("/tabla-pacientes");
+    };
 
   const closeModal = () => {
     setStadopen(false);
@@ -71,140 +91,172 @@ const ModalRadicacion = () => {
 
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2 text-sm">
                   <div>
-                    <label htmlFor="" className="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Tipo Documento
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Identificacion
                       </span>
                       <input
-                        type="number"
-                        id=""
-                        name=""
+                        type="text"
+                        id="identificacion"
+                        name="identificacion"
+                        value={identificacion}
+                        onChange={(e) => setIdentificacion(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
                       />
                     </label>
                   </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Nombre Completo
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Convevio
-                      </span>
-                      <input
-                        type="text"
-                        id=" "
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        IPS Primaria
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
+
+                  {/* { loading && <p className="text-gray-700 dark:text-gray-200">Cargando...</p>} */}
+
+                  {error && !data && (
+                    <div className="text-red-500 dark:text-red-300" >
+                      {error}
+                      <button
+                        onClick={handleRegisterPaciente}
+                      >
+                        Registrar Paciente
+                      </button>
+                    </div>
+                  )}
+
+                  {data && (
+                    <>
+                      <div>
+                        <label htmlFor="" className="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Tipo Documento
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            value={data.documentRelation.name}
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Nombre Completo
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            value={data.name}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Convevio
+                          </span>
+                          <input
+                            type="text"
+                            value={data.convenioRelation.name}
+                            id=" "
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            IPS Primaria
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            value={data.ipsPrimariaRelation.name}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                    </>
+                  )}
                 </section>
 
-                <div>
-                  <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                    Datos Contacto Paciente
-                  </h5>
-                </div>
+                {data && (
+                  <>
+                    <div>
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
+                        Datos Contacto Paciente
+                      </h5>
+                    </div>
 
-                <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Telefono Fijo
-                      </span>
-                      <input
-                        type="number"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        N° Celular
-                      </span>
-                      <input
-                        type="number"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Dirreción
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Email
-                      </span>
-                      <input
-                        type="email"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                </section>
+                    <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Telefono Fijo
+                          </span>
+                          <input
+                            type="number"
+                            id=""
+                            name=""
+                            value={data.landline}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            N° Celular
+                          </span>
+                          <input
+                            type="number"
+                            id=""
+                            value={data.phoneNumber}
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Dirreción
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            value={data.address}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Email
+                          </span>
+                          <input
+                            type="email"
+                            id=""
+                            name=""
+                            value={data.email}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                    </section>
+                  </>
+                )}
 
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
