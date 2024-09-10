@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/16/solid"
 import React, { useState } from "react";
 import ModalRenombrarItem from "../modals/ModalRenombrarItem";
+import ConfirmDeletePopupProps from "../../ConfirmDeletePopup";
 
 interface ItemManuProps {
     onDelete: () => void;
@@ -11,6 +12,7 @@ interface ItemManuProps {
 const ItemManu: React.FC<ItemManuProps> = ({onDelete, renameItem}) => {
 
   const [stadOpenRename, setStadOpenRename] = useState(false);
+  const [stadOpenDelete, setStadOpenDelete] = useState(false);
 
     const toggleModalRename = () => {
         setStadOpenRename(!stadOpenRename);
@@ -18,6 +20,19 @@ const ItemManu: React.FC<ItemManuProps> = ({onDelete, renameItem}) => {
 
     const handleModalOpenRename = () => {
         setStadOpenRename(true);
+    };
+
+    const handleModalOpenDelete = () => {
+      setStadOpenDelete(true);
+    };
+
+    const stadOffDelete = () =>{
+      setStadOpenDelete(false)
+    };
+
+    const confirmDeleteItem = () =>{
+      onDelete();
+      stadOffDelete();
     };
 
 
@@ -41,7 +56,7 @@ const ItemManu: React.FC<ItemManuProps> = ({onDelete, renameItem}) => {
                   <MenuItem>
                     <button
                       className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-                      onClick={onDelete}
+                      onClick={handleModalOpenDelete}// hacer la incorporacion del modal "en teoria generaria  hacia los dos "
                     >
                       Eliminar
                     </button>
@@ -58,6 +73,13 @@ const ItemManu: React.FC<ItemManuProps> = ({onDelete, renameItem}) => {
               </MenuItems>
 
                 {<ModalRenombrarItem toggleModal={toggleModalRename} standOpen={stadOpenRename} renameItem={renameItem}/>}
+
+                {/* Mensaje confirmacion DELETE */}
+                {<ConfirmDeletePopupProps 
+                  isOpen={stadOpenDelete}//condicion true
+                  onClose={stadOffDelete}//cerrar modal
+                  onConfirm={confirmDeleteItem}//eliminacion acertiva y cerrar el modal
+                ></ConfirmDeletePopupProps>}
 
             </Menu>
     </>
