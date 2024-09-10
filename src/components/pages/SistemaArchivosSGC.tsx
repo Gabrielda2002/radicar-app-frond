@@ -1,11 +1,12 @@
-import { useFileManager } from "../../hooks/useFileManager";
-import FolderList from "./SSGC/FolderList";
+import React from "react";
 import FileList from "./SSGC/FileList";
 import { Link } from "react-router-dom";
-import salir from "/assets/back.svg";
 import BreadCrumb from "./SSGC/BreadCrumb";
-// import { useState } from "react";
+import FolderList from "./SSGC/FolderList";
+import LoadingSpinner from "../LoadingSpinner";
 import DropDownManu from "./SSGC/DropDownManu";
+import { useFileManager } from "../../hooks/useFileManager";
+import salir from "/assets/back.svg";
 
 const FileManager: React.FC = () => {
   const {
@@ -19,13 +20,13 @@ const FileManager: React.FC = () => {
     uploadNewFile,
     setCurrentFolderId,
     createNewFolder,
-    renameItem
+    renameItem,
   } = useFileManager();
 
   const currentFolderId = path[path.length - 1].id;
-  
+  const isInFolder = path.length > 1; // Si tienes más de un elemento en el path, estás dentro de una carpeta
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <LoadingSpinner duration={3000} />;
   if (error) return <div>{error}</div>;
 
   const hasFolder = contents?.folders && contents?.folders.length > 0;
@@ -35,7 +36,7 @@ const FileManager: React.FC = () => {
   return (
     <>
       {/* navbar table */}
-      <section className="dark:bg-gray-900">
+      <section className="relative dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
           Módulo Sistema Gestion Calidad
         </h1>
@@ -69,6 +70,7 @@ const FileManager: React.FC = () => {
             uploadNewFile={uploadNewFile}
             currentFolderId={currentFolderId}
             createNewFolder={createNewFolder}
+            isInFolder={isInFolder} // Pasar el estado de si estás en una carpeta
           />
         </section>
         <div>
