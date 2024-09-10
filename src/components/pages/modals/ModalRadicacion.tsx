@@ -19,8 +19,14 @@ const ModalRadicacion = () => {
   );
   const [cantidad, setCantidad] = useState<string>("");
 
+  const handleBlur = () => {
+    if (identificacion) {
+      getData(identificacion);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Tab") {
       if (identificacion) {
         getData(identificacion);
       }
@@ -102,6 +108,7 @@ const ModalRadicacion = () => {
                         value={identificacion}
                         onChange={(e) => setIdentificacion(e.target.value)}
                         onKeyDown={handleKeyDown}
+                        onBlur={handleBlur}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
                       />
                     </label>
