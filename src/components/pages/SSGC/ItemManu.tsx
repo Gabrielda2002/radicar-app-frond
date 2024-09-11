@@ -85,6 +85,8 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
             isOpen={stadOpenDelete} //condicion true
             onClose={stadOffDelete} //cerrar modal
             onConfirm={confirmDeleteItem} //eliminacion acertiva y cerrar el modal
+            iteamName="el elemento"
+            condicClase={true}
           ></ConfirmDeletePopupProps>// pasar prop "cambio de nombre y clases"
         }
       </Menu>
