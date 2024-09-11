@@ -44,7 +44,7 @@ const TablaLugarRadicacion = () => {
       <section className=" dark:bg-gray-900">
         <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Lugar Radicacion
+          Módulo Lugar Radicación
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -52,7 +52,7 @@ const TablaLugarRadicacion = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Lugar Radicacion
+              Servicio Lugar Radicación
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -69,7 +69,7 @@ const TablaLugarRadicacion = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Lugar Radicacion :
+              Buscar Lugar Radicación :
             </label>
             <input
               value={query}
@@ -122,7 +122,7 @@ const TablaLugarRadicacion = () => {
                     <td>{lugar.name}</td>
                     <td>{lugar.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Lugar Radicacion" />
+                      <ModalAction nom="Lugar Radicación" />
                     </td>
                   </tr>
                 ))}

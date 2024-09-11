@@ -76,7 +76,7 @@ const ModalRadicacion = () => {
             {/* container-header */}
             <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
               <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
-                Radicacion de Servicios
+                Radicación de Servicios
               </h1>
               <button
                 onClick={() => setStadopen(false)}
@@ -99,7 +99,7 @@ const ModalRadicacion = () => {
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Identificacion
+                        Identificación
                       </span>
                       <input
                         type="text"
@@ -295,7 +295,7 @@ const ModalRadicacion = () => {
 
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                    Informacion del Servicio a Radicar
+                    Información del Servicio a Radicar
                   </h5>
                 </div>
 
@@ -399,7 +399,7 @@ const ModalRadicacion = () => {
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Lugar Radicacion
+                        Lugar Radicación
                       </span>
                       <input
                         type="text"
@@ -412,7 +412,7 @@ const ModalRadicacion = () => {
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Diagnostico
+                        Diagnóstico
                       </span>
                       <input
                         type="text"
@@ -428,7 +428,7 @@ const ModalRadicacion = () => {
                       className="disabled:bg-gray-200 disabled:cursor-not-allowed"
                     >
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Descripcion Dianostico
+                        Descripción Diagnóstico
                       </span>
                       <textarea
                         id=""
@@ -440,7 +440,7 @@ const ModalRadicacion = () => {
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Quien Radica
+                        Quién Radica
                       </span>
                       <select
                         id=""
@@ -471,12 +471,12 @@ const ModalRadicacion = () => {
             </form>
 
             {/* container-footer */}
-            <div className="flex items-center justify-end w-full gap-1 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
               <button
                 onClick={() => setTimeout(closeModal, 250)}
                 className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
-                Cancelar
+                Cerrar
               </button>
               <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
                 Radicar

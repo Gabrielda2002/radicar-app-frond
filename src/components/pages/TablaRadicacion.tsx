@@ -72,7 +72,7 @@ const TablaRadicacion = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar registro Radicacion :
+              Buscar registro Radicación :
             </label>
             <input
               value={query}
@@ -108,13 +108,13 @@ const TablaRadicacion = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
-                  <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-200">
+                  <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
                     <th>Convenio</th>
                     <th>N.º Documento</th>
                     <th>Nombre Paciente</th>
-                    <th>Fecha Auditoria</th>
+                    <th>Fecha Auditoría</th>
                     <th className="w-[150px]">Nombre Auditora</th>
                     <th>Soporte</th>
                     <th>Gestión Auxiliar</th>

@@ -52,7 +52,7 @@ const TablaAuditoria = () => {
       <section className=" dark:bg-gray-900 ps-0">
         <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Módulo Auditoria
+          Módulo Auditoría
         </h1>
         <nav className="">
           <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
@@ -60,7 +60,7 @@ const TablaAuditoria = () => {
               <li className="text-slate-400 after:mr-2 ">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Auditoria
+              Servicio Auditoría
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -73,7 +73,7 @@ const TablaAuditoria = () => {
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar registro Auditoria :
+          Buscar registro Auditoría :
         </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
@@ -121,17 +121,17 @@ const TablaAuditoria = () => {
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className=" ">Fecha Radicados</th>
                   <th className=" ">Tipo Documento </th>
-                  <th className=" ">Identificacion</th>
+                  <th className=" ">Identificación</th>
                   <th className=" ">Nombre Completo</th>
                   <th className=" ">Convenio</th>
                   <th className=" ">IPS Primaria</th>
                   <th className=" ">Fecha Orden</th>
-                  <th className=" ">Lugar Radicacion</th>
+                  <th className=" ">Lugar Radicación</th>
                   <th className=" ">IPS Remite</th>
                   <th className=" ">Profesional</th>
                   <th className=" ">Especialidad</th>
                   <th className=" ">Tipo Servicio</th>
-                  <th className=" ">Quien Radica</th>
+                  <th className=" ">Quién Radica</th>
                   <th className=" ">Soporte</th>
                   <th className=" ">Ver Servicios</th>
                   <th className=" ">Autorizar Servicios</th>

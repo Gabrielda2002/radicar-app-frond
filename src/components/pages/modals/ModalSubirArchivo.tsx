@@ -1,7 +1,7 @@
 // ModalSubirArchivo.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import upload from "/assets/upload.svg";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 interface FileUploaderProps {
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -18,28 +18,26 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
   uploading,
   onUpload,
 }) => {
-  const [showAnimation, setShowAnimation] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
-  useEffect(() => {
-    if (stadopen) {
-      setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false);
-      }, 800);
-    }
-  }, [stadopen]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const allowedExtensions = /(\.pdf|\.doc|\.docx|\.xls|\.xlsx)$/i;
       const filesArray = Array.from(e.target.files);
 
-      const validFiles = filesArray.filter((file) => allowedExtensions.test(file.name));
-      const invalidFiles = filesArray.filter((file) => !allowedExtensions.test(file.name));
+      const validFiles = filesArray.filter((file) =>
+        allowedExtensions.test(file.name)
+      );
+      const invalidFiles = filesArray.filter(
+        (file) => !allowedExtensions.test(file.name)
+      );
 
       if (invalidFiles.length > 0) {
-        toast.error(`Los siguientes archivos no son válidos: ${invalidFiles.map((file) => file.name).join(", ")}`);
+        toast.error(
+          `Los siguientes archivos no son válidos: ${invalidFiles
+            .map((file) => file.name)
+            .join(", ")}`
+        );
       }
 
       if (validFiles.length > 0) {
@@ -62,7 +60,9 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
   };
 
   const handleRemoveFile = (name: string) => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((file) => file.name !== name));
+    setSelectedFiles((prevFiles) =>
+      prevFiles.filter((file) => file.name !== name)
+    );
   };
 
   const handleUpload = () => {
@@ -105,13 +105,19 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
                   onChange={handleFileChange}
                   accept=".pdf,.doc,.docx,.xls,.xlsx"
                 />
-                <button
-                  className="py-2 px-1 rounded shadow hover:bg-blue-500 text-sm font-medium text-gray-700 dark:text-gray-300 truncate"
+                <div
+                  className="flex items-center justify-between rounded cursor-pointer hover:bg-blue-500 group hover:text-gray-100 outline outline-offset-2 outline-2"
                   onClick={() => document.getElementById("files")?.click()}
                 >
-                  Seleccionar Archivos
-                  <img src={upload} alt="Upload Icon" className="w-6 h-6" />
-                </button>
+                  <button className="px-2 py-4 text-sm font-semibold text-gray-800 rounded-l-lg dark:text-gray-200 dark:bg-gray-600 group-hover:text-gray-100">
+                    Seleccionar Archivos
+                  </button>
+                    <img
+                      src={upload}
+                      alt="Upload Icon"
+                      className="w-8 h-8 mx-3 dark:invert group-hover:invert"
+                    />
+                </div>
 
                 {selectedFiles.length > 0 && (
                   <ul className="mt-4 space-y-2">
@@ -120,7 +126,7 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
                         key={index}
                         className="flex items-center justify-between p-2 bg-gray-100 rounded-md dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                       >
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate w-full">
+                        <span className="w-full text-sm font-medium text-gray-700 truncate dark:text-gray-300">
                           {file.name}
                         </span>
                         <button
