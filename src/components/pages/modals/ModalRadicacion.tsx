@@ -3,21 +3,30 @@ import { useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
 import useFetchPaciente from "../../../hooks/useFetchPaciente";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import InputAutocompletado from "../../InputAutocompletado";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
 
   const navigate = useNavigate();
 
+  {/* hook que trae los datos del paciente */}
+  const { data, error, getData } = useFetchPaciente();
 
-  const { data, loading, error, getData } = useFetchPaciente();
+  const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
+
   const [identificacion, setIdentificacion] = useState<string>("");
 
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
+
   const [cantidad, setCantidad] = useState<string>("");
+
+  const hableIpsPrimariaChange = (value: string) => {
+    setIpsPrimaria(value);
+  }
 
   const handleBlur = () => {
     if (identificacion) {
@@ -32,11 +41,10 @@ const ModalRadicacion = () => {
       }
     }
   };
-  
-  
+
   const handleRegisterPaciente = () => {
-      navigate("/tabla-pacientes");
-    };
+    navigate("/tabla-pacientes");
+  };
 
   const closeModal = () => {
     setStadopen(false);
@@ -117,11 +125,9 @@ const ModalRadicacion = () => {
                   {/* { loading && <p className="text-gray-700 dark:text-gray-200">Cargando...</p>} */}
 
                   {error && !data && (
-                    <div className="text-red-500 dark:text-red-300" >
+                    <div className="text-red-500 dark:text-red-300">
                       {error}
-                      <button
-                        onClick={handleRegisterPaciente}
-                      >
+                      <button onClick={handleRegisterPaciente}>
                         Registrar Paciente
                       </button>
                     </div>
@@ -270,7 +276,7 @@ const ModalRadicacion = () => {
                     Cups
                   </h5>
                 </div>
-
+                {/* el usuario ingresa la cantidad de servicios que desea ingresar */}
                 <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2 text-sm">
                   <div>
                     <label htmlFor="cantidad">
@@ -301,7 +307,12 @@ const ModalRadicacion = () => {
 
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
                   <div>
-                    <label htmlFor="">
+
+                    <InputAutocompletado
+                      label="IPS Primaria"
+                      onInputChanged={hableIpsPrimariaChange}
+                    />
+                    {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         IPS Remite
                       </span>
@@ -311,7 +322,7 @@ const ModalRadicacion = () => {
                         name=""
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
-                    </label>
+                    </label> */}
                   </div>
                   <div>
                     <label htmlFor="">
