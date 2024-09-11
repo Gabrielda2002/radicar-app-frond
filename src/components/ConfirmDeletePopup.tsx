@@ -4,6 +4,8 @@ interface ConfirmDeletePopupProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  //prop? cambio de nombre
+  //prop? classes filter
 }
 
 const ConfirmDeletePopup: React.FC<ConfirmDeletePopupProps> = ({ isOpen, onClose, onConfirm }) => {

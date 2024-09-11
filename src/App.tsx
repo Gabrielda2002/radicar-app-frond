@@ -33,9 +33,8 @@ import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { useTheme } from "./context/blackWhiteContext";
 import FileManager from "./components/pages/SistemaArchivosSGC";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppRoutes() {
   const { theme } = useTheme();
@@ -162,13 +161,15 @@ export function App() {
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
-        hideProgressBar
-        newestOnTop
+        hideProgressBar={false}
+        newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        theme="colored"
+        transition={Bounce}
       />
     </AuthProvider>
   );
