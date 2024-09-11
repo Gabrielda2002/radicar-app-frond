@@ -11,12 +11,30 @@ const ModalRadicacion = () => {
 
   const navigate = useNavigate();
 
-  {/* hook que trae los datos del paciente */}
+  {
+    /* hook que trae los datos del paciente */
+  }
   const { data, error, getData } = useFetchPaciente();
 
   const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
 
+  const [especialidad, setEspecialidad] = useState<string>("");
+
+  const [grupoServicios, setGrupoServicios] = useState<string>("");
+
+  const [lugarRadicacion , setLugarRadicacion] = useState<string>("");
+
+  const [tipoServicios, setTipoServicios] = useState<string>("");
+
   const [identificacion, setIdentificacion] = useState<string>("");
+
+  const handleTipoServiciosChange = (value: string) => {
+    setTipoServicios(value);
+  }
+
+  const handleLugarRadicacionChange = (value: string) => {
+    setLugarRadicacion(value);
+  };
 
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
@@ -26,7 +44,15 @@ const ModalRadicacion = () => {
 
   const hableIpsPrimariaChange = (value: string) => {
     setIpsPrimaria(value);
-  }
+  };
+
+  const hableEspecialidadChange = (value: string) => {
+    setEspecialidad(value);
+  };
+
+  const hableGrupoServiciosChange = (value: string) => {
+    setGrupoServicios(value);
+  };
 
   const handleBlur = () => {
     if (identificacion) {
@@ -307,10 +333,10 @@ const ModalRadicacion = () => {
 
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
                   <div>
-
                     <InputAutocompletado
                       label="IPS Primaria"
                       onInputChanged={hableIpsPrimariaChange}
+                      apiRoute="ips-primaria-name"
                     />
                     {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -325,7 +351,13 @@ const ModalRadicacion = () => {
                     </label> */}
                   </div>
                   <div>
-                    <label htmlFor="">
+                    <InputAutocompletado
+                      label="Especialidad"
+                      onInputChanged={hableEspecialidadChange}
+                      apiRoute="especialidades-name"
+                    />
+
+                    {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Especialidad
                       </span>
@@ -335,7 +367,7 @@ const ModalRadicacion = () => {
                         name=""
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
-                    </label>
+                    </label> */}
                   </div>
                   <div>
                     <label htmlFor="">
@@ -364,7 +396,13 @@ const ModalRadicacion = () => {
                     </label>
                   </div>
                   <div>
-                    <label htmlFor="">
+                    <InputAutocompletado
+                      label="Grupo Servicios"
+                      onInputChanged={hableGrupoServiciosChange}
+                      apiRoute="grupo-servicios-name"
+                    />
+
+                    {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Grupo Servicios
                       </span>
@@ -374,25 +412,17 @@ const ModalRadicacion = () => {
                         name=""
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
-                    </label>
+                    </label> */}
                   </div>
                   <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        N° Radicado
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
+
+                      <InputAutocompletado
+                      label="Tipo Servicios"
+                      onInputChanged={handleTipoServiciosChange}
+                      apiRoute="servicios-name"
                       />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
+
+                    {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Tipo Servicios
                       </span>
@@ -405,10 +435,17 @@ const ModalRadicacion = () => {
                         <option value="">1</option>
                         <option value="">2</option>
                       </select>
-                    </label>
+                    </label> */}
                   </div>
                   <div>
-                    <label htmlFor="">
+
+                      <InputAutocompletado
+                      label="Lugar Radicacación"
+                      onInputChanged={handleLugarRadicacionChange}
+                      apiRoute="lugares-radicacion-name"
+                      />
+
+                    {/* <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Lugar Radicación
                       </span>
@@ -418,7 +455,7 @@ const ModalRadicacion = () => {
                         name=""
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
-                    </label>
+                    </label> */}
                   </div>
                   <div>
                     <label htmlFor="">

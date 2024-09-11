@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
-import useFetchInputAutocomplete from "../hooks/useFetchInputAutocomplete";
+import useFetchEspecialidadAtcp from "../hooks/useFetchInputAtcp";
 
 interface InputAutocompletadoProps {
   label: string;
   onInputChanged: (value: string) => void;
+  apiRoute: string;
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   label,
   onInputChanged,
+  apiRoute
 }) => {
   const [inputValue, setInputValue] = useState("");
   {
     /* hook  que trae los datos de  los inputs autocompletados */
   }
   const {
-    dataIpsPrimaria,
-    loadingIpsPrimaria,
-    errorIpsPrimaria,
-    fetchInputAutocomplete,
-  } = useFetchInputAutocomplete();
+    data,
+    loading,
+    error,
+    fetchInputAtcp
+  } = useFetchEspecialidadAtcp();
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     if (inputValue.trim() !== "") {
-      fetchInputAutocomplete(inputValue);
+      fetchInputAtcp(inputValue, apiRoute);
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
@@ -56,22 +58,21 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         />
       </label>
 
-        {loadingIpsPrimaria && <p>Cargando...</p>}
-        {errorIpsPrimaria && <p>{errorIpsPrimaria}</p>}
+        {loading && <p>Cargando...</p>}
+        {error && <p>{error}</p>}
 
       {/* Mostrar sugerencias */}
-      {showSuggestions && dataIpsPrimaria && (
+      {showSuggestions && data && (
         <ul className="absolute z-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 w-full rounded shadow-md mt-1 max-h-40 overflow-y-auto">
-          {showSuggestions && (
-            <li
-                key={dataIpsPrimaria.id}
-                className="px-3 py-2 text-gray-500"
-                onClick={() => handleSuggestionClick(dataIpsPrimaria.name)}
-            >
-                {dataIpsPrimaria.name}
-            </li>
-          
-          )}
+          {data.map((item) => (
+             <li
+             key={item.id}
+             className="px-3 py-2 text-gray-500"
+             onClick={() => handleSuggestionClick(item.name)}
+         >
+             {item.name}
+         </li>
+          ))}
         </ul>
       )}
     </div>
