@@ -79,7 +79,7 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
             onClick={toggleModal}
           ></div>
 
-          <div className="z-10 w-[800px] p-6 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div className="z-10 w-[800px] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-color">
                 Subir Archivo
@@ -95,7 +95,7 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
             <div className="grid grid-cols-1 gap-10 mb-4">
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Archivos *:
+                  Archivos :
                 </label>
                 <input
                   type="file"
@@ -106,16 +106,16 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
                   accept=".pdf,.doc,.docx,.xls,.xlsx"
                 />
                 <div
-                  className="flex items-center justify-between rounded cursor-pointer hover:bg-blue-500 group hover:text-gray-100 outline outline-offset-2 outline-2"
+                  className="flex items-center justify-between rounded cursor-pointer hover:bg-blue-400 active:bg-blue-500 dark:hover:bg-gray-600 dark:active:bg-gray-700 group  outline outline-1 outline-gray-300 "
                   onClick={() => document.getElementById("files")?.click()}
                 >
-                  <button className="px-2 py-4 text-sm font-semibold text-gray-800 rounded-l-lg dark:text-gray-200 dark:bg-gray-600 group-hover:text-gray-100">
+                  <button className="px-2 py-4 text-sm font-semibold text-gray-800 dark:text-gray-300 hover:text-gray-200 ">
                     Seleccionar Archivos
                   </button>
                     <img
                       src={upload}
                       alt="Upload Icon"
-                      className="w-8 h-8 mx-3 dark:invert group-hover:invert"
+                      className="mr-4 w-8 h-8 mx-3 dark:invert group-hover:invert "
                     />
                 </div>
 
@@ -124,7 +124,7 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
                     {selectedFiles.map((file, index) => (
                       <li
                         key={index}
-                        className="flex items-center justify-between p-2 bg-gray-100 rounded-md dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+                        className="flex items-center justify-between p-2 bg-gray-100 rounded-md dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
                       >
                         <span className="w-full text-sm font-medium text-gray-700 truncate dark:text-gray-300">
                           {file.name}

@@ -50,7 +50,7 @@ const ModalCrearCarpeta = ({
 
           {/* Contenido del formulario */}
 
-          <div className="z-10 w-[800px] p-6 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div className="z-10 w-[800px] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-color">
                 Crear Carpeta
@@ -68,7 +68,7 @@ const ModalCrearCarpeta = ({
             <div className="grid grid-cols-1 gap-10 mb-4">
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Nombre *:
+                  Nombre :
                 </label>
                 <input
                   type="text"
