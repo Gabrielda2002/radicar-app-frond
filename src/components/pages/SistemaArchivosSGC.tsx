@@ -38,7 +38,7 @@ const FileManager: React.FC = () => {
       {/* navbar table */}
       <section className="relative dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
-          Módulo Sistema Gestion Calidad
+          Módulo Sistema Gestión Calidad
         </h1>
         <nav>
           <ol className="flex mb-2 dark:text-gray-300">
@@ -47,7 +47,7 @@ const FileManager: React.FC = () => {
               Sistema de Archivos SGC
             </li>
           </ol>
-          <div className="pb-2">
+          <div className="pb-2 w-10">
             <Link to="/inicio">
               <img src={salir} alt="" />
             </Link>
@@ -62,8 +62,8 @@ const FileManager: React.FC = () => {
               Buscar Carpeta:
             </label>
             <input
-              placeholder="Consultar registro..."
-              className="block w-[280px] h-10 border-2 rounded-md focus:outline-none focus:ring dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
+              placeholder="Consultar"
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <DropDownManu
@@ -88,7 +88,7 @@ const FileManager: React.FC = () => {
             <div className="grid grid-cols-1">
               {hasFolder && (
                 <div>
-                  <h2 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
+                  <h2 className="mb-4 pt-2 text-xl font-semibold text-gray-700 dark:text-gray-300">
                     Carpetas:
                   </h2>
                   <FolderList
@@ -102,7 +102,7 @@ const FileManager: React.FC = () => {
 
               {hasFiles && (
                 <div>
-                  <h2 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
+                  <h2 className="mb-4 pt-2 text-xl font-semibold text-gray-700 dark:text-gray-300">
                     Archivos:
                   </h2>
                   <FileList

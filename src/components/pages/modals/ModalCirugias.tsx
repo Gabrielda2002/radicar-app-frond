@@ -36,7 +36,7 @@ const ModalCirugias = () => {
               {/* container-header */}
               <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
-                  Modulo Ciugias
+                  Módulo Ciugías
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -137,7 +137,7 @@ const ModalCirugias = () => {
                     <div className="">
                       <label htmlFor="">
                         <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
-                          IPS donde se realizará Cirugía
+                          IPS dónde se realizará Cirugía
                         </span>
                         <select
                           id=""

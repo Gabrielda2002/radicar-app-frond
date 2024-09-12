@@ -54,21 +54,21 @@ const ModalCups = () => {
             <div className="grid grid-cols-2 gap-10 mb-4">
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Codigo
+                  Código
                 </label>
                 <input
                   type="number"
-                  placeholder="Ingrese codigo..."
+                  placeholder="Ingrese código..."
                   className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>
               <div>
                 <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                  Descripcion
+                  Descripción
                 </label>
                 <input
                   type="text"
-                  placeholder="Ingrese Descripcion"
+                  placeholder="Ingrese Descripción"
                   className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>

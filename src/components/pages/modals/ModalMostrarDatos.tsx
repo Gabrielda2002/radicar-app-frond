@@ -49,17 +49,17 @@ const ModalMostarDatos: React.FC<ThProps> = ({
   // Table Col 1
   numRadi,
   feRadi,
-  nomCiru1 = "Radicacion",
+  nomCiru1 = "Radicación",
   tipoDoc,
   nomCiru7 = "Tipo Documento",
   numDoc,
   nomPac,
   numCel,
-  nomCiru2 = "Numero Celular",
+  nomCiru2 = "Número Celular",
   telFijo,
   email,
   direccion,
-  nomCiru3 = "Direccion",
+  nomCiru3 = "Dirección",
   convenio,
   nomCiru4 = "convenio",
   ipsPri,
@@ -132,7 +132,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {numRadi && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
-                      Numero Radicado : {/* ! POSIBLE dark:text-slate-200 ! */}
+                      Número Radicado : {/* ! POSIBLE dark:text-slate-200 ! */}
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -165,7 +165,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {numDoc && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
-                      Numero Documento :
+                      Número Documento :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -198,7 +198,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {telFijo && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
-                      Telefono Fijo :
+                      Teléfono Fijo :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -264,7 +264,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {lugRadi && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500 dark:border-slate-500">
-                      Lugar Radicacion :
+                      Lugar Radicación :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -311,7 +311,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {codDiagn && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Cod Diagnostico :
+                      Cod Diagnóstico :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -322,7 +322,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {descripDiagn && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Descripcion Diagnostico :
+                      Descripción Diagnóstico :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -366,7 +366,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {descripCup && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Descripcion Cups : {/* no prop de nombre */}
+                      Descripción Cups : {/* no prop de nombre */}
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -399,7 +399,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {feAuditoria && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Fecha Auditoria :
+                      Fecha Auditoría :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -421,7 +421,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {justConcepto && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Justificacion Concepto :
+                      Justificación Concepto :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
@@ -432,7 +432,7 @@ const ModalMostarDatos: React.FC<ThProps> = ({
                 {obserAuditoria && (
                   <>
                     <div className="text-left font-bold bg-slate-200 border ps-2 h-8 flex items-center justify-start dark:text-slate-900 dark:bg-slate-500  dark:border-slate-500">
-                      Observacion Auditoria :
+                      Observación Auditoría :
                     </div>
                     <div className="text-right border pr-2 h-8 flex items-center justify-end dark:border-slate-700">
                       ...texto alusivo
