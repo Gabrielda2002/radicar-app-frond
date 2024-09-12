@@ -3,7 +3,7 @@ import useFetchEspecialidadAtcp from "../hooks/useFetchInputAtcp";
 
 interface InputAutocompletadoProps {
   label: string;
-  onInputChanged: (value: string) => void;
+  onInputChanged: (value: string, id?: string) => void;
   apiRoute: string;
 }
 
@@ -38,8 +38,9 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
     onInputChanged(e.target.value);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = (suggestion: string, id?: string) => {
     setInputValue(suggestion);
+    onInputChanged(suggestion, id);
     setShowSuggestions(false);
   };
 
@@ -68,7 +69,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
              <li
              key={item.id}
              className="px-3 py-2 text-gray-500"
-             onClick={() => handleSuggestionClick(item.name)}
+             onClick={() => handleSuggestionClick(item.name, item?.id)}
          >
              {item.name}
          </li>

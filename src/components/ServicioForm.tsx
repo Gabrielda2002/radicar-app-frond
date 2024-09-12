@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import useFetchCups from "../hooks/useFetchCups";
 
 interface ServicioFormProps {
   cantidad: string;
+  servicios: string[];
+  descripciones: string[];
+  onServicioChange: (index: number, value: string) => void;
+  onDescripcionChange: (index: number, value: string) => void;
 }
 
-const ServicioForm: React.FC<ServicioFormProps> = ({ cantidad }) => {
-  const [servicios, setServicios] = useState<string[]>(Array(Number(cantidad)));
-  const [descripciones, setDescripciones] = useState<string[]>(Array(Number(cantidad)).fill(""));
+const ServicioForm: React.FC<ServicioFormProps> = ({
+  cantidad,
+  servicios,
+  descripciones,
+  onServicioChange,
+  onDescripcionChange
+}) => {
   const { data, fetchCups, error, loading } = useFetchCups();
 
-  // Efecto para actualizar la descripción cuando cambia `data`
   useEffect(() => {
     if (data && data.name) {
-      const newDescripciones = [...descripciones];
       const index = servicios.indexOf(data.code); // Asumiendo que el objeto `data` tiene un `code`
-      if (index !== -1) {
-        newDescripciones[index] = data.name; // Actualiza la descripción
-        setDescripciones(newDescripciones);
+
+      // Si el código del servicio ya existe en el array de servicios y la descripción es diferente
+      if (index !== -1 && descripciones[index] !== data.name) {
+        onDescripcionChange(index, data.name);
       }
     }
-  }, [data, servicios]);
-
-  const handleServicioChange = (index: number, value: string) => {
-    const newServicios = [...servicios];
-    newServicios[index] = value;
-    setServicios(newServicios);
-  };
+  }, [data, servicios, onDescripcionChange]);
 
   const handleServicioBlur = async (index: number) => {
     const codigoServicio = servicios[index];
@@ -47,7 +48,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({ cantidad }) => {
             id={`servicio-${index}`}
             name={`servicio-${index}`}
             value={servicios[index]}
-            onChange={(e) => handleServicioChange(index, e.target.value)}
+            onChange={(e) => onServicioChange(index, e.target.value)}
             onBlur={() => handleServicioBlur(index)} // Ejecuta la búsqueda al perder el foco
             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
             placeholder="Ingrese código de servicio"
@@ -62,7 +63,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({ cantidad }) => {
           <textarea
             id={`descripcion-${index}`}
             name={`descripcion-${index}`}
-            value={descripciones[index] || (loading ? "Cargando..." : error || "")} // Mostrar mensaje mientras carga
+            value={descripciones[index] || (loading ? "Cargando..." : error || "")}
             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
             placeholder="Descripción del servicio"
             readOnly

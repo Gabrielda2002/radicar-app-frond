@@ -1,4 +1,4 @@
 export interface IInputAutocompletado {
-    id: number;
+    id: string;
     name: string;
 }

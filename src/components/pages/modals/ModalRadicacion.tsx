@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
 import useFetchPaciente from "../../../hooks/useFetchPaciente";
@@ -19,34 +19,115 @@ const ModalRadicacion = () => {
 
   const { diagnostico, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
-  console.log(typeof diagnostico);
+
+
 
   const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
-
+  const [idIpsRemite, setIdIpsRemite] = useState<string>("");
   const [especialidad, setEspecialidad] = useState<string>("");
-
+  const [idEspecialidad, setIdEspecialidad] = useState<string>("");
   const [grupoServicios, setGrupoServicios] = useState<string>("");
-
+  const [idGrupoServicios, setIdGrupoServicios] = useState<string>("");
   const [lugarRadicacion, setLugarRadicacion] = useState<string>("");
-
+  const [idLugarRadicacion, setIdLugarRa] = useState<string>("");
   const [tipoServicios, setTipoServicios] = useState<string>("");
+  const [idTipoServicios, setIdTipoServicios] = useState<string>("");
+  const [idPaciente, setIdPaciente] = useState<string>("");
+  const [telefonoFijo, setTelefonoFijo] = useState<string>("");
+  const [numeroCelular, setNumeroCelular] = useState<string>("");
+  const [direccion, setDireccion] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [nombreProfesional, setNombreProfesional] = useState<string>("");
+  const [dateOrden, setDateOrden] = useState<string>("");
+  const [soporte, setSoporte] = useState<File | null>(null);
+
+  const handleSoporteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSoporte(e.target.files[0]);
+    }
+  };
 
   const user = localStorage.getItem("user");
   const nombreUsuario = user
     ? JSON.parse(user).nombre + " " + JSON.parse(user).apellido
     : "";
 
+  const idUsuario = user ? JSON.parse(user).id : "";
+
   const [identificacion, setIdentificacion] = useState<string>("");
-
   const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [idDiagnostico, setIdDiagnostico] = useState<string>("");
+  const [cantidad, setCantidad] = useState<string>("1");
+  const [servicios, setServicios] = useState<string[]>([]);
+  const [descripciones, setDescripciones] = useState<string[]>([]);
 
-  const [cantidad, setCantidad] = useState<string>("");
 
-  const handleTipoServiciosChange = (value: string) => {
-    setTipoServicios(value);
+  // * funcion para enviar los datos del formulario
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+
+
+
+    const formData = new FormData();
+    formData.append("landline", telefonoFijo);
+    formData.append("phoneNumber", numeroCelular);
+    formData.append("address", direccion);
+    formData.append("email", email);
+    formData.append("ipsRemitente", idIpsRemite);
+    formData.append("specialty", idEspecialidad);
+    formData.append("groupServices", idGrupoServicios);
+    formData.append("place", idLugarRadicacion);
+    formData.append("typeServices", idTipoServicios);
+    formData.append("radicador", idUsuario);
+    formData.append("profetional", nombreProfesional);
+    formData.append("orderDate", dateOrden);
+    if (soporte) {
+      formData.append("file", soporte);
+    }
+    formData.append("idDiagnostico", idDiagnostico);
+    formData.append("CodigoCUPS", servicios.join(","));
+    formData.append("descripcionCUPS", descripciones.join(","));
+
+    // iterar formData para ver los datos
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
   };
 
-  const handleLugarRadicacionChange = (value: string) => {
+  useEffect(() => {
+    if (data) {
+      setTelefonoFijo(data.landline);
+      setNumeroCelular(data.phoneNumber);
+      setDireccion(data.address);
+      setEmail(data.email);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (diagnostico) {
+      setDescription(diagnostico.map((item) => item.description).join(", "));
+      setIdDiagnostico(diagnostico.map((item) => item.id).join(", "));
+    }
+  }, [diagnostico]);
+
+  useEffect(() => {
+    if (data) {
+      setIdPaciente(data.id.toString());
+    }
+  }, [data]);
+
+  // * funcion para traer el id del input autocompletado
+
+  const handleTipoServiciosChange = (value: string, id?: string) => {
+    setTipoServicios(value);
+    setIdTipoServicios(id || "");
+  };
+
+  const handleLugarRadicacionChange = (value: string, id?: string) => {
+    setIdLugarRa(id || "");
     setLugarRadicacion(value);
   };
 
@@ -54,16 +135,20 @@ const ModalRadicacion = () => {
     setStadopen(false)
   );
 
-  const hableIpsPrimariaChange = (value: string) => {
+  const hableIpsPrimariaChange = (value: string, id?: string) => {
     setIpsPrimaria(value);
+    setIdIpsRemite(id || "");
   };
 
-  const hableEspecialidadChange = (value: string) => {
+  const hableEspecialidadChange = (value: string, id?: string) => {
     setEspecialidad(value);
+    setIdEspecialidad(id || "");
   };
 
-  const hableGrupoServiciosChange = (value: string) => {
+  const hableGrupoServiciosChange = (value: string, id?: string) => {
     setGrupoServicios(value);
+    setIdGrupoServicios(id || "");
+
   };
 
   const handleDiagnosticoKeyDown = (
@@ -99,8 +184,23 @@ const ModalRadicacion = () => {
   };
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCantidad(value === "" ? "" : Number(value).toString());
+    setCantidad(value);
+    // reiniciar arrays de servicios y descripciones
+    setServicios(Array(Number(value)).fill(""));
+    setDescripciones(Array(Number(value)).fill(""));
   };
+
+  const handleServicioChange = (index: number, value: string) => {
+    const newServicios = [...servicios];
+    newServicios[index] = value;
+    setServicios(newServicios);
+  }
+
+  const handleDescripcionChange = (index: number, value: string) => {
+    const newDescripciones = [...descripciones];
+    newDescripciones[index] = value;
+    setDescripciones(newDescripciones);
+  }
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -248,10 +348,16 @@ const ModalRadicacion = () => {
                       </div>
                     </>
                   )}
+                   <div>
+                    <input
+                      type="text"
+                      value={idPaciente}
+                      className="hidden"
+                      onChange={(e) => setIdPaciente(e.target.value)}
+                    />
+                  </div>
                 </section>
 
-                {data && (
-                  <>
                     <div>
                       <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                         Datos Contacto Paciente
@@ -268,7 +374,8 @@ const ModalRadicacion = () => {
                             type="number"
                             id=""
                             name=""
-                            value={data.landline}
+                            onChange={(e) => setTelefonoFijo(e.target.value)}
+                            value={telefonoFijo}
                             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
                         </label>
@@ -281,7 +388,8 @@ const ModalRadicacion = () => {
                           <input
                             type="number"
                             id=""
-                            value={data.phoneNumber}
+                            onChange={(e) => setNumeroCelular(e.target.value)}
+                            value={numeroCelular}
                             name=""
                             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
@@ -296,7 +404,8 @@ const ModalRadicacion = () => {
                             type="text"
                             id=""
                             name=""
-                            value={data.address}
+                            onChange={(e) => setDireccion(e.target.value)}
+                            value={direccion}
                             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
                         </label>
@@ -308,16 +417,15 @@ const ModalRadicacion = () => {
                           </span>
                           <input
                             type="email"
+                            onChange={(e) => setEmail(e.target.value)}
                             id=""
                             name=""
-                            value={data.email}
+                            value={email}
                             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
                         </label>
                       </div>
                     </section>
-                  </>
-                )}
 
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
@@ -344,7 +452,13 @@ const ModalRadicacion = () => {
                       />
                     </label>
                   </div>
-                  <ServicioForm cantidad={cantidad} />
+                  <ServicioForm 
+                  cantidad={cantidad}
+                  servicios={servicios}
+                  descripciones={descripciones}
+                  onServicioChange={handleServicioChange}
+                  onDescripcionChange={handleDescripcionChange}
+                  />
                 </section>
 
                 <div>
@@ -367,7 +481,6 @@ const ModalRadicacion = () => {
                       onInputChanged={hableEspecialidadChange}
                       apiRoute="especialidades-name"
                     />
-
                   </div>
                   <div>
                     <label htmlFor="">
@@ -378,6 +491,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
+                        onChange={(e) => setNombreProfesional(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
@@ -391,6 +505,7 @@ const ModalRadicacion = () => {
                         type="date"
                         id=""
                         name=""
+                        onChange={(e) => setDateOrden(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
@@ -401,7 +516,6 @@ const ModalRadicacion = () => {
                       onInputChanged={hableGrupoServiciosChange}
                       apiRoute="grupo-servicios-name"
                     />
-
                   </div>
                   <div>
                     <InputAutocompletado
@@ -409,8 +523,6 @@ const ModalRadicacion = () => {
                       onInputChanged={handleTipoServiciosChange}
                       apiRoute="servicios-name"
                     />
-
-                    
                   </div>
                   <div>
                     <InputAutocompletado
@@ -435,25 +547,23 @@ const ModalRadicacion = () => {
                     </label>
                   </div>
 
-                  {diagnostico?.map((diagnostico) => (
-                    <div>
-                      <label
-                        htmlFor=""
-                        className="disabled:bg-gray-200 disabled:cursor-not-allowed"
-                      >
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Descripción Diagnóstico
-                        </span>
-                        <textarea
-                          id=""
-                          name=""
-                          value={diagnostico.description}
-                          disabled
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                        ></textarea>
-                      </label>
-                    </div>
-                  ))}
+                  <div>
+                    <label
+                      htmlFor=""
+                      className="disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    >
+                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        Descripción Diagnóstico
+                      </span>
+                      <textarea
+                        id=""
+                        name=""
+                        value={description}
+                        disabled
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                      ></textarea>
+                    </label>
+                  </div>
 
                   <div>
                     <label htmlFor="">
@@ -480,9 +590,17 @@ const ModalRadicacion = () => {
                         id=""
                         name=""
                         accept=".pdf"
+                        onChange={handleSoporteChange}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
+                  </div>
+                  <div>
+                    <input 
+                      type="text"
+                      value={idDiagnostico}
+                      className="hidden"
+                    />
                   </div>
                 </section>
               </div>
@@ -496,7 +614,10 @@ const ModalRadicacion = () => {
               >
                 Cerrar
               </button>
-              <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+              <button
+                className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                onClick={handleSubmit}
+              >
                 Radicar
               </button>
             </div>
