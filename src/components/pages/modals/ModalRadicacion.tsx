@@ -5,6 +5,7 @@ import useAnimation from "../../../hooks/useAnimations";
 import useFetchPaciente from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import InputAutocompletado from "../../InputAutocompletado";
+import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -16,21 +17,34 @@ const ModalRadicacion = () => {
   }
   const { data, error, getData } = useFetchPaciente();
 
+  const { diagnostico, errorDiagnostico, fetchDiagnostico } =
+    useFetchDiagnostico();
+  console.log(typeof diagnostico);
+
   const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
 
   const [especialidad, setEspecialidad] = useState<string>("");
 
   const [grupoServicios, setGrupoServicios] = useState<string>("");
 
-  const [lugarRadicacion , setLugarRadicacion] = useState<string>("");
+  const [lugarRadicacion, setLugarRadicacion] = useState<string>("");
 
   const [tipoServicios, setTipoServicios] = useState<string>("");
 
+  const user = localStorage.getItem("user");
+  const nombreUsuario = user
+    ? JSON.parse(user).nombre + " " + JSON.parse(user).apellido
+    : "";
+
   const [identificacion, setIdentificacion] = useState<string>("");
+
+  const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
+
+  const [cantidad, setCantidad] = useState<string>("");
 
   const handleTipoServiciosChange = (value: string) => {
     setTipoServicios(value);
-  }
+  };
 
   const handleLugarRadicacionChange = (value: string) => {
     setLugarRadicacion(value);
@@ -39,8 +53,6 @@ const ModalRadicacion = () => {
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
-
-  const [cantidad, setCantidad] = useState<string>("");
 
   const hableIpsPrimariaChange = (value: string) => {
     setIpsPrimaria(value);
@@ -52,6 +64,16 @@ const ModalRadicacion = () => {
 
   const hableGrupoServiciosChange = (value: string) => {
     setGrupoServicios(value);
+  };
+
+  const handleDiagnosticoKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Tab") {
+      if (diagnosicoValue) {
+        fetchDiagnostico(diagnosicoValue);
+      }
+    }
   };
 
   const handleBlur = () => {
@@ -338,17 +360,6 @@ const ModalRadicacion = () => {
                       onInputChanged={hableIpsPrimariaChange}
                       apiRoute="ips-primaria-name"
                     />
-                    {/* <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        IPS Remite
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label> */}
                   </div>
                   <div>
                     <InputAutocompletado
@@ -357,17 +368,6 @@ const ModalRadicacion = () => {
                       apiRoute="especialidades-name"
                     />
 
-                    {/* <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Especialidad
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label> */}
                   </div>
                   <div>
                     <label htmlFor="">
@@ -402,60 +402,22 @@ const ModalRadicacion = () => {
                       apiRoute="grupo-servicios-name"
                     />
 
-                    {/* <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Grupo Servicios
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label> */}
                   </div>
                   <div>
-
-                      <InputAutocompletado
+                    <InputAutocompletado
                       label="Tipo Servicios"
                       onInputChanged={handleTipoServiciosChange}
                       apiRoute="servicios-name"
-                      />
+                    />
 
-                    {/* <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Tipo Servicios
-                      </span>
-                      <select
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      >
-                        <option value="">SELECT</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                      </select>
-                    </label> */}
+                    
                   </div>
                   <div>
-
-                      <InputAutocompletado
+                    <InputAutocompletado
                       label="Lugar Radicacación"
                       onInputChanged={handleLugarRadicacionChange}
                       apiRoute="lugares-radicacion-name"
-                      />
-
-                    {/* <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Lugar Radicación
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label> */}
+                    />
                   </div>
                   <div>
                     <label htmlFor="">
@@ -466,39 +428,46 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
+                        onChange={(e) => setDiagnosticoValue(e.target.value)}
+                        onKeyDown={handleDiagnosticoKeyDown}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
-                  <div>
-                    <label
-                      htmlFor=""
-                      className="disabled:bg-gray-200 disabled:cursor-not-allowed"
-                    >
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Descripción Diagnóstico
-                      </span>
-                      <textarea
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      ></textarea>
-                    </label>
-                  </div>
+
+                  {diagnostico?.map((diagnostico) => (
+                    <div>
+                      <label
+                        htmlFor=""
+                        className="disabled:bg-gray-200 disabled:cursor-not-allowed"
+                      >
+                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          Descripción Diagnóstico
+                        </span>
+                        <textarea
+                          id=""
+                          name=""
+                          value={diagnostico.description}
+                          disabled
+                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                        ></textarea>
+                      </label>
+                    </div>
+                  ))}
+
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Quién Radica
                       </span>
-                      <select
+                      <input
+                        type="text"
                         id=""
                         name=""
+                        value={nombreUsuario}
+                        disabled
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      >
-                        <option value="">SELECT</option>
-                        <option value="">..texto</option>
-                        <option value="">..texto</option>
-                      </select>
+                      />
                     </label>
                   </div>
                   <div>
@@ -510,6 +479,7 @@ const ModalRadicacion = () => {
                         type="file"
                         id=""
                         name=""
+                        accept=".pdf"
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
