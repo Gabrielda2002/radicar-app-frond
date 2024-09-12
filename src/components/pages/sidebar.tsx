@@ -1,24 +1,25 @@
+//*Funciones y Hooks
 import { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Modal from "./modals/ModalReporte";
-
-import folder from "/assets/folder.svg";
+import { useAuth } from "../../context/authContext";
+//*Icons
+import home from "/assets/home.svg";
+import flag from "/assets/flag.svg";
+import user from "/assets/user.svg";
 import user2 from "/assets/user2.svg";
 import user1 from "/assets/user1.svg";
-import userMain from "/assets/userMain.svg";
-import user from "/assets/user.svg";
+import audit from "/assets/audit.svg";
+import table from "/assets/table.svg";
+import arrow from "/assets/arrow.svg";
+import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
 import filing from "/assets/filing.svg";
 import surgery from "/assets/surgery.svg";
-import audit from "/assets/audit.svg";
-import flag from "/assets/flag.svg";
-import taskList from "/assets/task-list.svg";
-import table from "/assets/table.svg";
 import arrowUp from "/assets/arrow-up.svg";
-import arrow from "/assets/arrow.svg";
-import home from "/assets/home.svg";
+import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
-
+import taskList from "/assets/task-list.svg";
 const SideBar: FC = () => {
   //constante para slide del sidebar y funciones
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -71,6 +72,8 @@ const SideBar: FC = () => {
       ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
       : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
   };
+  //*Accede al rol del usuario
+  const { rol } = useAuth();
 
   return (
     <aside
@@ -133,22 +136,101 @@ const SideBar: FC = () => {
             </NavLink>
 
             {/* Modulo de acordion 2*/}
-            <div className="space-y-3">
+            {rol === "1" && (
+              <div className="space-y-3">
+                <div>
+                  <button
+                    onClick={toggleAccordion2}
+                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                      isAccordionOpen2
+                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                    } w-full`}
+                  >
+                    {/* Icono y texto para el segundo acordeón */}
+                    <img
+                      src={folder}
+                      alt=""
+                      className={`w-5 h-5 ${
+                        isAccordionOpen2
+                          ? "invert"
+                          : "group-hover:invert dark:invert"
+                      }`}
+                    />
+                    {!isCollapsed && (
+                      <span
+                        className={`mx-2 text-sm font-medium ${
+                          isAccordionOpen2
+                            ? "text-white dark:text-gray-200"
+                            : ""
+                        }`}
+                      >
+                        Gestión de Calidad
+                      </span>
+                    )}
+                    <img
+                      src={arrowUp}
+                      alt=""
+                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
+                        isAccordionOpen2 ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {isAccordionOpen2 && (
+                    <div className="mt-2 space-y-3">
+                      <NavLink to="/SistemGestionCalidad">
+                        {({ isActive }) => (
+                          <div
+                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                              isActive
+                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                            }`}
+                          >
+                            <img
+                              src={flag}
+                              alt=""
+                              className={`w-5 h-5 mx-2 ${
+                                isActive
+                                  ? "invert"
+                                  : "group-hover:invert dark:invert"
+                              }`}
+                            />
+                            {!isCollapsed && (
+                              <span
+                                className={`mx-2 text-sm font-medium ${
+                                  isActive
+                                    ? "text-white dark:text-gray-200"
+                                    : ""
+                                }`}
+                              >
+                                Norte de Santander
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </NavLink>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {/* Modulo de acordion 1*/}
+            {(rol === "1" || rol === "2") && (
               <div>
                 <button
-                  onClick={toggleAccordion2}
+                  onClick={toggleAccordion1}
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                    isAccordionOpen2
+                    isAccordionOpen1
                       ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
                       : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
                   } w-full`}
                 >
-                  {/* Icono y texto para el segundo acordeón */}
                   <img
-                    src={folder}
+                    src={services}
                     alt=""
                     className={`w-5 h-5 ${
-                      isAccordionOpen2
+                      isAccordionOpen1
                         ? "invert"
                         : "group-hover:invert dark:invert"
                     }`}
@@ -156,23 +238,23 @@ const SideBar: FC = () => {
                   {!isCollapsed && (
                     <span
                       className={`mx-2 text-sm font-medium ${
-                        isAccordionOpen2 ? "text-white dark:text-gray-200" : ""
+                        isAccordionOpen1 ? "text-white dark:text-gray-200" : ""
                       }`}
                     >
-                      Gestión de Calidad
+                      Gestión de Servicios
                     </span>
                   )}
                   <img
                     src={arrowUp}
                     alt=""
                     className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                      isAccordionOpen2 ? "rotate-180" : ""
+                      isAccordionOpen1 ? "rotate-180" : ""
                     }`}
                   />
                 </button>
-                {isAccordionOpen2 && (
+                {isAccordionOpen1 && (
                   <div className="mt-2 space-y-3">
-                    <NavLink to="/SistemGestionCalidad">
+                    <NavLink to="/tabla-radicacion">
                       {({ isActive }) => (
                         <div
                           className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
@@ -182,7 +264,7 @@ const SideBar: FC = () => {
                           }`}
                         >
                           <img
-                            src={flag}
+                            src={taskList}
                             alt=""
                             className={`w-5 h-5 mx-2 ${
                               isActive
@@ -196,7 +278,69 @@ const SideBar: FC = () => {
                                 isActive ? "text-white dark:text-gray-200" : ""
                               }`}
                             >
-                              Norte de Santander
+                              Radicador
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </NavLink>
+
+                    <NavLink to="/tabla-cirugias">
+                      {({ isActive }) => (
+                        <div
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
+                        >
+                          <img
+                            src={surgery}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white dark:text-gray-200" : ""
+                              }`}
+                            >
+                              Cirugía
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </NavLink>
+
+                    <NavLink to="/tabla-auditoria">
+                      {({ isActive }) => (
+                        <div
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
+                        >
+                          <img
+                            src={audit}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`mx-2 text-sm font-medium ${
+                                isActive ? "text-white dark:text-gray-200" : ""
+                              }`}
+                            >
+                              Auditoría
                             </span>
                           )}
                         </div>
@@ -205,141 +349,7 @@ const SideBar: FC = () => {
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* Modulo de acordion 1*/}
-            <div>
-              <button
-                onClick={toggleAccordion1}
-                className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                  isAccordionOpen1
-                    ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                    : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                } w-full`}
-              >
-                <img
-                  src={services}
-                  alt=""
-                  className={`w-5 h-5 ${
-                    isAccordionOpen1
-                      ? "invert"
-                      : "group-hover:invert dark:invert"
-                  }`}
-                />
-                {!isCollapsed && (
-                  <span
-                    className={`mx-2 text-sm font-medium ${
-                      isAccordionOpen1 ? "text-white dark:text-gray-200" : ""
-                    }`}
-                  >
-                    Gestión de Servicios
-                  </span>
-                )}
-                <img
-                  src={arrowUp}
-                  alt=""
-                  className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                    isAccordionOpen1 ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isAccordionOpen1 && (
-                <div className="mt-2 space-y-3">
-                  <NavLink to="/tabla-radicacion">
-                    {({ isActive }) => (
-                      <div
-                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={taskList}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive
-                              ? "invert"
-                              : "group-hover:invert dark:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white dark:text-gray-200" : ""
-                            }`}
-                          >
-                            Radicador
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </NavLink>
-
-                  <NavLink to="/tabla-cirugias">
-                    {({ isActive }) => (
-                      <div
-                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={surgery}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive
-                              ? "invert"
-                              : "group-hover:invert dark:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white dark:text-gray-200" : ""
-                            }`}
-                          >
-                            Cirugía
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </NavLink>
-
-                  <NavLink to="/tabla-auditoria">
-                    {({ isActive }) => (
-                      <div
-                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                          isActive
-                            ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                        }`}
-                      >
-                        <img
-                          src={audit}
-                          alt=""
-                          className={`w-5 h-5 mx-2 ${
-                            isActive
-                              ? "invert"
-                              : "group-hover:invert dark:invert"
-                          }`}
-                        />
-                        {!isCollapsed && (
-                          <span
-                            className={`mx-2 text-sm font-medium ${
-                              isActive ? "text-white dark:text-gray-200" : ""
-                            }`}
-                          >
-                            Auditoría
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </NavLink>
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Modulo de acordion 3*/}
             <div className="space-y-3">

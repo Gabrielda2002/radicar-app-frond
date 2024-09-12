@@ -9,7 +9,7 @@ interface breadcrumbProps {
 const BreadCrumb: React.FC<breadcrumbProps> = ({ path, onNavigate }) => {
   return (
     <>
-      <nav className="flex items-center text-gray-600 dark:text-gray-300">
+      <nav className="flex flex-wrap items-center text-gray-600 dark:text-gray-300">
         {path.map((folder, inde) => (
           <div key={folder.id} className="flex items-center">
             <button

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { toast } from "react-toastify";
 type ModalCrearCarpetaProps = {
   standOpen: boolean;
   toggleModal: () => void;
@@ -17,6 +17,7 @@ const ModalCrearCarpeta = ({
   const handleCreateFolder = () => {
     if (folderName.trim()) {
       createNewFolder(folderName);
+      toast.success("Carpeta creada correctamente");
       toggleModal();
     } else {
       alert("El nombre de la carpeta es requerido");
