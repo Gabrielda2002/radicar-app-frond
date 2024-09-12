@@ -1,6 +1,7 @@
 import React from "react";
 import folderIcon from "../../../../public/assets/folder-sgc.svg";
 import ItemManu from "./ItemManu";
+import { Bounce, toast } from "react-toastify";
 
 interface Folder {
   id: string;
@@ -24,6 +25,41 @@ const FolderList: React.FC<FolderListProps> = ({
   onDelete,
   renameItem,
 }) => {
+  const handleDelete = (folderId: string) => {
+    //Llama ka funcion de eliminacion
+    onDelete(folderId, "carpetas");
+    //Muestra la notificacion  despues de eliminar la carpeta
+    toast.success("Carpeta eliminada con éxito!", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  };
+
+  const handleRename = (folderId: string, newName: string) => {
+    //Llama la funcion de renombrado
+    renameItem(folderId, newName, "carpetas");
+
+    //Muestra la notificacion despues de renombrar la carpeta
+    toast.success("Carpeta renombrada con éxito!", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  };
+
   return (
     <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
       {folders.map((folder) => (
@@ -41,10 +77,8 @@ const FolderList: React.FC<FolderListProps> = ({
             onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
           >
             <ItemManu
-              onDelete={() => onDelete(folder.id, "carpetas")}
-              renameItem={(newName: string) =>
-                renameItem(folder.id, newName, "carpetas")
-              }
+              onDelete={() => handleDelete(folder.id)}
+              renameItem={(newName: string) => handleRename(folder.id, newName)}
             />
           </div>
 
