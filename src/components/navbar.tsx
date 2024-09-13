@@ -1,18 +1,34 @@
-//*Funciones y Hooks
+import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
 import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
 import { useUserProfile } from "../context/userProfileContext";
-//*Icons
+import defaultUserPicture from "/assets/icon-user.svg";
+// Icons
 import userLogo from "/assets/user-logo.svg";
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
+import { useEffect, useState } from "react";
 
 const Navbar: React.FC = () => {
   const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
-  const { logout } = useAuth();
+  const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
   const { theme, toggleTheme } = useTheme(); // Desestructura theme y toggleTheme
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    // Recuperar la imagen de perfil desde la cookie
+    const savedImage = Cookies.get("profileImage");
+
+    // Si hay una imagen guardada en la cookie, usarla
+    if (savedImage) {
+      setImageUrl(savedImage);
+    } else {
+      setImageUrl(defaultUserPicture); // Si no, usar la imagen por defecto
+    }
+  }, []);
+
 
   const userNavigation = [
     { name: "Perfil", href: "/perfil" },
@@ -42,7 +58,11 @@ const Navbar: React.FC = () => {
           className="p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 rounded-full hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:outline-none group hover:-translate-y-2"
         >
           {theme === "light" ? (
-            <img src={moon} alt="Moon Icon" className="w-6 h-6 group-hover:invert" />
+            <img
+              src={moon}
+              alt="Moon Icon"
+              className="w-6 h-6 group-hover:invert"
+            />
           ) : (
             <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
           )}
@@ -51,9 +71,9 @@ const Navbar: React.FC = () => {
         <Menu as="div" className="relative">
           <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
             <img
-              alt="User"
-              src={userProfile.imageUrl}
-              className="w-8 h-8 mr-2 rounded-full"
+              alt="Profile"
+              src={imageUrl}
+              className="object-cover w-8 h-8 border-2 rounded-full"
             />
             <img
               src={userLogo}
