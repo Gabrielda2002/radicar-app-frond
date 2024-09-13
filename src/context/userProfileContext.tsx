@@ -1,4 +1,4 @@
-// src/context/UserProfileContext.tsx
+// src/context/userProfileContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface UserProfile {
@@ -19,14 +19,22 @@ const UserProfileContext = createContext<UserProfileContextType | undefined>(
   undefined
 );
 
+export const useUserProfile = () => {
+  const context = useContext(UserProfileContext);
+  if (context === undefined) {
+    throw new Error("useUserProfile must be used within a UserProfileProvider");
+  }
+  return context;
+};
+
 export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    name: " ",
-    lastName: " ",
-    email: " ",
-    imageUrl: "https://via.placeholder.com/150",
+    name: "",
+    lastName: "",
+    email: "",
+    imageUrl: "", // Imagen predeterminada en blanco
     phone: "",
     role: "",
   });
@@ -40,12 +48,4 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </UserProfileContext.Provider>
   );
-};
-
-export const useUserProfile = () => {
-  const context = useContext(UserProfileContext);
-  if (context === undefined) {
-    throw new Error("useUserProfile must be used within a UserProfileProvider");
-  }
-  return context;
 };

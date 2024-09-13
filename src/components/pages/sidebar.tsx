@@ -1,7 +1,7 @@
 //*Funciones y Hooks
 import { FC, useState } from "react";
-import { NavLink } from "react-router-dom";
 import Modal from "./modals/ModalReporte";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 //*Icons
 import home from "/assets/home.svg";
@@ -20,13 +20,14 @@ import arrowUp from "/assets/arrow-up.svg";
 import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
 import taskList from "/assets/task-list.svg";
+
 const SideBar: FC = () => {
-  //constante para slide del sidebar y funciones
+  //*constante para slide del sidebar y funciones
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //constante para el acordion del sidebar
+  //*constante para el acordion del sidebar
 
-  //constantes y modulos
+  //*constantes y modulos
   const toggleSideBar = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -39,7 +40,7 @@ const SideBar: FC = () => {
     setIsModalOpen(false);
   };
 
-  //constantes para los acordiones del sidebar
+  //*constantes para los acordiones del sidebar
   const [isAccordionOpen1, setIsAccordionOpen1] = useState(false);
   const [isAccordionOpen2, setIsAccordionOpen2] = useState(false);
   const [isAccordionOpen3, setIsAccordionOpen3] = useState(false);
@@ -66,7 +67,7 @@ const SideBar: FC = () => {
     setIsAccordionOpen5(!isAccordionOpen5);
   };
 
-  //Funcion para hacer el color de los botones del sidebar
+  //*Funcion para hacer el color de los botones del sidebar
   const getLinkClass = (path: string) => {
     return location.pathname === path
       ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"

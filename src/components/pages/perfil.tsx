@@ -2,7 +2,9 @@
 import { api } from "../../utils/api-config";
 import { useEffect, useState, useRef } from "react";
 import ConfirmDeletePopup from "../ConfirmDeletePopup";
+import Cookies from "js-cookie";
 import defaultUserPicture from "../../../public/assets/icon-user.svg";
+import { useUserProfile } from "../../context/userProfileContext";
 //*Icons
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
@@ -10,6 +12,7 @@ import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 
 const Perfil = () => {
+  const { updateUserProfile } = useUserProfile();
   const [profile, setProfile] = useState({
     nombre: "",
     apellido: "",
@@ -33,10 +36,9 @@ const Perfil = () => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
     if (userData) {
       setProfile(userData);
-
       if (userData.photo) userData.photo = `${baseUrl}/${userData.photo}`;
-
       setFormData(userData);
+      Cookies.set("profileImage", userData.photo)
     }
   }, []);
 
@@ -48,26 +50,23 @@ const Perfil = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setFormData({ ...formData, photo: URL.createObjectURL(file) });
-
       const formDataUpload = new FormData();
       formDataUpload.append("photo", file);
-
+  
       try {
-        const response = await api.put(
-          `/upload-photo/${profile.id}`,
-          formDataUpload,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
+        const response = await api.put(`/upload-photo/${profile.id}`, formDataUpload, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+  
         const updatedPhoto = response.data.photo;
+        // Actualizamos tanto el perfil local como el global
         setFormData({ ...formData, photo: updatedPhoto });
         setProfile({ ...profile, photo: updatedPhoto });
-
+        updateUserProfile({ imageUrl: updatedPhoto }); // Actualiza el contexto global
+        
+        // Actualiza la foto en el cookie
+        Cookies.set('profileImage', updatedPhoto)
+        // Actualiza el localStorage
         const updatedData = { ...profile, photo: updatedPhoto };
         localStorage.setItem("user", JSON.stringify(updatedData));
       } catch (error) {
@@ -75,6 +74,7 @@ const Perfil = () => {
       }
     }
   };
+  
 
   const handleDeletePhoto = async () => {
     try {
@@ -82,7 +82,9 @@ const Perfil = () => {
 
       setFormData({ ...formData, photo: "" });
       setProfile({ ...profile, photo: "" });
+      //Actualiza la foto global con la foto por defecto
 
+      Cookies.set("profileImage", "");
       const updatedData = { ...profile, photo: "" };
       localStorage.setItem("user", JSON.stringify(updatedData));
     } catch (error) {
@@ -92,6 +94,8 @@ const Perfil = () => {
 
   const handleSaveChanges = (e: React.FormEvent) => {
     e.preventDefault();
+    // Actualiza la foto de perfil global despues de guardar cambios
+    updateUserProfile(formData);
     localStorage.setItem("user", JSON.stringify(formData));
     setProfile(formData);
   };
