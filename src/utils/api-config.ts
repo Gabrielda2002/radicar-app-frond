@@ -95,8 +95,12 @@ export const saveRadicar = async (data: FormData) => {
 }
 
 // guardar el archivo soporte de radicar
-export const saveFileRadicar = async (data: FormData) => {
-    return api.post(`/soportes`, data);
+export const saveFileRadicar = async (file: FormData) => {
+    return api.post(`/soportes`, file, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 
 // guardar CUPS

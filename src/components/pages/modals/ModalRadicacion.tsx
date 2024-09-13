@@ -6,6 +6,7 @@ import useFetchPaciente from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import InputAutocompletado from "../../InputAutocompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
+import { submitRadicado } from "../../../services/submitRadicado";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -40,7 +41,7 @@ const ModalRadicacion = () => {
   const [nombreProfesional, setNombreProfesional] = useState<string>("");
   const [dateOrden, setDateOrden] = useState<string>("");
   const [soporte, setSoporte] = useState<File | null>(null);
-
+  
   const handleSoporteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSoporte(e.target.files[0]);
@@ -67,9 +68,6 @@ const ModalRadicacion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
-
-
     const formData = new FormData();
     formData.append("landline", telefonoFijo);
     formData.append("phoneNumber", numeroCelular);
@@ -87,13 +85,10 @@ const ModalRadicacion = () => {
       formData.append("file", soporte);
     }
     formData.append("idDiagnostico", idDiagnostico);
-    formData.append("CodigoCUPS", servicios.join(","));
-    formData.append("descripcionCUPS", descripciones.join(","));
-
-    // iterar formData para ver los datos
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    formData.append("code", servicios.join(","));
+    formData.append("DescriptionCode", descripciones.join(","));
+    formData.append("idPatient", idPaciente);
+    submitRadicado(formData, idPaciente);
 
   };
 
