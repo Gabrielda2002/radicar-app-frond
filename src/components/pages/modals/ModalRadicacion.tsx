@@ -1,24 +1,201 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
-//*Icons
+import useFetchPaciente from "../../../hooks/useFetchPaciente";
+import { useNavigate } from "react-router-dom";
+import InputAutocompletado from "../../InputAutocompletado";
+import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
+import { submitRadicado } from "../../../services/submitRadicado";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
-  const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false)
+
+  const navigate = useNavigate();
+
+  {
+    /* hook que trae los datos del paciente */
+  }
+  const { data, error, getData } = useFetchPaciente();
+
+  const { diagnostico, errorDiagnostico, fetchDiagnostico } =
+    useFetchDiagnostico();
+
+
+
+  const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
+  const [idIpsRemite, setIdIpsRemite] = useState<string>("");
+  const [especialidad, setEspecialidad] = useState<string>("");
+  const [idEspecialidad, setIdEspecialidad] = useState<string>("");
+  const [grupoServicios, setGrupoServicios] = useState<string>("");
+  const [idGrupoServicios, setIdGrupoServicios] = useState<string>("");
+  const [lugarRadicacion, setLugarRadicacion] = useState<string>("");
+  const [idLugarRadicacion, setIdLugarRa] = useState<string>("");
+  const [tipoServicios, setTipoServicios] = useState<string>("");
+  const [idTipoServicios, setIdTipoServicios] = useState<string>("");
+  const [idPaciente, setIdPaciente] = useState<string>("");
+  const [telefonoFijo, setTelefonoFijo] = useState<string>("");
+  const [numeroCelular, setNumeroCelular] = useState<string>("");
+  const [direccion, setDireccion] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [nombreProfesional, setNombreProfesional] = useState<string>("");
+  const [dateOrden, setDateOrden] = useState<string>("");
+  const [soporte, setSoporte] = useState<File | null>(null);
+  
+  const handleSoporteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSoporte(e.target.files[0]);
+    }
+  };
+
+  const user = localStorage.getItem("user");
+  const nombreUsuario = user
+    ? JSON.parse(user).nombre + " " + JSON.parse(user).apellido
+    : "";
+
+  const idUsuario = user ? JSON.parse(user).id : "";
+
+  const [identificacion, setIdentificacion] = useState<string>("");
+  const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [idDiagnostico, setIdDiagnostico] = useState<string>("");
+  const [cantidad, setCantidad] = useState<string>("1");
+  const [servicios, setServicios] = useState<string[]>([]);
+  const [descripciones, setDescripciones] = useState<string[]>([]);
+
+
+  // * funcion para enviar los datos del formulario
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("landline", telefonoFijo);
+    formData.append("phoneNumber", numeroCelular);
+    formData.append("address", direccion);
+    formData.append("email", email);
+    formData.append("ipsRemitente", idIpsRemite);
+    formData.append("specialty", idEspecialidad);
+    formData.append("groupServices", idGrupoServicios);
+    formData.append("place", idLugarRadicacion);
+    formData.append("typeServices", idTipoServicios);
+    formData.append("radicador", idUsuario);
+    formData.append("profetional", nombreProfesional);
+    formData.append("orderDate", dateOrden);
+    if (soporte) {
+      formData.append("file", soporte);
+    }
+    formData.append("idDiagnostico", idDiagnostico);
+    formData.append("code", servicios.join(","));
+    formData.append("DescriptionCode", descripciones.join(","));
+    formData.append("idPatient", idPaciente);
+    submitRadicado(formData, idPaciente);
+
+  };
+
+  useEffect(() => {
+    if (data) {
+      setTelefonoFijo(data.landline);
+      setNumeroCelular(data.phoneNumber);
+      setDireccion(data.address);
+      setEmail(data.email);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (diagnostico) {
+      setDescription(diagnostico.map((item) => item.description).join(", "));
+      setIdDiagnostico(diagnostico.map((item) => item.id).join(", "));
+    }
+  }, [diagnostico]);
+
+  useEffect(() => {
+    if (data) {
+      setIdPaciente(data.id.toString());
+    }
+  }, [data]);
+
+  // * funcion para traer el id del input autocompletado
+
+  const handleTipoServiciosChange = (value: string, id?: string) => {
+    setTipoServicios(value);
+    setIdTipoServicios(id || "");
+  };
+
+  const handleLugarRadicacionChange = (value: string, id?: string) => {
+    setIdLugarRa(id || "");
+    setLugarRadicacion(value);
+  };
+
+  const { showAnimation, closing } = useAnimation(stadopen, () =>
+    setStadopen(false)
   );
-  const [cantidad, setCantidad] = useState<string>("");
+
+  const hableIpsPrimariaChange = (value: string, id?: string) => {
+    setIpsPrimaria(value);
+    setIdIpsRemite(id || "");
+  };
+
+  const hableEspecialidadChange = (value: string, id?: string) => {
+    setEspecialidad(value);
+    setIdEspecialidad(id || "");
+  };
+
+  const hableGrupoServiciosChange = (value: string, id?: string) => {
+    setGrupoServicios(value);
+    setIdGrupoServicios(id || "");
+
+  };
+
+  const handleDiagnosticoKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Tab") {
+      if (diagnosicoValue) {
+        fetchDiagnostico(diagnosicoValue);
+      }
+    }
+  };
+
+  const handleBlur = () => {
+    if (identificacion) {
+      getData(identificacion);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Tab") {
+      if (identificacion) {
+        getData(identificacion);
+      }
+    }
+  };
+
+  const handleRegisterPaciente = () => {
+    navigate("/tabla-pacientes");
+  };
 
   const closeModal = () => {
     setStadopen(false);
   };
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCantidad(value === "" ? "" : Number(value).toString());
+    setCantidad(value);
+    // reiniciar arrays de servicios y descripciones
+    setServicios(Array(Number(value)).fill(""));
+    setDescripciones(Array(Number(value)).fill(""));
   };
+
+  const handleServicioChange = (index: number, value: string) => {
+    const newServicios = [...servicios];
+    newServicios[index] = value;
+    setServicios(newServicios);
+  }
+
+  const handleDescripcionChange = (index: number, value: string) => {
+    const newDescripciones = [...descripciones];
+    newDescripciones[index] = value;
+    setDescripciones(newDescripciones);
+  }
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -71,147 +248,186 @@ const ModalRadicacion = () => {
 
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2 text-sm">
                   <div>
-                    <label htmlFor="" className="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Tipo Documento
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Identificación
                       </span>
                       <input
-                        type="number"
-                        id=""
-                        name=""
+                        type="text"
+                        id="identificacion"
+                        name="identificacion"
+                        value={identificacion}
+                        onChange={(e) => setIdentificacion(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        onBlur={handleBlur}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
                       />
                     </label>
                   </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Nombre Completo
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        Convevio
-                      </span>
-                      <input
-                        type="text"
-                        id=" "
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        IPS Primaria
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
+
+                  {/* { loading && <p className="text-gray-700 dark:text-gray-200">Cargando...</p>} */}
+
+                  {error && !data && (
+                    <div className="text-red-500 dark:text-red-300">
+                      {error}
+                      <button onClick={handleRegisterPaciente}>
+                        Registrar Paciente
+                      </button>
+                    </div>
+                  )}
+
+                  {data && (
+                    <>
+                      <div>
+                        <label htmlFor="" className="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Tipo Documento
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            value={data.documentRelation.name}
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Nombre Completo
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            value={data.name}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            Convevio
+                          </span>
+                          <input
+                            type="text"
+                            value={data.convenioRelation.name}
+                            id=" "
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                            IPS Primaria
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            value={data.ipsPrimariaRelation.name}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            disabled
+                          />
+                          {/*sin modificar*/}
+                        </label>
+                      </div>
+                    </>
+                  )}
+                   <div>
+                    <input
+                      type="text"
+                      value={idPaciente}
+                      className="hidden"
+                      onChange={(e) => setIdPaciente(e.target.value)}
+                    />
                   </div>
                 </section>
 
-                <div>
-                  <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                    Datos Contacto Paciente
-                  </h5>
-                </div>
+                    <div>
+                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
+                        Datos Contacto Paciente
+                      </h5>
+                    </div>
 
-                <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Teléfono Fijo
-                      </span>
-                      <input
-                        type="number"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        N° Celular
-                      </span>
-                      <input
-                        type="number"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Dirreción
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Email
-                      </span>
-                      <input
-                        type="email"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
-                  </div>
-                </section>
+                    <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Telefono Fijo
+                          </span>
+                          <input
+                            type="number"
+                            id=""
+                            name=""
+                            onChange={(e) => setTelefonoFijo(e.target.value)}
+                            value={telefonoFijo}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            N° Celular
+                          </span>
+                          <input
+                            type="number"
+                            id=""
+                            onChange={(e) => setNumeroCelular(e.target.value)}
+                            value={numeroCelular}
+                            name=""
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Dirreción
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            onChange={(e) => setDireccion(e.target.value)}
+                            value={direccion}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Email
+                          </span>
+                          <input
+                            type="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            id=""
+                            name=""
+                            value={email}
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
+                    </section>
 
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
                     Cups
                   </h5>
                 </div>
-
+                {/* el usuario ingresa la cantidad de servicios que desea ingresar */}
                 <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2 text-sm">
                   <div>
                     <label htmlFor="cantidad">
@@ -231,7 +447,13 @@ const ModalRadicacion = () => {
                       />
                     </label>
                   </div>
-                  <ServicioForm cantidad={cantidad} />
+                  <ServicioForm 
+                  cantidad={cantidad}
+                  servicios={servicios}
+                  descripciones={descripciones}
+                  onServicioChange={handleServicioChange}
+                  onDescripcionChange={handleDescripcionChange}
+                  />
                 </section>
 
                 <div>
@@ -242,30 +464,18 @@ const ModalRadicacion = () => {
 
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
                   <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        IPS Remite
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
+                    <InputAutocompletado
+                      label="IPS Primaria"
+                      onInputChanged={hableIpsPrimariaChange}
+                      apiRoute="ips-primaria-name"
+                    />
                   </div>
                   <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Especialidad
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
+                    <InputAutocompletado
+                      label="Especialidad"
+                      onInputChanged={hableEspecialidadChange}
+                      apiRoute="especialidades-name"
+                    />
                   </div>
                   <div>
                     <label htmlFor="">
@@ -276,6 +486,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
+                        onChange={(e) => setNombreProfesional(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
@@ -289,66 +500,31 @@ const ModalRadicacion = () => {
                         type="date"
                         id=""
                         name=""
+                        onChange={(e) => setDateOrden(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
                   <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Grupo Servicios
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
+                    <InputAutocompletado
+                      label="Grupo Servicios"
+                      onInputChanged={hableGrupoServiciosChange}
+                      apiRoute="grupo-servicios-name"
+                    />
                   </div>
                   <div>
-                    <label htmlFor="">
-                      <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                        N° Radicado
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
-                        disabled
-                      />
-                      {/*sin modificar*/}
-                    </label>
+                    <InputAutocompletado
+                      label="Tipo Servicios"
+                      onInputChanged={handleTipoServiciosChange}
+                      apiRoute="servicios-name"
+                    />
                   </div>
                   <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Tipo Servicios
-                      </span>
-                      <select
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      >
-                        <option value="">SELECT</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                      </select>
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="">
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Lugar Radicación
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        name=""
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      />
-                    </label>
+                    <InputAutocompletado
+                      label="Lugar Radicacación"
+                      onInputChanged={handleLugarRadicacionChange}
+                      apiRoute="lugares-radicacion-name"
+                    />
                   </div>
                   <div>
                     <label htmlFor="">
@@ -359,10 +535,13 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
+                        onChange={(e) => setDiagnosticoValue(e.target.value)}
+                        onKeyDown={handleDiagnosticoKeyDown}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
                   </div>
+
                   <div>
                     <label
                       htmlFor=""
@@ -374,24 +553,26 @@ const ModalRadicacion = () => {
                       <textarea
                         id=""
                         name=""
+                        value={description}
+                        disabled
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       ></textarea>
                     </label>
                   </div>
+
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                         Quién Radica
                       </span>
-                      <select
+                      <input
+                        type="text"
                         id=""
                         name=""
+                        value={nombreUsuario}
+                        disabled
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                      >
-                        <option value="">SELECT</option>
-                        <option value="">..texto</option>
-                        <option value="">..texto</option>
-                      </select>
+                      />
                     </label>
                   </div>
                   <div>
@@ -403,9 +584,18 @@ const ModalRadicacion = () => {
                         type="file"
                         id=""
                         name=""
+                        accept=".pdf"
+                        onChange={handleSoporteChange}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
+                  </div>
+                  <div>
+                    <input 
+                      type="text"
+                      value={idDiagnostico}
+                      className="hidden"
+                    />
                   </div>
                 </section>
               </div>
@@ -419,7 +609,10 @@ const ModalRadicacion = () => {
               >
                 Cerrar
               </button>
-              <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+              <button
+                className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                onClick={handleSubmit}
+              >
                 Radicar
               </button>
             </div>
