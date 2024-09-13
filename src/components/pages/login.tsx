@@ -27,9 +27,9 @@ const Login: React.FC = () => {
       login(token, rol, Municipio); // Llamar a la función login del contexto para actualizar el estado de autenticación
 
       // Redirigir al usuario según su rol
-      if (rol == 1) {
+      if (rol) {
         navigate("/home");
-      } else if (rol == 5) navigate("/home");
+      } // <! VALIDACION DE ROLES "TIENEN QUE ESTAR EN LA BASE" !>
     } catch (error) {
       setError("Error al iniciar sesión, verifica tus credenciales" + error);
     }
