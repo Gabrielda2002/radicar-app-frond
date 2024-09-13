@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 
-// Componentes
+//*Componentes
 import SideBar from "./components/pages/sidebar";
 import Footer from "./components/footer";
 import Layout from "./components/layout";
@@ -28,14 +28,14 @@ import RegistrarUsuarios from "./components/pages/RegistrarUsuarios";
 import TablaAutorizarServicios from "./components/pages/tablas-radicacion/TablaAutorizarServicios";
 import CookieConsent from "./components/PopCookie";
 
-// Contextos
+//*Contextos
 import { AuthProvider } from "./context/authContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { useTheme } from "./context/blackWhiteContext";
 import FileManager from "./components/pages/SistemaArchivosSGC";
 import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { UserProfileProvider } from "./context/userProfileContext";
 function AppRoutes() {
   const { theme } = useTheme();
   return (
@@ -155,22 +155,24 @@ function AppRoutes() {
 export function App() {
   return (
     <AuthProvider>
-      <CookieConsent />{" "}
-      {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
-      <AppRoutes />
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        transition={Bounce}
-      />
+      <UserProfileProvider>
+        <CookieConsent />{" "}
+        {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
+        <AppRoutes />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
+      </UserProfileProvider>
     </AuthProvider>
   );
 }
