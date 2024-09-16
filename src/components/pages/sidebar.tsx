@@ -138,7 +138,7 @@ const SideBar: FC = () => {
 
             {/* Modulo de acordion 2*/}
             {/* < -- MODULO GESTION CALIDAD -- > */}
-            {(rol == "1" || rol == "2" || rol == "3" || rol == "4" || rol == "5" || rol == "6") && (
+            {/* {(rol == "1" || rol == "2" || rol == "3" || rol == "4" || rol == "5" || rol == "6") && ( */}
               <div className="space-y-3">
                 <div>
                   <button
@@ -216,11 +216,11 @@ const SideBar: FC = () => {
                   )}
                 </div>
               </div>
-            )}
+            {/* )} */}
 
             {/* Modulo de acordion 1*/}
             {/* < -- MODULO GESTION SERVICIOS -- > */}
-            {(rol == "1" || rol == "3") && (
+            {[10, 3, 1].includes(Number(rol)) && (
               <div>
                 <button
                   onClick={toggleAccordion1}
@@ -258,6 +258,8 @@ const SideBar: FC = () => {
                 </button>
                 {isAccordionOpen1 && (
                   <div className="mt-2 space-y-3">
+
+                    {[10, 3, 1].includes(Number(rol)) && (
                     <NavLink to="/tabla-radicacion">
                       {({ isActive }) => (
                         <div
@@ -288,7 +290,10 @@ const SideBar: FC = () => {
                         </div>
                       )}
                     </NavLink>
+                    )}
 
+
+                    {[10, 15, 1].includes(Number(rol)) && (
                     <NavLink to="/tabla-cirugias">
                       {({ isActive }) => (
                         <div
@@ -319,6 +324,9 @@ const SideBar: FC = () => {
                         </div>
                       )}
                     </NavLink>
+                    )}
+
+                    { [3, 1].includes(Number(rol)) && (
 
                     <NavLink to="/tabla-auditoria">
                       {({ isActive }) => (
@@ -350,6 +358,7 @@ const SideBar: FC = () => {
                         </div>
                       )}
                     </NavLink>
+                    )}
                   </div>
                 )}
               </div>
@@ -357,7 +366,7 @@ const SideBar: FC = () => {
 
             {/* Modulo de acordion 3*/}
             {/* < -- MODULO GESTION REPORTES -- > */}
-            {(rol == "1"|| rol == "2" || rol == "3" || rol == "6") && (
+            {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
               <div className="space-y-3">
                 <div>
                   <button
@@ -430,7 +439,7 @@ const SideBar: FC = () => {
 
             {/* Modulo de acordion 4*/}
             {/* < -- MODULO TABLAS RADICACION -- > */}
-            {(rol == "1") && (
+            {[ 1].includes(Number(rol)) && (
               <div className="space-y-3">
                 <div>
                   <button
@@ -863,7 +872,7 @@ const SideBar: FC = () => {
 
             {/* Tabla Configuraciones 1 */}
             {/* < -- MODULO ADIM (PERFIL) -- > */}
-            {(rol == "1") && (
+            {[1].includes(Number(rol)) && (
               <div className="flex flex-col -mx-3 space-y-3">
                 <div>
                   <button
