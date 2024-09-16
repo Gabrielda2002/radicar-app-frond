@@ -1,8 +1,8 @@
 //*Funciones y Hooks
+import Cookies from "js-cookie";
 import { api } from "../../utils/api-config";
 import { useEffect, useState, useRef } from "react";
 import ConfirmDeletePopup from "../ConfirmDeletePopup";
-import Cookies from "js-cookie";
 import defaultUserPicture from "../../../public/assets/icon-user.svg";
 import { useUserProfile } from "../../context/userProfileContext";
 //*Icons
@@ -34,11 +34,14 @@ const Perfil = () => {
   useEffect(() => {
     const baseUrl = "http://localhost:3600/api/v1";
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
+
     if (userData) {
       setProfile(userData);
-      if (userData.photo) userData.photo = `${baseUrl}/${userData.photo}`;
+      userData.photo = userData.photo ? `${baseUrl}/${userData.photo}` : defaultUserPicture;
       setFormData(userData);
-      Cookies.set("profileImage", userData.photo)
+
+      // Guardar la imagen actual del usuario en cookies
+      Cookies.set(`profileImage_${userData.id}`, userData.photo || "");
     }
   }, []);
 
@@ -52,21 +55,27 @@ const Perfil = () => {
       const file = e.target.files[0];
       const formDataUpload = new FormData();
       formDataUpload.append("photo", file);
-  
+
+      const token =localStorage.getItem("authToken");
+
       try {
-        const response = await api.put(`/upload-photo/${profile.id}`, formDataUpload, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-  
+        const response = await api.put(
+          `/upload-photo/${profile.id}`,
+          formDataUpload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         const updatedPhoto = response.data.photo;
-        // Actualizamos tanto el perfil local como el global
         setFormData({ ...formData, photo: updatedPhoto });
         setProfile({ ...profile, photo: updatedPhoto });
-        updateUserProfile({ imageUrl: updatedPhoto }); // Actualiza el contexto global
-        
-        // Actualiza la foto en el cookie
-        Cookies.set('profileImage', updatedPhoto)
-        // Actualiza el localStorage
+        updateUserProfile({ imageUrl: updatedPhoto }); 
+
+        Cookies.set(`profileImage_${profile.id}`, updatedPhoto);
         const updatedData = { ...profile, photo: updatedPhoto };
         localStorage.setItem("user", JSON.stringify(updatedData));
       } catch (error) {
@@ -74,7 +83,6 @@ const Perfil = () => {
       }
     }
   };
-  
 
   const handleDeletePhoto = async () => {
     try {
@@ -82,9 +90,7 @@ const Perfil = () => {
 
       setFormData({ ...formData, photo: "" });
       setProfile({ ...profile, photo: "" });
-      //Actualiza la foto global con la foto por defecto
-
-      Cookies.set("profileImage", "");
+      localStorage.removeItem(`profileImage_${profile.id}`);
       const updatedData = { ...profile, photo: "" };
       localStorage.setItem("user", JSON.stringify(updatedData));
     } catch (error) {
