@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
-import { useTheme } from "../context/blackWhiteContext"; // Importa el hook useTheme
+import { useTheme } from "../context/blackWhiteContext";
 import { useUserProfile } from "../context/userProfileContext";
 import defaultUserPicture from "/assets/icon-user.svg";
 // Icons
@@ -12,22 +12,24 @@ import moon from "/assets/moon.svg";
 import { useEffect, useState } from "react";
 
 const Navbar: React.FC = () => {
-  const { userProfile } = useUserProfile(); // Suponiendo que tienes un contexto para el perfil del usuario
+  const { userProfile } = useUserProfile();
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
-  const { theme, toggleTheme } = useTheme(); // Desestructura theme y toggleTheme
+  const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
 
   useEffect(() => {
-    // Recuperar la imagen de perfil desde la cookie
-    const savedImage = Cookies.get("profileImage");
-
-    // Si hay una imagen guardada en la cookie, usarla
-    if (savedImage) {
-      setImageUrl(savedImage);
-    } else {
-      setImageUrl(defaultUserPicture); // Si no, usar la imagen por defecto
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    if (userData && userData.id) {
+      const savedImage = Cookies.get(`profileImage_${userData.id}`);
+      
+      if (savedImage) {
+        setImageUrl(savedImage);
+      } else {
+        setImageUrl(defaultUserPicture);
+      }
     }
-  }, []);
+  }, [userProfile]);
 
 
   const userNavigation = [
@@ -72,7 +74,7 @@ const Navbar: React.FC = () => {
           <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
             <img
               alt="Profile"
-              src={imageUrl}
+              src={imageUrl || defaultUserPicture}
               className="object-cover w-8 h-8 border-2 rounded-full"
             />
             <img
