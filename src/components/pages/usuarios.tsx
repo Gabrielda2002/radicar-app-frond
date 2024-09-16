@@ -6,9 +6,10 @@ import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 import usePagination from "../../hooks/usePagination";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
+import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
+
 //*Icons
 import salir from "/assets/back.svg";
-import mostrar from "/assets/mostrar.svg";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -129,9 +130,7 @@ const Usuarios = () => {
                       <td>{usuario.roles}</td>
                       <td>{usuario.municipio}</td>
                       <td>
-                        <button>
-                          <img className="text-center" src={mostrar} alt="" />
-                        </button>
+                        <ModalActionUsuario />
                       </td>
                     </tr>
                   ))}
