@@ -36,6 +36,7 @@ const TablaRadicacion = () => {
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
   const [selectedRadicacion, setSelectedRadicacion] = useState(null);
 
   const handleItemsPerPageChange = (
@@ -48,6 +49,11 @@ const TablaRadicacion = () => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
   };
+
+  const handleShowGestionAuxiliar = (radicacion) => {
+    setSelectedRadicacion(radicacion);
+    setIsOpenGestionAuxiliar(true);
+  }
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -154,7 +160,11 @@ const TablaRadicacion = () => {
                         <ModalSoporte></ModalSoporte>
                       </td>
                       <td>
-                        <ModalGestionAuxiliar></ModalGestionAuxiliar>
+                        <button
+                          onClick={() => handleShowGestionAuxiliar(radicacion)}
+                        >
+                          <img src={mostrar} alt="" />
+                        </button>
                       </td>
                       <td>
                         <button
@@ -174,6 +184,12 @@ const TablaRadicacion = () => {
             <ModalMostrarDatos
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
+              radicacion={selectedRadicacion}
+            />
+
+            <ModalGestionAuxiliar
+              isOpen={isOpenGestionAuxiliar}
+              onClose={() => setIsOpenGestionAuxiliar(false)}
               radicacion={selectedRadicacion}
             />
 
