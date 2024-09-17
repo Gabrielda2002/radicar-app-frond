@@ -14,7 +14,6 @@ import {
   fetchUsers,
   fetchUsuario,
 } from "../services/apiService";
-import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
 import { IMunicipios } from "../models/IMunicipios";
@@ -27,6 +26,7 @@ import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
 import { IRadicados } from "../models/IRadicados";
+import { IAuditar } from "../models/IAuditar";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -52,7 +52,7 @@ export const useFetchUsers = () => {
 };
 
 export const useFetchAuditoria = () => {
-  const [data, setData] = useState<IAuditoria[]>([]);
+  const [data, setData] = useState<IAuditar[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
