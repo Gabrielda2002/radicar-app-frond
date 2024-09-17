@@ -6,7 +6,6 @@ import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 import Pagination from "../Pagination.tsx";
 import usePagination from "../../hooks/usePagination.ts";
 import useSearch from "../../hooks/useSearch.ts";
-import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalSoporte from "./modals/ModalSoporte.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -166,46 +165,7 @@ const TablaAuditoria = () => {
                       <ModalSoporte></ModalSoporte>
                     </td>
                     <td>
-                      <ModalMostarDatos
-                        // wdCondic={true}
-                        // gdCondic={true}
-                        // Table Col 1
-                        // numRadi={false}
-                        // feRadi={false}
-                        // nomCiru3=""
-                        // tipoDoc={false}
-                        // nomCiru4=""
-                        // numDoc={false}
-                        // nomCiru6=""
-                        // nomPac={false}
-                        // numCel={false}
-                        // telFijo={false}
-                        // email={false}
-                        // direccion={false}
-                        // convenio={false}
-                        // ipsPri={false}
-                        // nomCiru5=""
-                        // feOrden={false}
-                        // lugRadi={false}
-                        // ipsRem={false}
-                        // Table Col 2
-                        obserAuditoria={true} //observacion cups |
-                        nomCiru1="Obseracion Cups"
-                        // justConcepto={false}
-                        unidadFunciona={true} //estado cups
-                        nomCiru2="Estado cups"
-                        // feAuditoria={false}
-                        // nomAuditor={false}
-                        // auxiRadi={false}
-                        descripCup={true} //
-                        codCup={true} //
-                        // tipoServicio={false}
-                        // grupoServicio={false}
-                        // descripDiagn={false}
-                        // codDiagn={false}
-                        // especialidad={false}
-                        // profecional={false}
-                      ></ModalMostarDatos>
+                        hoa
                     </td>
                     <td>
                       <Link to="/tabla-autorizar-servicios">

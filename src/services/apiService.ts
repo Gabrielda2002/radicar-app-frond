@@ -7,15 +7,15 @@ import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { IIPSRemite } from "../models/IIpsRemite";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IMunicipios } from "../models/IMunicipios";
+import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
-import { IRadicacion } from "../models/TableRadicacion";
 import { api } from "../utils/api-config";
 
-export const fetchUsers = async (): Promise<IRadicacion[]> => {
-    const response = await api.get('/radicacion-table');
-    const radicaciones = response.data.map((radicacion: IRadicacion) => ({
+export const fetchUsers = async (): Promise<IRadicados[]> => {
+    const response = await api.get('/radicacion');
+    const radicaciones = response.data.map((radicacion: IRadicados) => ({
         ...radicacion,
         createdAt: new Date(radicacion.createdAt),
         auditDate: radicacion.auditDate ? new Date(radicacion.auditDate) : null

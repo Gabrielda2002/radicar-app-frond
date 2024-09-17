@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IRadicacion } from "../models/TableRadicacion";
 import {
   fetchAuditoria,
   fetchConvenio,
@@ -27,9 +26,10 @@ import { IIPSRemite } from "../models/IIpsRemite";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
+import { IRadicados } from "../models/IRadicados";
 
 export const useFetchUsers = () => {
-  const [data, setData] = useState<IRadicacion[]>([]);
+  const [data, setData] = useState<IRadicados[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
