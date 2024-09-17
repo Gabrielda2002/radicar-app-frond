@@ -35,7 +35,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
       <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
         <div className="z-10 w-[fit-content] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-color">Crear Carpeta</h2>
+            <h2 className="text-lg font-semibold text-color">Tabla Gestion Servicios.</h2>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
