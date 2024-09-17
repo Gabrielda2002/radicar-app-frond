@@ -22,7 +22,7 @@ const useFetchPaciente = () => {
         }
 
       } catch (error) {
-        setError("Error al obtener los datos de los pacientes" + error);
+        setError("Error al obtener los datos de los pacientes.");
         setData(null);
       } finally {
         setLoading(false);

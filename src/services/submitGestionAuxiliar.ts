@@ -5,8 +5,6 @@ export const  submitGestionAuxiliar = async (data: FormData) => {
         
         const response  = saveGestionAuxiliar(data)
 
-        console.log(response)
-
         return response
 
     } catch (error) {
