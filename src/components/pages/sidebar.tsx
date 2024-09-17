@@ -439,7 +439,7 @@ const SideBar: FC = () => {
 
             {/* Modulo de acordion 4*/}
             {/* < -- MODULO TABLAS RADICACION -- > */}
-            {[ 1].includes(Number(rol)) && (
+            {[1].includes(Number(rol)) && (
               <div className="space-y-3">
                 <div>
                   <button
