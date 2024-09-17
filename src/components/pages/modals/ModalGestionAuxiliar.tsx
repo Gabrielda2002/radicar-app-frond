@@ -1,11 +1,20 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { IRadicados } from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
-//*Icons
-import gestion from "/assets/gestion.svg";
 
-const ModalGestionAuxiliar = () => {
+interface ModalGestionAuxiliarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  radicacion: IRadicados | null;
+}
+
+const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
+  isOpen,
+  onClose,
+  radicacion,
+}) => {
   const [stadOpen, setStadOpen] = useState(false); // Estados Auxiliar
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
   const { showAnimation, closing } = useAnimation(
@@ -14,6 +23,8 @@ const ModalGestionAuxiliar = () => {
     300
   );
 
+  if (!isOpen || !radicacion) return null;
+
   const EventServicio = () => {
     setStadOpen(false); // Cierra el primer modal
     setOpenServicio(true); // Abre el segundo modal
@@ -21,174 +32,83 @@ const ModalGestionAuxiliar = () => {
 
   return (
     <>
-      <button className="focus:outline-none" onClick={() => setStadOpen(true)}>
-        <img className="dark:invert" src={gestion} alt="" />
-      </button>
-
-      {stadOpen && (
-        <section className="fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 inset-0 backdrop-blur-sm">
-          <section className="">
-            {/* container-full */}
-            <div
-              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
-                showAnimation && !closing
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
-              }`}
+      <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div className="z-10 w-[fit-content] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-color">Tabla Gestion Servicios.</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700"
             >
-              {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
-                  Seguimiento Auxiliar
-                </h1>
-                <button
-                  onClick={() => setStadOpen(false)}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
-                >
-                  &times;
-                </button>
-              </div>
+              &times;
+            </button>
+          </div>
 
-              {/* init-table */}
-              <section className="py-1 px-6 max-h-[70Vh] overflow-y-auto dark:bg-gray-800">
-                <table className="min-w-full text-sm">
-                  {/* posible scroll "70Vh" */}
-                  <thead className="">
-                    <tr className="dark:text-gray-300 dark:bg-gray-700 bg-gray-100 border-none">
-                      <th>Número Radicado</th>
-                      <th>Código</th>
-                      <th>Fecha</th>
-                      <th>Estado</th>
-                      <th>Observación</th>
-                    </tr>
-                  </thead>
+          {/* Contenedor para las dos tablas en columnas */}
+          <div className="flex space-x-4">
+            {/* Primera tabla */}
 
-                  <tbody className="text-xs dark:text-gray-200">
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivow</td>
+            <table className="min-w-[50%] text-sm mb-4">
+              {radicacion.seguimientoAuxiliarRelation.length > 0 ? (
+              <>
+                <thead>
+                  <tr className="bg-gray-200 dark:bg-gray-700">
+                    <th className="p-2">Codigo CUPS</th>
+                    <th className="p-2">Observacion</th>
+                    <th className="p-2">Estado</th>
+                    <th className="p-2">Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {radicacion.seguimientoAuxiliarRelation.map((seguimiento) => (
+                    <tr key={seguimiento.id}>
+                      <td className="p-2">{seguimiento.codeCups}</td>
+                      <td className="p-2">{seguimiento.observation}</td>
+                      <td className="p-2">
+                        {seguimiento.estadoSeguimientoRelation.name}
+                      </td>
+                      <td className="p-2">
+                        {seguimiento.createdAt
+                          ? new Date(seguimiento.createdAt).toLocaleString()
+                          : "N/A"}
+                      </td>
                     </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivow</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivow</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                    <tr>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                      <td>...texto alusivo</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </section>
+                  ))}
+                </tbody>
+              </>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td className="p-2" colSpan={4}>
+                      No hay seguimientos
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+            </table>
 
-              {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
-                <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
-                  onClick={() => setStadOpen(false)}
-                >
-                  Cerrar
-                </button>
-                <button
-                  className="w-40 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                  onClick={EventServicio}
-                >
-                  Registrar Seguimiento
-                </button>
-              </div>
-            </div>
-          </section>
-        </section>
-      )}
+            {/* Segunda tabla */}
+          </div>
 
-      {/* init-modal-second */}
+          {/* Botones */}
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+            >
+              Cerrar
+            </button>
+            <button
+              onClick={EventServicio}
+              className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+            >
+              Registrar Gestion.
+            </button>
+          </div>
+        </div>
+      </div>
       {openServicio && (
-        <ModalGestionServicio onClose={() => setOpenServicio(false)} />
+        <ModalGestionServicio onClose={() => setOpenServicio(false)} idRadicado={radicacion.id} />
       )}
     </>
   );

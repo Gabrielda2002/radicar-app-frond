@@ -107,3 +107,7 @@ export const saveFileRadicar = async (file: FormData) => {
 export const saveCups = async (data: FormData) => {
     return api.post(`/cups-radicados`, data);
 }
+
+export const saveGestionAuxiliar = async (data: FormData) => {
+    return api.post(`/seguimientos-auxiliares`, data)
+}
