@@ -9,9 +9,10 @@ import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import mostrar from "/assets/mostrar.svg";
 
 //*Iconos
+import gestion from "/assets/gestion.svg"
+import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 
@@ -163,14 +164,14 @@ const TablaRadicacion = () => {
                         <button
                           onClick={() => handleShowGestionAuxiliar(radicacion)}
                         >
-                          <img src={mostrar} alt="" />
+                          <img className="dark:invert" src={gestion} alt="" />
                         </button>
                       </td>
                       <td>
                         <button
                           onClick={() => handleShowData(radicacion)}
                         >
-                          <img src={mostrar} alt="" />
+                          <img className="dark:invert" src={mostrar} alt="" />
                         </button>
                       </td>
                     </tr>

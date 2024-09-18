@@ -6,7 +6,7 @@ import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 import usePagination from "../../hooks/usePagination";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
-import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
+// import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
 
 //*Icons
 import salir from "/assets/back.svg";

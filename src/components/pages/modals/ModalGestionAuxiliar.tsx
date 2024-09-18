@@ -32,83 +32,90 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
   return (
     <>
-      <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
-        <div className="z-10 w-[fit-content] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-color">Tabla Gestion Servicios.</h2>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              &times;
-            </button>
-          </div>
+      <div className="fixed z-50 flex py-20 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <section>
+          <div className="z-10 w-[fit-content] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+            <div className="flex items-center justify-between p-2 mb-4">
+              <h2 className="text-xl font-semibold text-color dark:text-gray-200  ">
+                Tabla Gestion Servicios.
+              </h2>
+              <button
+                onClick={onClose}
+                className="text-xl text-gray-500 hover-gray-700 pr-2"
+              >
+                &times;
+              </button>
+            </div>
 
-          {/* Contenedor para las dos tablas en columnas */}
-          <div className="flex space-x-4">
             {/* Primera tabla */}
 
-            <table className="min-w-[50%] text-sm mb-4">
+            <table className="max-h-[70vh] w-auto overflow-y-auto mb-4 mx-4">
               {radicacion.seguimientoAuxiliarRelation.length > 0 ? (
-              <>
-                <thead>
-                  <tr className="bg-gray-200 dark:bg-gray-700">
-                    <th className="p-2">Codigo CUPS</th>
-                    <th className="p-2">Observacion</th>
-                    <th className="p-2">Estado</th>
-                    <th className="p-2">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {radicacion.seguimientoAuxiliarRelation.map((seguimiento) => (
-                    <tr key={seguimiento.id}>
-                      <td className="p-2">{seguimiento.codeCups}</td>
-                      <td className="p-2">{seguimiento.observation}</td>
-                      <td className="p-2">
-                        {seguimiento.estadoSeguimientoRelation.name}
-                      </td>
-                      <td className="p-2">
-                        {seguimiento.createdAt
-                          ? new Date(seguimiento.createdAt).toLocaleString()
-                          : "N/A"}
-                      </td>
+                <>
+                  <thead className="text-center">
+                    <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
+                      <th className="ps-2">Codigo CUPS</th>
+                      <th className="">Observación</th>
+                      <th className="">Estado</th>
+                      <th className="">Fecha</th>
                     </tr>
-                  ))}
-                </tbody>
-              </>
+                  </thead>
+                  <tbody className="text-center text-sm break-words dark:text-gray-200">
+                    {radicacion.seguimientoAuxiliarRelation.map(
+                      (seguimiento) => (
+                        <tr key={seguimiento.id}>
+                          <td className="">{seguimiento.codeCups}</td>
+                          <td className="max-w-[400px]">
+                            {seguimiento.observation}
+                          </td>
+                          <td className="">
+                            {seguimiento.estadoSeguimientoRelation.name}
+                          </td>
+                          <td className="">
+                            {seguimiento.createdAt
+                              ? new Date(seguimiento.createdAt).toLocaleString()
+                              : "N/A"}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </>
               ) : (
-                <tbody>
-                  <tr>
-                    <td className="p-2" colSpan={4}>
-                      No hay seguimientos
+                <tbody className=" w-[400px] ">
+                  <tr className="border-none hover:bg-transparent dark:hover:bg-transparent">
+                    <td className="p-2 text-stone-400 dark:text-stone-500"colSpan={4} >
+                      No sean generado seguimientos... 
                     </td>
                   </tr>
                 </tbody>
               )}
             </table>
-
             {/* Segunda tabla */}
-          </div>
 
-          {/* Botones */}
-          <div className="flex justify-end space-x-3">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-            >
-              Cerrar
-            </button>
-            <button
-              onClick={EventServicio}
-              className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-            >
-              Registrar Gestion.
-            </button>
+            {/* Botones */}
+            <div className="flex items-center justify-end w-full px-2 py-4 text-sm font-semibold bg-white gap-x-2 h-14 dark:bg-gray-800">
+              <button
+                onClick={onClose}
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
+              >
+                Cerrar
+              </button>
+              <button
+                onClick={EventServicio}
+                className="w-32 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
+              >
+                Registrar Gestion.
+              </button>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
       {openServicio && (
-        <ModalGestionServicio onClose={() => setOpenServicio(false)} idRadicado={radicacion.id} />
+        <ModalGestionServicio
+          onClose={() => setOpenServicio(false)}
+          idRadicado={radicacion.id}
+        />
       )}
     </>
   );
