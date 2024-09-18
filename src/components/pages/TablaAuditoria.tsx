@@ -119,26 +119,26 @@ const TablaAuditoria = () => {
             <table className="w-full text-center">
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className=" ">Fecha Radicados</th>
-                  <th className=" ">Tipo Documento </th>
-                  <th className=" ">Identificación</th>
-                  <th className=" ">Nombre Completo</th>
-                  <th className=" ">Convenio</th>
-                  <th className=" ">IPS Primaria</th>
-                  <th className=" ">Fecha Orden</th>
-                  <th className=" ">Lugar Radicación</th>
-                  <th className=" ">IPS Remite</th>
-                  <th className=" ">Profesional</th>
-                  <th className=" ">Especialidad</th>
-                  <th className=" ">Tipo Servicio</th>
-                  <th className=" ">Quién Radica</th>
-                  <th className=" ">Soporte</th>
-                  <th className=" ">Ver Servicios</th>
-                  <th className=" ">Autorizar Servicios</th>
+                  <th className="">Fecha Radicados</th>
+                  <th className="">Tipo Documento </th>
+                  <th className="">Identificación</th>
+                  <th className="">Nombre Completo</th>
+                  <th className="">Convenio</th>
+                  <th className="">IPS Primaria</th>
+                  <th className="">Fecha Orden</th>
+                  <th className="">Lugar Radicación</th>
+                  <th className="">IPS Remite</th>
+                  <th className="">Profesional</th>
+                  <th className="">Especialidad</th>
+                  <th className="">Tipo Servicio</th>
+                  <th className="">Quién Radica</th>
+                  <th className="">Soporte</th>
+                  <th className="">Ver Servicios</th>
+                  <th className="">Autorizar Servicios</th>
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center  dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((auditoria) => (
                   <tr>
                     <td>
@@ -221,7 +221,7 @@ const TablaAuditoria = () => {
                 ))}
               </tbody>
             </table>
-
+            <div>‎ </div>
             {/* pagination */}
             <Pagination
               currentPage={currentPage}

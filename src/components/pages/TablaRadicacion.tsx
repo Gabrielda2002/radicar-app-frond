@@ -195,8 +195,8 @@ const TablaRadicacion = () => {
                 </tbody>
               </table>
             </div>
-
             {/* Controles de la Paginacion */}
+            <div>‎ </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
