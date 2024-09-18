@@ -125,6 +125,7 @@ const TablaIpsPrimaria = () => {
                 <tr></tr>
               </tbody>
             </table>
+            <div>‎ </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

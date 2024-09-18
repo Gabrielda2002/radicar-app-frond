@@ -110,7 +110,7 @@ const TablaConvenios = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center  dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((convenio) => (
                   <tr>
                     <td>{convenio.id}</td>
@@ -123,6 +123,7 @@ const TablaConvenios = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎ </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

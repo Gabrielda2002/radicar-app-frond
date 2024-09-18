@@ -112,7 +112,7 @@ const TablaRadicadores = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center  dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((radicador) => (
                   <tr>
                     <td>{radicador.id}</td>
@@ -125,6 +125,7 @@ const TablaRadicadores = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎</div>
             {/* Controles de Paginacion */}
             <Pagination
               currentPage={currentPage}

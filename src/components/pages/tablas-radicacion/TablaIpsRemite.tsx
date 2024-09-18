@@ -125,6 +125,7 @@ const TablaIpsRemite = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎ </div>
             <Pagination
               totalPages={totalPages}
               currentPage={currentPage}

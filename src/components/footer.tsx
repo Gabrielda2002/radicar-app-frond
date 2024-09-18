@@ -111,27 +111,27 @@ const Footer = () => {
               Nordvital IPS
             </a>
           </p>
-          <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start">
+          <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
             <a
-              className="text-gray-500 hover:text-white"
+              className="text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
               target="_blank"
             >
-              <img src={facebook} alt="" className="w-5 h-5" />
+              <img src={facebook} alt="" className="w-8 h-8" />
             </a>
             <a
-              className="ml-3 text-gray-500 hover:text-white"
+              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
               href="https://www.youtube.com/@ipsnordvital7237"
               target="_blank"
             >
-              <img src={youtube} alt="" className="w-5 h-5" />
+              <img src={youtube} alt="" className="w-8 h-8" />
             </a>
             <a
-              className="ml-3 text-gray-500 hover:text-white"
+              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
               href="https://www.instagram.com/nordvital_ips/"
               target="_blank"
             >
-              <img src={instagram} alt="" className="w-5 h-5" />
+              <img src={instagram} alt="" className="w-8 h-8" />
             </a>
           </span>
         </div>

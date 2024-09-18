@@ -57,7 +57,7 @@ const Usuarios = () => {
               Usuarios
             </li>
           </ol>
-          <div className="pb-2 w-10">
+          <div className="w-10 pb-2">
             <Link to="/inicio">
               <img src={salir} alt="Salir" className="" />
             </Link>
@@ -137,6 +137,7 @@ const Usuarios = () => {
                 </tbody>
               </table>
             </div>
+            <div>‎</div>
             {/* Controles de de Paginacion */}
             <Pagination
               currentPage={currentPage}
