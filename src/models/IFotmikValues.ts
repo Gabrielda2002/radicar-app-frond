@@ -1,0 +1,45 @@
+export interface CupsDetail {
+    idCupsRadicado: string;
+    idRadicado: string;
+    id: string;
+    observacionCups: string;
+    unidadFuncional: string;
+    estadoCups: string;
+  }
+  
+  export interface FormikValues {
+    auditora: string;
+    id: number;
+    fechaAuditoria: string;
+    justificacion: string;
+    cupsDetails: CupsDetail[];
+  }
+  
+  interface FormikTouched {
+    auditora?: boolean;
+    fechaAuditoria?: boolean;
+    justificacion?: boolean;
+    observacionCups?: boolean;
+    unidadFuncional?: boolean;
+    estadoCups?: boolean;
+    cupsDetails?: Array<{
+      observacionCups?: boolean;
+      unidadFuncional?: boolean;
+      estadoCups?: boolean;
+    }>;
+  }
+  
+  interface FormikErrors {
+    auditora?: string;
+    fechaAuditoria?: string;
+    justificacion?: string;
+    observacionCups?: string;
+    unidadFuncional?: string;
+    estadoCups?: string;
+    cupsDetails?: Array<{
+      observacionCups?: string;
+      unidadFuncional?: string;
+      estadoCups?: string;
+    }>;
+  }
+  

@@ -185,7 +185,7 @@ const TablaAuditoria = () => {
                     <td>
                       <Link
                         to="/tabla-autorizar-servicios"
-                        state={{ CUPS: auditoria.statusCups }}
+                      state={{ CUPS: auditoria.statusCups, id: auditoria.id  }}
                       >
                         <img
                           className="dark:invert "

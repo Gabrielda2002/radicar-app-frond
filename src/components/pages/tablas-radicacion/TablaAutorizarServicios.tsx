@@ -1,25 +1,92 @@
-//*Funciones y Hooks
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import LoadingSpinner from "../../LoadingSpinner";
-//*Icons
-import back from "/assets/back.svg";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   useFetchEstados,
   useFetchUnidadFuncional,
 } from "../../../hooks/useFetchUsers";
+import LoadingSpinner from "../../LoadingSpinner";
+import { useLocation, Link } from "react-router-dom";
+import back from "/assets/back.svg";
+import { CupsDetail, FormikValues } from "../../../models/IFotmikValues";
+import { submitAutorizacionRadicado } from "../../../services/submitAutorizacionRadicado";
+import { useState } from "react";
 
 const FormularioAutorizacion = () => {
-  const [fechaAuditoria, setFechaAuditoria] = useState<Date | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const location = useLocation();
-  const CUPS = location.state.CUPS;
+  const CUPS = location.state.CUPS || [];
+  const id = location.state.id || 0;
+  console.log(id);
 
   const { data, error, loading } = useFetchUnidadFuncional();
-
   const { dataEstados, errorEstados } = useFetchEstados();
+
+  const validationSchema = Yup.object({
+    auditora: Yup.string()
+      .required("El nombre de la auditora es requerido.")
+      .min(3, "El nombre de la auditora debe tener al menos 3 caracteres.")
+      .max(100, "El nombre de la auditora no debe exceder los 100 caracteres."),
+    fechaAuditoria: Yup.date().required("La fecha de auditoría es requerida."),
+    justificacion: Yup.string()
+      .required("La justificación es requerida.")
+      .min(3, "La justificación debe tener al menos 3 caracteres.")
+      .max(150, "La justificación no debe exceder los 150 caracteres."),
+    cupsDetails: Yup.array().of(
+      Yup.object().shape({
+        idCupsRadicado: Yup.string().required("ID CUPS radicado es requerido."),
+        idRadicado: Yup.string().required("ID radicado es requerido."),
+        observacionCups: Yup.string()
+          .required("La observación CUPS es requerida.")
+          .min(1, "La observación debe tener al menos 1 carácter.")
+          .max(150, "La observación no debe exceder los 150 caracteres."),
+        unidadFuncional: Yup.string().required(
+          "La unidad funcional es requerida."
+        ),
+        estadoCups: Yup.string().required("El estado CUPS es requerido."),
+      })
+    ),
+  });
+
+  const formik = useFormik<FormikValues>({
+    initialValues: {
+      id: id,
+      auditora: "",
+      fechaAuditoria: "",
+      justificacion: "",
+      cupsDetails: CUPS.map((cups: CupsDetail) => ({
+        idCupsRadicado: cups.id,
+        idRadicado: cups.idRadicado,
+        observacionCups: "",
+        unidadFuncional: "",
+        estadoCups: "",
+      })),
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      setIsSubmitting(true);
+      setSuccess(false);
+
+      try {
+        const response = await submitAutorizacionRadicado(values, id);
+
+        if (response?.status === 200) {
+          setSuccess(true);
+
+          window.location.href = "/tabla-auditoria";
+        } else {
+          throw new Error("Error al registrar la autorización.");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      setIsSubmitting(false);
+    },
+  });
+  //   console.log("Errors:", formik.errors);
+  // console.log("Touched:", formik.touched);
 
   if (error) return <h2>{error}</h2>;
   if (loading) return <LoadingSpinner duration={500} />;
@@ -59,7 +126,10 @@ const FormularioAutorizacion = () => {
         <h2 className="mb-6 text-xl font-semibold text-stone-600 dark:text-stone-300">
           Crear autorización
         </h2>
-        <form className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+        >
           {/* Auditora */}
           <div className="flex flex-col">
             <label
@@ -71,9 +141,16 @@ const FormularioAutorizacion = () => {
             <input
               id="auditora"
               type="text"
+              name="auditora"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.auditora}
               className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="Nombre de la auditora"
             />
+            {formik.touched.auditora && formik.errors.auditora && (
+              <p className="text-red-500">{formik.errors.auditora}</p>
+            )}
           </div>
 
           {/* Fecha Auditoría */}
@@ -84,13 +161,18 @@ const FormularioAutorizacion = () => {
             >
               Fecha Auditoría:
             </label>
-            <DatePicker
-              selected={fechaAuditoria}
-              onChange={(date) => setFechaAuditoria(date)}
-              dateFormat="dd/MM/yyyy"
+            <input
+              onChange={formik.handleChange}
+              id="fechaAuditoria"
+              type="date"
+              onBlur={formik.handleBlur}
+              value={formik.values.fechaAuditoria}
+              name="fechaAuditoria"
               className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholderText="dd/mm/aaaa"
             />
+            {formik.touched.fechaAuditoria && formik.errors.fechaAuditoria && (
+              <p className="text-red-500">{formik.errors.fechaAuditoria}</p>
+            )}
           </div>
 
           {/* Justificación Concepto Auditor */}
@@ -104,112 +186,155 @@ const FormularioAutorizacion = () => {
             <input
               id="justificacion"
               type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.justificacion}
+              name="justificacion"
               className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
+            {formik.touched.justificacion && formik.errors.justificacion && (
+              <p className="text-red-500">{formik.errors.justificacion}</p>
+            )}
           </div>
 
-          {CUPS.map((cups) => (
-            <div>
-              <div className="flex flex-col">
+          {formik.values.cupsDetails.map((detalle, index) => (
+            <div key={index} className="border p-4 mb-4 rounded-md shadow-md">
+              {/* Código CUPS */}
+              <div className="flex flex-col mb-4">
                 <label
-                  htmlFor="codigoCups"
+                  htmlFor={`cupsDetails[${index}].codigoCups`}
                   className="mb-2 font-medium text-stone-600 dark:text-stone-300"
                 >
                   Código CUPS:
                 </label>
                 <input
-                  id="codigoCups"
+                  id={`cupsDetails[${index}].codigoCups`}
                   type="text"
-                  value={cups.code}
+                  value={CUPS[index].code} // Muestra el código CUPS correspondiente
+                  readOnly
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Código CUPS"
                 />
               </div>
 
               {/* Descripción CUPS */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-4">
                 <label
-                  htmlFor="descripcionCups"
+                  htmlFor={`cupsDetails[${index}].descripcionCups`}
                   className="mb-2 font-medium text-stone-600 dark:text-stone-300"
                 >
                   Descripción CUPS:
                 </label>
                 <textarea
-                  id="descripcionCups"
-                  value={cups.description}
+                  id={`cupsDetails[${index}].descripcionCups`}
+                  value={CUPS[index].description} // Muestra la descripción CUPS correspondiente
+                  readOnly
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  rows={3}
                   placeholder="Descripción CUPS"
-                  rows={3} // Valor predeterminado
                 />
               </div>
 
               {/* Observación CUPS */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-4">
                 <label
-                  htmlFor="observacionCups"
+                  htmlFor={`cupsDetails[${index}].observacionCups`}
                   className="mb-2 font-medium text-stone-600 dark:text-stone-300"
                 >
                   Observación CUPS:
                 </label>
                 <input
-                  id="observacionCups"
+                  id={`cupsDetails[${index}].observacionCups`}
                   type="text"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.cupsDetails[index].observacionCups}
+                  name={`cupsDetails[${index}].observacionCups`}
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Observación CUPS"
                 />
+                {formik.touched.cupsDetails?.[index]?.observacionCups &&
+                  formik.errors.cupsDetails?.[index]?.observacionCups && (
+                    <p className="text-red-500">
+                      {formik.errors.cupsDetails[index].observacionCups}
+                    </p>
+                  )}
               </div>
 
               {/* Unidad Funcional */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-4">
                 <label
-                  htmlFor="unidadFuncional"
+                  htmlFor={`cupsDetails[${index}].unidadFuncional`}
                   className="mb-2 font-medium text-stone-600 dark:text-stone-300"
                 >
-                  Unidad funcional:
+                  Unidad Funcional:
                 </label>
-
                 <select
-                  id="unidadFuncional"
+                  id={`cupsDetails[${index}].unidadFuncional`}
+                  name={`cupsDetails[${index}].unidadFuncional`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.cupsDetails[index].unidadFuncional}
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 >
-                  <option value="">SELECT</option>
+                  <option value="">Seleccione Unidad Funcional</option>
                   {data.map((unidad) => (
-                    <option value={unidad.id}>{unidad.name}</option>
+                    <option key={unidad.id} value={unidad.id}>
+                      {unidad.name}
+                    </option>
                   ))}
                 </select>
+                {formik.touched.cupsDetails?.[index]?.unidadFuncional &&
+                  formik.errors.cupsDetails?.[index]?.unidadFuncional && (
+                    <p className="text-red-500">
+                      {formik.errors.cupsDetails[index].unidadFuncional}
+                    </p>
+                  )}
               </div>
 
               {/* Estado CUPS */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-4">
                 <label
-                  htmlFor="estadoCups"
+                  htmlFor={`cupsDetails[${index}].estadoCups`}
                   className="mb-2 font-medium text-stone-600 dark:text-stone-300"
                 >
                   Estado CUPS:
                 </label>
                 <select
-                  id="estadoCups"
+                  id={`cupsDetails[${index}].estadoCups`}
+                  name={`cupsDetails[${index}].estadoCups`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.cupsDetails[index].estadoCups}
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 >
-                  <option value="">SELECT</option>
+                  <option value="">Seleccione Estado CUPS</option>
                   {dataEstados.map((estado) => (
-                    <option value={estado.id}>{estado.name}</option>
+                    <option key={estado.id} value={estado.id}>
+                      {estado.name}
+                    </option>
                   ))}
                 </select>
+                {formik.touched.cupsDetails?.[index]?.estadoCups &&
+                  formik.errors.cupsDetails?.[index]?.estadoCups && (
+                    <p className="text-red-500">
+                      {formik.errors.cupsDetails[index].estadoCups}
+                    </p>
+                  )}
               </div>
             </div>
           ))}
-        </form>
 
-        {/* Botón Enviar */}
-        <div className="flex justify-center mt-6">
+          {success && <p className="text-green-500">Autorización exitosa.</p>}
+
           <button
             type="submit"
-            className="w-full py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            disabled={isSubmitting || !formik.isValid}
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Enviar
+            {isSubmitting ? "Enviando..." : "Autorizar"}
           </button>
-        </div>
+        </form>
       </div>
     </>
   );

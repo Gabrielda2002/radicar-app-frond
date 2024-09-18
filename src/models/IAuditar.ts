@@ -1,4 +1,5 @@
 export interface IAuditar {
+    id:            number;
     radicadoDate:   Date;
     documentType:   string;
     documentNumber: number;
@@ -27,4 +28,5 @@ export interface IStatusCup {
     observation:     string;
     status:          string;
     unidadFuncional: string;
+    idRadicado:      number;
 }
