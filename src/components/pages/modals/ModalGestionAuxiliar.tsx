@@ -37,7 +37,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
           <div className="z-10 w-[fit-content] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
             <div className="flex items-center justify-between p-2 mb-4">
               <h2 className="text-xl font-semibold text-color dark:text-gray-200  ">
-                Tabla Gestion Servicios.
+                Tabla Gestión Servicios.
               </h2>
               <button
                 onClick={onClose}
@@ -105,7 +105,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                 onClick={EventServicio}
                 className="w-32 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
               >
-                Registrar Gestion.
+                Registrar Gestión.
               </button>
             </div>
           </div>

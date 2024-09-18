@@ -110,7 +110,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                   <textarea
                     id="observacion"
                     name="observacion"
-                    placeholder="Observación"
+                    placeholder="Observación . . ."
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.observacion}

@@ -77,9 +77,7 @@ const TablaRadicacion = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-            <Link to="/inicio">
-              <img src={salir} alt="" />
-            </Link>
+              <img src={salir} alt=""  onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
       </section>
