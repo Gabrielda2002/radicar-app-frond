@@ -53,7 +53,7 @@ const TablaAuditoria = () => {
   const handleShowServicios = (statusCups) => {
     setSelectedCups(statusCups);
     setIsOpen(true);
-  }
+  };
 
   return (
     <>
@@ -174,14 +174,19 @@ const TablaAuditoria = () => {
                       <ModalSoporte></ModalSoporte>
                     </td>
                     <td>
-                        <button
-                          onClick={() => handleShowServicios(auditoria.statusCups)}
-                        >
-                          <img src={mostrar} alt="mostrar-icon" />
-                        </button>
+                      <button
+                        onClick={() =>
+                          handleShowServicios(auditoria.statusCups)
+                        }
+                      >
+                        <img src={mostrar} alt="mostrar-icon" />
+                      </button>
                     </td>
                     <td>
-                      <Link to="/tabla-autorizar-servicios">
+                      <Link
+                        to="/tabla-autorizar-servicios"
+                        state={{ CUPS: auditoria.statusCups }}
+                      >
                         <img
                           className="dark:invert "
                           src={autorizar}
@@ -195,11 +200,11 @@ const TablaAuditoria = () => {
               </tbody>
             </table>
 
-                <ModalMostrarDatosCUPS
-                  isOpen={isOpen}
-                  onClose={() => setIsOpen(false)}
-                  data={selectedCups}
-                />
+            <ModalMostrarDatosCUPS
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              data={selectedCups}
+            />
 
             {/* pagination */}
             <Pagination

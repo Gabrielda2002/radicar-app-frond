@@ -1,14 +1,29 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../LoadingSpinner";
 //*Icons
 import back from "/assets/back.svg";
+import {
+  useFetchEstados,
+  useFetchUnidadFuncional,
+} from "../../../hooks/useFetchUsers";
 
 const FormularioAutorizacion = () => {
   const [fechaAuditoria, setFechaAuditoria] = useState<Date | null>(null);
+
+  const location = useLocation();
+  const CUPS = location.state.CUPS;
+
+  const { data, error, loading } = useFetchUnidadFuncional();
+
+  const { dataEstados, errorEstados } = useFetchEstados();
+
+  if (error) return <h2>{error}</h2>;
+  if (loading) return <LoadingSpinner duration={500} />;
+  if (errorEstados) return <h2>{errorEstados}</h2>;
 
   return (
     <>
@@ -61,22 +76,6 @@ const FormularioAutorizacion = () => {
             />
           </div>
 
-          {/* Código CUPS */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="codigoCups"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Código CUPS:
-            </label>
-            <input
-              id="codigoCups"
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Código CUPS"
-            />
-          </div>
-
           {/* Fecha Auditoría */}
           <div className="flex flex-col">
             <label
@@ -94,65 +93,13 @@ const FormularioAutorizacion = () => {
             />
           </div>
 
-          {/* Descripción CUPS */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="descripcionCups"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Descripción CUPS:
-            </label>
-            <textarea
-              id="descripcionCups"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Descripción CUPS"
-              rows={3} // Valor predeterminado
-            />
-          </div>
-
-          {/* Concepto Auditoría */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="conceptoAuditoria"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Concepto Auditoría:
-            </label>
-            <select
-              id="conceptoAuditoria"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            >
-              <option value="" disabled selected>
-                SELECCIONE
-              </option>
-              <option value="opcion1">Opción 1</option>
-              <option value="opcion2">Opción 2</option>
-            </select>
-          </div>
-
-          {/* Observación CUPS */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="observacionCups"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Observación CUPS:
-            </label>
-            <input
-              id="observacionCups"
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Observación CUPS"
-            />
-          </div>
-
           {/* Justificación Concepto Auditor */}
           <div className="flex flex-col">
             <label
               htmlFor="justificacion"
               className="mb-2 font-medium text-stone-600 dark:text-stone-300"
             >
-              Justificación concepto auditor:
+              Justificación:
             </label>
             <input
               id="justificacion"
@@ -161,45 +108,97 @@ const FormularioAutorizacion = () => {
             />
           </div>
 
-          {/* Unidad Funcional */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="unidadFuncional"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Unidad funcional:
-            </label>
-            <select
-              id="unidadFuncional"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            >
-              <option value="" disabled selected>
-                SELECCIONE
-              </option>
-              <option value="unidad1">Unidad 1</option>
-              <option value="unidad2">Unidad 2</option>
-            </select>
-          </div>
+          {CUPS.map((cups) => (
+            <div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="codigoCups"
+                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                >
+                  Código CUPS:
+                </label>
+                <input
+                  id="codigoCups"
+                  type="text"
+                  value={cups.code}
+                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  placeholder="Código CUPS"
+                />
+              </div>
 
-          {/* Estado CUPS */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="estadoCups"
-              className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-            >
-              Estado CUPS:
-            </label>
-            <select
-              id="estadoCups"
-              className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            >
-              <option value="" disabled selected>
-                SELECCIONE
-              </option>
-              <option value="estado1">Estado 1</option>
-              <option value="estado2">Estado 2</option>
-            </select>
-          </div>
+              {/* Descripción CUPS */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="descripcionCups"
+                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                >
+                  Descripción CUPS:
+                </label>
+                <textarea
+                  id="descripcionCups"
+                  value={cups.description}
+                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  placeholder="Descripción CUPS"
+                  rows={3} // Valor predeterminado
+                />
+              </div>
+
+              {/* Observación CUPS */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="observacionCups"
+                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                >
+                  Observación CUPS:
+                </label>
+                <input
+                  id="observacionCups"
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  placeholder="Observación CUPS"
+                />
+              </div>
+
+              {/* Unidad Funcional */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="unidadFuncional"
+                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                >
+                  Unidad funcional:
+                </label>
+
+                <select
+                  id="unidadFuncional"
+                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                >
+                  <option value="">SELECT</option>
+                  {data.map((unidad) => (
+                    <option value={unidad.id}>{unidad.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Estado CUPS */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="estadoCups"
+                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                >
+                  Estado CUPS:
+                </label>
+                <select
+                  id="estadoCups"
+                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                >
+                  <option value="">SELECT</option>
+                  {dataEstados.map((estado) => (
+                    <option value={estado.id}>{estado.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
         </form>
 
         {/* Botón Enviar */}
