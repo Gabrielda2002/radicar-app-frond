@@ -124,6 +124,7 @@ const TablaTipoServicio = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎</div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

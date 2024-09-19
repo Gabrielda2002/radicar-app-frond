@@ -126,6 +126,7 @@ const TablaLugarRadicacion = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎</div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

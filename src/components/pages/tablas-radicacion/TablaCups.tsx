@@ -114,7 +114,7 @@ const TablaCups = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center  dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((cups) => (
                   <tr key={cups.id}>
                     <td>{cups.id}</td>
@@ -128,6 +128,7 @@ const TablaCups = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎ </div>
             {/* Controles de paginación */}
             <Pagination
               currentPage={currentPage}

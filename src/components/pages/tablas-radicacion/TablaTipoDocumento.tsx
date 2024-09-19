@@ -111,7 +111,7 @@ const TablaTipoDocumento = () => {
                 </tr>
               </thead>
 
-              <tbody className="text-xs text-center  dark:text-gray-200">
+              <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((documento) => (
                   <tr>
                     <td className="py-3">{documento.id}</td>
@@ -124,6 +124,7 @@ const TablaTipoDocumento = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎</div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
