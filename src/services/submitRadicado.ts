@@ -39,6 +39,7 @@ export const submitRadicado = async (data: FormData, idPaciente: string) => {
                     if (cupsResponse.status === 201) {
                         console.log("cups guardados correctamente")
                         console.log("radicado guardado correctamente")
+                        return cupsResponse;
                     }
 
 

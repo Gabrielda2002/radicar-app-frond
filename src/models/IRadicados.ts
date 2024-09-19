@@ -37,8 +37,8 @@ export interface CupsRadicadosRelation {
     observation:            string;
     functionalUnit:         number;
     idRadicacion:           number;
-    updatedAt:              string;
-    createdAt:              string;
+    updatedAt:              Date;
+    createdAt:              Date;
     statusRelation:         Relation;
     functionalUnitRelation: Relation;
 }
@@ -94,7 +94,12 @@ export interface SoportesRelation {
     name:      string;
     url:       string;
     size:      number;
-    type:      string;
+    type:      Type;
     createdAt: Date;
     updateAt:  Date;
+    nameSaved: null | string;
+}
+
+export enum Type {
+    ApplicationPDF = "application/pdf",
 }
