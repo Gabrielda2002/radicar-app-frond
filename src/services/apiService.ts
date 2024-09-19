@@ -1,4 +1,3 @@
-import { IAuditoria } from "../models/IAuditoria";
 import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IDocumento } from "../models/IDocumento";
@@ -12,6 +11,9 @@ import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
 import { api } from "../utils/api-config";
+import { IAuditar } from "../models/IAuditar";
+import { IUnidadFuncional } from "../models/IUnidadFuncional";
+import { IEstados } from "../models/IEstados";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -23,9 +25,9 @@ export const fetchUsers = async (): Promise<IRadicados[]> => {
     return radicaciones;
 }
 
-export const fetchAuditoria = async (): Promise<IAuditoria[]> => {
+export const fetchAuditoria = async (): Promise<IAuditar[]> => {
     const response = await api.get('/auditoria-table');
-    const auditorias = response.data.map((auditoria: IAuditoria) => ({
+    const auditorias = response.data.map((auditoria: IAuditar) => ({
         ...auditoria,
         radicadoDate: new Date(auditoria.radicadoDate),
         orderDate: new Date(auditoria.orderDate)
@@ -144,4 +146,25 @@ export const fetchUsuario = async (): Promise<IUsuarios[]> => {
     }));
     return usuarios;
 
+}
+
+export const fetchUnidadFuncional = async (): Promise<IUnidadFuncional[]> => {
+    const response = await api.get('/unidad-funcional');
+    const unidadFuncional = response.data.map((unidad: IUnidadFuncional) => ({
+        ...unidad,
+        updatedAt: new Date(unidad.updatedAt),
+        createdAt: new Date(unidad.createdAt)
+    }));
+    return unidadFuncional;
+} 
+
+export const fetchEstados = async (): Promise<IEstados[]> => {
+
+    const response = await api.get('/estados');
+    const estados = response.data.map((estado: IEstados) => ({
+        ...estado,
+        updatedAt: new Date(estado.updatedAt),
+        createdAt: new Date(estado.createdAt)
+    }));
+    return estados;
 }

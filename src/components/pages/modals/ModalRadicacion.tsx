@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
 import useFetchPaciente from "../../../hooks/useFetchPaciente";
@@ -21,7 +21,9 @@ const ModalRadicacion = () => {
   const { diagnostico, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
 
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [submiting, setSubmiting] = useState<boolean>(false);
 
   const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
   const [idIpsRemite, setIdIpsRemite] = useState<string>("");
@@ -41,7 +43,7 @@ const ModalRadicacion = () => {
   const [nombreProfesional, setNombreProfesional] = useState<string>("");
   const [dateOrden, setDateOrden] = useState<string>("");
   const [soporte, setSoporte] = useState<File | null>(null);
-  
+
   const handleSoporteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSoporte(e.target.files[0]);
@@ -63,10 +65,12 @@ const ModalRadicacion = () => {
   const [servicios, setServicios] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
-
   // * funcion para enviar los datos del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setSubmiting(true);
+    setSuccess(false);
 
     const formData = new FormData();
     formData.append("landline", telefonoFijo);
@@ -88,7 +92,29 @@ const ModalRadicacion = () => {
     formData.append("code", servicios.join(","));
     formData.append("DescriptionCode", descripciones.join(","));
     formData.append("idPatient", idPaciente);
-    submitRadicado(formData, idPaciente);
+
+    try {
+      
+      const response = await submitRadicado(formData, idPaciente);
+
+
+
+      if (response?.status === 201) {
+        setSuccess(true);
+
+        setTimeout(() => {
+          setStadopen(false);
+        }, 2000);
+
+      }else{
+        setErrorMessage("Error al radicar.");
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+
+    setSubmiting(false);
 
   };
 
@@ -143,7 +169,6 @@ const ModalRadicacion = () => {
   const hableGrupoServiciosChange = (value: string, id?: string) => {
     setGrupoServicios(value);
     setIdGrupoServicios(id || "");
-
   };
 
   const handleDiagnosticoKeyDown = (
@@ -189,13 +214,13 @@ const ModalRadicacion = () => {
     const newServicios = [...servicios];
     newServicios[index] = value;
     setServicios(newServicios);
-  }
+  };
 
   const handleDescripcionChange = (index: number, value: string) => {
     const newDescripciones = [...descripciones];
     newDescripciones[index] = value;
     setDescripciones(newDescripciones);
-  }
+  };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -260,6 +285,7 @@ const ModalRadicacion = () => {
                         onChange={(e) => setIdentificacion(e.target.value)}
                         onKeyDown={handleKeyDown}
                         onBlur={handleBlur}
+                        placeholder="Digite número"
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
                       />
                     </label>
@@ -270,7 +296,11 @@ const ModalRadicacion = () => {
                   {error && !data && (
                     <div className="text-red-500 dark:text-red-300">
                       {error}
-                      <button onClick={handleRegisterPaciente}>
+                      <div></div>
+                      <button
+                        onClick={handleRegisterPaciente}
+                        className="text-blue-500 dark:text-blue-300"
+                      >
                         Registrar Paciente
                       </button>
                     </div>
@@ -343,7 +373,7 @@ const ModalRadicacion = () => {
                       </div>
                     </>
                   )}
-                   <div>
+                  <div>
                     <input
                       type="text"
                       value={idPaciente}
@@ -353,74 +383,78 @@ const ModalRadicacion = () => {
                   </div>
                 </section>
 
-                    <div>
-                      <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                        Datos Contacto Paciente
-                      </h5>
-                    </div>
+                <div>
+                  <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
+                    Datos Contacto Paciente
+                  </h5>
+                </div>
 
-                    <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
-                      <div>
-                        <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                            Telefono Fijo
-                          </span>
-                          <input
-                            type="number"
-                            id=""
-                            name=""
-                            onChange={(e) => setTelefonoFijo(e.target.value)}
-                            value={telefonoFijo}
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          />
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                            N° Celular
-                          </span>
-                          <input
-                            type="number"
-                            id=""
-                            onChange={(e) => setNumeroCelular(e.target.value)}
-                            value={numeroCelular}
-                            name=""
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          />
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                            Dirreción
-                          </span>
-                          <input
-                            type="text"
-                            id=""
-                            name=""
-                            onChange={(e) => setDireccion(e.target.value)}
-                            value={direccion}
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          />
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="">
-                          <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                            Email
-                          </span>
-                          <input
-                            type="email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            id=""
-                            name=""
-                            value={email}
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          />
-                        </label>
-                      </div>
-                    </section>
+                <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
+                  <div>
+                    <label htmlFor="">
+                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        Telefono Fijo
+                      </span>
+                      <input
+                        type="number"
+                        id=""
+                        name=""
+                        placeholder="Digite telefono"
+                        onChange={(e) => setTelefonoFijo(e.target.value)}
+                        value={telefonoFijo}
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label htmlFor="">
+                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        N° Celular
+                      </span>
+                      <input
+                        type="number"
+                        id=""
+                        onChange={(e) => setNumeroCelular(e.target.value)}
+                        value={numeroCelular}
+                        placeholder="Digite número"
+                        name=""
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label htmlFor="">
+                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        Dirreción
+                      </span>
+                      <input
+                        type="text"
+                        id=""
+                        name=""
+                        onChange={(e) => setDireccion(e.target.value)}
+                        value={direccion}
+                        placeholder="Digite dirreción"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label htmlFor="">
+                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        Email
+                      </span>
+                      <input
+                        type="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        id=""
+                        name=""
+                        value={email}
+                        placeholder="Digite email"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                      />
+                    </label>
+                  </div>
+                </section>
 
                 <div>
                   <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
@@ -447,12 +481,12 @@ const ModalRadicacion = () => {
                       />
                     </label>
                   </div>
-                  <ServicioForm 
-                  cantidad={cantidad}
-                  servicios={servicios}
-                  descripciones={descripciones}
-                  onServicioChange={handleServicioChange}
-                  onDescripcionChange={handleDescripcionChange}
+                  <ServicioForm
+                    cantidad={cantidad}
+                    servicios={servicios}
+                    descripciones={descripciones}
+                    onServicioChange={handleServicioChange}
+                    onDescripcionChange={handleDescripcionChange}
                   />
                 </section>
 
@@ -486,6 +520,7 @@ const ModalRadicacion = () => {
                         type="text"
                         id=""
                         name=""
+                        placeholder="Digite nombre"
                         onChange={(e) => setNombreProfesional(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
@@ -537,6 +572,7 @@ const ModalRadicacion = () => {
                         name=""
                         onChange={(e) => setDiagnosticoValue(e.target.value)}
                         onKeyDown={handleDiagnosticoKeyDown}
+                        placeholder="Digite código"
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       />
                     </label>
@@ -591,7 +627,7 @@ const ModalRadicacion = () => {
                     </label>
                   </div>
                   <div>
-                    <input 
+                    <input
                       type="text"
                       value={idDiagnostico}
                       className="hidden"
@@ -600,6 +636,17 @@ const ModalRadicacion = () => {
                 </section>
               </div>
             </form>
+
+                  {errorMessage && (
+                    <div className="text-red-500 dark:text-red-300">
+                      {errorMessage}
+                    </div>
+                  )}
+                  {success && (
+                    <div className="text-green-500 dark:text-green-300">
+                      Radicado guardado correctamente.
+                    </div>
+                  )}
 
             {/* container-footer */}
             <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">

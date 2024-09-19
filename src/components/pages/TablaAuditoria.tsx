@@ -10,13 +10,17 @@ import ModalSoporte from "./modals/ModalSoporte.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 
 import autorizar from "/assets/autorizar.svg";
+import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [selectedCups, setSelectedCups] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "documentNumber",
@@ -45,6 +49,11 @@ const TablaAuditoria = () => {
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
+
+  const handleShowServicios = (statusCups) => {
+    setSelectedCups(statusCups);
+    setIsOpen(true);
+  };
 
   return (
     <>
@@ -165,10 +174,19 @@ const TablaAuditoria = () => {
                       <ModalSoporte></ModalSoporte>
                     </td>
                     <td>
-                        hoa
+                      <button
+                        onClick={() =>
+                          handleShowServicios(auditoria.statusCups)
+                        }
+                      >
+                        <img src={mostrar} alt="mostrar-icon" />
+                      </button>
                     </td>
                     <td>
-                      <Link to="/tabla-autorizar-servicios">
+                      <Link
+                        to="/tabla-autorizar-servicios"
+                      state={{ CUPS: auditoria.statusCups, id: auditoria.id  }}
+                      >
                         <img
                           className="dark:invert "
                           src={autorizar}
@@ -181,6 +199,12 @@ const TablaAuditoria = () => {
                 ))}
               </tbody>
             </table>
+
+            <ModalMostrarDatosCUPS
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              data={selectedCups}
+            />
 
             {/* pagination */}
             <Pagination

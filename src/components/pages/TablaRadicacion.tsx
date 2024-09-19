@@ -4,12 +4,13 @@ import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-import ModalSoporte from "./modals/ModalSoporte.tsx";
 import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import mostrar from "/assets/mostrar.svg";
+import soporte from "/assets/soporte.svg";
+
 
 //*Iconos
 import salir from "/assets/back.svg";
@@ -54,6 +55,20 @@ const TablaRadicacion = () => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
   }
+
+const handleOpenSoporte = (nombreSoporte: string | null) => {
+
+  if (!nombreSoporte) {
+    alert("No hay soporte para mostrar.");
+    return;
+  }
+
+  window.open(
+    `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
+    "_blank"
+  );
+  return;
+}
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -157,7 +172,11 @@ const TablaRadicacion = () => {
                       </td>
                       <td>{radicacion.auditora}</td>
                       <td>
-                        <ModalSoporte></ModalSoporte>
+                        <button
+                          onClick={() => radicacion.soportesRelation && handleOpenSoporte(radicacion.soportesRelation.nameSaved)}
+                        >
+                          <img src={soporte} alt="" />
+                        </button>
                       </td>
                       <td>
                         <button
