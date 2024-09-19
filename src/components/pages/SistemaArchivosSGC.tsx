@@ -36,7 +36,7 @@ const FileManager: React.FC = () => {
   return (
     <>
       {/* navbar table */}
-      <section className="relative dark:bg-gray-900">
+      <section className="dark:bg-gray-900">
         <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
           Módulo Sistema Gestión Calidad
         </h1>
@@ -86,7 +86,7 @@ const FileManager: React.FC = () => {
             <div className="grid grid-cols-1">
               {hasFolder && (
                 <div>
-                  <h2 className="mb-4 pt-2 text-xl font-semibold text-gray-700 dark:text-gray-300">
+                  <h2 className="pt-2 mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
                     Carpetas:
                   </h2>
                   <FolderList
@@ -100,7 +100,7 @@ const FileManager: React.FC = () => {
 
               {hasFiles && (
                 <div>
-                  <h2 className="mb-4 pt-2 text-xl font-semibold text-gray-700 dark:text-gray-300">
+                  <h2 className="pt-2 mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
                     Archivos:
                   </h2>
                   <FileList
