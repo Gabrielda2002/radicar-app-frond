@@ -65,7 +65,7 @@ const ModalRadicacion = () => {
 
 
   // * funcion para enviar los datos del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -226,12 +226,12 @@ const ModalRadicacion = () => {
           >
             {/* container-header */}
             <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
-              <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
+              <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
                 Radicación de Servicios
               </h1>
               <button
                 onClick={() => setStadopen(false)}
-                className="text-xl text-gray-500 hover-gray-700 pr-2"
+                className="pr-2 text-xl text-gray-500 hover-gray-700"
               >
                 &times;
               </button>
@@ -246,7 +246,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ms-2 text-sm">
+                <section className="grid grid-cols-3 mb-6 text-sm gap-x-10 gap-y-2 ms-2">
                   <div>
                     <label htmlFor="">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -288,7 +288,7 @@ const ModalRadicacion = () => {
                             id=""
                             value={data.documentRelation.name}
                             name=""
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            className="w-full px-3 py-2 border border-gray-200 rounded cursor-not-allowed dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                         </label>
@@ -303,7 +303,7 @@ const ModalRadicacion = () => {
                             id=""
                             name=""
                             value={data.name}
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            className="w-full px-3 py-2 border border-gray-200 rounded cursor-not-allowed dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -319,7 +319,7 @@ const ModalRadicacion = () => {
                             value={data.convenioRelation.name}
                             id=" "
                             name=""
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            className="w-full px-3 py-2 border border-gray-200 rounded cursor-not-allowed dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -335,7 +335,7 @@ const ModalRadicacion = () => {
                             id=""
                             name=""
                             value={data.ipsPrimariaRelation.name}
-                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                            className="w-full px-3 py-2 border border-gray-200 rounded cursor-not-allowed dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                             disabled
                           />
                           {/*sin modificar*/}
@@ -359,7 +359,7 @@ const ModalRadicacion = () => {
                       </h5>
                     </div>
 
-                    <section className="grid grid-cols-2 mb-6 gap-x-40 gap-y-2 ms-2 text-sm">
+                    <section className="grid grid-cols-2 mb-6 text-sm gap-x-40 gap-y-2 ms-2">
                       <div>
                         <label htmlFor="">
                           <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -428,7 +428,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
                 {/* el usuario ingresa la cantidad de servicios que desea ingresar */}
-                <section className="grid grid-cols-3 mb-6 border-2 border-transparent gap-x-10 gap-y-0 ps-2 text-sm">
+                <section className="grid grid-cols-3 mb-6 text-sm border-2 border-transparent gap-x-10 gap-y-0 ps-2">
                   <div>
                     <label htmlFor="cantidad">
                       <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
@@ -462,7 +462,7 @@ const ModalRadicacion = () => {
                   </h5>
                 </div>
 
-                <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
+                <section className="grid grid-cols-3 mb-6 text-sm gap-x-10 gap-y-2 ps-2">
                   <div>
                     <InputAutocompletado
                       label="IPS Primaria"
