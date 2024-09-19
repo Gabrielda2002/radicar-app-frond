@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
 import useFetchPaciente from "../../../hooks/useFetchPaciente";
@@ -66,7 +66,7 @@ const ModalRadicacion = () => {
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
   // * funcion para enviar los datos del formulario
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setSubmiting(true);

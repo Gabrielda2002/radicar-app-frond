@@ -18,7 +18,6 @@ const FormularioAutorizacion = () => {
   const location = useLocation();
   const CUPS = location.state.CUPS || [];
   const id = location.state.id || 0;
-  console.log(id);
 
   const { data, error, loading } = useFetchUnidadFuncional();
   const { dataEstados, errorEstados } = useFetchEstados();
