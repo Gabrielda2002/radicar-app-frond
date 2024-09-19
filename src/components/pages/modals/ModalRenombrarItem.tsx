@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type ModalRenombrarItemProps = {
   standOpen: boolean;
@@ -8,20 +8,8 @@ type ModalRenombrarItemProps = {
 
 const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({standOpen, toggleModal, renameItem}) => {
 
-    const [showAnimation, setShowAnimation] = useState(false);
     const [ Error, setError ] = useState('');
     const [ folderNewName, setFolderNewName ] = useState('');
-  
-    // Se agrega useEffect para controlar la animación de la ventana emergente
-  
-  useEffect(() => {
-      if (standOpen) {
-        setShowAnimation(true);
-        setTimeout(() => {
-          setShowAnimation(false);
-        }, 800);
-      }
-    }, [standOpen]);
   
     const handleRename = () => {
         if (folderNewName.trim()) {
