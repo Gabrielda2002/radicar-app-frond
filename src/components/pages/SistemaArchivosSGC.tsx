@@ -48,9 +48,7 @@ const FileManager: React.FC = () => {
             </li>
           </ol>
           <div className="pb-2 w-10">
-            <Link to="/inicio">
-              <img src={salir} alt="" />
-            </Link>
+              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
       </section>
