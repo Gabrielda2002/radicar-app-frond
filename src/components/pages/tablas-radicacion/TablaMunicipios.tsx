@@ -125,6 +125,7 @@ const TablaMunicipios = () => {
                 ))}
               </tbody>
             </table>
+            <div>‎</div>
             <Pagination
               totalPages={totalPages}
               onPageChange={paginate}
