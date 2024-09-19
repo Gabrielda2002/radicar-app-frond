@@ -213,6 +213,7 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
             />
 
             {/* Controles de la Paginacion */}
+            <div>‎ </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
