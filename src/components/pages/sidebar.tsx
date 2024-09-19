@@ -1,8 +1,10 @@
 //*Funciones y Hooks
-import { FC, useRef, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import Modal from "./modals/ModalReporte";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
+import { FC, useRef, useState, useEffect } from "react";
+import { useSidebar } from "../../context/sidebarContext";
 
 //*Icons
 import home from "/assets/home.svg";
@@ -12,7 +14,6 @@ import user2 from "/assets/user2.svg";
 import user1 from "/assets/user1.svg";
 import audit from "/assets/audit.svg";
 import table from "/assets/table.svg";
-import arrow from "/assets/arrow.svg";
 import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
 import filing from "/assets/filing.svg";
@@ -24,7 +25,7 @@ import taskList from "/assets/task-list.svg";
 
 const SideBar: FC = () => {
   //*constante para slide del sidebar y funciones
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleSideBar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
   //*Variables para identificación de la tabla
   const [openAccordions, setOpenAccordions] = useState({
@@ -36,10 +37,6 @@ const SideBar: FC = () => {
   });
   //*constante para el acordion del sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
-  //*constantes y modulos
-  const toggleSideBar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -71,30 +68,29 @@ const SideBar: FC = () => {
     }
   }, [openAccordions.quality]);
 
+  useEffect(() => {
+    const savedState = Cookies.get("sidebarState");
+    if (savedState && savedState === "collapsed" && !isCollapsed) {
+      toggleSideBar(); // Colapsa el sidebar si está guardado en la cookie como colapsado
+    }
+  }, []); // Solo se ejecuta al montar el componente
+
+  //* Guardar el estado del sidebar en la cookie cada vez que cambie
+  useEffect(() => {
+    Cookies.set("sidebarState", isCollapsed ? "collapsed" : "expanded");
+  }, [isCollapsed]);
+
   return (
     <aside
-      className={`flex flex-col h-full transition-all duration-500 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
-        isCollapsed ? "w-28" : "w-64 absolute"
+      className={`flex flex-col h-full transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
+        isCollapsed
+          ? "-translate-x-full w-1 absolute duration-300 opacity-25 z-50"
+          : "w-64 duration-300 absolute z-50"
       } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 `}
     >
-      <div>
-        <button
-          onClick={toggleSideBar}
-          className="mb-4 text-gray-600 transition-all duration-300 dark:text-gray-900 group"
-        >
-          <img
-            src={arrow}
-            alt=""
-            className={`mx-1 transition-all duration-500 dark:bg-white dark:rounded-full dark:px-1 dark:py-1 bg-gray-300 px-1 py-1 rounded-full ${
-              isCollapsed ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-      </div>
-
       <div className="flex flex-col justify-between flex-1 gap-3 mt-6">
         <nav className="-mx-3 space-y-6">
-          <div className="space-y-4">
+          <div className="pt-8 space-y-4">
             {!isCollapsed && (
               <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                 Servicios
@@ -123,14 +119,6 @@ const SideBar: FC = () => {
                           ? "text-white dark:text-gray-200"
                           : "group-hover:text-white dark:group-hover:text-gray-200"
                       }`}
-                    >
-                      Inicio
-                    </span>
-                  )}
-                  {isCollapsed && (
-                    <span
-                      className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                      style={{ top: "70%", transform: "translateX(-10%)" }}
                     >
                       Inicio
                     </span>
@@ -171,21 +159,15 @@ const SideBar: FC = () => {
                       Gestión de Calidad
                     </span>
                   )}
-                  {isCollapsed && (
-                    <span
-                      className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                      style={{ top: "70%", transform: "translateX(-24%)" }}
-                    >
-                      Calidad
-                    </span>
+                  {!isCollapsed && (
+                    <img
+                      src={arrowUp}
+                      alt=""
+                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
+                        openAccordions.quality ? "rotate-180" : ""
+                      }`}
+                    />
                   )}
-                  <img
-                    src={arrowUp}
-                    alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                      openAccordions.quality ? "rotate-180" : ""
-                    }`}
-                  />
                 </button>
                 {openAccordions.quality && (
                   <div className="mt-2 space-y-3">
@@ -255,21 +237,15 @@ const SideBar: FC = () => {
                       Gestión de Servicios
                     </span>
                   )}
-                  {isCollapsed && (
-                    <span
-                      className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                      style={{ top: "70%", transform: "translateX(-35%)" }}
-                    >
-                      Servicios
-                    </span>
+                  {!isCollapsed && (
+                    <img
+                      src={arrowUp}
+                      alt=""
+                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
+                        openAccordions.services ? "rotate-180" : ""
+                      }`}
+                    />
                   )}
-                  <img
-                    src={arrowUp}
-                    alt=""
-                    className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                      openAccordions.services ? "rotate-180" : ""
-                    }`}
-                  />
                 </button>
                 {openAccordions.services && (
                   <div className="mt-2 space-y-3">
@@ -299,17 +275,6 @@ const SideBar: FC = () => {
                                     ? "text-white dark:text-gray-200"
                                     : ""
                                 }`}
-                              >
-                                Radicador
-                              </span>
-                            )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(-35%)",
-                                }}
                               >
                                 Radicador
                               </span>
@@ -349,17 +314,6 @@ const SideBar: FC = () => {
                                 Cirugía
                               </span>
                             )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(-15%)",
-                                }}
-                              >
-                                Cirugía
-                              </span>
-                            )}
                           </div>
                         )}
                       </NavLink>
@@ -391,17 +345,6 @@ const SideBar: FC = () => {
                                     ? "text-white dark:text-gray-200"
                                     : ""
                                 }`}
-                              >
-                                Auditoría
-                              </span>
-                            )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(-28%)",
-                                }}
                               >
                                 Auditoría
                               </span>
@@ -448,21 +391,15 @@ const SideBar: FC = () => {
                         Gestión de Reportes
                       </span>
                     )}
-                    {isCollapsed && (
-                      <span
-                        className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                        style={{ top: "70%", transform: "translateX(-35%)" }}
-                      >
-                        Reportes
-                      </span>
+                    {!isCollapsed && (
+                      <img
+                        src={arrowUp}
+                        alt=""
+                        className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
+                          openAccordions.reports ? "rotate-180" : ""
+                        }`}
+                      />
                     )}
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                        openAccordions.reports ? "rotate-180" : ""
-                      }`}
-                    />
                   </button>
                   {openAccordions.reports && (
                     <div className="mt-2 space-y-3">
@@ -530,21 +467,15 @@ const SideBar: FC = () => {
                         Tabla Radicación
                       </span>
                     )}
-                    {isCollapsed && (
-                      <span
-                        className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                        style={{ top: "70%", transform: "translateX(-20%)" }}
-                      >
-                        Tablas
-                      </span>
+                    {!isCollapsed && (
+                      <img
+                        src={arrowUp}
+                        alt=""
+                        className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                          openAccordions.tablets ? "rotate-180" : ""
+                        } dark:invert`}
+                      />
                     )}
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 ${
-                        openAccordions.tablets ? "rotate-180" : ""
-                      } dark:invert`}
-                    />
                   </button>
 
                   {openAccordions.tablets && (
@@ -967,24 +898,18 @@ const SideBar: FC = () => {
                             : "group-hover:text-white dark:group-hover:text-gray-200"
                         }`}
                       >
-                        Administrador
+                        Perfil
                       </span>
                     )}
-                    {isCollapsed && (
-                      <span
-                        className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                        style={{ top: "70%", transform: "translateX(-30%)" }}
-                      >
-                        Usuario
-                      </span>
+                    {!isCollapsed && (
+                      <img
+                        src={arrowUp}
+                        alt=""
+                        className={`w-6 h-6 ml-auto transition-transform duration-300 ${
+                          openAccordions.admin ? "rotate-180" : ""
+                        } dark:invert`}
+                      />
                     )}
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 ${
-                        openAccordions.admin ? "rotate-180" : ""
-                      } dark:invert`}
-                    />
                   </button>
                   {openAccordions.admin && (
                     <div className="mt-2 space-y-3">
@@ -1015,17 +940,6 @@ const SideBar: FC = () => {
                                 }`}
                               >
                                 Mi Perfil
-                              </span>
-                            )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(1.6%)",
-                                }}
-                              >
-                                Perfil
                               </span>
                             )}
                           </div>
@@ -1061,17 +975,6 @@ const SideBar: FC = () => {
                                 Usuarios
                               </span>
                             )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(-28%)",
-                                }}
-                              >
-                                Usuarios
-                              </span>
-                            )}
                           </div>
                         )}
                       </NavLink>
@@ -1103,17 +1006,6 @@ const SideBar: FC = () => {
                                 }`}
                               >
                                 Registrar Usuarios
-                              </span>
-                            )}
-                            {isCollapsed && (
-                              <span
-                                className="absolute px-2 py-1 text-xs text-white transition-opacity duration-300 bg-gray-700 rounded-lg opacity-0 dark:bg-gray-500 left-14 group-hover:opacity-100"
-                                style={{
-                                  top: "70%",
-                                  transform: "translateX(-30%)",
-                                }}
-                              >
-                                Registrar
                               </span>
                             )}
                           </div>

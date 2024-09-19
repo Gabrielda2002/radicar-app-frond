@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const usePagination = (data: any[], initialItemsPerPage: number) => {
+const usePagination = <T>(data: T[], initialItemsPerPage: number) => {
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 

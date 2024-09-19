@@ -4,40 +4,71 @@ import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-import ModalSoporte from "./modals/ModalSoporte.tsx";
 import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
-import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+import mostrar from "/assets/mostrar.svg";
+import soporte from "/assets/soporte.svg";
+
+
 //*Iconos
 import salir from "/assets/back.svg";
+import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaRadicacion = () => {
+  //  se traen los datos de la api
   const { data, loading, error } = useFetchUsers();
+
+  //  se inicializan los estados para el paginado y la busqueda
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "createdAt",
     "id",
-    "convenio",
-    "document",
-    "patientName",
     "auditDate",
-    "management",
   ]);
   const { currentPage, totalPages, paginate, currentData } = usePagination(
     filteredData,
     itemsPerPage
   );
 
+  // estado para controlar la apertura del modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
+  const [selectedRadicacion, setSelectedRadicacion] = useState(null);
+
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setItemsPerPage(Number(e.target.value));
   };
+
+  const handleShowData = (radicacion) => {
+    setSelectedRadicacion(radicacion);
+    setIsOpen(true);
+  };
+
+  const handleShowGestionAuxiliar = (radicacion) => {
+    setSelectedRadicacion(radicacion);
+    setIsOpenGestionAuxiliar(true);
+  }
+
+const handleOpenSoporte = (nombreSoporte: string | null) => {
+
+  if (!nombreSoporte) {
+    alert("No hay soporte para mostrar.");
+    return;
+  }
+
+  window.open(
+    `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
+    "_blank"
+  );
+  return;
+}
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -131,63 +162,34 @@ const TablaRadicacion = () => {
                           : "N/A"}
                       </td>
                       <td>{radicacion.id}</td>
-                      <td>{radicacion.convenio}</td>
-                      <td>{radicacion.document}</td>
-                      <td>{radicacion.patientName}</td>
+                      <td>{radicacion.patientRelation.convenioRelation.name}</td>
+                      <td>{radicacion.patientRelation.documentRelation.name}</td>
+                      <td>{radicacion.patientRelation.name}</td>
                       <td>
                         {radicacion.auditDate
                           ? radicacion.auditDate.toISOString()
                           : "N/A"}
                       </td>
-                      <td>{radicacion.management}</td>
+                      <td>{radicacion.auditora}</td>
                       <td>
-                        <ModalSoporte></ModalSoporte>
+                        <button
+                          onClick={() => radicacion.soportesRelation && handleOpenSoporte(radicacion.soportesRelation.nameSaved)}
+                        >
+                          <img src={soporte} alt="" />
+                        </button>
                       </td>
                       <td>
-                        <ModalGestionAuxiliar></ModalGestionAuxiliar>
+                        <button
+                          onClick={() => handleShowGestionAuxiliar(radicacion)}
+                        >
+                          <img src={mostrar} alt="" />
+                        </button>
                       </td>
                       <td>
-                        <button>
-                          <ModalMostarDatos
-                            wdCondic={false}
-                            gdCondic={false}
-                            // Tabla Col 1
-                            numRadi={true}
-                            feRadi={true}
-                            // nomCiru1=""
-                            tipoDoc={true}
-                            numDoc={true}
-                            nomPac={true}
-                            numCel={true}
-                            // nomCiru2=""
-                            telFijo={true}
-                            email={true}
-                            direccion={true}
-                            // nomCiru3=""
-                            convenio={true}
-                            // nomCiru4=""
-                            ipsPri={true}
-                            // nomCiru5=""
-                            feOrden={true}
-                            // nomCiru6=""
-                            lugRadi={true}
-                            ipsRem={true}
-                            // Tabla Col 2
-                            obserAuditoria={true}
-                            justConcepto={true}
-                            unidadFunciona={true}
-                            feAuditoria={true}
-                            nomAuditor={true}
-                            auxiRadi={true}
-                            descripCup={true}
-                            codCup={true}
-                            tipoServicio={true}
-                            grupoServicio={true}
-                            descripDiagn={true}
-                            codDiagn={true}
-                            especialidad={true}
-                            profecional={true}
-                          ></ModalMostarDatos>
+                        <button
+                          onClick={() => handleShowData(radicacion)}
+                        >
+                          <img src={mostrar} alt="" />
                         </button>
                       </td>
                     </tr>
@@ -195,6 +197,21 @@ const TablaRadicacion = () => {
                 </tbody>
               </table>
             </div>
+
+            {/* modal mostrar datos */}
+
+            <ModalMostrarDatos
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              radicacion={selectedRadicacion}
+            />
+
+            <ModalGestionAuxiliar
+              isOpen={isOpenGestionAuxiliar}
+              onClose={() => setIsOpenGestionAuxiliar(false)}
+              radicacion={selectedRadicacion}
+            />
+
             {/* Controles de la Paginacion */}
             <div>‎ </div>
             <Pagination

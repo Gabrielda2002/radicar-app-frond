@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { IRadicacion } from "../models/TableRadicacion";
 import {
   fetchAuditoria,
   fetchConvenio,
   fetchCups,
   fetchDocumento,
   fetchEspecialidad,
+  fetchEstados,
   fetchIpsPrimaria,
   fetchIpsRemite,
   fetchLugarRadicado,
   fetchMunicipio,
   fetchRadicador,
   fetchServicio,
+  fetchUnidadFuncional,
   fetchUsers,
   fetchUsuario,
 } from "../services/apiService";
-import { IAuditoria } from "../models/IAuditoria";
 import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
 import { IMunicipios } from "../models/IMunicipios";
@@ -27,9 +27,13 @@ import { IIPSRemite } from "../models/IIpsRemite";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
+import { IRadicados } from "../models/IRadicados";
+import { IAuditar } from "../models/IAuditar";
+import { IUnidadFuncional } from "../models/IUnidadFuncional";
+import { IEstados } from "../models/IEstados";
 
 export const useFetchUsers = () => {
-  const [data, setData] = useState<IRadicacion[]>([]);
+  const [data, setData] = useState<IRadicados[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +56,7 @@ export const useFetchUsers = () => {
 };
 
 export const useFetchAuditoria = () => {
-  const [data, setData] = useState<IAuditoria[]>([]);
+  const [data, setData] = useState<IAuditar[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +66,7 @@ export const useFetchAuditoria = () => {
         const auditorias = await fetchAuditoria();
         setData(auditorias);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos por Auditar." + error);
       } finally {
         setLoading(false);
       }
@@ -85,7 +89,7 @@ export const useFetchCups = () => {
         const cups = await fetchCups();
         setData(cups);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los CUPS." + error);
       } finally {
         setLoading(false);
       }
@@ -108,7 +112,7 @@ export const useFetchRadicador = () => {
         const radicadores = await fetchRadicador();
         setData(radicadores);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los Radicadores." + error);
       } finally {
         setLoading(false);
       }
@@ -131,7 +135,7 @@ export const useFetchMunicipio = () => {
         const municipios = await fetchMunicipio();
         setData(municipios);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los municipios." + error);
       } finally {
         setLoading(false);
       }
@@ -154,7 +158,7 @@ export const useFetchConvenio = () => {
         const convenios = await fetchConvenio();
         setData(convenios);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los convenios." + error);
       } finally {
         setLoading(false);
       }
@@ -177,7 +181,7 @@ export const useFetchDocumento = () => {
         const users = await fetchDocumento();
         setData(users);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los tipos de documentos." + error);
       } finally {
         setLoading(false);
       }
@@ -200,7 +204,7 @@ export const useFetchIpsPrimaria = () => {
         const ipsPrimaria = await fetchIpsPrimaria();
         setData(ipsPrimaria);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de las IPS Primarias." + error);
       } finally {
         setLoading(false);
       }
@@ -223,7 +227,7 @@ export const useFetchLugarRadicado = () => {
         const lugarRadicado = await fetchLugarRadicado();
         setData(lugarRadicado);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los Lugares Radicado." + error);
       } finally {
         setLoading(false);
       }
@@ -246,7 +250,7 @@ export const useFetchIpsRemite = () => {
         const ipsRemite = await fetchIpsRemite();
         setData(ipsRemite);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de las IPS Remitente." + error);
       } finally {
         setLoading(false);
       }
@@ -269,7 +273,7 @@ export const useFetchEspecialidad = () => {
             const especialidad = await fetchEspecialidad();
             setData(especialidad);
         } catch (error) {
-            setError("Error al obtener los datos de los usuarios" + error);
+            setError("Error al obtener los datos de las especialidades." + error);
         } finally {
             setLoading(false);
         }
@@ -292,7 +296,7 @@ export const useFetchServicios = () => {
             const servicios = await fetchServicio();
             setData(servicios);
         } catch (error) {
-            setError("Error al obtener los datos de los usuarios" + error);
+            setError("Error al obtener los datos de los servicios." + error);
         } finally {
             setLoading(false);
         }
@@ -325,4 +329,50 @@ export const useFetchUsuarios = () => {
     }, []);
     
     return { data, loading, error };
+}
+
+export const useFetchUnidadFuncional = () => {
+    const [data, setData] = useState<IUnidadFuncional[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    useEffect(() => {
+        const getData = async () => {
+        try {
+            const unidadFuncional = await fetchUnidadFuncional();
+            setData(unidadFuncional);
+        } catch (error) {
+            setError("Error al obtener las unidades funcionales." + error);
+        } finally {
+            setLoading(false);
+        }
+        };
+    
+        getData();
+    }, []);
+    
+    return { data, loading, error };
+}
+
+export const useFetchEstados = () => {
+    const [dataEstados, setDataEstados] = useState<IEstados[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [errorEstados, setErrorEstados] = useState<string | null>(null);
+    
+    useEffect(() => {
+        const getData = async () => {
+        try {
+            const estados = await fetchEstados();
+            setDataEstados(estados);
+        } catch (error) {
+            setErrorEstados("Error al obtener los estados." + error);
+        } finally {
+            setLoading(false);
+        }
+        };
+    
+        getData();
+    }, []);
+    
+    return { dataEstados, loading, errorEstados };
 }

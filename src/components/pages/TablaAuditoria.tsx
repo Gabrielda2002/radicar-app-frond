@@ -6,18 +6,21 @@ import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 import Pagination from "../Pagination.tsx";
 import usePagination from "../../hooks/usePagination.ts";
 import useSearch from "../../hooks/useSearch.ts";
-import ModalMostarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalSoporte from "./modals/ModalSoporte.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 
 import autorizar from "/assets/autorizar.svg";
+import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [selectedCups, setSelectedCups] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "documentNumber",
@@ -46,6 +49,11 @@ const TablaAuditoria = () => {
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
+
+  const handleShowServicios = (statusCups) => {
+    setSelectedCups(statusCups);
+    setIsOpen(true);
+  };
 
   return (
     <>
@@ -166,49 +174,19 @@ const TablaAuditoria = () => {
                       <ModalSoporte></ModalSoporte>
                     </td>
                     <td>
-                      <ModalMostarDatos
-                        // wdCondic={true}
-                        // gdCondic={true}
-                        // Table Col 1
-                        // numRadi={false}
-                        // feRadi={false}
-                        // nomCiru3=""
-                        // tipoDoc={false}
-                        // nomCiru4=""
-                        // numDoc={false}
-                        // nomCiru6=""
-                        // nomPac={false}
-                        // numCel={false}
-                        // telFijo={false}
-                        // email={false}
-                        // direccion={false}
-                        // convenio={false}
-                        // ipsPri={false}
-                        // nomCiru5=""
-                        // feOrden={false}
-                        // lugRadi={false}
-                        // ipsRem={false}
-                        // Table Col 2
-                        obserAuditoria={true} //observacion cups |
-                        nomCiru1="Obseracion Cups"
-                        // justConcepto={false}
-                        unidadFunciona={true} //estado cups
-                        nomCiru2="Estado cups"
-                        // feAuditoria={false}
-                        // nomAuditor={false}
-                        // auxiRadi={false}
-                        descripCup={true} //
-                        codCup={true} //
-                        // tipoServicio={false}
-                        // grupoServicio={false}
-                        // descripDiagn={false}
-                        // codDiagn={false}
-                        // especialidad={false}
-                        // profecional={false}
-                      ></ModalMostarDatos>
+                      <button
+                        onClick={() =>
+                          handleShowServicios(auditoria.statusCups)
+                        }
+                      >
+                        <img src={mostrar} alt="mostrar-icon" />
+                      </button>
                     </td>
                     <td>
-                      <Link to="/tabla-autorizar-servicios">
+                      <Link
+                        to="/tabla-autorizar-servicios"
+                      state={{ CUPS: auditoria.statusCups, id: auditoria.id  }}
+                      >
                         <img
                           className="dark:invert "
                           src={autorizar}
@@ -221,7 +199,13 @@ const TablaAuditoria = () => {
                 ))}
               </tbody>
             </table>
-            <div>‎ </div>
+
+            <ModalMostrarDatosCUPS
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              data={selectedCups}
+            />
+
             {/* pagination */}
             <Pagination
               currentPage={currentPage}
