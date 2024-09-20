@@ -40,7 +40,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
 
   const handleSuggestionClick = (suggestion: string, id?: string) => {
     setInputValue(suggestion);
-    onInputChanged(suggestion, id);
+    onInputChanged(id ?? "", suggestion);
     setShowSuggestions(false);
   };
 

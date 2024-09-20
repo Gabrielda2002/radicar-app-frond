@@ -13,13 +13,14 @@ import autorizar from "/assets/autorizar.svg";
 import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
+import { IStatusCup } from "../../models/IAuditar.ts";
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
-  const [selectedCups, setSelectedCups] = useState([]);
+  const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const { query, setQuery, filteredData } = useSearch(data, [
@@ -50,7 +51,7 @@ const TablaAuditoria = () => {
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
 
-  const handleShowServicios = (statusCups) => {
+  const handleShowServicios = (statusCups: IStatusCup[]) => {
     setSelectedCups(statusCups);
     setIsOpen(true);
   };
@@ -174,7 +175,7 @@ const TablaAuditoria = () => {
                     <td>
                       <button
                         onClick={() =>
-                          handleShowServicios(auditoria.statusCups)
+                          handleShowServicios(auditoria.statusCups) // * 
                         }
                       >
                         <img src={mostrar} alt="mostrar-icon" />

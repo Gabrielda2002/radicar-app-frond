@@ -5,6 +5,8 @@ export interface CupsDetail {
     observacionCups: string;
     unidadFuncional: string;
     estadoCups: string;
+    code: string;
+    description: string;
   }
   
   export interface FormikValues {
@@ -15,7 +17,7 @@ export interface CupsDetail {
     cupsDetails: CupsDetail[];
   }
   
-  interface FormikTouched {
+  export interface FormikTouched {
     auditora?: boolean;
     fechaAuditoria?: boolean;
     justificacion?: boolean;
@@ -29,7 +31,7 @@ export interface CupsDetail {
     }>;
   }
   
-  interface FormikErrors {
+  export interface FormikErrors {
     auditora?: string;
     fechaAuditoria?: string;
     justificacion?: string;

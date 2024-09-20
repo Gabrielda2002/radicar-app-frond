@@ -14,13 +14,12 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   onClose,
   radicacion,
 }) => {
-  const [stadOpen, setStadOpen] = useState(false); // Estados Auxiliar
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
+
 
   if (!isOpen || !radicacion) return null;
 
   const EventServicio = () => {
-    setStadOpen(false); // Cierra el primer modal
     setOpenServicio(true); // Abre el segundo modal
   };
 
