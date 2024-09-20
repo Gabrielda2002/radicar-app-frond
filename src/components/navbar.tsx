@@ -1,28 +1,33 @@
+//*Functions and Hooks
 import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
+import { useSidebar } from "../context/sidebarContext";
 import { useTheme } from "../context/blackWhiteContext";
 import { useUserProfile } from "../context/userProfileContext";
-import defaultUserPicture from "/assets/icon-user.svg";
-// Icons
-import userLogo from "/assets/user-logo.svg";
+//*Icons
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
-import { useEffect, useState } from "react";
+import userLogo from "/assets/user-logo.svg";
+import menu from "/assets/menu.svg";
+import menu2 from "/assets/menu2.svg";
+import defaultUserPicture from "/assets/icon-user.svg";
 
 const Navbar: React.FC = () => {
-  const { userProfile } = useUserProfile();
-  const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
-  const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
+  const { isCollapsed, toggleSideBar } = useSidebar();
+  const { userProfile } = useUserProfile();
+  const { theme, toggleTheme } = useTheme();
+  const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
-    
+
     if (userData && userData.id) {
       const savedImage = Cookies.get(`profileImage_${userData.id}`);
-      
+
       if (savedImage) {
         setImageUrl(savedImage);
       } else {
@@ -30,7 +35,6 @@ const Navbar: React.FC = () => {
       }
     }
   }, [userProfile]);
-
 
   const userNavigation = [
     { name: "Perfil", href: "/perfil" },
@@ -44,7 +48,7 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-gray-700">
-        <nav className="flex flex-wrap items-center text-base">
+        <nav className="absolute z-50 flex flex-wrap items-center text-base">
           <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"
@@ -53,6 +57,28 @@ const Navbar: React.FC = () => {
             />
           </NavLink>
         </nav>
+
+        <button
+          onClick={toggleSideBar}
+          className="absolute z-50 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
+        >
+          <div className="relative w-8 h-8">
+            <img
+              src={menu}
+              alt="Menu Icon"
+              className={`top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                isCollapsed ? "opacity-100" : "opacity-0"
+              }`}
+            />
+            <img
+              src={menu2}
+              alt="Menu2 Icon"
+              className={`absolute top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                isCollapsed ? "opacity-0" : "opacity-100"
+              }`}
+            />
+          </div>
+        </button>
 
         {/* Botón de Modo Oscuro */}
         <button

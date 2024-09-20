@@ -8,11 +8,8 @@ type ModalRenombrarItemProps = {
 
 const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({standOpen, toggleModal, renameItem}) => {
 
-
     const [ Error, setError ] = useState('');
     const [ folderNewName, setFolderNewName ] = useState('');
-  
-
   
     const handleRename = () => {
         if (folderNewName.trim()) {
