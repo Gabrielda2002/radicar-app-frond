@@ -30,9 +30,7 @@ const TablaRegistrosAuditados = () => {
           </ol>
         </nav>
         <div className="w-10 ">
-          <Link to="/inicio">
-            <img src={salir} alt="icon-salir" />
-          </Link>
+            <img src={salir} alt="icon-salir" onClick={() => window.history.back()} className="cursor-pointer"/>
         </div>
       </section>
 

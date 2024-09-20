@@ -4,15 +4,16 @@ import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
+
 import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import mostrar from "/assets/mostrar.svg";
-import soporte from "/assets/soporte.svg";
-
 
 //*Iconos
+import gestion from "/assets/gestion.svg"
+import mostrar from "/assets/mostrar.svg";
+import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
 import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 import { IRadicados } from "../../models/IRadicados.ts";
@@ -92,9 +93,7 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-            <Link to="/inicio">
-              <img src={salir} alt="" />
-            </Link>
+              <img src={salir} alt=""  onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
       </section>
@@ -176,21 +175,21 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
                         <button
                           onClick={() => radicacion.soportesRelation && handleOpenSoporte(radicacion.soportesRelation.nameSaved)}
                         >
-                          <img src={soporte} alt="" />
+                          <img className="dark:invert" src={soporte} alt="" />
                         </button>
                       </td>
                       <td>
                         <button
                           onClick={() => handleShowGestionAuxiliar(radicacion)}
                         >
-                          <img src={mostrar} alt="" />
+                          <img className="dark:invert" src={gestion} alt="" />
                         </button>
                       </td>
                       <td>
                         <button
                           onClick={() => handleShowData(radicacion)}
                         >
-                          <img src={mostrar} alt="" />
+                          <img className="dark:invert" src={mostrar} alt="" />
                         </button>
                       </td>
                     </tr>

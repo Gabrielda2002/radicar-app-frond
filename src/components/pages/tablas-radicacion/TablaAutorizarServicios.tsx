@@ -119,9 +119,7 @@ const FormularioAutorizacion = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-            <Link to="/inicio">
-              <img src={back} alt="Back" />
-            </Link>
+              <img src={back} alt="Back" onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
       </section>
