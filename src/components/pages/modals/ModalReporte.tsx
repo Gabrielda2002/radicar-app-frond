@@ -5,7 +5,6 @@ import { useModalReport } from "../../../hooks/useReport";
 import { useDownloadReport } from "../../../hooks/useDownloadReport";
 //*Icons
 import back from "/assets/back.svg";
-import close from "/assets/close.svg";
 
 interface ModalProps {
   isOpen: boolean;
@@ -50,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
 
   return (
     <div
-      className={`fixed z-50 flex pt-20 justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
+      className={`fixed z-30 flex pt-20 justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
         showAnimation && !closing ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOutsideClick}
