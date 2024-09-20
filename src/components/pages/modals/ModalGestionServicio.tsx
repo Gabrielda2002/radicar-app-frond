@@ -85,7 +85,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.estadoSeguimiento}
-                    className="w-[200px] px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                    className="w-[200px] px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-gray-200 dark:bg-gray-800"
                   >
                     <option value="">- SELECT -</option>
                     <option value="1">Asignado</option>
@@ -110,11 +110,11 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                   <textarea
                     id="observacion"
                     name="observacion"
-                    placeholder="Observación"
+                    placeholder="Observación . . ."
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.observacion}
-                    className={`w-[300px] px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-800 ${
+                    className={`w-[300px] px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
                       formik.touched.observacion && formik.errors.observacion ? "border-red-500" : "border-gray-300"
                     }`}
                   ></textarea>

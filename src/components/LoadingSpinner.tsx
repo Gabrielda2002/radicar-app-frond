@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 
 interface LoadingSpinnerProps {
   duration?: number;
+  onFinish?: () => void; // Añadimos el callback onFinish
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ duration = 5000 }) => {
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  duration = 5000,
+  onFinish,
+}) => {
   const [isVisible, setIsVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -13,11 +17,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ duration = 5000 }) => {
       setFadeOut(true);
       setTimeout(() => {
         setIsVisible(false);
-      }, 500);
+        if (onFinish) onFinish(); // Llamamos a onFinish después de la animación
+      }, 500); // Tiempo para que termine el fade-out
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration]);
+  }, [duration, onFinish]);
 
   if (!isVisible) return null;
 

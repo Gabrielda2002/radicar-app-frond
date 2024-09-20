@@ -6,7 +6,7 @@ import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 import usePagination from "../../hooks/usePagination";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
-import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
+// import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
 
 //*Icons
 import salir from "/assets/back.svg";
@@ -114,7 +114,7 @@ const Usuarios = () => {
                     <th className="px-4 py-2">Estado</th>
                     <th className="px-4 py-2">Rol</th>
                     <th className="px-4 py-2">Municipio</th>
-                    <th className="px-4 py-2">Acciones</th>
+                    {/* <th className="px-4 py-2">Acciones</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -129,9 +129,10 @@ const Usuarios = () => {
                       <td>{usuario.status ? "Activo" : "Inactivo"}</td>
                       <td>{usuario.roles}</td>
                       <td>{usuario.municipio}</td>
-                      <td>
+                      {/* RESERVA HACIA FUTURO ! NO BORAR ! */}
+                      {/* <td>
                         <ModalActionUsuario />
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
