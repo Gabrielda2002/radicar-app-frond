@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 interface AuthContextType {
     isAuthenticated: boolean;
     rol: string | null;
+    Municipio: string | null;
     login: (token: string, rol: string, Municipio: string) => void;
     logout: () => void;
 }
@@ -33,7 +34,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated,rol ,login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated,rol, Municipio ,login, logout }}>
             {children}
         </AuthContext.Provider>
     );
