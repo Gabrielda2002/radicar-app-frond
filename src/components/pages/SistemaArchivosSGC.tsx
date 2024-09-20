@@ -1,6 +1,5 @@
 import React from "react";
 import FileList from "./SSGC/FileList";
-import { Link } from "react-router-dom";
 import BreadCrumb from "./SSGC/BreadCrumb";
 import FolderList from "./SSGC/FolderList";
 import LoadingSpinner from "../LoadingSpinner";
