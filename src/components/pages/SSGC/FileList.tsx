@@ -96,7 +96,7 @@ const FileList: React.FC<FileListProps> = ({
       {files.map((file) => (
         <div
           key={file.id}
-          className="relative flex flex-col  items-center p-4 bg-gray-200 rounded-md dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 cursor-pointer"
+          className="relative flex flex-col items-center p-4 bg-gray-200 rounded-md cursor-pointer dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600"
           title={`${file.name} - ${file.size / 1024} KB`}
         >
           {/* Contenedor para el icono y el nombre del archivo */}

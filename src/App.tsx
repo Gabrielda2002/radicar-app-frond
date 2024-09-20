@@ -29,13 +29,15 @@ import TablaAutorizarServicios from "./components/pages/tablas-radicacion/TablaA
 import CookieConsent from "./components/PopCookie";
 
 //*Contextos
-import { AuthProvider } from "./context/authContext";
-import { PrivateRoutes } from "./components/PrivateRoutes";
-import { useTheme } from "./context/blackWhiteContext";
-import FileManager from "./components/pages/SistemaArchivosSGC";
-import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthProvider } from "./context/authContext";
+import { useTheme } from "./context/blackWhiteContext";
+import { Bounce, ToastContainer } from "react-toastify";
+import { PrivateRoutes } from "./components/PrivateRoutes";
+import FileManager from "./components/pages/SistemaArchivosSGC";
 import { UserProfileProvider } from "./context/userProfileContext";
+import { SidebarProvider } from "./context/sidebarContext";
+
 function AppRoutes() {
   const { theme } = useTheme();
   return (
@@ -156,22 +158,23 @@ export function App() {
   return (
     <AuthProvider>
       <UserProfileProvider>
-        <CookieConsent />{" "}
-        {/* Asegúrate de que el mensaje de cookies esté disponible en la raíz */}
-        <AppRoutes />
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
+        <SidebarProvider>
+          <CookieConsent />
+          <AppRoutes />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+        </SidebarProvider>
       </UserProfileProvider>
     </AuthProvider>
   );
