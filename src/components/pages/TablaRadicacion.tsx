@@ -15,6 +15,7 @@ import soporte from "/assets/soporte.svg";
 //*Iconos
 import salir from "/assets/back.svg";
 import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
+import { IRadicados } from "../../models/IRadicados.ts";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -38,7 +39,7 @@ const TablaRadicacion = () => {
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
-  const [selectedRadicacion, setSelectedRadicacion] = useState(null);
+  const [selectedRadicacion, setSelectedRadicacion] = useState<IRadicados | null>(null);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -46,12 +47,12 @@ const TablaRadicacion = () => {
     setItemsPerPage(Number(e.target.value));
   };
 
-  const handleShowData = (radicacion) => {
+  const handleShowData = (radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
   };
 
-  const handleShowGestionAuxiliar = (radicacion) => {
+  const handleShowGestionAuxiliar = (radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
   }

@@ -7,7 +7,11 @@ import {
 import LoadingSpinner from "../../LoadingSpinner";
 import { useLocation, Link } from "react-router-dom";
 import back from "/assets/back.svg";
-import { CupsDetail, FormikValues } from "../../../models/IFotmikValues";
+import {
+  CupsDetail,
+  FormikErrors,
+  FormikValues,
+} from "../../../models/IFotmikValues";
 import { submitAutorizacionRadicado } from "../../../services/submitAutorizacionRadicado";
 import { useState } from "react";
 
@@ -55,6 +59,8 @@ const FormularioAutorizacion = () => {
       fechaAuditoria: "",
       justificacion: "",
       cupsDetails: CUPS.map((cups: CupsDetail) => ({
+        code: cups.code,
+        description: cups.description,
         idCupsRadicado: cups.id,
         idRadicado: cups.idRadicado,
         observacionCups: "",
@@ -209,7 +215,7 @@ const FormularioAutorizacion = () => {
                 <input
                   id={`cupsDetails[${index}].codigoCups`}
                   type="text"
-                  value={CUPS[index].code} // Muestra el código CUPS correspondiente
+                  value={detalle.code} // Muestra el código CUPS correspondiente
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Código CUPS"
@@ -226,7 +232,7 @@ const FormularioAutorizacion = () => {
                 </label>
                 <textarea
                   id={`cupsDetails[${index}].descripcionCups`}
-                  value={CUPS[index].description} // Muestra la descripción CUPS correspondiente
+                  value={detalle.description} // Muestra la descripción CUPS correspondiente
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   rows={3}
@@ -253,9 +259,12 @@ const FormularioAutorizacion = () => {
                   placeholder="Observación CUPS"
                 />
                 {formik.touched.cupsDetails?.[index]?.observacionCups &&
-                  formik.errors.cupsDetails?.[index]?.observacionCups && (
+                  formik.errors.cupsDetails &&
+                  typeof formik.errors.cupsDetails !== "string" &&
+                  (formik.errors.cupsDetails as Array<FormikErrors>)[index]
+                    ?.observacionCups && (
                     <p className="text-red-500">
-                      {formik.errors.cupsDetails[index].observacionCups}
+                      Requerido, máximo 150 caracteres.
                     </p>
                   )}
               </div>
@@ -284,9 +293,12 @@ const FormularioAutorizacion = () => {
                   ))}
                 </select>
                 {formik.touched.cupsDetails?.[index]?.unidadFuncional &&
-                  formik.errors.cupsDetails?.[index]?.unidadFuncional && (
+                  formik.errors.cupsDetails &&
+                  typeof formik.errors.cupsDetails !== "string" &&
+                  (formik.errors.cupsDetails as Array<FormikErrors>)[index]
+                    ?.unidadFuncional && (
                     <p className="text-red-500">
-                      {formik.errors.cupsDetails[index].unidadFuncional}
+                      Requerido.
                     </p>
                   )}
               </div>
@@ -315,9 +327,12 @@ const FormularioAutorizacion = () => {
                   ))}
                 </select>
                 {formik.touched.cupsDetails?.[index]?.estadoCups &&
-                  formik.errors.cupsDetails?.[index]?.estadoCups && (
+                  formik.errors.cupsDetails &&
+                  typeof formik.errors.cupsDetails !== "string" &&
+                  (formik.errors.cupsDetails as Array<FormikErrors>)[index]
+                    ?.estadoCups && (
                     <p className="text-red-500">
-                      {formik.errors.cupsDetails[index].estadoCups}
+                      Requerido.
                     </p>
                   )}
               </div>
