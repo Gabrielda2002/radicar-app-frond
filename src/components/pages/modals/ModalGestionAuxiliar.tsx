@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import React, { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
 import { IRadicados } from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
 
@@ -17,11 +16,6 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 }) => {
   const [stadOpen, setStadOpen] = useState(false); // Estados Auxiliar
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
-  const { showAnimation, closing } = useAnimation(
-    stadOpen,
-    () => setStadOpen(false),
-    300
-  );
 
   if (!isOpen || !radicacion) return null;
 

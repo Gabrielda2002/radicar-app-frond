@@ -111,3 +111,15 @@ export const saveCups = async (data: FormData) => {
 export const saveGestionAuxiliar = async (data: FormData) => {
     return api.post(`/seguimientos-auxiliares`, data)
 }
+
+export const AuditarRadicado = async (data: string, id: number) => {
+    return api.put(`/autorizar-radicado/${id}`, data)
+}
+
+export const autorizarCups = async (data: any, id: number) => {
+    return api.put(`/autorizar-cups/${id}`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+}
