@@ -18,22 +18,17 @@ const ModalRadicacion = () => {
   }
   const { data, error, getData } = useFetchPaciente();
 
-  const { diagnostico, errorDiagnostico, fetchDiagnostico } =
+  const { diagnostico, loading, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [submiting, setSubmiting] = useState<boolean>(false);
 
-  const [ipsPrimaria, setIpsPrimaria] = useState<string>("");
   const [idIpsRemite, setIdIpsRemite] = useState<string>("");
-  const [especialidad, setEspecialidad] = useState<string>("");
   const [idEspecialidad, setIdEspecialidad] = useState<string>("");
-  const [grupoServicios, setGrupoServicios] = useState<string>("");
   const [idGrupoServicios, setIdGrupoServicios] = useState<string>("");
-  const [lugarRadicacion, setLugarRadicacion] = useState<string>("");
   const [idLugarRadicacion, setIdLugarRa] = useState<string>("");
-  const [tipoServicios, setTipoServicios] = useState<string>("");
   const [idTipoServicios, setIdTipoServicios] = useState<string>("");
   const [idPaciente, setIdPaciente] = useState<string>("");
   const [telefonoFijo, setTelefonoFijo] = useState<string>("");
@@ -107,7 +102,7 @@ const ModalRadicacion = () => {
         }, 2000);
 
       }else{
-        setErrorMessage("Error al radicar.");
+        setErrorMessage("Error al radicar, revise los campos.");
       }
 
     } catch (error) {
@@ -142,32 +137,27 @@ const ModalRadicacion = () => {
 
   // * funcion para traer el id del input autocompletado
 
-  const handleTipoServiciosChange = (value: string, id?: string) => {
-    setTipoServicios(value);
+  const handleTipoServiciosChange = (id?: string) => {
     setIdTipoServicios(id || "");
   };
 
-  const handleLugarRadicacionChange = (value: string, id?: string) => {
+  const handleLugarRadicacionChange = ( id?: string) => {
     setIdLugarRa(id || "");
-    setLugarRadicacion(value);
   };
 
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
 
-  const hableIpsPrimariaChange = (value: string, id?: string) => {
-    setIpsPrimaria(value);
+  const hableIpsRemiteChange = (id?: string) => {
     setIdIpsRemite(id || "");
   };
 
-  const hableEspecialidadChange = (value: string, id?: string) => {
-    setEspecialidad(value);
+  const hableEspecialidadChange = (id?: string) => {
     setIdEspecialidad(id || "");
   };
 
-  const hableGrupoServiciosChange = (value: string, id?: string) => {
-    setGrupoServicios(value);
+  const hableGrupoServiciosChange = (id?: string) => {
     setIdGrupoServicios(id || "");
   };
 
@@ -290,9 +280,6 @@ const ModalRadicacion = () => {
                       />
                     </label>
                   </div>
-
-                  {/* { loading && <p className="text-gray-700 dark:text-gray-200">Cargando...</p>} */}
-
                   {error && !data && (
                     <div className="text-red-500 dark:text-red-300">
                       {error}
@@ -499,9 +486,9 @@ const ModalRadicacion = () => {
                 <section className="grid grid-cols-3 mb-6 gap-x-10 gap-y-2 ps-2 text-sm">
                   <div>
                     <InputAutocompletado
-                      label="IPS Primaria"
-                      onInputChanged={hableIpsPrimariaChange}
-                      apiRoute="ips-primaria-name"
+                      label="IPS Remite"
+                      onInputChanged={hableIpsRemiteChange}
+                      apiRoute="ips-remite-name"
                     />
                   </div>
                   <div>
@@ -589,7 +576,7 @@ const ModalRadicacion = () => {
                       <textarea
                         id=""
                         name=""
-                        value={description}
+                        value={description || (loading ? "" : errorDiagnostico || "") }
                         disabled
                         className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                       ></textarea>
@@ -657,6 +644,7 @@ const ModalRadicacion = () => {
                 Cerrar
               </button>
               <button
+                disabled={submiting}
                 className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                 onClick={handleSubmit}
               >
