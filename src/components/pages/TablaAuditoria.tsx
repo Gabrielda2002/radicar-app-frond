@@ -206,7 +206,7 @@ const TablaAuditoria = () => {
               onClose={() => setIsOpen(false)}
               data={selectedCups}
             />
-
+            <div>‎</div>
             {/* pagination */}
             <Pagination
               currentPage={currentPage}
