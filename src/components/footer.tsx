@@ -9,7 +9,7 @@ import logoFooter from "../imgs/logo-footer.png";
 
 const Footer = () => {  
   return (
-    <footer className="font-sans text-gray-600 body-font bg-color dark:bg-gray-800">
+    <footer className="font-sans text-gray-600 border-t-2 border-black dark:border-white body-font bg-color dark:bg-gray-800 border-top">
       <div className="container flex flex-col flex-wrap px-10 py-20 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">
         <div className="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-left">
           <a className="flex items-center justify-center text-gray-900 title-font font-lg md:justify-start">
