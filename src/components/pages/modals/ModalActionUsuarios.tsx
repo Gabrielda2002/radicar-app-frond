@@ -161,7 +161,6 @@ const ModalActionUsuario: React.FC<PropsEvent> = () => {
 
                         <div className="flex justify-end px-4 text-sm">
                           <button
-                            type="submit"
                             className="w-20 h-10 mt-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
                           >
                             Actualizar
@@ -272,7 +271,6 @@ const ModalActionUsuario: React.FC<PropsEvent> = () => {
                         </section>
                         <div className="flex justify-end px-4 text-sm">
                           <button
-                            type="submit"
                             className="w-20 h-10 mt-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
                           >
                             Agregar
@@ -290,11 +288,12 @@ const ModalActionUsuario: React.FC<PropsEvent> = () => {
                       {/* Elementos */}
                       <form className="">
                         {/* container de elementos atraer */}
-                        <section className="grid grid-cols-2 gap-x-16 px-8"></section>
+                        <section className="grid grid-cols-2 gap-x-16 px-8">
+                          <h3>No se encuentra con permisos actualmente</h3>
+                        </section>
 
                         <div className="flex justify-end px-4 text-sm">
                           <button
-                            type="submit"
                             className="w-20 h-10 mt-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
                           >
                             Eliminar

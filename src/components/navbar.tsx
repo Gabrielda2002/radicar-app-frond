@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
-        <nav className="z-10 flex flex-wrap items-center text-base">
+        <nav className="z-50 flex flex-wrap items-center text-base">
           <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
 
         <button
           onClick={toggleSideBar}
-          className="absolute z-10 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
+          className="z-10 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
         >
           <div className="relative w-8 h-8">
             <img

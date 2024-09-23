@@ -1,6 +1,5 @@
 import React from "react";
 import FileList from "./SSGC/FileList";
-import { Link } from "react-router-dom";
 import BreadCrumb from "./SSGC/BreadCrumb";
 import FolderList from "./SSGC/FolderList";
 import LoadingSpinner from "../LoadingSpinner";
@@ -47,10 +46,8 @@ const FileManager: React.FC = () => {
               Sistema de Archivos SGC
             </li>
           </ol>
-          <div className="w-10 pb-2">
-            <Link to="/inicio">
-              <img src={salir} alt="" />
-            </Link>
+          <div className="pb-2 w-10">
+              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
       </section>
