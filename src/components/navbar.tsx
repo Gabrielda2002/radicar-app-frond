@@ -47,8 +47,8 @@ const Navbar: React.FC = () => {
         theme === "dark" ? "bg-gray-800 dark-mode" : "bg-white light-mode"
       }`}
     >
-      <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-gray-700">
-        <nav className="absolute z-50 flex flex-wrap items-center text-base">
+      <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
+        <nav className="z-10 flex flex-wrap items-center text-base">
           <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
 
         <button
           onClick={toggleSideBar}
-          className="absolute z-50 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
+          className="absolute z-10 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
         >
           <div className="relative w-8 h-8">
             <img
@@ -78,6 +78,11 @@ const Navbar: React.FC = () => {
               }`}
             />
           </div>
+            <span className="absolute p-2 text-xs text-white transition-opacity duration-300 -translate-y-8 bg-gray-700 dark:bg-indigo-600 rounded-lg opacity-0 left-[49px] w-max group-hover:opacity-100 ">
+              {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
+              <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700"></span>
+            </span>
+          {/* ToolTip */}
         </button>
 
         {/* Botón de Modo Oscuro */}
