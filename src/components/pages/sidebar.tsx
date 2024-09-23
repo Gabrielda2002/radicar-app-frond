@@ -16,7 +16,7 @@ import audit from "/assets/audit.svg";
 import table from "/assets/table.svg";
 import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
-import filing from "/assets/filing.svg";
+import filling from "/assets/filling.svg";
 import surgery from "/assets/surgery.svg";
 import arrowUp from "/assets/arrow-up.svg";
 import userMain from "/assets/userMain.svg";
@@ -372,7 +372,7 @@ const SideBar: FC = () => {
                   >
                     {/* Icono y texto para el tercer acordeón */}
                     <img
-                      src={filing}
+                      src={filling}
                       alt=""
                       className={`w-5 h-5 ${
                         openAccordions.reports
