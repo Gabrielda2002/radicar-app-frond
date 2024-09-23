@@ -16,7 +16,7 @@ import audit from "/assets/audit.svg";
 import table from "/assets/table.svg";
 import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
-import filing from "/assets/filing.svg";
+import filling from "/assets/filling.svg";
 import surgery from "/assets/surgery.svg";
 import arrowUp from "/assets/arrow-up.svg";
 import userMain from "/assets/userMain.svg";
@@ -84,9 +84,9 @@ const SideBar: FC = () => {
     <aside
       className={`flex flex-col h-full transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
         isCollapsed
-          ? "-translate-x-full w-1 absolute duration-300 opacity-25 z-50"
-          : "w-64 duration-300 absolute z-50"
-      } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 `}
+          ? "w-64 -translate-x-full absolute duration-300 opacity-15"
+          : "w-64 duration-300 absolute"
+      } h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 z-10 `}
     >
       <div className="flex flex-col justify-between flex-1 gap-3 mt-6">
         <nav className="-mx-3 space-y-6">
@@ -372,7 +372,7 @@ const SideBar: FC = () => {
                   >
                     {/* Icono y texto para el tercer acordeón */}
                     <img
-                      src={filing}
+                      src={filling}
                       alt=""
                       className={`w-5 h-5 ${
                         openAccordions.reports
