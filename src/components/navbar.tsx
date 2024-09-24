@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
-        <nav className="z-50 flex flex-wrap items-center text-base">
+        <nav className="z-10 flex flex-wrap items-center text-base ">
           <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"

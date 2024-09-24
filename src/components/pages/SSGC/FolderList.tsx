@@ -66,13 +66,13 @@ const FolderList: React.FC<FolderListProps> = ({
         <div
           key={folder.id}
           onClick={() => onFolderClick(folder.id, folder.name)} // Se abre la carpeta
-          className=" flex flex-col items-center p-4 text-gray-700 bg-gray-200 rounded-md cursor-pointer dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
+          className="relative flex flex-col items-center p-4 text-gray-700 bg-gray-200 rounded-md cursor-pointer dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
         >
           {/* Icono de la carpeta */}
           <img src={folderIcon} alt="folder-icon" className="w-16 h-16 mb-2" />
           {/* Menú en la esquina superior derecha */}
           <div
-            className=""
+            className="absolute top-2 rigth-2 ml-52"
             onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
           >
             <ItemManu
