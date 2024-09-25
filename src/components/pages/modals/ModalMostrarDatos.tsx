@@ -1,6 +1,5 @@
 import { IRadicados } from "../../../models/IRadicados";
 
-
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,160 +15,172 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 
   return (
     <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
-      <div className="z-10 w-[fit-content] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-color">Crear Carpeta</h2>
+      <div className="z-10 w-[1200px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+        {/* container-header */}
+        <div className="flex items-center justify-between px-2 pb-4 pt-2 dark:bg-gray-800">
+          <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
+            Crear Carpeta
+          </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="pr-2 text-xl text-gray-500 hover-gray-700"
           >
             &times;
           </button>
         </div>
 
         {/* Contenedor para las dos tablas en columnas */}
-        <div className="flex space-x-4">
+        <div className="grid grid-cols-2 gap-x-6 max-h-[78vh] overflow-auto px-4">
           {/* Primera tabla */}
-
-          <table className="min-w-[50%] text-sm mb-4">
+          <table className="text-sm mt-2 mb-8">
             <thead>
-              <tr className="bg-gray-200 dark:bg-gray-700">
-                <th className="p-2">Campo</th>
-                <th className="p-2">Valor</th>
+              <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
+                <th className="">Campo</th>
+                <th className="">Valor</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td className="p-2">Lugar Radicacion</td>
-                <td className="p-2">{radicacion.placeRelation.name}</td>
+
+            <tbody className="dark:text-gray-200 ">
+              {/* estilo hacia "td(2)" */}
+              <style>
+                {`tbody tr td:nth-child(2) {
+                text-align: center; 
+              }`}
+              </style>
+
+              <tr className="">
+                <td className="">Lugar Radicacion</td>
+                <td className="">{radicacion.placeRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Remisión de IPS</td>
-                <td className="p-2">{radicacion.ipsRemiteRelation.name}</td>
+                <td className="">Remisión de IPS</td>
+                <td className="">{radicacion.ipsRemiteRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Profesional</td>
-                <td className="p-2">{radicacion.profetional}</td>
+                <td className="">Profesional</td>
+                <td className="">{radicacion.profetional}</td>
               </tr>
               <tr>
-                <td className="p-2">Especialidad</td>
-                <td className="p-2">{radicacion.specialtyRelation.name}</td>
+                <td className="">Especialidad</td>
+                <td className="">{radicacion.specialtyRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Grupo Servicios</td>
-                <td className="p-2">{radicacion.servicesGroupRelation.name}</td>
+                <td className="">Grupo Servicios</td>
+                <td className="">{radicacion.servicesGroupRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Tipo Servicios</td>
-                <td className="p-2">{radicacion.servicesRelation.name}</td>
+                <td className="">Tipo Servicios</td>
+                <td className="">{radicacion.servicesRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Auxiliar Radicador</td>
-                <td className="p-2">{radicacion.radicadorRelation.name}</td>
+                <td className="">Auxiliar Radicador</td>
+                <td className="">{radicacion.radicadorRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">Auditora</td>
-                <td className="p-2">{radicacion.auditora}</td>
+                <td className="">Auditora</td>
+                <td className="">{radicacion.auditora}</td>
               </tr>
               <tr>
-                <td className="p-2">Fecha Auditoría</td>
-                <td className="p-2">
+                <td className="">Fecha Auditoría</td>
+                <td className="">
                   {radicacion.auditDate
                     ? new Date(radicacion.auditDate).toLocaleString()
                     : "N/A"}
                 </td>
               </tr>
               <tr>
-                <td className="p-2">Justificación</td>
-                <td className="p-2">{radicacion.justify}</td>
+                <td className="">Justificación</td>
+                <td className="">{radicacion.justify}</td>
               </tr>
             </tbody>
           </table>
 
-          <table className="min-w-[50%] text-sm mb-4">
+          {/* Segunda-tabla */}
+          <table className="text-sm mt-2 mb-8">
             <thead>
-              <tr className="bg-gray-200 dark:bg-gray-700">
-                <th className="p-2">Campo</th>
-                <th className="p-2">Valor</th>
+              <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
+                <th className="">Campo</th>
+                <th className="">Valor</th>
               </tr>
             </thead>
-            <tbody>
+
+            <tbody className="dark:text-gray-200">
               <tr>
-                <td className="p-2">Fecha - Hora del Radicado</td>
-                <td className="p-2">
+                <td className="">Fecha - Hora del Radicado</td>
+                <td className="">
                   {radicacion.createdAt
                     ? new Date(radicacion.createdAt).toLocaleString()
                     : "N/A"}
                 </td>
               </tr>
               <tr>
-                <td className="p-2">N.º Radicado</td>
-                <td className="p-2">{radicacion.id}</td>
+                <td className="">N.º Radicado</td>
+                <td className="">{radicacion.id}</td>
               </tr>
               <tr>
-                <td className="p-2">Nombre paciente</td>
-                <td className="p-2">{radicacion.patientRelation.name}</td>
+                <td className="">Nombre paciente</td>
+                <td className="">{radicacion.patientRelation.name}</td>
               </tr>
               <tr>
-                <td className="p-2">N.º Documento</td>
-                <td className="p-2">
+                <td className="">N.º Documento</td>
+                <td className="">
                   {radicacion.patientRelation.documentNumber}
                 </td>
               </tr>
               <tr>
-                <td className="p-2">Celular</td>
-                <td className="p-2">
-                  {radicacion.patientRelation.phoneNumber}
-                </td>
+                <td className="">Celular</td>
+                <td className="">{radicacion.patientRelation.phoneNumber}</td>
               </tr>
               <tr>
-                <td className="p-2">Correo Electrónico</td>
-                <td className="p-2">{radicacion.patientRelation.email}</td>
+                <td className="">Correo Electrónico</td>
+                <td className="">{radicacion.patientRelation.email}</td>
               </tr>
               <tr>
-                <td className="p-2">Dirección</td>
-                <td className="p-2">{radicacion.patientRelation.address}</td>
+                <td className="">Dirección</td>
+                <td className="">{radicacion.patientRelation.address}</td>
               </tr>
               <tr>
-                <td className="p-2">Convenio</td>
-                <td className="p-2">
+                <td className="">Convenio</td>
+                <td className="">
                   {radicacion.patientRelation.convenioRelation.name}
                 </td>
               </tr>
               <tr>
-                <td className="p-2">IPS Primaria</td>
-                <td className="p-2">
+                <td className="">IPS Primaria</td>
+                <td className="">
                   {radicacion.patientRelation.ipsPrimariaRelation.name}
                 </td>
               </tr>
             </tbody>
           </table>
-          <table className="min-w-[50%] text-sm mb-4">
+
+          {/* Tabla-cups */}
+          <table className="text-sm mt-2 mb-8">
             <thead>
-              <tr className="bg-gray-200 dark:bg-gray-700">
-                <th className="p-2">Campo</th>
-                <th className="p-2">Valor</th>
+              <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
+                <th className="">Campo</th>
+                <th className="">Valor</th>
               </tr>
             </thead>
 
             {radicacion.cupsRadicadosRelation.length > 0 ? (
               radicacion.cupsRadicadosRelation.map((cups) => (
-                <tbody key={cups.code}>
+                <tbody key={cups.code} className="dark:text-gray-200">
                   <tr>
-                    <td className="p-2">Codigo CUPS</td>
-                    <td className="p-2">{cups.code}</td>
+                    <td className="">Código CUPS</td>
+                    <td className="">{cups.code}</td>
                   </tr>
                   <tr>
-                    <td className="p-2">Descripcion CUPS</td>
-                    <td className="p-2">{cups.DescriptionCode}</td>
+                    <td className="">Descripción CUPS</td>
+                    <td className="">{cups.DescriptionCode}</td>
                   </tr>
                   <tr>
-                    <td className="p-2">Observiacion CUPS</td>
-                    <td className="p-2">{cups.observation}</td>
+                    <td className="">Observiación CUPS</td>
+                    <td className="">{cups.observation}</td>
                   </tr>
                   <tr>
-                    <td className="p-2">Unidad Funcional</td>
-                    <td className="p-2">{cups.functionalUnitRelation.name}</td>
+                    <td className="">Unidad Funcional</td>
+                    <td className="">{cups.functionalUnitRelation.name}</td>
                   </tr>
                 </tbody>
               ))
@@ -185,11 +196,11 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           {/* Segunda tabla */}
         </div>
 
-        {/* Botones */}
-        <div className="flex justify-end space-x-3">
+        {/* container-footer */}
+        <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+            className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
           >
             Cerrar
           </button>

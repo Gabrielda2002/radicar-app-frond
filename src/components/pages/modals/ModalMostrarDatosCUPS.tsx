@@ -16,38 +16,39 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
 
   return (
     <div className="fixed z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
-      <div className="z-10 w-[fit-content] p-4 bg-white rounded shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-color">CUPS</h2>
+      <div className="z-10 w-[fit-content] bg-white rounded  overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+        {/* container-header */}
+        <div className="flex items-center justify-between px-2 pb-4 pt-2 dark:bg-gray-800">
+          <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">CUPS</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="pr-2 text-xl text-gray-500 hover-gray-700"
           >
             &times;
           </button>
         </div>
 
         {/* Contenedor para las dos tablas en columnas */}
-        <div className="flex space-x-4">
+        <div className="max-h-[78vh] overflow-auto px-2">
           {/* Primera tabla */}
 
           <table className="min-w-[50%] text-sm mb-4">
-            <thead>
-              <tr className="bg-gray-200 dark:bg-gray-700">
-                <th className="p-2">Codigo</th>
-                <th className="p-2">Descripcion</th>
-                <th className="p-2">Estado</th>
-                <th className="p-2">Unidad Funcional CUPS</th>
+            <thead className="">
+              <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
+                <th className="">Código</th>
+                <th className="">Descripción</th>
+                <th className="">Estado</th>
+                <th className="">Unidad Funcional CUPS</th>
               </tr>
             </thead>
 
             {data.map((cups) => (
-            <tbody>
+            <tbody className="dark:text-gray-200 text-center">
               <tr>
-                <td className="p-2">{cups.code}</td>
-                <td className="p-2">{cups.description}</td>
-                <td className="p-2">{cups.status}</td>
-                <td className="p-2">{cups.unidadFuncional}</td>
+                <td className="">{cups.code}</td>
+                <td className="">{cups.description}</td>
+                <td className="">{cups.status}</td>
+                <td className="">{cups.unidadFuncional}</td>
               </tr>
               
             </tbody>
@@ -60,10 +61,10 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
         </div>
 
         {/* Botones */}
-        <div className="flex justify-end space-x-3">
+        <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+            className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
           >
             Cerrar
           </button>
