@@ -66,7 +66,7 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
   }
 
   window.open(
-    `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
+    `http://44.222.149.53/api/v1/radicacion/uploads/Soportes/${nombreSoporte}`,
     "_blank"
   );
   return;

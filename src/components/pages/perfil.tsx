@@ -32,13 +32,14 @@ const Perfil = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const baseUrl = "http://localhost:3600/api/v1";
+    const baseUrl = "http://44.222.149.53/api/v1";
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (userData) {
       setProfile(userData);
       userData.photo = userData.photo ? `${baseUrl}/${userData.photo}` : defaultUserPicture;
       setFormData(userData);
+      console.log(userData.photo);
 
       // Guardar la imagen actual del usuario en cookies
       Cookies.set(`profileImage_${userData.id}`, userData.photo || "");
