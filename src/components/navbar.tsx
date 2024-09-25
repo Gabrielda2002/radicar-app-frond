@@ -1,7 +1,7 @@
-//*Functions and Hooks
+//*Fuctions and Hooks
 import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useAuth } from "../context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
 import { useSidebar } from "../context/sidebarContext";
@@ -10,9 +10,9 @@ import { useUserProfile } from "../context/userProfileContext";
 //*Icons
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
-import userLogo from "/assets/user-logo.svg";
 import menu from "/assets/menu.svg";
 import menu2 from "/assets/menu2.svg";
+import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 
 const Navbar: React.FC = () => {
@@ -41,6 +41,34 @@ const Navbar: React.FC = () => {
     { name: "Cerrar Sesión", action: logout },
   ];
 
+  // Array de enlaces de soporte
+  const supportLinks = [
+    {
+      name: "Soporte de Infraestructura",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSdHshZOrObZv-CJRht81bIZCY7jUQLo1fy5D7scB-1nW_CF-g/viewform",
+    },
+    {
+      name: "Soporte de equipos biometricos",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSe8UZprqV_FqNYIgC0rowHcVCyUDAyZxPmgRxPuHjNXrgOOag/viewform",
+    },
+    {
+      name: "Seguridad del Paciente",
+      href: "https://forms.office.com/pages/responsepage.aspx?id=h5gx0IxtRE6Nz0WYsPqRxS4uCKLheylNnxH7ATQR5cdUQkRMTFM5QkxNNlVZQTRDMUxZTlBWRkRKQiQlQCN0PWcu&route=shorturl",
+    },
+    {
+      name: "Soporte de Sistemas",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfZunq4zGfBLBecr_WZPenSgqnpMwRJaTSri9n2T46zW5l_qw/viewform",
+    },
+    {
+      name: "Salud y seguridad en el trabajo",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfXdBv2KCYylUdP8w9Lo1CoBsUEtjx7BIZkAcdBUd32QzBq4w/viewform",
+    },
+    {
+      name: "Comite de convivencia laboral",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLScXdjU2mbD3bifKzEje2ypBMgdS64h1w5-_ENI9VvenoVf98g/viewform?usp=sf_link",
+    },
+  ];
+
   return (
     <header
       className={`text-gray-900 body-font ${
@@ -48,7 +76,7 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
-        <nav className="z-10 flex flex-wrap items-center text-base ">
+        <nav className="z-10 flex flex-wrap items-center text-base">
           <NavLink to="/home">
             <img
               src="./src/imgs/logo-navbar.png"
@@ -78,11 +106,10 @@ const Navbar: React.FC = () => {
               }`}
             />
           </div>
-            <span className="absolute p-2 text-xs text-white transition-opacity duration-300 -translate-y-8 bg-gray-700 dark:bg-indigo-600 rounded-lg opacity-0 left-[49px] w-max group-hover:opacity-100 ">
-              {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
-              <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700"></span>
-            </span>
-          {/* ToolTip */}
+          <span className="absolute p-2 text-xs text-white transition-opacity duration-300 -translate-y-8 bg-gray-700 dark:bg-indigo-600 rounded-lg opacity-0 left-[49px] w-max group-hover:opacity-100 ">
+            {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
+            <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-indigo-600"></span>
+          </span>
         </button>
 
         {/* Botón de Modo Oscuro */}
@@ -100,6 +127,40 @@ const Navbar: React.FC = () => {
             <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
           )}
         </button>
+
+        {/* Menú de Soporte con Enlaces */}
+        <Menu as="div" className="relative">
+          <MenuButton className="p-2 mr-4 text-white duration-300 ease-in-out bg-blue-500 border rounded-full hover:bg-blue-700 dark:text-white focus:outline-none hover:-translate-y-2 dark:hover:bg-indigo-500 dark:bg-indigo-700">
+            Soportes
+          </MenuButton>
+
+          <Menu.Items
+            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none border-2 dark:border-indigo-500 dark:bg-gray-700 duration-300 ease-in-out hover:-translate-y-2 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <div className="flex-grow w-full">
+              {supportLinks.map((link) => (
+                <Menu.Item key={link.name}>
+                  {({ active }) => (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${
+                        active
+                          ? "bg-blue-500 text-white dark:bg-indigo-700"
+                          : "text-gray-900 dark:text-white"
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm hover:underline hover:underline-offset-4`}
+                    >
+                      {link.name}
+                    </a>
+                  )}
+                </Menu.Item>
+              ))}
+            </div>
+          </Menu.Items>
+        </Menu>
 
         <Menu as="div" className="relative">
           <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
