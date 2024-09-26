@@ -14,6 +14,7 @@ import { api } from "../utils/api-config";
 import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
+import { IAuditados } from "../models/IAuditados";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -167,4 +168,16 @@ export const fetchEstados = async (): Promise<IEstados[]> => {
         createdAt: new Date(estado.createdAt)
     }));
     return estados;
+}
+
+export const fetchAuditados = async (): Promise<IAuditados[]> => {
+    const response = await api.get('/auditoria-auditados');
+    const auditados = response.data.map((auditado: IAuditados) => ({
+        ...auditado,
+        CUPS: auditado.CUPS.map((cups) => ({
+            ...cups,
+            modifyDate: cups.modifyDate ? new Date(cups.modifyDate) : null
+        }))
+    }));    
+    return auditados;   
 }

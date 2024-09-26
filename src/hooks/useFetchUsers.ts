@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  fetchAuditados,
   fetchAuditoria,
   fetchConvenio,
   fetchCups,
@@ -31,6 +32,7 @@ import { IRadicados } from "../models/IRadicados";
 import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
+import { IAuditados } from "../models/IAuditados";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -375,4 +377,29 @@ export const useFetchEstados = () => {
     }, []);
     
     return { dataEstados, loading, errorEstados };
+}
+
+// traer datos para los registros auditados de auditoria
+
+export const useFetchAuditados = () => {
+  const [data, setData] = useState<IAuditados[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const auditados = await fetchAuditados();
+        setData(auditados);
+      } catch (error) {
+        setError("Error al obtener los datos de los registros auditados." + error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getData();
+  }, []);
+
+  return { data, loading, error };
 }

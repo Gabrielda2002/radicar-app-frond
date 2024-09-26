@@ -1,14 +1,37 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 //*Icons
 import editar from "/assets/editar.svg";
+import { Cup } from "../../../models/IAuditados";
+import { useFetchEstados } from "../../../hooks/useFetchUsers";
 
-const ModalActualizarCupsAuditoria = () => {
+interface ModalActualizarCupsAuditadosProps {
+  cup: Cup;
+}
+
+const ModalActualizarCupsAuditoria: React.FC<ModalActualizarCupsAuditadosProps> = ({
+  cup
+}) => {
+
+  const {dataEstados, errorEstados} = useFetchEstados();
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
+
+  const [estado, setEstado] = useState<string>("");
+  const [observacion, setObservacion] = useState<string>("");
+
+  const handleEstado = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setEstado(e.target.value);
+  }
+
+  const handleObservacion = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setObservacion(e.target.value);
+  }
+
+  if(errorEstados) return <h2>Error Al cargar Estados {errorEstados}</h2>;
 
   return (
     <>
@@ -44,15 +67,30 @@ const ModalActualizarCupsAuditoria = () => {
                 className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
               >
                 <div className="p-8">
-                  <section className="grid grid-cols-3 gap-x-16 ">
+                  {cup && (
+
+                  <section className="grid grid-cols-3 gap-x-16" key={cup.code}>
                     <div>
                       <label htmlFor="">
                         <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200">
-                          Descripción CUP
+                          Codigo CUPS
+                        </span>
+                        <input 
+                          name=""
+                          value={cup.code}
+                          className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label htmlFor="">
+                        <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200">
+                          Descripción CUPS
                         </span>
                         <textarea
                           id=""
                           name=""
+                          value={cup.description}
                           className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         ></textarea>
                       </label>
@@ -65,12 +103,16 @@ const ModalActualizarCupsAuditoria = () => {
                         <select
                           id=""
                           name=""
+                          value={estado}
+                          onChange={handleEstado}
                           className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         >
                           <option value="">- SELECT -</option>
-                          <option value="1">Activo</option>
-                          <option value="2">..?..</option>
-                          <option value="3">Inactivo</option>
+                          {dataEstados?.map((estado) => (
+                            <option key={estado.id} value={estado.id}>
+                              {estado.name}
+                            </option>
+                          ))}
                         </select>
                       </label>
                     </div>
@@ -82,11 +124,15 @@ const ModalActualizarCupsAuditoria = () => {
                         <textarea
                           id=""
                           name=""
+                          value={observacion}
+                          onChange={handleObservacion}
                           className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         ></textarea>
                       </label>
                     </div>
                   </section>
+
+                  )}
                 </div>
               </form>
 
