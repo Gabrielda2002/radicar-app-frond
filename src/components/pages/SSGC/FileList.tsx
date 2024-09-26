@@ -47,7 +47,7 @@ const FileList: React.FC<FileListProps> = ({
     // Validar que solo se puedan abrir archivos PDF
     if (file.mimeType === "application/pdf") {
       window.open(
-        `http://localhost:3600/api/v1/uploads/${file.path}`,
+        `http://localhost:3600/api/v1/radicacion/uploads/${file.path}`,
         "_blank"
       );
       return;

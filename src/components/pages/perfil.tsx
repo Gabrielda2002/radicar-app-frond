@@ -39,6 +39,7 @@ const Perfil = () => {
       setProfile(userData);
       userData.photo = userData.photo ? `${baseUrl}/${userData.photo}` : defaultUserPicture;
       setFormData(userData);
+      console.log(userData.photo);
 
       // Guardar la imagen actual del usuario en cookies
       Cookies.set(`profileImage_${userData.id}`, userData.photo || "");

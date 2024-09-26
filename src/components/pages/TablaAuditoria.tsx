@@ -178,7 +178,7 @@ const TablaAuditoria = () => {
                           handleShowServicios(auditoria.statusCups) // * 
                         }
                       >
-                        <img src={mostrar} alt="mostrar-icon" />
+                        <img src={mostrar} alt="mostrar-icon" className="dark:invert"/>
                       </button>
                     </td>
                     <td>
