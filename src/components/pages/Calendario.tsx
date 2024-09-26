@@ -2,6 +2,7 @@
 import "moment/locale/es";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, Event } from "react-big-calendar";
 
@@ -26,6 +27,8 @@ const Calendario: React.FC = () => {
     images: [],
     color: "#000000",
   });
+
+  const { rol } = useAuth();
 
   //*Cargar los eventos desde el localStorage al cargar la página
   useEffect(() => {
@@ -101,12 +104,14 @@ const Calendario: React.FC = () => {
         />
       </div>
       <br />
-      <button
-        onClick={handleAddEventClick}
-        className="px-4 py-2 mb-4 text-white duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700 hover:-translate-y-1"
-      >
-        Agregar Evento
-      </button>
+      {[1, 2].includes(Number(rol)) && (
+        <button
+          onClick={handleAddEventClick}
+          className="px-4 py-2 mb-4 text-white duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700 hover:-translate-y-1"
+        >
+          Agregar Evento
+        </button>
+      )}
 
       {/* Modal para mostrar eventos y agregar uno nuevo */}
       {showModal && (
