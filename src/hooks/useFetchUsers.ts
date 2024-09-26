@@ -355,29 +355,33 @@ export const useFetchUnidadFuncional = () => {
     
     return { data, loading, error };
 }
+  // Asumiendo que fetchEstados es la función que hace la solicitud
+export const useFetchEstados = (shouldFetch: boolean) => {
+  const [dataEstados, setDataEstados] = useState<IEstados[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errorEstados, setErrorEstados] = useState<string | null>(null);
 
-export const useFetchEstados = () => {
-    const [dataEstados, setDataEstados] = useState<IEstados[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [errorEstados, setErrorEstados] = useState<string | null>(null);
-    
-    useEffect(() => {
-        const getData = async () => {
-        try {
-            const estados = await fetchEstados();
-            setDataEstados(estados);
-        } catch (error) {
-            setErrorEstados("Error al obtener los estados." + error);
-        } finally {
-            setLoading(false);
-        }
-        };
-    
-        getData();
-    }, []);
-    
-    return { dataEstados, loading, errorEstados };
-}
+  useEffect(() => {
+    // * si shouldFetch es false, no se hace la solicitud ya que le modal aun no esta abierto
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
+    const getData = async () => {
+      try {
+        const estados = await fetchEstados();
+        setDataEstados(estados);
+      } catch (error) {
+        setErrorEstados("Error al obtener los estados: " + error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getData();
+  }, [shouldFetch]); // Se ejecuta solo cuando shouldFetch cambia a true
+
+  return { dataEstados, loading, errorEstados };
+};
+
 
 // traer datos para los registros auditados de auditoria
 
@@ -387,18 +391,28 @@ export const useFetchAuditados = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+  
     const getData = async () => {
       try {
         const auditados = await fetchAuditados();
-        setData(auditados);
+        if (isMounted) {
+          setData(auditados);
+        }
       } catch (error) {
         setError("Error al obtener los datos de los registros auditados." + error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
-
+  
     getData();
+  
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return { data, loading, error };

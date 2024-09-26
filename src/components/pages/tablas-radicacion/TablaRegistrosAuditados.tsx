@@ -104,9 +104,9 @@ const TablaRegistrosAuditados = () => {
                       <th>Editar</th>
                     </tr>
                   </thead>
+                  <tbody>
                   {auditado.CUPS.map((cups) => (
-                    <tbody>
-                      <tr key={cups.code}>
+                      <tr key={cups.id}>
                         <td>{cups.code}</td>
                         <td>{cups.description}</td>
                         <td>{cups.status}</td>
@@ -122,8 +122,8 @@ const TablaRegistrosAuditados = () => {
                           />
                         </td>
                       </tr>
-                    </tbody>
                   ))}
+                  </tbody>
                 </table>
               </tr>
             ))}

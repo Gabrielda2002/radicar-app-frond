@@ -123,3 +123,7 @@ export const autorizarCups = async (data: any, id: number) => {
         },
     })
 }
+
+export const updateCupsAuditados = async (id: number, data: FormData) => {
+    return api.put(`/actualizar-cups/${id}`, data)
+}

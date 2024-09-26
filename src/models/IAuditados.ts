@@ -6,6 +6,7 @@ export interface IAuditados {
 }
 
 export interface Cup {
+    id:          number;
     code:        number;
     description: string;
     status:      string;
