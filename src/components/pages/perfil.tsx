@@ -32,7 +32,7 @@ const Perfil = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const baseUrl = "http://44.222.149.53/api/v1";
+    const baseUrl = "http://localhost:3600/api/v1";
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (userData) {
