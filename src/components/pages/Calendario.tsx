@@ -75,7 +75,6 @@ const Calendario: React.FC = () => {
         <Calendar
           localizer={localizer}
           events={events}
-          defaultView="month"
           views={["month", "agenda"]}
           startAccessor="start"
           endAccessor="end"
@@ -98,7 +97,6 @@ const Calendario: React.FC = () => {
             noEventsInRange: "No hay eventos en este rango.",
             allDay: "Todo el día",
           }}
-          date={moment('2024-09-24').toDate()}
           className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-indigo-500"
         />
       </div>
