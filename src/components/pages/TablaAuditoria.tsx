@@ -6,7 +6,6 @@ import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 import Pagination from "../Pagination.tsx";
 import usePagination from "../../hooks/usePagination.ts";
 import useSearch from "../../hooks/useSearch.ts";
-import ModalSoporte from "./modals/ModalSoporte.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 
 import autorizar from "/assets/autorizar.svg";
@@ -14,6 +13,7 @@ import mostrar from "/assets/mostrar.svg";
 import salir from "/assets/back.svg";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 import { IStatusCup } from "../../models/IAuditar.ts";
+import soporte from "/assets/soporte.svg";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -55,6 +55,21 @@ const TablaAuditoria = () => {
     setSelectedCups(statusCups);
     setIsOpen(true);
   };
+
+  // * Funcion para abrir el modal de soporte
+  const handleOpenSoporte = (soporte: string | null) => {
+    if (!soporte) {
+      console.log(soporte)
+      alert("No hay soporte para mostrar.");
+      return;
+    }
+  
+    window.open(
+      `http://localhost:3600/api/v1/uploads/Soportes/${soporte}`,
+      "_blank"
+    );
+    return
+  }
 
   return (
     <>
@@ -147,7 +162,7 @@ const TablaAuditoria = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((auditoria) => (
-                  <tr>
+                  <tr key={auditoria.id}>
                     <td>
                       {auditoria.radicadoDate
                         ? auditoria.radicadoDate.getTime()
@@ -170,7 +185,11 @@ const TablaAuditoria = () => {
                     <td>{auditoria.typeServices}</td>
                     <td>{auditoria.radicador}</td>
                     <td>
-                      <ModalSoporte></ModalSoporte>
+                      <button
+                        onClick={() => handleOpenSoporte(auditoria.soportes)}
+                      >
+                        <img src={soporte} alt="soporte-icon" className="dark:invert"/>
+                      </button>
                     </td>
                     <td>
                       <button
@@ -178,7 +197,7 @@ const TablaAuditoria = () => {
                           handleShowServicios(auditoria.statusCups) // * 
                         }
                       >
-                        <img src={mostrar} alt="mostrar-icon" />
+                        <img src={mostrar} alt="mostrar-icon" className="dark:invert"/>
                       </button>
                     </td>
                     <td>
@@ -204,7 +223,7 @@ const TablaAuditoria = () => {
               onClose={() => setIsOpen(false)}
               data={selectedCups}
             />
-
+            <div>‎</div>
             {/* pagination */}
             <Pagination
               currentPage={currentPage}
