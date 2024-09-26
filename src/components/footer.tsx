@@ -7,7 +7,7 @@ import facebook from "/assets/facebook.svg";
 import instagram from "/assets/instagram.svg";
 import logoFooter from "../imgs/logo-footer.png";
 
-const Footer = () => {  
+const Footer = () => {
   return (
     <footer className="font-sans text-gray-600 border-t-2 border-black dark:border-white body-font bg-color dark:bg-gray-800 border-top">
       <div className="container flex flex-col flex-wrap px-10 py-20 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">
@@ -112,6 +112,11 @@ const Footer = () => {
             </a>
           </p>
           <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
+            <div className="flex items-center">
+              <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-indigo-600 hover:text-green-400 hover:-translate-y-1 bg-gradient-to-r from-color to-color2 dark:bg-gradient-to-r dark:from-indigo-600 dark:to-rose-500">
+                <a href="/politicas-cookies.html">Politicas de Cookies</a>
+              </p>
+            </div>
             <a
               className="text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
