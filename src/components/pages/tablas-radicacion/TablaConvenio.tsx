@@ -10,6 +10,7 @@ import usePagination from "../../../hooks/usePagination";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -88,7 +89,10 @@ const TablaConvenios = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalConvenio></ModalConvenio>
+            <ModalAgregarDato
+              name="Convenio"
+              endPoint="convenio"
+            />
           </div>
         </section>
 
@@ -110,7 +114,7 @@ const TablaConvenios = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((convenio) => (
-                  <tr>
+                  <tr key={convenio.id}>
                     <td>{convenio.id}</td>
                     <td>{convenio.name}</td>
                     <td>{convenio.status ? "Activo" : "Inactivo"} </td>
