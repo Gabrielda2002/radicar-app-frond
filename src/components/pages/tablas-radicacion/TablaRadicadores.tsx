@@ -112,12 +112,16 @@ const TablaRadicadores = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((radicador) => (
-                  <tr>
+                  <tr key={radicador.id}>
                     <td>{radicador.id}</td>
                     <td>{radicador.name}</td>
                     <td>{radicador.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Radicadores" />
+                      <ModalAction 
+                        id={radicador.id}
+                        name="Radicador"
+                        endPoint="update-status-radicador"
+                      />
                     </td>
                   </tr>
                 ))}
