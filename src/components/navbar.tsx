@@ -76,19 +76,9 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
-        <nav className="z-10 flex flex-wrap items-center text-base">
-          <NavLink to="/home">
-            <img
-              src="./src/imgs/logo-navbar.png"
-              className="w-10 h-10"
-              alt="Logo"
-            />
-          </NavLink>
-        </nav>
-
         <button
           onClick={toggleSideBar}
-          className="z-10 px-1 py-1 mx-1 ml-12 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:-translate-y-2 group hover:bg-gray-700 dark:bg-indigo-700"
+          className="z-10 px-1 py-1 mx-1 ml-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
         >
           <div className="relative w-8 h-8">
             <img
@@ -106,16 +96,26 @@ const Navbar: React.FC = () => {
               }`}
             />
           </div>
-          <span className="absolute p-2 text-xs text-white transition-opacity duration-300 -translate-y-8 bg-gray-700 dark:bg-indigo-600 rounded-lg opacity-0 left-[49px] w-max group-hover:opacity-100 ">
+          <span className="fixed p-2 text-xs text-white transition-opacity duration-300 -translate-x-12 translate-y-3 bg-gray-700 dark:bg-color rounded-lg opacity-0 left-[50px] w-max group-hover:opacity-100 ">
             {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
-            <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-indigo-600"></span>
+            <span className="absolute w-0 h-0 -translate-x-[30px] -translate-y-[20px] rotate-3 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-color"></span>
           </span>
         </button>
 
-        {/* Botón de Modo Oscuro */}
+        <nav className="z-10 flex flex-wrap items-center text-base">
+          <NavLink to="/home">
+            <img
+              src="./src/imgs/logo-navbar.png"
+              className="w-10 h-10"
+              alt="Logo"
+            />
+          </NavLink>
+        </nav>
+
+        {/* Botón de Modo Oscuro con Tooltip */}
         <button
           onClick={toggleTheme}
-          className="p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 rounded-full hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:outline-none group hover:-translate-y-2"
+          className="relative p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
         >
           {theme === "light" ? (
             <img
@@ -126,16 +126,22 @@ const Navbar: React.FC = () => {
           ) : (
             <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
           )}
+
+          {/* Tooltip */}
+          <span className="fixed p-2 px-2 text-xs text-white transition-opacity duration-300 transform -translate-x-[25px] translate-y-[89px] bg-gray-800 dark:bg-color rounded-lg opacity-0 group-hover:opacity-100 -top-10 left-1/2">
+            {theme === "light" ? "Modo Dark" : "Modo Light"}
+            <span className="absolute w-0 h-0 -translate-x-[14px] -translate-y-[28px] rotate-0 border-b-4 border-l-4 border-r-4 border-transparent border-b-gray-900 dark:border-b-color"></span>
+          </span>
         </button>
 
         {/* Menú de Soporte con Enlaces */}
         <Menu as="div" className="relative">
-          <MenuButton className="p-2 mr-4 text-white duration-300 ease-in-out bg-blue-500 border rounded-full hover:bg-blue-700 dark:text-white focus:outline-none hover:-translate-y-2 dark:hover:bg-indigo-500 dark:bg-indigo-700">
+          <MenuButton className="p-2 mr-4 text-black duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
             Soportes
           </MenuButton>
 
           <Menu.Items
-            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none border-2 dark:border-indigo-500 dark:bg-gray-700 duration-300 ease-in-out hover:-translate-y-2 ${
+            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none border-2 dark:border-color dark:bg-gray-700 duration-300 ease-in-out ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
@@ -149,7 +155,7 @@ const Navbar: React.FC = () => {
                       rel="noopener noreferrer"
                       className={`${
                         active
-                          ? "bg-blue-500 text-white dark:bg-indigo-700"
+                          ? "bg-gray-500 text-white dark:bg-color"
                           : "text-gray-900 dark:text-white"
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm hover:underline hover:underline-offset-4`}
                     >
@@ -162,23 +168,26 @@ const Navbar: React.FC = () => {
           </Menu.Items>
         </Menu>
 
-        <Menu as="div" className="relative">
-          <MenuButton className="flex items-center px-3 py-1 text-base text-white bg-gray-900 border-0 rounded focus:outline-none hover:bg-gray-700 hover:text-white group">
+        <Menu
+          as="div"
+          className="relative border-2 rounded-lg dark:border-white"
+        >
+          <MenuButton className="flex items-center px-3 py-1 text-base text-white duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
             <img
               alt="Profile"
               src={imageUrl || defaultUserPicture}
-              className="object-cover w-8 h-8 border-2 rounded-full"
+              className="object-cover w-8 h-8 border-2 rounded-full dark:border-white"
             />
             <img
               src={userLogo}
               alt="User Logo"
-              className="w-8 h-8 group-hover:invert"
+              className="w-8 h-8 text-white group-hover:invert dark:invert"
             />
           </MenuButton>
           <Menu.Items
             transition
             className={`absolute right-0 z-50 w-56 p-2 border rounded-lg top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
+              theme === "dark" ? "bg-color" : "bg-white"
             }`}
           >
             {userNavigation.map((item) => (
@@ -190,7 +199,7 @@ const Navbar: React.FC = () => {
                     }}
                     className={`block px-4 py-2 text-sm w-full text-left ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-700"
+                        ? "text-gray-200 hover:bg-teal-600"
                         : "text-gray-800 hover:bg-gray-200"
                     } rounded-lg transition-colors duration-300`}
                   >
@@ -201,7 +210,7 @@ const Navbar: React.FC = () => {
                     to={item.href}
                     className={`block px-4 py-2 text-sm ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-700"
+                        ? "text-gray-200 hover:bg-teal-600"
                         : "text-gray-800 hover:bg-gray-200"
                     } rounded-lg transition-colors duration-300`}
                   >
