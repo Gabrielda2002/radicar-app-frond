@@ -216,7 +216,7 @@ const FormularioAutorizacion = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="w-full h-20 text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700"
+                  className="w-full h-20 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                 >
                   {isSubmitting ? "Enviando..." : "Autorizar"}
                 </button>
