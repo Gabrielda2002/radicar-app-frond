@@ -118,7 +118,11 @@ const TablaTipoServicio = () => {
                       {servicio.status ? "Activo" : "Inactivo"}
                     </td>
                     <td className="py-2">
-                      <ModalAction nom="Tipo Servicio" />
+                      <ModalAction 
+                        name="Tipo Servicio"
+                        id={servicio.id}
+                        endPoint="update-status-servicio"
+                      />
                     </td>
                   </tr>
                 ))}
