@@ -8,14 +8,12 @@ export const useDownloadReport = () => {
     const downloadReport = async (dateStartRadicado: string, dateEndRadicado: string, cupsCode: string) => {
         try {
             const response = await api.post("/report-excel-filtro", {
-              dateStartRadicado,
-              dateEndRadicado,
-              cupsCode
+              radicadoDateStart:  dateStartRadicado,
+              radicadoDateEnd: dateEndRadicado,
+              cupsCode: cupsCode
             },{
               responseType: 'blob',
             });
-            console.log(dateStartRadicado, dateEndRadicado, cupsCode);
-      
             // * crear un objeto URL temporal para el archivo
             const url = window.URL.createObjectURL(new Blob([response.data]));
       
