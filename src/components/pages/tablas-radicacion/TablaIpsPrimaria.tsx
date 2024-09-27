@@ -120,7 +120,11 @@ const TablaIpsPrimaria = () => {
                       {ips.status ? "Activo" : "Inactivo"}
                     </td>
                     <td className="py-2">
-                      <ModalAction nom="IPS Primaria" />
+                      <ModalAction 
+                        id={ips.id} 
+                        name={ips.name} 
+                        endPoint="update-status-ips-primaria"
+                      />
                     </td>
                   </tr>
                 ))}
