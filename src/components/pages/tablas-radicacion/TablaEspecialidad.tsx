@@ -6,7 +6,6 @@ import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalEspecialidad from "../modals/ModalEspecialidad";
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
