@@ -5,11 +5,11 @@ import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
-import ModalRadicador from "../modals/ModalRadicador";
 import usePagination from "../../../hooks/usePagination";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -87,10 +87,10 @@ const TablaRadicadores = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-              Agregar Radicador
-            </button> */}
-            <ModalRadicador></ModalRadicador>
+            <ModalAgregarDato
+              name="Radicador"
+              endPoint="radicador"
+            />
           </div>
         </section>
 
