@@ -49,7 +49,7 @@ const ModalAction = (props: any) => {
                 action=""
                 className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
               >
-                <div className="p-8">
+                <div className="p-4 ">
                   <section className="grid grid-cols-2 gap-x-16 ">
                     <div className="">
                       <label htmlFor="">

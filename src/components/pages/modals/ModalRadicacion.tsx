@@ -566,7 +566,7 @@ const ModalRadicacion = () => {
                       htmlFor=""
                       className="disabled:bg-gray-200 disabled:cursor-not-allowed"
                     >
-                      <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                      <span className=" block mb-2 font-bold text-gray-700 dark:text-gray-200">
                         Descripción Diagnóstico
                       </span>
                       <textarea
@@ -574,7 +574,7 @@ const ModalRadicacion = () => {
                         name=""
                         value={description || (loading ? "" : errorDiagnostico || "") }
                         disabled
-                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                        className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                       ></textarea>
                     </label>
                   </div>
