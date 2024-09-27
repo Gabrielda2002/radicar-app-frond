@@ -21,13 +21,14 @@ import back from "/assets/back.svg";
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const loadEstados = true;
 
   const location = useLocation();
   const CUPS = location.state.CUPS || [];
   const id = location.state.id || 0;
 
   const { data, error, loading } = useFetchUnidadFuncional();
-  const { dataEstados, errorEstados } = useFetchEstados();
+  const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
 
   const validationSchema = Yup.object({
     auditora: Yup.string()
