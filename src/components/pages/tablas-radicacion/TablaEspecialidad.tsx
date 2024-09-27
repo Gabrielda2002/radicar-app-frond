@@ -10,6 +10,7 @@ import ModalEspecialidad from "../modals/ModalEspecialidad";
 import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -89,7 +90,10 @@ const TablaEspecialidad = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            <ModalEspecialidad></ModalEspecialidad>
+            <ModalAgregarDato
+              name="Especialidad"
+              endPoint="especialidades"
+            />
           </div>
         </section>
 
@@ -111,7 +115,7 @@ const TablaEspecialidad = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((especialidad) => (
-                  <tr>
+                  <tr key={especialidad.id}>
                     <td>{especialidad.id}</td>
                     <td>{especialidad.name}</td>
                     <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
