@@ -4,8 +4,14 @@ import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados
 import LoadingSpinner from "../../LoadingSpinner";
 //*Icons
 import salir from "/assets/back.svg";
+import { useFetchAuditados } from "../../../hooks/useFetchUsers";
 
 const TablaRegistrosAuditados = () => {
+  const { data, loading, error } = useFetchAuditados();
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <h2>Error al cargar {error}</h2>;
+
   return (
     <>
       {/* nav-container */}
@@ -30,7 +36,12 @@ const TablaRegistrosAuditados = () => {
           </ol>
         </nav>
         <div className="w-10 ">
-            <img src={salir} alt="icon-salir" onClick={() => window.history.back()} className="cursor-pointer"/>
+          <img
+            src={salir}
+            alt="icon-salir"
+            onClick={() => window.history.back()}
+            className="cursor-pointer"
+          />
         </div>
       </section>
 
@@ -69,32 +80,53 @@ const TablaRegistrosAuditados = () => {
         <table className="min-w-full  dark:text-gray-100">
           <thead className="">
             <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 ">
-              <th>ID CUP</th>
               <th>ID Radicación</th>
               <th>Número Documento</th>
               <th>Nombre Paciente</th>
-              <th>Codigo CUP</th>
-              <th>Descripción CUP</th>
-              <th>Estado CUP</th>
-              <th>Ultima Modificación</th>
-              <th>Acciones</th>
+              <th>CUPS</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr className="text-xs text-center mt-2">
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>..texto alusivo</td>
-              <td>
-                <ModalActualizarCupsAuditoria />
-              </td>
-            </tr>
+            {data.map((auditado) => (
+              <tr className="text-xs text-center mt-2" key={auditado.id}>
+                <td>{auditado.id}</td>
+                <td>{auditado.document}</td>
+                <td>{auditado.patientName}</td>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Descripción</th>
+                      <th>Estado</th>
+                      <th>Observación</th>
+                      <th>Última modificación</th>
+                      <th>Editar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {auditado.CUPS.map((cups) => (
+                      <tr key={cups.id}>
+                        <td>{cups.code}</td>
+                        <td>{cups.description}</td>
+                        <td>{cups.status}</td>
+                        <td>{cups.observation}</td>
+                        <td>
+                          {cups.modifyDate
+                            ? cups.modifyDate.toISOString()
+                            : "N/A"}
+                        </td>
+                        <td>
+                          <ModalActualizarCupsAuditoria
+                            cup={cups}
+                          />
+                        </td>
+                      </tr>
+                  ))}
+                  </tbody>
+                </table>
+              </tr>
+            ))}
           </tbody>
         </table>
 
