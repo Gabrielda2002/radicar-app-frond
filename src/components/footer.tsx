@@ -100,21 +100,22 @@ const Footer = () => {
       </div>
       <div className="bg-gray-100">
         <div className="container flex flex-col flex-wrap px-5 py-4 mx-auto sm:flex-row">
-          <p className="text-sm text-center text-gray-500 sm:text-left">
-            © 2024
+          <p className="flex items-center text-xl text-gray-500">
             <a
               href="https://nordvitalips.com/Pagina-nordvitalips/index.php"
               rel="noopener noreferrer"
               className="ml-1 text-gray-600"
               target="_blank"
             >
-              Nordvital IPS
+              Nordvital IPS © 2024
             </a>
           </p>
           <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
-            <div className="flex items-center">
-              <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-indigo-600 hover:text-green-400 hover:-translate-y-1 bg-gradient-to-r from-color to-color2 dark:bg-gradient-to-r dark:from-indigo-600 dark:to-rose-500">
-                <a href="/politicas-cookies.html">Politicas de Cookies</a>
+            <div className="flex items-center cursor-pointer">
+              <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-color bg-gradient-to-r from-color to-color2">
+                <a href="/politicas-cookies.html" target="_blank">
+                  Politicas de Cookies
+                </a>
               </p>
             </div>
             <a

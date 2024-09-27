@@ -44,8 +44,8 @@ const Inicio = () => {
         >
           <div className="container mx-auto">
             {/* Sección de bienvenida */}
-            <div className="flex flex-col items-center w-full pb-10 mb-10 text-center border-2 border-black rounded-lg dark:border-indigo-600 bg-gray-50 dark:bg-gray-700">
-              <h1 className="px-2 mt-10 mb-6 text-5xl font-extrabold border-2 rounded-lg border-rose-500 box-decoration-clone bg-gradient-to-r from-color to-color2 title-font dark:text-gray-200 text-gray-50 dark:bg-gradient-to-r dark:from-indigo-500 dark:to-red-500">
+            <div className="flex flex-col items-center w-full pb-10 mb-10 text-center border-2 border-black rounded-lg dark:border-color bg-gray-50 dark:bg-gray-700">
+              <h1 className="px-2 mt-10 mb-6 text-5xl font-extrabold border-2 border-black rounded-lg dark:border-color box-decoration-clone bg-gradient-to-r from-color to-color2 title-font dark:text-gray-200 text-gray-50">
                 Bienvenidos a Nordvital IPS
               </h1>
               <p className="mb-8 text-lg font-medium text-gray-700 dark:text-gray-300">
