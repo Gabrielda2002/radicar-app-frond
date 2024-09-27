@@ -51,7 +51,7 @@ const TablaMunicipios = () => {
               <li className="text-slate-400 after:mr-4">Inicio</li>
             </Link>
             <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Municipios
+              Municipios
             </li>
           </ol>
           <div className="w-10 pb-2">
@@ -117,7 +117,11 @@ const TablaMunicipios = () => {
                     <td>{municipio.nitMunicipio}</td>
                     <td>{municipio.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Municipios" />
+                      <ModalAction 
+                        name="Municipio"
+                        id={municipio.id}
+                        endPoint="update-status-municipio"
+                      />
                     </td>
                   </tr>
                 ))}

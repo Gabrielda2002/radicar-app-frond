@@ -5,11 +5,11 @@ import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalTipoServicio from "../modals/ModalTipoServicio";
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import { useState } from "react";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -89,7 +89,10 @@ const TablaTipoServicio = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalTipoServicio></ModalTipoServicio>
+            <ModalAgregarDato
+              name="Tipo Servicio"
+              endPoint="servicios"
+            />
           </div>
         </section>
 
@@ -111,14 +114,18 @@ const TablaTipoServicio = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((servicio) => (
-                  <tr>
+                  <tr key={servicio.id}>
                     <td className="py-2">{servicio.id}</td>
                     <td className="py-2">{servicio.name}</td>
                     <td className="py-2">
                       {servicio.status ? "Activo" : "Inactivo"}
                     </td>
                     <td className="py-2">
-                      <ModalAction nom="Tipo Servicio" />
+                      <ModalAction 
+                        name="Tipo Servicio"
+                        id={servicio.id}
+                        endPoint="update-status-servicio"
+                      />
                     </td>
                   </tr>
                 ))}

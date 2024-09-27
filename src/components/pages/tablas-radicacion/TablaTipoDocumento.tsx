@@ -6,10 +6,10 @@ import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalTipoDocumento from "../modals/ModalTipoDocumento";
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -88,10 +88,10 @@ const TablaTipoDocumento = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[200px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-              Agregar Tipo Documento
-            </button> */}
-            <ModalTipoDocumento></ModalTipoDocumento>
+            <ModalAgregarDato
+              name="Tipo Documento"
+              endPoint="documento"
+            />
           </div>
         </section>
 
@@ -113,12 +113,16 @@ const TablaTipoDocumento = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((documento) => (
-                  <tr>
+                  <tr key={documento.id}>
                     <td className="py-3">{documento.id}</td>
                     <td className="py-3">{documento.name}</td>
                     <td>{documento.status ? "Activo" : "Inactivo"}</td>
                     <td className="py-3">
-                      <ModalAction nom="Tipo Documento" />
+                      <ModalAction
+                        name="Tipo Documento"
+                        id={documento.id}
+                        endPoint="update-status-documento"
+                      />
                     </td>
                   </tr>
                 ))}
