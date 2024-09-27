@@ -43,7 +43,7 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
         
         const response = await createDataTableRadicacion(values.name, endPoint);
 
-        if (response && response.status === 200) {
+        if (response && response.status === 200 || response && response.status === 201) {
           
           setSuccess(true);
           setTimeout(() => {

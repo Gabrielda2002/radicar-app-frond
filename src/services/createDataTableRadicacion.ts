@@ -5,7 +5,7 @@ export const createDataTableRadicacion = async (name: string, endPoint: string) 
         
         const response = await createTableRadicacion(name, endPoint);
 
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             return response;
         }
 
