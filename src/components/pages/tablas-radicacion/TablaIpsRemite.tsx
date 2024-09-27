@@ -6,10 +6,10 @@ import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalIpsRemitente from "../modals/ModalIpsRemitente";
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -88,10 +88,10 @@ const TablaIpsRemite = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[90px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar IPS Primaria
-                    </button> */}
-            <ModalIpsRemitente></ModalIpsRemitente>
+            <ModalAgregarDato
+              name="IPS Remite"
+              endPoint="ips-remite"
+            />
           </div>
         </section>
 
@@ -112,12 +112,16 @@ const TablaIpsRemite = () => {
               </thead>
               <tbody>
                 {currentData().map((ips) => (
-                  <tr>
+                  <tr key={ips.id}>
                     <td>{ips.id}</td>
                     <td>{ips.name}</td>
                     <td>{ips.status ? "Activo" : "Inactivo"} </td>
                     <td>
-                      <ModalAction nom="IPS Remite" />
+                      <ModalAction
+                        name="IPS Remite"
+                        id={ips.id}
+                        endPoint="update-status-ips-remite"
+                      />
                     </td>
                   </tr>
                 ))}
