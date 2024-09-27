@@ -82,15 +82,15 @@ const SideBar: FC = () => {
 
   return (
     <aside
-      className={`z-10 flex flex-col h-full transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
+      className={`mt-[83px] z-10 flex flex-col h-[800px] transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
         isCollapsed
           ? "-translate-x-full w-1 absolute duration-300 opacity-25"
           : "w-64 duration-300 absolute"
       } z-10 h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 `}
     >
-      <div className="flex flex-col justify-between flex-1 gap-3 mt-6">
+      <div className="flex flex-col justify-between flex-1">
         <nav className="-mx-3 space-y-6">
-          <div className="pt-8 space-y-4">
+          <div className=" space-y-4">
             {!isCollapsed && (
               <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                 Servicios
