@@ -118,7 +118,11 @@ const TablaTipoDocumento = () => {
                     <td className="py-3">{documento.name}</td>
                     <td>{documento.status ? "Activo" : "Inactivo"}</td>
                     <td className="py-3">
-                      <ModalAction nom="Tipo Documento" />
+                      <ModalAction
+                        name="Tipo Documento"
+                        id={documento.id}
+                        endPoint="update-status-documento"
+                      />
                     </td>
                   </tr>
                 ))}
