@@ -117,7 +117,11 @@ const TablaIpsRemite = () => {
                     <td>{ips.name}</td>
                     <td>{ips.status ? "Activo" : "Inactivo"} </td>
                     <td>
-                      <ModalAction nom="IPS Remite" />
+                      <ModalAction
+                        name="IPS Remite"
+                        id={ips.id}
+                        endPoint="update-status-ips-remite"
+                      />
                     </td>
                   </tr>
                 ))}
