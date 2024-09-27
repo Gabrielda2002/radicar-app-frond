@@ -120,7 +120,11 @@ const TablaLugarRadicacion = () => {
                     <td>{lugar.name}</td>
                     <td>{lugar.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Lugar Radicación" />
+                      <ModalAction 
+                        name="Lugar Radicacion"
+                        id={lugar.id}
+                        endPoint="update-lugar-status"
+                      />
                     </td>
                   </tr>
                 ))}
