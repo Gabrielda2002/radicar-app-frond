@@ -21,7 +21,7 @@ const ModalCirugias = () => {
       {/* init-modal */}
       {stadopen && (
         <section
-          className={` fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
+          className={` fixed z-50 flex justify-center pt-14 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >

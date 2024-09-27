@@ -100,14 +100,14 @@ const Calendario: React.FC = () => {
             noEventsInRange: "No hay eventos en este rango.",
             allDay: "Todo el día",
           }}
-          className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-indigo-500"
+          className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-color"
         />
       </div>
       <br />
       {[1, 2].includes(Number(rol)) && (
         <button
           onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-white duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700 hover:-translate-y-1"
+          className="px-4 py-2 mb-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
         >
           Agregar Evento
         </button>

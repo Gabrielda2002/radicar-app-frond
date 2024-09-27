@@ -1,10 +1,12 @@
+//*Funciones y Hooks
 import { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-const ModalIpsRemitente = () => {
+const ModalTipoServicio = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { showAnimation, closing } = useAnimation(isOpen, () =>
     setIsOpen(false)
   );
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -15,7 +17,7 @@ const ModalIpsRemitente = () => {
         onClick={toggleModal}
         className="border-2 w-[200px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800"
       >
-        Agregar IPS Remitente
+        Agregar Tipo Servicio
       </button>
       {isOpen && (
         <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -28,7 +30,7 @@ const ModalIpsRemitente = () => {
             {/* Contenido del Formulario */}
 
             <div
-              className={`z-10 w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`z-10 w-[900px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800  ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -36,7 +38,7 @@ const ModalIpsRemitente = () => {
             >
               <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
-                  Agregar IPS
+                  Agregar Tipo Servicio
                 </h1>
                 <button
                   onClick={toggleModal}
@@ -55,7 +57,7 @@ const ModalIpsRemitente = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="Ingrese Nombre IPS Remitente..."
+                    placeholder="Ingrese Nombre Tipo Servicio..."
                     className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
@@ -82,4 +84,4 @@ const ModalIpsRemitente = () => {
   );
 };
 
-export default ModalIpsRemitente;
+export default ModalTipoServicio;

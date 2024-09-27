@@ -211,7 +211,7 @@ const RegistrarUsuarios: React.FC = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full py-2 text-white transition-colors duration-300 bg-blue-500 rounded hover:bg-blue-600"
+              className="w-full py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               Crear
             </button>

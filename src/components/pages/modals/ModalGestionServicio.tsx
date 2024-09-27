@@ -60,7 +60,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   });
 
   return (
-    <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
+    <section className="fixed inset-0 z-50 flex justify-center pt-14   transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
       <section>
         <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded dark:bg-gray-800">
           <div className="flex items-center justify-between px-2 py-2">

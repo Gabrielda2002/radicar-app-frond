@@ -25,7 +25,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
   return (
     <>
-      <div className="fixed z-50 flex py-20 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+      <div className="fixed z-50 flex  justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
         <section>
           <div className="z-10 w-[fit-content] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
             <div className="flex items-center justify-between p-2 mb-4">
