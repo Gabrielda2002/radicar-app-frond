@@ -116,7 +116,11 @@ const TablaEspecialidad = () => {
                     <td>{especialidad.name}</td>
                     <td>{especialidad.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Especialidad" />
+                      <ModalAction
+                        name="Especialidad"
+                        id={especialidad.id}
+                        endPoint="update-status-especialidad"
+                      />
                     </td>
                   </tr>
                 ))}
