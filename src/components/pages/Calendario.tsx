@@ -100,7 +100,7 @@ const Calendario: React.FC = () => {
             noEventsInRange: "No hay eventos en este rango.",
             allDay: "Todo el día",
           }}
-          className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-indigo-500"
+          className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-color"
         />
       </div>
       <br />
