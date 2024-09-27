@@ -5,7 +5,6 @@ import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
-import ModalConvenio from "../modals/ModalConvenio";
 import usePagination from "../../../hooks/usePagination";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 //*Icons
