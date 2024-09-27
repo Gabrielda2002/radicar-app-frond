@@ -10,6 +10,7 @@ import ModalIpsPrimaria from "../modals/ModalIpsPrimaria";
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -87,7 +88,10 @@ const TablaIpsPrimaria = () => {
               <option value="20">20 PAGES</option>
               <option value="30">30 PAGES</option>
             </select>
-            <ModalIpsPrimaria></ModalIpsPrimaria>
+            <ModalAgregarDato
+              name="IPS Primaria"
+              endPoint="ips-primaria"
+            />
           </div>
         </section>
 
@@ -109,7 +113,7 @@ const TablaIpsPrimaria = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((ips) => (
-                  <tr>
+                  <tr key={ips.id}>
                     <td className="py-2">{ips.id}</td>
                     <td className="py-2">{ips.name}</td>
                     <td className="py-2">
