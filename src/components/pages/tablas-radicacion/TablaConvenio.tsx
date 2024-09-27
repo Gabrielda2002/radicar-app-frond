@@ -115,7 +115,11 @@ const TablaConvenios = () => {
                     <td>{convenio.name}</td>
                     <td>{convenio.status ? "Activo" : "Inactivo"} </td>
                     <td>
-                      <ModalAction nom="Convenios" />
+                      <ModalAction 
+                        name="Convenio"
+                        id={convenio.id}
+                        endPoint="update-status-convenio"
+                      />
                     </td>
                   </tr>
                 ))}
