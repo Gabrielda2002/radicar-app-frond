@@ -176,7 +176,7 @@ const Perfil = () => {
                   </div>
                   <div className="flex justify-center mt-4 space-x-4">
                     <button
-                      className="px-4 py-2 rounded shadow hover:bg-blue-500 dark:hover:bg-blue-600 dark:bg-gray-700"
+                      className="px-4 py-2 rounded shadow hover:bg-color dark:hover:bg-color dark:bg-gray-700"
                       onClick={triggerFileInput}
                     >
                       <img
@@ -238,7 +238,7 @@ const Perfil = () => {
                   <div>
                     <button
                       type="submit"
-                      className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+                      className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     >
                       Guardar Cambios
                     </button>

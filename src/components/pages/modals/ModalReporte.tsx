@@ -49,21 +49,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
 
   return (
     <div
-      className={`fixed z-30 flex pt-20 justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
+      className={`fixed z-30 flex pt-14 justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
         showAnimation && !closing ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOutsideClick}
     >
       <section>
         <div
-          className={`w-[600px]  bg-white rounded-md  overflow-hidden shadow-lg dark:bg-gray-900 transform transition-transform duration-300 ${
+          className={`w-[600px]  bg-white rounded-md  overflow-hidden shadow-lg dark:bg-gray-800 transform transition-transform duration-300 ${
             showAnimation && !closing
               ? "translate-y-0 opacity-100"
               : "translate-y-10 opacity-0"
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-900">
+          <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800">
             <h2 className="text-xl font-semibold text-color dark:text-gray-200  ">
               {modalTitle}
             </h2>
@@ -165,21 +165,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             </div>
 
             {/* container-footer */}
-            <div className="flex justify-end space-x-2 py-4 px-2">
+            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
               <button
                 type="button"
                 onClick={() => {
                   setShowSecondModal(false);
                   setTimeout(onClose, 300);
                 }}
-                className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 Cerrar
               </button>
               {!showSecondModal ? (
                 <button
                   onClick={() => setShowSecondModal(true)}
-                  className={`px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700 ${
+                  className={`w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600${
                     !formValues.reportOptions
                       ? "opacity-50 cursor-not-allowed"
                       : ""
@@ -191,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               ) : (
                 <button
                   type="submit"
-                  className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
+                  className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                   onClick={handleDownloadReport}
                 >
                   Descargar

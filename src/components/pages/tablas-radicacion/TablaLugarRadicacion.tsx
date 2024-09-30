@@ -6,10 +6,10 @@ import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalLugarRadicacion from "../modals/ModalLugarRadicacion";
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -89,11 +89,10 @@ const TablaLugarRadicacion = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[100px] h-12 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 ">
-              Agregar Lugar
-            </button> */}
-
-            <ModalLugarRadicacion></ModalLugarRadicacion>
+            <ModalAgregarDato
+              name="Lugar Radicacion"
+              endPoint="lugares-radicacion"
+            />
           </div>
         </section>
 
@@ -115,12 +114,16 @@ const TablaLugarRadicacion = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((lugar) => (
-                  <tr>
+                  <tr key={lugar.id}>
                     <td>{lugar.id}</td>
                     <td>{lugar.name}</td>
                     <td>{lugar.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalAction nom="Lugar Radicación" />
+                      <ModalAction 
+                        name="Lugar Radicacion"
+                        id={lugar.id}
+                        endPoint="update-lugar-status"
+                      />
                     </td>
                   </tr>
                 ))}

@@ -107,7 +107,7 @@ const Calendario: React.FC = () => {
       {[1, 2].includes(Number(rol)) && (
         <button
           onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-white duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700 hover:-translate-y-1"
+          className="px-4 py-2 mb-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
         >
           Agregar Evento
         </button>
