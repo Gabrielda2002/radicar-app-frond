@@ -41,11 +41,7 @@ import { SidebarProvider } from "./context/sidebarContext";
 function AppRoutes() {
   const { theme } = useTheme();
   return (
-    <div
-      className={`flex h-screen font-semibold ${
-        theme === "dark" ? "dark" : ""
-      }`}
-    >
+    <div className={`font-semibold ${theme === "dark" ? "dark" : ""}`}>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
@@ -55,11 +51,11 @@ function AppRoutes() {
           <Route
             path="/*"
             element={
-              <div className="flex flex-row w-full h-full">
-                <SideBar />
-                <div className="flex flex-col flex-grow bg-slate-200 dark:bg-gray-900">
-                  <Navbar />
-                  <div className="flex-grow overflow-auto">
+              <div className="grid min-h-screen grid-rows-layout">
+                <Navbar />
+                <div className="relative flex">
+                  <SideBar />
+                  <main className="flex-1 overflow-auto bg-slate-200 dark:bg-gray-900">
                     <Layout>
                       <Routes>
                         <Route path="/home" element={<Inicio />} />
@@ -73,10 +69,8 @@ function AppRoutes() {
                         />
                         <Route
                           path="/tabla-registros-auditados"
-                          element={
-                            <TablaRegistrosAuditados></TablaRegistrosAuditados>
-                          }
-                        ></Route>
+                          element={<TablaRegistrosAuditados />}
+                        />
                         <Route
                           path="/tabla-cirugias"
                           element={<TablaCirugias />}
@@ -139,9 +133,9 @@ function AppRoutes() {
                         <Route path="*" element={<Navigate to="/home" />} />
                       </Routes>
                     </Layout>
-                    <Footer />
-                  </div>
+                  </main>
                 </div>
+                <Footer />
               </div>
             }
           />
