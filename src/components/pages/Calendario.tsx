@@ -146,7 +146,9 @@ const Calendario: React.FC = () => {
               ) : (
                 <>
                   <div>
-                    <h2 className="text-xl font-semibold text-color dark:text-gray-200 mb-4">Agregar Nuevo Evento</h2>
+                    <h2 className="text-xl font-semibold text-color dark:text-gray-200 mb-4">
+                      Agregar Nuevo Evento
+                    </h2>
                     <input
                       type="text"
                       placeholder="Título"
@@ -201,16 +203,16 @@ const Calendario: React.FC = () => {
                       className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 mb-4"
                     />
                     <button
-                      onClick={handleAddEvent}
-                      className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                    >
-                      Guardar Evento
-                    </button>
-                    <button
                       onClick={() => setShowModal(false)}
                       className="px-4 py-2 ml-2 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                     >
                       Cancelar
+                    </button>
+                    <button
+                      onClick={handleAddEvent}
+                      className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    >
+                      Guardar Evento
                     </button>
                   </div>
                 </>

@@ -66,7 +66,7 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
     <>
       <button
         onClick={toggleModal}
-        className="border-2 w-[200px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800"
+        className="border-2 w-[200px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900 "
       >
         {`Agregar ${name}`}
       </button>

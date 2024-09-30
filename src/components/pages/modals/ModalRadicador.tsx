@@ -16,7 +16,7 @@ const ModalRadicador = () => {
     <>
       <button
         onClick={toggleModal}
-        className={` border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800 ${
+        className={` border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-red-800  active:bg-redp-900  ${
           showAnimation && !closing ? "opacity-100" : "opacity-100"
         }`}
       >

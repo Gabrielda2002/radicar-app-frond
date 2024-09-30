@@ -120,12 +120,12 @@ const TablaAuditoria = () => {
               <option value="24">24 Páginas</option>
             </select>
             <Link to={"/tabla-radicacion"}>
-              <button className="border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:border-gray-200">
+              <button className="border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-teal-800  active:bg-teal-900 ">
                 Ver Autorizaciones
               </button>
             </Link>
             <Link to={"/tabla-registros-auditados"}>
-              <button className="border-2 w-[100px] h-10 focus:outline-none rounded-md bg-color  text-white hover:bg-emerald-900 active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
+              <button className="border-2 w-[100px] h-10 focus:outline-none rounded-md bg-color  text-white hover:bg-teal-800 active:bg-teal-900 ">
                 Auditados
               </button>
               {/* ! no se funciona | focus:outline-none | ! */}
