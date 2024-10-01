@@ -115,14 +115,14 @@ const Calendario: React.FC = () => {
 
       {/* Modal para mostrar eventos y agregar uno nuevo */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex pt-10  justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
           <section>
-            <div className="relative flex flex-col items-center max-w-lg gap-4 p-6  bg-white  rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
+            <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 bg-white rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
               <button
                 onClick={() => setShowModal(false)} // Cerrar modal al hacer clic en "X"
                 className="absolute top-2 right-2"
               >
-                <div className="text-xl text-gray-500 hover-gray-700 pr-2">
+                <div className="pr-2 text-xl text-gray-500 hover-gray-700">
                   &times;
                 </div>
               </button>
@@ -135,18 +135,20 @@ const Calendario: React.FC = () => {
                   <p className="text-stone-400 dark:text-gray-200">
                     {selectedEvent.description}
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteEvent(selectedEvent)} //*Eliminar evento
-                    className="px-10 h-12 font-semibold text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                  >
-                    Eliminar Evento
-                  </button>
+                  {[1, 2].includes(Number(rol)) && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteEvent(selectedEvent)} //*Eliminar evento
+                      className="h-12 px-10 font-semibold text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    >
+                      Eliminar Evento
+                    </button>
+                  )}
                 </>
               ) : (
                 <>
                   <div>
-                    <h2 className="text-xl font-semibold text-color dark:text-gray-200 mb-4">
+                    <h2 className="mb-4 text-xl font-semibold text-color dark:text-gray-200">
                       Agregar Nuevo Evento
                     </h2>
                     <input
@@ -156,7 +158,7 @@ const Calendario: React.FC = () => {
                       onChange={(e) =>
                         setNewEvent({ ...newEvent, title: e.target.value })
                       }
-                      className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 mb-4"
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                     />
                     <textarea
                       placeholder="Descripción"
@@ -167,7 +169,7 @@ const Calendario: React.FC = () => {
                           description: e.target.value,
                         })
                       }
-                      className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 mb-4"
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                     />
                     <label>Color del evento</label>
                     <input
@@ -188,7 +190,7 @@ const Calendario: React.FC = () => {
                           start: new Date(e.target.value),
                         })
                       }
-                      className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 mb-4"
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                     />
                     <label>Fecha de Fin</label>
                     <input
@@ -200,7 +202,7 @@ const Calendario: React.FC = () => {
                           end: new Date(e.target.value),
                         })
                       }
-                      className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 mb-4"
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                     />
                     <button
                       onClick={() => setShowModal(false)}
