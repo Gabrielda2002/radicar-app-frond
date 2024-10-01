@@ -1,13 +1,40 @@
 //*Funciones y Hooks
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
+import Pagination from "../../Pagination";
 import LoadingSpinner from "../../LoadingSpinner";
+import usePagination from "../../../hooks/usePagination";
+import { useFetchAuditados } from "../../../hooks/useFetchUsers";
+import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
+import useSearch from "../../../hooks/useSearch"; // Importar el hook de búsqueda
 //*Icons
 import salir from "/assets/back.svg";
-import { useFetchAuditados } from "../../../hooks/useFetchUsers";
+
+const ITEMS_PER_PAGE = 10;
 
 const TablaRegistrosAuditados = () => {
   const { data, loading, error } = useFetchAuditados();
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  // Hook para la búsqueda
+  const { query, setQuery, filteredData } = useSearch(data, [
+    "id",
+    "document",
+    "patientName",
+  ]);
+
+  // Hook para la paginación
+  const { currentPage, totalPages, paginate, currentData } = usePagination(
+    filteredData,
+    itemsPerPage
+  );
+
+  // Manejador de cambio de ítems por página
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   if (loading) return <LoadingSpinner />;
   if (error) return <h2>Error al cargar {error}</h2>;
@@ -51,13 +78,15 @@ const TablaRegistrosAuditados = () => {
           htmlFor=""
           className="text-lg font-bold text-stone-600 dark:text-stone-300"
         >
-          Buscar registos Auditados:
+          Buscar registros Auditados:
         </label>
         <section className="flex justify-between pb-6 ">
           <div className="flex items-center">
             <input
               type="text"
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               placeholder=" Consultar..."
             />
           </div>
@@ -66,71 +95,85 @@ const TablaRegistrosAuditados = () => {
             <select
               name=""
               id=""
-              className="border-2 h-12 w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white "
+              className="border-2 h-12 w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
             >
-              <option value="">- SELECT -</option>
-              <option value="1">10</option>
-              <option value="2">20</option>
-              <option value="3">30</option>
+              <option value="">Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
           </div>
         </section>
 
-        {/* init-tabla */}
-        <table className="min-w-full  dark:text-gray-100">
-          <thead className="">
-            <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 ">
-              <th>ID Radicación</th>
-              <th>Número Documento</th>
-              <th>Nombre Paciente</th>
-              <th>CUPS</th>
-            </tr>
-          </thead>
+        {/* Mostrar resultados */}
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la búsqueda.
+          </div>
+        ) : (
+          <>
+            {/* init-tabla */}
+            <table className="min-w-full dark:text-gray-100">
+              <thead className="">
+                <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700 ">
+                  <th>ID Radicación</th>
+                  <th>Número Documento</th>
+                  <th>Nombre Paciente</th>
+                  <th>CUPS</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            {data.map((auditado) => (
-              <tr className="text-xs text-center mt-2" key={auditado.id}>
-                <td>{auditado.id}</td>
-                <td>{auditado.document}</td>
-                <td>{auditado.patientName}</td>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Código</th>
-                      <th>Descripción</th>
-                      <th>Estado</th>
-                      <th>Observación</th>
-                      <th>Última modificación</th>
-                      <th>Editar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {auditado.CUPS.map((cups) => (
-                      <tr key={cups.id}>
-                        <td>{cups.code}</td>
-                        <td>{cups.description}</td>
-                        <td>{cups.status}</td>
-                        <td>{cups.observation}</td>
-                        <td>
-                          {cups.modifyDate
-                            ? cups.modifyDate.toISOString()
-                            : "N/A"}
-                        </td>
-                        <td>
-                          <ModalActualizarCupsAuditoria
-                            cup={cups}
-                          />
-                        </td>
-                      </tr>
-                  ))}
-                  </tbody>
-                </table>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              <tbody>
+                {currentData().map((auditado) => (
+                  <tr className="mt-2 text-xs text-center" key={auditado.id}>
+                    <td>{auditado.id}</td>
+                    <td>{auditado.document}</td>
+                    <td>{auditado.patientName}</td>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Código</th>
+                          <th>Descripción</th>
+                          <th>Estado</th>
+                          <th>Observación</th>
+                          <th>Última modificación</th>
+                          <th>Editar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {auditado.CUPS.map((cups) => (
+                          <tr key={cups.id}>
+                            <td>{cups.code}</td>
+                            <td>{cups.description}</td>
+                            <td>{cups.status}</td>
+                            <td>{cups.observation}</td>
+                            <td>
+                              {cups.modifyDate
+                                ? cups.modifyDate.toISOString()
+                                : "N/A"}
+                            </td>
+                            <td>
+                              <ModalActualizarCupsAuditoria cup={cups} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-        {/* pagination */}
+            {/* pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );
