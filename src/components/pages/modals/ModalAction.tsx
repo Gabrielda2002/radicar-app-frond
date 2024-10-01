@@ -144,6 +144,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                     </div>
                   </section>
                 </div>
+                </form>
 
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
@@ -154,7 +155,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                     Cerrar
                   </button>
                   <button
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
                     disabled={submitting}
                    >
@@ -165,7 +166,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                   )}
                   {error && <div className="text-red-500">{error}</div>}
                 </div>
-              </form>
+
             </div>
           </section>
         </section>

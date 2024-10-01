@@ -16,7 +16,7 @@ const ModalPaciente = () => {
   return (
     <>
       <button
-        className={`border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900 active:bg-emerald-800 ${
+        className={`border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900  ${
           showAnimation && !closing ? "opacity-100" : "opacity-100"
         }`}
         onClick={toggleModal}
