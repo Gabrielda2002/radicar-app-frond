@@ -1,4 +1,5 @@
 import { IRadicados } from "../../../models/IRadicados";
+import useAnimation from "../../../hooks/useAnimations";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -11,16 +12,23 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   radicacion,
 }) => {
+  const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || !radicacion) return null;
 
   return (
-    <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+    <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
       <section>
-        <div className="z-10 w-[1200px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+        <div
+          className={`z-10 w-[1200px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+            showAnimation && !closing
+              ? "translate-y-0 opacity-100"
+              : "translate-y-10 opacity-0"
+          }`}
+        >
           {/* container-header */}
-          <div className="flex items-center justify-between px-2 pb-4 pt-2 dark:bg-gray-800">
+          <div className="flex items-center justify-between px-2 pt-2 pb-4 dark:bg-gray-800">
             <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
-              Crear Carpeta
+              Tabla Completa
             </h2>
             <button
               onClick={onClose}
@@ -33,7 +41,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           {/* Contenedor para las dos tablas en columnas */}
           <div className="grid grid-cols-2 gap-x-6 max-h-[70vh] overflow-auto px-4">
             {/* Primera tabla */}
-            <table className="text-sm mt-2 mb-8">
+            <table className="mt-2 mb-8 text-sm">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
                   <th className="">Campo</th>
@@ -97,7 +105,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </table>
 
             {/* Segunda-tabla */}
-            <table className="text-sm mt-2 mb-8">
+            <table className="mt-2 mb-8 text-sm">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
                   <th className="">Campo</th>
@@ -156,7 +164,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </table>
 
             {/* Tabla-cups */}
-            <table className="text-sm mt-2 mb-8">
+            <table className="mt-2 mb-8 text-sm">
               <thead>
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
                   <th className="">Campo</th>
