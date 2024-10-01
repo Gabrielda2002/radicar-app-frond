@@ -15,14 +15,14 @@ const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
   const { data, loading, error } = useFetchMunicipio();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
     "name",
     "nitMunicipio",
     "status",
   ]);
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );

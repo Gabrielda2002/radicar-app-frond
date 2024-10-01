@@ -25,7 +25,7 @@ const Calendario: React.FC = () => {
     end: new Date(),
     description: "",
     images: [],
-    color: "#000000",
+    color: "#00776f",
   });
 
   const { rol } = useAuth();
@@ -50,7 +50,7 @@ const Calendario: React.FC = () => {
       end: new Date(),
       description: "",
       images: [],
-      color: "#000000", //*Restablecer color por defecto
+      color: "#00776f", //*Restablecer color por defecto
     });
   };
 
@@ -107,7 +107,7 @@ const Calendario: React.FC = () => {
       {[1, 2].includes(Number(rol)) && (
         <button
           onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-600"
+          className="px-4 py-2 mb-4 text-black duration-300 ease-in-out bg-gray-300 rounded-md hover:bg-gray-700 hover:text-white dark:text-white active:bg-emerald-950 dark:bg-color dark:hover:bg-teal-600"
         >
           Agregar Evento
         </button>

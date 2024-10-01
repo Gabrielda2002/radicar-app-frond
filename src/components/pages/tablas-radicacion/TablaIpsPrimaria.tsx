@@ -15,14 +15,14 @@ const ITEMS_PER_PAGE = 10;
 
 const TablaIpsPrimaria = () => {
   const { data, loading, error } = useFetchIpsPrimaria();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
     "name",
     "status",
   ]);
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );
@@ -82,10 +82,10 @@ const TablaIpsPrimaria = () => {
               onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
-              <option value="">PAGES</option>
-              <option value="10">10 PAGES</option>
-              <option value="20">20 PAGES</option>
-              <option value="30">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
             <ModalAgregarDato
               name="IPS Primaria"

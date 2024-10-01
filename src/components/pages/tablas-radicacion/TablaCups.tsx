@@ -18,7 +18,7 @@ const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
@@ -27,7 +27,7 @@ const TablaCups = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );
@@ -88,10 +88,10 @@ const TablaCups = () => {
               onChange={handleItemsPerPageChange}
               value={itemsPerPage}
             >
-              <option value="">PAGES</option>
-              <option value="10">10 PAGES</option>
-              <option value="20">20 PAGES</option>
-              <option value="30">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
             <ModalCups></ModalCups>
           </div>

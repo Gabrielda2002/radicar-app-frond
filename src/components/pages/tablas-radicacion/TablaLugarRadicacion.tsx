@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 8;
 
 const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
@@ -23,7 +23,7 @@ const TablaLugarRadicacion = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );
