@@ -25,7 +25,7 @@ const Calendario: React.FC = () => {
     end: new Date(),
     description: "",
     images: [],
-    color: "#000000",
+    color: "#00776f",
   });
 
   const { rol } = useAuth();
@@ -50,7 +50,7 @@ const Calendario: React.FC = () => {
       end: new Date(),
       description: "",
       images: [],
-      color: "#000000", //*Restablecer color por defecto
+      color: "#00776f", //*Restablecer color por defecto
     });
   };
 
@@ -107,7 +107,7 @@ const Calendario: React.FC = () => {
       {[1, 2].includes(Number(rol)) && (
         <button
           onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+          className="px-4 py-2 mb-4 text-black duration-300 ease-in-out bg-gray-300 rounded-md hover:bg-gray-700 hover:text-white dark:text-white active:bg-emerald-950 dark:bg-color dark:hover:bg-teal-600"
         >
           Agregar Evento
         </button>
@@ -116,7 +116,7 @@ const Calendario: React.FC = () => {
       {/* Modal para mostrar eventos y agregar uno nuevo */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 text-gray-100 bg-gray-900 border-2 rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white dark:border-indigo-500">
+          <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 text-black bg-white border-2 rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
             <button
               onClick={() => setShowModal(false)} // Cerrar modal al hacer clic en "X"
               className="absolute w-8 h-8 rounded-full top-2 right-2 hover:bg-gray-50"
@@ -196,13 +196,13 @@ const Calendario: React.FC = () => {
                   />
                   <button
                     onClick={handleAddEvent}
-                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700"
+                    className="px-4 py-2 text-white duration-200 ease-in-out bg-blue-500 rounded hover:bg-blue-700"
                   >
                     Guardar Evento
                   </button>
                   <button
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 ml-2 text-white bg-red-500 rounded hover:bg-red-700"
+                    className="px-4 py-2 ml-2 text-white duration-200 ease-in-out bg-red-500 rounded hover:bg-red-700"
                   >
                     Cancelar
                   </button>
