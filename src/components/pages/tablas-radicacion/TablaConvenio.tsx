@@ -15,14 +15,14 @@ const ITEMS_PER_PAGE = 10;
 
 const TablaConvenios = () => {
   const { data, loading, error } = useFetchConvenio();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
     "name",
     "status",
   ]);
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );

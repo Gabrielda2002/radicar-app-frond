@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 8;
 
 const TablaTipoServicio = () => {
   const { data, loading, error } = useFetchServicios();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
@@ -23,7 +23,7 @@ const TablaTipoServicio = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
     itemsPerPage
   );

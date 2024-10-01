@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 10;
 
 const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
@@ -23,10 +23,8 @@ const TablaEspecialidad = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
-    filteredData,
-    itemsPerPage
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -56,7 +54,12 @@ const TablaEspecialidad = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            />
           </div>
         </nav>
       </section>
@@ -78,21 +81,18 @@ const TablaEspecialidad = () => {
           </div>
           <div className="flex items-center pt-1 space-x-2">
             <select
-              name=""
-              id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
+              name=""
+              id=""
               className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
-              <option value="">PAGES</option>
-              <option value="10">10 PAGES</option>
-              <option value="20">20 PAGES</option>
-              <option value="30">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato
-              name="Especialidad"
-              endPoint="especialidades"
-            />
+            <ModalAgregarDato name="Especialidad" endPoint="especialidades" />
           </div>
         </section>
 

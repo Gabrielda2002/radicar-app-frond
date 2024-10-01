@@ -19,7 +19,7 @@ const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
   const { data, loading, error } = useFetchAuditoria();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,9 +37,9 @@ const TablaAuditoria = () => {
     "radicador",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
-    itemsPerPage
+    ITEMS_PER_PAGE
   );
 
   const handleItemsPerPageChange = (
@@ -115,9 +115,9 @@ const TablaAuditoria = () => {
               className="border-2 h-12 w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
-              <option value="8">8 Páginas</option>
-              <option value="16">16 Páginas</option>
-              <option value="24">24 Páginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
             <Link to={"/tabla-radicacion"}>
               <button className="border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:border-gray-200">
