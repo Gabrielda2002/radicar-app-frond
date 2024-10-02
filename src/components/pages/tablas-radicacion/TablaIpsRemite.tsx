@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 8;
 
 const TablaIpsRemite = () => {
   const { data, loading, error } = useFetchIpsRemite();
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "id",
@@ -23,10 +23,9 @@ const TablaIpsRemite = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
-    filteredData,
-    itemsPerPage
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
+
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -55,7 +54,12 @@ const TablaIpsRemite = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            />
           </div>
         </nav>
       </section>
@@ -88,10 +92,7 @@ const TablaIpsRemite = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato
-              name="IPS Remite"
-              endPoint="ips-remite"
-            />
+            <ModalAgregarDato name="IPS Remite" endPoint="ips-remite" />
           </div>
         </section>
 
