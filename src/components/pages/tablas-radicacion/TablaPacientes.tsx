@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import { Link } from "react-router-dom";
-import ModalAction from "../modals/ModalAction";
 import ModalPaciente from "../modals/ModalPaciente";
 //*Iconos
 import salir from "/assets/back.svg";
@@ -116,7 +115,7 @@ const TablaPacientes = () => {
               <td className="break-words">Compensar EPS</td>
               <td className="break-words">INACTIVO2</td>
               <td className="break-words">
-                <ModalAction nom="Paciente" />
+                {/* <ModalAction/> */}
               </td>
             </tr>
             <tr>
@@ -130,7 +129,7 @@ const TablaPacientes = () => {
               <td className="break-words">Ferrocarriles </td>
               <td className="break-words">INACTIVO2 </td>
               <td className="break-words">
-                <ModalAction nom="Pacientes" />
+                {/* <ModalAction nom="Pacientes" /> */}
               </td>
             </tr>
           </tbody>
