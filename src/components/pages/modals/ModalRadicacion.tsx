@@ -215,7 +215,7 @@ const ModalRadicacion = () => {
   return (
     <>
       <button
-        className="border-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+        className="border-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-teal-800  active:bg-teal-900 "
         onClick={() => setStadopen(true)}
       >
         Radicar

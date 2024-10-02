@@ -55,10 +55,24 @@ const SideBar: FC = () => {
       ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
       : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
   };
-  //*Funcion para manejar la logica del sidebar
-  const toggleAccordion = (key: keyof typeof openAccordions) => {
-    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  //*Función para manejar la lógica del sidebar, asegurando que solo un acordeón esté abierto a la vez
+const toggleAccordion = (key: keyof typeof openAccordions) => {
+  setOpenAccordions((prev) => {
+    // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
+    const isSameAccordionOpen = prev[key];
+    
+    // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
+    return {
+      services: false,
+      quality: false,
+      reports: false,
+      tablets: false,
+      admin: false,
+      [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
+    };
+  });
+};
+
 
   useEffect(() => {
     if (accordionRef.current) {
@@ -82,15 +96,13 @@ const SideBar: FC = () => {
 
   return (
     <aside
-      className={`mt-[83px] z-10 flex flex-col h-[800px] transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
-        isCollapsed
-          ? "-translate-x-full w-1 absolute duration-300 opacity-25"
-          : "w-64 duration-300 absolute"
-      } z-10 h-full px-4 py-8 overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 `}
+      className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
+        isCollapsed ? "-translate-x-full w-16 absolute" : "w-56 absolute"
+      } px-4 py-8 h-full`}
     >
       <div className="flex flex-col justify-between flex-1">
         <nav className="-mx-3 space-y-6">
-          <div className=" space-y-4">
+          <div className="space-y-4 ">
             {!isCollapsed && (
               <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                 Servicios

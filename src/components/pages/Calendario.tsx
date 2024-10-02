@@ -25,7 +25,7 @@ const Calendario: React.FC = () => {
     end: new Date(),
     description: "",
     images: [],
-    color: "#000000",
+    color: "#00776f",
   });
 
   const { rol } = useAuth();
@@ -50,7 +50,7 @@ const Calendario: React.FC = () => {
       end: new Date(),
       description: "",
       images: [],
-      color: "#000000", //*Restablecer color por defecto
+      color: "#00776f", //*Restablecer color por defecto
     });
   };
 
@@ -107,7 +107,7 @@ const Calendario: React.FC = () => {
       {[1, 2].includes(Number(rol)) && (
         <button
           onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+          className="px-4 py-2 mb-4 text-black duration-300 ease-in-out bg-gray-300 rounded-md hover:bg-gray-700 hover:text-white dark:text-white active:bg-emerald-950 dark:bg-color dark:hover:bg-teal-600"
         >
           Agregar Evento
         </button>
@@ -115,101 +115,112 @@ const Calendario: React.FC = () => {
 
       {/* Modal para mostrar eventos y agregar uno nuevo */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 text-gray-100 bg-gray-900 border-2 rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white dark:border-indigo-500">
-            <button
-              onClick={() => setShowModal(false)} // Cerrar modal al hacer clic en "X"
-              className="absolute w-8 h-8 rounded-full top-2 right-2 hover:bg-gray-50"
-            >
-              <div className="text-2xl text-red-600">&times;</div>
-            </button>
-
-            {selectedEvent ? (
-              <>
-                <h2 className="text-2xl font-semibold leading-tight tracking-wide text-white dark:text-gray-50">
-                  {selectedEvent.title}
-                </h2>
-                <p className="text-gray-400 dark:text-gray-50">
-                  {selectedEvent.description}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteEvent(selectedEvent)} //*Eliminar evento
-                  className="px-8 py-3 font-semibold bg-red-500 rounded-full text-gray-50 dark:bg-red-600 dark:hover:bg-red-700 hover:bg-red-700 dark:text-white"
-                >
-                  Eliminar Evento
-                </button>
-              </>
-            ) : (
-              <>
-                <div>
-                  <h2 className="mb-4 text-xl">Agregar Nuevo Evento</h2>
-                  <input
-                    type="text"
-                    placeholder="Título"
-                    value={newEvent.title?.toString() || ""}
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, title: e.target.value })
-                    }
-                    className="w-full p-2 mb-4 text-black border rounded"
-                  />
-                  <textarea
-                    placeholder="Descripción"
-                    value={newEvent.description}
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, description: e.target.value })
-                    }
-                    className="w-full p-2 mb-4 text-black border rounded"
-                  />
-                  <label>Color del evento</label>
-                  <input
-                    type="color"
-                    value={newEvent.color}
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, color: e.target.value })
-                    }
-                    className="w-full px-4 mb-4 border rounded cursor-pointer"
-                  />
-                  <label>Fecha de Inicio</label>
-                  <input
-                    type="datetime-local"
-                    value={moment(newEvent.start).format("YYYY-MM-DDTHH:mm")}
-                    onChange={(e) =>
-                      setNewEvent({
-                        ...newEvent,
-                        start: new Date(e.target.value),
-                      })
-                    }
-                    className="w-full p-2 mb-4 text-black border rounded cursor-pointer"
-                  />
-                  <label>Fecha de Fin</label>
-                  <input
-                    type="datetime-local"
-                    value={moment(newEvent.end).format("YYYY-MM-DDTHH:mm")}
-                    onChange={(e) =>
-                      setNewEvent({
-                        ...newEvent,
-                        end: new Date(e.target.value),
-                      })
-                    }
-                    className="w-full p-2 mb-4 text-black border rounded cursor-pointer"
-                  />
-                  <button
-                    onClick={handleAddEvent}
-                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700"
-                  >
-                    Guardar Evento
-                  </button>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 ml-2 text-white bg-red-500 rounded hover:bg-red-700"
-                  >
-                    Cancelar
-                  </button>
+        <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
+          <section>
+            <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 bg-white rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
+              <button
+                onClick={() => setShowModal(false)} // Cerrar modal al hacer clic en "X"
+                className="absolute top-2 right-2"
+              >
+                <div className="pr-2 text-xl text-gray-500 hover-gray-700">
+                  &times;
                 </div>
-              </>
-            )}
-          </div>
+              </button>
+
+              {selectedEvent ? (
+                <>
+                  <h2 className="text-2xl font-semibold leading-tight tracking-wide text-stone-600 dark:text-stone-400">
+                    {selectedEvent.title}
+                  </h2>
+                  <p className="text-stone-400 dark:text-gray-200">
+                    {selectedEvent.description}
+                  </p>
+                  {[1, 2].includes(Number(rol)) && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteEvent(selectedEvent)} //*Eliminar evento
+                      className="h-12 px-10 font-semibold text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    >
+                      Eliminar Evento
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div>
+                    <h2 className="mb-4 text-xl font-semibold text-color dark:text-gray-200">
+                      Agregar Nuevo Evento
+                    </h2>
+                    <input
+                      type="text"
+                      placeholder="Título"
+                      value={newEvent.title?.toString() || ""}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, title: e.target.value })
+                      }
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                    />
+                    <textarea
+                      placeholder="Descripción"
+                      value={newEvent.description}
+                      onChange={(e) =>
+                        setNewEvent({
+                          ...newEvent,
+                          description: e.target.value,
+                        })
+                      }
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                    />
+                    <label>Color del evento</label>
+                    <input
+                      type="color"
+                      value={newEvent.color}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, color: e.target.value })
+                      }
+                      className="w-full px-4 mb-4 border rounded cursor-pointer"
+                    />
+                    <label>Fecha de Inicio</label>
+                    <input
+                      type="datetime-local"
+                      value={moment(newEvent.start).format("YYYY-MM-DDTHH:mm")}
+                      onChange={(e) =>
+                        setNewEvent({
+                          ...newEvent,
+                          start: new Date(e.target.value),
+                        })
+                      }
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                    />
+                    <label>Fecha de Fin</label>
+                    <input
+                      type="datetime-local"
+                      value={moment(newEvent.end).format("YYYY-MM-DDTHH:mm")}
+                      onChange={(e) =>
+                        setNewEvent({
+                          ...newEvent,
+                          end: new Date(e.target.value),
+                        })
+                      }
+                      className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                    />
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2 ml-2 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleAddEvent}
+                      className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    >
+                      Guardar Evento
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
         </div>
       )}
     </div>

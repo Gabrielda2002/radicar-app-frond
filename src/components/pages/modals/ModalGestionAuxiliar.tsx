@@ -1,8 +1,8 @@
 //*Funciones y Hooks
 import React, { useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 import { IRadicados } from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
-
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,7 +15,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   radicacion,
 }) => {
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
-
+  const { showAnimation, closing } = useAnimation(isOpen, onClose);
 
   if (!isOpen || !radicacion) return null;
 
@@ -25,16 +25,22 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
   return (
     <>
-      <div className="fixed z-50 flex  justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+      <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
         <section>
-          <div className="z-10 w-[fit-content] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+          <div
+            className={`z-10 w-[fit-content] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              showAnimation && !closing
+                ? "translate-y-0 opacity-100"
+                : "translate-y-10 opacity-0"
+            }`}
+          >
             <div className="flex items-center justify-between p-2 mb-4">
-              <h2 className="text-xl font-semibold text-color dark:text-gray-200  ">
+              <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
                 Tabla Gestión Servicios.
               </h2>
               <button
                 onClick={onClose}
-                className="text-xl text-gray-500 hover-gray-700 pr-2"
+                className="pr-2 text-xl text-gray-500 hover-gray-700"
               >
                 &times;
               </button>
@@ -53,7 +59,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                       <th className="">Fecha</th>
                     </tr>
                   </thead>
-                  <tbody className="text-center text-sm break-words dark:text-gray-200">
+                  <tbody className="text-sm text-center break-words dark:text-gray-200">
                     {radicacion.seguimientoAuxiliarRelation.map(
                       (seguimiento) => (
                         <tr key={seguimiento.id}>
@@ -77,8 +83,11 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
               ) : (
                 <tbody className=" w-[400px] ">
                   <tr className="border-none hover:bg-transparent dark:hover:bg-transparent">
-                    <td className="p-2 text-stone-400 dark:text-stone-500"colSpan={4} >
-                      No sean generado seguimientos... 
+                    <td
+                      className="p-2 text-stone-400 dark:text-stone-500"
+                      colSpan={4}
+                    >
+                      No sean generado seguimientos...
                     </td>
                   </tr>
                 </tbody>
@@ -90,13 +99,13 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             <div className="flex items-center justify-end w-full px-2 py-4 text-sm font-semibold bg-white gap-x-2 h-14 dark:bg-gray-800">
               <button
                 onClick={onClose}
-                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
+                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 Cerrar
               </button>
               <button
                 onClick={EventServicio}
-                className="w-32 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
+                className="w-32 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600 dark:hover:bg-gray-700"
               >
                 Registrar Gestión.
               </button>

@@ -76,6 +76,16 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
+        <nav className="flex flex-wrap items-center text-base">
+          <NavLink to="/home">
+            <img
+              src="./src/imgs/logo-navbar.png"
+              className="w-10 h-10"
+              alt="Logo"
+            />
+          </NavLink>
+        </nav>
+
         <button
           onClick={toggleSideBar}
           className="px-1 py-1 mx-1 ml-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
@@ -96,21 +106,11 @@ const Navbar: React.FC = () => {
               }`}
             />
           </div>
-          <span className="fixed p-2 text-xs text-white transition-opacity duration-300 -translate-x-12 translate-y-3 bg-gray-700 dark:bg-color rounded-lg opacity-0 left-[50px] w-max group-hover:opacity-100 ">
+          <span className="fixed p-2 text-xs text-white transition-opacity duration-300 -translate-x-22 -translate-y-8 bg-gray-700 dark:bg-color rounded-lg opacity-0 left-[50px] w-max group-hover:opacity-100 ">
             {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
-            <span className="absolute w-0 h-0 -translate-x-[30px] -translate-y-[20px] rotate-3 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-color"></span>
+            <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-color"></span>
           </span>
         </button>
-
-        <nav className="flex flex-wrap items-center text-base">
-          <NavLink to="/home">
-            <img
-              src="./src/imgs/logo-navbar.png"
-              className="w-10 h-10"
-              alt="Logo"
-            />
-          </NavLink>
-        </nav>
 
         {/* Botón de Modo Oscuro con Tooltip */}
         <button
@@ -128,10 +128,10 @@ const Navbar: React.FC = () => {
           )}
 
           {/* Tooltip */}
-          <span className="fixed p-2 px-2 text-xs text-white transition-opacity duration-300 transform -translate-x-[25px] translate-y-[89px] bg-gray-800 dark:bg-color rounded-lg opacity-0 group-hover:opacity-100 -top-10 left-1/2">
+          {/* <span className="fixed p-2 px-2 text-xs text-white transition-opacity duration-300 transform -translate-x-[81px] translate-y-[35px] bg-gray-800 dark:bg-color rounded-lg opacity-0 group-hover:opacity-100 -top-10 left-1/2">
             {theme === "light" ? "Modo Dark" : "Modo Light"}
-            <span className="absolute w-0 h-0 -translate-x-[14px] -translate-y-[28px] rotate-0 border-b-4 border-l-4 border-r-4 border-transparent border-b-gray-900 dark:border-b-color"></span>
-          </span>
+            <span className="absolute w-0 h-0 translate-x-[9px] translate-y-[0.1px] rotate-90 border-b-4 border-l-4 border-r-4 border-transparent border-b-gray-900 dark:border-b-color"></span>
+          </span> */}
         </button>
 
         {/* Menú de Soporte con Enlaces */}

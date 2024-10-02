@@ -1,5 +1,5 @@
 import { IStatusCup } from "../../../models/IAuditar";
-
+import useAnimation from "../../../hooks/useAnimations";
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
@@ -11,20 +11,27 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   data,
 }) => {
+  const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || !data) return null;
 
   return (
-    <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+    <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
       <section>
-        <div className="z-10 w-[fit-content] bg-white rounded  overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
+        <div
+          className={`z-10 w-[fit-content] bg-white rounded  overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+            showAnimation && !closing
+              ? "translate-y-0 opacity-100"
+              : "translate-y-10 opacity-0"
+          }`}
+        >
           {/* container-header */}
-          <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
+          <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800 ">
             <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
               CUPS
             </h2>
             <button
               onClick={onClose}
-              className="text-xl text-gray-500 hover-gray-700 pr-2"
+              className="pr-2 text-xl text-gray-500 hover-gray-700"
             >
               &times;
             </button>
@@ -45,7 +52,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
               </thead>
 
               {data.map((cups) => (
-                <tbody className="dark:text-gray-200 text-center">
+                <tbody className="text-center dark:text-gray-200">
                   <tr>
                     <td className="">{cups.code}</td>
                     <td className="">{cups.description}</td>

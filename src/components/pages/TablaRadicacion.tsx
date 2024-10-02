@@ -11,7 +11,7 @@ import { useFetchUsers } from "../../hooks/useFetchUsers";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 
 //*Iconos
-import gestion from "/assets/gestion.svg"
+import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
@@ -25,27 +25,28 @@ const TablaRadicacion = () => {
   const { data, loading, error } = useFetchUsers();
 
   //  se inicializan los estados para el paginado y la busqueda
-  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(data, [
     "createdAt",
     "id",
     "auditDate",
   ]);
-  const { currentPage, totalPages, paginate, currentData } = usePagination(
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
     filteredData,
-    itemsPerPage
+    ITEMS_PER_PAGE
   );
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
-  const [selectedRadicacion, setSelectedRadicacion] = useState<IRadicados | null>(null);
+  const [selectedRadicacion, setSelectedRadicacion] =
+    useState<IRadicados | null>(null);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setItemsPerPage(Number(e.target.value));
+    setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
   };
 
   const handleShowData = (radicacion: IRadicados) => {
@@ -56,21 +57,20 @@ const TablaRadicacion = () => {
   const handleShowGestionAuxiliar = (radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
-  }
+  };
 
-const handleOpenSoporte = (nombreSoporte: string | null) => {
+  const handleOpenSoporte = (nombreSoporte: string | null) => {
+    if (!nombreSoporte) {
+      alert("No hay soporte para mostrar.");
+      return;
+    }
 
-  if (!nombreSoporte) {
-    alert("No hay soporte para mostrar.");
+    window.open(
+      `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
+      "_blank"
+    );
     return;
-  }
-
-  window.open(
-    `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
-    "_blank"
-  );
-  return;
-}
+  };
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <h2>{error}</h2>;
@@ -93,7 +93,12 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt=""  onClick={() => window.history.back()} className="cursor-pointer"/>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            />
           </div>
         </nav>
       </section>
@@ -114,16 +119,14 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
           </div>
           <div className="flex items-center space-x-2 pt-1-">
             <select
-              name=""
-              id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
-              <option value="">PAGES</option>
-              <option value="1">10 PAGES</option>
-              <option value="2">20 PAGES</option>
-              <option value="3">30 PAGES</option>
+              <option value="">Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
             <ModalRadicacion />
           </div>
@@ -162,8 +165,12 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
                           : "N/A"}
                       </td>
                       <td>{radicacion.id}</td>
-                      <td>{radicacion.patientRelation.convenioRelation.name}</td>
-                      <td>{radicacion.patientRelation.documentRelation.name}</td>
+                      <td>
+                        {radicacion.patientRelation.convenioRelation.name}
+                      </td>
+                      <td>
+                        {radicacion.patientRelation.documentRelation.name}
+                      </td>
                       <td>{radicacion.patientRelation.name}</td>
                       <td>
                         {radicacion.auditDate
@@ -173,7 +180,12 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
                       <td>{radicacion.auditora}</td>
                       <td>
                         <button
-                          onClick={() => radicacion.soportesRelation && handleOpenSoporte(radicacion.soportesRelation.nameSaved)}
+                          onClick={() =>
+                            radicacion.soportesRelation &&
+                            handleOpenSoporte(
+                              radicacion.soportesRelation.nameSaved
+                            )
+                          }
                         >
                           <img className="dark:invert" src={soporte} alt="" />
                         </button>
@@ -186,9 +198,7 @@ const handleOpenSoporte = (nombreSoporte: string | null) => {
                         </button>
                       </td>
                       <td>
-                        <button
-                          onClick={() => handleShowData(radicacion)}
-                        >
+                        <button onClick={() => handleShowData(radicacion)}>
                           <img className="dark:invert" src={mostrar} alt="" />
                         </button>
                       </td>
