@@ -3,7 +3,7 @@ import axios from 'axios'
 const token = localStorage.getItem('token')
 
 export const api = axios.create({
-    baseURL: 'http://api.nordvitalips.com/api/v1',
+    baseURL: 'http://localhost:3600/api/v1',
 
     headers: {
         'Content-Type': 'application/json',
