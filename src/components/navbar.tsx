@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
 
         <button
           onClick={toggleSideBar}
-          className="px-1 py-1 mx-1 ml-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
+          className="p-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
         >
           <div className="relative w-8 h-8">
             <img
@@ -136,16 +136,16 @@ const Navbar: React.FC = () => {
 
         {/* Menú de Soporte con Enlaces */}
         <Menu as="div" className="relative">
-          <MenuButton className="p-2 mr-4 text-black duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
+          <MenuButton className="p-2 mr-4  duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
             Soportes
           </MenuButton>
 
           <Menu.Items
-            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none border-2 dark:border-color dark:bg-gray-700 duration-300 ease-in-out ${
+            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white dark:bg-gray-500 rounded-md shadow-lg ring-1 ring-black ring-opacity-5   ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
-            <div className="flex-grow w-full">
+            <div className="flex-grow w-full py-2 mt-1">
               {supportLinks.map((link) => (
                 <Menu.Item key={link.name}>
                   {({ active }) => (
@@ -155,9 +155,9 @@ const Navbar: React.FC = () => {
                       rel="noopener noreferrer"
                       className={`${
                         active
-                          ? "bg-gray-500 text-white dark:bg-color"
-                          : "text-gray-900 dark:text-white"
-                      } group flex rounded-md items-center w-full px-2 py-2 text-sm hover:underline hover:underline-offset-4`}
+                          ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600"//hover-dark
+                          : "text-gray-700 dark:text-gray-200"//hover-claro
+                      } group flex  items-center w-full px-2 py-2 text-sm `}
                     >
                       {link.name}
                     </a>
@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
           as="div"
           className="relative border-2 rounded-lg dark:border-white"
         >
-          <MenuButton className="flex items-center px-3 py-1 text-base text-white duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
+          <MenuButton className="flex items-center px-3 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
             <img
               alt="Profile"
               src={imageUrl || defaultUserPicture}
@@ -186,8 +186,8 @@ const Navbar: React.FC = () => {
           </MenuButton>
           <Menu.Items
             transition
-            className={`absolute right-0 z-50 w-56 p-2 border rounded-lg top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
-              theme === "dark" ? "bg-color" : "bg-white"
+            className={`absolute right-0 z-50 w-56 py-2 rounded-md top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5  ${
+              theme === "dark" ? "bg-gray-500" : "bg-white"
             }`}
           >
             {userNavigation.map((item) => (
@@ -197,22 +197,22 @@ const Navbar: React.FC = () => {
                     onClick={() => {
                       item.action();
                     }}
-                    className={`block px-4 py-2 text-sm w-full text-left ${
+                    className={`block  py-2  ps-2 text-sm w-full text-left ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-teal-600"
-                        : "text-gray-800 hover:bg-gray-200"
-                    } rounded-lg transition-colors duration-300`}
+                        ? "text-gray-200 hover:bg-gray-600 hover:text-white"//hover-dark
+                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"//hover-claro
+                    }  transition-colors duration-300`}
                   >
                     {item.name}
                   </button>
                 ) : (
                   <NavLink
                     to={item.href}
-                    className={`block px-4 py-2 text-sm ${
+                    className={`block  py-2 text-sm ps-2 ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-teal-600"
-                        : "text-gray-800 hover:bg-gray-200"
-                    } rounded-lg transition-colors duration-300`}
+                        ? "text-gray-200 hover:bg-gray-600 hover:text-white"//hover-dark
+                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"//hover-claro
+                    } transition-colors duration-300`}
                   >
                     {item.name}
                   </NavLink>

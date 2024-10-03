@@ -122,7 +122,7 @@ const TablaCups = () => {
                     <td>{cups.name}</td>
                     <td>{cups.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalActionCups />
+                      <ModalActionCups/>
                     </td>
                   </tr>
                 ))}

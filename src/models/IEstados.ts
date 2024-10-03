@@ -1,5 +1,5 @@
 export interface IEstados {
-    descripcion: ReactNode;
+    descripcion: string;
     id:        number;
     name:      string;
     updatedAt: Date;
