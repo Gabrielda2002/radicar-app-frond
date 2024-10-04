@@ -15,6 +15,7 @@ import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
+import { IRol } from "../models/IRol";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -180,4 +181,14 @@ export const fetchAuditados = async (): Promise<IAuditados[]> => {
         }))
     }));    
     return auditados;   
+}
+
+export const fetchRoles = async (): Promise<IRol[]> => {
+    const response = await api.get('/roles');
+    const roles = response.data.map((rol: IRol) => ({
+        ...rol,
+        updatedAt: new Date(rol.updatedAt),
+        createdAt: new Date(rol.createdAt)
+    }));
+    return roles;
 }

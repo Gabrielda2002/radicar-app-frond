@@ -14,7 +14,7 @@ import menu from "/assets/menu.svg";
 import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
-
+import logo from "../imgs/logo-navbar.png";
 const Navbar: React.FC = () => {
   const { logout } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
         <nav className="flex flex-wrap items-center text-base">
           <NavLink to="/home">
             <img
-              src="./src/imgs/logo-navbar.png"
+              src={logo}
               className="w-10 h-10"
               alt="Logo"
             />
