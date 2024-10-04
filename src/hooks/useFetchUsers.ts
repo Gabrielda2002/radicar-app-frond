@@ -12,6 +12,7 @@ import {
   fetchLugarRadicado,
   fetchMunicipio,
   fetchRadicador,
+  fetchRoles,
   fetchServicio,
   fetchUnidadFuncional,
   fetchUsers,
@@ -33,6 +34,7 @@ import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
+import { IRol } from "../models/IRol";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -173,26 +175,26 @@ export const useFetchConvenio = () => {
 };
 
 export const useFetchDocumento = () => {
-  const [data, setData] = useState<IDocumento[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [dataDocumento, setDataDocumento] = useState<IDocumento[]>([]);
+  const [loadingDocumento, setLoadingDocumento] = useState<boolean>(true);
+  const [errorDocumento, setErrorDocumento] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const users = await fetchDocumento();
-        setData(users);
+        setDataDocumento(users);
       } catch (error) {
-        setError("Error al obtener los datos de los tipos de documentos." + error);
+        setErrorDocumento("Error al obtener los datos de los tipos de documentos." + error);
       } finally {
-        setLoading(false);
+        setLoadingDocumento(false);
       }
     };
 
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataDocumento, loadingDocumento, errorDocumento };
 };
 
 export const useFetchIpsPrimaria = () => {
@@ -416,4 +418,28 @@ export const useFetchAuditados = () => {
   }, []);
 
   return { data, loading, error };
+}
+
+// * traer roles
+export const useFetchRoles = () => {
+  const [dataRol, setDataRol] = useState<IRol[]>([]);
+  const [loadingRol, setLoadingRol] = useState<boolean>(true);
+  const [errorRol, setErrorRol] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const roles = await fetchRoles();
+        setDataRol(roles);
+      } catch (error) {
+        setErrorRol("Error al obtener los datos de los roles." + error);
+      } finally {
+        setLoadingRol(false);
+      }
+    };
+
+    getData();
+  }, []);
+
+  return { dataRol, loadingRol, errorRol };
 }
