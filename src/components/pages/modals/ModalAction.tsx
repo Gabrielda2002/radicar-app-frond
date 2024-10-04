@@ -36,11 +36,9 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-
       setSubmitting(true);
-      
+
       try {
-        
         const response = await updateStatus(values.id, values.status, endPoint);
 
         if (response && response.status === 200) {
@@ -52,13 +50,11 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
             setSuccess(false);
           }, 2000);
         }
-
       } catch (error) {
         setError(`Error al actualizar el estado ${name}, ${error}`);
       }
 
       setSubmitting(false);
-
     },
   });
 
@@ -84,7 +80,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
               {/* container-header */}
               <div className="flex items-center justify-between  px-2 py-2  ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
-                  Módulo Estado
+                  Módulos
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -100,8 +96,8 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                 className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-4 ">
-                  <section className="grid grid-cols-2 gap-x-16 ">
-                    <div className="">
+                  <section className="grid grid-cols-3">
+                    <div className="flex">
                       <label htmlFor="">
                         <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
                           ID {name}
@@ -112,15 +108,17 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                           name="id"
                           value={formik.values.id}
                           readOnly
-                          className="w-full p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                          className="w-[200px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                           disabled
                         />
                         {formik.touched.id && formik.errors.id ? (
-                          <label className="text-red-500">{formik.errors.id}</label>
+                          <label className="text-red-500">
+                            {formik.errors.id}
+                          </label>
                         ) : null}
                       </label>
                     </div>
-                    <div className="">
+                    <div className="flex">
                       <label htmlFor="">
                         <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Estado
@@ -131,42 +129,58 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                           value={formik.values.status}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className="w-full p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                          className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                         >
                           <option value="">- SELECT -</option>
                           <option value={1}>Activo</option>
                           <option value={0}>Inactivo</option>
                         </select>
                         {formik.touched.status && formik.errors.status ? (
-                          <label className="text-red-500">{formik.errors.status}</label>
+                          <label className="text-red-500">
+                            {formik.errors.status}
+                          </label>
                         ) : null}
+                      </label>
+                    </div>
+                    <div className="">
+                      <label htmlFor="">
+                        <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                          Cambiar Nombre
+                        </span>
+                        <input
+                          type="text"
+                          id=""
+                          name=""
+                          className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                        />
                       </label>
                     </div>
                   </section>
                 </div>
-                </form>
+              </form>
 
-                {/* container-footer */}
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
-                  <button
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={() => setStadopen(false)}
-                  >
-                    Cerrar
-                  </button>
-                  <button
-                    className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                    type="submit"
-                    disabled={submitting}
-                   >
-                    {submitting ? "Actualizando..." : "Actualizando"}
-                  </button>
-                  {success && (
-                    <div className="text-green-500">Estado actualizado con éxito</div>
-                  )}
-                  {error && <div className="text-red-500">{error}</div>}
-                </div>
-
+              {/* container-footer */}
+              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                <button
+                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                  onClick={() => setStadopen(false)}
+                >
+                  Cerrar
+                </button>
+                <button
+                  className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  {submitting ? "Actualizando..." : "Actualizando"}
+                </button>
+                {success && (
+                  <div className="text-green-500">
+                    Estado actualizado con éxito
+                  </div>
+                )}
+                {error && <div className="text-red-500">{error}</div>}
+              </div>
             </div>
           </section>
         </section>
