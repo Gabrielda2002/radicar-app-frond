@@ -63,7 +63,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({
           <textarea
             id={`descripcion-${index}`}
             name={`descripcion-${index}`}
-            value={descripciones[index] || (loading ? "Cargando..." : error || "")}
+            value={descripciones[index] || (loading ? "Esperando..." : error || "")}
             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
             placeholder="Descripción del servicio"
             readOnly

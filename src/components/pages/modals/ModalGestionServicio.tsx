@@ -47,6 +47,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
           setSuccess(true);
           setTimeout(() => {
             onClose();
+            window.location.reload();
           }, 2000);
         } else {
           throw new Error("Error al registrar la gestión.");
