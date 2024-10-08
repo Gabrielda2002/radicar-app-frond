@@ -139,3 +139,8 @@ export const createTableRadicacion = (name: string, endPoint: string) => {
 export const createUsuario = async (data: FormData) => {
     return api.post(`/usuarios`, data);
 }
+
+// actualizar datos del perfil del usuario
+export const updateUserDataEp = async (data: FormData, id: string) => {
+    return api.put(`/usuario-datos-basicos/${id}`, data);
+}
