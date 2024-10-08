@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import InputAutocompletado from "../../InputAutocompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -25,26 +27,6 @@ const ModalRadicacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [submiting, setSubmiting] = useState<boolean>(false);
 
-  const [idIpsRemite, setIdIpsRemite] = useState<string>("");
-  const [idEspecialidad, setIdEspecialidad] = useState<string>("");
-  const [idGrupoServicios, setIdGrupoServicios] = useState<string>("");
-  const [idLugarRadicacion, setIdLugarRa] = useState<string>("");
-  const [idTipoServicios, setIdTipoServicios] = useState<string>("");
-  const [idPaciente, setIdPaciente] = useState<string>("");
-  const [telefonoFijo, setTelefonoFijo] = useState<string>("");
-  const [numeroCelular, setNumeroCelular] = useState<string>("");
-  const [direccion, setDireccion] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [nombreProfesional, setNombreProfesional] = useState<string>("");
-  const [dateOrden, setDateOrden] = useState<string>("");
-  const [soporte, setSoporte] = useState<File | null>(null);
-
-  const handleSoporteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSoporte(e.target.files[0]);
-    }
-  };
-
   const user = localStorage.getItem("user");
   const nombreUsuario = user
     ? JSON.parse(user).nombre + " " + JSON.parse(user).apellido
@@ -55,47 +37,92 @@ const ModalRadicacion = () => {
   const [identificacion, setIdentificacion] = useState<string>("");
   const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [idDiagnostico, setIdDiagnostico] = useState<string>("");
+  // const [idDiagnostico, setIdDiagnostico] = useState<string>("");
   const [cantidad, setCantidad] = useState<string>("1");
   const [servicios, setServicios] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
-  // * funcion para enviar los datos del formulario
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // * usar formik y yup para validar los campos
+  const validationSchema = Yup.object({
+    telefonoFijo: Yup.string()
+      .required("Campo requerido")
+      .min(1, "El número debe tener al menos 1 caracteres.")
+      .max(20, "El número debe tener máximo 10 caracteres."),
+    numeroCelular: Yup.string()
+      .required("Campo requerido")
+      .min(1, "El número debe tener al menos 10 caracteres.")
+      .max(15, "El número debe tener máximo 10 caracteres."),
+    direccion: Yup.string().required("Campo requerido"),
+    email: Yup.string().email("Email inválido").required("Campo requerido"),
+    idIpsRemite: Yup.string().required("Campo requerido"),
+    idEspecialidad: Yup.string().required("Campo requerido"),
+    idGrupoServicios: Yup.string().required("Campo requerido"),
+    idLugarRadicacion: Yup.string().required("Campo requerido"),
+    idTipoServicios: Yup.string().required("Campo requerido"),
+    nombreProfesional: Yup.string()
+      .required("Campo requerido")
+      .min(3, "El nombre debe tener al menos 3 caracteres.")
+      .max(100, "El nombre debe tener máximo 100 caracteres."),
+    dateOrden: Yup.string().required("Campo requerido"),
+    soporte: Yup.mixed().required("Campo requerido")
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      telefonoFijo: "",
+      numeroCelular: "",
+      direccion: "",
+      email: "",
+      idIpsRemite: "",
+      idEspecialidad: "",
+      idGrupoServicios: "",
+      idLugarRadicacion: "",
+      idTipoServicios: "",
+      nombreProfesional: "",
+      dateOrden: "",
+      idDiagnostico: "",
+      descripcionDiagnostico: "",
+      codigoDiagnostico: "",
+      idPaciente: "",
+      soporte: null,
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      console.log(values);
 
     setSubmiting(true);
     setSuccess(false);
 
     const formData = new FormData();
-    formData.append("landline", telefonoFijo);
-    formData.append("phoneNumber", numeroCelular);
-    formData.append("address", direccion);
-    formData.append("email", email);
-    formData.append("ipsRemitente", idIpsRemite);
-    formData.append("specialty", idEspecialidad);
-    formData.append("groupServices", idGrupoServicios);
-    formData.append("place", idLugarRadicacion);
-    formData.append("typeServices", idTipoServicios);
+    formData.append("landline", values.telefonoFijo);
+    formData.append("phoneNumber", values.numeroCelular);
+    formData.append("address", values.direccion);
+    formData.append("email", values.email);
+    formData.append("ipsRemitente", values.idIpsRemite);
+    formData.append("specialty", values.idEspecialidad);
+    formData.append("groupServices", values.idGrupoServicios);
+    formData.append("place", values.idLugarRadicacion);
+    formData.append("typeServices", values.idTipoServicios);
     formData.append("radicador", idUsuario);
-    formData.append("profetional", nombreProfesional);
-    formData.append("orderDate", dateOrden);
-    if (soporte) {
-      formData.append("file", soporte);
+    formData.append("profetional", values.nombreProfesional);
+    formData.append("orderDate", values.dateOrden);
+    if (values.soporte) {
+      formData.append("file", values.soporte);
     }
-    formData.append("idDiagnostico", idDiagnostico);
+    formData.append("idDiagnostico", values.idDiagnostico);
     formData.append("code", servicios.join(","));
     formData.append("DescriptionCode", descripciones.join(","));
-    formData.append("idPatient", idPaciente);
+    formData.append("idPatient", values.idPaciente);
 
     try {
-      const response = await submitRadicado(formData, idPaciente);
+      const response = await submitRadicado(formData, values.idPaciente);
 
       if (response?.status === 201) {
         setSuccess(true);
 
         setTimeout(() => {
           setStadopen(false);
+          window.location.reload();
         }, 2000);
       } else {
         setErrorMessage("Error al radicar, revise los campos.");
@@ -105,55 +132,38 @@ const ModalRadicacion = () => {
     }
 
     setSubmiting(false);
-  };
 
+    },
+  });
+
+  // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
     if (data) {
-      setTelefonoFijo(data.landline);
-      setNumeroCelular(data.phoneNumber);
-      setDireccion(data.address);
-      setEmail(data.email);
+      formik.setFieldValue("telefonoFijo", data.landline);
+      formik.setFieldValue("numeroCelular", data.phoneNumber);
+      formik.setFieldValue("direccion", data.address);
+      formik.setFieldValue("email", data.email);
     }
   }, [data]);
 
   useEffect(() => {
     if (diagnostico) {
+      formik.setFieldValue("idDiagnostico", diagnostico.map((item) => item.id).join(", "));
       setDescription(diagnostico.map((item) => item.description).join(", "));
-      setIdDiagnostico(diagnostico.map((item) => item.id).join(", "));
+      // formik.setFieldValue("servicios", diagnostico.map((item) => item.id).join(", "));      
     }
   }, [diagnostico]);
 
   useEffect(() => {
     if (data) {
-      setIdPaciente(data.id.toString());
+      formik.setFieldValue("idPaciente", data.id.toString());
+      // setIdPaciente(data.id.toString());
     }
   }, [data]);
-
-  // * funcion para traer el id del input autocompletado
-
-  const handleTipoServiciosChange = (id?: string) => {
-    setIdTipoServicios(id || "");
-  };
-
-  const handleLugarRadicacionChange = (id?: string) => {
-    setIdLugarRa(id || "");
-  };
 
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
-
-  const hableIpsRemiteChange = (id?: string) => {
-    setIdIpsRemite(id || "");
-  };
-
-  const hableEspecialidadChange = (id?: string) => {
-    setIdEspecialidad(id || "");
-  };
-
-  const hableGrupoServiciosChange = (id?: string) => {
-    setIdGrupoServicios(id || "");
-  };
 
   const handleDiagnosticoKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -248,7 +258,10 @@ const ModalRadicacion = () => {
               </div>
 
               {/* init form */}
-              <form className="flex max-h-[70Vh] overflow-y-auto  dark:bg-gray-800">
+              <form
+                onSubmit={formik.handleSubmit}
+                className="flex max-h-[70Vh] overflow-y-auto  dark:bg-gray-800"
+              >
                 <div className="px-5">
                   <div>
                     <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
@@ -358,9 +371,8 @@ const ModalRadicacion = () => {
                     <div>
                       <input
                         type="text"
-                        value={idPaciente}
+                        value={formik.values.idPaciente}
                         className="hidden"
-                        onChange={(e) => setIdPaciente(e.target.value)}
                       />
                     </div>
                   </section>
@@ -380,11 +392,18 @@ const ModalRadicacion = () => {
                         <input
                           type="number"
                           id=""
-                          name=""
-                          onChange={(e) => setTelefonoFijo(e.target.value)}
-                          value={telefonoFijo}
+                          name="telefonoFijo"
+                          onChange={formik.handleChange}
+                          value={formik.values.telefonoFijo}
+                          onBlur={formik.handleBlur}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {formik.touched.telefonoFijo &&
+                        formik.errors.telefonoFijo ? (
+                          <div className="text-red-500 dark:text-red-300">
+                            {formik.errors.telefonoFijo}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
@@ -395,11 +414,20 @@ const ModalRadicacion = () => {
                         <input
                           type="number"
                           id=""
-                          onChange={(e) => setNumeroCelular(e.target.value)}
-                          value={numeroCelular}
-                          name=""
+                          onChange={formik.handleChange}
+                          value={formik.values.numeroCelular}
+                          name="numeroCelular"
+                          onBlur={formik.handleBlur}  
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.numeroCelular &&
+                          formik.errors.numeroCelular ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.numeroCelular}
+                            </div>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div>
@@ -410,11 +438,20 @@ const ModalRadicacion = () => {
                         <input
                           type="text"
                           id=""
-                          name=""
-                          onChange={(e) => setDireccion(e.target.value)}
-                          value={direccion}
+                          name="direccion"
+                          onChange={formik.handleChange}
+                          value={formik.values.direccion}
+                          onBlur={formik.handleBlur}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.direccion &&
+                          formik.errors.direccion ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.direccion}
+                            </div>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div>
@@ -424,12 +461,21 @@ const ModalRadicacion = () => {
                         </span>
                         <input
                           type="email"
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={formik.handleChange}
                           id=""
-                          name=""
-                          value={email}
+                          name="email"
+                          value={formik.values.email}
+                          onBlur={formik.handleBlur}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.email &&
+                          formik.errors.email ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.email}
+                            </div>
+                          ) : null  
+                        }
                       </label>
                     </div>
                   </section>
@@ -478,16 +524,32 @@ const ModalRadicacion = () => {
                     <div>
                       <InputAutocompletado
                         label="IPS Remite"
-                        onInputChanged={hableIpsRemiteChange}
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("idIpsRemite", value)
+                        }
                         apiRoute="ips-remite-name"
                       />
+                      {formik.touched.idIpsRemite &&
+                      formik.errors.idIpsRemite ? (
+                        <div className="text-red-500 dark:text-red-300">
+                          {formik.errors.idIpsRemite}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <InputAutocompletado
                         label="Especialidad"
-                        onInputChanged={hableEspecialidadChange}
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("idEspecialidad", value)
+                        }
                         apiRoute="especialidades-name"
                       />
+                      {formik.touched.idEspecialidad &&
+                      formik.errors.idEspecialidad ? (
+                        <div className="text-red-500 dark:text-red-300">
+                          {formik.errors.idEspecialidad}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <label htmlFor="">
@@ -497,11 +559,21 @@ const ModalRadicacion = () => {
                         <input
                           type="text"
                           id=""
-                          name=""
+                          name="nombreProfesional"
                           placeholder="Digite nombre"
-                          onChange={(e) => setNombreProfesional(e.target.value)}
+                          onChange={formik.handleChange}
+                          value={formik.values.nombreProfesional}
+                          onBlur={formik.handleBlur}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.nombreProfesional &&
+                          formik.errors.nombreProfesional ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.nombreProfesional}
+                            </div>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div>
@@ -512,32 +584,71 @@ const ModalRadicacion = () => {
                         <input
                           type="date"
                           id=""
-                          name=""
-                          onChange={(e) => setDateOrden(e.target.value)}
+                          name="dateOrden"
+                          onChange={formik.handleChange}
+                          value={formik.values.dateOrden}
+                          onBlur={formik.handleBlur}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.dateOrden &&
+                          formik.errors.dateOrden ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.dateOrden}
+                            </div>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div>
                       <InputAutocompletado
                         label="Grupo Servicios"
-                        onInputChanged={hableGrupoServiciosChange}
+                        onInputChanged={(value) =>
+                          formik.setFieldValue(
+                            "idGrupoServicios",
+                            value
+                          )
+                        }
                         apiRoute="grupo-servicios-name"
                       />
+                      {formik.touched.idGrupoServicios &&
+                      formik.errors.idGrupoServicios ? (
+                        <div className="text-red-500 dark:text-red-300">
+                          {formik.errors.idGrupoServicios}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <InputAutocompletado
                         label="Tipo Servicios"
-                        onInputChanged={handleTipoServiciosChange}
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("idTipoServicios", value)
+                        }
                         apiRoute="servicios-name"
                       />
+                      {
+                        formik.touched.idTipoServicios &&
+                        formik.errors.idTipoServicios ? (
+                          <div className="text-red-500 dark:text-red-300">
+                            {formik.errors.idTipoServicios}
+                          </div>
+                        ) : null
+                      }
                     </div>
                     <div>
                       <InputAutocompletado
                         label="Lugar Radicacación"
-                        onInputChanged={handleLugarRadicacionChange}
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("idLugarRadicacion", value)
+                        }
                         apiRoute="lugares-radicacion-name"
                       />
+                      {formik.touched.idLugarRadicacion &&
+                      formik.errors.idLugarRadicacion ? (
+                        <div className="text-red-500 dark:text-red-300">
+                          {formik.errors.idLugarRadicacion}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <label htmlFor="">
@@ -600,51 +711,63 @@ const ModalRadicacion = () => {
                         <input
                           type="file"
                           id=""
-                          name=""
+                          name="soporte"
                           accept=".pdf"
-                          onChange={handleSoporteChange}
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                              formik.setFieldValue("soporte", e.target.files[0]); // Asignar el archivo seleccionado a Formik
+                            }
+                          }}
                           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.soporte &&
+                          formik.errors.soporte ? (
+                            <div className="text-red-500 dark:text-red-300">
+                              {formik.errors.soporte}
+                            </div>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div>
                       <input
                         type="text"
-                        value={idDiagnostico}
+                        value={formik.values.idDiagnostico}
                         className="hidden"
                       />
                     </div>
                   </section>
                 </div>
+
+                {errorMessage && (
+                  <div className="text-red-500 dark:text-red-300">
+                    {errorMessage}
+                  </div>
+                )}
+                {success && (
+                  <div className="text-green-500 dark:text-green-300">
+                    Radicado guardado correctamente.
+                  </div>
+                )}
+
+                {/* container-footer */}
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+                  <button
+                    onClick={() => setTimeout(closeModal, 250)}
+                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    disabled={submiting}
+                    type="submit"
+                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  >
+                    {submiting ? "Enviando..." : "Radicar"}
+                  </button>
+                </div>
               </form>
-
-              {errorMessage && (
-                <div className="text-red-500 dark:text-red-300">
-                  {errorMessage}
-                </div>
-              )}
-              {success && (
-                <div className="text-green-500 dark:text-green-300">
-                  Radicado guardado correctamente.
-                </div>
-              )}
-
-              {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
-                <button
-                  onClick={() => setTimeout(closeModal, 250)}
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
-                >
-                  Cerrar
-                </button>
-                <button
-                  disabled={submiting}
-                  className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                  onClick={handleSubmit}
-                >
-                  Radicar
-                </button>
-              </div>
             </div>
           </section>
         </div>
