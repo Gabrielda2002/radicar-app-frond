@@ -28,6 +28,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.removeItem('token');  // Asegúrate de que 'token' es el nombre correcto
         localStorage.removeItem('rol');  // Elimina el rol del usuario
         localStorage.removeItem('Municipio');  // Elimina el municipio del usuario
+        localStorage.removeItem('user');  // Elimina el usuario
         setIsAuthenticated(false);
         setRol(null);
         setMunicipio(null);
