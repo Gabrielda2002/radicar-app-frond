@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import ModalPaciente from "../modals/ModalPaciente";
 //*Iconos
 import salir from "/assets/back.svg";
+import { useFetchPacientes } from "../../../hooks/useFetchPaciente";
+import LoadingSpinner from "../../LoadingSpinner";
+
 
 //! NO BORRAR
 /*
@@ -33,6 +36,13 @@ const {query, setQuery, filteredData} = useSearch(data,[
 //! NO BORRAR
 
 const TablaPacientes = () => {
+
+  
+const {pacientes, errorPacientes, loading} = useFetchPacientes();
+
+  if (loading) return <LoadingSpinner />;
+  if (errorPacientes) return <h2>{errorPacientes}</h2>;
+
   return (
     <>
       {/* nav-table */}
@@ -80,9 +90,6 @@ const TablaPacientes = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            {/* <button className="borde-2 w-[150px] h-[40px] rounded-md focus:outline-none bg-color text-white hover:bg-emerald-900  active:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800">
-                        Agregar Paciente
-                    </button> */}
             <ModalPaciente></ModalPaciente>
           </div>
         </section>
@@ -104,34 +111,26 @@ const TablaPacientes = () => {
           </thead>
 
           <tbody className="text-xs text-center  dark:text-gray-200">
+            {pacientes.map((pacientes) => (
             <tr>
-              <td className="break-words">222</td>
-              <td className="break-words">1045256363</td>
-              <td className="break-words">CC</td>
-              <td className="break-words">LAURA ANDREA CASTRO BARBOSA</td>
-              <td className="break-words">30420192872</td>
-              <td className="break-words">30420197582222</td>
-              <td className="break-words">noregistra@notiene.com</td>
-              <td className="break-words">Compensar EPS</td>
-              <td className="break-words">INACTIVO2</td>
-              <td className="break-words">
-                {/* <ModalAction/> */}
+              
+              <td>{pacientes.id}</td>
+              <td>{pacientes.documentNumber}</td>
+              <td>{pacientes.documentRelation.name}</td>
+              <td>{pacientes.name}</td>
+              <td>{pacientes.phoneNumber}</td>
+              <td>{pacientes.landline}</td>
+              <td>{pacientes.email}</td>
+              <td>{pacientes.convenioRelation.name}</td>
+              <td>{pacientes.status}</td>
+              <td>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  Editar
+                </button>
               </td>
+
             </tr>
-            <tr>
-              <td className="break-words">10</td>
-              <td className="break-words">2782665572</td>
-              <td className="break-words">CC</td>
-              <td className="break-words">JESSICA LIZBETH BRICE O AGUIN</td>
-              <td className="break-words">30287662778</td>
-              <td className="break-words"> 092767276662</td>
-              <td className="break-words">noregistra@notiene.com</td>
-              <td className="break-words">Ferrocarriles </td>
-              <td className="break-words">INACTIVO2 </td>
-              <td className="break-words">
-                {/* <ModalAction nom="Pacientes" /> */}
-              </td>
-            </tr>
+            ))}
           </tbody>
         </table>
       </section>
