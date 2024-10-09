@@ -1,16 +1,72 @@
 //*Funciones y Hooks
 import { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import * as Yup from "yup";
 //*Icons
 import onOff from "/assets/on-off.svg";
+import { useFormik } from "formik";
+import { updateCupsData } from "../../../services/updateCupsData";
 
-const ModalActionCups = () => {
+interface ModalActionCupsProps {
+  id: number;
+}
+
+const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string>("");
   const { showAnimation, closing } = useAnimation(
     stadopen,
     () => setStadopen(false),
     300
   );
+
+  const validationSchema = Yup.object({
+    estado: Yup.string().optional(),
+    nombreCups: Yup.string().optional()
+      .min(1, "El nombre del cups debe tener al menos 1 caracter")
+      .max(100, "El nombre del cups debe tener como máximo 100 caracteres"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      id: id,
+      estado: "",
+      nombreCups: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+
+      try {
+
+        const formData = new FormData();
+
+        if (values.nombreCups) {
+          formData.append("name", values.nombreCups);
+        }
+        if (values.estado) {
+          formData.append("status", values.estado);
+        }
+
+        
+        const response = await updateCupsData(formData, id);
+
+        if (response?.status === 200 || response?.status === 201) {
+          setSuccess(true);
+          setError("");
+          setTimeout(() => {
+            setStadopen(false);
+            window.location.reload();
+          }, 2000);
+        }
+
+      } catch (error) {
+        setError(`Ocurrió un error al intentar actualizar el estado del cups ${error}`);
+        setSuccess(false);
+      }
+
+    },
+  });
 
   return (
     <>
@@ -48,8 +104,8 @@ const ModalActionCups = () => {
 
               {/* init form */}
               <form
-                action=""
-                className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
+                onSubmit={formik.handleSubmit}
+                className=" max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-4">
                   <section className="grid grid-cols-3">
@@ -61,10 +117,18 @@ const ModalActionCups = () => {
                         <input
                           type="text"
                           id=""
-                          name=""
+                          name="id"
+                          value={formik.values.id}
                           className="w-[200px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                           disabled
                         />
+                        {
+                          formik.touched.id && formik.errors.id ? (
+                            <label className="text-red-500">
+                              {formik.errors.id}
+                            </label>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div className="flex">
@@ -74,13 +138,23 @@ const ModalActionCups = () => {
                         </span>
                         <select
                           id=""
-                          name=""
+                          name="estado"
+                          value={formik.values.estado}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                         >
                           <option value="">- SELECT -</option>
-                          <option value="1">Activo</option>
-                          <option value="2">Inactivo</option>
+                          <option value={1}>Activo</option>
+                          <option value={0}>Inactivo</option>
                         </select>
+                        {
+                          formik.touched.estado && formik.errors.estado ? (
+                            <label className="text-red-500">
+                              {formik.errors.estado}
+                            </label>
+                          ) : null
+                        }
                       </label>
                     </div>
                     <div className="">
@@ -91,27 +165,49 @@ const ModalActionCups = () => {
                         <input
                           type="text"
                           id=""
-                          name=""
+                          name="nombreCups"
+                          value={formik.values.nombreCups}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {
+                          formik.touched.nombreCups && formik.errors.nombreCups ? (
+                            <label className="text-red-500">
+                              {formik.errors.nombreCups}
+                            </label>
+                          ) : null
+                        }
                       </label>
                     </div>
                   </section>
                 </div>
-              </form>
 
-              {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
-                <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                  onClick={() => setStadopen(false)}
-                >
-                  Cerrar
-                </button>
-                <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
-                  Actualizar
-                </button>
-              </div>
+                {/* container-footer */}
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                  <button
+                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    onClick={() => setStadopen(false)}
+                  >
+                    Cerrar
+                  </button>
+                  <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
+                    Actualizar
+                  </button>
+
+                  {success && (
+                    <div className="text-green-500 dark:text-green-300">
+                      Actualizado correctamente.
+                    </div>
+                  )}
+                  {error && (
+                    <div className="text-red-500 dark:text-red-300">
+                      {error}
+                    </div>
+                  )}
+                        
+                </div>
+              </form>
             </div>
           </section>
         </section>
