@@ -56,7 +56,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
           setError("");
           setTimeout(() => {
             setStadopen(false);
-            // window.location.reload();
+            window.location.reload();
           }, 2000);
         }
 
