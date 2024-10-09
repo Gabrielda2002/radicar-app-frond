@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import ServicioForm from "../../ServicioForm";
 import useAnimation from "../../../hooks/useAnimations";
-import useFetchPaciente from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import InputAutocompletado from "../../InputAutocompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
