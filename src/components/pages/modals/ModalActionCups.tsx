@@ -105,7 +105,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
               {/* init form */}
               <form
                 onSubmit={formik.handleSubmit}
-                className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
+                className=" max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-4">
                   <section className="grid grid-cols-3">
