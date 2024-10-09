@@ -154,3 +154,8 @@ export const updateCupsDataEp = async (data: FormData, id: number) => {
 export const createCupsEp = async (data: FormData) => {
     return api.post(`/servicio-solicitado`, data);
 }
+
+// crear pacciente
+export const createPacienteEp = async (data: FormData) => {
+    return api.post(`/pacientes`, data);
+}
