@@ -83,8 +83,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             {!showSecondModal ? (
               <>
                 <div className="mb-8 px-6 mt-2">
-                  <label className="flex mb-2  text-xl font-medium text-blue-500 dark:text-white">
-                    Seleccione la fecha con la que desea hacer el filtrado
+                  <label className="flex mb-2  text-xl font-medium text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
+                  Fecha Filtrado 
                   </label>
                   <select
                     name="reportOptions"
@@ -148,9 +148,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             )}
 
             {/* section-two */}
-            <div className="mb-6 px-2">
-              <label className="flex mb-2 text-xl font-semibold text-color dark:text-white">
-                Código CUPS :
+            <div className="mb-6 px-6">
+              <label className="flex mb-2 text-xl font-semibold text-color dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
+                Código CUPS 
               </label>
               <input
                 type="text"
@@ -186,7 +186,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
                   }`}
                   disabled={!formValues.reportOptions} // Deshabilita si no hay opción seleccionada
                 >
-                  Generar
+                  Siguiente
                 </button>
               ) : (
                 <button
