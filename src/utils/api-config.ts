@@ -144,3 +144,8 @@ export const createUsuario = async (data: FormData) => {
 export const updateUserDataEp = async (data: FormData, id: string) => {
     return api.put(`/usuario-datos-basicos/${id}`, data);
 }
+
+// actualizar datos de cups
+export const updateCupsDataEp = async (data: FormData, id: number) => {
+    return api.put(`/servicio-solicitado-update-table/${id}`, data);
+}
