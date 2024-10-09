@@ -9,7 +9,7 @@ const useFetchCups = () => {
 
   const fetchCups = async (id: string) => {
     try {
-      const response = await api.post(`/servicio-solicitado-documento`, {
+      const response = await api.post(`/servicio-solicitado-code`, {
         code : id
       });
 
