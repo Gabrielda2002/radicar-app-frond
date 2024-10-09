@@ -27,10 +27,8 @@ const TablaCups = () => {
     "status",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
-    filteredData,
-    itemsPerPage
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -59,7 +57,12 @@ const TablaCups = () => {
             </li>
           </ol>
           <div className="w-10 pb-2 ">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            />
           </div>
         </nav>
       </section>
@@ -122,9 +125,7 @@ const TablaCups = () => {
                     <td>{cups.name}</td>
                     <td>{cups.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <ModalActionCups
-                        id={cups.id}
-                      />
+                      <ModalActionCups id={cups.id} />
                     </td>
                   </tr>
                 ))}
