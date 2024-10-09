@@ -260,9 +260,9 @@ const ModalRadicacion = () => {
               {/* init form */}
               <form
                 onSubmit={formik.handleSubmit}
-                className="flex max-h-[70Vh] overflow-y-auto  dark:bg-gray-800"
+                className="dark:bg-gray-800"
               >
-                <div className="px-5">
+                <div className="px-5 max-h-[70Vh] overflow-y-auto">
                   <div>
                     <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
                       Datos Paciente
