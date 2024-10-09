@@ -58,7 +58,6 @@ const ModalPaciente = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const formData = new FormData();
         formData.append("documentType", values.tipoDocumento);
@@ -88,7 +87,6 @@ const ModalPaciente = () => {
     },
   });
 
-  console.log(formik.errors);
   
 
   const { showAnimation, closing } = useAnimation(
