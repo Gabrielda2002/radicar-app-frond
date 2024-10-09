@@ -152,17 +152,17 @@ export const useFetchMunicipio = () => {
 };
 
 export const useFetchConvenio = () => {
-  const [data, setData] = useState<IConvenios[]>([]);
+  const [dataConvenios, setDataConvenios] = useState<IConvenios[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorConvenio, setErrorConvenio] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const convenios = await fetchConvenio();
-        setData(convenios);
+        setDataConvenios(convenios);
       } catch (error) {
-        setError("Error al obtener los datos de los convenios." + error);
+        setErrorConvenio("Error al obtener los datos de los convenios." + error);
       } finally {
         setLoading(false);
       }
@@ -171,7 +171,7 @@ export const useFetchConvenio = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataConvenios, loading, errorConvenio };
 };
 
 export const useFetchDocumento = () => {
@@ -198,17 +198,17 @@ export const useFetchDocumento = () => {
 };
 
 export const useFetchIpsPrimaria = () => {
-  const [data, setData] = useState<IIPSPrimaria[]>([]);
+  const [dataIpsPrimaria, setDataIpsPrimaria] = useState<IIPSPrimaria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorIpsPrimaria, setErrorIpsPrimaria] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const ipsPrimaria = await fetchIpsPrimaria();
-        setData(ipsPrimaria);
+        setDataIpsPrimaria(ipsPrimaria);
       } catch (error) {
-        setError("Error al obtener los datos de las IPS Primarias." + error);
+        setErrorIpsPrimaria("Error al obtener los datos de las IPS Primarias." + error);
       } finally {
         setLoading(false);
       }
@@ -217,7 +217,7 @@ export const useFetchIpsPrimaria = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataIpsPrimaria, loading, errorIpsPrimaria };
 };
 
 export const useFetchLugarRadicado = () => {
