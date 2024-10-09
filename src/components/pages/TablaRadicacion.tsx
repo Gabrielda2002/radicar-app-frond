@@ -66,7 +66,7 @@ const TablaRadicacion = () => {
     }
 
     window.open(
-      `http://localhost:3600/api/v1/uploads/Soportes/${nombreSoporte}`,
+      `https://api.nordvitalips.com/api/v1/uploads/Soportes/${nombreSoporte}`,
       "_blank"
     );
     return;

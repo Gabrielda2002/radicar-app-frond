@@ -14,10 +14,10 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoDocumento = () => {
-  const { data, loading, error } = useFetchDocumento();
+  const { dataDocumento, loadingDocumento, errorDocumento } = useFetchDocumento();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(dataDocumento, [
     "id",
     "name",
     "status",
@@ -33,8 +33,8 @@ const TablaTipoDocumento = () => {
     setItemsPerPage(Number(e.target.value));
   };
 
-  if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h1>{error}</h1>;
+  if (loadingDocumento) return <LoadingSpinner duration={100000} />;
+  if (errorDocumento) return <h1>{errorDocumento}</h1>;
 
   return (
     <>

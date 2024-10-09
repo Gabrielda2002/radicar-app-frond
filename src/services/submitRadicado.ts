@@ -3,7 +3,7 @@ import { saveCups, saveFileRadicar, saveRadicar, updatePatientData } from "../ut
 export const submitRadicado = async (data: FormData, idPaciente: string) => {
     try {
         
-        for (var pair of data.entries()) {
+        for (const pair of data.entries()) {
             console.log(pair[0] + ", " + pair[1]);
           }
 

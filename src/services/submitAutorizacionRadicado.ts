@@ -1,6 +1,6 @@
 import { AuditarRadicado, autorizarCups } from "../utils/api-config"
 
-export const submitAutorizacionRadicado = async (data: any, id: number) => {
+export const submitAutorizacionRadicado = async (data: object, id: number) => {
 
     const response = await AuditarRadicado(data, id)
 
