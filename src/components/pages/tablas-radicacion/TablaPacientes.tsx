@@ -1,46 +1,43 @@
 //*Funciones y Hooks
 import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
 import ModalPaciente from "../modals/ModalPaciente";
+import usePagination from "../../../hooks/usePagination";
+import { useFetchPacientes } from "../../../hooks/useFetchPaciente";
 //*Iconos
 import salir from "/assets/back.svg";
-import { useFetchPacientes } from "../../../hooks/useFetchPaciente";
-import LoadingSpinner from "../../LoadingSpinner";
+import { useState } from "react";
 
-
-//! NO BORRAR
-/*
-Componentes para la paginacion y busqueda y filtrado
-
-import usePagination from "../../../hooks/usePagination";
-import useSearch from "../../../hooks/useSearch";
-import Pagination from "../../Pagination";
-
-const ITEMS_PER_PAGE = 10;
-const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
-const {query, setQuery, filteredData} = useSearch(data,[
-  "id",
-  "document",
-  "TypeDocument",
-  "full name",
-  "phone",
-  "mail",
-  "convenio",
-  "Status"
-  ] '
-
-  const {currentPage, totalPages, paginate, currentData} = usePagination(
-    filteredData,
-    itemsPerPage
-  )
-*/
-//! NO BORRAR
+const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaPacientes = () => {
+  const { pacientes, errorPacientes, loading } = useFetchPacientes();
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  
-const {pacientes, errorPacientes, loading} = useFetchPacientes();
+  const { query, setQuery, filteredData } = useSearch(pacientes, [
+    "id",
+    "documentNumber",
+    "documentRelation",
+    "name",
+    "phoneNumber",
+    "landline",
+    "email",
+    "convenioRelation",
+    "status",
+  ]);
 
-  if (loading) return <LoadingSpinner />;
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+
+  if (loading) return <LoadingSpinner duration={500} />;
   if (errorPacientes) return <h2>{errorPacientes}</h2>;
 
   return (
@@ -48,6 +45,7 @@ const {pacientes, errorPacientes, loading} = useFetchPacientes();
       {/* nav-table */}
 
       <section className=" dark:bg-gray-900">
+        <LoadingSpinner duration={500} />;
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Pacientes
         </h1>
@@ -61,7 +59,12 @@ const {pacientes, errorPacientes, loading} = useFetchPacientes();
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            />
           </div>
         </nav>
       </section>
@@ -75,6 +78,8 @@ const {pacientes, errorPacientes, loading} = useFetchPacientes();
               Buscar Paciente :
             </label>
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
               className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
@@ -83,6 +88,8 @@ const {pacientes, errorPacientes, loading} = useFetchPacientes();
             <select
               name=""
               id=""
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
               className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
@@ -94,45 +101,59 @@ const {pacientes, errorPacientes, loading} = useFetchPacientes();
           </div>
         </section>
 
-        <table className="w-full text-sm ">
-          <thead>
-            <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-              <th className=" w-[70px]">ID</th>
-              <th className="">Identificación</th>
-              <th className="">Tipo de Documento</th>
-              <th className="">Nombre Completo</th>
-              <th className=" w-[120px]">Número Celular</th>
-              <th className=" w-[130px]">Teléfono Fijo</th>
-              <th className="">Correo</th>
-              <th className="">Convenio</th>
-              <th className=" w-[90px]">Estado </th>
-              <th className=" w-[80px]">Acciones</th>
-            </tr>
-          </thead>
+        {/* Tabla de Pacientes */}
+        {filteredData.length === 0 ? (
+          <div className="text-center text-red-500 dark:text-red-300">
+            No se encontraron resultados para la busqueda
+          </div>
+        ) : (
+          <>
+            <table className="w-full text-sm ">
+              <thead>
+                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                  <th className=" w-[70px]">ID</th>
+                  <th className="">Identificación</th>
+                  <th className="">Tipo de Documento</th>
+                  <th className="">Nombre Completo</th>
+                  <th className=" w-[120px]">Número Celular</th>
+                  <th className=" w-[130px]">Teléfono Fijo</th>
+                  <th className="">Correo</th>
+                  <th className="">Convenio</th>
+                  <th className=" w-[90px]">Estado </th>
+                  <th className=" w-[80px]">Acciones</th>
+                </tr>
+              </thead>
 
-          <tbody className="text-xs text-center  dark:text-gray-200">
-            {pacientes.map((pacientes) => (
-            <tr>
-              
-              <td>{pacientes.id}</td>
-              <td>{pacientes.documentNumber}</td>
-              <td>{pacientes.documentRelation.name}</td>
-              <td>{pacientes.name}</td>
-              <td>{pacientes.phoneNumber}</td>
-              <td>{pacientes.landline}</td>
-              <td>{pacientes.email}</td>
-              <td>{pacientes.convenioRelation.name}</td>
-              <td>{pacientes.status}</td>
-              <td>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                  Editar
-                </button>
-              </td>
-
-            </tr>
-            ))}
-          </tbody>
-        </table>
+              <tbody className="text-xs text-center dark:text-gray-200">
+                {currentData().map((pacientes) => (
+                  <tr>
+                    <td>{pacientes.id}</td>
+                    <td>{pacientes.documentNumber}</td>
+                    <td>{pacientes.documentRelation.name}</td>
+                    <td>{pacientes.name}</td>
+                    <td>{pacientes.phoneNumber}</td>
+                    <td>{pacientes.landline}</td>
+                    <td>{pacientes.email}</td>
+                    <td>{pacientes.convenioRelation.name}</td>
+                    <td>{pacientes.status}</td>
+                    <td>
+                      <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700">
+                        Editar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div>‎ </div>
+            {/* Controles de Paginacion */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
+          </>
+        )}
       </section>
     </>
   );
