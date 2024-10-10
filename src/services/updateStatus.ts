@@ -1,9 +1,9 @@
 import { updateStatusData } from "../utils/api-config"
 
-export const updateStatus = async (id: number, status: string, endPonint: string) => {
+export const updateStatus = async (id: number, data: FormData, endPonint: string) => {
     try {
         
-        const response = await updateStatusData(id, status, endPonint)
+        const response = await updateStatusData(id, data, endPonint)
 
         if (response.status === 200) {
             return response;

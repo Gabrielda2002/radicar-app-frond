@@ -128,8 +128,8 @@ export const updateCupsAuditados = async (id: number, data: FormData) => {
     return api.put(`/actualizar-cups/${id}`, data)
 }
 
-export const updateStatusData = async (id: number, status: string, endPoint: string) => {
-    return api.put(`/${endPoint}/${id}`, { status });
+export const updateStatusData = async (id: number, data: FormData, endPoint: string) => {
+    return api.put(`/${endPoint}/${id}`, data);
 }
 
 export const createTableRadicacion = (name: string, endPoint: string) => {
