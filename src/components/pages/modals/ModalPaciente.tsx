@@ -1,12 +1,27 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { createPaciente } from "../../../services/createPaciente";
 import { useFetchConvenio, useFetchDocumento, useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
+import { IPacientes } from "../../../models/IPacientes";
+import { updatePacienteEp } from "../../../utils/api-config";
 
-const ModalPaciente = () => {
+interface ModalPacienteProps {
+  id: number | null;
+  update: boolean;
+  tittle: string;
+  paciente: IPacientes | null;
+}
+
+const ModalPaciente: React.FC<ModalPacienteProps> = ({
+  id,
+  update,
+  tittle,
+  paciente,
+}) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -70,7 +85,13 @@ const ModalPaciente = () => {
         formData.append("ipsPrimaria", values.ipsPrimaria);
         formData.append("address", values.direccion);
 
-        const response = await createPaciente(formData);
+        let response;
+
+        if (update && id) {
+          response = await updatePacienteEp(formData, id);
+        }else{
+          response = await createPaciente(formData);
+        }
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
@@ -87,7 +108,24 @@ const ModalPaciente = () => {
     },
   });
 
-  
+  // useEfct para llenar los valores del formulario en caso de que sea una actualización
+
+  useEffect(() => {
+    if (update && paciente) {
+      formik.setValues({
+        tipoDocumento: paciente.documentRelation.id.toString(),
+        correo: paciente.email,
+        identificacion: paciente.documentNumber.toString(),
+        telefonoFijo: paciente.landline,
+        nombreCompleto: paciente.name,
+        convenio: paciente.convenioRelation.id.toString(),
+        numeroCelular: paciente.phoneNumber,
+        ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
+        direccion: paciente.address,
+      });
+      
+    }
+  }, [update, paciente]);
 
   const { showAnimation, closing } = useAnimation(
     isOpen,
@@ -110,7 +148,7 @@ const ModalPaciente = () => {
         }`}
         onClick={toggleModal}
       >
-        Agregar Paciente
+        {`${tittle} Paciente`}
       </button>
       {isOpen && (
         <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -130,7 +168,7 @@ const ModalPaciente = () => {
             >
               <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
-                  Agregar Paciente
+                  {tittle} Paciente
                 </h1>
                 <button
                   onClick={toggleModal}
@@ -353,8 +391,11 @@ const ModalPaciente = () => {
                   >
                     Cerrar
                   </button>
-                  <button className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
-                    Subir
+                  <button
+                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    type="submit"
+                   >
+                    {tittle}
                   </button>
                   {success && (
                     <span className="text-green-500">Paciente creado con éxito</span>

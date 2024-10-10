@@ -159,3 +159,7 @@ export const createCupsEp = async (data: FormData) => {
 export const createPacienteEp = async (data: FormData) => {
     return api.post(`/pacientes`, data);
 }
+
+export const updatePacienteEp = async (data: FormData, id: number) => {
+    return api.put(`/pacientes-actualizar-tablet/${id}`, data);
+}
