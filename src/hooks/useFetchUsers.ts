@@ -106,17 +106,17 @@ export const useFetchCups = () => {
 };
 
 export const useFetchRadicador = () => {
-  const [data, setData] = useState<IRadicador[]>([]);
+  const [dataRadicador, setDataRadicador] = useState<IRadicador[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorRadicador, setErrorRadicador] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const radicadores = await fetchRadicador();
-        setData(radicadores);
+        setDataRadicador(radicadores);
       } catch (error) {
-        setError("Error al obtener los datos de los Radicadores." + error);
+        setErrorRadicador("Error al obtener los datos de los Radicadores." + error);
       } finally {
         setLoading(false);
       }
@@ -125,7 +125,7 @@ export const useFetchRadicador = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataRadicador, loading, errorRadicador };
 };
 
 export const useFetchMunicipio = () => {

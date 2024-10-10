@@ -14,9 +14,9 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
-  const { data, loading, error } = useFetchRadicador();
+  const { dataRadicador, loading, errorRadicador } = useFetchRadicador();
   const [itemPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(dataRadicador, [
     "id",
     "name",
     "status",
@@ -33,7 +33,7 @@ const TablaRadicadores = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h1>{error}</h1>;
+  if (errorRadicador) return <h1>{errorRadicador}</h1>;
 
   return (
     <>
