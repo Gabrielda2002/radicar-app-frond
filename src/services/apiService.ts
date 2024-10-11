@@ -17,6 +17,7 @@ import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
 import { IPacientes } from "../models/IPacientes";
+import { ICirugias } from "../models/ICirugias";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -203,4 +204,16 @@ export const fetchPacientes = async (): Promise<IPacientes[]> => {
         createdAt: new Date(paciente.createdAt)
     }));
     return pacientes;
+}
+
+// tabla cirugias
+export const fetchCirugias = async (): Promise<ICirugias[]> => {
+    const response = await api.get('/tabla-cirugias');
+    const cirugias = response.data.map((cirugia: ICirugias) => ({
+        ...cirugia,
+        fechaRadicado: new Date(cirugia.fechaRadicado),
+        fechaAuditoria: cirugia.fechaAuditoria ? new Date(cirugia.fechaAuditoria) : null
+        
+    }));
+    return cirugias;
 }

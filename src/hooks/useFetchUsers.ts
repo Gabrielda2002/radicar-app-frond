@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   fetchAuditados,
   fetchAuditoria,
+  fetchCirugias,
   fetchConvenio,
   fetchCups,
   fetchDocumento,
@@ -35,6 +36,7 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
+import { ICirugias } from "../models/ICirugias";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -442,4 +444,26 @@ export const useFetchRoles = () => {
   }, []);
 
   return { dataRol, loadingRol, errorRol };
+}
+
+// * traer cirugias
+export const useFetchCirugias = () => {
+  const [dataCirugias, setDataCirugias] = useState<ICirugias[]>([]);
+  const [loadingCirugias, setLoadingCirugias] = useState<boolean>(true);
+  const [errorCirugias, setErrorCirugias] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const cirugias = await fetchCirugias();
+        setDataCirugias(cirugias);
+      } catch (error) {
+        setErrorCirugias("Error al obtener los datos de las cirugias." + error);
+      } finally {
+        setLoadingCirugias(false);
+      }
+    }
+    getData();
+  }, []);
+  return { dataCirugias, loadingCirugias, errorCirugias };
 }
