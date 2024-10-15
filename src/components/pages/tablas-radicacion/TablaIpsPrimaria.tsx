@@ -14,10 +14,10 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 10;
 
 const TablaIpsPrimaria = () => {
-  const { data, loading, error } = useFetchIpsPrimaria();
+  const { dataIpsPrimaria, loading, errorIpsPrimaria } = useFetchIpsPrimaria();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(dataIpsPrimaria, [
     "id",
     "name",
     "status",
@@ -33,7 +33,7 @@ const TablaIpsPrimaria = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h1>{error}</h1>;
+  if (errorIpsPrimaria) return <h1>{errorIpsPrimaria}</h1>;
 
   return (
     <>

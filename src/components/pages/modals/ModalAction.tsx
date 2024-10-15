@@ -26,20 +26,32 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
 
   const validationSchema = Yup.object({
     id: Yup.number().required("El ID es requerido"),
-    status: Yup.string().required("El estado es requerido"),
+    status: Yup.string().optional(),
+    name: Yup.string()
+      .optional()
+      .min(2, "El nombre debe tener al menos 3 caracteres")
+      .max(200, "El nombre debe tener como máximo 200 caracteres"),
   });
 
   const formik = useFormik({
     initialValues: {
       id: id,
       status: "",
+      name: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setSubmitting(true);
 
       try {
-        const response = await updateStatus(values.id, values.status, endPoint);
+        const formData = new FormData();
+
+        if (values.name) {
+          formData.append("name", values.name);
+        } else if (values.status) {
+          formData.append("status", values.status);
+        }
+        const response = await updateStatus(values.id, formData, endPoint);
 
         if (response && response.status === 200) {
           setSuccess(true);
@@ -150,37 +162,45 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                         <input
                           type="text"
                           id=""
-                          name=""
+                          name="name"
+                          value={formik.values.name}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
+                        {formik.touched.name && formik.errors.name ? (
+                          <label className="text-red-500">
+                            {formik.errors.name}
+                          </label>
+                        ) : null}
                       </label>
                     </div>
                   </section>
                 </div>
-              </form>
 
-              {/* container-footer */}
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
-                <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                  onClick={() => setStadopen(false)}
-                >
-                  Cerrar
-                </button>
-                <button
-                  className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                  type="submit"
-                  disabled={submitting}
-                >
-                  {submitting ? "Actualizando..." : "Actualizando"}
-                </button>
-                {success && (
-                  <div className="text-green-500">
-                    Estado actualizado con éxito
-                  </div>
-                )}
-                {error && <div className="text-red-500">{error}</div>}
-              </div>
+                {/* container-footer */}
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                  <button
+                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    onClick={() => setStadopen(false)}
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    type="submit"
+                    disabled={submitting}
+                  >
+                    {submitting ? "Actualizando..." : "Actualizando"}
+                  </button>
+                  {success && (
+                    <div className="text-green-500">
+                      Estado actualizado con éxito
+                    </div>
+                  )}
+                  {error && <div className="text-red-500">{error}</div>}
+                </div>
+              </form>
             </div>
           </section>
         </section>

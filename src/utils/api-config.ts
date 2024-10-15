@@ -128,8 +128,8 @@ export const updateCupsAuditados = async (id: number, data: FormData) => {
     return api.put(`/actualizar-cups/${id}`, data)
 }
 
-export const updateStatusData = async (id: number, status: string, endPoint: string) => {
-    return api.put(`/${endPoint}/${id}`, { status });
+export const updateStatusData = async (id: number, data: FormData, endPoint: string) => {
+    return api.put(`/${endPoint}/${id}`, data);
 }
 
 export const createTableRadicacion = (name: string, endPoint: string) => {
@@ -153,4 +153,19 @@ export const updateCupsDataEp = async (data: FormData, id: number) => {
 // crear CUPS
 export const createCupsEp = async (data: FormData) => {
     return api.post(`/servicio-solicitado`, data);
+}
+
+// crear pacciente
+export const createPacienteEp = async (data: FormData) => {
+    return api.post(`/pacientes`, data);
+}
+
+export const updatePacienteEp = async (data: FormData, id: number) => {
+    return api.put(`/pacientes-actualizar-tablet/${id}`, data);
+}
+
+// crear una programacion de cirugia
+
+export const createProgramacionCirugia = async (data: FormData) => {
+    return api.post(`/cirugias`, data);
 }
