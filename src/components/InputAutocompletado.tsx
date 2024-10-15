@@ -18,7 +18,6 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   }
   const {
     data,
-    loading,
     error,
     fetchInputAtcp
   } = useFetchEspecialidadAtcp();
@@ -59,7 +58,6 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         />
       </label>
 
-        {loading && <p>Cargando...</p>}
         {error && <p>{error}</p>}
 
       {/* Mostrar sugerencias */}
