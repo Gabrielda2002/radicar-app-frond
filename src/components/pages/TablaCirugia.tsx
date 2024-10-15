@@ -5,8 +5,15 @@ import ModalCirugias from "./modals/ModalCirugias";
 
 //iconos
 import salir from "/assets/back.svg";
+import LoadingSpinner from "../LoadingSpinner";
+import { useFetchCirugias } from "../../hooks/useFetchUsers";
 
 const TablaCirugias = () => {
+
+  const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
+
+  if (loadingCirugias) return <LoadingSpinner />;
+  if (errorCirugias) return <div>Error al cargar los datos</div>;
  
   return (
     <>
@@ -59,39 +66,44 @@ const TablaCirugias = () => {
         
         <table className="min-w-full mx-auto text-sm ">
           <thead>
-            <tr className="text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
-              <th className="">Fecha - Hora del Radicado</th>
-              <th className="">N.º Radicado</th>
-              <th className="">N.º Documento</th>
-              <th className="">Nombre Completo</th>
-              <th className="">Nombre Paciente</th>
-              <th className="">Servicio de Radicado</th>
-              <th className="">Fecha Auditoría</th>
-              <th className="">Justificación Auditoría</th>
-              <th className="">Especialidad</th>
-              <th className="">Mostrar</th>
-              <th className="">Servicio Solicitado</th>
-            </tr>
+          <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+                    <th>Fecha - Hora del Radicado</th>
+                    <th>N.º Radicado</th>
+                    <th>Convenio</th>
+                    <th>N.º Documento</th>
+                    <th>Nombre Paciente</th>
+                    <th>Gestión Auxiliar</th>
+                    <th>Mostrar</th>
+                  </tr>
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            <tr>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td>....texto alussivo</td>
-              <td className="">
-                tabla
+            {dataCirugias.map((cirugia) => (
+            <tr key={cirugia.id}>
+              <td>{cirugia.fechaRadicado ? cirugia.fechaRadicado.toISOString() : "N/A"}</td>
+              <td>{cirugia.id}</td>
+              <td>{cirugia.convenio}</td>
+              <td>{cirugia.numeroDocumento}</td>
+              <td>{cirugia.nombrePaciente}</td>
+              <td>
+                <button className="bg-blue-500 text-white rounded-md w-20 h-8">Gestión</button>
               </td>
-              <td className="px-4 py-2">
-                <ModalCirugias />
+              <td>
+                <ModalCirugias
+                  name={cirugia.nombrePaciente}
+                  phonneNumber={cirugia.numeroPaciente}
+                  email={cirugia.email}
+                  landline={cirugia.telefonoFijo}
+                  cups={cirugia.cups}
+                  speciality={cirugia.especialidad}
+                  diagnostic={cirugia.diagnostico} 
+                  idGroupService={cirugia.idGrupoServicios}
+                  idRadicado={cirugia.id}
+                  idCirugia={cirugia.programacionCirugia.map((programacion) => programacion.id)}
+                  />
               </td>
             </tr>
+            ))}
           </tbody>
         </table>
 

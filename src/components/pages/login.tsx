@@ -4,6 +4,7 @@ import { api } from "../../utils/api-config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
+
 const Login: React.FC = () => {
   const [dniNumber, setDniNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -44,11 +45,7 @@ const Login: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img
-            className="w-8 h-8 mr-2"
-            src="src/imgs/logo-navbar.png"
-            alt="Nordvital IPS"
-          />
+          
           Nordvital IPS
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-200 dark:border-gray-400">

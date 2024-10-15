@@ -97,7 +97,12 @@ const TablaPacientes = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalPaciente></ModalPaciente>
+            <ModalPaciente
+              id={null}
+              update={false}
+              tittle="Crear"
+              paciente={null}
+            />
           </div>
         </section>
 
@@ -126,7 +131,7 @@ const TablaPacientes = () => {
 
               <tbody className="text-xs text-center dark:text-gray-200">
                 {currentData().map((pacientes) => (
-                  <tr>
+                  <tr key={pacientes.id}>
                     <td>{pacientes.id}</td>
                     <td>{pacientes.documentNumber}</td>
                     <td>{pacientes.documentRelation.name}</td>
@@ -135,11 +140,14 @@ const TablaPacientes = () => {
                     <td>{pacientes.landline}</td>
                     <td>{pacientes.email}</td>
                     <td>{pacientes.convenioRelation.name}</td>
-                    <td>{pacientes.status}</td>
+                    <td>{pacientes.status ? "Activo" : "Inactivo"}</td>
                     <td>
-                      <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700">
-                        Editar
-                      </button>
+                      <ModalPaciente
+                        id={pacientes.id}
+                        update={true}
+                        tittle="Editar"
+                        paciente={pacientes}
+                      />
                     </td>
                   </tr>
                 ))}

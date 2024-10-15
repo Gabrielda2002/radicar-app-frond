@@ -14,10 +14,10 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 10;
 
 const TablaConvenios = () => {
-  const { data, loading, error } = useFetchConvenio();
+  const { dataConvenios, loading, errorConvenio } = useFetchConvenio();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(dataConvenios, [
     "id",
     "name",
     "status",
@@ -34,7 +34,7 @@ const TablaConvenios = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h1>{error}</h1>;
+  if (errorConvenio) return <h1>{errorConvenio}</h1>;
 
   return (
     <>

@@ -83,7 +83,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </tr>
                 <tr>
                   <td className="">Auxiliar Radicador</td>
-                  <td className="">{radicacion.radicadorRelation.name}</td>
+                  <td className="">{radicacion.usuarioRelation.name}</td>
                 </tr>
                 <tr>
                   <td className="">Auditora</td>

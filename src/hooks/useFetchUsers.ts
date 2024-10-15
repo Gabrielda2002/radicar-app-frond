@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   fetchAuditados,
   fetchAuditoria,
+  fetchCirugias,
   fetchConvenio,
   fetchCups,
   fetchDocumento,
@@ -35,6 +36,7 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
+import { ICirugias } from "../models/ICirugias";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -106,17 +108,17 @@ export const useFetchCups = () => {
 };
 
 export const useFetchRadicador = () => {
-  const [data, setData] = useState<IRadicador[]>([]);
+  const [dataRadicador, setDataRadicador] = useState<IRadicador[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorRadicador, setErrorRadicador] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const radicadores = await fetchRadicador();
-        setData(radicadores);
+        setDataRadicador(radicadores);
       } catch (error) {
-        setError("Error al obtener los datos de los Radicadores." + error);
+        setErrorRadicador("Error al obtener los datos de los Radicadores." + error);
       } finally {
         setLoading(false);
       }
@@ -125,7 +127,7 @@ export const useFetchRadicador = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataRadicador, loading, errorRadicador };
 };
 
 export const useFetchMunicipio = () => {
@@ -152,17 +154,17 @@ export const useFetchMunicipio = () => {
 };
 
 export const useFetchConvenio = () => {
-  const [data, setData] = useState<IConvenios[]>([]);
+  const [dataConvenios, setDataConvenios] = useState<IConvenios[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorConvenio, setErrorConvenio] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const convenios = await fetchConvenio();
-        setData(convenios);
+        setDataConvenios(convenios);
       } catch (error) {
-        setError("Error al obtener los datos de los convenios." + error);
+        setErrorConvenio("Error al obtener los datos de los convenios." + error);
       } finally {
         setLoading(false);
       }
@@ -171,7 +173,7 @@ export const useFetchConvenio = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataConvenios, loading, errorConvenio };
 };
 
 export const useFetchDocumento = () => {
@@ -198,17 +200,17 @@ export const useFetchDocumento = () => {
 };
 
 export const useFetchIpsPrimaria = () => {
-  const [data, setData] = useState<IIPSPrimaria[]>([]);
+  const [dataIpsPrimaria, setDataIpsPrimaria] = useState<IIPSPrimaria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorIpsPrimaria, setErrorIpsPrimaria] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const ipsPrimaria = await fetchIpsPrimaria();
-        setData(ipsPrimaria);
+        setDataIpsPrimaria(ipsPrimaria);
       } catch (error) {
-        setError("Error al obtener los datos de las IPS Primarias." + error);
+        setErrorIpsPrimaria("Error al obtener los datos de las IPS Primarias." + error);
       } finally {
         setLoading(false);
       }
@@ -217,7 +219,7 @@ export const useFetchIpsPrimaria = () => {
     getData();
   }, []);
 
-  return { data, loading, error };
+  return { dataIpsPrimaria, loading, errorIpsPrimaria };
 };
 
 export const useFetchLugarRadicado = () => {
@@ -442,4 +444,26 @@ export const useFetchRoles = () => {
   }, []);
 
   return { dataRol, loadingRol, errorRol };
+}
+
+// * traer cirugias
+export const useFetchCirugias = () => {
+  const [dataCirugias, setDataCirugias] = useState<ICirugias[]>([]);
+  const [loadingCirugias, setLoadingCirugias] = useState<boolean>(true);
+  const [errorCirugias, setErrorCirugias] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const cirugias = await fetchCirugias();
+        setDataCirugias(cirugias);
+      } catch (error) {
+        setErrorCirugias("Error al obtener los datos de las cirugias." + error);
+      } finally {
+        setLoadingCirugias(false);
+      }
+    }
+    getData();
+  }, []);
+  return { dataCirugias, loadingCirugias, errorCirugias };
 }
