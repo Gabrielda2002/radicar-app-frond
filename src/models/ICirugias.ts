@@ -4,6 +4,24 @@ export interface ICirugias {
     convenio:        string;
     numeroDocumento: number;
     nombrePaciente:  string;
+    numeroPaciente:  string;
+    telefonoFijo:    string;
+    email:           string;
     fechaAuditoria:  Date | null;
-    nombreAuditor:   string;
+    especialidad:    string;
+    cups:            Cup[];
+    grupoServicios:  string;
+    diagnostico:     string;
+    idGrupoServicios: number;
+    programacionCirugia : programacion[];
+}
+
+export interface programacion{
+    id: number;
+}
+
+export interface Cup {
+    id:          number;
+    code:        number;
+    description: string;
 }

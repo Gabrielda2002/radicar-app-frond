@@ -72,8 +72,6 @@ const TablaCirugias = () => {
                     <th>Convenio</th>
                     <th>N.º Documento</th>
                     <th>Nombre Paciente</th>
-                    <th>Fecha Auditoría</th>
-                    <th className="w-[150px]">Nombre Auditora</th>
                     <th>Gestión Auxiliar</th>
                     <th>Mostrar</th>
                   </tr>
@@ -87,13 +85,22 @@ const TablaCirugias = () => {
               <td>{cirugia.convenio}</td>
               <td>{cirugia.numeroDocumento}</td>
               <td>{cirugia.nombrePaciente}</td>
-              <td>{cirugia.fechaAuditoria ? cirugia.fechaAuditoria.toISOString() : "N/A"}</td>
-              <td>{cirugia.nombreAuditor}</td>
               <td>
                 <button className="bg-blue-500 text-white rounded-md w-20 h-8">Gestión</button>
               </td>
               <td>
-                <ModalCirugias />
+                <ModalCirugias
+                  name={cirugia.nombrePaciente}
+                  phonneNumber={cirugia.numeroPaciente}
+                  email={cirugia.email}
+                  landline={cirugia.telefonoFijo}
+                  cups={cirugia.cups}
+                  speciality={cirugia.especialidad}
+                  diagnostic={cirugia.diagnostico} 
+                  idGroupService={cirugia.idGrupoServicios}
+                  idRadicado={cirugia.id}
+                  idCirugia={cirugia.programacionCirugia.map((programacion) => programacion.id)}
+                  />
               </td>
             </tr>
             ))}

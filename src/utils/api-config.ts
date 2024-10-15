@@ -163,3 +163,9 @@ export const createPacienteEp = async (data: FormData) => {
 export const updatePacienteEp = async (data: FormData, id: number) => {
     return api.put(`/pacientes-actualizar-tablet/${id}`, data);
 }
+
+// crear una programacion de cirugia
+
+export const createProgramacionCirugia = async (data: FormData) => {
+    return api.post(`/cirugias`, data);
+}
