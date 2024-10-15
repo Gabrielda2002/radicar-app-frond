@@ -45,7 +45,7 @@ const TablaPacientes = () => {
       {/* nav-table */}
 
       <section className=" dark:bg-gray-900">
-        <LoadingSpinner duration={500} />;
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Pacientes
         </h1>
