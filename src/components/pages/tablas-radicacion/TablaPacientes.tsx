@@ -38,7 +38,7 @@ const TablaPacientes = () => {
   };
 
   if (loading) return <LoadingSpinner duration={500} />;
-  if (errorPacientes) return <h2>{errorPacientes}</h2>;
+  if (errorPacientes) return <h2 className="flex justify-center text-lg dark:text-white">{errorPacientes}</h2>;
 
   return (
     <>

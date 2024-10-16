@@ -35,7 +35,7 @@ const TablaTipoServicio = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h1>{error}</h1>;
+  if (error) return <h1 className="flex justify-center text-lg dark:text-white">{error}</h1>;
 
   return (
     <>
