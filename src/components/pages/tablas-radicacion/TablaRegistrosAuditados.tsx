@@ -7,6 +7,7 @@ import { useFetchAuditados } from "../../../hooks/useFetchUsers";
 import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
 import useSearch from "../../../hooks/useSearch";
 import salir from "/assets/back.svg";
+import { Cup, IAuditados } from "../../../models/IAuditados";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -87,8 +88,8 @@ interface MainContentProps {
   setQuery: (query: string) => void;
   itemsPerPage: number;
   handleItemsPerPageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  filteredData: any[];
-  currentData: () => any[];
+  filteredData: IAuditados[];
+  currentData: () => IAuditados[];
   currentPage: number;
   totalPages: number;
   paginate: (pageNumber: number) => void;
@@ -178,7 +179,7 @@ const NoResultsMessage: React.FC = () => (
 );
 
 interface TableContentProps {
-  currentData: () => any[];
+  currentData: () => IAuditados[];
   currentPage: number;
   totalPages: number;
   paginate: (pageNumber: number) => void;
@@ -222,11 +223,11 @@ const TableContent: React.FC<TableContentProps> = ({
 );
 
 interface CupsTableProps {
-  cups: any[];
+  cups: Cup[];
 }
 
 const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
-  <table>
+  <table className="min-w-full dark:text-gray-100">
     <thead>
       <tr>
         <th>Código</th>
