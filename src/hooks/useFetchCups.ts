@@ -24,6 +24,7 @@ const useFetchCups = () => {
     } catch (error) {
       setError(`Ocurrió un error al intentar obtener el cups.`);
       setData(null);
+      console.log(error)
     }finally{
       setLoading(false);
     }

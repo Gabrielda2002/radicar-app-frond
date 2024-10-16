@@ -34,7 +34,7 @@ export const useFileManager = (initialFolderId?: string) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Function to fetch folder contents
+    // funcion para traer el contenido de la carpeta
     const fetchContents = async () => {
         setLoading(true);
         try {
@@ -43,7 +43,7 @@ export const useFileManager = (initialFolderId?: string) => {
             setContents(response.data);
             setError(null);
         } catch (err) {
-            setError(`Error fetching folder contents${err}`);
+            setError(`Error al mostrar el contenido de la carpeta. ${err}`);
         } finally {
             setLoading(false);
         }
@@ -60,18 +60,18 @@ export const useFileManager = (initialFolderId?: string) => {
             await createFolder(currentFolderId || null, name);
             await fetchContents(); // Reload contents after creating a folder
         } catch (err) {
-            setError(`Error creating folder${err}`);
+            setError(`Error al crear la carpeta, intente nuevamente. ${err}`);
         }
     };
 
-    // Function to upload a new file
+    // funcion para subir un archivo
     const uploadNewFile = async (formData: FormData, id: number | string) => { // Usa el tipo global File ahora
         // if (!currentFolderId) return;
         try {
             await uploadFile(formData, id);
             await fetchContents(); // Reload contents after uploading a file
         } catch (err) {
-            setError(`Error uploading file ${err}`);
+            setError(`Error al subir el archivo, intente nuevamente. ${err}`);
         }
     };
 
@@ -81,7 +81,7 @@ export const useFileManager = (initialFolderId?: string) => {
             await deleteItem(id, type);
             await fetchContents(); // Reload contents after deleting an item
         } catch (err) {
-            setError(`Error deleting ${type === "carpetas" ? "folder" : "file"} ${err}`);
+            setError(`Error al eliminar ${type === "carpetas" ? "revisa que la carpeta este vacía" : "file"}, intente nuevamente ${err}`);
         }
     };
 
@@ -126,7 +126,7 @@ export const useFileManager = (initialFolderId?: string) => {
             await renameItems(id, currentFolderId || null, name, type);
             await fetchContents(); // Reload contents after renaming an item
         } catch (err) {
-            setError(`Error renaming ${type === "carpetas" ? "folder" : "file"} ${err}`);
+            setError(`Error al renombrar ${type === "carpetas" ? "la carpeta" : "el archivo"} ${err}.`);
         }
     }
 

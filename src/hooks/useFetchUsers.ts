@@ -49,7 +49,7 @@ export const useFetchUsers = () => {
         const users = await fetchUsers();
         setData(users);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios" + error);
+        setError("Error al obtener los datos de los usuarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -72,7 +72,7 @@ export const useFetchAuditoria = () => {
         const auditorias = await fetchAuditoria();
         setData(auditorias);
       } catch (error) {
-        setError("Error al obtener los datos por Auditar." + error);
+        setError("Error al obtener los datos por Auditar. " + error);
       } finally {
         setLoading(false);
       }
@@ -95,7 +95,7 @@ export const useFetchCups = () => {
         const cups = await fetchCups();
         setData(cups);
       } catch (error) {
-        setError("Error al obtener los datos de los CUPS." + error);
+        setError("Error al obtener los datos de los CUPS. " + error);
       } finally {
         setLoading(false);
       }
@@ -118,7 +118,7 @@ export const useFetchRadicador = () => {
         const radicadores = await fetchRadicador();
         setDataRadicador(radicadores);
       } catch (error) {
-        setErrorRadicador("Error al obtener los datos de los Radicadores." + error);
+        setErrorRadicador("Error al obtener los datos de la tabla radicadores. " + error);
       } finally {
         setLoading(false);
       }
@@ -141,7 +141,7 @@ export const useFetchMunicipio = () => {
         const municipios = await fetchMunicipio();
         setData(municipios);
       } catch (error) {
-        setError("Error al obtener los datos de los municipios." + error);
+        setError("Error al obtener los datos de la tabla municipios. " + error);
       } finally {
         setLoading(false);
       }
@@ -164,7 +164,7 @@ export const useFetchConvenio = () => {
         const convenios = await fetchConvenio();
         setDataConvenios(convenios);
       } catch (error) {
-        setErrorConvenio("Error al obtener los datos de los convenios." + error);
+        setErrorConvenio("Error al obtener los datos de la tabla convenios. " + error);
       } finally {
         setLoading(false);
       }
@@ -187,7 +187,7 @@ export const useFetchDocumento = () => {
         const users = await fetchDocumento();
         setDataDocumento(users);
       } catch (error) {
-        setErrorDocumento("Error al obtener los datos de los tipos de documentos." + error);
+        setErrorDocumento("Error al obtener los datos de los datos de la tabla tipo documento. " + error);
       } finally {
         setLoadingDocumento(false);
       }
@@ -210,7 +210,7 @@ export const useFetchIpsPrimaria = () => {
         const ipsPrimaria = await fetchIpsPrimaria();
         setDataIpsPrimaria(ipsPrimaria);
       } catch (error) {
-        setErrorIpsPrimaria("Error al obtener los datos de las IPS Primarias." + error);
+        setErrorIpsPrimaria("Error al obtener los datos de la tabla IPS primaria. " + error);
       } finally {
         setLoading(false);
       }
@@ -233,7 +233,7 @@ export const useFetchLugarRadicado = () => {
         const lugarRadicado = await fetchLugarRadicado();
         setData(lugarRadicado);
       } catch (error) {
-        setError("Error al obtener los datos de los Lugares Radicado." + error);
+        setError("Error al obtener los datos de la tabla lugar radicacion. " + error);
       } finally {
         setLoading(false);
       }
@@ -256,7 +256,7 @@ export const useFetchIpsRemite = () => {
         const ipsRemite = await fetchIpsRemite();
         setData(ipsRemite);
       } catch (error) {
-        setError("Error al obtener los datos de las IPS Remitente." + error);
+        setError("Error al obtener los datos de la tabla IPS remite. " + error);
       } finally {
         setLoading(false);
       }
@@ -279,7 +279,7 @@ export const useFetchEspecialidad = () => {
             const especialidad = await fetchEspecialidad();
             setData(especialidad);
         } catch (error) {
-            setError("Error al obtener los datos de las especialidades." + error);
+            setError("Error al obtener los datos de la tabla especialidades. " + error);
         } finally {
             setLoading(false);
         }
@@ -302,7 +302,7 @@ export const useFetchServicios = () => {
             const servicios = await fetchServicio();
             setData(servicios);
         } catch (error) {
-            setError("Error al obtener los datos de los servicios." + error);
+            setError("Error al obtener los datos de la tabla servicios. " + error);
         } finally {
             setLoading(false);
         }
@@ -325,7 +325,7 @@ export const useFetchUsuarios = () => {
             const usuarios = await fetchUsuario();
             setData(usuarios);
         } catch (error) {
-            setError("Error al obtener los datos de los usuarios" + error);
+            setError("Error al obtener los datos de la tabla usuarios. " + error);
         } finally {
             setLoading(false);
         }
@@ -348,7 +348,7 @@ export const useFetchUnidadFuncional = () => {
             const unidadFuncional = await fetchUnidadFuncional();
             setData(unidadFuncional);
         } catch (error) {
-            setError("Error al obtener las unidades funcionales." + error);
+            setError("Error al obtener los datos de la tabla unidad funcional. " + error);
         } finally {
             setLoading(false);
         }
@@ -374,7 +374,7 @@ export const useFetchEstados = (shouldFetch: boolean) => {
         const estados = await fetchEstados();
         setDataEstados(estados);
       } catch (error) {
-        setErrorEstados("Error al obtener los estados: " + error);
+        setErrorEstados("Error al obtener los estados. " + error);
       } finally {
         setLoading(false);
       }
@@ -404,7 +404,7 @@ export const useFetchAuditados = () => {
           setData(auditados);
         }
       } catch (error) {
-        setError("Error al obtener los datos de los registros auditados." + error);
+        setError("Error al obtener los datos de la tabla auditados. " + error);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -434,7 +434,7 @@ export const useFetchRoles = () => {
         const roles = await fetchRoles();
         setDataRol(roles);
       } catch (error) {
-        setErrorRol("Error al obtener los datos de los roles." + error);
+        setErrorRol("Error al obtener los datos de la tabla roles. " + error);
       } finally {
         setLoadingRol(false);
       }
@@ -458,7 +458,7 @@ export const useFetchCirugias = () => {
         const cirugias = await fetchCirugias();
         setDataCirugias(cirugias);
       } catch (error) {
-        setErrorCirugias("Error al obtener los datos de las cirugias." + error);
+        setErrorCirugias("Error al obtener los datos de la tabla cirugias. " + error);
       } finally {
         setLoadingCirugias(false);
       }
