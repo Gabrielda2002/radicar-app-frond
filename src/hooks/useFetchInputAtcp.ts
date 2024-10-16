@@ -23,8 +23,9 @@ const useFetchEspecialidadAtcp = () => {
                 setError(null);
             }
         } catch (error) {
-            setError(`Ocurrió un errorEspecialidades al intentar obtener la especialidad.`);
+            setError(`Sin resultados.`);
             setData(null);
+            console.log(error)
         } finally {
             setLoading(false);
         }

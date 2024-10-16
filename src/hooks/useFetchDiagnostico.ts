@@ -22,8 +22,9 @@ const useFetchDiagnostico = () => {
             }
 
         } catch (error) {
-            setError("Error al cargar el diagnóstico");
+            setError("Error al cargar el diagnóstico.");
             setDiagnostico(null);
+            console.log(error);
         }finally{
             setLoading(false);
         }

@@ -169,3 +169,8 @@ export const updatePacienteEp = async (data: FormData, id: number) => {
 export const createProgramacionCirugia = async (data: FormData) => {
     return api.post(`/cirugias`, data);
 }
+
+// actualizar la contrasena del usuario=
+export const updatePasswordUsuarioEp = async (data: FormData, id: number) => {
+    return api.put(`/usuario-update-password/${id}`, data);
+}

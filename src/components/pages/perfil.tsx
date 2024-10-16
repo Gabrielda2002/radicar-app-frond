@@ -13,6 +13,7 @@ import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import { useFormik } from "formik";
 import { updateUserData } from "../../services/updateUserData";
+import { updatePasswordUsuario } from "../../services/updatePasswordUsuario";
 
 const Perfil = () => {
   const { updateUserProfile } = useUserProfile();
@@ -32,6 +33,8 @@ const Perfil = () => {
 
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
+
+  const [errorPassword, setErrorPassword] = useState<string>("");
 
   const [formData, setFormData] = useState(profile);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -80,6 +83,58 @@ const Perfil = () => {
       .max(150, "El correo electrónico debe tener como máximo 150 caracteres"),
   });
 
+  const validationSchemaPassword = Yup.object({
+    currentPassword: Yup.string().required("La contraseña actual es requerida"),
+    newPassword: Yup.string()
+      .required("La nueva contraseña es requerida")
+      .min(8, "La nueva contraseña debe tener al menos 8 caracteres")
+      .matches(/[0-9]/, "La nueva contraseña debe tener al menos un número")
+      .matches(/[A-Z]/, "La nueva contraseña debe tener al menos una letra mayúscula")
+      .matches(/[!@#$%^&*(),.?":{}|<>]/, "La nueva contraseña debe tener al menos un carácter especial"),
+    confirmPassword: Yup.string()
+      .required("La confirmación de la contraseña es requerida")
+      .oneOf([Yup.ref("newPassword")], "Las contraseñas no coinciden")
+  });
+
+  const formikPassword = useFormik({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+    validationSchema: validationSchemaPassword,
+    onSubmit: async (values) => {
+      console.log(values);
+
+      try {
+        
+        // validar que las contrasenas sean iguales
+        if (values.newPassword !== values.confirmPassword) {
+          setErrorPassword("Las contrasenas no coinciden");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("currentPassword", values.currentPassword);
+        formData.append("newPassword", values.newPassword);
+        formData.append("confirmPassword", values.confirmPassword);
+
+        const response = await updatePasswordUsuario(formData, parseInt(profile.id));
+
+        if (response?.status === 200 || response?.status === 201) {
+          setSuccess(true);
+          setErrorPassword("");
+        }
+
+
+        
+      } catch (error) {
+        setErrorPassword(`Error al actualizar la contraseña del usuario.`);
+        console.log(error);
+      }
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
       nombre: formData.nombre,
@@ -89,7 +144,6 @@ const Perfil = () => {
     enableReinitialize: true, // ? Habilita la re-inicialización de los valores del formulario, para que en dado caso los datos del localStorage llegan vacios, al momento de que se actualicen los valores, se actualicen en el formulario
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-
       setFormData({ ...formData, ...values });
       updateUserProfile({ ...formData, ...values });
       localStorage.setItem("user", JSON.stringify({ ...formData, ...values }));
@@ -102,7 +156,6 @@ const Perfil = () => {
       formDataUpdate.append("email", values.email);
 
       try {
-        
         const response = await updateUserData(formDataUpdate, profile.id);
 
         if (response?.status === 200 || response?.status === 201) {
@@ -112,14 +165,8 @@ const Perfil = () => {
       } catch (error) {
         setError(`Error al actualizar la información del usuario. ${error}`);
       }
-
     },
   });
-
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { id, value } = e.target;
-  //   setFormData({ ...formData, [id]: value });
-  // };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -168,14 +215,6 @@ const Perfil = () => {
       console.log("Error al eliminar la foto de perfil", error);
     }
   };
-
-  // const handleSaveChanges = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   // Actualiza la foto de perfil global despues de guardar cambios
-  //   updateUserProfile(formData);
-  //   localStorage.setItem("user", JSON.stringify(formData));
-  //   setProfile(formData);
-  // };
 
   const triggerFileInput = () => {
     if (fileInputRef.current) {
@@ -276,6 +315,84 @@ const Perfil = () => {
               </div>
             </div>
 
+            {/* formulario para actualizar la contrasena del usuario */}
+
+            <div className="p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800">
+              <form onSubmit={formikPassword.handleSubmit}>
+                <div>
+                  <h2>Cambiar contrasena</h2>
+                </div>
+
+                <div>
+                  <label htmlFor="">
+                    Contrasena actual
+                    <input
+                      type="password"
+                      name="currentPassword"
+                      id=""
+                      onChange={formikPassword.handleChange}
+                      onBlur={formikPassword.handleBlur}
+                      value={formikPassword.values.currentPassword}
+                      className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                    />
+                    {
+                      formikPassword.touched.currentPassword && formikPassword.errors.currentPassword ? (
+                        <div className="text-red-500">{formikPassword.errors.currentPassword}</div>
+                      ) : null
+                    }
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor="">
+                    Contrasena nueva
+                    <input
+                      type="password"
+                      name="newPassword"
+                      onChange={formikPassword.handleChange}
+                      onBlur={formikPassword.handleBlur}
+                      value={formikPassword.values.newPassword}
+                      id=""
+                      className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                    />
+                    {
+                      formikPassword.touched.newPassword && formikPassword.errors.newPassword ? (
+                        <div className="text-red-500">{formikPassword.errors.newPassword}</div>
+                      ) : null
+                    }
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor="">
+                    comfirmar contrasena
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      id=""
+                      onChange={formikPassword.handleChange}
+                      onBlur={formikPassword.handleBlur}
+                      value={formikPassword.values.confirmPassword}
+                      className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                    />
+                    {
+                      formikPassword.touched.confirmPassword && formikPassword.errors.confirmPassword ? (
+                        <div className="text-red-500">{formikPassword.errors.confirmPassword}</div>
+                      ) : null
+                    }
+                  </label>
+                </div>
+
+                <div>
+                  <button type="submit" className="`px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900">Actualizar contrasena</button>
+                </div>
+                {
+                  errorPassword && <div className="text-red-500">{errorPassword}</div>
+                }
+                {
+                  success && <div className="text-green-500">Contrasena actualizada exitosamente!</div>
+                }
+              </form>
+            </div>
+
             {/* Formulario Section */}
             <div className="w-[480px] p-4">
               <div className="p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800">
@@ -356,16 +473,12 @@ const Perfil = () => {
                     >
                       Guardar Cambios
                     </button>
-                    {
-                      success && (
-                        <div className="text-green-500">Cambios guardados exitosamente.</div>
-                      )
-                    }
-                    {
-                      error && (
-                        <div className="text-red-500">{error}</div>
-                      )
-                    }
+                    {success && (
+                      <div className="text-green-500">
+                        Cambios guardados exitosamente.
+                      </div>
+                    )}
+                    {error && <div className="text-red-500">{error}</div>}
                   </div>
                 </form>
               </div>
