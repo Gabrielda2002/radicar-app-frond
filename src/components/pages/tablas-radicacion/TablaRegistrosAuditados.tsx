@@ -30,7 +30,7 @@ const TablaRegistrosAuditados: React.FC = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <h2>Error al cargar {error}</h2>;
+  if (error) return <h2>{error}</h2>;
 
   return (
     <>

@@ -13,7 +13,7 @@ const TablaCirugias = () => {
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
 
   if (loadingCirugias) return <LoadingSpinner />;
-  if (errorCirugias) return <div>Error al cargar los datos</div>;
+  if (errorCirugias) return <div>{errorCirugias}</div>;
  
   return (
     <>
