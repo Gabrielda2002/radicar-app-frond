@@ -15,7 +15,7 @@ export const useFetchPaciente = () => {
         });
 
         if (pacientes.data.length === 0) {
-          setError("No se encontraron pacientes con el documento ingresado");
+          setError("Paciente no encontrado.");
           setData(null);
         }else{
           setData(pacientes.data);
@@ -23,8 +23,9 @@ export const useFetchPaciente = () => {
         }
 
       } catch (error) {
-        setError("Error al obtener los datos de los pacientes.");
+        setError("Sin resultados, si el número de identidad está correcto, por favor registre al paciente.");
         setData(null);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +51,7 @@ export const useFetchPacientes = () => {
         setPacientes(response);
   
       } catch (error) {
-        setErrorPacientes("Error al obtener los datos de los pacientes.");
+        setErrorPacientes(`Error al obtener los datos de la tabla pacientes. ${error}`);
       } finally {
         setLoading(false);
       }
