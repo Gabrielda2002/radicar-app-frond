@@ -1,14 +1,14 @@
 //*Funciones y Hooks
-import React, { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
+import { useFormik } from "formik";
+import React, { useState } from "react";
+import { Cup } from "../../../models/ICirugias";
+import useAnimation from "../../../hooks/useAnimations";
+import InputAutocompletado from "../../InputAutocompletado";
+import { createCirugia } from "../../../services/createCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
-import { Cup } from "../../../models/ICirugias";
-import InputAutocompletado from "../../InputAutocompletado";
-import { useFormik } from "formik";
-import { createCirugia } from "../../../services/createCirugia";
 
 interface ModalCirugiasProps {
   name: string;
@@ -131,26 +131,26 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
       {/* init-modal */}
       {stadopen && (
         <section
-          className={` fixed z-50 flex justify-center pt-14 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
+          className={` fixed z-50 flex justify-center pt-5 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >
           <section>
             <div
-              className={` w-auto bg-white shadow-lg transform transition-transform duration-300  dark:bg-gray-800 overflow-hidden rounded ${
+              className={` w-full max-w-6xl bg-white shadow-lg transform transition-transform duration-300 dark:bg-gray-800 overflow-hidden rounded ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200  ">
+              <div className="flex items-center justify-between px-4 py-3 bg-gray-100 rounded-t-lg dark:bg-gray-800">
+                <h1 className="text-xl font-semibold text-color dark:text-white">
                   Programacion Cirugia
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                  className="text-lg duration-200 rounded-lg hover:bg-gray-400 dark:text-gray-300 w-7 h-7"
                 >
                   &times;
                 </button>
@@ -158,95 +158,129 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               {/* validacion si el radicado ya tiene una cirugia programada se muestra el contenido del modal con normalidad de lo contrario se mostrara un error */}
               {idCirugia.length == 0 ? (
                 // validacion de datos del paciente para programacion
-                <div>
+                <div className="p-6">
                   <div>
-                    <h5>Datos del Paciente</h5>
-                    <table className="">
-                      <thead>
+                    <h5 className="mb-4 text-lg text-left text-blue-500 dark:text-white">
+                      Datos del Paciente
+                    </h5>
+                    <table className="w-full mb-2 text-sm border-collapse">
+                      <thead className="bg-gray-100 dark:bg-gray-700">
                         <tr>
-                          <td>Nombre</td>
-                          <td>Telefono Fijo</td>
-                          <td>Celular</td>
-                          <td>Email</td>
-                          <td>Especialidad</td>
-                          <td>Diagnostico</td>
+                          <th className="p-2">Nombre</th>
+                          <th className="p-2">Telefono Fijo</th>
+                          <th className="p-2">Celular</th>
+                          <th className="p-2">Email</th>
+                          <th className="p-2">Especialidad</th>
+                          <th className="p-2">Diagnostico</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>{name}</td>
-                          <td>{landline}</td>
-                          <td>{phonneNumber}</td>
-                          <td>{email}</td>
-                          <td>{speciality}</td>
-                          <td>{diagnostic}</td>
+                        <tr className="text-center border-t dark:border-gray-600">
+                          <td className="p-2">{name}</td>
+                          <td className="p-2">{landline}</td>
+                          <td className="p-2">{phonneNumber}</td>
+                          <td className="p-2">{email}</td>
+                          <td className="p-2">{speciality}</td>
+                          <td className="p-2">{diagnostic}</td>
                         </tr>
                       </tbody>
                     </table>
 
-                    <h5>CUPS del radicado</h5>
+                    <h5 className="mb-4 text-lg text-left text-blue-500 dark:text-white">
+                      CUPS del radicado
+                    </h5>
 
-                    <table>
-                      <thead>
+                    <table className="w-full mb-4 text-sm border-collapse">
+                      <thead className="bg-gray-100 dark:bg-gray-700">
                         <tr>
-                          <th>Codigo</th>
-                          <th>Descripcion</th>
+                          <th className="p-2">Codigo</th>
+                          <th className="p-2">Descripcion</th>
                         </tr>
                       </thead>
                       <tbody>
                         {cups.map((cup) => (
-                          <tr key={cup.id}>
-                            <td>{cup.code}</td>
-                            <td>{cup.description}</td>
+                          <tr
+                            key={cup.id}
+                            className="text-center border-t dark:border-gray-600"
+                          >
+                            <td className="p-2">{cup.code}</td>
+                            <td className="p-2">{cup.description}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
 
                     {idGroupService === 9 && (
-                      <div>
-                        <h4>Validacion de requisitos para programacion</h4>
+                      <div className="mb-6">
+                        <h4 className="mb-4 text-lg text-blue-500 dark:text-white">
+                          Validacion de requisitos para programacion
+                        </h4>
 
-                        <label htmlFor="">
-                          <input
-                            type="checkbox"
-                            checked={soporte}
-                            onChange={(e) => setSoporte(e.target.checked)}
-                          />
-                          1. Soportes completos (historia clínica, orden de la
-                          cirugía).
-                        </label>
-                        <label htmlFor="">
-                          <input
-                            type="checkbox"
-                            checked={paraclinicos}
-                            onChange={(e) => setParaclinicos(e.target.checked)}
-                          />
-                          2. Preclínicos (resultados clínicos).
-                        </label>
-                        <label htmlFor="">
-                          <input
-                            checked={valoracion}
-                            onChange={(e) => setValoracion(e.target.checked)}
-                            type="checkbox"
-                          />
-                          3. Valoracion para anestesiologia.
-                        </label>
-                        {!isValidate && (
-                        <div>
-                          <button
-                            onClick={handleValidation}
-                            className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
+                        <div className="space-y-4">
+                          <label
+                            htmlFor=""
+                            className="flex items-center space-x-2"
                           >
-                            Siguiente
-                          </button>
+                            <input
+                              className="w-4 h-4"
+                              type="checkbox"
+                              checked={soporte}
+                              onChange={(e) => setSoporte(e.target.checked)}
+                            />
+                            <span className="text-sm dark:text-gray-300">
+                              1. Soportes completos (historia clínica, orden de
+                              la cirugía).
+                            </span>
+                          </label>
+
+                          <label
+                            htmlFor=""
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              className="w-4 h-4"
+                              type="checkbox"
+                              checked={paraclinicos}
+                              onChange={(e) =>
+                                setParaclinicos(e.target.checked)
+                              }
+                            />
+                            <span className="text-sm dark:text-gray-300">
+                              2. Preclínicos (resultados clínicos).
+                            </span>
+                          </label>
+
+                          <label
+                            htmlFor=""
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              className="w-4 h-4"
+                              checked={valoracion}
+                              onChange={(e) => setValoracion(e.target.checked)}
+                              type="checkbox"
+                            />
+                            <span className="text-sm dark:text-gray-300">
+                              3. Valoracion para anestesiologia.
+                            </span>
+                          </label>
+
+                          {!isValidate && (
+                            <div>
+                              <button
+                                onClick={handleValidation}
+                                className="w-24 h-12 text-white duration-200 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-700"
+                              >
+                                <span className="text-base">Siguiente</span>
+                              </button>
+                            </div>
+                          )}
+                          {error && (
+                            <span className="text-base text-red-500 dark:text-red-400">
+                              {error}
+                            </span>
+                          )}
                         </div>
-                        ) }
-                        {error && (
-                          <div className="text-red-500 dark:text-red-300">
-                            {error}
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>
@@ -255,143 +289,159 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                     // formulario de programacion de cirugias
                     <form
                       onSubmit={formik.handleSubmit}
-                      className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
+                      className="max-h-[70Vh] overflow-y-auto p-5 bg-white dark:bg-gray-800 rounded-lg"
                     >
-                      <div className="px-5">
-                        <div>
-                          <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                            Información Cirugía
-                          </h5>
-                        </div>
+                      <div className="grid grid-cols-2 gap-10">
+                        <div className="">
+                          <div>
+                            <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                              Información Cirugía
+                            </h5>
+                          </div>
 
-                        <section className="grid grid-cols-2 mb-6 gap-x-20 gap-y-4 ms-2 text-sm">
-                          <div className="">
-                            <label htmlFor="">
-                              <span className="flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
+                          <section className="grid grid-cols-2 gap-6 text-sm">
+                            <div className="">
+                              <label
+                                htmlFor=""
+                                className="font-bold text-gray-700 dark:text-white"
+                              >
                                 Fecha Ordenamiento de Cirugía
-                              </span>
-                              <input
-                                type="date"
-                                id=""
-                                name="fechaOrdenamiento"
-                                onChange={formik.handleChange}
-                                value={formik.values.fechaOrdenamiento}
-                                onBlur={formik.handleBlur}
-                                className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                                <span className="ml-2 text-red-600">*</span>
+                                <input
+                                  type="date"
+                                  id=""
+                                  name="fechaOrdenamiento"
+                                  onChange={formik.handleChange}
+                                  value={formik.values.fechaOrdenamiento}
+                                  onBlur={formik.handleBlur}
+                                  className="w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800"
+                                />
+                                {formik.touched.fechaOrdenamiento &&
+                                formik.errors.fechaOrdenamiento ? (
+                                  <div className="mt-1 text-red-600">
+                                    {formik.errors.fechaOrdenamiento}
+                                  </div>
+                                ) : null}
+                              </label>
+                            </div>
+                            {/* IPS Remite */}
+                            <div className="">
+                              <InputAutocompletado
+                                label="IPS Remite"
+                                onInputChanged={(value) =>
+                                  formik.setFieldValue("ips", value)
+                                }
+                                apiRoute="ips-remite-name"
                               />
-                              {formik.touched.fechaOrdenamiento &&
-                              formik.errors.fechaOrdenamiento ? (
-                                <div className="text-red-600">
-                                  {formik.errors.fechaOrdenamiento}
+                              {formik.touched.ips && formik.errors.ips ? (
+                                <div className="mt-1 text-red-600">
+                                  {formik.errors.ips}
                                 </div>
                               ) : null}
-                            </label>
-                          </div>
-                          <div className="">
-                            <InputAutocompletado
-                              label="IPS Remite"
-                              onInputChanged={(value) =>
-                                formik.setFieldValue("ips", value)
-                              }
-                              apiRoute="ips-remite-name"
-                            />
-                            {formik.touched.ips && formik.errors.ips ? (
-                              <div className="text-red-600">
-                                {formik.errors.ips}
-                              </div>
-                            ) : null}
-                          </div>
-                          <div className="">
-                            <label htmlFor="">
-                              <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
-                                Fecha Cirugía
-                              </span>
-                              <input
-                                type="date"
-                                id=""
-                                name="fechaCirugia"
-                                onChange={formik.handleChange}
-                                value={formik.values.fechaCirugia}
-                                onBlur={formik.handleBlur}
-                                className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                              />
-                              {formik.touched.fechaCirugia &&
-                              formik.errors.fechaCirugia ? (
-                                <div className="text-red-600">
-                                  {formik.errors.fechaCirugia}
-                                </div>
-                              ) : null}
-                            </label>
-                          </div>
-                          <div className="">
-                            <label htmlFor="">
-                              <span className=" flex mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
-                                Hora Programada
-                              </span>
-                              <input
-                                type="time"
-                                id=""
-                                name="horaProgramada"
-                                onChange={formik.handleChange}
-                                value={formik.values.horaProgramada}
-                                onBlur={formik.handleBlur}
-                                className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                              />
-                              {formik.touched.horaProgramada &&
-                              formik.errors.horaProgramada ? (
-                                <div className="text-red-600">
-                                  {formik.errors.horaProgramada}
-                                </div>
-                              ) : null}
-                            </label>
-                          </div>
-                        </section>
+                            </div>
 
-                        <div>
-                          <h5 className="flex mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                            Observacion
-                          </h5>
+                            {/* Fecha Cirugia */}
+
+                            <div className="">
+                              <label
+                                htmlFor=""
+                                className="font-bold text-gray-700 dark:text-white"
+                              >
+                                Fecha Cirugía
+                                <span className="ml-2 text-red-600">*</span>
+                                <input
+                                  type="date"
+                                  id=""
+                                  name="fechaCirugia"
+                                  onChange={formik.handleChange}
+                                  value={formik.values.fechaCirugia}
+                                  onBlur={formik.handleBlur}
+                                  className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                                />
+                                {formik.touched.fechaCirugia &&
+                                formik.errors.fechaCirugia ? (
+                                  <div className="text-red-600">
+                                    {formik.errors.fechaCirugia}
+                                  </div>
+                                ) : null}
+                              </label>
+                            </div>
+
+                            {/* Hora programada */}
+
+                            <div className="">
+                              <label
+                                htmlFor=""
+                                className="font-bold text-gray-700 dark:text-white"
+                              >
+                                Hora Programada
+                                <span className="ml-2 text-red-600">*</span>
+                                <input
+                                  type="time"
+                                  id=""
+                                  name="horaProgramada"
+                                  onChange={formik.handleChange}
+                                  value={formik.values.horaProgramada}
+                                  onBlur={formik.handleBlur}
+                                  className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                                />
+                                {formik.touched.horaProgramada &&
+                                formik.errors.horaProgramada ? (
+                                  <div className="mt-1 text-red-600">
+                                    {formik.errors.horaProgramada}
+                                  </div>
+                                ) : null}
+                              </label>
+                            </div>
+                          </section>
                         </div>
 
-                        <section className="flex justify-center text-sm">
-                          <div className="">
-                            <label htmlFor="">
-                              <span className="flex justify-center mb-2 font-bold text-gray-700 dark:text-white after:content-['*'] after:ml-2 after:text-red-600 ">
-                                Observación
-                              </span>
-                              <textarea
-                                name="observacion"
-                                onChange={formik.handleChange}
-                                value={formik.values.observacion}
-                                onBlur={formik.handleBlur}
-                                id=""
-                                className="block w-[500px] h-28 px-3 pt-2 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                              ></textarea>
-                              {formik.touched.observacion &&
-                              formik.errors.observacion ? (
-                                <div className="text-red-600">
+                        {/* Sección Observación */}
+                        <div>
+                          <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                            Observación
+                          </h5>
+                          <div>
+                            <label className="font-bold text-gray-700 dark:text-white">
+                              Observación
+                              <span className="ml-2 text-red-600">*</span>
+                            </label>
+                            <textarea
+                              name="observacion"
+                              onChange={formik.handleChange}
+                              value={formik.values.observacion}
+                              onBlur={formik.handleBlur}
+                              className="w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded h-28 dark:border-gray-600 dark:text-white dark:bg-gray-800"
+                            ></textarea>
+                            {formik.touched.observacion &&
+                              formik.errors.observacion && (
+                                <div className="mt-1 text-red-600">
                                   {formik.errors.observacion}
                                 </div>
-                              ) : null}
-                            </label>
+                              )}
                           </div>
-                        </section>
+                        </div>
                       </div>
-                      <div>
+
+                      {/* Boton de Envio */}
+
+                      <div className="mt-6">
                         <button
-                          className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600  dark:hover:bg-gray-700"
+                          className="w-24 h-12 text-white rounded-md bg-color hover:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-700"
                           type="submit"
                           disabled={submiting}
                         >
-                          {submiting ? "Enviando..." : "Enviar"}
+                          <span className="text-base">
+                            {submiting ? "Enviando..." : "Enviar"}
+                          </span>
                         </button>
                         {errorSubmit && (
-                          <div className="text-red-500 dark:text-red-300">
+                          <div className="mt-2 text-red-500 dark:text-red-300">
                             {errorSubmit}
                           </div>
                         )}
                         {success && (
-                          <div className="text-red-500 dark:text-green-300">
+                          <div className="mt-2 text-red-500 dark:text-green-300">
                             Programacion exitosa!
                           </div>
                         )}
@@ -406,9 +456,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               )}
 
               {/* container-footer */}
-              <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-white gap-x-2 h-14 dark:bg-gray-800">
+              <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-white rounded-md shadow-md gap-x-2 h-14 dark:bg-gray-800">
                 <button
-                  className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200  dark:hover:bg-gray-700"
+                  className="w-24 h-12 mb-4 text-blue-600 transition-colors duration-200 ease-in-out bg-blue-100 rounded-md hover:bg-blue-200 active:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:text-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-500"
                   onClick={() => setStadopen(false)}
                 >
                   Cerrar
