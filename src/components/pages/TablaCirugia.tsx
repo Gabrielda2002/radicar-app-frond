@@ -7,11 +7,24 @@ import ModalCirugias from "./modals/ModalCirugias";
 import salir from "/assets/back.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
+import gestion from "/assets/gestion.svg";
+import { useState } from "react";
+import {  programacion } from "../../models/ICirugias";
+import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+
 
 const TablaCirugias = () => {
 
+  // estado para abrir el modal
+  const [isOpenGestion, setIsOpenGestion] = useState(false);
+  const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(null);
+
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
 
+  const handleShowGestion = (cirugias: programacion) => {
+    setIsOpenGestion(true);
+    setSelectedCirugia(cirugias);
+  }
   if (loadingCirugias) return <LoadingSpinner />;
   if (errorCirugias) return <div>{errorCirugias}</div>;
  
@@ -86,7 +99,11 @@ const TablaCirugias = () => {
               <td>{cirugia.numeroDocumento}</td>
               <td>{cirugia.nombrePaciente}</td>
               <td>
-                <button className="bg-blue-500 text-white rounded-md w-20 h-8">Gestión</button>
+                <button
+                onClick={() => handleShowGestion(cirugia.programacionCirugia[0])}
+                 >
+                  <img src={gestion} alt="Gestion-icon" />
+                </button>
               </td>
               <td>
                 <ModalCirugias
@@ -109,6 +126,13 @@ const TablaCirugias = () => {
 
         {/* pagination */}
       </div>
+      {/* modal gestion auxiliar cirugias */}
+      <ModalGestionAuxiliar
+        isOpen={isOpenGestion}
+        onClose={() => setIsOpenGestion(false)}
+        radicacion={null}
+        cirugias={selectedCirugia}
+      />
     </>
   );
 };
