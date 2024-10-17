@@ -77,40 +77,36 @@ const Navbar: React.FC = () => {
     >
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
         <nav className="flex flex-wrap items-center text-base">
+          <button
+            onClick={toggleSideBar}
+            className="p-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
+          >
+            <div className="relative w-8 h-8">
+              <img
+                src={menu}
+                alt="Menu Icon"
+                className={`top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                  isCollapsed ? "opacity-100" : "opacity-0"
+                }`}
+              />
+              <img
+                src={menu2}
+                alt="Menu2 Icon"
+                className={`absolute top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                  isCollapsed ? "opacity-0" : "opacity-100"
+                }`}
+              />
+            </div>
+            {/* <span className="fixed p-2 text-xs text-white transition-opacity duration-300 translate-x-[35px] -translate-y-8 bg-gray-700 dark:bg-color rounded-lg opacity-0 left-[50px] w-max group-hover:opacity-100 ">
+              {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
+              <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-color"></span>
+            </span> */}
+          </button>
+
           <NavLink to="/home">
-            <img
-              src={logo}
-              className="w-10 h-10"
-              alt="Logo"
-            />
+            <img src={logo} className="w-10 h-10" alt="Logo" />
           </NavLink>
         </nav>
-
-        <button
-          onClick={toggleSideBar}
-          className="p-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
-        >
-          <div className="relative w-8 h-8">
-            <img
-              src={menu}
-              alt="Menu Icon"
-              className={`top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                isCollapsed ? "opacity-100" : "opacity-0"
-              }`}
-            />
-            <img
-              src={menu2}
-              alt="Menu2 Icon"
-              className={`absolute top-0 left-0 w-8 h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                isCollapsed ? "opacity-0" : "opacity-100"
-              }`}
-            />
-          </div>
-          <span className="fixed p-2 text-xs text-white transition-opacity duration-300 -translate-x-22 -translate-y-8 bg-gray-700 dark:bg-color rounded-lg opacity-0 left-[50px] w-max group-hover:opacity-100 ">
-            {isCollapsed ? "Abrir Sidebar" : "Cerrar Sidebar"}
-            <span className="absolute w-0 h-0 -translate-x-[45px] -translate-y-[2px] -rotate-90 border-b-4 border-l-4 border-r-4 border-transparent left-10 top-1/2 border-b-gray-700 dark:border-b-color"></span>
-          </span>
-        </button>
 
         {/* Botón de Modo Oscuro con Tooltip */}
         <button
@@ -126,17 +122,11 @@ const Navbar: React.FC = () => {
           ) : (
             <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
           )}
-
-          {/* Tooltip */}
-          {/* <span className="fixed p-2 px-2 text-xs text-white transition-opacity duration-300 transform -translate-x-[81px] translate-y-[35px] bg-gray-800 dark:bg-color rounded-lg opacity-0 group-hover:opacity-100 -top-10 left-1/2">
-            {theme === "light" ? "Modo Dark" : "Modo Light"}
-            <span className="absolute w-0 h-0 translate-x-[9px] translate-y-[0.1px] rotate-90 border-b-4 border-l-4 border-r-4 border-transparent border-b-gray-900 dark:border-b-color"></span>
-          </span> */}
         </button>
 
         {/* Menú de Soporte con Enlaces */}
         <Menu as="div" className="relative">
-          <MenuButton className="p-2 mr-4  duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
+          <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
             Soportes
           </MenuButton>
 
@@ -155,8 +145,8 @@ const Navbar: React.FC = () => {
                       rel="noopener noreferrer"
                       className={`${
                         active
-                          ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600"//hover-dark
-                          : "text-gray-700 dark:text-gray-200"//hover-claro
+                          ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600" //hover-dark
+                          : "text-gray-700 dark:text-gray-200" //hover-claro
                       } group flex  items-center w-full px-2 py-2 text-sm `}
                     >
                       {link.name}
@@ -199,8 +189,8 @@ const Navbar: React.FC = () => {
                     }}
                     className={`block  py-2  ps-2 text-sm w-full text-left ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-600 hover:text-white"//hover-dark
-                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"//hover-claro
+                        ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
+                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
                     }  transition-colors duration-300`}
                   >
                     {item.name}
@@ -210,8 +200,8 @@ const Navbar: React.FC = () => {
                     to={item.href}
                     className={`block  py-2 text-sm ps-2 ${
                       theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-600 hover:text-white"//hover-dark
-                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"//hover-claro
+                        ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
+                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
                     } transition-colors duration-300`}
                   >
                     {item.name}

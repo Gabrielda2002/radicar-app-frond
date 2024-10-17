@@ -1,6 +1,7 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import Cookies from "js-cookie";
+import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import { api } from "../../utils/api-config";
 import { useEffect, useState, useRef } from "react";
@@ -245,6 +246,13 @@ const Perfil = () => {
     closeDeletePopup();
   };
 
+  // Variantes para Motion
+  const variantes = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, x: -100, transition: { duration: 0.5 } },
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen mb-8 bg-gray-700 rounded-lg dark:bg-gray-500">
       <section className="p-10 text-gray-900 dark:text-gray-100 body-font">
@@ -340,7 +348,7 @@ const Perfil = () => {
                     Actualizar Datos
                   </button>
                   <button
-                    onClick={togglePasswordForm}
+                    onClick={() => setIsPassowrdFormVisible(true)}
                     className={` text-gray-800 dark:text-white ml-2 border-b ${
                       isPassowrdFormVisible
                         ? "bg-gray-500 dark:bg-gray-400 duration-500 ease-in-out rounded text-white"
@@ -350,187 +358,196 @@ const Perfil = () => {
                     Actualizar Contraseña
                   </button>
                 </div>
+                {/* Animaciones Para el Perfil */}
+                <motion.div
+                  key={isPassowrdFormVisible ? "password-form" : "profile-form"}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={variantes}
+                  className="mt-4"
+                >
+                  {!isPassowrdFormVisible ? (
+                    <form onSubmit={formik.handleSubmit} className="space-y-4">
+                      <h2 className="text-2xl">Editar Información</h2>
+                      <div>
+                        <label
+                          htmlFor="nombre"
+                          className="block text-sm text-gray-700 dark:text-gray-300"
+                        >
+                          Nombre
+                        </label>
+                        <input
+                          type="text"
+                          id="nombre"
+                          value={formik.values.nombre}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                        />
+                        {formik.touched.nombre && formik.errors.nombre ? (
+                          <div className="text-red-500">
+                            {formik.errors.nombre}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="apellido"
+                          className="block text-sm text-gray-700 dark:text-gray-300"
+                        >
+                          Apellido
+                        </label>
+                        <input
+                          type="text"
+                          id="apellido"
+                          value={formik.values.apellido}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                        />
+                        {formik.touched.apellido && formik.errors.apellido ? (
+                          <div className="text-red-500">
+                            {formik.errors.apellido}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm text-gray-700 dark:text-gray-300"
+                        >
+                          Correo Electrónico
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                        />
+                        {formik.touched.email && formik.errors.email ? (
+                          <div className="text-red-500">
+                            {formik.errors.email}
+                          </div>
+                        ) : null}
+                      </div>
 
-                {!isPassowrdFormVisible ? (
-                  <form onSubmit={formik.handleSubmit} className="space-y-4">
-                    <h2 className="text-2xl">Editar Información</h2>
-                    <div>
-                      <label
-                        htmlFor="nombre"
-                        className="block text-sm text-gray-700 dark:text-gray-300"
-                      >
-                        Nombre
-                      </label>
-                      <input
-                        type="text"
-                        id="nombre"
-                        value={formik.values.nombre}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                      />
-                      {formik.touched.nombre && formik.errors.nombre ? (
-                        <div className="text-red-500">
-                          {formik.errors.nombre}
-                        </div>
-                      ) : null}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="apellido"
-                        className="block text-sm text-gray-700 dark:text-gray-300"
-                      >
-                        Apellido
-                      </label>
-                      <input
-                        type="text"
-                        id="apellido"
-                        value={formik.values.apellido}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                      />
-                      {formik.touched.apellido && formik.errors.apellido ? (
-                        <div className="text-red-500">
-                          {formik.errors.apellido}
-                        </div>
-                      ) : null}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm text-gray-700 dark:text-gray-300"
-                      >
-                        Correo Electrónico
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                      />
-                      {formik.touched.email && formik.errors.email ? (
-                        <div className="text-red-500">
-                          {formik.errors.email}
-                        </div>
-                      ) : null}
-                    </div>
-
-                    <div className="flex justify-between ">
-                      <button
-                        type="submit"
-                        disabled={!formik.dirty || formik.isSubmitting}
-                        className={`px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 duration-200 
+                      <div className="flex justify-between ">
+                        <button
+                          type="submit"
+                          disabled={!formik.dirty || formik.isSubmitting}
+                          className={`px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 duration-200 
                         ${
                           !formik.dirty || formik.isSubmitting
                             ? "opacity-50 cursor-not-allowed"
                             : "active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                         }`}
-                      >
-                        Guardar Cambios
-                      </button>
+                        >
+                          Guardar Cambios
+                        </button>
+                        {success && (
+                          <div className="text-green-500">
+                            Cambios guardados exitosamente.
+                          </div>
+                        )}
+                        {error && <div className="text-red-500">{error}</div>}
+                      </div>
+                    </form>
+                  ) : (
+                    <form onSubmit={formikPassword.handleSubmit}>
+                      <div className="flex items-center justify-between">
+                        <div className="">
+                          <h2 className="text-2xl">Cambiar contraseña</h2>
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            Contraseña actual
+                          </span>
+                          <input
+                            type="password"
+                            name="currentPassword"
+                            id=""
+                            onChange={formikPassword.handleChange}
+                            onBlur={formikPassword.handleBlur}
+                            value={formikPassword.values.currentPassword}
+                            className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                          />
+                          {formikPassword.touched.currentPassword &&
+                          formikPassword.errors.currentPassword ? (
+                            <div className="text-red-500">
+                              {formikPassword.errors.currentPassword}
+                            </div>
+                          ) : null}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            Contraseña nueva
+                          </span>
+                          <input
+                            type="password"
+                            name="newPassword"
+                            onChange={formikPassword.handleChange}
+                            onBlur={formikPassword.handleBlur}
+                            value={formikPassword.values.newPassword}
+                            id=""
+                            className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                          />
+                          {formikPassword.touched.newPassword &&
+                          formikPassword.errors.newPassword ? (
+                            <div className="text-red-500">
+                              {formikPassword.errors.newPassword}
+                            </div>
+                          ) : null}
+                        </label>
+                      </div>
+                      <div>
+                        <label htmlFor="">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            comfirmar contraseña
+                          </span>
+                          <input
+                            type="password"
+                            name="confirmPassword"
+                            id=""
+                            onChange={formikPassword.handleChange}
+                            onBlur={formikPassword.handleBlur}
+                            value={formikPassword.values.confirmPassword}
+                            className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+                          />
+                          {formikPassword.touched.confirmPassword &&
+                          formikPassword.errors.confirmPassword ? (
+                            <div className="text-red-500">
+                              {formikPassword.errors.confirmPassword}
+                            </div>
+                          ) : null}
+                        </label>
+                      </div>
+
+                      <div className="pt-8">
+                        <button
+                          type="submit"
+                          className="px-5 py-2 text-white duration-200 rounded-md bg-color hover:bg-emerald-900"
+                        >
+                          Actualizar contraseña
+                        </button>
+                      </div>
+                      {errorPassword && (
+                        <div className="text-red-500">{errorPassword}</div>
+                      )}
                       {success && (
                         <div className="text-green-500">
-                          Cambios guardados exitosamente.
+                          Contrasena actualizada exitosamente!
                         </div>
                       )}
-                      {error && <div className="text-red-500">{error}</div>}
-                    </div>
-                  </form>
-                ) : (
-                  <form onSubmit={formikPassword.handleSubmit}>
-                    <div className="flex items-center justify-between">
-                      <div className="">
-                        <h2 className="text-2xl">Cambiar contraseña</h2>
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="">
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          Contraseña actual
-                        </span>
-                        <input
-                          type="password"
-                          name="currentPassword"
-                          id=""
-                          onChange={formikPassword.handleChange}
-                          onBlur={formikPassword.handleBlur}
-                          value={formikPassword.values.currentPassword}
-                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                        />
-                        {formikPassword.touched.currentPassword &&
-                        formikPassword.errors.currentPassword ? (
-                          <div className="text-red-500">
-                            {formikPassword.errors.currentPassword}
-                          </div>
-                        ) : null}
-                      </label>
-                    </div>
-                    <div>
-                      <label htmlFor="">
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          Contraseña nueva
-                        </span>
-                        <input
-                          type="password"
-                          name="newPassword"
-                          onChange={formikPassword.handleChange}
-                          onBlur={formikPassword.handleBlur}
-                          value={formikPassword.values.newPassword}
-                          id=""
-                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                        />
-                        {formikPassword.touched.newPassword &&
-                        formikPassword.errors.newPassword ? (
-                          <div className="text-red-500">
-                            {formikPassword.errors.newPassword}
-                          </div>
-                        ) : null}
-                      </label>
-                    </div>
-                    <div>
-                      <label htmlFor="">
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          comfirmar contraseña
-                        </span>
-                        <input
-                          type="password"
-                          name="confirmPassword"
-                          id=""
-                          onChange={formikPassword.handleChange}
-                          onBlur={formikPassword.handleBlur}
-                          value={formikPassword.values.confirmPassword}
-                          className="w-full px-3 py-2 mt-1 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
-                        />
-                        {formikPassword.touched.confirmPassword &&
-                        formikPassword.errors.confirmPassword ? (
-                          <div className="text-red-500">
-                            {formikPassword.errors.confirmPassword}
-                          </div>
-                        ) : null}
-                      </label>
-                    </div>
-
-                    <div className="pt-8">
-                      <button
-                        type="submit"
-                        className="px-5 py-2 text-white duration-200 rounded-md bg-color hover:bg-emerald-900"
-                      >
-                        Actualizar contraseña
-                      </button>
-                    </div>
-                    {errorPassword && (
-                      <div className="text-red-500">{errorPassword}</div>
-                    )}
-                    {success && (
-                      <div className="text-green-500">
-                        Contrasena actualizada exitosamente!
-                      </div>
-                    )}
-                  </form>
-                )}
+                    </form>
+                  )}
+                </motion.div>
               </div>
             </div>
 
