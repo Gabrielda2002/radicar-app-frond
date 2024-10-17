@@ -38,14 +38,14 @@ const TablaPacientes = () => {
   };
 
   if (loading) return <LoadingSpinner duration={500} />;
-  if (errorPacientes) return <h2>{errorPacientes}</h2>;
+  if (errorPacientes) return <h2 className="flex justify-center text-lg dark:text-white">{errorPacientes}</h2>;
 
   return (
     <>
       {/* nav-table */}
 
       <section className=" dark:bg-gray-900">
-        <LoadingSpinner duration={500} />;
+        <LoadingSpinner duration={500} />
         <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
           Módulo Pacientes
         </h1>

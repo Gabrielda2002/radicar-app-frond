@@ -33,7 +33,7 @@ const TablaRadicadores = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorRadicador) return <h1>{errorRadicador}</h1>;
+  if (errorRadicador) return <h1 className="flex justify-center text-lg dark:text-white">{errorRadicador}</h1>;
 
   return (
     <>

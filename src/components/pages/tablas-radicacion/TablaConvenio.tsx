@@ -34,7 +34,7 @@ const TablaConvenios = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorConvenio) return <h1>{errorConvenio}</h1>;
+  if (errorConvenio) return <h1 className="flex justify-center text-lg dark:text-white">{errorConvenio}</h1>;
 
   return (
     <>

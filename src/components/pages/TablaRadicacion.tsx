@@ -73,7 +73,7 @@ const TablaRadicacion = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h2>{error}</h2>;
+  if (error) return <h2 className="flex justify-center text-center dark:text-white">{error}</h2>;
 
   return (
     <>

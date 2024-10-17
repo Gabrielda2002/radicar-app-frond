@@ -41,7 +41,7 @@ const Usuarios = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="flex justify-center text-lg dark:text-white">{error}</p>;
 
   return (
     <>

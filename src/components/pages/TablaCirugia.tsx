@@ -1,18 +1,21 @@
 //*Funciones y Hooks
+import { useState } from "react";
+import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
-
+import useSearch from "../../hooks/useSearch";
+import LoadingSpinner from "../LoadingSpinner";
 import ModalCirugias from "./modals/ModalCirugias";
-
-//iconos
+import usePagination from "../../hooks/usePagination";
+import { useFetchCirugias } from "../../hooks/useFetchUsers";
+//*iconos
 import salir from "/assets/back.svg";
 import mostrar from "/assets/mostrar.svg";
-import LoadingSpinner from "../LoadingSpinner";
-import { useFetchCirugias } from "../../hooks/useFetchUsers";
 import gestion from "/assets/gestion.svg";
-import { useState } from "react";
 import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
+
+const ITEMS_PER_PAGE = 8;
 
 const TablaCirugias = () => {
   // estado para abrir el modal
@@ -23,6 +26,22 @@ const TablaCirugias = () => {
   );
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { query, setQuery, filteredData } = useSearch(dataCirugias, [
+    "fechaRadicado",
+    "id",
+    "convenio",
+    "numeroDocumento",
+    "nombrePaciente",
+  ]);
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, ITEMS_PER_PAGE);
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
+  };
 
   const handleShowGestion = (cirugias: programacion) => {
     setIsOpenGestion(true);
@@ -35,8 +54,8 @@ const TablaCirugias = () => {
   };
 
   if (loadingCirugias) return <LoadingSpinner />;
-  if (errorCirugias) return <div>{errorCirugias}</div>;
-
+  if (errorCirugias) return <div className="flex justify-center dark:text-white">{errorCirugias}</div>;
+ 
   return (
     <>
       {/*nav-auditoria*/}
@@ -73,25 +92,35 @@ const TablaCirugias = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
               className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
           <div className="flex items-center space-x-2 pt-1-">
             <select
-              name=""
-              id=""
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[100px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
-              <option value="1">10 Paginas</option>
-              <option value="2">20 Paginas</option>
-              <option value="3">30 Paginas</option>
+              <option value="10">10 Paginas</option>
+              <option value="20">20 Paginas</option>
+              <option value="30">30 Paginas</option>
             </select>
           </div>
         </section>
 
-        <table className="min-w-full mx-auto text-sm ">
+        {filteredData.length === 0 ? (
+          <div>
+            <p className="text-center text-red-500 dark:text-red-300">
+              No se encontraron resultados para la busqueda.
+            </p>
+          </div>
+        ) : (
+          <>
+            <table className="min-w-full mx-auto text-sm ">
           <thead>
             <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
               <th>Fecha - Hora del Radicado</th>
@@ -107,7 +136,7 @@ const TablaCirugias = () => {
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            {dataCirugias.map((cirugia) => (
+            {currentData().map((cirugia) => (
               <tr key={cirugia.id}>
                 <td>
                   {cirugia.fechaRadicado
@@ -162,8 +191,16 @@ const TablaCirugias = () => {
             ))}
           </tbody>
         </table>
+          </>
+        )}
 
         {/* pagination */}
+        <div>‎ </div>
+        <Pagination
+          totalPages={totalPages}
+          onPageChange={paginate}
+          currentPage={currentPage}
+        />
       </div>
       {/* modal mostrar registro cirugias */}
       <ModalMostrarDatosCUPS

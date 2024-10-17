@@ -4,48 +4,59 @@ import * as Yup from "yup";
 //*Icons
 import logo from "/src/imgs/logo.png";
 import { useFormik } from "formik";
-import { useFetchDocumento, useFetchMunicipio, useFetchRoles } from "../../hooks/useFetchUsers";
+import {
+  useFetchDocumento,
+  useFetchMunicipio,
+  useFetchRoles,
+} from "../../hooks/useFetchUsers";
 import { createUser } from "../../services/createUser";
 
 const RegistrarUsuarios: React.FC = () => {
-
-  const {data, error} = useFetchMunicipio();
-  const {dataDocumento, errorDocumento} = useFetchDocumento();
-  const {dataRol, errorRol} = useFetchRoles();
+  const { data, error } = useFetchMunicipio();
+  const { dataDocumento, errorDocumento } = useFetchDocumento();
+  const { dataRol, errorRol } = useFetchRoles();
 
   // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [errorPage , setErrorPage] = useState<string | null>("");
+  const [errorPage, setErrorPage] = useState<string | null>("");
   const [success, setSuccess] = useState<boolean>(false);
 
   // const toggleAccordion = () => {
   //   setIsAccordionOpen(!isAccordionOpen);
   // };
-  
 
   const validationSchema = Yup.object({
     municipio: Yup.string().required("El municipio es obligatorio"),
     rol: Yup.string().required("El rol es obligatorio"),
     tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
-    numeroDocumento: Yup.string().required("El número de documento es obligatorio")
+    numeroDocumento: Yup.string()
+      .required("El número de documento es obligatorio")
       .min(1, "El número de documento no puede ser menor a 1")
       .max(10, "El número de documento no puede ser mayor a 10"),
-    nombresCompletos: Yup.string().required("Los nombres completos son obligatorios")
-      .min(2, 'Debe tener minimo 2 caracteres')
-      .max(150, 'Debe tener máximo 150 caracteres'),
-    apellidosCompletos: Yup.string().required("Los apellidos completos son obligatorios")
-      .min(2, 'Debe tener minimo 2 caracteres')
-      .max(150, 'Debe tener máximo 150 caracteres'),
-    correo: Yup.string().email("Correo inválido").required("El correo es obligatorio")
-      .email('Correo inválido')
-      .min(10, 'Debe tener minimo 5 caracteres')
-      .max(150, 'Debe tener máximo 150 caracteres'),
-    contraseña: Yup.string().required("La contraseña es obligatoria")
-      .min(8, 'Debe tener minimo 8 caracteres')
-      .max(150, 'Debe tener máximo 150 caracteres')
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/, 'La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)'),
-    date: Yup.date().required("La fecha de nacimiento es obligatoria")
-  })
+    nombresCompletos: Yup.string()
+      .required("Los nombres completos son obligatorios")
+      .min(2, "Debe tener minimo 2 caracteres")
+      .max(150, "Debe tener máximo 150 caracteres"),
+    apellidosCompletos: Yup.string()
+      .required("Los apellidos completos son obligatorios")
+      .min(2, "Debe tener minimo 2 caracteres")
+      .max(150, "Debe tener máximo 150 caracteres"),
+    correo: Yup.string()
+      .email("Correo inválido")
+      .required("El correo es obligatorio")
+      .email("Correo inválido")
+      .min(10, "Debe tener minimo 5 caracteres")
+      .max(150, "Debe tener máximo 150 caracteres"),
+    contraseña: Yup.string()
+      .required("La contraseña es obligatoria")
+      .min(8, "Debe tener minimo 8 caracteres")
+      .max(150, "Debe tener máximo 150 caracteres")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
+        "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
+      ),
+    date: Yup.date().required("La fecha de nacimiento es obligatoria"),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -57,7 +68,7 @@ const RegistrarUsuarios: React.FC = () => {
       apellidosCompletos: "",
       correo: "",
       contraseña: "",
-      date: ""
+      date: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -73,30 +84,30 @@ const RegistrarUsuarios: React.FC = () => {
       formData.append("email", values.correo);
       formData.append("password", values.contraseña);
       formData.append("date", values.date);
-      
+
       try {
-        
         setSubmitting(true);
         setSuccess(false);
 
         const response = await createUser(formData);
 
-        if ( response?.status === 200 || response?.status === 201) {
+        if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
           setErrorPage(null);
           formik.resetForm();
         }
       } catch (error) {
         setErrorPage(`Ocurrio un error al registrar el usuario: ${error}`);
-        
       }
 
       setSubmitting(false);
+    },
+  });
 
-    }
-  })
-
-  if (error) return <div>Error: {error}</div>;
+  if (error)
+    return (
+      <div className="flex justify-center text-lg dark:text-white">Error: {error}</div>
+    );
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
 
@@ -132,9 +143,9 @@ const RegistrarUsuarios: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {
-                formik.touched.municipio && formik.errors.municipio ? <div className="text-red-500">{formik.errors.municipio}</div> : null
-              }
+              {formik.touched.municipio && formik.errors.municipio ? (
+                <div className="text-red-500">{formik.errors.municipio}</div>
+              ) : null}
             </div>
 
             {/* Rol */}
@@ -156,9 +167,9 @@ const RegistrarUsuarios: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {
-                formik.touched.rol && formik.errors.rol ? <div className="text-red-500">{formik.errors.rol}</div> : null
-              }
+              {formik.touched.rol && formik.errors.rol ? (
+                <div className="text-red-500">{formik.errors.rol}</div>
+              ) : null}
             </div>
 
             {/* Tipo de Documento */}
@@ -178,18 +189,20 @@ const RegistrarUsuarios: React.FC = () => {
                   <option key={tipoDoc.id} value={tipoDoc.id}>
                     {tipoDoc.name}
                   </option>
-                ))} 
+                ))}
               </select>
-              {
-                formik.touched.tipoDocumento && formik.errors.tipoDocumento ? <div className="text-red-500">{formik.errors.tipoDocumento}</div> : null
-              }
+              {formik.touched.tipoDocumento && formik.errors.tipoDocumento ? (
+                <div className="text-red-500">
+                  {formik.errors.tipoDocumento}
+                </div>
+              ) : null}
             </div>
 
             <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
                 Fecha nacimiento
               </label>
-              <input 
+              <input
                 type="date"
                 name="date"
                 className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -197,11 +210,10 @@ const RegistrarUsuarios: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {
-                formik.touched.date && formik.errors.date ? <div className="text-red-500">{formik.errors.date}</div> : null
-              }
+              {formik.touched.date && formik.errors.date ? (
+                <div className="text-red-500">{formik.errors.date}</div>
+              ) : null}
             </div>
-
 
             {/* Número Documento */}
             <div>
@@ -216,9 +228,12 @@ const RegistrarUsuarios: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {
-                formik.touched.numeroDocumento && formik.errors.numeroDocumento ? <div className="text-red-500">{formik.errors.numeroDocumento}</div> : null
-              }
+              {formik.touched.numeroDocumento &&
+              formik.errors.numeroDocumento ? (
+                <div className="text-red-500">
+                  {formik.errors.numeroDocumento}
+                </div>
+              ) : null}
             </div>
 
             {/* Nombres Completos */}
@@ -234,9 +249,12 @@ const RegistrarUsuarios: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {
-                formik.touched.nombresCompletos && formik.errors.nombresCompletos ? <div className="text-red-500">{formik.errors.nombresCompletos}</div> : null
-              }
+              {formik.touched.nombresCompletos &&
+              formik.errors.nombresCompletos ? (
+                <div className="text-red-500">
+                  {formik.errors.nombresCompletos}
+                </div>
+              ) : null}
             </div>
 
             {/* Apellidos Completos */}
@@ -252,9 +270,12 @@ const RegistrarUsuarios: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {
-                formik.touched.apellidosCompletos && formik.errors.apellidosCompletos ? <div className="text-red-500">{formik.errors.apellidosCompletos}</div> : null
-              }
+              {formik.touched.apellidosCompletos &&
+              formik.errors.apellidosCompletos ? (
+                <div className="text-red-500">
+                  {formik.errors.apellidosCompletos}
+                </div>
+              ) : null}
             </div>
 
             {/* Correo */}
@@ -270,9 +291,9 @@ const RegistrarUsuarios: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {
-                formik.touched.correo && formik.errors.correo ? <div className="text-red-500">{formik.errors.correo}</div> : null
-              }
+              {formik.touched.correo && formik.errors.correo ? (
+                <div className="text-red-500">{formik.errors.correo}</div>
+              ) : null}
             </div>
 
             {/* Contraseña */}
@@ -287,9 +308,9 @@ const RegistrarUsuarios: React.FC = () => {
                 value={formik.values.contraseña}
                 onChange={formik.handleChange}
               />
-              {
-                formik.touched.contraseña && formik.errors.contraseña ? <div className="text-red-500">{formik.errors.contraseña}</div> : null
-              }
+              {formik.touched.contraseña && formik.errors.contraseña ? (
+                <div className="text-red-500">{formik.errors.contraseña}</div>
+              ) : null}
             </div>
 
             {/* Permisos con Acordeón */}
@@ -342,12 +363,10 @@ const RegistrarUsuarios: React.FC = () => {
             >
               {submitting ? "Enviando..." : "Registrar Usuario"}
             </button>
-            {
-              errorPage && <div className="text-red-500">{errorPage}</div>
-            }
-            {
-              success && <div className="text-green-500">Usuario registrado con éxito</div>
-            }
+            {errorPage && <div className="text-red-500">{errorPage}</div>}
+            {success && (
+              <div className="text-green-500">Usuario registrado con éxito</div>
+            )}
           </div>
         </form>
       </div>
