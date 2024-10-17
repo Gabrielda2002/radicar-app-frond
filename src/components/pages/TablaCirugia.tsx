@@ -10,33 +10,33 @@ import LoadingSpinner from "../LoadingSpinner";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
 import gestion from "/assets/gestion.svg";
 import { useState } from "react";
-import {  programacion } from "../../models/ICirugias";
+import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
 
-
 const TablaCirugias = () => {
-
   // estado para abrir el modal
   const [isOpenGestion, setIsOpenGestion] = useState(false);
   const [isOpenMostrar, setIsOpenMostrar] = useState(false);
-  const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(null);
+  const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(
+    null
+  );
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
 
   const handleShowGestion = (cirugias: programacion) => {
     setIsOpenGestion(true);
     setSelectedCirugia(cirugias);
-  }
+  };
 
   const handleShowVer = (progCirugia: programacion) => {
     setIsOpenMostrar(true);
     setSelectedCirugia(progCirugia);
-  }
+  };
 
   if (loadingCirugias) return <LoadingSpinner />;
   if (errorCirugias) return <div>{errorCirugias}</div>;
- 
+
   return (
     <>
       {/*nav-auditoria*/}
@@ -54,7 +54,12 @@ const TablaCirugias = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"></img>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            ></img>
           </div>
         </nav>
       </section>
@@ -85,58 +90,75 @@ const TablaCirugias = () => {
             </select>
           </div>
         </section>
-        
+
         <table className="min-w-full mx-auto text-sm ">
           <thead>
-          <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
-                    <th>Fecha - Hora del Radicado</th>
-                    <th>N.º Radicado</th>
-                    <th>Convenio</th>
-                    <th>N.º Documento</th>
-                    <th>Nombre Paciente</th>
-                    <th>Gestión Auxiliar</th>
-                    <th>Mostrar</th>
-                    <th>Programar</th>
-                  </tr>
+            <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+              <th>Fecha - Hora del Radicado</th>
+              <th>N.º Radicado</th>
+              <th>Convenio</th>
+              <th>N.º Documento</th>
+              <th>Nombre Paciente</th>
+              <th>Ultimo Estado Gestion</th>
+              <th>Gestión Auxiliar</th>
+              <th>Mostrar</th>
+              <th>Programar</th>
+            </tr>
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
             {dataCirugias.map((cirugia) => (
-            <tr key={cirugia.id}>
-              <td>{cirugia.fechaRadicado ? cirugia.fechaRadicado.toISOString() : "N/A"}</td>
-              <td>{cirugia.id}</td>
-              <td>{cirugia.convenio}</td>
-              <td>{cirugia.numeroDocumento}</td>
-              <td>{cirugia.nombrePaciente}</td>
-              <td>
-                <button
-                onClick={() => handleShowGestion(cirugia.programacionCirugia[0])}
-                 >
-                  <img src={gestion} alt="Gestion-icon" />
-                </button>
-              </td>
-              <td>
-                <button
-                  onClick={() => handleShowVer(cirugia.programacionCirugia[0])}
-                >
-                  <img src={mostrar} alt="Gestion-icon" />
-                </button>
-              </td>
-              <td>
-                <ModalCirugias
-                  name={cirugia.nombrePaciente}
-                  phonneNumber={cirugia.numeroPaciente}
-                  email={cirugia.email}
-                  landline={cirugia.telefonoFijo}
-                  cups={cirugia.cups}
-                  speciality={cirugia.especialidad}
-                  diagnostic={cirugia.diagnostico} 
-                  idGroupService={cirugia.idGrupoServicios}
-                  idRadicado={cirugia.id}
-                  idCirugia={cirugia.programacionCirugia.map((programacion) => programacion.id)}
+              <tr key={cirugia.id}>
+                <td>
+                  {cirugia.fechaRadicado
+                    ? cirugia.fechaRadicado.toISOString()
+                    : "N/A"}
+                </td>
+                <td>{cirugia.id}</td>
+                <td>{cirugia.convenio}</td>
+                <td>{cirugia.numeroDocumento}</td>
+                <td>{cirugia.nombrePaciente}</td>
+                <td>
+                  {cirugia.programacionCirugia.length > 0 &&
+                  cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length > 0
+                    ? cirugia.programacionCirugia[0].gestionAuxiliarCirugia.slice(-1)[0].estado
+                    : "N/A"}
+                </td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleShowGestion(cirugia.programacionCirugia[0])
+                    }
+                  >
+                    <img src={gestion} alt="Gestion-icon" />
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleShowVer(cirugia.programacionCirugia[0])
+                    }
+                  >
+                    <img src={mostrar} alt="Gestion-icon" />
+                  </button>
+                </td>
+                <td>
+                  <ModalCirugias
+                    name={cirugia.nombrePaciente}
+                    phonneNumber={cirugia.numeroPaciente}
+                    email={cirugia.email}
+                    landline={cirugia.telefonoFijo}
+                    cups={cirugia.cups}
+                    speciality={cirugia.especialidad}
+                    diagnostic={cirugia.diagnostico}
+                    idGroupService={cirugia.idGrupoServicios}
+                    idRadicado={cirugia.id}
+                    idCirugia={cirugia.programacionCirugia.map(
+                      (programacion) => programacion.id
+                    )}
                   />
-              </td>
-            </tr>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>

@@ -16,7 +16,6 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   idCirugias
 }) => {
 
-  console.log(idCirugias)
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
