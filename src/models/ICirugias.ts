@@ -22,6 +22,7 @@ export interface programacion{
     fechaCirugia:    Date;
     ipsRemite:       string;
     observacion:     string;
+    hora:           string;
     gestionAuxiliarCirugia: GestionAuxiliarCirugia[];
 }
 
