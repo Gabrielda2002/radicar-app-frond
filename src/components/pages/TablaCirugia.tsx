@@ -10,10 +10,7 @@ import { useFetchCirugias } from "../../hooks/useFetchUsers";
 //*iconos
 import salir from "/assets/back.svg";
 import mostrar from "/assets/mostrar.svg";
-import LoadingSpinner from "../LoadingSpinner";
-import { useFetchCirugias } from "../../hooks/useFetchUsers";
 import gestion from "/assets/gestion.svg";
-import { useState } from "react";
 import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
@@ -124,59 +121,6 @@ const TablaCirugias = () => {
         ) : (
           <>
             <table className="min-w-full mx-auto text-sm ">
-              <thead>
-                <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
-                  <th>Fecha - Hora del Radicado</th>
-                  <th>N.º Radicado</th>
-                  <th>Convenio</th>
-                  <th>N.º Documento</th>
-                  <th>Nombre Paciente</th>
-                  <th>Gestión Auxiliar</th>
-                  <th>Mostrar</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-                {currentData().map((cirugia) => (
-                  <tr key={cirugia.id}>
-                    <td>
-                      {cirugia.fechaRadicado
-                        ? cirugia.fechaRadicado.toISOString()
-                        : "N/A"}
-                    </td>
-                    <td>{cirugia.id}</td>
-                    <td>{cirugia.convenio}</td>
-                    <td>{cirugia.numeroDocumento}</td>
-                    <td>{cirugia.nombrePaciente}</td>
-                    <td>
-                      <button className="w-20 h-8 text-white bg-blue-500 rounded-md">
-                        Gestión
-                      </button>
-                    </td>
-                    <td>
-                      <ModalCirugias
-                        name={cirugia.nombrePaciente}
-                        phonneNumber={cirugia.numeroPaciente}
-                        email={cirugia.email}
-                        landline={cirugia.telefonoFijo}
-                        cups={cirugia.cups}
-                        speciality={cirugia.especialidad}
-                        diagnostic={cirugia.diagnostico}
-                        idGroupService={cirugia.idGrupoServicios}
-                        idRadicado={cirugia.id}
-                        idCirugia={cirugia.programacionCirugia.map(
-                          (programacion) => programacion.id
-                        )}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
-
-        <table className="min-w-full mx-auto text-sm ">
           <thead>
             <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
               <th>Fecha - Hora del Radicado</th>
@@ -192,7 +136,7 @@ const TablaCirugias = () => {
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            {dataCirugias.map((cirugia) => (
+            {currentData().map((cirugia) => (
               <tr key={cirugia.id}>
                 <td>
                   {cirugia.fechaRadicado
@@ -247,6 +191,8 @@ const TablaCirugias = () => {
             ))}
           </tbody>
         </table>
+          </>
+        )}
 
         {/* pagination */}
         <div>‎ </div>
