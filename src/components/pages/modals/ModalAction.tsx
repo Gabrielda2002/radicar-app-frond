@@ -1,4 +1,4 @@
-//*Funciones y Hooks
+  //*Funciones y Hooks
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
@@ -73,7 +73,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
   return (
     <>
       <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        <img className="dark:invert " src={onOff} alt="" />
+        <img className="dark:invert " src={onOff} alt="Configuraciones" />
       </button>
 
       {/* init event modal */}
@@ -90,13 +90,13 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between  px-2 py-2  ">
+              <div className="flex items-center justify-between px-4 py-2 ">
                 <h1 className="text-xl font-semibold text-color dark:text-gray-200">
                   Módulos
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-500 hover:text-gray-700 pr-2"
+                  className="w-6 text-2xl duration-300 rounded text-gray-3 00 hover:text-gray-700 hover:bg-gray-300"
                 >
                   &times;
                 </button>
@@ -105,7 +105,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
               {/* init form */}
               <form
                 onSubmit={formik.handleSubmit}
-                className="max-h-[70Vh] overflow-y-auto flex dark:bg-gray-800 dark:text-gray-200"
+                className="px-4 py-2 max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-4 ">
                   <section className="grid grid-cols-3">
@@ -181,13 +181,13 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                   <button
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    className="w-20 h-10 text-blue-400 duration-200 rounded-md hover:text-red-600 hover:bg-red-200 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                     onClick={() => setStadopen(false)}
                   >
                     Cerrar
                   </button>
                   <button
-                    className="w-24 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-24 h-10 text-white duration-200 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
                     disabled={submitting}
                   >
