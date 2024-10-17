@@ -5,18 +5,21 @@ import ModalCirugias from "./modals/ModalCirugias";
 
 //iconos
 import salir from "/assets/back.svg";
+import mostrar from "/assets/mostrar.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
 import gestion from "/assets/gestion.svg";
 import { useState } from "react";
 import {  programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
 
 
 const TablaCirugias = () => {
 
   // estado para abrir el modal
   const [isOpenGestion, setIsOpenGestion] = useState(false);
+  const [isOpenMostrar, setIsOpenMostrar] = useState(false);
   const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(null);
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
@@ -25,6 +28,12 @@ const TablaCirugias = () => {
     setIsOpenGestion(true);
     setSelectedCirugia(cirugias);
   }
+
+  const handleShowVer = (progCirugia: programacion) => {
+    setIsOpenMostrar(true);
+    setSelectedCirugia(progCirugia);
+  }
+
   if (loadingCirugias) return <LoadingSpinner />;
   if (errorCirugias) return <div>{errorCirugias}</div>;
  
@@ -87,6 +96,7 @@ const TablaCirugias = () => {
                     <th>Nombre Paciente</th>
                     <th>Gestión Auxiliar</th>
                     <th>Mostrar</th>
+                    <th>Programar</th>
                   </tr>
           </thead>
 
@@ -103,6 +113,13 @@ const TablaCirugias = () => {
                 onClick={() => handleShowGestion(cirugia.programacionCirugia[0])}
                  >
                   <img src={gestion} alt="Gestion-icon" />
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={() => handleShowVer(cirugia.programacionCirugia[0])}
+                >
+                  <img src={mostrar} alt="Gestion-icon" />
                 </button>
               </td>
               <td>
@@ -126,6 +143,13 @@ const TablaCirugias = () => {
 
         {/* pagination */}
       </div>
+      {/* modal mostrar registro cirugias */}
+      <ModalMostrarDatosCUPS
+        isOpen={isOpenMostrar}
+        onClose={() => setIsOpenMostrar(false)}
+        data={null}
+        cirugias={selectedCirugia}
+      />
       {/* modal gestion auxiliar cirugias */}
       <ModalGestionAuxiliar
         isOpen={isOpenGestion}
