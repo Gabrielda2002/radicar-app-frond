@@ -111,7 +111,7 @@ const TablaCups = () => {
                 <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                   <th className="w-[fit-content]">ID</th>
                   <th className="">Código</th>
-                  <th className="w-[fit-content]">Descripción del Cup</th>
+                  <th className="w-[fit-content]">Descripción CUPS</th>
                   <th className="">Estado</th>
                   <th className="">Acciones</th>
                 </tr>
