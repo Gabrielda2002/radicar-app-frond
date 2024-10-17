@@ -9,10 +9,22 @@ import usePagination from "../../hooks/usePagination";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
 //*iconos
 import salir from "/assets/back.svg";
+import mostrar from "/assets/mostrar.svg";
+import gestion from "/assets/gestion.svg";
+import { programacion } from "../../models/ICirugias";
+import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
 
 const ITEMS_PER_PAGE = 8;
 
 const TablaCirugias = () => {
+  // estado para abrir el modal
+  const [isOpenGestion, setIsOpenGestion] = useState(false);
+  const [isOpenMostrar, setIsOpenMostrar] = useState(false);
+  const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(
+    null
+  );
+
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const { query, setQuery, filteredData } = useSearch(dataCirugias, [
@@ -29,6 +41,16 @@ const TablaCirugias = () => {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
+  };
+
+  const handleShowGestion = (cirugias: programacion) => {
+    setIsOpenGestion(true);
+    setSelectedCirugia(cirugias);
+  };
+
+  const handleShowVer = (progCirugia: programacion) => {
+    setIsOpenMostrar(true);
+    setSelectedCirugia(progCirugia);
   };
 
   if (loadingCirugias) return <LoadingSpinner />;
@@ -99,55 +121,76 @@ const TablaCirugias = () => {
         ) : (
           <>
             <table className="min-w-full mx-auto text-sm ">
-              <thead>
-                <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
-                  <th>Fecha - Hora del Radicado</th>
-                  <th>N.º Radicado</th>
-                  <th>Convenio</th>
-                  <th>N.º Documento</th>
-                  <th>Nombre Paciente</th>
-                  <th>Gestión Auxiliar</th>
-                  <th>Mostrar</th>
-                </tr>
-              </thead>
+          <thead>
+            <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+              <th>Fecha - Hora del Radicado</th>
+              <th>N.º Radicado</th>
+              <th>Convenio</th>
+              <th>N.º Documento</th>
+              <th>Nombre Paciente</th>
+              <th>Ultimo Estado Gestion</th>
+              <th>Gestión Auxiliar</th>
+              <th>Mostrar</th>
+              <th>Programar</th>
+            </tr>
+          </thead>
 
-              <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-                {currentData().map((cirugia) => (
-                  <tr key={cirugia.id}>
-                    <td>
-                      {cirugia.fechaRadicado
-                        ? cirugia.fechaRadicado.toISOString()
-                        : "N/A"}
-                    </td>
-                    <td>{cirugia.id}</td>
-                    <td>{cirugia.convenio}</td>
-                    <td>{cirugia.numeroDocumento}</td>
-                    <td>{cirugia.nombrePaciente}</td>
-                    <td>
-                      <button className="w-20 h-8 text-white bg-blue-500 rounded-md">
-                        Gestión
-                      </button>
-                    </td>
-                    <td>
-                      <ModalCirugias
-                        name={cirugia.nombrePaciente}
-                        phonneNumber={cirugia.numeroPaciente}
-                        email={cirugia.email}
-                        landline={cirugia.telefonoFijo}
-                        cups={cirugia.cups}
-                        speciality={cirugia.especialidad}
-                        diagnostic={cirugia.diagnostico}
-                        idGroupService={cirugia.idGrupoServicios}
-                        idRadicado={cirugia.id}
-                        idCirugia={cirugia.programacionCirugia.map(
-                          (programacion) => programacion.id
-                        )}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
+            {currentData().map((cirugia) => (
+              <tr key={cirugia.id}>
+                <td>
+                  {cirugia.fechaRadicado
+                    ? cirugia.fechaRadicado.toISOString()
+                    : "N/A"}
+                </td>
+                <td>{cirugia.id}</td>
+                <td>{cirugia.convenio}</td>
+                <td>{cirugia.numeroDocumento}</td>
+                <td>{cirugia.nombrePaciente}</td>
+                <td>
+                  {cirugia.programacionCirugia.length > 0 &&
+                  cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length > 0
+                    ? cirugia.programacionCirugia[0].gestionAuxiliarCirugia.slice(-1)[0].estado
+                    : "N/A"}
+                </td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleShowGestion(cirugia.programacionCirugia[0])
+                    }
+                  >
+                    <img src={gestion} alt="Gestion-icon" />
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleShowVer(cirugia.programacionCirugia[0])
+                    }
+                  >
+                    <img src={mostrar} alt="Gestion-icon" />
+                  </button>
+                </td>
+                <td>
+                  <ModalCirugias
+                    name={cirugia.nombrePaciente}
+                    phonneNumber={cirugia.numeroPaciente}
+                    email={cirugia.email}
+                    landline={cirugia.telefonoFijo}
+                    cups={cirugia.cups}
+                    speciality={cirugia.especialidad}
+                    diagnostic={cirugia.diagnostico}
+                    idGroupService={cirugia.idGrupoServicios}
+                    idRadicado={cirugia.id}
+                    idCirugia={cirugia.programacionCirugia.map(
+                      (programacion) => programacion.id
+                    )}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
           </>
         )}
 
@@ -159,6 +202,20 @@ const TablaCirugias = () => {
           currentPage={currentPage}
         />
       </div>
+      {/* modal mostrar registro cirugias */}
+      <ModalMostrarDatosCUPS
+        isOpen={isOpenMostrar}
+        onClose={() => setIsOpenMostrar(false)}
+        data={null}
+        cirugias={selectedCirugia}
+      />
+      {/* modal gestion auxiliar cirugias */}
+      <ModalGestionAuxiliar
+        isOpen={isOpenGestion}
+        onClose={() => setIsOpenGestion(false)}
+        radicacion={null}
+        cirugias={selectedCirugia}
+      />
     </>
   );
 };

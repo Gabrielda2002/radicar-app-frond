@@ -220,6 +220,7 @@ const TablaRadicacion = () => {
               isOpen={isOpenGestionAuxiliar}
               onClose={() => setIsOpenGestionAuxiliar(false)}
               radicacion={selectedRadicacion}
+              cirugias={null}
             />
 
             {/* Controles de la Paginacion */}

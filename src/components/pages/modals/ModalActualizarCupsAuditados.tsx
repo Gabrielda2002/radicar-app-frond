@@ -42,8 +42,8 @@ const ModalActualizarCupsAuditoria: React.FC<
   const validationSchema = Yup.object({
     estado: Yup.string().required("El estado es requerido."),
     observacion: Yup.string()
-      .min(10, "La observación debe tener al menos 10 caracteres.")
-      .max(200, "La observación no debe exceder los 200 caracteres.")
+      .min(1, "La observación debe tener al menos 1 caracteres.")
+      .max(150, "La observación no debe exceder los 150 caracteres.")
       .required("La observación es requerida."),
   });
 
@@ -51,11 +51,12 @@ const ModalActualizarCupsAuditoria: React.FC<
   const formik = useFormik({
     initialValues: {
       estado: "",
-      observacion: "",
+      observacion: cup.observation,
     },
     validationSchema,
     onSubmit: async (values) => {
       setIsSubmiting(true);
+      setError(""); // limpiar errores
 
       const formData = new FormData();
       formData.append("observation", values.observacion);
@@ -129,6 +130,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                           <input
                             name=""
                             value={cup.code}
+                            readOnly
                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
                         </label>
@@ -141,6 +143,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                           <textarea
                             id=""
                             name=""
+                            readOnly
                             value={cup.description}
                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           ></textarea>
@@ -207,7 +210,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                   </button>
                   <button
                     type="submit"
-                    disabled={!formik.isValid}
+                    disabled={!formik.isValid || isSubmiting}
                     className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >
                     {isSubmiting ? "Enviando..." : "Actualizar"}

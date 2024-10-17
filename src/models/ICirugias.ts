@@ -18,6 +18,19 @@ export interface ICirugias {
 
 export interface programacion{
     id: number;
+    fechaProgramada: Date;
+    fechaCirugia:    Date;
+    ipsRemite:       string;
+    observacion:     string;
+    hora:           string;
+    gestionAuxiliarCirugia: GestionAuxiliarCirugia[];
+}
+
+export interface GestionAuxiliarCirugia {
+    id:            number;
+    estado:        string;
+    observacion:   string;
+    fechaCreacion: Date;
 }
 
 export interface Cup {

@@ -212,7 +212,16 @@ export const fetchCirugias = async (): Promise<ICirugias[]> => {
     const cirugias = response.data.map((cirugia: ICirugias) => ({
         ...cirugia,
         fechaRadicado: new Date(cirugia.fechaRadicado),
-        fechaAuditoria: cirugia.fechaAuditoria ? new Date(cirugia.fechaAuditoria) : null
+        fechaAuditoria: cirugia.fechaAuditoria ? new Date(cirugia.fechaAuditoria) : null,
+        programacionCirugia: cirugia.programacionCirugia.map((programacion) => ({
+            ...programacion,
+            fechaProgramada: new Date(programacion.fechaProgramada),
+            fechaCirugia: new Date(programacion.fechaCirugia),
+            gestionAuxiliarCirugia: programacion.gestionAuxiliarCirugia.map((gestion) => ({
+                ...gestion,
+                fechaCreacion: new Date(gestion.fechaCreacion)
+            }))
+        }))
         
     }));
     return cirugias;
