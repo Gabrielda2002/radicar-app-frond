@@ -227,7 +227,7 @@ interface CupsTableProps {
 }
 
 const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
-  <table className="min-w-full border-2 border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
+  <table className="min-w-full border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
     <thead>
       <tr className="bg-gray-300 dark:bg-gray-700">
         <th>Código</th>
