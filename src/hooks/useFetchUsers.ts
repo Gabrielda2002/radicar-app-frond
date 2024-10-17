@@ -153,12 +153,15 @@ export const useFetchMunicipio = () => {
   return { data, loading, error };
 };
 
-export const useFetchConvenio = () => {
+export const useFetchConvenio = (shouldFetch: boolean) => {
   const [dataConvenios, setDataConvenios] = useState<IConvenios[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorConvenio, setErrorConvenio] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const convenios = await fetchConvenio();
@@ -171,17 +174,20 @@ export const useFetchConvenio = () => {
     };
 
     getData();
-  }, []);
+  }, [shouldFetch]);
 
   return { dataConvenios, loading, errorConvenio };
 };
 
-export const useFetchDocumento = () => {
+export const useFetchDocumento = (shouldFetch: boolean) => {
   const [dataDocumento, setDataDocumento] = useState<IDocumento[]>([]);
   const [loadingDocumento, setLoadingDocumento] = useState<boolean>(true);
   const [errorDocumento, setErrorDocumento] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const users = await fetchDocumento();
@@ -194,17 +200,20 @@ export const useFetchDocumento = () => {
     };
 
     getData();
-  }, []);
+  }, [shouldFetch]);
 
   return { dataDocumento, loadingDocumento, errorDocumento };
 };
 
-export const useFetchIpsPrimaria = () => {
+export const useFetchIpsPrimaria = (shouldFetch: boolean) => {
   const [dataIpsPrimaria, setDataIpsPrimaria] = useState<IIPSPrimaria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorIpsPrimaria, setErrorIpsPrimaria] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const ipsPrimaria = await fetchIpsPrimaria();
@@ -217,7 +226,7 @@ export const useFetchIpsPrimaria = () => {
     };
 
     getData();
-  }, []);
+  }, [shouldFetch]);
 
   return { dataIpsPrimaria, loading, errorIpsPrimaria };
 };
