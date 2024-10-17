@@ -32,7 +32,7 @@ const TablaCirugias = () => {
   };
 
   if (loadingCirugias) return <LoadingSpinner />;
-  if (errorCirugias) return <div>{errorCirugias}</div>;
+  if (errorCirugias) return <div className="flex justify-center dark:text-white">{errorCirugias}</div>;
  
   return (
     <>

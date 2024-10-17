@@ -33,7 +33,7 @@ const TablaIpsPrimaria = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorIpsPrimaria) return <h1>{errorIpsPrimaria}</h1>;
+  if (errorIpsPrimaria) return <h1 className="flex justify-center text-lg dark:text-white">{errorIpsPrimaria}</h1>;
 
   return (
     <>

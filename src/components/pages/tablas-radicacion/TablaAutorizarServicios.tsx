@@ -99,7 +99,7 @@ const FormularioAutorizacion = () => {
 
   if (error) return <h2>{error}</h2>;
   if (loading) return <LoadingSpinner duration={500} />;
-  if (errorEstados) return <h2>{errorEstados}</h2>;
+  if (errorEstados) return <h2 className="flex justify-center text-lg dark:text-white">{errorEstados}</h2>;
 
   return (
     <>

@@ -26,7 +26,7 @@ const FileManager: React.FC = () => {
   const isInFolder = path.length > 1; // Si tienes más de un elemento en el path, estás dentro de una carpeta
 
   if (loading) return <LoadingSpinner duration={3000} />;
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="flex justify-center text-lg dark:text-white">{error}</div>;
 
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
@@ -46,7 +46,7 @@ const FileManager: React.FC = () => {
               Sistema de Archivos SGC
             </li>
           </ol>
-          <div className="pb-2 w-10">
+          <div className="w-10 pb-2">
               <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"/>
           </div>
         </nav>
@@ -77,7 +77,7 @@ const FileManager: React.FC = () => {
         <div>
           {isEmpty ? (
             <div>
-              <p className="text-center text-gray-500 dark:text-gray-400">
+              <p className="text-center text-gray-500 dark:text-gray-100">
                 Esta carpeta está vacía.
               </p>
             </div>

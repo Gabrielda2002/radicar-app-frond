@@ -37,7 +37,7 @@ const TablaCups = () => {
   };
 
   if (loading) return <LoadingSpinner duration={500} />;
-  if (error) return <h2>{error}</h2>;
+  if (error) return <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>;
 
   return (
     <>

@@ -34,7 +34,7 @@ const TablaTipoDocumento = () => {
   };
 
   if (loadingDocumento) return <LoadingSpinner duration={100000} />;
-  if (errorDocumento) return <h1>{errorDocumento}</h1>;
+  if (errorDocumento) return <h1 className="flex justify-center text-lg dark:text-white">{errorDocumento}</h1>;
 
   return (
     <>
