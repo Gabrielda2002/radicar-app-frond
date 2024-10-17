@@ -82,8 +82,9 @@ const FormularioAutorizacion = () => {
 
         if (response?.status === 200) {
           setSuccess(true);
-
-          window.location.href = "/tabla-auditoria";
+          setTimeout(() => {
+            window.location.href = "/tabla-auditoria";
+          }, 3000);
         } else {
           throw new Error("Error al registrar la autorización.");
         }
@@ -203,6 +204,7 @@ const FormularioAutorizacion = () => {
                   onBlur={formik.handleBlur}
                   value={formik.values.justificacion}
                   name="justificacion"
+                  placeholder="Justificación"
                   className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
                 {formik.touched.justificacion &&

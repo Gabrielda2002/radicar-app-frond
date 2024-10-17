@@ -482,7 +482,7 @@ const ModalRadicacion = () => {
 
                   <div>
                     <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
-                      Cups
+                      CUPS
                     </h5>
                   </div>
                   {/* el usuario ingresa la cantidad de servicios que desea ingresar */}

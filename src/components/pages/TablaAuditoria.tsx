@@ -222,6 +222,7 @@ const TablaAuditoria = () => {
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
               data={selectedCups}
+              cirugias={null}
             />
             <div>‎</div>
             {/* pagination */}

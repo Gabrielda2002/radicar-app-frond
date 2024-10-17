@@ -108,8 +108,8 @@ export const saveCups = async (data: FormData) => {
     return api.post(`/cups-radicados`, data);
 }
 
-export const saveGestionAuxiliar = async (data: FormData) => {
-    return api.post(`/seguimientos-auxiliares`, data)
+export const saveGestionAuxiliar = async (data: FormData, endpoint: string) => {
+    return api.post(`/${endpoint}`, data)
 }
 
 export const AuditarRadicado = async (data: object, id: number) => {

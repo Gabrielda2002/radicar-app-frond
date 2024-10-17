@@ -5,13 +5,17 @@ import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
 
 interface ModalGestionServicioProps {
   onClose: () => void;
-  idRadicado: number;
+  idRadicado: number | null;
+  idCirugias: number | null;
+  
 }
 
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   onClose,
   idRadicado,
+  idCirugias
 }) => {
+
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -38,10 +42,20 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
       const formData = new FormData();
       formData.append("observation", values.observacion);
       formData.append("status", values.estadoSeguimiento);
-      formData.append("idRadicacion", idRadicado.toString());
 
       try {
-        const response = await submitGestionAuxiliar(formData);
+
+        let endPoint: string = "";
+          
+        if (idCirugias !== null) {
+          formData.append("surgeryId", idCirugias.toString());
+          endPoint = "seguimiento-auxiliar-cirugia";
+        }else if (idRadicado !== null) {
+          formData.append("idRadicacion", idRadicado.toString());
+          endPoint = "seguimientos-auxiliares";
+        }
+
+        const response = await submitGestionAuxiliar(formData, endPoint);
 
         if (response && response.status === 200) {
           setSuccess(true);
