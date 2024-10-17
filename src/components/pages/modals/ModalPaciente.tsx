@@ -26,14 +26,22 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
 
+  const [load, setLoad] = useState(false);
+
   //hook para traer los tipos de documentos
-  const {dataDocumento, errorDocumento} = useFetchDocumento();
+  const {dataDocumento, errorDocumento} = useFetchDocumento(load);
 
   // hook para traer los convenios
-  const { dataConvenios, errorConvenio } = useFetchConvenio();
+  const { dataConvenios, errorConvenio } = useFetchConvenio(load);
 
   // hook para traer  las ips primarias
-  const { dataIpsPrimaria, errorIpsPrimaria } = useFetchIpsPrimaria();
+  const { dataIpsPrimaria, errorIpsPrimaria } = useFetchIpsPrimaria(load);
+
+  useEffect(() => {
+    if(isOpen){
+      setLoad(true);
+    }
+  }, [isOpen]);
 
   const validationSchema = Yup.object({
     tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
