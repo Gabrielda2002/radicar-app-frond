@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import * as Yup from "yup";
 //*Icons
 import logo from "/src/imgs/logo.png";
@@ -13,7 +13,9 @@ import { createUser } from "../../services/createUser";
 
 const RegistrarUsuarios: React.FC = () => {
   const { data, error } = useFetchMunicipio();
-  const { dataDocumento, errorDocumento } = useFetchDocumento();
+
+  const isOpen = true;
+  const { dataDocumento, errorDocumento } = useFetchDocumento(isOpen);
   const { dataRol, errorRol } = useFetchRoles();
 
   // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
