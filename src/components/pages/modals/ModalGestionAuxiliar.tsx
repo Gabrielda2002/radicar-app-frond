@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import { IRadicados } from "../../../models/IRadicados";
+import { IRadicados, SeguimientoAuxiliarRelation } from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
-import { programacion } from "../../../models/ICirugias";
+import {  GestionAuxiliarCirugia, programacion } from "../../../models/ICirugias";
 
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
@@ -19,6 +19,33 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 }) => {
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
+
+  // se hace una sobre carga para que la funcion reciba un array de seguimientos de radicacion o de cirugias
+  function getUltimoEstado (seguimientos: SeguimientoAuxiliarRelation[]): string | null;
+  function getUltimoEstado(seguimientos: GestionAuxiliarCirugia[]): string | null;
+  function getUltimoEstado (seguimientos: SeguimientoAuxiliarRelation[] | GestionAuxiliarCirugia[]): string | null {
+
+    if (seguimientos.length > 0) {
+      const ultimoSeguimiento = seguimientos[seguimientos.length - 1];
+
+      if("estadoSeguimientoRelation" in ultimoSeguimiento) {
+      return ultimoSeguimiento.estadoSeguimientoRelation 
+             ? ultimoSeguimiento.estadoSeguimientoRelation.name
+             : null;
+    }
+    return ultimoSeguimiento.estado;
+  }
+
+    return null;
+  }
+
+  // obtener el ultimo estao de la cirugia y radicacion
+  const ultimoEstadoCirugia = radicacion && radicacion.seguimientoAuxiliarRelation ? getUltimoEstado(radicacion.seguimientoAuxiliarRelation) : null;
+  const ultimoEstadoRadicacion = cirugias && cirugias.gestionAuxiliarCirugia ? getUltimoEstado(cirugias.gestionAuxiliarCirugia) : null;
+
+  // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
+  const isDisabled = ultimoEstadoCirugia === "Cerrado" || ultimoEstadoCirugia === "Cancelado" || ultimoEstadoRadicacion === "Cerrado" || ultimoEstadoRadicacion === "Cancelado";
+
 
   // Si el modal no está abierto o no hay datos de radicación ni cirugías, no renderiza nada.
   if (!isOpen || (!cirugias && !radicacion)) return null;
@@ -128,7 +155,12 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
               </button>
               <button
                 onClick={EventServicio}
-                className="w-32 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600 dark:hover:bg-gray-700"
+                disabled={isDisabled}
+                className={`w-32 h-10 text-white rounded-md ${
+                  isDisabled
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover-gray-600 dark:hover:bg-gray-700"
+                }`}
               >
                 Registrar Gestión.
               </button>
