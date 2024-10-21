@@ -49,7 +49,7 @@ export const useFetchUsers = () => {
         const users = await fetchUsers();
         setData(users);
       } catch (error) {
-        setError("Error al obtener los datos de los usuarios. " + error);
+        setError("Error al obtener los datos de la tabla radicación o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -72,7 +72,7 @@ export const useFetchAuditoria = () => {
         const auditorias = await fetchAuditoria();
         setData(auditorias);
       } catch (error) {
-        setError("Error al obtener los datos por Auditar. " + error);
+        setError("Error al obtener los datos por Auditar o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -95,7 +95,7 @@ export const useFetchCups = () => {
         const cups = await fetchCups();
         setData(cups);
       } catch (error) {
-        setError("Error al obtener los datos de los CUPS. " + error);
+        setError("Error al obtener los datos de los CUPS o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -118,7 +118,7 @@ export const useFetchRadicador = () => {
         const radicadores = await fetchRadicador();
         setDataRadicador(radicadores);
       } catch (error) {
-        setErrorRadicador("Error al obtener los datos de la tabla radicadores. " + error);
+        setErrorRadicador("Error al obtener los datos de la tabla radicadores o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -141,7 +141,7 @@ export const useFetchMunicipio = () => {
         const municipios = await fetchMunicipio();
         setData(municipios);
       } catch (error) {
-        setError("Error al obtener los datos de la tabla municipios. " + error);
+        setError("Error al obtener los datos de la tabla municipios o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -167,7 +167,7 @@ export const useFetchConvenio = (shouldFetch: boolean) => {
         const convenios = await fetchConvenio();
         setDataConvenios(convenios);
       } catch (error) {
-        setErrorConvenio("Error al obtener los datos de la tabla convenios. " + error);
+        setErrorConvenio("Error al obtener los datos de la tabla convenios o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -193,7 +193,7 @@ export const useFetchDocumento = (shouldFetch: boolean) => {
         const users = await fetchDocumento();
         setDataDocumento(users);
       } catch (error) {
-        setErrorDocumento("Error al obtener los datos de los datos de la tabla tipo documento. " + error);
+        setErrorDocumento("Error al obtener los datos de los datos de la tabla tipo documento o no tienes los permisos necesarios. " + error);
       } finally {
         setLoadingDocumento(false);
       }
@@ -219,7 +219,7 @@ export const useFetchIpsPrimaria = (shouldFetch: boolean) => {
         const ipsPrimaria = await fetchIpsPrimaria();
         setDataIpsPrimaria(ipsPrimaria);
       } catch (error) {
-        setErrorIpsPrimaria("Error al obtener los datos de la tabla IPS primaria. " + error);
+        setErrorIpsPrimaria("Error al obtener los datos de la tabla IPS primaria o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -242,7 +242,7 @@ export const useFetchLugarRadicado = () => {
         const lugarRadicado = await fetchLugarRadicado();
         setData(lugarRadicado);
       } catch (error) {
-        setError("Error al obtener los datos de la tabla lugar radicacion. " + error);
+        setError("Error al obtener los datos de la tabla lugar radicacion o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -265,7 +265,7 @@ export const useFetchIpsRemite = () => {
         const ipsRemite = await fetchIpsRemite();
         setData(ipsRemite);
       } catch (error) {
-        setError("Error al obtener los datos de la tabla IPS remite. " + error);
+        setError("Error al obtener los datos de la tabla IPS remite o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -288,7 +288,7 @@ export const useFetchEspecialidad = () => {
             const especialidad = await fetchEspecialidad();
             setData(especialidad);
         } catch (error) {
-            setError("Error al obtener los datos de la tabla especialidades. " + error);
+            setError("Error al obtener los datos de la tabla especialidades o no tienes los permisos necesarios. " + error);
         } finally {
             setLoading(false);
         }
@@ -311,7 +311,7 @@ export const useFetchServicios = () => {
             const servicios = await fetchServicio();
             setData(servicios);
         } catch (error) {
-            setError("Error al obtener los datos de la tabla servicios. " + error);
+            setError("Error al obtener los datos de la tabla servicios o no tienes los permisos necesarios. " + error);
         } finally {
             setLoading(false);
         }
@@ -334,7 +334,7 @@ export const useFetchUsuarios = () => {
             const usuarios = await fetchUsuario();
             setData(usuarios);
         } catch (error) {
-            setError("Error al obtener los datos de la tabla usuarios. " + error);
+            setError("Error al obtener los datos de la tabla usuarios o no tienes los permisos necesarios. " + error);
         } finally {
             setLoading(false);
         }
@@ -357,7 +357,7 @@ export const useFetchUnidadFuncional = () => {
             const unidadFuncional = await fetchUnidadFuncional();
             setData(unidadFuncional);
         } catch (error) {
-            setError("Error al obtener los datos de la tabla unidad funcional. " + error);
+            setError("Error al obtener los datos de la tabla unidad funcional o no tienes los permisos necesarios. " + error);
         } finally {
             setLoading(false);
         }
@@ -383,7 +383,7 @@ export const useFetchEstados = (shouldFetch: boolean) => {
         const estados = await fetchEstados();
         setDataEstados(estados);
       } catch (error) {
-        setErrorEstados("Error al obtener los estados. " + error);
+        setErrorEstados("Error al obtener los estados o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
@@ -413,7 +413,7 @@ export const useFetchAuditados = () => {
           setData(auditados);
         }
       } catch (error) {
-        setError("Error al obtener los datos de la tabla auditados. " + error);
+        setError("Error al obtener los datos de la tabla auditados o no tienes los permisos necesarios. " + error);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -443,7 +443,7 @@ export const useFetchRoles = () => {
         const roles = await fetchRoles();
         setDataRol(roles);
       } catch (error) {
-        setErrorRol("Error al obtener los datos de la tabla roles. " + error);
+        setErrorRol("Error al obtener los datos de la tabla roles o no tienes los permisos necesarios. " + error);
       } finally {
         setLoadingRol(false);
       }
@@ -467,7 +467,7 @@ export const useFetchCirugias = () => {
         const cirugias = await fetchCirugias();
         setDataCirugias(cirugias);
       } catch (error) {
-        setErrorCirugias("Error al obtener los datos de la tabla cirugias. " + error);
+        setErrorCirugias("Error al obtener los datos de la tabla cirugias o no tienes los permisos necesarios. " + error);
       } finally {
         setLoadingCirugias(false);
       }
