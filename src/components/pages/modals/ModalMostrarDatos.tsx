@@ -26,30 +26,27 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between px-2 pt-2 pb-4 dark:bg-gray-800">
-            <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
-              Tabla Completa
+          <div className="flex items-center justify-between px-2 pt-4 pb-4 bg-gray-200 border-b-2 border-black dark:border-white dark:bg-gray-800">
+            <h2 className="p-2 text-2xl font-semibold text-color dark:text-gray-200">
+              Tabla Completa De Datos
             </h2>
             <button
               onClick={onClose}
-              className="pr-2 text-xl text-gray-500 hover-gray-700"
+              className="text-xl text-gray-500 duration-200 rounded-md dark:text-gray-200 w-7 h-7 dark:hover:bg-gray-300 dark:hover:text-gray-800"
             >
               &times;
             </button>
           </div>
 
           {/* Contenedor para las dos tablas en columnas */}
-          <div className="grid grid-cols-2 gap-x-6 max-h-[70vh] overflow-auto px-4">
+          <div className="grid grid-cols-2 gap-x-6 max-h-[70vh] overflow-auto px-4 gap-y-6">
             {/* Primera tabla */}
-            <table className="mt-2 mb-8 text-sm">
+            <table className="mt-2 mb-8 text-sm border-2 rounded-lg">
               <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
-                  <th className="">Campo</th>
-                  <th className="">Valor</th>
-                </tr>
+                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300"></tr>
               </thead>
 
-              <tbody className="dark:text-gray-200 ">
+              <tbody className="dark:text-gray-200">
                 {/* estilo hacia "td(2)" */}
                 <style>
                   {`tbody tr td:nth-child(2) {
@@ -58,39 +55,51 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </style>
 
                 <tr className="">
-                  <td className="">Lugar Radicacion</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Lugar Radicacion
+                  </td>
                   <td className="">{radicacion.placeRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Remisión de IPS</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Remisión de IPS
+                  </td>
                   <td className="">{radicacion.ipsRemiteRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Profesional</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Profesional</td>
                   <td className="">{radicacion.profetional}</td>
                 </tr>
                 <tr>
-                  <td className="">Especialidad</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Especialidad</td>
                   <td className="">{radicacion.specialtyRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Grupo Servicios</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Grupo Servicios
+                  </td>
                   <td className="">{radicacion.servicesGroupRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Tipo Servicios</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Tipo Servicios
+                  </td>
                   <td className="">{radicacion.servicesRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Auxiliar Radicador</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Auxiliar Radicador
+                  </td>
                   <td className="">{radicacion.usuarioRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">Auditora</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Auditora</td>
                   <td className="">{radicacion.auditora}</td>
                 </tr>
                 <tr>
-                  <td className="">Fecha Auditoría</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Fecha Auditoría
+                  </td>
                   <td className="">
                     {radicacion.auditDate
                       ? new Date(radicacion.auditDate).toLocaleString()
@@ -98,64 +107,69 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   </td>
                 </tr>
                 <tr>
-                  <td className="">Justificación</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Justificación
+                  </td>
                   <td className="">{radicacion.justify}</td>
                 </tr>
               </tbody>
             </table>
 
             {/* Segunda-tabla */}
-            <table className="mt-2 mb-8 text-sm">
-              <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
-                  <th className="">Campo</th>
-                  <th className="">Valor</th>
-                </tr>
-              </thead>
+            <table className="mt-2 mb-8 text-sm border-2">
+              <thead></thead>
 
-              <tbody className="dark:text-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 dark:text-gray-200">
                 <tr>
-                  <td className="">Fecha - Hora del Radicado</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Fecha - Hora del Radicado
+                  </td>
                   <td className="">
                     {radicacion.createdAt
                       ? new Date(radicacion.createdAt).toLocaleString()
                       : "N/A"}
                   </td>
                 </tr>
-                <tr>
-                  <td className="">N.º Radicado</td>
+                <tr className="">
+                  <td className="bg-gray-400 dark:bg-gray-600">N.º Radicado</td>
                   <td className="">{radicacion.id}</td>
                 </tr>
                 <tr>
-                  <td className="">Nombre paciente</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Nombre paciente
+                  </td>
                   <td className="">{radicacion.patientRelation.name}</td>
                 </tr>
                 <tr>
-                  <td className="">N.º Documento</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    N.º Documento
+                  </td>
                   <td className="">
                     {radicacion.patientRelation.documentNumber}
                   </td>
                 </tr>
                 <tr>
-                  <td className="">Celular</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Celular</td>
                   <td className="">{radicacion.patientRelation.phoneNumber}</td>
                 </tr>
                 <tr>
-                  <td className="">Correo Electrónico</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Correo Electrónico
+                  </td>
                   <td className="">{radicacion.patientRelation.email}</td>
                 </tr>
                 <tr>
-                  <td className="">Dirección</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Dirección</td>
                   <td className="">{radicacion.patientRelation.address}</td>
                 </tr>
                 <tr>
-                  <td className="">Convenio</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Convenio</td>
                   <td className="">
                     {radicacion.patientRelation.convenioRelation.name}
                   </td>
                 </tr>
                 <tr>
-                  <td className="">IPS Primaria</td>
+                  <td className="bg-gray-400 dark:bg-gray-600">IPS Primaria</td>
                   <td className="">
                     {radicacion.patientRelation.ipsPrimariaRelation.name}
                   </td>
@@ -164,31 +178,34 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </table>
 
             {/* Tabla-cups */}
-            <table className="mt-2 mb-8 text-sm">
+            <table className="mt-2 mb-8 text-sm border-2">
               <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
-                  <th className="">Campo</th>
-                  <th className="">Valor</th>
-                </tr>
+                <tr className="bg-gray-100 dark:bg-gray-700 dark:text-gray-300"></tr>
               </thead>
 
               {radicacion.cupsRadicadosRelation.length > 0 ? (
                 radicacion.cupsRadicadosRelation.map((cups) => (
                   <tbody key={cups.code} className="dark:text-gray-200">
                     <tr>
-                      <td className="">Código CUPS</td>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Código CUPS
+                      </td>
                       <td className="">{cups.code}</td>
                     </tr>
                     <tr>
-                      <td className="">Descripción CUPS</td>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Descripción CUPS
+                      </td>
                       <td className="">{cups.DescriptionCode}</td>
                     </tr>
                     <tr>
-                      <td className="">Observiación CUPS</td>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Observiación CUPS
+                      </td>
                       <td className="">{cups.observation}</td>
                     </tr>
                     <tr>
-                      <td className="">Unidad Funcional</td>
+                      <td className="bg-gray-400 dark:bg-gray-600">Unidad Funcional</td>
                       <td className="">{cups.functionalUnitRelation.name}</td>
                     </tr>
                   </tbody>
@@ -206,10 +223,10 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           </div>
 
           {/* container-footer */}
-          <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+          <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-gray-200 border-t-2 border-black dark:border-white h-14 dark:bg-gray-800">
             <button
               onClick={onClose}
-              className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+              className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               Cerrar
             </button>
