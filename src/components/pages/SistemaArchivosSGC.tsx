@@ -6,6 +6,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import DropDownManu from "./SSGC/DropDownManu";
 import { useFileManager } from "../../hooks/useFileManager";
 import salir from "/assets/back.svg";
+import { useAuth } from "../../context/authContext";
 
 const FileManager: React.FC = () => {
   const {
@@ -31,6 +32,8 @@ const FileManager: React.FC = () => {
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
+
+const { rol } = useAuth();
 
   return (
     <>
@@ -63,12 +66,14 @@ const FileManager: React.FC = () => {
               className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <DropDownManu
-            uploadNewFile={uploadNewFile}
-            currentFolderId={currentFolderId}
-            createNewFolder={createNewFolder}
-            isInFolder={isInFolder} // Pasar el estado de si estás en una carpeta
-          />
+          {[4, 1].includes(Number(rol)) && (
+            <DropDownManu
+              uploadNewFile={uploadNewFile}
+              currentFolderId={currentFolderId}
+              createNewFolder={createNewFolder}
+              isInFolder={isInFolder} // Pasar el estado de si estás en una carpeta
+            />
+          )}
         </section>
         <div>
           <BreadCrumb path={path} onNavigate={navigateBackToFolder} />

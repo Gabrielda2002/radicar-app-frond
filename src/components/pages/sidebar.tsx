@@ -56,23 +56,22 @@ const SideBar: FC = () => {
       : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
   };
   //*Función para manejar la lógica del sidebar, asegurando que solo un acordeón esté abierto a la vez
-const toggleAccordion = (key: keyof typeof openAccordions) => {
-  setOpenAccordions((prev) => {
-    // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
-    const isSameAccordionOpen = prev[key];
-    
-    // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
-    return {
-      services: false,
-      quality: false,
-      reports: false,
-      tablets: false,
-      admin: false,
-      [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
-    };
-  });
-};
+  const toggleAccordion = (key: keyof typeof openAccordions) => {
+    setOpenAccordions((prev) => {
+      // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
+      const isSameAccordionOpen = prev[key];
 
+      // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
+      return {
+        services: false,
+        quality: false,
+        reports: false,
+        tablets: false,
+        admin: false,
+        [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
+      };
+    });
+  };
 
   useEffect(() => {
     if (accordionRef.current) {
@@ -219,156 +218,148 @@ const toggleAccordion = (key: keyof typeof openAccordions) => {
             </div>
 
             {/*  MODULO GESTION SERVICIOS  */}
-            {[10, 3, 1].includes(Number(rol)) && (
-              <div>
-                <button
-                  onClick={() => toggleAccordion("services")}
-                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+            <div>
+              <button
+                onClick={() => toggleAccordion("services")}
+                className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                  openAccordions.services
+                    ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                    : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                } w-full`}
+              >
+                <img
+                  src={services}
+                  alt=""
+                  className={`w-5 h-5 ${
                     openAccordions.services
-                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                  } w-full`}
-                >
-                  <img
-                    src={services}
-                    alt=""
-                    className={`w-5 h-5 ${
+                      ? "invert"
+                      : "group-hover:invert dark:invert"
+                  }`}
+                />
+                {!isCollapsed && (
+                  <span
+                    className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                       openAccordions.services
-                        ? "invert"
-                        : "group-hover:invert dark:invert"
+                        ? "text-white dark:text-gray-200"
+                        : ""
+                    }`}
+                  >
+                    Gestión de Servicios
+                  </span>
+                )}
+                {!isCollapsed && (
+                  <img
+                    src={arrowUp}
+                    alt=""
+                    className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
+                      openAccordions.services ? "rotate-180" : ""
                     }`}
                   />
-                  {!isCollapsed && (
-                    <span
-                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                        openAccordions.services
-                          ? "text-white dark:text-gray-200"
-                          : ""
-                      }`}
-                    >
-                      Gestión de Servicios
-                    </span>
-                  )}
-                  {!isCollapsed && (
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                        openAccordions.services ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
-                </button>
-                {openAccordions.services && (
-                  <div className="mt-2 space-y-3">
-                    {[10, 3, 1].includes(Number(rol)) && (
-                      <NavLink to="/tabla-radicacion">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={taskList}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Radicador
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                    <div></div>
-                    {[10, 15, 1].includes(Number(rol)) && (
-                      <NavLink to="/tabla-cirugias">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={surgery}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Cirugía
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                    <div></div>
-                    {[3, 1].includes(Number(rol)) && (
-                      <NavLink to="/tabla-auditoria">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={audit}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Auditoría
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                  </div>
                 )}
-              </div>
-            )}
+              </button>
+              {openAccordions.services && (
+                <div className="mt-2 space-y-3">
+                  {[10, 3, 1, 15].includes(Number(rol)) && (
+                    <NavLink to="/tabla-radicacion">
+                      {({ isActive }) => (
+                        <div
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
+                        >
+                          <img
+                            src={taskList}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                                isActive ? "text-white dark:text-gray-200" : ""
+                              }`}
+                            >
+                              Radicador
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </NavLink>
+                  )}
+                  <div></div>
+                  {[10, 15, 1].includes(Number(rol)) && (
+                    <NavLink to="/tabla-cirugias">
+                      {({ isActive }) => (
+                        <div
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
+                        >
+                          <img
+                            src={surgery}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                                isActive ? "text-white dark:text-gray-200" : ""
+                              }`}
+                            >
+                              Cirugía
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </NavLink>
+                  )}
+                  <div></div>
+                  {[3, 1].includes(Number(rol)) && (
+                    <NavLink to="/tabla-auditoria">
+                      {({ isActive }) => (
+                        <div
+                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                            isActive
+                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                          }`}
+                        >
+                          <img
+                            src={audit}
+                            alt=""
+                            className={`w-5 h-5 mx-2 ${
+                              isActive
+                                ? "invert"
+                                : "group-hover:invert dark:invert"
+                            }`}
+                          />
+                          {!isCollapsed && (
+                            <span
+                              className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                                isActive ? "text-white dark:text-gray-200" : ""
+                              }`}
+                            >
+                              Auditoría
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </NavLink>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* MODULO GESTION REPORTES  */}
             {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
@@ -873,16 +864,16 @@ const toggleAccordion = (key: keyof typeof openAccordions) => {
           </div>
 
           {/*Tabla Configuraciones*/}
-          <div className="flex flex-col mx-3 space-y-3">
-            {!isCollapsed && (
-              <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
-                Configuraciones
-              </label>
-            )}
+          {[1].includes(Number(rol)) && (
+            <div className="flex flex-col mx-3 space-y-3">
+              {!isCollapsed && (
+                <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
+                  Configuraciones
+                </label>
+              )}
 
-            {/* Tabla Configuraciones 1 */}
-            {/* < -- MODULO ADIM (PERFIL) -- > */}
-            {[1].includes(Number(rol)) && (
+              {/* Tabla Configuraciones 1 */}
+              {/* < -- MODULO ADIM (PERFIL) -- > */}
               <div className="flex flex-col -mx-3 space-y-3">
                 <div>
                   <button
@@ -1027,8 +1018,8 @@ const toggleAccordion = (key: keyof typeof openAccordions) => {
                   )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </nav>
       </div>
     </aside>
