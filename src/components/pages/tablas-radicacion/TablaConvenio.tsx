@@ -14,7 +14,8 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 10;
 
 const TablaConvenios = () => {
-  const { dataConvenios, loading, errorConvenio } = useFetchConvenio();
+  const load = true;
+  const { dataConvenios, loading, errorConvenio } = useFetchConvenio(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(dataConvenios, [
