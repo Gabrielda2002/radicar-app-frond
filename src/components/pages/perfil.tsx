@@ -42,9 +42,9 @@ const Perfil = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const togglePasswordForm = () => {
-    setIsPassowrdFormVisible((prevState) => !prevState);
-  };
+  // const togglePasswordForm = () => {
+  //   setIsPassowrdFormVisible((prevState) => !prevState);
+  // };
 
   // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
