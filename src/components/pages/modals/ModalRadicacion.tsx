@@ -1,14 +1,20 @@
 //*Funciones y Hooks
-import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import ServicioForm from "../../ServicioForm";
-import useAnimation from "../../../hooks/useAnimations";
 import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 import InputAutocompletado from "../../InputAutocompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
+
+import id from "/assets/id.svg";
+import phone from "/assets/phone.svg";
+import email from "/assets/email.svg";
+import adress from "/assets/adress.svg";
+import telephone from "/assets/telephone.svg";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -64,7 +70,7 @@ const ModalRadicacion = () => {
       .min(3, "El nombre debe tener al menos 3 caracteres.")
       .max(100, "El nombre debe tener máximo 100 caracteres."),
     dateOrden: Yup.string().required("Campo requerido"),
-    soporte: Yup.mixed().required("Campo requerido")
+    soporte: Yup.mixed().required("Campo requerido"),
   });
 
   const formik = useFormik({
@@ -90,49 +96,48 @@ const ModalRadicacion = () => {
     onSubmit: async (values) => {
       console.log(values);
 
-    setSubmiting(true);
-    setSuccess(false);
+      setSubmiting(true);
+      setSuccess(false);
 
-    const formData = new FormData();
-    formData.append("landline", values.telefonoFijo);
-    formData.append("phoneNumber", values.numeroCelular);
-    formData.append("address", values.direccion);
-    formData.append("email", values.email);
-    formData.append("ipsRemitente", values.idIpsRemite);
-    formData.append("specialty", values.idEspecialidad);
-    formData.append("groupServices", values.idGrupoServicios);
-    formData.append("place", values.idLugarRadicacion);
-    formData.append("typeServices", values.idTipoServicios);
-    formData.append("radicador", idUsuario);
-    formData.append("profetional", values.nombreProfesional);
-    formData.append("orderDate", values.dateOrden);
-    if (values.soporte) {
-      formData.append("file", values.soporte);
-    }
-    formData.append("idDiagnostico", values.idDiagnostico);
-    formData.append("code", servicios.join(","));
-    formData.append("DescriptionCode", descripciones.join(","));
-    formData.append("idPatient", values.idPaciente);
-
-    try {
-      const response = await submitRadicado(formData, values.idPaciente);
-
-      if (response?.status === 201) {
-        setSuccess(true);
-
-        setTimeout(() => {
-          setStadopen(false);
-          window.location.reload();
-        }, 2000);
-      } else {
-        setErrorMessage("Error al radicar, revise los campos.");
+      const formData = new FormData();
+      formData.append("landline", values.telefonoFijo);
+      formData.append("phoneNumber", values.numeroCelular);
+      formData.append("address", values.direccion);
+      formData.append("email", values.email);
+      formData.append("ipsRemitente", values.idIpsRemite);
+      formData.append("specialty", values.idEspecialidad);
+      formData.append("groupServices", values.idGrupoServicios);
+      formData.append("place", values.idLugarRadicacion);
+      formData.append("typeServices", values.idTipoServicios);
+      formData.append("radicador", idUsuario);
+      formData.append("profetional", values.nombreProfesional);
+      formData.append("orderDate", values.dateOrden);
+      if (values.soporte) {
+        formData.append("file", values.soporte);
       }
-    } catch (error) {
-      console.error(error);
-    }
+      formData.append("idDiagnostico", values.idDiagnostico);
+      formData.append("code", servicios.join(","));
+      formData.append("DescriptionCode", descripciones.join(","));
+      formData.append("idPatient", values.idPaciente);
 
-    setSubmiting(false);
+      try {
+        const response = await submitRadicado(formData, values.idPaciente);
 
+        if (response?.status === 201) {
+          setSuccess(true);
+
+          setTimeout(() => {
+            setStadopen(false);
+            window.location.reload();
+          }, 2000);
+        } else {
+          setErrorMessage("Error al radicar, revise los campos.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      setSubmiting(false);
     },
   });
 
@@ -148,9 +153,12 @@ const ModalRadicacion = () => {
 
   useEffect(() => {
     if (diagnostico) {
-      formik.setFieldValue("idDiagnostico", diagnostico.map((item) => item.id).join(", "));
+      formik.setFieldValue(
+        "idDiagnostico",
+        diagnostico.map((item) => item.id).join(", ")
+      );
       setDescription(diagnostico.map((item) => item.description).join(", "));
-      // formik.setFieldValue("servicios", diagnostico.map((item) => item.id).join(", "));      
+      // formik.setFieldValue("servicios", diagnostico.map((item) => item.id).join(", "));
     }
   }, [diagnostico]);
 
@@ -245,36 +253,36 @@ const ModalRadicacion = () => {
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
+              <div className="flex items-center justify-between px-2 py-2 bg-gray-100 border-b-2 border-black dark:border-white dark:bg-gray-600">
+                <h1 className="p-3 text-2xl font-semibold text-color dark:text-gray-200">
                   Radicación de Servicios
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="pr-2 text-xl text-gray-500 hover-gray-700"
+                  className="text-xl text-gray-500 duration-200 rounded-md dark:text-white w-7 h-7 dark:hover:bg-gray-300 dark:hover:text-gray-800"
                 >
                   &times;
                 </button>
               </div>
 
               {/* init form */}
-              <form
-                onSubmit={formik.handleSubmit}
-                className="dark:bg-gray-800"
-              >
+              <form onSubmit={formik.handleSubmit} className="dark:bg-gray-800">
                 <div className="px-5 max-h-[70Vh] overflow-y-auto">
                   <div>
-                    <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                      Datos Paciente
+                    <h5 className="p-2 mt-2 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                      Datos Paciente:
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-3 mb-6 text-sm gap-x-10 gap-y-2 ms-2">
+                  <section className="grid grid-cols-2 mb-6 text-sm gap-x-10 gap-y-2 ms-2">
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Identificación
-                        </span>
+                        <div className="flex mb-2">
+                          <img src={id} alt="" className="mr-2 w-7 h-7 dark:invert" />
+                          <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Identificación
+                          </span>
+                        </div>
                         <input
                           type="text"
                           id="identificacion"
@@ -284,7 +292,7 @@ const ModalRadicacion = () => {
                           onKeyDown={handleKeyDown}
                           onBlur={handleBlur}
                           placeholder="Digite número"
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 "
+                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
@@ -378,29 +386,42 @@ const ModalRadicacion = () => {
                   </section>
 
                   <div>
-                    <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                      Datos Contacto Paciente
+                    <h5 className="p-2 mt-12 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                      Datos Contacto Paciente:
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 mb-6 text-sm gap-x-40 gap-y-2 ms-2">
-                    <div>
+                  <section className="grid grid-cols-2 mb-6 text-sm gap-x-10 gap-y-2 ms-2">
+                    <div className="mb-4">
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Telefono Fijo
-                        </span>
+                        <div className="flex mb-2">
+                          <img
+                            src={telephone}
+                            alt=""
+                            className="mr-2 h-7 w-7 dark:invert"
+                          />
+                          <span className="flex text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200 items-center">
+                            Telefono Fijo
+                          </span>
+                        </div>
                         <input
                           type="number"
                           id=""
                           name="telefonoFijo"
+                          placeholder="Ingrese numero de teléfono..."
                           onChange={formik.handleChange}
                           value={formik.values.telefonoFijo}
                           onBlur={formik.handleBlur}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                            formik.touched.telefonoFijo &&
+                            formik.errors.telefonoFijo
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
                         />
                         {formik.touched.telefonoFijo &&
                         formik.errors.telefonoFijo ? (
-                          <div className="text-red-500 dark:text-red-300">
+                          <div className="mt-2 text-red-500 dark:text-red-300">
                             {formik.errors.telefonoFijo}
                           </div>
                         ) : null}
@@ -408,88 +429,117 @@ const ModalRadicacion = () => {
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          N° Celular
-                        </span>
+                        <div className="flex mb-2">
+                          <img
+                            src={phone}
+                            alt=""
+                            className="mr-2 w-7 h-7 dark:invert"
+                          />
+                          <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            N° Celular
+                          </span>
+                        </div>
                         <input
                           type="number"
                           id=""
+                          placeholder="Ingrese número de celular..."
                           onChange={formik.handleChange}
                           value={formik.values.numeroCelular}
                           name="numeroCelular"
-                          onBlur={formik.handleBlur}  
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          onBlur={formik.handleBlur}
+                          className={` ${
+                            formik.touched.numeroCelular &&
+                            formik.errors.numeroCelular
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.numeroCelular &&
-                          formik.errors.numeroCelular ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.numeroCelular}
-                            </div>
-                          ) : null
-                        }
+                        {formik.touched.numeroCelular &&
+                        formik.errors.numeroCelular ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.numeroCelular}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Dirreción
-                        </span>
+                        <div className="flex mb-2">
+                          <img
+                            src={adress}
+                            alt=""
+                            className="mr-2 w-7 h-7 dark:invert"
+                          />
+                          <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Dirección
+                          </span>
+                        </div>
                         <input
                           type="text"
                           id=""
+                          placeholder="Ingrese dirección..."
                           name="direccion"
                           onChange={formik.handleChange}
                           value={formik.values.direccion}
                           onBlur={formik.handleBlur}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` ${
+                            formik.touched.direccion && formik.errors.direccion
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.direccion &&
-                          formik.errors.direccion ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.direccion}
-                            </div>
-                          ) : null
-                        }
+                        {formik.touched.direccion && formik.errors.direccion ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.direccion}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Email
-                        </span>
+                        <div className="flex mb-2">
+                          <img
+                            src={email}
+                            alt=""
+                            className="mr-2 w-7 h-7 dark:invert"
+                          />
+                          <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Email
+                          </span>
+                        </div>
                         <input
                           type="email"
                           onChange={formik.handleChange}
                           id=""
                           name="email"
+                          placeholder="Ingrese correo electronico..."
                           value={formik.values.email}
                           onBlur={formik.handleBlur}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` ${
+                            formik.touched.email && formik.errors.email
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.email &&
-                          formik.errors.email ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.email}
-                            </div>
-                          ) : null  
-                        }
+                        {formik.touched.email && formik.errors.email ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.email}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                   </section>
 
                   <div>
-                    <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200 ">
-                      CUPS
+                    <h5 className="p-2 mt-12 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                      CUPS:
                     </h5>
                   </div>
                   {/* el usuario ingresa la cantidad de servicios que desea ingresar */}
-                  <section className="grid grid-cols-3 mb-6 text-sm border-2 border-transparent gap-x-10 gap-y-0 ps-2">
-                    <div>
+                  <section className="grid grid-cols-1 mb-6 text-sm border-2 border-transparent gap-x-10 gap-y-3 ps-2">
+                    <div className="mb-3">
                       <label htmlFor="cantidad">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Cantidad de Servicios Solicitados
                         </span>
                         <input
@@ -500,11 +550,12 @@ const ModalRadicacion = () => {
                           value={cantidad}
                           onChange={CantidadInput}
                           onKeyDown={EventEnter}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className="w-auto px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           placeholder="Digite número . . . ."
                         />
                       </label>
                     </div>
+                    <div className="grid grid-cols-2 gap-10">  
                     <ServicioForm
                       cantidad={cantidad}
                       servicios={servicios}
@@ -512,22 +563,27 @@ const ModalRadicacion = () => {
                       onServicioChange={handleServicioChange}
                       onDescripcionChange={handleDescripcionChange}
                     />
+                    </div>
                   </section>
 
                   <div>
-                    <h5 className="mb-2 text-xl font-normal text-blue-500 dark:text-gray-200">
-                      Información del Servicio a Radicar
+                    <h5 className="p-2 mt-12 mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                      Información del Servicio a Radicar:
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-3 mb-6 text-sm gap-x-10 gap-y-2 ps-2">
-                    <div>
+                  <section className="grid grid-cols-2 mb-4 text-sm gap-x-10 gap-y-8 ps-2">
+                    <div className="mb-1">
                       <InputAutocompletado
                         label="IPS Remite"
                         onInputChanged={(value) =>
                           formik.setFieldValue("idIpsRemite", value)
                         }
                         apiRoute="ips-remite-name"
+                        error={
+                          formik.touched.idIpsRemite &&
+                          !!formik.errors.idIpsRemite
+                        }
                       />
                       {formik.touched.idIpsRemite &&
                       formik.errors.idIpsRemite ? (
@@ -543,17 +599,21 @@ const ModalRadicacion = () => {
                           formik.setFieldValue("idEspecialidad", value)
                         }
                         apiRoute="especialidades-name"
+                        error={
+                          formik.touched.idEspecialidad &&
+                          !!formik.errors.idEspecialidad
+                        }
                       />
                       {formik.touched.idEspecialidad &&
                       formik.errors.idEspecialidad ? (
-                        <div className="text-red-500 dark:text-red-300">
+                        <div className="mt-2 text-red-500 dark:text-red-300">
                           {formik.errors.idEspecialidad}
                         </div>
                       ) : null}
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className=" block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Profesional Remite
                         </span>
                         <input
@@ -564,21 +624,24 @@ const ModalRadicacion = () => {
                           onChange={formik.handleChange}
                           value={formik.values.nombreProfesional}
                           onBlur={formik.handleBlur}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` ${
+                            formik.touched.nombreProfesional &&
+                            formik.errors.nombreProfesional
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.nombreProfesional &&
-                          formik.errors.nombreProfesional ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.nombreProfesional}
-                            </div>
-                          ) : null
-                        }
+                        {formik.touched.nombreProfesional &&
+                        formik.errors.nombreProfesional ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.nombreProfesional}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Fecha Orden
                         </span>
                         <input
@@ -588,32 +651,34 @@ const ModalRadicacion = () => {
                           onChange={formik.handleChange}
                           value={formik.values.dateOrden}
                           onBlur={formik.handleBlur}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` ${
+                            formik.touched.dateOrden && formik.errors.dateOrden
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.dateOrden &&
-                          formik.errors.dateOrden ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.dateOrden}
-                            </div>
-                          ) : null
-                        }
+                        {formik.touched.dateOrden && formik.errors.dateOrden ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.dateOrden}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
                       <InputAutocompletado
                         label="Grupo Servicios"
                         onInputChanged={(value) =>
-                          formik.setFieldValue(
-                            "idGrupoServicios",
-                            value
-                          )
+                          formik.setFieldValue("idGrupoServicios", value)
                         }
                         apiRoute="grupo-servicios-name"
+                        error={
+                          formik.touched.idGrupoServicios &&
+                          !!formik.errors.idGrupoServicios
+                        }
                       />
                       {formik.touched.idGrupoServicios &&
                       formik.errors.idGrupoServicios ? (
-                        <div className="text-red-500 dark:text-red-300">
+                        <div className="mt-2 text-red-500 dark:text-red-300">
                           {formik.errors.idGrupoServicios}
                         </div>
                       ) : null}
@@ -625,15 +690,17 @@ const ModalRadicacion = () => {
                           formik.setFieldValue("idTipoServicios", value)
                         }
                         apiRoute="servicios-name"
+                        error={
+                          formik.touched.idTipoServicios &&
+                          !!formik.errors.idTipoServicios
+                        }
                       />
-                      {
-                        formik.touched.idTipoServicios &&
-                        formik.errors.idTipoServicios ? (
-                          <div className="text-red-500 dark:text-red-300">
-                            {formik.errors.idTipoServicios}
-                          </div>
-                        ) : null
-                      }
+                      {formik.touched.idTipoServicios &&
+                      formik.errors.idTipoServicios ? (
+                        <div className="mt-2 text-red-500 dark:text-red-300">
+                          {formik.errors.idTipoServicios}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <InputAutocompletado
@@ -642,17 +709,21 @@ const ModalRadicacion = () => {
                           formik.setFieldValue("idLugarRadicacion", value)
                         }
                         apiRoute="lugares-radicacion-name"
+                        error={
+                          formik.touched.idLugarRadicacion &&
+                          !!formik.errors.idLugarRadicacion
+                        }
                       />
                       {formik.touched.idLugarRadicacion &&
                       formik.errors.idLugarRadicacion ? (
-                        <div className="text-red-500 dark:text-red-300">
+                        <div className="mt-2 text-red-500 dark:text-red-300">
                           {formik.errors.idLugarRadicacion}
                         </div>
                       ) : null}
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Diagnóstico
                         </span>
                         <input
@@ -672,7 +743,7 @@ const ModalRadicacion = () => {
                         htmlFor=""
                         className="disabled:bg-gray-200 disabled:cursor-not-allowed"
                       >
-                        <span className=" block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                        <span className="block mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
                           Descripción Diagnóstico
                         </span>
                         <textarea
@@ -683,14 +754,14 @@ const ModalRadicacion = () => {
                             (loading ? "" : errorDiagnostico || "")
                           }
                           disabled
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                          className="w-full px-3 py-2 border border-gray-200 rounded cursor-not-allowed dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700"
                         ></textarea>
                       </label>
                     </div>
 
                     <div>
                       <label htmlFor="">
-                        <span className=" block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Quién Radica
                         </span>
                         <input
@@ -705,7 +776,7 @@ const ModalRadicacion = () => {
                     </div>
                     <div>
                       <label htmlFor="">
-                        <span className="block mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Soporte
                         </span>
                         <input
@@ -715,19 +786,23 @@ const ModalRadicacion = () => {
                           accept=".pdf"
                           onChange={(e) => {
                             if (e.target.files && e.target.files.length > 0) {
-                              formik.setFieldValue("soporte", e.target.files[0]); // Asignar el archivo seleccionado a Formik
+                              formik.setFieldValue(
+                                "soporte",
+                                e.target.files[0]
+                              ); // Asignar el archivo seleccionado a Formik
                             }
                           }}
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` ${
+                            formik.touched.soporte && formik.errors.soporte
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {
-                          formik.touched.soporte &&
-                          formik.errors.soporte ? (
-                            <div className="text-red-500 dark:text-red-300">
-                              {formik.errors.soporte}
-                            </div>
-                          ) : null
-                        }
+                        {formik.touched.soporte && formik.errors.soporte ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.soporte}
+                          </div>
+                        ) : null}
                       </label>
                     </div>
                     <div>
@@ -752,17 +827,17 @@ const ModalRadicacion = () => {
                 )}
 
                 {/* container-footer */}
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-gray-100 border-t-2 border-black dark:border-white h-14 dark:bg-gray-600">
                   <button
                     onClick={() => setTimeout(closeModal, 250)}
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-blue-400 duration-300 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >
                     Cerrar
                   </button>
                   <button
                     disabled={submiting}
                     type="submit"
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-white duration-300 border-2 border-gray-400 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:border-gray-900"
                   >
                     {submiting ? "Enviando..." : "Radicar"}
                   </button>
