@@ -1,8 +1,28 @@
 const healthData = [
-  { id: 1, title: "Vacunación", value: "75%", description: "Vacunación completada contra la influenza" },
-  { id: 2, title: "Pasos diarios", value: "8500", description: "Promedio de pasos diarios esta semana" },
-  { id: 3, title: "IMC Promedio", value: "22.4", description: "Índice de Masa Corporal promedio" },
-  { id: 4, title: "Presión Arterial", value: "120/80", description: "Presión arterial promedio" },
+  {
+    id: 1,
+    title: "Vacunación",
+    value: "N/A",
+    description: "Vacunación completada contra la influenza",
+  },
+  {
+    id: 2,
+    title: "Pasos diarios",
+    value: "N/A",
+    description: "Promedio de pasos diarios esta semana",
+  },
+  {
+    id: 3,
+    title: "IMC Promedio",
+    value: "N/A",
+    description: "Índice de Masa Corporal promedio",
+  },
+  {
+    id: 4,
+    title: "Presión Arterial",
+    value: "N/A",
+    description: "Presión arterial promedio",
+  },
 ];
 
 const HealthIndicators = () => {
