@@ -14,7 +14,8 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 10;
 
 const TablaIpsPrimaria = () => {
-  const { dataIpsPrimaria, loading, errorIpsPrimaria } = useFetchIpsPrimaria();
+  const load = true;
+  const { dataIpsPrimaria, loading, errorIpsPrimaria } = useFetchIpsPrimaria(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(dataIpsPrimaria, [

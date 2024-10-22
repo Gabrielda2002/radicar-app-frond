@@ -25,6 +25,7 @@ export const fetchUsers = async (): Promise<IRadicados[]> => {
         ...radicacion,
         createdAt: new Date(radicacion.createdAt),
         auditDate: radicacion.auditDate ? new Date(radicacion.auditDate) : null
+        
     }));
     return radicaciones;
 }

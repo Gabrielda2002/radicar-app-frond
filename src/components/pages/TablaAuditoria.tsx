@@ -169,7 +169,7 @@ const TablaAuditoria = () => {
                   <tr key={auditoria.id}>
                     <td>
                       {auditoria.radicadoDate
-                        ? auditoria.radicadoDate.getTime()
+                        ? auditoria.radicadoDate.toISOString()
                         : "N/A"}
                     </td>
                     <td>{auditoria.documentType}</td>
