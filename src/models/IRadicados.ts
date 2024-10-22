@@ -21,7 +21,8 @@ export interface IRadicados {
     ipsRemiteRelation:           Relation;
     servicesGroupRelation:       Relation;
     servicesRelation:            Relation;
-    usuarioRelation:           Relation;
+    usuarioRelation:             Relation;
+    statusRelation:              Relation;
     patientRelation:             PatientRelation;
     cupsRadicadosRelation:       CupsRadicadosRelation[];
     diagnosticoRelation:         DiagnosticoRelation;

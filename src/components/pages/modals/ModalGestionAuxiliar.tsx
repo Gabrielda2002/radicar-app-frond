@@ -40,7 +40,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   }
 
   // obtener el ultimo estao de la cirugia y radicacion
-  const ultimoEstadoCirugia = radicacion && radicacion.seguimientoAuxiliarRelation ? getUltimoEstado(radicacion.seguimientoAuxiliarRelation) : null;
+  const ultimoEstadoCirugia = radicacion && radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation ? getUltimoEstado(radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation) : null;
   const ultimoEstadoRadicacion = cirugias && cirugias.gestionAuxiliarCirugia ? getUltimoEstado(cirugias.gestionAuxiliarCirugia) : null;
 
   // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
@@ -109,7 +109,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             ) : null}
 
             {/* Segunda tabla: Radicaciones */}
-            {radicacion && radicacion.seguimientoAuxiliarRelation.length > 0 ? (
+            {radicacion && radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.length > 0 ? (
               <table className="max-h-[70vh] w-auto overflow-y-auto mb-4 mx-4">
                 <thead className="text-center">
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
@@ -120,7 +120,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                   </tr>
                 </thead>
                 <tbody className="text-sm text-center break-words dark:text-gray-200">
-                  {radicacion.seguimientoAuxiliarRelation.map((seguimiento) => (
+                  {radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.map((seguimiento) => (
                     <tr key={seguimiento.id}>
                       <td className="">{seguimiento.codeCups}</td>
                       <td className="max-w-[400px]">
@@ -173,7 +173,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
       {openServicio && (
         <ModalGestionServicio
           onClose={() => setOpenServicio(false)}
-          idRadicado={radicacion?.id || null}
+          idRadicado={radicacion?.cupsRadicadosRelation[0].id || null}
           idCirugias={cirugias?.id || null}
         />
       )}

@@ -153,9 +153,8 @@ const TablaRadicacion = () => {
                     <th>N.º Documento</th>
                     <th>Nombre Paciente</th>
                     <th>Fecha Auditoría</th>
-                    <th>CUPS</th>
+                    <th>Gestión del servicio</th>
                     <th>Soporte</th>
-                    <th>Gestión Auxiliar</th>
                     <th>Mostrar</th>
                   </tr>
                 </thead>
@@ -187,10 +186,11 @@ const TablaRadicacion = () => {
                           <table className="min-w-full border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
                             <thead>
                               <tr className="bg-gray-300 dark:bg-gray-700">
-                                <th>Código</th>
+                                <th>CUPS</th>
                                 <th>Descripción</th>
-                                <th>Estado</th>
-                                <th>Estado Auxiliar</th>
+                                <th>Auditoria</th>
+                                <th>Gestion</th>
+                                <th>Auxiliar</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -198,7 +198,18 @@ const TablaRadicacion = () => {
                                 <tr key={cup.id}>
                                   <td>{cup.code}</td>
                                   <td>{cup.DescriptionCode}</td>
-                                  <td>{cup.status}</td>
+                                  <td
+                                    style={{
+                                      backgroundColor:
+                                        cup.statusRelation.name &&
+                                        cup.statusRelation.name ===
+                                          "AUTORIZADO"
+                                          ? "green"
+                                          : "transparent",
+                                    }}
+                                  >
+                                    {cup.statusRelation.name}
+                                  </td>
                                   {/*  Se agrega el estado del seguimiento auxiliar  */}
                                   {/*  y dependiendo del estado se cambia el color */}
                                   <td
@@ -221,6 +232,21 @@ const TablaRadicacion = () => {
                                           .estadoSeguimientoRelation.name
                                       : "N/A"}
                                   </td>
+                                  <td>
+                                    <td>
+                                      <button
+                                        onClick={() =>
+                                          handleShowGestionAuxiliar(radicacion)
+                                        }
+                                      >
+                                        <img
+                                          className="dark:invert"
+                                          src={gestion}
+                                          alt=""
+                                        />
+                                      </button>
+                                    </td>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -237,13 +263,6 @@ const TablaRadicacion = () => {
                           }
                         >
                           <img className="dark:invert" src={soporte} alt="" />
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleShowGestionAuxiliar(radicacion)}
-                        >
-                          <img className="dark:invert" src={gestion} alt="" />
                         </button>
                       </td>
                       <td>
