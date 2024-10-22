@@ -1,44 +1,20 @@
 //*Funciones y Hooks
 import { Link } from "react-router-dom";
-import Pagination from "../../Pagination";
-import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import ModalPaciente from "../modals/ModalPaciente";
-import usePagination from "../../../hooks/usePagination";
-import { useFetchPacientes } from "../../../hooks/useFetchPaciente";
+import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 //*Iconos
 import salir from "/assets/back.svg";
 import { useState } from "react";
 
-const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
-
 const TablaPacientes = () => {
-  const { pacientes, errorPacientes, loading } = useFetchPacientes();
-  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
+  const { data, error, getData } = useFetchPaciente();
 
-  const { query, setQuery, filteredData } = useSearch(pacientes, [
-    "id",
-    "documentNumber",
-    "documentRelation",
-    "name",
-    "phoneNumber",
-    "landline",
-    "email",
-    "convenioRelation",
-    "status",
-  ]);
+  const [identificacion, setIdentificacion] = useState<string>("");
 
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination(filteredData, itemsPerPage);
-
-  const handleItemsPerPageChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setItemsPerPage(Number(e.target.value));
+  const handleSearch = () => {
+    getData(identificacion);
   };
-
-  if (loading) return <LoadingSpinner duration={500} />;
-  if (errorPacientes) return <h2 className="flex justify-center text-lg dark:text-white">{errorPacientes}</h2>;
 
   return (
     <>
@@ -77,26 +53,25 @@ const TablaPacientes = () => {
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
               Buscar Paciente :
             </label>
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            ></input>
+            <div>
+              <input
+                type="text"
+                placeholder="Buscar paciente"
+                className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white"
+                onChange={(e) => setIdentificacion(e.target.value)}
+              />
+            </div>
+            <div>
+              <button
+                className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
+                onClick={handleSearch}
+                type="button"
+              >
+                Buscar
+              </button>
+            </div>
           </div>
           <div className="flex items-center pt-1 space-x-2">
-            <select
-              name=""
-              id=""
-              onChange={handleItemsPerPageChange}
-              value={itemsPerPage}
-              className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
             <ModalPaciente
               id={null}
               update={false}
@@ -107,61 +82,55 @@ const TablaPacientes = () => {
         </section>
 
         {/* Tabla de Pacientes */}
-        {filteredData.length === 0 ? (
-          <div className="text-center text-red-500 dark:text-red-300">
-            No se encontraron resultados para la busqueda
-          </div>
-        ) : (
-          <>
-            <table className="w-full text-sm ">
-              <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className=" w-[70px]">ID</th>
-                  <th className="">Identificación</th>
-                  <th className="">Tipo de Documento</th>
-                  <th className="">Nombre Completo</th>
-                  <th className=" w-[120px]">Número Celular</th>
-                  <th className=" w-[130px]">Teléfono Fijo</th>
-                  <th className="">Correo</th>
-                  <th className="">Convenio</th>
-                  <th className=" w-[90px]">Estado </th>
-                  <th className=" w-[80px]">Acciones</th>
-                </tr>
-              </thead>
 
-              <tbody className="text-xs text-center dark:text-gray-200">
-                {currentData().map((pacientes) => (
-                  <tr key={pacientes.id}>
-                    <td>{pacientes.id}</td>
-                    <td>{pacientes.documentNumber}</td>
-                    <td>{pacientes.documentRelation.name}</td>
-                    <td>{pacientes.name}</td>
-                    <td>{pacientes.phoneNumber}</td>
-                    <td>{pacientes.landline}</td>
-                    <td>{pacientes.email}</td>
-                    <td>{pacientes.convenioRelation.name}</td>
-                    <td>{pacientes.status ? "Activo" : "Inactivo"}</td>
-                    <td>
-                      <ModalPaciente
-                        id={pacientes.id}
-                        update={true}
-                        tittle="Editar"
-                        paciente={pacientes}
-                      />
-                    </td>
+        <div>
+          {data ? (
+            <>
+              <table className="w-full text-sm ">
+                <thead>
+                  <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                    <th className=" w-[70px]">ID</th>
+                    <th className="">Identificación</th>
+                    <th className="">Tipo de Documento</th>
+                    <th className="">Nombre Completo</th>
+                    <th className=" w-[120px]">Número Celular</th>
+                    <th className=" w-[130px]">Teléfono Fijo</th>
+                    <th className="">Correo</th>
+                    <th className="">Convenio</th>
+                    <th className=" w-[90px]">Estado </th>
+                    <th className=" w-[80px]">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div>‎ </div>
-            {/* Controles de Paginacion */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={paginate}
-            />
-          </>
-        )}
+                </thead>
+
+                <tbody className="text-xs text-center dark:text-gray-200">
+                  {data && (
+                    <tr key={data.id}>
+                      <td>{data.id}</td>
+                      <td>{data.documentNumber}</td>
+                      <td>{data.documentRelation.name}</td>
+                      <td>{data.name}</td>
+                      <td>{data.phoneNumber}</td>
+                      <td>{data.landline}</td>
+                      <td>{data.email}</td>
+                      <td>{data.convenioRelation.name}</td>
+                      <td>{data.status ? "Activo" : "Inactivo"}</td>
+                      <td>
+                        <ModalPaciente
+                          id={data.id}
+                          update={true}
+                          tittle="Editar"
+                          paciente={data}
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <h2 className="text-center text-lg dark:text-white">{error}</h2>
+          )}
+        </div>
       </section>
     </>
   );
