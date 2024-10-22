@@ -259,7 +259,7 @@ const ModalRadicacion = () => {
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-500 duration-200 rounded-md dark:text-white w-7 h-7 dark:hover:bg-gray-300 dark:hover:text-gray-800"
+                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
                 </button>
@@ -278,7 +278,11 @@ const ModalRadicacion = () => {
                     <div>
                       <label htmlFor="">
                         <div className="flex mb-2">
-                          <img src={id} alt="" className="mr-2 w-7 h-7 dark:invert" />
+                          <img
+                            src={id}
+                            alt=""
+                            className="mr-2 w-7 h-7 dark:invert"
+                          />
                           <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                             Identificación
                           </span>
@@ -555,14 +559,14 @@ const ModalRadicacion = () => {
                         />
                       </label>
                     </div>
-                    <div className="grid grid-cols-2 gap-10">  
-                    <ServicioForm
-                      cantidad={cantidad}
-                      servicios={servicios}
-                      descripciones={descripciones}
-                      onServicioChange={handleServicioChange}
-                      onDescripcionChange={handleDescripcionChange}
-                    />
+                    <div className="grid grid-cols-2 gap-10">
+                      <ServicioForm
+                        cantidad={cantidad}
+                        servicios={servicios}
+                        descripciones={descripciones}
+                        onServicioChange={handleServicioChange}
+                        onDescripcionChange={handleDescripcionChange}
+                      />
                     </div>
                   </section>
 
@@ -704,7 +708,7 @@ const ModalRadicacion = () => {
                     </div>
                     <div>
                       <InputAutocompletado
-                        label="Lugar Radicacación"
+                        label="Lugar Radicación"
                         onInputChanged={(value) =>
                           formik.setFieldValue("idLugarRadicacion", value)
                         }
@@ -721,23 +725,27 @@ const ModalRadicacion = () => {
                         </div>
                       ) : null}
                     </div>
-                    <div>
-                      <label htmlFor="">
-                        <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Diagnóstico
-                        </span>
-                        <input
-                          type="text"
-                          id=""
-                          name=""
-                          onChange={(e) => setDiagnosticoValue(e.target.value)}
-                          onKeyDown={handleDiagnosticoKeyDown}
-                          placeholder="Digite código"
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                        />
-                      </label>
+                    <br />
+                    <div className="grid grid-cols-1">
+                      <div>
+                        <label htmlFor="">
+                          <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Diagnóstico
+                          </span>
+                          <input
+                            type="text"
+                            id=""
+                            name=""
+                            onChange={(e) =>
+                              setDiagnosticoValue(e.target.value)
+                            }
+                            onKeyDown={handleDiagnosticoKeyDown}
+                            placeholder="Digite código"
+                            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          />
+                        </label>
+                      </div>
                     </div>
-
                     <div>
                       <label
                         htmlFor=""
@@ -758,7 +766,6 @@ const ModalRadicacion = () => {
                         ></textarea>
                       </label>
                     </div>
-
                     <div>
                       <label htmlFor="">
                         <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">

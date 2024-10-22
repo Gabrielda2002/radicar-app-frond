@@ -63,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between p-4 dark:bg-gray-800">
+          <div className="flex items-center justify-between p-4 dark:bg-gray-600">
             <h2 className="text-2xl font-semibold text-color dark:text-gray-200 ">
               {modalTitle}
             </h2>
@@ -84,7 +84,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               <>
                 <div className="px-6 mt-2 mb-8">
                   <label className="flex mb-2  text-xl font-bold text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
-                  Fecha Filtrado: 
+                    Fecha Filtrado:
                   </label>
                   <select
                     name="reportOptions"
@@ -101,17 +101,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             ) : (
               // secction-option
               <div className="px-4">
-                <div className="flex ">
-                  <div className="w-10 pb-1 -ms-4">
+                <div className="flex items-center mt-4 mb-4">
+                  <div className="flex items-center mr-2">
                     <img
                       src={back}
                       alt="back"
                       onClick={() => setShowSecondModal(false)}
-                      className="w-8 cursor-pointer "
+                      className="w-8 duration-300 rounded-lg cursor-pointer dark:hover:bg-gray-300"
                     />
                   </div>
 
-                  <label className="block mb-5 text-xl font-medium text-blue-500 dark:text-white">
+                  <label className="block text-xl font-medium text-blue-500 dark:text-white">
                     {formValues.reportOptions === "Autorizacion"
                       ? "Código de Autorización"
                       : "Código de Radicación"}
@@ -149,7 +149,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
 
             {/* section-two */}
             <div className="px-6 mb-6">
-              <label className="flex mb-2 text-xl font-semibold text-color dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
+              <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
                 Código CUPS:
               </label>
               <input
@@ -165,7 +165,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             </div>
 
             {/* container-footer */}
-            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-600">
               <button
                 type="button"
                 onClick={() => {
@@ -191,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               ) : (
                 <button
                   type="submit"
-                  className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
                   onClick={handleDownloadReport}
                 >
                   Descargar

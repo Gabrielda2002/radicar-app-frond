@@ -28,7 +28,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between p-2 dark:bg-gray-800">
+          <div className="flex items-center justify-between p-2 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
             <h2 className="p-3 text-2xl font-semibold text-color dark:text-gray-200">
               {data ? "Tabla CUPS" : "Programación Cirugía"}
             </h2>
@@ -110,10 +110,10 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           ) : null}
 
           {/* Botones */}
-          <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+          <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
             <button
               onClick={onClose}
-              className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md dark:hover:border-red-500 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+              className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md dark:hover:border-red-500 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               Cerrar
             </button>

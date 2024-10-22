@@ -65,13 +65,13 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                 : "translate-y-10 opacity-0"
             }`}
           >
-            <div className="flex items-center justify-between p-4 bg-gray-200 dark:bg-gray-700">
+            <div className="flex items-center justify-between p-4 bg-gray-200 border-b-2 border-b-gray-900 dark:border-b-white dark:bg-gray-700">
               <h2 className="text-xl font-semibold text-color dark:text-gray-200">
                 Tabla Gestión Servicios.
               </h2>
               <button
                 onClick={onClose}
-                className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 dark:hover:bg-gray-300 dark:text-gray-300 dark:hover:text-gray-800"
+                className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
               >
                 &times;
               </button>
@@ -146,7 +146,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             ) : null}
 
             {/* Botones */}
-            <div className="flex items-center justify-end w-full px-2 py-4 text-sm font-semibold bg-gray-200 gap-x-2 h-14 dark:bg-gray-700">
+            <div className="flex items-center justify-end w-full px-2 py-4 text-sm font-semibold bg-gray-200 border-t-2 gap-x-2 h-14 dark:bg-gray-700 border-t-gray-900 dark:border-t-white">
               <button
                 onClick={onClose}
                 className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md dark:bg-gray-900 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"

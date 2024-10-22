@@ -32,7 +32,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </h2>
             <button
               onClick={onClose}
-              className="text-xl text-gray-500 duration-200 rounded-md dark:text-gray-200 w-7 h-7 dark:hover:bg-gray-300 dark:hover:text-gray-800"
+              className="text-xl text-gray-500 duration-200 rounded-md hover:text-gray-900 dark:text-gray-100 hover:bg-gray-400 w-7 h-7 dark:hover:bg-gray-300 dark:hover:text-gray-800"
             >
               &times;
             </button>

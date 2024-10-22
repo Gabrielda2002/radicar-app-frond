@@ -144,13 +144,13 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between px-4 py-3 bg-gray-100 border-b-2 rounded-t-lg dark:bg-gray-800">
+              <div className="flex items-center justify-between px-4 py-3 bg-gray-100 border-b-2 rounded-t-lg dark:bg-gray-800 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-white">
                   Programacion Cirugia
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-lg duration-200 rounded-lg hover:bg-gray-400 dark:text-gray-300 dark:hover:text-gray-800 w-7 h-7"
+                  className="text-lg text-gray-400 duration-200 rounded-lg hover:text-gray-900 hover:bg-gray-400 dark:text-gray-300 dark:hover:text-gray-800 w-7 h-7"
                 >
                   &times;
                 </button>
@@ -312,7 +312,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     <h5 className="mb-2 text-base">
                                       Fecha Ordenamiento de Cirugía
                                     </h5>
-                                    <span className="ml-2 text-lg text-red-600">*</span>
+                                    <span className="ml-2 text-lg text-red-600">
+                                      *
+                                    </span>
                                   </div>
                                   <input
                                     type="date"
@@ -358,7 +360,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     <h5 className="mb-2 text-base">
                                       Fecha Cirugía:
                                     </h5>
-                                    <span className="ml-2 text-lg text-red-600">*</span>
+                                    <span className="ml-2 text-lg text-red-600">
+                                      *
+                                    </span>
                                   </div>
                                   <input
                                     type="date"
@@ -389,7 +393,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     <h5 className="mb-2 text-base">
                                       Hora Programada:
                                     </h5>
-                                    <span className="ml-2 text-lg text-red-600">*</span>
+                                    <span className="ml-2 text-lg text-red-600">
+                                      *
+                                    </span>
                                   </div>
                                   <input
                                     type="time"
@@ -420,7 +426,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                               <label className="font-bold text-gray-700 dark:text-white">
                                 <div className="flex">
                                   <h5 className="text-base">Observación:</h5>
-                                  <span className="ml-2 text-lg text-red-600">*</span>
+                                  <span className="ml-2 text-lg text-red-600">
+                                    *
+                                  </span>
                                 </div>
                               </label>
                               <textarea

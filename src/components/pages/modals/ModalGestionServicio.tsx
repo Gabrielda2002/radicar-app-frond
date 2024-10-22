@@ -83,7 +83,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
             </h1>
             <button
               onClick={onClose}
-              className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-800"
+              className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
             >
               &times;
             </button>
