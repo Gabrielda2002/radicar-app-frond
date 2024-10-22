@@ -71,7 +71,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
               </h2>
               <button
                 onClick={onClose}
-                className="pr-2 text-xl text-gray-500 hover-gray-700"
+                className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 dark:hover:bg-gray-300 dark:text-gray-300 dark:hover:text-gray-800"
               >
                 &times;
               </button>
@@ -149,7 +149,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             <div className="flex items-center justify-end w-full px-2 py-4 text-sm font-semibold bg-gray-200 gap-x-2 h-14 dark:bg-gray-700">
               <button
                 onClick={onClose}
-                className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md dark:bg-gray-900 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 Cerrar
               </button>
