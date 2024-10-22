@@ -5,14 +5,14 @@ interface InputAutocompletadoProps {
   label: string;
   onInputChanged: (value: string, id?: string) => void;
   apiRoute: string;
-  error?: boolean; // Nueva propiedad para manejar el error
+  error?: boolean; //*Nueva propiedad para manejar el error
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   label,
   onInputChanged,
   apiRoute,
-  error = false, // Establece un valor por defecto
+  error = false, //*Establece un valor por defecto
 }) => {
   const [inputValue, setInputValue] = useState("");
   const {
