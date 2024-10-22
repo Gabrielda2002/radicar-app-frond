@@ -104,7 +104,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
           setError("");
-          setTimeout(() => {
+            setTimeout(() => {
             setIsOpen(false);
             window.location.reload();
           }, 2000);
@@ -115,6 +115,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
       }
     },
   });
+  console.log(formik.errors)
 
   // useEfct para llenar los valores del formulario en caso de que sea una actualización
 
@@ -151,6 +152,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   return (
     <>
       <button
+        type="button"
         className={`border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900  ${
           showAnimation && !closing ? "opacity-100" : "opacity-100"
         }`}
@@ -179,6 +181,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   {tittle} Paciente
                 </h1>
                 <button
+                type="button"
                   onClick={toggleModal}
                   className="text-xl text-gray-500 hover-gray-700 pr-2"
                 >
@@ -395,6 +398,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                   <button
                     onClick={toggleModal}
+                    type="button"
                     className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >
                     Cerrar
