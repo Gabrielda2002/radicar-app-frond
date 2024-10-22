@@ -37,6 +37,7 @@ const SideBar: FC = () => {
   });
   //*constante para el acordion del sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -93,8 +94,29 @@ const SideBar: FC = () => {
     Cookies.set("sidebarState", isCollapsed ? "collapsed" : "expanded");
   }, [isCollapsed]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !isCollapsed //*Solo cerrar si el sidebar está abierto
+      ) {
+        toggleSideBar();
+      }
+    };
+
+    //*Añadir el event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    //*Limpiar el event listener cuando el componente se desmonte
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCollapsed, toggleSideBar]);
+
   return (
     <aside
+      ref={sidebarRef}
       className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
         isCollapsed ? "-translate-x-full w-16 absolute" : "w-56 absolute"
       } px-4 py-8 h-full`}

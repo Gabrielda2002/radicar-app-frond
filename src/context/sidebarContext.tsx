@@ -17,8 +17,15 @@ export const useSidebar = () => {
 
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
 
   const toggleSideBar = () => {
+    if (isToggling) return;
+    setIsToggling(true);
+
+    setTimeout(() => {
+      setIsToggling(false);
+    }, 200); // Simulate a slow transition effect
     setIsCollapsed((prev) => !prev);
   };
 

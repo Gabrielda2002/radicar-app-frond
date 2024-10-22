@@ -7,21 +7,21 @@ interface ModalGestionServicioProps {
   onClose: () => void;
   idRadicado: number | null;
   idCirugias: number | null;
-  
 }
 
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   onClose,
   idRadicado,
-  idCirugias
+  idCirugias,
 }) => {
-
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Esquema de validación con Yup
   const validationSchema = Yup.object({
-    estadoSeguimiento: Yup.string().required("El estado de seguimiento es requerido."),
+    estadoSeguimiento: Yup.string().required(
+      "El estado de seguimiento es requerido."
+    ),
     observacion: Yup.string()
       .min(10, "La observación debe tener al menos 10 caracteres.")
       .max(200, "La observación no debe exceder los 200 caracteres.")
@@ -44,13 +44,12 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
       formData.append("status", values.estadoSeguimiento);
 
       try {
-
         let endPoint: string = "";
-          
+
         if (idCirugias !== null) {
           formData.append("surgeryId", idCirugias.toString());
           endPoint = "seguimiento-auxiliar-cirugia";
-        }else if (idRadicado !== null) {
+        } else if (idRadicado !== null) {
           formData.append("idRadicacion", idRadicado.toString());
           endPoint = "seguimientos-auxiliares";
         }
@@ -75,21 +74,24 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   });
 
   return (
-    <section className="fixed inset-0 z-50 flex justify-center pt-14   transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
+    <section className="fixed inset-0 z-50 flex justify-center transition-opacity duration-300 bg-black bg-opacity-50 pt-14 backdrop-blur-sm">
       <section>
-        <div className="w-full bg-white shadow-lg transform transition-transform duration-300 overflow-hidden rounded dark:bg-gray-800">
+        <div className="w-full p-4 overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800">
           <div className="flex items-center justify-between px-2 py-2">
-            <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+            <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
               Gestión Servicio Cliente
             </h1>
-            <button onClick={onClose} className="text-xl text-gray-500 hover-gray-700 pr-2">
+            <button
+              onClick={onClose}
+              className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
+            >
               &times;
             </button>
           </div>
 
           <form onSubmit={formik.handleSubmit}>
-            <section className="py-2 px-4 max-h-[70Vh] overflow-y-auto grid grid-cols-2 mb-4 ms-2 dark:bg-gray-800">
-              <div className="flex">
+            <section className="py-2 px-4 max-h-[70Vh] overflow-y-auto grid grid-cols-2 mb-4 ms-2 dark:bg-gray-800 gap-12">
+              <div className="">
                 <label htmlFor="estadoSeguimiento">
                   <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white">
                     Estado Seguimiento
@@ -100,7 +102,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.estadoSeguimiento}
-                    className="w-[200px] px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-gray-200 dark:bg-gray-800"
+                    className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-gray-200 dark:bg-gray-800"
                   >
                     <option value="">- SELECT -</option>
                     <option value="1">Asignado</option>
@@ -111,9 +113,12 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     <option value="6">Pendiente</option>
                     <option value="7">Reprogramado</option>
                   </select>
-                  {formik.touched.estadoSeguimiento && formik.errors.estadoSeguimiento && (
-                    <p className="text-red-500">{formik.errors.estadoSeguimiento}</p>
-                  )}
+                  {formik.touched.estadoSeguimiento &&
+                    formik.errors.estadoSeguimiento && (
+                      <p className="mt-2 text-red-500">
+                        {formik.errors.estadoSeguimiento}
+                      </p>
+                    )}
                 </label>
               </div>
 
@@ -129,12 +134,14 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.observacion}
-                    className={`w-[300px] px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                      formik.touched.observacion && formik.errors.observacion ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                      formik.touched.observacion && formik.errors.observacion
+                        ? "border-red-500"
+                        : "border-gray-300"
                     }`}
                   ></textarea>
                   {formik.touched.observacion && formik.errors.observacion && (
-                    <p className="text-red-500">{formik.errors.observacion}</p>
+                    <p className="text-red-500 ">{formik.errors.observacion}</p>
                   )}
                 </label>
               </div>
@@ -143,7 +150,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
             <div className="flex items-center justify-end w-full h-12 gap-2 px-4 py-4 text-sm font-semibold bg-white dark:bg-gray-800">
               <button
                 type="button"
-                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
                 onClick={onClose}
               >
                 Cerrar
@@ -151,7 +158,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting || !formik.isValid}
-                className={`w-16 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 ${
+                className={`w-16 h-10 text-white rounded-md bg-color hover:bg-emerald-900 border-2 hover:border-gray-900 duration-200 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 ${
                   isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
@@ -160,7 +167,11 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
             </div>
           </form>
 
-          {success && <div className="mb-4 text-green-500">¡Gestión registrada con éxito!</div>}
+          {success && (
+            <div className="mb-4 text-green-500">
+              ¡Gestión registrada con éxito!
+            </div>
+          )}
         </div>
       </section>
     </section>

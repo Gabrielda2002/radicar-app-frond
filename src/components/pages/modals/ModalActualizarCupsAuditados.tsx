@@ -91,7 +91,7 @@ const ModalActualizarCupsAuditoria: React.FC<
 
       {/* init-event-modal */}
       {stadopen && (
-        <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm" >
+        <section className="fixed inset-0 z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm">
           <section className="">
             <div
               className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg container-modal bg dark:bg-gray-800 ${
@@ -99,13 +99,13 @@ const ModalActualizarCupsAuditoria: React.FC<
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between px-2 py-2 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200">
+              <div className="flex items-center justify-between p-4">
+                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
                   Actualizar CUPS Auditados
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                  className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:bg-gray-300 hover:text-gray-900"
                 >
                   &times;
                 </button>
@@ -116,16 +116,16 @@ const ModalActualizarCupsAuditoria: React.FC<
                 onSubmit={formik.handleSubmit}
                 className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800"
               >
-                <div className="p-8">
+                <div className="p-5">
                   {cup && (
                     <section
-                      className="grid grid-cols-3 gap-x-16"
+                      className="grid grid-cols-4 gap-x-10"
                       key={cup.code}
                     >
                       <div>
                         <label htmlFor="">
-                          <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200">
-                            Codigo CUPS
+                          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+                            Codigo CUPS:
                           </span>
                           <input
                             name=""
@@ -137,22 +137,22 @@ const ModalActualizarCupsAuditoria: React.FC<
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className="flex mb-2 font-bold text-gray-700 dark:text-gray-200">
-                            Descripción CUPS
+                          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+                            Descripción CUPS:
                           </span>
                           <textarea
                             id=""
                             name=""
                             readOnly
                             value={cup.description}
-                            className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            className="w-full h-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           ></textarea>
                         </label>
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className="flex mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200 ">
-                            Estado CUP
+                          <span className="flex text-base mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200 ">
+                            Estado CUP:
                           </span>
                           <select
                             id=""
@@ -160,7 +160,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                             value={formik.values.estado}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
-                            className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            className="w-full p-2 px-3 mb-2 text-sm border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           >
                             <option value="">- SELECT -</option>
                             {dataEstados?.map((estado) => (
@@ -170,7 +170,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                             ))}
                           </select>
                           {formik.touched.estado && formik.errors.estado && (
-                            <label className="text-red-500">
+                            <label className="text-sm text-red-500 ">
                               {formik.errors.estado}
                             </label>
                           )}
@@ -178,8 +178,8 @@ const ModalActualizarCupsAuditoria: React.FC<
                       </div>
                       <div>
                         <label htmlFor="">
-                          <span className="flex mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200">
-                            Observación hecha anteriormente
+                          <span className="flex text-base mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200">
+                            Observación hecha anteriormente:
                           </span>
                           <textarea
                             id=""
@@ -189,11 +189,12 @@ const ModalActualizarCupsAuditoria: React.FC<
                             onBlur={formik.handleBlur}
                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           ></textarea>
-                          {formik.touched.observacion && formik.errors.observacion && (
-                            <label className="text-red-500">
-                              {formik.errors.observacion}
-                            </label>
-                          )}
+                          {formik.touched.observacion &&
+                            formik.errors.observacion && (
+                              <label className="text-red-500">
+                                {formik.errors.observacion}
+                              </label>
+                            )}
                         </label>
                       </div>
                     </section>
@@ -203,7 +204,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                   <button
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                    className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
                     onClick={() => setStadopen(false)}
                   >
                     Cerrar
@@ -211,7 +212,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                   <button
                     type="submit"
                     disabled={!formik.isValid || isSubmiting}
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-white duration-200 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >
                     {isSubmiting ? "Enviando..." : "Actualizar"}
                   </button>

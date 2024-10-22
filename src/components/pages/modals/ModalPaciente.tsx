@@ -4,7 +4,11 @@ import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { createPaciente } from "../../../services/createPaciente";
-import { useFetchConvenio, useFetchDocumento, useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
+import {
+  useFetchConvenio,
+  useFetchDocumento,
+  useFetchIpsPrimaria,
+} from "../../../hooks/useFetchUsers";
 import { IPacientes } from "../../../models/IPacientes";
 import { updatePacienteEp } from "../../../utils/api-config";
 
@@ -21,7 +25,6 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   tittle,
   paciente,
 }) => {
-
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -29,7 +32,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   const [load, setLoad] = useState(false);
 
   //hook para traer los tipos de documentos
-  const {dataDocumento, errorDocumento} = useFetchDocumento(load);
+  const { dataDocumento, errorDocumento } = useFetchDocumento(load);
 
   // hook para traer los convenios
   const { dataConvenios, errorConvenio } = useFetchConvenio(load);
@@ -38,7 +41,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   const { dataIpsPrimaria, errorIpsPrimaria } = useFetchIpsPrimaria(load);
 
   useEffect(() => {
-    if(isOpen){
+    if (isOpen) {
       setLoad(true);
     }
   }, [isOpen]);
@@ -97,7 +100,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
 
         if (update && id) {
           response = await updatePacienteEp(formData, id);
-        }else{
+        } else {
           response = await createPaciente(formData);
         }
 
@@ -132,7 +135,6 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
         direccion: paciente.address,
       });
-      
     }
   }, [update, paciente]);
 
@@ -145,9 +147,9 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
     setIsOpen(!isOpen);
   };
 
-  if(errorDocumento) return <p>Error al cargar los tipos de documentos</p>
-  if(errorConvenio) return <p>Error al cargar los convenios</p>
-  if(errorIpsPrimaria) return <p>Error al cargar las ips primarias</p>
+  if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
+  if (errorConvenio) return <p>Error al cargar los convenios</p>;
+  if (errorIpsPrimaria) return <p>Error al cargar las ips primarias</p>;
 
   return (
     <>
@@ -161,9 +163,9 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         {`${tittle} Paciente`}
       </button>
       {isOpen && (
-        <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
-            className="fixed inset-0  transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"
+            className="fixed inset-0 transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"
             onClick={toggleModal}
           ></div>
 
@@ -176,14 +178,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   : "translate-y-10 opacity-0"
               }`}
             >
-              <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
+              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+                <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
                   {tittle} Paciente
                 </h1>
                 <button
                 type="button"
                   onClick={toggleModal}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
                 >
                   &times;
                 </button>
@@ -191,13 +193,18 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
 
               {/* Contenido del formulario */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-3 gap-x-10 mb-4 p-4">
+                <div className="grid grid-cols-3 p-4 mb-4 gap-x-6">
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Tipo Documento
                     </label>
                     <select
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.tipoDocumento &&
+                        formik.errors.tipoDocumento
+                          ? "border-red-500 dark:border-red-500"
+                          : "dark:border-gray-600 border-gray-200"
+                      }`}
                       name="tipoDocumento"
                       value={formik.values.tipoDocumento}
                       onChange={formik.handleChange}
@@ -219,7 +226,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
 
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Correo Electrónico
                     </label>
                     <input
@@ -229,7 +236,11 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       value={formik.values.correo}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.correo && formik.errors.correo
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      } `}
                     />
                     {formik.touched.correo && formik.errors.correo ? (
                       <label className="text-red-500">
@@ -239,7 +250,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
 
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Identificación
                     </label>
                     <input
@@ -249,7 +260,12 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       onBlur={formik.handleBlur}
                       type="number"
                       placeholder="Ingrese Identificación..."
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.identificacion &&
+                        formik.errors.identificacion
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
                     {formik.touched.identificacion &&
                     formik.errors.identificacion ? (
@@ -260,9 +276,9 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-x-10 mb-4 p-4">
+                <div className="grid grid-cols-2 p-4 mb-4 gap-x-10">
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Teléfono Fijo
                     </label>
                     <input
@@ -272,7 +288,12 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       onBlur={formik.handleBlur}
                       type="number"
                       placeholder="Ingrese Teléfono Fijo..."
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.telefonoFijo &&
+                        formik.errors.telefonoFijo
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      } `}
                     />
                     {formik.touched.telefonoFijo &&
                     formik.errors.telefonoFijo ? (
@@ -282,7 +303,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                     ) : null}
                   </div>
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Nombre completo
                     </label>
                     <input
@@ -292,7 +313,12 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese Nombre Completo..."
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` ${
+                        formik.touched.nombreCompleto &&
+                        formik.errors.nombreCompleto
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      } w-full px-3 py-2 mb-2 border-2 rounded dark:bg-gray-700 dark:text-white`}
                     />
                     {formik.touched.nombreCompleto &&
                     formik.errors.nombreCompleto ? (
@@ -303,13 +329,18 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-x-10 mb-4 p-4">
+                {/* Segunda parte del formulario */}
+                <div className="grid grid-cols-2 p-4 mb-4 gap-x-10">
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Convenio
                     </label>
                     <select
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.convenio && formik.errors.convenio
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                       name="convenio"
                       value={formik.values.convenio}
                       onChange={formik.handleChange}
@@ -330,7 +361,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
 
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Número de Celular
                     </label>
                     <input
@@ -340,7 +371,12 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese Número..."
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.numeroCelular &&
+                        formik.errors.numeroCelular
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
                     {formik.touched.numeroCelular &&
                     formik.errors.numeroCelular ? (
@@ -350,7 +386,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                     ) : null}
                   </div>
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Dirección
                     </label>
                     <input
@@ -360,7 +396,11 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese Direccion..."
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.direccion && formik.errors.direccion
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
                     {formik.touched.direccion && formik.errors.direccion ? (
                       <label className="text-red-500">
@@ -369,11 +409,15 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                     ) : null}
                   </div>
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       IPS Primaria
                     </label>
                     <select
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` ${
+                        formik.touched.ipsPrimaria && formik.errors.ipsPrimaria
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      } w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:bg-gray-700 dark:text-white`}
                       name="ipsPrimaria"
                       value={formik.values.ipsPrimaria}
                       onChange={formik.handleChange}
@@ -395,26 +439,26 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                 </div>
 
                 {/* Botones */}
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-t-gray-900 dark:border-t-white h-14 dark:bg-gray-600">
                   <button
                     onClick={toggleModal}
                     type="button"
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >
                     Cerrar
                   </button>
                   <button
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
-                   >
+                  >
                     {tittle}
                   </button>
                   {success && (
-                    <span className="text-green-500">Paciente creado con éxito</span>
+                    <span className="text-green-500">
+                      Paciente creado con éxito
+                    </span>
                   )}
-                  {error && (
-                    <span className="text-red-500">{error}</span>
-                  )}
+                  {error && <span className="text-red-500">{error}</span>}
                 </div>
               </form>
             </div>

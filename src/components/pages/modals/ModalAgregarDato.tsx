@@ -69,7 +69,7 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
         {`Agregar ${name}`}
       </button>
       {isOpen && (
-        <div className="fixed z-50 flex pt-16 justify-center transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
+        <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <section>
             <div
               onClick={toggleModal}
@@ -85,13 +85,13 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
                   : "translate-y-10 opacity-0"
               }`}
             >
-              <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
-                <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
+              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+                <h2 className="text-2xl font-semibold text-color dark:text-gray-200 ">
                   {`Agregar ${name}`}
                 </h2>
                 <button
                   onClick={toggleModal}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
                 </button>
@@ -101,7 +101,7 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
               <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-1 gap-10 mb-4">
                   <div className="p-4">
-                    <label className="block mb-2 font-bold text-gray-7000 dark:text-gray-200">
+                    <label className="block mb-2 text-lg font-bold text-gray-7000 dark:text-gray-200">
                       Nombre:
                     </label>
                     <input
@@ -111,7 +111,11 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder={`Nombre del ${name}`}
-                      className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.name && formik.errors.name
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
                     {formik.touched.name && formik.errors.name ? (
                       <div className="text-red-500">{formik.errors.name}</div>
@@ -121,15 +125,15 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
 
                 {/* Botones */}
 
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     onClick={toggleModal}
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >
                     Cerrar
                   </button>
                   <button
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
                     disabled={!formik.isValid}
                   >

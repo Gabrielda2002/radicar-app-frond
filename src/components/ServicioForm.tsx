@@ -40,7 +40,7 @@ const ServicioForm: React.FC<ServicioFormProps> = ({
     <React.Fragment key={index}>
       <div>
         <label htmlFor={`servicio-${index}`}>
-          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
             Servicio Solicitado N° ({index + 1})
           </span>
           <input
@@ -57,14 +57,16 @@ const ServicioForm: React.FC<ServicioFormProps> = ({
       </div>
       <div>
         <label htmlFor={`descripcion-${index}`}>
-          <span className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
+          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
             Descripción Servicio N° ({index + 1})
           </span>
           <textarea
             id={`descripcion-${index}`}
             name={`descripcion-${index}`}
-            value={descripciones[index] || (loading ? "Esperando..." : error || "")}
-            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+            value={
+              descripciones[index] || (loading ? "Esperando..." : error || "")
+            }
+            className="w-full px-3 py-2 text-gray-400 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-800"
             placeholder="Descripción del servicio"
             readOnly
           ></textarea>
