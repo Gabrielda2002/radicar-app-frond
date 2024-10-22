@@ -28,13 +28,13 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between px-2 py-2 dark:bg-gray-800 ">
-            <h2 className="text-xl font-semibold text-color dark:text-gray-200 ">
+          <div className="flex items-center justify-between p-2 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+            <h2 className="p-3 text-2xl font-semibold text-color dark:text-gray-200">
               {data ? "Tabla CUPS" : "Programación Cirugía"}
             </h2>
             <button
               onClick={onClose}
-              className="pr-2 text-xl text-gray-500 hover-gray-700"
+              className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
             >
               &times;
             </button>
@@ -54,8 +54,16 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                 </thead>
                 <tbody className="text-center dark:text-gray-200">
                   <tr>
-                    <td>{cirugias.fechaProgramada ? cirugias.fechaProgramada.toISOString() : cirugias.fechaProgramada }</td>
-                    <td>{cirugias.fechaCirugia ? cirugias.fechaCirugia.toISOString() : cirugias.fechaCirugia }</td>
+                    <td>
+                      {cirugias.fechaProgramada
+                        ? cirugias.fechaProgramada.toISOString()
+                        : cirugias.fechaProgramada}
+                    </td>
+                    <td>
+                      {cirugias.fechaCirugia
+                        ? cirugias.fechaCirugia.toISOString()
+                        : cirugias.fechaCirugia}
+                    </td>
                     <td>{cirugias.hora}</td>
                     <td>{cirugias.ipsRemite}</td>
                     <td>{cirugias.observacion}</td>
@@ -71,7 +79,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
 
           {/* Contenedor para las dos tablas en columnas */}
           {data && data.length > 0 ? (
-            <div className="max-h-[78vh] overflow-auto px-2">
+            <div className="max-h-[78vh] overflow-auto p-2 mt-3">
               <table className="min-w-[50%] text-sm mb-4">
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
@@ -102,10 +110,10 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           ) : null}
 
           {/* Botones */}
-          <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+          <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
             <button
               onClick={onClose}
-              className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
+              className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md dark:hover:border-red-500 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               Cerrar
             </button>

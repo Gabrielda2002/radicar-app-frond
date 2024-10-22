@@ -37,6 +37,7 @@ const SideBar: FC = () => {
   });
   //*constante para el acordion del sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -56,23 +57,22 @@ const SideBar: FC = () => {
       : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
   };
   //*Función para manejar la lógica del sidebar, asegurando que solo un acordeón esté abierto a la vez
-const toggleAccordion = (key: keyof typeof openAccordions) => {
-  setOpenAccordions((prev) => {
-    // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
-    const isSameAccordionOpen = prev[key];
-    
-    // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
-    return {
-      services: false,
-      quality: false,
-      reports: false,
-      tablets: false,
-      admin: false,
-      [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
-    };
-  });
-};
+  const toggleAccordion = (key: keyof typeof openAccordions) => {
+    setOpenAccordions((prev) => {
+      // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
+      const isSameAccordionOpen = prev[key];
 
+      // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
+      return {
+        services: false,
+        quality: false,
+        reports: false,
+        tablets: false,
+        admin: false,
+        [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
+      };
+    });
+  };
 
   useEffect(() => {
     if (accordionRef.current) {
@@ -94,8 +94,29 @@ const toggleAccordion = (key: keyof typeof openAccordions) => {
     Cookies.set("sidebarState", isCollapsed ? "collapsed" : "expanded");
   }, [isCollapsed]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !isCollapsed //*Solo cerrar si el sidebar está abierto
+      ) {
+        toggleSideBar();
+      }
+    };
+
+    //*Añadir el event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    //*Limpiar el event listener cuando el componente se desmonte
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCollapsed, toggleSideBar]);
+
   return (
     <aside
+      ref={sidebarRef}
       className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
         isCollapsed ? "-translate-x-full w-16 absolute" : "w-56 absolute"
       } px-4 py-8 h-full`}

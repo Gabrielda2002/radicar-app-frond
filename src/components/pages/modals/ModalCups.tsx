@@ -80,13 +80,13 @@ const ModalCups = () => {
                 showAnimation && !closing ? "translate-y-0" : "translate-y-10"
               }`}
             >
-              <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800 ">
-                <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
+              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+                <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
                   Agregar CUPS
                 </h1>
                 <button
                   onClick={toggleModal}
-                  className="text-xl text-gray-500 hover-gray-700 pr-2"
+                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
                 </button>
@@ -94,10 +94,10 @@ const ModalCups = () => {
 
               {/* formulario con dos columnas */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-2 gap-10 mb-4 p-4">
+                <div className="grid grid-cols-2 gap-10 p-4 mb-4">
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                      Código
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                      Código:
                     </label>
                     <input
                       type="text"
@@ -106,19 +106,21 @@ const ModalCups = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese código..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.code && formik.errors.code
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
-                    {
-                          formik.touched.code && formik.errors.code ? (
-                            <label className="text-red-500">
-                              {formik.errors.code}
-                            </label>
-                          ) : null
-                        }
+                    {formik.touched.code && formik.errors.code ? (
+                      <label className="text-red-500">
+                        {formik.errors.code}
+                      </label>
+                    ) : null}
                   </div>
                   <div>
-                    <label className="block mb-2 font-bold text-gray-700 dark:text-gray-200">
-                      Descripción
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                      Descripción:
                     </label>
                     <input
                       type="text"
@@ -126,32 +128,34 @@ const ModalCups = () => {
                       value={formik.values.description}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      placeholder="Ingrese Descripción"
-                      className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      placeholder="Ingrese Descripción..."
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.description && formik.errors.description
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
                     />
-                    {
-                          formik.touched.description && formik.errors.description ? (
-                            <label className="text-red-500">
-                              {formik.errors.description}
-                            </label>
-                          ) : null
-                        }
+                    {formik.touched.description && formik.errors.description ? (
+                      <label className="text-red-500">
+                        {formik.errors.description}
+                      </label>
+                    ) : null}
                   </div>
                 </div>
 
                 {/* Botones */}
 
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
+                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-300 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     onClick={toggleModal}
-                    className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-500 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >
                     Cerrar
                   </button>
                   <button
-                    className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                    className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
                     type="submit"
-                   >
+                  >
                     Subir
                   </button>
                   {success && (
@@ -160,7 +164,9 @@ const ModalCups = () => {
                     </div>
                   )}
                   {error && (
-                    <div className="text-red-500 dark:text-red-300">{error}</div>
+                    <div className="text-red-500 dark:text-red-300">
+                      {error}
+                    </div>
                   )}
                 </div>
               </form>

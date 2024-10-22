@@ -63,12 +63,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
           }`}
         >
           {/* container-header */}
-          <div className="flex items-center justify-between  px-2 py-2 dark:bg-gray-800">
-            <h2 className="text-xl font-semibold text-color dark:text-gray-200  ">
+          <div className="flex items-center justify-between p-4 dark:bg-gray-600">
+            <h2 className="text-2xl font-semibold text-color dark:text-gray-200 ">
               {modalTitle}
             </h2>
             <button
-              className="text-xl text-gray-500 hover-gray-700 pr-2"
+              className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 dark:text-gray-200 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
               onClick={() => {
                 setShowSecondModal(false);
                 setTimeout(onClose, 300);
@@ -82,9 +82,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
           <form onSubmit={handleSubmit} className="">
             {!showSecondModal ? (
               <>
-                <div className="mb-8 px-6 mt-2">
-                  <label className="flex mb-2  text-xl font-medium text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
-                  Fecha Filtrado 
+                <div className="px-6 mt-2 mb-8">
+                  <label className="flex mb-2  text-xl font-bold text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
+                    Fecha Filtrado:
                   </label>
                   <select
                     name="reportOptions"
@@ -101,17 +101,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             ) : (
               // secction-option
               <div className="px-4">
-                <div className="flex ">
-                  <div className=" w-10 pb-1 -ms-4">
+                <div className="flex items-center mt-4 mb-4">
+                  <div className="flex items-center mr-2">
                     <img
                       src={back}
                       alt="back"
                       onClick={() => setShowSecondModal(false)}
-                      className="cursor-pointer w-8 "
+                      className="w-8 duration-300 rounded-lg cursor-pointer dark:hover:bg-gray-300"
                     />
                   </div>
 
-                  <label className="block mb-5 text-xl font-medium text-blue-500 dark:text-white">
+                  <label className="block text-xl font-medium text-blue-500 dark:text-white">
                     {formValues.reportOptions === "Autorizacion"
                       ? "Código de Autorización"
                       : "Código de Radicación"}
@@ -148,9 +148,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             )}
 
             {/* section-two */}
-            <div className="mb-6 px-6">
-              <label className="flex mb-2 text-xl font-semibold text-color dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
-                Código CUPS 
+            <div className="px-6 mb-6">
+              <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white after:content-['*'] after:ml-2 after:text-red-600">
+                Código CUPS:
               </label>
               <input
                 type="text"
@@ -165,21 +165,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
             </div>
 
             {/* container-footer */}
-            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-800">
+            <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-white h-14 dark:bg-gray-600">
               <button
                 type="button"
                 onClick={() => {
                   setShowSecondModal(false);
                   setTimeout(onClose, 300);
                 }}
-                className="w-20 h-10 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
+                className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 Cerrar
               </button>
               {!showSecondModal ? (
                 <button
                   onClick={() => setShowSecondModal(true)}
-                  className={`w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600${
+                  className={`w-20 h-10 border-2 duration-200 dark:hover:border-gray-900 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600${
                     !formValues.reportOptions
                       ? "opacity-50 cursor-not-allowed"
                       : ""
@@ -191,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               ) : (
                 <button
                   type="submit"
-                  className="w-20 h-10 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
                   onClick={handleDownloadReport}
                 >
                   Descargar

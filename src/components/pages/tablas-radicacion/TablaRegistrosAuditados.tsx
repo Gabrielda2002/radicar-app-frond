@@ -31,7 +31,7 @@ const TablaRegistrosAuditados: React.FC = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <h2>{error}</h2>;
+  if (error) return <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>;
 
   return (
     <>
@@ -214,6 +214,7 @@ const TableContent: React.FC<TableContentProps> = ({
         ))}
       </tbody>
     </table>
+    <div>‎</div>
     <Pagination
       currentPage={currentPage}
       totalPages={totalPages}
