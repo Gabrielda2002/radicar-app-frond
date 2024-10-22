@@ -240,7 +240,8 @@ const SideBar: FC = () => {
             </div>
 
             {/*  MODULO GESTION SERVICIOS  */}
-            {[10, 3, 1].includes(Number(rol)) && (
+
+            {[10, 3, 1, 15].includes(Number(rol)) && (
               <div>
                 <button
                   onClick={() => toggleAccordion("services")}
@@ -282,7 +283,7 @@ const SideBar: FC = () => {
                 </button>
                 {openAccordions.services && (
                   <div className="mt-2 space-y-3">
-                    {[10, 3, 1].includes(Number(rol)) && (
+                    {[10, 3, 1, 15].includes(Number(rol)) && (
                       <NavLink to="/tabla-radicacion">
                         {({ isActive }) => (
                           <div
@@ -317,7 +318,7 @@ const SideBar: FC = () => {
                       </NavLink>
                     )}
                     <div></div>
-                    {[10, 15, 1].includes(Number(rol)) && (
+                    {[15, 1].includes(Number(rol)) && (
                       <NavLink to="/tabla-cirugias">
                         {({ isActive }) => (
                           <div
@@ -894,16 +895,16 @@ const SideBar: FC = () => {
           </div>
 
           {/*Tabla Configuraciones*/}
-          <div className="flex flex-col mx-3 space-y-3">
-            {!isCollapsed && (
-              <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
-                Configuraciones
-              </label>
-            )}
+          {[1].includes(Number(rol)) && (
+            <div className="flex flex-col mx-3 space-y-3">
+              {!isCollapsed && (
+                <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
+                  Configuraciones
+                </label>
+              )}
 
-            {/* Tabla Configuraciones 1 */}
-            {/* < -- MODULO ADIM (PERFIL) -- > */}
-            {[1].includes(Number(rol)) && (
+              {/* Tabla Configuraciones 1 */}
+              {/* < -- MODULO ADIM (PERFIL) -- > */}
               <div className="flex flex-col -mx-3 space-y-3">
                 <div>
                   <button
@@ -1048,8 +1049,8 @@ const SideBar: FC = () => {
                   )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </nav>
       </div>
     </aside>

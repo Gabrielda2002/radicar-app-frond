@@ -32,10 +32,8 @@ const TablaRadicacion = () => {
     "id",
     "auditDate",
   ]);
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
-    filteredData,
-    ITEMS_PER_PAGE
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, ITEMS_PER_PAGE);
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
@@ -73,7 +71,12 @@ const TablaRadicacion = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h2 className="flex justify-center text-center dark:text-white">{error}</h2>;
+  if (error)
+    return (
+      <h2 className="flex justify-center text-center dark:text-white">
+        {error}
+      </h2>
+    );
 
   return (
     <>
@@ -145,13 +148,13 @@ const TablaRadicacion = () => {
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
+                    <th>Numero Documento</th>
                     <th>Convenio</th>
                     <th>N.º Documento</th>
                     <th>Nombre Paciente</th>
                     <th>Fecha Auditoría</th>
-                    <th className="w-[150px]">Nombre Auditora</th>
+                    <th>Gestión del servicio</th>
                     <th>Soporte</th>
-                    <th>Gestión Auxiliar</th>
                     <th>Mostrar</th>
                   </tr>
                 </thead>
@@ -165,6 +168,7 @@ const TablaRadicacion = () => {
                           : "N/A"}
                       </td>
                       <td>{radicacion.id}</td>
+                      <td>{radicacion.patientRelation.documentNumber}</td>
                       <td>
                         {radicacion.patientRelation.convenioRelation.name}
                       </td>
@@ -177,7 +181,78 @@ const TablaRadicacion = () => {
                           ? radicacion.auditDate.toISOString()
                           : "N/A"}
                       </td>
-                      <td>{radicacion.auditora}</td>
+                      <td>
+                        {radicacion.cupsRadicadosRelation.length > 0 && (
+                          <table className="min-w-full border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
+                            <thead>
+                              <tr className="bg-gray-300 dark:bg-gray-700">
+                                <th>CUPS</th>
+                                <th>Descripción</th>
+                                <th>Auditoria</th>
+                                <th>Gestion</th>
+                                <th>Auxiliar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {radicacion.cupsRadicadosRelation.map((cup) => (
+                                <tr key={cup.id}>
+                                  <td>{cup.code}</td>
+                                  <td>{cup.DescriptionCode}</td>
+                                  <td
+                                    style={{
+                                      backgroundColor:
+                                        cup.statusRelation.name &&
+                                        cup.statusRelation.name ===
+                                          "AUTORIZADO"
+                                          ? "green"
+                                          : "transparent",
+                                    }}
+                                  >
+                                    {cup.statusRelation.name}
+                                  </td>
+                                  {/*  Se agrega el estado del seguimiento auxiliar  */}
+                                  {/*  y dependiendo del estado se cambia el color */}
+                                  <td
+                                    style={{
+                                      backgroundColor:
+                                        cup.seguimientoAuxiliarRelation.length >
+                                          0 &&
+                                        cup.seguimientoAuxiliarRelation[0]
+                                          .estadoSeguimientoRelation.name ===
+                                          "Asignado"
+                                          ? "green"
+                                          : "transparent",
+                                    }}
+                                  >
+                                    {cup.seguimientoAuxiliarRelation.length >
+                                      0 &&
+                                    cup.seguimientoAuxiliarRelation[0]
+                                      .estadoSeguimientoRelation.name
+                                      ? cup.seguimientoAuxiliarRelation[0]
+                                          .estadoSeguimientoRelation.name
+                                      : "N/A"}
+                                  </td>
+                                  <td>
+                                    <td>
+                                      <button
+                                        onClick={() =>
+                                          handleShowGestionAuxiliar(radicacion)
+                                        }
+                                      >
+                                        <img
+                                          className="dark:invert"
+                                          src={gestion}
+                                          alt=""
+                                        />
+                                      </button>
+                                    </td>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
+                      </td>
                       <td>
                         <button
                           onClick={() =>
@@ -188,13 +263,6 @@ const TablaRadicacion = () => {
                           }
                         >
                           <img className="dark:invert" src={soporte} alt="" />
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleShowGestionAuxiliar(radicacion)}
-                        >
-                          <img className="dark:invert" src={gestion} alt="" />
                         </button>
                       </td>
                       <td>

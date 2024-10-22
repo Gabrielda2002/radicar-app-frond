@@ -59,7 +59,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         />
       </label>
 
-      {fetchError && <p>{fetchError}</p>}
+        {error && <p className="text-red-500 dark:text-red-300">{error}</p>}
 
       {/* Mostrar sugerencias */}
       {showSuggestions && data && (

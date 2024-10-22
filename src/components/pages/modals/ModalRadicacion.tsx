@@ -2,13 +2,13 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import ServicioForm from "../../ServicioForm";
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import InputAutocompletado from "../../InputAutocompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
+import { useNavigate } from "react-router-dom";
 
 import id from "/assets/id.svg";
 import phone from "/assets/phone.svg";
@@ -197,8 +197,9 @@ const ModalRadicacion = () => {
     }
   };
 
+  // ? redirigir al usuario a la tabla de pacientes para registrar un nuevo paciente
   const handleRegisterPaciente = () => {
-    navigate("/tabla-pacientes");
+     navigate("/tabla-pacientes", {state: {openModal: true}});
   };
 
   const closeModal = () => {
@@ -233,6 +234,7 @@ const ModalRadicacion = () => {
   return (
     <>
       <button
+        type="button"
         className="border-2 w-[80px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-teal-800  active:bg-teal-900 "
         onClick={() => setStadopen(true)}
       >
@@ -258,6 +260,7 @@ const ModalRadicacion = () => {
                   Radicación de Servicios
                 </h1>
                 <button
+                type="button"
                   onClick={() => setStadopen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
@@ -304,9 +307,10 @@ const ModalRadicacion = () => {
                       <div className="text-red-500 dark:text-red-300">
                         {error}
                         <div></div>
-                        <button
-                          onClick={handleRegisterPaciente}
+                        <button 
+                          type="button"
                           className="text-blue-500 dark:text-blue-300"
+                          onClick={handleRegisterPaciente}
                         >
                           Registrar Paciente
                         </button>
@@ -836,6 +840,7 @@ const ModalRadicacion = () => {
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-medium bg-gray-100 border-t-2 border-black dark:border-white h-14 dark:bg-gray-600">
                   <button
+                    type="button"
                     onClick={() => setTimeout(closeModal, 250)}
                     className="w-20 h-10 text-blue-400 duration-300 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
                   >

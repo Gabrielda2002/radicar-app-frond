@@ -14,7 +14,8 @@ import ModalAgregarDato from "../modals/ModalAgregarDato";
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoDocumento = () => {
-  const { dataDocumento, loadingDocumento, errorDocumento } = useFetchDocumento();
+  const load = true;
+  const { dataDocumento, loadingDocumento, errorDocumento } = useFetchDocumento(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(dataDocumento, [

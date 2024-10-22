@@ -199,9 +199,11 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                       <td className="">{cups.DescriptionCode}</td>
                     </tr>
                     <tr>
-                      <td className="bg-gray-400 dark:bg-gray-600">
-                        Observiación CUPS
-                      </td>
+                      <td>Estado CUPS</td>
+                      <td>{cups.statusRelation.name}</td>
+                    </tr>
+                    <tr>
+                      <td className="">Observiación CUPS</td>
                       <td className="">{cups.observation}</td>
                     </tr>
                     <tr>
