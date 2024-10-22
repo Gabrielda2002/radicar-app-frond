@@ -179,7 +179,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
               {!showSecondModal ? (
                 <button
                   onClick={() => setShowSecondModal(true)}
-                  className={`w-20 h-10 border-2 duration-200 dark:hover:border-gray-900 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600${
+                  className={`w-20 h-10 border-2 duration-200 dark:hover:border-gray-900 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
                     !formValues.reportOptions
                       ? "opacity-50 cursor-not-allowed"
                       : ""
