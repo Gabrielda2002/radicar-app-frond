@@ -37,10 +37,8 @@ const TablaAuditoria = () => {
     "radicador",
   ]);
 
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
-    filteredData,
-    ITEMS_PER_PAGE
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, ITEMS_PER_PAGE);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -49,7 +47,8 @@ const TablaAuditoria = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <h2 className="flex justify-center dark:text-white">{error}</h2>;
+  if (error)
+    return <h2 className="flex justify-center dark:text-white">{error}</h2>;
 
   const handleShowServicios = (statusCups: IStatusCup[]) => {
     setSelectedCups(statusCups);
@@ -59,17 +58,17 @@ const TablaAuditoria = () => {
   // * Funcion para abrir el modal de soporte
   const handleOpenSoporte = (soporte: string | null) => {
     if (!soporte) {
-      console.log(soporte)
+      console.log(soporte);
       alert("No hay soporte para mostrar.");
       return;
     }
-  
+
     window.open(
       `http://localhost:3600/api/v1/uploads/Soportes/${soporte}`,
       "_blank"
     );
-    return
-  }
+    return;
+  };
 
   return (
     <>
@@ -88,7 +87,12 @@ const TablaAuditoria = () => {
             </li>
           </ol>
           <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer"></img>
+            <img
+              src={salir}
+              alt=""
+              onClick={() => window.history.back()}
+              className="cursor-pointer"
+            ></img>
           </div>
         </nav>
       </section>
@@ -184,26 +188,34 @@ const TablaAuditoria = () => {
                     <td>{auditoria.speciality}</td>
                     <td>{auditoria.typeServices}</td>
                     <td>{auditoria.radicador}</td>
-                    <td>
+                    <td className="flex justify-center">
                       <button
                         onClick={() => handleOpenSoporte(auditoria.soportes)}
                       >
-                        <img src={soporte} alt="soporte-icon" className="dark:invert"/>
+                        <img
+                          src={soporte}
+                          alt="soporte-icon"
+                          className="dark:invert"
+                        />
                       </button>
                     </td>
-                    <td>
+                    <td className="">
                       <button
-                        onClick={() =>
-                          handleShowServicios(auditoria.statusCups) // * 
+                        onClick={
+                          () => handleShowServicios(auditoria.statusCups) // *
                         }
                       >
-                        <img src={mostrar} alt="mostrar-icon" className="dark:invert"/>
+                        <img
+                          src={mostrar}
+                          alt="mostrar-icon"
+                          className="dark:invert"
+                        />
                       </button>
                     </td>
-                    <td>
+                    <td className="flex justify-center">
                       <Link
                         to="/tabla-autorizar-servicios"
-                      state={{ CUPS: auditoria.statusCups, id: auditoria.id  }}
+                        state={{ CUPS: auditoria.statusCups, id: auditoria.id }}
                       >
                         <img
                           className="dark:invert "
