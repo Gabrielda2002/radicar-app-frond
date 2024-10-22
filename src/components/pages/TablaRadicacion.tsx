@@ -145,6 +145,7 @@ const TablaRadicacion = () => {
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
+                    <th>Numero Documento</th>
                     <th>Convenio</th>
                     <th>N.º Documento</th>
                     <th>Nombre Paciente</th>
@@ -165,6 +166,7 @@ const TablaRadicacion = () => {
                           : "N/A"}
                       </td>
                       <td>{radicacion.id}</td>
+                      <td>{radicacion.patientRelation.documentNumber}</td>
                       <td>
                         {radicacion.patientRelation.convenioRelation.name}
                       </td>
