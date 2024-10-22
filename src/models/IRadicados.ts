@@ -26,7 +26,6 @@ export interface IRadicados {
     cupsRadicadosRelation:       CupsRadicadosRelation[];
     diagnosticoRelation:         DiagnosticoRelation;
     soportesRelation:            SoportesRelation | null;
-    seguimientoAuxiliarRelation: SeguimientoAuxiliarRelation[];
 }
 
 export interface CupsRadicadosRelation {
@@ -39,6 +38,7 @@ export interface CupsRadicadosRelation {
     idRadicacion:           number;
     updatedAt:              Date;
     createdAt:              Date;
+    seguimientoAuxiliarRelation: SeguimientoAuxiliarRelation[];
     statusRelation:         Relation;
     functionalUnitRelation: Relation;
 }
