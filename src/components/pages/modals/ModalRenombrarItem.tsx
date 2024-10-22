@@ -44,9 +44,7 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
       {standOpen && (
         <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <section>
-            <div
-              className="fixed inset-0 transition-opacity duration-300 bg-black opacity-50 backdrop-blur-sm "
-            ></div>
+            <div className="fixed inset-0 transition-opacity duration-300 bg-black opacity-50 backdrop-blur-sm "></div>
 
             {/* Contenido del formulario */}
 
@@ -57,7 +55,7 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
                 </h1>
                 <button
                   onClick={toggleModal}
-                  className="text-xl text-gray-100 duration-200 rounded-md w-7 h-7 hover:bg-gray-300 hover:text-gray-800"
+                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
                 </button>
