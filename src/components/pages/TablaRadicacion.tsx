@@ -148,9 +148,8 @@ const TablaRadicacion = () => {
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
-                    <th>Numero Documento</th>
-                    <th>Convenio</th>
                     <th>N.º Documento</th>
+                    <th>Convenio</th>
                     <th>Nombre Paciente</th>
                     <th>Fecha Auditoría</th>
                     <th>Gestión del servicio</th>
@@ -171,9 +170,6 @@ const TablaRadicacion = () => {
                       <td>{radicacion.patientRelation.documentNumber}</td>
                       <td>
                         {radicacion.patientRelation.convenioRelation.name}
-                      </td>
-                      <td>
-                        {radicacion.patientRelation.documentRelation.name}
                       </td>
                       <td>{radicacion.patientRelation.name}</td>
                       <td>
