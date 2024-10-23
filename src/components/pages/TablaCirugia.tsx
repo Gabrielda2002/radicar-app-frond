@@ -14,6 +14,7 @@ import gestion from "/assets/gestion.svg";
 import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -55,6 +56,11 @@ const TablaCirugias = () => {
 
   if (loadingCirugias) return <LoadingSpinner />;
   if (errorCirugias) return <div className="flex justify-center dark:text-white">{errorCirugias}</div>;
+
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+  }
  
   return (
     <>
@@ -139,9 +145,7 @@ const TablaCirugias = () => {
             {currentData().map((cirugia) => (
               <tr key={cirugia.id}>
                 <td>
-                  {cirugia.fechaRadicado
-                    ? cirugia.fechaRadicado.toISOString()
-                    : "N/A"}
+                  {formatDate(cirugia.fechaRadicado) || "N/A"}
                 </td>
                 <td>{cirugia.id}</td>
                 <td>{cirugia.convenio}</td>

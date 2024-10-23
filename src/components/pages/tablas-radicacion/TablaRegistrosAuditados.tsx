@@ -8,8 +8,14 @@ import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados
 import useSearch from "../../../hooks/useSearch";
 import salir from "/assets/back.svg";
 import { Cup, IAuditados } from "../../../models/IAuditados";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 10;
+
+// * funcion para formatear la fecha
+const formatDate = (date: Date | null) => {
+  return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+}
 
 const TablaRegistrosAuditados: React.FC = () => {
   const { data, loading, error } = useFetchAuditados();
@@ -246,7 +252,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
           <td>{cup.description}</td>
           <td>{cup.status}</td>
           <td>{cup.observation}</td>
-          <td>{cup.modifyDate ? cup.modifyDate.toISOString() : "N/A"}</td>
+          <td>{formatDate(cup.modifyDate)}</td>
           <td>
             <ModalActualizarCupsAuditoria cup={cup} />
           </td>
