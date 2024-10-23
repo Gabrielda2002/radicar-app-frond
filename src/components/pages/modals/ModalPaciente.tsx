@@ -56,7 +56,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
     telefonoFijo: Yup.string()
       .required("El teléfono fijo es obligatorio")
       .min(1, "El teléfono fijo debe tener al menos 1 caracter")
-      .max(20, "El teléfono fijo debe tener como máximo 20 caracteres"),
+      .max(10, "El teléfono fijo debe tener como máximo 20 caracteres"),
     nombreCompleto: Yup.string()
       .required("El nombre completo es obligatorio")
       .min(3, "El nombre completo debe tener al menos 3 caracteres")
@@ -65,7 +65,10 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
     numeroCelular: Yup.string()
       .required("El número de celular es obligatorio")
       .min(1, "El número de celular debe tener al menos 1 caracter")
-      .max(15, "El número de celular debe tener como máximo 15 caracteres"),
+      .max(10, "El número de celular debe tener como máximo 10 caracteres"),
+    numeroCelular2: Yup.string().optional()
+      .min(1, "El número de celular debe tener al menos 1 caracter")
+      .max(10, "El número de celular debe tener como máximo 10 caracteres"),
     ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
     direccion: Yup.string().required("La dirección es obligatoria"),
   });
@@ -79,6 +82,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
       nombreCompleto: "",
       convenio: "",
       numeroCelular: "",
+      numeroCelular2: "",
       ipsPrimaria: "",
       direccion: "",
     },
@@ -93,6 +97,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         formData.append("name", values.nombreCompleto);
         formData.append("convenio", values.convenio);
         formData.append("phoneNumber", values.numeroCelular);
+        formData.append("phoneNumber2", values.numeroCelular2);
         formData.append("ipsPrimaria", values.ipsPrimaria);
         formData.append("address", values.direccion);
 
@@ -118,7 +123,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
       }
     },
   });
-  console.log(formik.errors)
+  // console.log(formik.errors)
 
   // useEfct para llenar los valores del formulario en caso de que sea una actualización
 
@@ -132,6 +137,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         nombreCompleto: paciente.name,
         convenio: paciente.convenioRelation.id.toString(),
         numeroCelular: paciente.phoneNumber,
+        numeroCelular2: paciente.phoneNumber2 ?? "",
         ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
         direccion: paciente.address,
       });
@@ -385,6 +391,33 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       </label>
                     ) : null}
                   </div>
+
+                  <div>
+                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                      Número de Celular 2
+                    </label>
+                    <input
+                      type="text"
+                      name="numeroCelular2"
+                      value={formik.values.numeroCelular2}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      placeholder="Ingrese Número..."
+                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.numeroCelular2 &&
+                        formik.errors.numeroCelular2
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
+                    />
+                    {formik.touched.numeroCelular2 &&
+                    formik.errors.numeroCelular2 ? (
+                      <label className="text-red-500">
+                        {formik.errors.numeroCelular2}
+                      </label>
+                    ) : null}
+                  </div>
+
                   <div>
                     <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Dirección
