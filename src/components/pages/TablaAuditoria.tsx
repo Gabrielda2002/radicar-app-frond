@@ -14,6 +14,7 @@ import salir from "/assets/back.svg";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 import { IStatusCup } from "../../models/IAuditar.ts";
 import soporte from "/assets/soporte.svg";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -69,6 +70,10 @@ const TablaAuditoria = () => {
     );
     return;
   };
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy') : 'N/A';
+  }
 
   return (
     <>
@@ -168,9 +173,7 @@ const TablaAuditoria = () => {
                 {currentData().map((auditoria) => (
                   <tr key={auditoria.id}>
                     <td>
-                      {auditoria.radicadoDate
-                        ? auditoria.radicadoDate.toISOString()
-                        : "N/A"}
+                      {formatDate(auditoria.radicadoDate)}
                     </td>
                     <td>{auditoria.documentType}</td>
                     <td>{auditoria.documentNumber}</td>
@@ -178,9 +181,7 @@ const TablaAuditoria = () => {
                     <td>{auditoria.convenio}</td>
                     <td>{auditoria.ipsPrimary}</td>
                     <td>
-                      {auditoria.orderDate
-                        ? auditoria.orderDate.getTime()
-                        : "N/A"}
+                      {formatDate(auditoria.orderDate)}
                     </td>
                     <td>{auditoria.place}</td>
                     <td>{auditoria.ipsRemitente}</td>

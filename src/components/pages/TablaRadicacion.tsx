@@ -17,6 +17,7 @@ import soporte from "/assets/soporte.svg";
 import salir from "/assets/back.svg";
 import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 import { IRadicados } from "../../models/IRadicados.ts";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -31,6 +32,8 @@ const TablaRadicacion = () => {
     "createdAt",
     "id",
     "auditDate",
+    "patientRelation.documentNumber",
+    "patientRelation.name",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
@@ -77,6 +80,11 @@ const TablaRadicacion = () => {
         {error}
       </h2>
     );
+
+    // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+  }
 
   return (
     <>
@@ -148,9 +156,8 @@ const TablaRadicacion = () => {
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
                     <th>Fecha - Hora del Radicado</th>
                     <th>N.º Radicado</th>
-                    <th>Numero Documento</th>
-                    <th>Convenio</th>
                     <th>N.º Documento</th>
+                    <th>Convenio</th>
                     <th>Nombre Paciente</th>
                     <th>Fecha Auditoría</th>
                     <th>Gestión del servicio</th>
@@ -163,23 +170,16 @@ const TablaRadicacion = () => {
                   {currentData().map((radicacion) => (
                     <tr className="text-center" key={radicacion.id}>
                       <td>
-                        {radicacion.createdAt
-                          ? radicacion.createdAt.toISOString()
-                          : "N/A"}
+                        {formatDate(radicacion.createdAt)}
                       </td>
                       <td>{radicacion.id}</td>
                       <td>{radicacion.patientRelation.documentNumber}</td>
                       <td>
                         {radicacion.patientRelation.convenioRelation.name}
                       </td>
-                      <td>
-                        {radicacion.patientRelation.documentRelation.name}
-                      </td>
                       <td>{radicacion.patientRelation.name}</td>
                       <td>
-                        {radicacion.auditDate
-                          ? radicacion.auditDate.toISOString()
-                          : "N/A"}
+                        {formatDate(radicacion.auditDate)}
                       </td>
                       <td>
                         {radicacion.cupsRadicadosRelation.length > 0 && (

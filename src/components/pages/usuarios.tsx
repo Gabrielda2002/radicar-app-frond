@@ -10,6 +10,7 @@ import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 
 //*Icons
 import salir from "/assets/back.svg";
+import ModalActionUsuario from "./modals/ModalActionUsuario";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -114,6 +115,7 @@ const Usuarios = () => {
                     <th className="px-4 py-2">Estado</th>
                     <th className="px-4 py-2">Rol</th>
                     <th className="px-4 py-2">Municipio</th>
+                    <th className="px-4 py-2">Editar</th>
                     {/* <th className="px-4 py-2">Acciones</th> */}
                   </tr>
                 </thead>
@@ -130,9 +132,12 @@ const Usuarios = () => {
                       <td>{usuario.roles}</td>
                       <td>{usuario.municipio}</td>
                       {/* RESERVA HACIA FUTURO ! NO BORAR ! */}
-                      {/* <td>
-                        <ModalActionUsuario />
-                      </td> */}
+                      <td>
+                        <ModalActionUsuario
+                          id={usuario.id}
+                          ususario={usuario}
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
