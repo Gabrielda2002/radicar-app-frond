@@ -37,34 +37,39 @@ const TablaCups = () => {
   };
 
   if (loading) return <LoadingSpinner duration={500} />;
-  if (error) return <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>;
+  if (error)
+    return (
+      <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>
+    );
 
   return (
     <>
       {/* nav-table */}
-      <section className=" dark:bg-gray-900">
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Cups
-        </h1>
-        <nav>
-          <ol className="flex mb-2 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-2">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Cups
-            </li>
-          </ol>
-          <div className="w-10 pb-2 ">
-            <img
-              src={salir}
-              alt=""
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            />
-          </div>
-        </nav>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo Cups
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio Cups
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
       {/* container-table */}
@@ -74,7 +79,7 @@ const TablaCups = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Cup :
+              Buscar Cups:
             </label>
             <input
               value={query}
@@ -106,31 +111,44 @@ const TablaCups = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto ">
-              <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className="w-[fit-content]">ID</th>
-                  <th className="">Código</th>
-                  <th className="w-[fit-content]">Descripción CUPS</th>
-                  <th className="">Estado</th>
-                  <th className="">Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-xs text-center dark:text-gray-200">
-                {currentData().map((cups) => (
-                  <tr key={cups.id}>
-                    <td>{cups.id}</td>
-                    <td>{cups.code}</td>
-                    <td>{cups.name}</td>
-                    <td>{cups.status ? "Activo" : "Inactivo"}</td>
-                    <td>
-                      <ModalActionCups id={cups.id} />
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
+                <thead>
+                  <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                    <th className="w-[fit-content]">ID</th>
+                    <th className="">Código</th>
+                    <th className="w-[fit-content]">Descripción CUPS</th>
+                    <th className="">Estado</th>
+                    <th className="">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="text-xs text-center dark:text-gray-200">
+                  {currentData().map((cups) => (
+                    <tr
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      key={cups.id}
+                    >
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cups.id}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cups.code}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cups.name}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cups.status ? "Activo" : "Inactivo"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <ModalActionCups id={cups.id} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <div>‎ </div>
             {/* Controles de paginación */}
             <Pagination

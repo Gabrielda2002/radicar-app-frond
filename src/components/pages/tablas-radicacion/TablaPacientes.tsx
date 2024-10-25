@@ -20,29 +20,31 @@ const TablaPacientes = () => {
     <>
       {/* nav-table */}
 
-      <section className=" dark:bg-gray-900">
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo Pacientes
-        </h1>
-        <nav>
-          <ol className="flex mb-2 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-4">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Pacientes
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <img
-              src={salir}
-              alt=""
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            />
-          </div>
-        </nav>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo Pacientes
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio Pacientes
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
@@ -51,7 +53,7 @@ const TablaPacientes = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Paciente :
+              Buscar Paciente:
             </label>
             <div>
               <input
@@ -128,7 +130,7 @@ const TablaPacientes = () => {
               </table>
             </>
           ) : (
-            <h2 className="text-center text-lg dark:text-white">{error}</h2>
+            <h2 className="text-lg text-center dark:text-white">{error}</h2>
           )}
         </div>
       </section>
