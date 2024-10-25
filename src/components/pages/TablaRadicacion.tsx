@@ -32,6 +32,8 @@ const TablaRadicacion = () => {
     "createdAt",
     "id",
     "auditDate",
+    "patientRelation.documentNumber",
+    "patientRelation.name",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
