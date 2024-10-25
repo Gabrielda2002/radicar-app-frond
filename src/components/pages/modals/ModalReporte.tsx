@@ -107,7 +107,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
                       src={back}
                       alt="back"
                       onClick={() => setShowSecondModal(false)}
-                      className="w-8 duration-300 rounded-lg cursor-pointer dark:hover:bg-gray-300"
+                      className="w-8 duration-300 rounded-lg cursor-pointer dark:hover:bg-gray-300 hover:bg-gray-200"
                     />
                   </div>
 
