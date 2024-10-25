@@ -15,7 +15,8 @@ const ITEMS_PER_PAGE = 10;
 
 const TablaIpsPrimaria = () => {
   const load = true;
-  const { dataIpsPrimaria, loading, errorIpsPrimaria } = useFetchIpsPrimaria(load);
+  const { dataIpsPrimaria, loading, errorIpsPrimaria } =
+    useFetchIpsPrimaria(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch(dataIpsPrimaria, [
@@ -23,10 +24,8 @@ const TablaIpsPrimaria = () => {
     "name",
     "status",
   ]);
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination(
-    filteredData,
-    itemsPerPage
-  );
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -34,64 +33,69 @@ const TablaIpsPrimaria = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorIpsPrimaria) return <h1 className="flex justify-center text-lg dark:text-white">{errorIpsPrimaria}</h1>;
+  if (errorIpsPrimaria)
+    return (
+      <h1 className="flex justify-center text-lg dark:text-white">
+        {errorIpsPrimaria}
+      </h1>
+    );
 
   return (
     <>
       {/* nav-table */}
-
-      <section className="dark:bg-gray-900">
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100 ">
-          Módulo IPS Primaria
-        </h1>
-        <nav>
-          <ol className="flex mb-2 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-4">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio IPS Primaria
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-              <img src={salir} alt="" onClick={() => window.history.back()} className="cursor-pointer" />
-          </div>
-        </nav>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo IPS Primaria
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio IPS Primaria
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
-
-        <section className="flex items-center justify-between pb-6 header-tabla">
-          <div className="container-filter">
-            <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar IPS Primaria :
+        <section className="flex items-center justify-between mb-4">
+          <div className="flex flex-col">
+            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
+              Buscar Ips Primaria:
             </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            ></input>
+              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            />
           </div>
-          <div className="flex items-center pt-1 space-x-2">
+          <div className="flex items-center space-x-4">
             <select
-              name=""
-              id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="10">10 Paginas</option>
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato
-              name="IPS Primaria"
-              endPoint="ips-primaria"
-            />
+            <ModalAgregarDato name="IPS Primaria" endPoint="ips-primaria" />
           </div>
         </section>
 
@@ -101,36 +105,41 @@ const TablaIpsPrimaria = () => {
           </div>
         ) : (
           <>
-            <table className="w-full mx-auto text-sm ">
-              <thead>
-                <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className=" w-[60px]">ID</th>
-                  <th className=" w-[200px]">Nombre IPS Primaria</th>
-                  <th className=" w-[100px]">Estado</th>
-                  <th className=" w-[80px]">Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-xs text-center dark:text-gray-200">
-                {currentData().map((ips) => (
-                  <tr key={ips.id}>
-                    <td className="py-2">{ips.id}</td>
-                    <td className="py-2">{ips.name}</td>
-                    <td className="py-2">
-                      {ips.status ? "Activo" : "Inactivo"}
-                    </td>
-                    <td className="py-2">
-                      <ModalAction 
-                        id={ips.id} 
-                        name={ips.name} 
-                        endPoint="update-status-ips-primaria"
-                      />
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
+                <thead>
+                  <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                    <th className=" w-[60px]">ID</th>
+                    <th className=" w-[200px]">Nombre IPS Primaria</th>
+                    <th className=" w-[100px]">Estado</th>
+                    <th className=" w-[80px]">Acciones</th>
                   </tr>
-                ))}
-                <tr></tr>
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="text-xs text-center dark:text-gray-200">
+                  {currentData().map((ips) => (
+                    <tr
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      key={ips.id}
+                    >
+                      <td className="p-3 border-b dark:border-gray-700">{ips.id}</td>
+                      <td className="p-3 border-b dark:border-gray-700">{ips.name}</td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {ips.status ? "Activo" : "Inactivo"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <ModalAction
+                          id={ips.id}
+                          name={ips.name}
+                          endPoint="update-status-ips-primaria"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                  <tr></tr>
+                </tbody>
+              </table>
+            </div>
             <div>‎ </div>
             <Pagination
               currentPage={currentPage}
