@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import { IRadicados, SeguimientoAuxiliarRelation } from "../../../models/IRadicados";
+import {
+  IRadicados,
+  SeguimientoAuxiliarRelation,
+} from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
-import {  GestionAuxiliarCirugia, programacion } from "../../../models/ICirugias";
+import {
+  GestionAuxiliarCirugia,
+  programacion,
+} from "../../../models/ICirugias";
+import { div } from "framer-motion/client";
 
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
@@ -21,31 +28,48 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
 
   // se hace una sobre carga para que la funcion reciba un array de seguimientos de radicacion o de cirugias
-  function getUltimoEstado (seguimientos: SeguimientoAuxiliarRelation[]): string | null;
-  function getUltimoEstado(seguimientos: GestionAuxiliarCirugia[]): string | null;
-  function getUltimoEstado (seguimientos: SeguimientoAuxiliarRelation[] | GestionAuxiliarCirugia[]): string | null {
-
+  function getUltimoEstado(
+    seguimientos: SeguimientoAuxiliarRelation[]
+  ): string | null;
+  function getUltimoEstado(
+    seguimientos: GestionAuxiliarCirugia[]
+  ): string | null;
+  function getUltimoEstado(
+    seguimientos: SeguimientoAuxiliarRelation[] | GestionAuxiliarCirugia[]
+  ): string | null {
     if (seguimientos.length > 0) {
       const ultimoSeguimiento = seguimientos[seguimientos.length - 1];
 
-      if("estadoSeguimientoRelation" in ultimoSeguimiento) {
-      return ultimoSeguimiento.estadoSeguimientoRelation 
-             ? ultimoSeguimiento.estadoSeguimientoRelation.name
-             : null;
+      if ("estadoSeguimientoRelation" in ultimoSeguimiento) {
+        return ultimoSeguimiento.estadoSeguimientoRelation
+          ? ultimoSeguimiento.estadoSeguimientoRelation.name
+          : null;
+      }
+      return ultimoSeguimiento.estado;
     }
-    return ultimoSeguimiento.estado;
-  }
 
     return null;
   }
 
   // obtener el ultimo estao de la cirugia y radicacion
-  const ultimoEstadoCirugia = radicacion && radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation ? getUltimoEstado(radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation) : null;
-  const ultimoEstadoRadicacion = cirugias && cirugias.gestionAuxiliarCirugia ? getUltimoEstado(cirugias.gestionAuxiliarCirugia) : null;
+  const ultimoEstadoCirugia =
+    radicacion &&
+    radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+      ? getUltimoEstado(
+          radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+        )
+      : null;
+  const ultimoEstadoRadicacion =
+    cirugias && cirugias.gestionAuxiliarCirugia
+      ? getUltimoEstado(cirugias.gestionAuxiliarCirugia)
+      : null;
 
   // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
-  const isDisabled = ultimoEstadoCirugia === "Cerrado" || ultimoEstadoCirugia === "Cancelado" || ultimoEstadoRadicacion === "Cerrado" || ultimoEstadoRadicacion === "Cancelado";
-
+  const isDisabled =
+    ultimoEstadoCirugia === "Cerrado" ||
+    ultimoEstadoCirugia === "Cancelado" ||
+    ultimoEstadoRadicacion === "Cerrado" ||
+    ultimoEstadoRadicacion === "Cancelado";
 
   // Si el modal no está abierto o no hay datos de radicación ni cirugías, no renderiza nada.
   if (!isOpen || (!cirugias && !radicacion)) return null;
@@ -109,35 +133,41 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             ) : null}
 
             {/* Segunda tabla: Radicaciones */}
-            {radicacion && radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.length > 0 ? (
-              <table className="max-h-[100vh] w-auto overflow-y-auto mb-4 mx-4">
-                <thead className="text-center">
-                  <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
-                    <th className="ps-2">Codigo CUPS</th>
-                    <th className="">Observación</th>
-                    <th className="">Estado</th>
-                    <th className="">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody className="text-sm text-center break-words dark:text-gray-200">
-                  {radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.map((seguimiento) => (
-                    <tr key={seguimiento.id}>
-                      <td className="">{seguimiento.codeCups}</td>
-                      <td className="max-w-[400px]">
-                        {seguimiento.observation}
-                      </td>
-                      <td className="">
-                        {seguimiento.estadoSeguimientoRelation.name}
-                      </td>
-                      <td className="">
-                        {seguimiento.createdAt
-                          ? new Date(seguimiento.createdAt).toLocaleString()
-                          : "N/A"}
-                      </td>
+            {radicacion &&
+            radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+              .length > 0 ? (
+              <div className="flex justify-center w-full p-2">
+                <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
+                  <thead className="text-center">
+                    <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
+                      <th className="ps-2">CUPS</th>
+                      <th className="p-2">Observación</th>
+                      <th className="p-2">Estado</th>
+                      <th className="p-2">Fecha</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
+                    {radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.map(
+                      (seguimiento) => (
+                        <tr key={seguimiento.id}>
+                          <td className="">{seguimiento.codeCups}</td>
+                          <td className="max-w-[400px]">
+                            {seguimiento.observation}
+                          </td>
+                          <td className="">
+                            {seguimiento.estadoSeguimientoRelation.name}
+                          </td>
+                          <td className="">
+                            {seguimiento.createdAt
+                              ? new Date(seguimiento.createdAt).toLocaleString()
+                              : "N/A"}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
             ) : !cirugias ? (
               // Mostrar mensaje solo si no hay ni cirugías ni radicaciones
               <div className="p-12 text-center text-gray-400 dark:text-gray-100">
