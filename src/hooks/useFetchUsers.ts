@@ -130,27 +130,30 @@ export const useFetchRadicador = () => {
   return { dataRadicador, loading, errorRadicador };
 };
 
-export const useFetchMunicipio = () => {
-  const [data, setData] = useState<IMunicipios[]>([]);
+export const useFetchMunicipio = (shouldFetch: boolean) => {
+  const [municipios, setMunicipios] = useState<IMunicipios[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorMunicipios, setErrorMunicipios] = useState<string | null>(null);
 
   useEffect(() => {
+    
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const municipios = await fetchMunicipio();
-        setData(municipios);
+        setMunicipios(municipios);
       } catch (error) {
-        setError("Error al obtener los datos de la tabla municipios o no tienes los permisos necesarios. " + error);
+        setErrorMunicipios("Error al obtener los datos de la tabla municipios o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
     };
 
     getData();
-  }, []);
+  }, [shouldFetch]);
 
-  return { data, loading, error };
+  return { municipios, loading, errorMunicipios };
 };
 
 export const useFetchConvenio = (shouldFetch: boolean) => {
@@ -432,12 +435,15 @@ export const useFetchAuditados = () => {
 }
 
 // * traer roles
-export const useFetchRoles = () => {
+export const useFetchRoles = (shouldFetch: boolean) => {
   const [dataRol, setDataRol] = useState<IRol[]>([]);
   const [loadingRol, setLoadingRol] = useState<boolean>(true);
   const [errorRol, setErrorRol] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const roles = await fetchRoles();
@@ -450,7 +456,7 @@ export const useFetchRoles = () => {
     };
 
     getData();
-  }, []);
+  }, [ shouldFetch ]);
 
   return { dataRol, loadingRol, errorRol };
 }

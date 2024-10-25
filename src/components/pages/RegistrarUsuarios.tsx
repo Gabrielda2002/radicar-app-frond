@@ -12,11 +12,16 @@ import {
 import { createUser } from "../../services/createUser";
 
 const RegistrarUsuarios: React.FC = () => {
-  const { data, error } = useFetchMunicipio();
 
+  
   const isOpen = true;
   const { dataDocumento, errorDocumento } = useFetchDocumento(isOpen);
-  const { dataRol, errorRol } = useFetchRoles();
+  const load = true;
+
+  // traer los datos de los roles
+  const { dataRol, errorRol } = useFetchRoles(load);
+  // traer los datos de los municipios
+  const { municipios, errorMunicipios } = useFetchMunicipio(load);
 
   // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -106,9 +111,9 @@ const RegistrarUsuarios: React.FC = () => {
     },
   });
 
-  if (error)
+  if (errorMunicipios)
     return (
-      <div className="flex justify-center text-lg dark:text-white">Error: {error}</div>
+      <div className="flex justify-center text-lg dark:text-white">Error: {errorMunicipios}</div>
     );
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
@@ -139,7 +144,7 @@ const RegistrarUsuarios: React.FC = () => {
                 onBlur={formik.handleBlur}
               >
                 <option value="">SELECCIONE</option>
-                {data.map((municipio) => (
+                {municipios.map((municipio) => (
                   <option key={municipio.id} value={municipio.id}>
                     {municipio.name}
                   </option>
