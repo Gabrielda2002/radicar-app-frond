@@ -34,6 +34,7 @@ const TablaCirugias = () => {
     "convenio",
     "numeroDocumento",
     "nombrePaciente",
+    "especialidad",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
@@ -134,6 +135,7 @@ const TablaCirugias = () => {
               <th>Convenio</th>
               <th>N.º Documento</th>
               <th>Nombre Paciente</th>
+              <th>Especialidad</th>
               <th>Ultimo Estado Gestion</th>
               <th>Gestión Auxiliar</th>
               <th>Mostrar</th>
@@ -151,6 +153,7 @@ const TablaCirugias = () => {
                 <td>{cirugia.convenio}</td>
                 <td>{cirugia.numeroDocumento}</td>
                 <td>{cirugia.nombrePaciente}</td>
+                <td>{cirugia.especialidad}</td>
                 <td>
                   {cirugia.programacionCirugia.length > 0 &&
                   cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length > 0

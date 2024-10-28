@@ -9,7 +9,7 @@ import {
   GestionAuxiliarCirugia,
   programacion,
 } from "../../../models/ICirugias";
-import { div } from "framer-motion/client";
+import { format } from "date-fns";
 
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
