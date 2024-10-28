@@ -14,9 +14,10 @@ import { useState } from "react";
 const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
-  const { data, loading, error } = useFetchMunicipio();
+  const load = true;
+  const { municipios, loading, errorMunicipios } = useFetchMunicipio(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch(municipios, [
     "id",
     "name",
     "nitMunicipio",
@@ -32,10 +33,7 @@ const TablaMunicipios = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error)
-    return (
-      <h1 className="flex justify-center text-lg dark:text-white">{error}</h1>
-    );
+  if (errorMunicipios) return <h1 className="flex justify-center text-lg dark:text-white">{errorMunicipios}</h1>;
 
   return (
     <>

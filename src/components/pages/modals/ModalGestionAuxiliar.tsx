@@ -9,7 +9,7 @@ import {
   GestionAuxiliarCirugia,
   programacion,
 } from "../../../models/ICirugias";
-import { div } from "framer-motion/client";
+import { format } from "date-fns";
 
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
@@ -78,6 +78,11 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     setOpenServicio(true); // Abre el segundo modal
   };
 
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+  }
+
   return (
     <>
       <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -117,9 +122,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                       <td>{c.observacion}</td>
                       <td>{c.estado}</td>
                       <td>
-                        {c.fechaCreacion
-                          ? new Date(c.fechaCreacion).toLocaleString()
-                          : "N/A"}
+                        {formatDate(c.fechaCreacion)}
                       </td>
                     </tr>
                   ))}

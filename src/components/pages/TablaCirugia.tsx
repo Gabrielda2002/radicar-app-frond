@@ -14,6 +14,7 @@ import gestion from "/assets/gestion.svg";
 import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -33,6 +34,7 @@ const TablaCirugias = () => {
     "convenio",
     "numeroDocumento",
     "nombrePaciente",
+    "especialidad",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
@@ -55,6 +57,11 @@ const TablaCirugias = () => {
 
   if (loadingCirugias) return <LoadingSpinner />;
   if (errorCirugias) return <div className="flex justify-center dark:text-white">{errorCirugias}</div>;
+
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+  }
  
   return (
     <>
@@ -128,6 +135,7 @@ const TablaCirugias = () => {
               <th>Convenio</th>
               <th>N.º Documento</th>
               <th>Nombre Paciente</th>
+              <th>Especialidad</th>
               <th>Ultimo Estado Gestion</th>
               <th>Gestión Auxiliar</th>
               <th>Mostrar</th>
@@ -139,14 +147,13 @@ const TablaCirugias = () => {
             {currentData().map((cirugia) => (
               <tr key={cirugia.id}>
                 <td>
-                  {cirugia.fechaRadicado
-                    ? cirugia.fechaRadicado.toISOString()
-                    : "N/A"}
+                  {formatDate(cirugia.fechaRadicado) || "N/A"}
                 </td>
                 <td>{cirugia.id}</td>
                 <td>{cirugia.convenio}</td>
                 <td>{cirugia.numeroDocumento}</td>
                 <td>{cirugia.nombrePaciente}</td>
+                <td>{cirugia.especialidad}</td>
                 <td>
                   {cirugia.programacionCirugia.length > 0 &&
                   cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length > 0

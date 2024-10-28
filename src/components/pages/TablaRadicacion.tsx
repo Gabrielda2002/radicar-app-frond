@@ -32,6 +32,8 @@ const TablaRadicacion = () => {
     "createdAt",
     "id",
     "auditDate",
+    "patientRelation.documentNumber",
+    "patientRelation.name",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
@@ -94,6 +96,11 @@ const TablaRadicacion = () => {
         {error}
       </h2>
     );
+
+    // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
+  }
 
   return (
     <>
