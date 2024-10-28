@@ -72,7 +72,7 @@ const TablaAuditoria = () => {
   };
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy') : 'N/A';
+    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
   }
 
   return (
@@ -180,9 +180,7 @@ const TablaAuditoria = () => {
                       key={auditoria.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
-                        {auditoria.radicadoDate
-                          ? auditoria.radicadoDate.toISOString()
-                          : "N/A"}
+                        {formatDate(auditoria.radicadoDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.documentType}

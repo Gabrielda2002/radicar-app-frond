@@ -18,6 +18,7 @@ import salir from "/assets/back.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
+import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -192,9 +193,7 @@ const TablaRadicacion = () => {
                       key={radicacion.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.createdAt
-                          ? radicacion.createdAt.toISOString()
-                          : "N/A"}
+                        {formatDate(radicacion.createdAt)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.id}
