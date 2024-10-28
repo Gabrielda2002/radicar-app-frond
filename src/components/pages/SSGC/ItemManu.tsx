@@ -1,8 +1,12 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+//*Fuctions and hooks
 import React, { useState } from "react";
 import ModalRenombrarItem from "../modals/ModalRenombrarItem";
 import ConfirmDeletePopupProps from "../../ConfirmDeletePopup";
+//*Icons
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 interface ItemManuProps {
   onDelete: () => void;
@@ -53,20 +57,26 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
         >
           <div className="py-1">
             <MenuItem>
-              <button
-                className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
-                onClick={handleModalOpenDelete}
-              >
-                Eliminar.
-              </button>
+              <div className="flex text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600">
+                <button
+                  className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
+                  onClick={handleModalOpenDelete}
+                >
+                  Eliminar.
+                  <TrashIcon className="w-6 h-6 dark:text-white" />
+                </button>
+              </div>
             </MenuItem>
             <MenuItem>
-              <button
-                className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
-                onClick={handleModalOpenRename}
-              >
-                Renombrar.
-              </button>
+              <div className="flex text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600">
+                <button
+                  className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
+                  onClick={handleModalOpenRename}
+                >
+                  Renombrar.
+                  <PencilIcon className="w-6 h-6 dark:text-white" />
+                </button>
+              </div>
             </MenuItem>
           </div>
         </MenuItems>
