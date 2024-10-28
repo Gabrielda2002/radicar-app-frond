@@ -53,11 +53,14 @@ const ModalRadicacion = () => {
     telefonoFijo: Yup.string()
       .required("Campo requerido")
       .min(1, "El número debe tener al menos 1 caracteres.")
-      .max(20, "El número debe tener máximo 10 caracteres."),
+      .max(10, "El número debe tener máximo 10 caracteres."),
     numeroCelular: Yup.string()
       .required("Campo requerido")
       .min(1, "El número debe tener al menos 10 caracteres.")
-      .max(15, "El número debe tener máximo 10 caracteres."),
+      .max(10, "El número debe tener máximo 10 caracteres."),
+    numeroCelular2: Yup.string().optional()
+      .min(1, "El número debe tener al menos 10 caracteres.")
+      .max(10, "El número debe tener máximo 10 caracteres."),
     direccion: Yup.string().required("Campo requerido"),
     email: Yup.string().email("Email inválido").required("Campo requerido"),
     idIpsRemite: Yup.string().required("Campo requerido"),
@@ -77,6 +80,7 @@ const ModalRadicacion = () => {
     initialValues: {
       telefonoFijo: "",
       numeroCelular: "",
+      numeroCelular2: "",
       direccion: "",
       email: "",
       idIpsRemite: "",
@@ -102,6 +106,7 @@ const ModalRadicacion = () => {
       const formData = new FormData();
       formData.append("landline", values.telefonoFijo);
       formData.append("phoneNumber", values.numeroCelular);
+      formData.append("phoneNumber2", values.numeroCelular2);
       formData.append("address", values.direccion);
       formData.append("email", values.email);
       formData.append("ipsRemitente", values.idIpsRemite);
@@ -146,6 +151,7 @@ const ModalRadicacion = () => {
     if (data) {
       formik.setFieldValue("telefonoFijo", data.landline);
       formik.setFieldValue("numeroCelular", data.phoneNumber);
+      formik.setFieldValue("numeroCelular2", data.phoneNumber2 || "");
       formik.setFieldValue("direccion", data.address);
       formik.setFieldValue("email", data.email);
     }
@@ -416,7 +422,7 @@ const ModalRadicacion = () => {
                           type="number"
                           id=""
                           name="telefonoFijo"
-                          placeholder="Ingrese numero de teléfono..."
+                          placeholder="Ingrese teléfono..."
                           onChange={formik.handleChange}
                           value={formik.values.telefonoFijo}
                           onBlur={formik.handleBlur}
@@ -466,6 +472,41 @@ const ModalRadicacion = () => {
                         formik.errors.numeroCelular ? (
                           <div className="mt-2 text-red-500 dark:text-red-300">
                             {formik.errors.numeroCelular}
+                          </div>
+                        ) : null}
+                      </label>
+                    </div>
+                    <div>
+                      <label htmlFor="">
+                        <div className="flex mb-2">
+                          <img
+                            src={phone}
+                            alt=""
+                            className="mr-2 w-7 h-7 dark:invert"
+                          />
+                          <span className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            N° Celular 2
+                          </span>
+                        </div>
+                        <input
+                          type="number"
+                          id=""
+                          placeholder="Ingrese número de celular..."
+                          onChange={formik.handleChange}
+                          value={formik.values.numeroCelular2}
+                          name="numeroCelular2"
+                          onBlur={formik.handleBlur}
+                          className={` ${
+                            formik.touched.numeroCelular2 &&
+                            formik.errors.numeroCelular2
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
+                        />
+                        {formik.touched.numeroCelular2 &&
+                        formik.errors.numeroCelular2 ? (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {formik.errors.numeroCelular2}
                           </div>
                         ) : null}
                       </label>

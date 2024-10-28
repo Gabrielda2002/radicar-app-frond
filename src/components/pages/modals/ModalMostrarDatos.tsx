@@ -1,5 +1,6 @@
 import { IRadicados } from "../../../models/IRadicados";
 import useAnimation from "../../../hooks/useAnimations";
+import { format } from "date-fns";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -14,6 +15,11 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || !radicacion) return null;
+
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy') : 'N/A';
+  }
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -101,9 +107,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                     Fecha Auditoría
                   </td>
                   <td className="">
-                    {radicacion.auditDate
-                      ? new Date(radicacion.auditDate).toLocaleString()
-                      : "N/A"}
+                    {formatDate(radicacion.auditDate)}
                   </td>
                 </tr>
                 <tr>
@@ -125,9 +129,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                     Fecha - Hora del Radicado
                   </td>
                   <td className="">
-                    {radicacion.createdAt
-                      ? new Date(radicacion.createdAt).toLocaleString()
-                      : "N/A"}
+                    {formatDate(radicacion.createdAt)}
                   </td>
                 </tr>
                 <tr className="">

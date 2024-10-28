@@ -1,40 +1,34 @@
 // src/hooks/useSearch.ts
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from "react";
 
-function useSearch<T>(data: T[], searchKeys: (keyof T)[]) {
-  const [query, setQuery] = useState('');
+const useSearch = <T>(data: T[], searchKeys: string[]) => {
+  const [query, setQuery] = useState("");
+  const [filteredData, setFilteredData] = useState<T[]>(data);
 
-  // Convertir la consulta a minúsculas una sola vez
-  const normalizedQuery = query.toLowerCase();
+  useEffect(() => {
+    if (query) {
+      const lowerCaseQuery = query.toLowerCase();
+      setFilteredData(
+        data.filter((item) =>
+          searchKeys.some((key) => {
+            const keys = key.split('.');
+            let value: any = item; // Cambiamos el tipo a 'any'
 
-  const filteredData = useMemo(() => {
-    if (normalizedQuery === '') {
-      return data; // Mostrar datos originales si la consulta está vacía
-    }
+            for (const k of keys) {
+              value = value[k as keyof typeof value]; // Usamos 'typeof value'
+              if (value === undefined) return false;
+            }
 
-    return data
-      .filter((item) =>
-        searchKeys.some((key) =>
-          String(item[key]).toLowerCase().includes(normalizedQuery)
+            return String(value).toLowerCase().includes(lowerCaseQuery);
+          })
         )
-      )
-      .sort((a, b) => {
-        const aMatch = searchKeys.some((key) =>
-          String(a[key]).toLowerCase() === normalizedQuery
-        );
-        const bMatch = searchKeys.some((key) =>
-          String(b[key]).toLowerCase() === normalizedQuery
-        );
-
-        if (aMatch && !bMatch) return -1;
-        if (!aMatch && bMatch) return 1;
-
-        return searchKeys[0] &&
-          String(a[searchKeys[0]]).localeCompare(String(b[searchKeys[0]]));
-      });
-  }, [data, searchKeys, normalizedQuery]);
+      );
+    } else {
+      setFilteredData(data);
+    }
+  }, [query, data, searchKeys]);
 
   return { query, setQuery, filteredData };
-}
+};
 
 export default useSearch;

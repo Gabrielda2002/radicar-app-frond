@@ -39,7 +39,7 @@ const FormularioAutorizacion = () => {
     justificacion: Yup.string()
       .required("La justificación es requerida.")
       .min(3, "La justificación debe tener al menos 3 caracteres.")
-      .max(150, "La justificación no debe exceder los 150 caracteres."),
+      .max(500, "La justificación no debe exceder los 150 caracteres."),
     cupsDetails: Yup.array().of(
       Yup.object().shape({
         idCupsRadicado: Yup.string().required("ID CUPS radicado es requerido."),

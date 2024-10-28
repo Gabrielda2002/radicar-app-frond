@@ -4,6 +4,7 @@ export interface IPacientes {
     documentNumber:      number;
     name:                string;
     phoneNumber:         string;
+    phoneNumber2:        string | null;
     landline:            string;
     email:               string;
     address:             string;
