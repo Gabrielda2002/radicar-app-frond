@@ -112,6 +112,7 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     <option value="5">Incumplido</option>
                     <option value="6">Pendiente</option>
                     <option value="7">Reprogramado</option>
+                    <option value="9">Programado</option>
                   </select>
                   {formik.touched.estadoSeguimiento &&
                     formik.errors.estadoSeguimiento && (

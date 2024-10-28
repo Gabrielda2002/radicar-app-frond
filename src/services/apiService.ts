@@ -218,6 +218,8 @@ export const fetchCirugias = async (): Promise<ICirugias[]> => {
             ...programacion,
             fechaProgramada: new Date(programacion.fechaProgramada),
             fechaCirugia: new Date(programacion.fechaCirugia),
+            fechaParaclinoco: new Date(programacion.fechaParaclinoco),
+            fechaAnesteciologia: new Date(programacion.fechaAnesteciologia),
             gestionAuxiliarCirugia: programacion.gestionAuxiliarCirugia.map((gestion) => ({
                 ...gestion,
                 fechaCreacion: new Date(gestion.fechaCreacion)
