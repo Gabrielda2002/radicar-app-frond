@@ -1,20 +1,21 @@
 //*Funciones y Hooks
 import { useState } from "react";
+import { format } from "date-fns";
 import Pagination from "../Pagination";
-import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 import ModalCirugias from "./modals/ModalCirugias";
 import usePagination from "../../hooks/usePagination";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
 //*iconos
-import salir from "/assets/back.svg";
 import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
 import { programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
-import { format } from "date-fns";
+
+//*Props
+import ModalSection from "../ModalSection";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -68,8 +69,15 @@ const TablaCirugias = () => {
 
   return (
     <>
-      {/*nav-auditoria*/}
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+      <ModalSection
+        title="Módulo Cirugia"
+        breadcrumb={[
+          { label: "Inicio", path: "/Inicio" },
+          { label: "/ Servicio Cirugia", path: "" },
+        ]}
+      />
+      {/* NO BORRAR */}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -94,7 +102,7 @@ const TablaCirugias = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/*header-table*/}

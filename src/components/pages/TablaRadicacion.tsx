@@ -1,8 +1,8 @@
 //*Funciones y Hooks
 import { useState } from "react";
+import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Pagination from "../Pagination";
-import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -13,12 +13,13 @@ import { useFetchUsers } from "../../hooks/useFetchUsers";
 import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 
+//*Props
+import ModalSection from "../ModalSection.tsx";
+
 //*Iconos
-import salir from "/assets/back.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
-import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -105,8 +106,15 @@ const TablaRadicacion = () => {
 
   return (
     <>
-      {/* nav-table */}
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+      <ModalSection
+        title="Módulo Radicación"
+        breadcrumb={[
+          { label: "Inicio", path: "/inicio" },
+          { label: "/ Servicio Radicación", path: "" },
+        ]}
+      />
+      {/* NO BORRAR */}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -131,7 +139,7 @@ const TablaRadicacion = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
