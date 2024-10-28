@@ -257,7 +257,7 @@ const Perfil = () => {
           <div className="flex flex-row">
             {/* Perfil Section */}
             <div className="w-full max-w-lg p-4">
-              <div className="min-w-[300px] max-w-full p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
+              <div className="min-w-[500px] max-w-full p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
                 <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                   <img
                     src={profile.photo || defaultUserPicture}
