@@ -1,5 +1,6 @@
 //*Funciones y Hooks
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
 import useSearch from "../../hooks/useSearch";
@@ -7,17 +8,16 @@ import LoadingSpinner from "../LoadingSpinner";
 
 import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
+import { IRadicados } from "../../models/IRadicados.ts";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
+import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 
 //*Iconos
+import salir from "/assets/back.svg";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
-import salir from "/assets/back.svg";
-import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
-import { IRadicados } from "../../models/IRadicados.ts";
-import { format } from "date-fns";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -73,6 +73,22 @@ const TablaRadicacion = () => {
     return;
   };
 
+  //PRUEBA
+  // Estado para mostrar el alerta de cookies
+  const [showCookieAlert, setShowCookieAlert] = useState(false);
+  const [cookieDescription, setCookieDescription] = useState("");
+
+  // Función para abrir la alerta de cookies
+  const handleShowCookieAlert = (description: string) => {
+    setCookieDescription(description);
+    setShowCookieAlert(true);
+  };
+
+  // Función para cerrar la alerta de cookies
+  const handleCloseCookieAlert = () => {
+    setShowCookieAlert(false);
+  };
+
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error)
     return (
@@ -89,50 +105,52 @@ const TablaRadicacion = () => {
   return (
     <>
       {/* nav-table */}
-      <section className="dark:bg-gray-900">
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-200">
-          Módulo Radicación
-        </h1>
-        <nav>
-          <ol className="flex mb-2 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-2">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Radicación
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <img
-              src={salir}
-              alt=""
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            />
-          </div>
-        </nav>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo Radicación
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio Radicación
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
-      <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
+      <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
-        <section className="flex items-center justify-between pb-6 header-tabla">
-          <div className="container-filter">
-            <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
+        <section className="flex items-center justify-between mb-4">
+          <div className="flex flex-col">
+            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
               Buscar registro Radicación :
             </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50  focus:outline-none focus:ring-2  focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <div className="flex items-center space-x-2 pt-1-">
+          <div className="flex items-center space-x-4">
             <select
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-[40px] w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="10">10 Paginas</option>
@@ -151,14 +169,15 @@ const TablaRadicacion = () => {
           <>
             {/* Contenedor para la tabla con overflow-x-auto */}
             <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
-                    <th>Fecha - Hora del Radicado</th>
+              <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
+                <thead className="bg-gray-200 dark:bg-gray-700">
+                  <tr className="shadow-md dark:text-gray-300 rounded-t-md">
+                    <th className="">Fecha - Hora</th>
                     <th>N.º Radicado</th>
-                    <th>N.º Documento</th>
+                    <th>Documento</th>
                     <th>Convenio</th>
-                    <th>Nombre Paciente</th>
+                    <th>N.º Documento</th>
+                    <th>Paciente</th>
                     <th>Fecha Auditoría</th>
                     <th>Gestión del servicio</th>
                     <th>Soporte</th>
@@ -168,92 +187,128 @@ const TablaRadicacion = () => {
 
                 <tbody className="text-xs text-center dark:text-gray-200">
                   {currentData().map((radicacion) => (
-                    <tr className="text-center" key={radicacion.id}>
-                      <td>
-                        {formatDate(radicacion.createdAt)}
+                    <tr
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      key={radicacion.id}
+                    >
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.createdAt
+                          ? radicacion.createdAt.toISOString()
+                          : "N/A"}
                       </td>
-                      <td>{radicacion.id}</td>
-                      <td>{radicacion.patientRelation.documentNumber}</td>
-                      <td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.id}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.patientRelation.documentNumber}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.patientRelation.convenioRelation.name}
                       </td>
-                      <td>{radicacion.patientRelation.name}</td>
-                      <td>
-                        {formatDate(radicacion.auditDate)}
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.patientRelation.documentRelation.name}
                       </td>
-                      <td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.patientRelation.name}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.auditDate
+                          ? radicacion.auditDate.toISOString()
+                          : "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.cupsRadicadosRelation.length > 0 && (
-                          <table className="min-w-full border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
-                            <thead>
-                              <tr className="bg-gray-300 dark:bg-gray-700">
-                                <th>CUPS</th>
-                                <th>Descripción</th>
-                                <th>Auditoria</th>
-                                <th>Gestion</th>
-                                <th>Auxiliar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {radicacion.cupsRadicadosRelation.map((cup) => (
-                                <tr key={cup.id}>
-                                  <td>{cup.code}</td>
-                                  <td>{cup.DescriptionCode}</td>
-                                  <td
-                                    style={{
-                                      backgroundColor:
-                                        cup.statusRelation.name &&
-                                        cup.statusRelation.name ===
-                                          "AUTORIZADO"
-                                          ? "green"
-                                          : "transparent",
-                                    }}
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
+                              <thead>
+                                <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
+                                  <th className="">CUPS</th>
+                                  <th>Descripción</th>
+                                  <th>Auditoria</th>
+                                  <th>Gestion</th>
+                                  <th>Auxiliar</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {radicacion.cupsRadicadosRelation.map((cup) => (
+                                  <tr
+                                    key={cup.id}
+                                    className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
                                   >
-                                    {cup.statusRelation.name}
-                                  </td>
-                                  {/*  Se agrega el estado del seguimiento auxiliar  */}
-                                  {/*  y dependiendo del estado se cambia el color */}
-                                  <td
-                                    style={{
-                                      backgroundColor:
-                                        cup.seguimientoAuxiliarRelation.length >
-                                          0 &&
-                                        cup.seguimientoAuxiliarRelation[0]
-                                          .estadoSeguimientoRelation.name ===
-                                          "Asignado"
-                                          ? "green"
-                                          : "transparent",
-                                    }}
-                                  >
-                                    {cup.seguimientoAuxiliarRelation.length >
-                                      0 &&
-                                    cup.seguimientoAuxiliarRelation[0]
-                                      .estadoSeguimientoRelation.name
-                                      ? cup.seguimientoAuxiliarRelation[0]
-                                          .estadoSeguimientoRelation.name
-                                      : "N/A"}
-                                  </td>
-                                  <td>
-                                    <td>
+                                    <td className="p-3 border-b dark:border-gray-700">
+                                      {cup.code}
+                                    </td>
+                                    <td className="px-4 py-2 border-b dark:border-gray-700">
+                                      <span
+                                        className="block max-w-[200px] truncate cursor-pointer"
+                                        title="Click para ver descripción completa"
+                                        onClick={() =>
+                                          handleShowCookieAlert(
+                                            cup.DescriptionCode
+                                          )
+                                        }
+                                      >
+                                        {cup.DescriptionCode}
+                                      </span>
+                                    </td>
+
+                                    <td
+                                      className="p-3 border-b dark:border-gray-700"
+                                      style={{
+                                        backgroundColor:
+                                          cup.statusRelation.name &&
+                                          cup.statusRelation.name ===
+                                            "AUTORIZADO"
+                                            ? "green"
+                                            : "transparent",
+                                      }}
+                                    >
+                                      {cup.statusRelation.name}
+                                    </td>
+                                    {/*  Se agrega el estado del seguimiento auxiliar  */}
+                                    {/*  y dependiendo del estado se cambia el color */}
+                                    <td
+                                      className="p-3 border-b dark:border-gray-700"
+                                      style={{
+                                        backgroundColor:
+                                          cup.seguimientoAuxiliarRelation
+                                            .length > 0 &&
+                                          cup.seguimientoAuxiliarRelation[0]
+                                            .estadoSeguimientoRelation.name ===
+                                            "Asignado"
+                                            ? "green"
+                                            : "transparent",
+                                      }}
+                                    >
+                                      {cup.seguimientoAuxiliarRelation.length >
+                                        0 &&
+                                      cup.seguimientoAuxiliarRelation[0]
+                                        .estadoSeguimientoRelation.name
+                                        ? cup.seguimientoAuxiliarRelation[0]
+                                            .estadoSeguimientoRelation.name
+                                        : "N/A"}
+                                    </td>
+                                    <td className="p-3 border-b dark:border-gray-700">
                                       <button
                                         onClick={() =>
                                           handleShowGestionAuxiliar(radicacion)
                                         }
                                       >
                                         <img
-                                          className="dark:invert"
+                                          className="w-8 h-8 dark:invert"
                                           src={gestion}
                                           alt=""
                                         />
                                       </button>
                                     </td>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         )}
                       </td>
-                      <td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
                             radicacion.soportesRelation &&
@@ -265,13 +320,51 @@ const TablaRadicacion = () => {
                           <img className="dark:invert" src={soporte} alt="" />
                         </button>
                       </td>
-                      <td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         <button onClick={() => handleShowData(radicacion)}>
                           <img className="dark:invert" src={mostrar} alt="" />
                         </button>
                       </td>
                     </tr>
                   ))}
+                  {showCookieAlert && (
+                    <motion.div
+                      className="fixed flex items-center justify-center transition-opacity bg-black -inset-5 bg-opacity-10 backdrop-blur-sm"
+                      initial={{ opacity: 0, y: -20 }} // Mover hacia arriba
+                      animate={{ opacity: 1, y: 0 }} // Vuelve a su posición original
+                      exit={{ opacity: 0, y: 20 }} // Mover hacia abajo al salir
+                      transition={{ duration: 0.1 }} // Duración de la animación
+                    >
+                      <div className="fixed flex items-center justify-center transition-opacity bg-black bg-opacity-50 -inset-5 backdrop-blur-sm">
+                        {" "}
+                        {/* bg-opacity reducido a 30 */}
+                        <div className="p-6 bg-white rounded-md dark:bg-gray-700">
+                          <div className="flex justify-between pb-4 border-b">
+                            <h2 className="text-2xl font-bold text-left text-color dark:text-white">
+                              Descripción Completa:
+                            </h2>
+                            <button
+                              onClick={handleCloseCookieAlert}
+                              className="flex items-center justify-center text-xl duration-200 rounded-md w-7 h-7 hover:bg-gray-400 hover:text-black dark:hover:bg-gray-300"
+                            >
+                              &times;
+                            </button>
+                          </div>
+                          <p className="mt-4 mb-4 text-sm text-justify text-gray-700 dark:text-gray-100">
+                            {cookieDescription}
+                          </p>
+                          <div className="flex justify-end border-t">
+                            <button
+                              onClick={handleCloseCookieAlert}
+                              className="w-20 h-12 mt-4 text-white duration-200 rounded-md bg-color dark:hover:bg-teal-600 hover:bg-teal-600"
+                            >
+                              <span className="text-base">Cerrar</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
                 </tbody>
               </table>
             </div>

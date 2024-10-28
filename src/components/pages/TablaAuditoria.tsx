@@ -77,29 +77,32 @@ const TablaAuditoria = () => {
 
   return (
     <>
-      <section className=" dark:bg-gray-900 ps-0">
+      {/* nav-table */}
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Módulo Auditoría
-        </h1>
-        <nav className="">
-          <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-2 ">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Auditoría
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <img
-              src={salir}
-              alt=""
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            ></img>
-          </div>
-        </nav>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo Auditoría
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio Auditoría
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
@@ -121,7 +124,7 @@ const TablaAuditoria = () => {
               id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-12 w-[90px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="10">10 Paginas</option>
@@ -147,89 +150,123 @@ const TablaAuditoria = () => {
           </div>
         ) : (
           <>
-            <table className="w-full text-center">
-              <thead>
-                <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className="">Fecha Radicados</th>
-                  <th className="">Tipo Documento </th>
-                  <th className="">Identificación</th>
-                  <th className="">Nombre Completo</th>
-                  <th className="">Convenio</th>
-                  <th className="">IPS Primaria</th>
-                  <th className="">Fecha Orden</th>
-                  <th className="">Lugar Radicación</th>
-                  <th className="">IPS Remite</th>
-                  <th className="">Profesional</th>
-                  <th className="">Especialidad</th>
-                  <th className="">Tipo Servicio</th>
-                  <th className="">Quién Radica</th>
-                  <th className="">Soporte</th>
-                  <th className="">Ver Servicios</th>
-                  <th className="">Autorizar Servicios</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-xs text-center dark:text-gray-200">
-                {currentData().map((auditoria) => (
-                  <tr key={auditoria.id}>
-                    <td>
-                      {formatDate(auditoria.radicadoDate)}
-                    </td>
-                    <td>{auditoria.documentType}</td>
-                    <td>{auditoria.documentNumber}</td>
-                    <td>{auditoria.namePatient}</td>
-                    <td>{auditoria.convenio}</td>
-                    <td>{auditoria.ipsPrimary}</td>
-                    <td>
-                      {formatDate(auditoria.orderDate)}
-                    </td>
-                    <td>{auditoria.place}</td>
-                    <td>{auditoria.ipsRemitente}</td>
-                    <td>{auditoria.profetional}</td>
-                    <td>{auditoria.speciality}</td>
-                    <td>{auditoria.typeServices}</td>
-                    <td>{auditoria.radicador}</td>
-                    <td className="flex justify-center">
-                      <button
-                        onClick={() => handleOpenSoporte(auditoria.soportes)}
-                      >
-                        <img
-                          src={soporte}
-                          alt="soporte-icon"
-                          className="dark:invert"
-                        />
-                      </button>
-                    </td>
-                    <td className="">
-                      <button
-                        onClick={
-                          () => handleShowServicios(auditoria.statusCups) // *
-                        }
-                      >
-                        <img
-                          src={mostrar}
-                          alt="mostrar-icon"
-                          className="dark:invert"
-                        />
-                      </button>
-                    </td>
-                    <td className="flex justify-center">
-                      <Link
-                        to="/tabla-autorizar-servicios"
-                        state={{ CUPS: auditoria.statusCups, id: auditoria.id }}
-                      >
-                        <img
-                          className="dark:invert "
-                          src={autorizar}
-                          alt="autorizar-icon"
-                        />
-                      </Link>
-                      {/* ! no se le puede colocar | focus:outline-none | ! */}
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
+                <thead>
+                  <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                    <th>Fecha</th>
+                    <th>N. Documento </th>
+                    <th>Identificación</th>
+                    <th>Nombre Completo</th>
+                    <th>Convenio</th>
+                    <th>IPS Primaria</th>
+                    <th>Fecha Orden</th>
+                    <th>Lugar Radicación</th>
+                    <th>IPS Remite</th>
+                    <th>Profesional</th>
+                    <th>Especialidad</th>
+                    <th>Tipo Servicio</th>
+                    <th>Quién Radica</th>
+                    <th>Soporte</th>
+                    <th>Ver Servicios</th>
+                    <th>Autorizar Servicios</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="text-xs text-center dark:text-gray-200">
+                  {currentData().map((auditoria) => (
+                    <tr
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      key={auditoria.id}
+                    >
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.radicadoDate
+                          ? auditoria.radicadoDate.toISOString()
+                          : "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.documentType}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.documentNumber}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.namePatient}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.convenio}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.ipsPrimary}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.orderDate
+                          ? auditoria.orderDate.getTime()
+                          : "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.place}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.ipsRemitente}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.profetional}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.speciality}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.typeServices}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {auditoria.radicador}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <button
+                          onClick={() => handleOpenSoporte(auditoria.soportes)}
+                        >
+                          <img
+                            src={soporte}
+                            alt="soporte-icon"
+                            className="dark:invert"
+                          />
+                        </button>
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <button
+                          onClick={
+                            () => handleShowServicios(auditoria.statusCups) // *
+                          }
+                        >
+                          <img
+                            src={mostrar}
+                            alt="mostrar-icon"
+                            className="dark:invert"
+                          />
+                        </button>
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <Link
+                          to="/tabla-autorizar-servicios"
+                          state={{
+                            CUPS: auditoria.statusCups,
+                            id: auditoria.id,
+                          }}
+                        >
+                          <img
+                            className="dark:invert "
+                            src={autorizar}
+                            alt="autorizar-icon"
+                          />
+                        </Link>
+                        {/* ! no se le puede colocar | focus:outline-none | ! */}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
             <ModalMostrarDatosCUPS
               isOpen={isOpen}
