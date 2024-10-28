@@ -14,7 +14,7 @@ const BreadCrumb: React.FC<breadcrumbProps> = ({ path, onNavigate }) => {
           <div key={folder.id} className="flex items-center">
             <button
               onClick={() => onNavigate(folder.id)}
-              className={`text-sm font-medium hover:underline ${
+              className={`text-base font-medium hover:underline ${
                 inde === path.length - 1 ? "text-gray-800 dark:text-gray-100" :"text-blue-500 dark:text-blue-300"
               }`}
               disabled={inde === path.length - 1}
