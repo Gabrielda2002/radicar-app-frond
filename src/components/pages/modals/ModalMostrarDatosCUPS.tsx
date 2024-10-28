@@ -1,6 +1,7 @@
 import { IStatusCup } from "../../../models/IAuditar";
 import useAnimation from "../../../hooks/useAnimations";
 import { programacion } from "../../../models/ICirugias";
+import { format } from "date-fns";
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,6 +17,13 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || (!data && !cirugias)) return null;
+
+  // * funcion para formatear la fecha
+  const formatDate = (date: Date | null) => {
+    return date ? format(date, 'dd/MM/yyyy') : 'N/A';
+  }
+
+  
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -49,23 +57,25 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                     <th className="">Fecha Cirugia</th>
                     <th className="">Hora</th>
                     <th className="">IPS remite</th>
+                    <th>Fecha paraclinico</th>
+                    <th>Fecha anestesiologia</th>
+                    <th>Especialista</th>
                     <th className="">Observacion</th>
                   </tr>
                 </thead>
                 <tbody className="text-center dark:text-gray-200">
                   <tr>
                     <td>
-                      {cirugias.fechaProgramada
-                        ? cirugias.fechaProgramada.toISOString()
-                        : cirugias.fechaProgramada}
+                      {formatDate(cirugias.fechaProgramada)}
                     </td>
                     <td>
-                      {cirugias.fechaCirugia
-                        ? cirugias.fechaCirugia.toISOString()
-                        : cirugias.fechaCirugia}
+                      {formatDate(cirugias.fechaCirugia)}
                     </td>
                     <td>{cirugias.hora}</td>
                     <td>{cirugias.ipsRemite}</td>
+                    <td>{formatDate(cirugias.fechaParaclinoco)}</td>
+                    <td>{formatDate(cirugias.fechaAnesteciologia)}</td>
+                    <td>{cirugias.especialista}</td>
                     <td>{cirugias.observacion}</td>
                   </tr>
                 </tbody>

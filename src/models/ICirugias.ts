@@ -22,7 +22,10 @@ export interface programacion{
     fechaCirugia:    Date;
     ipsRemite:       string;
     observacion:     string;
-    hora:           string;
+    hora:            string;
+    fechaParaclinoco: Date;
+    fechaAnesteciologia: Date;
+    especialista: string;
     gestionAuxiliarCirugia: GestionAuxiliarCirugia[];
 }
 
