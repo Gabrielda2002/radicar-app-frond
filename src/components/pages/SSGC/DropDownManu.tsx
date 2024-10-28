@@ -55,7 +55,7 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
               Nuevo
               <PlusIcon
                 arial-hidden="true"
-                className={`w-5 h-5 -mr-1 text-gray-400 dark:text-white duration-300 transform ${
+                className={`w-5 h-5 -mr-1 text-gray-800 dark:text-white duration-300 transform ${
                   open ? "rotate-[132deg]" : ""
                 }`}
               />
