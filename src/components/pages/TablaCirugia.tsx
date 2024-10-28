@@ -56,60 +56,65 @@ const TablaCirugias = () => {
   };
 
   if (loadingCirugias) return <LoadingSpinner />;
-  if (errorCirugias) return <div className="flex justify-center dark:text-white">{errorCirugias}</div>;
+  if (errorCirugias)
+    return (
+      <div className="flex justify-center dark:text-white">{errorCirugias}</div>
+    );
 
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
-  }
- 
+    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+  };
+
   return (
     <>
       {/*nav-auditoria*/}
-      <section className="dark:bg-gray-900">
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Módulo Cirugías
-        </h1>
-        <nav className="">
-          <ol className="flex mb-2 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-2 ">Inicio</li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Servicio Cirugías
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <img
-              src={salir}
-              alt=""
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            ></img>
-          </div>
-        </nav>
+      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+        <LoadingSpinner duration={500} />
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
+            Módulo Cirugía
+          </h1>
+          <nav>
+            <ol className="flex items-center space-x-2">
+              <Link to="/inicio">
+                <li className="text-slate-400 hover:underline">Inicio</li>
+              </Link>
+              <li className="text-slate-700 dark:text-gray-300">
+                / Servicio Cirugía
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          >
+            <img src={salir} alt="Volver" className="w-6 h-6" />
+          </button>
+        </div>
       </section>
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/*header-table*/}
-
-        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar registro Cirugía :
-        </label>
-        <section className="flex items-center justify-between pb-6 header-tabla">
-          <div className="flex items-center space-x-2 container-filter">
+        <section className="flex items-center justify-between mb-4">
+          <div className="flex flex-col">
+            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
+              Buscar Cirugía:
+            </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            ></input>
+              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            />
           </div>
-          <div className="flex items-center space-x-2 pt-1-">
+          <div className="flex items-center space-x-4">
             <select
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="border-2 h-[40px] w-[100px] focus:outline-none rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
               <option value="10">10 Paginas</option>
@@ -127,77 +132,95 @@ const TablaCirugias = () => {
           </div>
         ) : (
           <>
-            <table className="min-w-full mx-auto text-sm ">
-          <thead>
-            <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
-              <th>Fecha - Hora del Radicado</th>
-              <th>N.º Radicado</th>
-              <th>Convenio</th>
-              <th>N.º Documento</th>
-              <th>Nombre Paciente</th>
-              <th>Especialidad</th>
-              <th>Ultimo Estado Gestion</th>
-              <th>Gestión Auxiliar</th>
-              <th>Mostrar</th>
-              <th>Programar</th>
-            </tr>
-          </thead>
+            <div className="overflow-x-auto">
+              <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
+                <thead>
+                  <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+                    <th>Fecha - Hora</th>
+                    <th>N.º Radicado</th>
+                    <th>Convenio</th>
+                    <th>Documento</th>
+                    <th>Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Ultimo Estado Gestion</th>
+                    <th>Gestión Auxiliar</th>
+                    <th>Mostrar</th>
+                    <th>Programar</th>
+                  </tr>
+                </thead>
 
-          <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            {currentData().map((cirugia) => (
-              <tr key={cirugia.id}>
-                <td>
-                  {formatDate(cirugia.fechaRadicado) || "N/A"}
-                </td>
-                <td>{cirugia.id}</td>
-                <td>{cirugia.convenio}</td>
-                <td>{cirugia.numeroDocumento}</td>
-                <td>{cirugia.nombrePaciente}</td>
-                <td>{cirugia.especialidad}</td>
-                <td>
-                  {cirugia.programacionCirugia.length > 0 &&
-                  cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length > 0
-                    ? cirugia.programacionCirugia[0].gestionAuxiliarCirugia.slice(-1)[0].estado
-                    : "N/A"}
-                </td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleShowGestion(cirugia.programacionCirugia[0])
-                    }
-                  >
-                    <img src={gestion} alt="Gestion-icon" />
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleShowVer(cirugia.programacionCirugia[0])
-                    }
-                  >
-                    <img src={mostrar} alt="Gestion-icon" />
-                  </button>
-                </td>
-                <td>
-                  <ModalCirugias
-                    name={cirugia.nombrePaciente}
-                    phonneNumber={cirugia.numeroPaciente}
-                    email={cirugia.email}
-                    landline={cirugia.telefonoFijo}
-                    cups={cirugia.cups}
-                    speciality={cirugia.especialidad}
-                    diagnostic={cirugia.diagnostico}
-                    idGroupService={cirugia.idGrupoServicios}
-                    idRadicado={cirugia.id}
-                    idCirugia={cirugia.programacionCirugia.map(
-                      (programacion) => programacion.id
-                    )}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
+                  {currentData().map((cirugia) => (
+                    <tr
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      key={cirugia.id}
+                    >
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {formatDate(cirugia.fechaRadicado) || "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.id}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.convenio}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.numeroDocumento}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.nombrePaciente}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.especialidad}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {cirugia.programacionCirugia.length > 0 &&
+                        cirugia.programacionCirugia[0].gestionAuxiliarCirugia
+                          .length > 0
+                          ? cirugia.programacionCirugia[0].gestionAuxiliarCirugia.slice(
+                              -1
+                            )[0].estado
+                          : "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <button
+                          onClick={() =>
+                            handleShowGestion(cirugia.programacionCirugia[0])
+                          }
+                        >
+                          <img src={gestion} alt="Gestion-icon" />
+                        </button>
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <button
+                          onClick={() =>
+                            handleShowVer(cirugia.programacionCirugia[0])
+                          }
+                        >
+                          <img src={mostrar} alt="Gestion-icon" />
+                        </button>
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <ModalCirugias
+                          name={cirugia.nombrePaciente}
+                          phonneNumber={cirugia.numeroPaciente}
+                          email={cirugia.email}
+                          landline={cirugia.telefonoFijo}
+                          cups={cirugia.cups}
+                          speciality={cirugia.especialidad}
+                          diagnostic={cirugia.diagnostico}
+                          idGroupService={cirugia.idGrupoServicios}
+                          idRadicado={cirugia.id}
+                          idCirugia={cirugia.programacionCirugia.map(
+                            (programacion) => programacion.id
+                          )}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
 
