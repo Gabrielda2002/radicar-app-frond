@@ -29,7 +29,7 @@ const TablaRadicacion = () => {
   //  se inicializan los estados para el paginado y la busqueda
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query ,setQuery, filteredData } = useSearch<IRadicados>(data, [
     "createdAt",
     "id",
     "auditDate",
@@ -50,6 +50,12 @@ const TablaRadicacion = () => {
   ) => {
     setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
   };
+
+  // const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === 'Enter') {
+  //     setQuery((e.target as HTMLInputElement).value); // Actualiza el estado de la búsqueda solo al presionar Enter
+  //   }
+  // };
 
   const handleShowData = (radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
@@ -141,8 +147,9 @@ const TablaRadicacion = () => {
               Buscar registro Radicación :
             </label>
             <input
+              type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value) } // Escuchar eventos de teclado
               placeholder="Consultar..."
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />

@@ -10,13 +10,14 @@ import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IRadicador } from "../../../models/IRadicador";
 
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
   const { dataRadicador, loading, errorRadicador } = useFetchRadicador();
   const [itemPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(dataRadicador, [
+  const { query, setQuery, filteredData } = useSearch<IRadicador>(dataRadicador, [
     "id",
     "name",
     "status",

@@ -10,6 +10,7 @@ import { useFetchServicios } from "../../../hooks/useFetchUsers";
 import salir from "/assets/back.svg";
 import { useState } from "react";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IServicios } from "../../../models/IServicio";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -17,7 +18,7 @@ const TablaTipoServicio = () => {
   const { data, loading, error } = useFetchServicios();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IServicios>(data, [
     "id",
     "name",
     "status",

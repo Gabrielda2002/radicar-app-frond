@@ -10,6 +10,7 @@ import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IIPSPrimaria } from "../../../models/IIpsPrimaria";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -19,7 +20,7 @@ const TablaIpsPrimaria = () => {
     useFetchIpsPrimaria(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(dataIpsPrimaria, [
+  const { query, setQuery, filteredData } = useSearch<IIPSPrimaria>(dataIpsPrimaria, [
     "id",
     "name",
     "status",

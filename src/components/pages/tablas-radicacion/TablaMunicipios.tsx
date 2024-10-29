@@ -10,6 +10,7 @@ import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import { useState } from "react";
+import { IMunicipios } from "../../../models/IMunicipios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -17,7 +18,7 @@ const TablaMunicipios = () => {
   const load = true;
   const { municipios, loading, errorMunicipios } = useFetchMunicipio(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(municipios, [
+  const { query, setQuery, filteredData } = useSearch<IMunicipios>(municipios, [
     "id",
     "name",
     "nitMunicipio",

@@ -13,6 +13,7 @@ import ModalActionCups from "../modals/ModalActionCups";
 
 //*Iconos
 import salir from "/assets/back.svg";
+import { ICups } from "../../../models/ICups";
 
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
@@ -20,7 +21,7 @@ const TablaCups = () => {
   const { data, loading, error } = useFetchCups();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<ICups>(data, [
     "id",
     "code",
     "name",

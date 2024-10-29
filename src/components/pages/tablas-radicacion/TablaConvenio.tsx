@@ -10,6 +10,7 @@ import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IConvenios } from "../../../models/IConvenios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -18,7 +19,7 @@ const TablaConvenios = () => {
   const { dataConvenios, loading, errorConvenio } = useFetchConvenio(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(dataConvenios, [
+  const { query, setQuery, filteredData } = useSearch<IConvenios>(dataConvenios, [
     "id",
     "name",
     "status",

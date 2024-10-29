@@ -10,6 +10,7 @@ import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { ILugarRadicacion } from "../../../models/ILugarRadicado";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -17,7 +18,7 @@ const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<ILugarRadicacion>(data, [
     "id",
     "name",
     "status",

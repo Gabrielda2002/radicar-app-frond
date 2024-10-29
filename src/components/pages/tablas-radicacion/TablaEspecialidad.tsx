@@ -10,6 +10,7 @@ import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IEspecialidad } from "../../../models/IEspecialidad";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -17,7 +18,7 @@ const TablaEspecialidad = () => {
   const { data, loading, error } = useFetchEspecialidad();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IEspecialidad>(data, [
     "id",
     "name",
     "status",

@@ -10,6 +10,7 @@ import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IDocumento } from "../../../models/IDocumento";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -19,7 +20,7 @@ const TablaTipoDocumento = () => {
     useFetchDocumento(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(dataDocumento, [
+  const { query, setQuery, filteredData } = useSearch<IDocumento>(dataDocumento, [
     "id",
     "name",
     "status",

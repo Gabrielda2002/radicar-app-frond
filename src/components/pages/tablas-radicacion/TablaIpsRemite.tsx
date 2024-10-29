@@ -10,6 +10,7 @@ import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { IIPSRemite } from "../../../models/IIpsRemite";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -17,7 +18,7 @@ const TablaIpsRemite = () => {
   const { data, loading, error } = useFetchIpsRemite();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IIPSRemite>(data, [
     "id",
     "name",
     "status",
