@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { FC, useRef, useState, useEffect } from "react";
 import { useSidebar } from "../../context/sidebarContext";
+import ModalReporteCirugia from "./modals/ModalReporteCirugia";
 
 //*Icons
 import home from "/assets/home.svg";
@@ -27,6 +28,16 @@ const SideBar: FC = () => {
   //*constante para slide del sidebar y funciones
   const { isCollapsed, toggleSideBar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isModalCirugiaOpen, setIsModalCirugiaOpen] = useState(false);
+
+  const openModalCirugia = () => {
+    setIsModalCirugiaOpen(true);
+  };
+  const closeModalCirugia = () => {
+    setIsModalCirugiaOpen(false);
+  };
+
   //*Variables para identificación de la tabla
   const [openAccordions, setOpenAccordions] = useState({
     services: false,
@@ -46,6 +57,13 @@ const SideBar: FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // const openModalCirugia = () => {
+  //   setIsModalOpenCirugia(true);
+  // };
+  // const closeModalCirugia = () => {
+  //   setIsModalOpenCirugia(false);
+  // };
 
   //*Accede al rol del usuario
   const { rol } = useAuth(); // <! ITERA ROLES DESDE LOGIN !>
@@ -437,6 +455,7 @@ const SideBar: FC = () => {
                   </button>
                   {openAccordions.reports && (
                     <div className="mt-2 space-y-3">
+                      {/* Modal Reportes */}
                       <button
                         onClick={openModal}
                         className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
@@ -456,18 +475,46 @@ const SideBar: FC = () => {
                           </span>
                         )}
                       </button>
+                      {/* Modal Reportes Cirugia */}
+                      <button
+                        onClick={openModalCirugia}
+                        className={` flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                          openAccordions.quality
+                            ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                        } w-full`}
+                      >
+                        <img
+                          src={report}
+                          alt=""
+                          className="w-5 h-5 mx-2 group-hover:invert dark:invert"
+                        />
+                        {!isCollapsed && (
+                          <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
+                            Reporte de Cirugía
+                          </span>
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>
               </div>
             )}
 
-            {/* Modal Component */}
+            {/* Modal Component Radicacion*/}
             <Modal
               isOpen={isModalOpen}
               onClose={closeModal}
               formType={"Autorizacion"}
             />
+
+            {isModalCirugiaOpen && (
+              <ModalReporteCirugia
+                isOpen={isModalCirugiaOpen}
+                onCLose={closeModalCirugia}
+              />
+            )}
+
             {/* MODULO TABLAS RADICACION */}
             {[1].includes(Number(rol)) && (
               <div className="space-y-3">
