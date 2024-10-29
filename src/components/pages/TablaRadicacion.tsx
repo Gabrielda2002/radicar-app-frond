@@ -229,7 +229,7 @@ const TablaRadicacion = () => {
                             <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
                               <thead>
                                 <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
-                                  <th className="">CUPS</th>
+                                  <th>CUPS</th>
                                   <th>Descripción</th>
                                   <th>Auditoria</th>
                                   <th>Gestion</th>
