@@ -47,15 +47,18 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
   };
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu
+      as="div"
+      className="relative inline-block text-left rounded-md outline outline-offset-2 outline-3 outline-gray-300"
+    >
       {({ open }) => (
         <>
           <div>
-            <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md dark:text-white bg-white dark:bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <MenuButton className="flex w-full items-center justify-center gap-x-1.5 rounded-md dark:text-white bg-white dark:bg-gray-500 px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               Nuevo
               <PlusIcon
                 arial-hidden="true"
-                className={`w-5 h-5 -mr-1 text-gray-400 dark:text-white duration-300 transform ${
+                className={`w-6 h-6 -mr-1 text-gray-800 dark:text-white duration-300 transform ${
                   open ? "rotate-[132deg]" : ""
                 }`}
               />

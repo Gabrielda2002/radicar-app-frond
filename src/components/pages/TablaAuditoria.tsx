@@ -1,20 +1,22 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-
-import Pagination from "../Pagination.tsx";
-import usePagination from "../../hooks/usePagination.ts";
-import useSearch from "../../hooks/useSearch.ts";
-import LoadingSpinner from "../LoadingSpinner";
-
-import autorizar from "/assets/autorizar.svg";
-import mostrar from "/assets/mostrar.svg";
-import salir from "/assets/back.svg";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
-import { IStatusCup } from "../../models/IAuditar.ts";
-import soporte from "/assets/soporte.svg";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import Pagination from "../Pagination.tsx";
+import LoadingSpinner from "../LoadingSpinner";
+import useSearch from "../../hooks/useSearch.ts";
+import { IStatusCup } from "../../models/IAuditar.ts";
+import usePagination from "../../hooks/usePagination.ts";
+import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
+
+//*Icons
+import mostrar from "/assets/mostrar.svg";
+import soporte from "/assets/soporte.svg";
+import autorizar from "/assets/autorizar.svg";
+
+//*Properties
+import ModalSection from "../ModalSection.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -77,8 +79,15 @@ const TablaAuditoria = () => {
 
   return (
     <>
-      {/* nav-table */}
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+    <ModalSection
+      title="Módulo Auditoría"
+      breadcrumb={[
+        {label: "Inicio", path: "/Inicio"},
+        {label: "/ Servicio Auditoría", path: ""}
+      ]}
+    />
+      {/* nav-table NO BORRAR*/}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -100,10 +109,10 @@ const TablaAuditoria = () => {
             onClick={() => window.history.back()}
             className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
           >
-            <img src={salir} alt="Volver" className="w-6 h-6" />
+            <img src="" alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         <label className="text-lg font-bold text-stone-600 dark:text-stone-300">

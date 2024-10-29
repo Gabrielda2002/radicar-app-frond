@@ -1,15 +1,15 @@
 //*Funciones y Hooks
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import { useFetchServicios } from "../../../hooks/useFetchUsers";
-//*Icons
-import salir from "/assets/back.svg";
-import { useState } from "react";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
+import { useFetchServicios } from "../../../hooks/useFetchUsers";
+
+//*Properties
+import ModalSection from "../../ModalSection";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -40,9 +40,15 @@ const TablaTipoServicio = () => {
 
   return (
     <>
-      {/* nav-table */}
-
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+      <ModalSection
+        title="Módulo Tipo Servicio"
+        breadcrumb={[
+          { label: "Inicio", path: "/Inicio" },
+          { label: "/ Servicio Tipo Servicio", path: "" },
+        ]}
+      />
+      {/* nav-table Tipo-Servicio*/}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -67,7 +73,7 @@ const TablaTipoServicio = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
@@ -121,8 +127,12 @@ const TablaTipoServicio = () => {
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                       key={servicio.id}
                     >
-                      <td className="p-3 border-b dark:border-gray-700">{servicio.id}</td>
-                      <td className="p-3 border-b dark:border-gray-700">{servicio.name}</td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {servicio.id}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {servicio.name}
+                      </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {servicio.status ? "Activo" : "Inactivo"}
                       </td>
