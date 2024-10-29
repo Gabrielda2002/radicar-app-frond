@@ -1,21 +1,25 @@
+//*Fuctions and Hooks
+import { format } from "date-fns";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Pagination from "../../Pagination";
+import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
+import { Cup, IAuditados } from "../../../models/IAuditados";
 import { useFetchAuditados } from "../../../hooks/useFetchUsers";
 import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
-import useSearch from "../../../hooks/useSearch";
-import salir from "/assets/back.svg";
-import { Cup, IAuditados } from "../../../models/IAuditados";
-import { format } from "date-fns";
+
+//*Properties
+import { motion } from "framer-motion";
+import ModalSection from "../../ModalSection";
+
 
 const ITEMS_PER_PAGE = 10;
 
 // * funcion para formatear la fecha
 const formatDate = (date: Date | null) => {
-  return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
-}
+  return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+};
 
 const TablaRegistrosAuditados: React.FC = () => {
   const { data, loading, error } = useFetchAuditados();
@@ -37,7 +41,10 @@ const TablaRegistrosAuditados: React.FC = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>;
+  if (error)
+    return (
+      <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>
+    );
 
   return (
     <>
@@ -58,35 +65,13 @@ const TablaRegistrosAuditados: React.FC = () => {
 };
 
 const Header: React.FC = () => (
-  <section className="p-4 dark:bg-gray-900 ps-0">
-    <LoadingSpinner duration={500} />
-    <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-      Módulo Registro Auditados
-    </h1>
-    <nav>
-      <ol className="flex mb-3 text-gray-700 dark:text-gray-300">
-        <Link to="/inicio">
-          <li className="text-slate-400 after:mr-2">Inicio</li>
-        </Link>
-        <Link to="/tabla-auditoria">
-          <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
-            Servicio Auditoría
-          </li>
-        </Link>
-        <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-          Registros Auditados
-        </li>
-      </ol>
-    </nav>
-    <div className="w-10">
-      <img
-        src={salir}
-        alt="icon-salir"
-        onClick={() => window.history.back()}
-        className="cursor-pointer"
-      />
-    </div>
-  </section>
+  <ModalSection
+    title="Tabla Registros Auditados"
+    breadcrumb={[
+      { label: "Inicio", path: "/inicio" },
+      { label: "/ Servicio Registros Auditados", path: "" },
+    ]}
+  />
 );
 
 interface MainContentProps {
@@ -198,28 +183,39 @@ const TableContent: React.FC<TableContentProps> = ({
   paginate,
 }) => (
   <>
-    <table className="min-w-full dark:text-gray-100">
-      <thead>
-        <tr className="text-sm text-center bg-gray-50 dark:bg-gray-700">
-          <th className="px-2">ID Radicación</th>
-          <th className="px-2">Número Documento</th>
-          <th className="px-2">Nombre Paciente</th>
-          <th className="px-2">CUPS</th>
-        </tr>
-      </thead>
-      <tbody>
-        {currentData().map((auditado) => (
-          <tr className="mt-2 text-xs text-center" key={auditado.id}>
-            <td>{auditado.id}</td>
-            <td>{auditado.document}</td>
-            <td>{auditado.patientName}</td>
-            <td>
-              <CupsTable cups={auditado.CUPS} />
-            </td>
+    <div className="overflow-x-auto">
+      <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg dark:text-gray-100">
+        <thead className="bg-gray-200 dark:bg-gray-700">
+          <tr className="text-base text-center shadow-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
+            <th className="px-2">ID Radicación</th>
+            <th>Número Documento</th>
+            <th>Nombre Paciente</th>
+            <th>CUPS</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="text-xs text-center dark:text-gray-200">
+          {currentData().map((auditado) => (
+            <tr
+              className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+              key={auditado.id}
+            >
+              <td className="p-3 border-b dark:border-gray-700">
+                {auditado.id}
+              </td>
+              <td className="p-3 border-b dark:border-gray-700">
+                {auditado.document}
+              </td>
+              <td className="p-3 border-b dark:border-gray-700">
+                {auditado.patientName}
+              </td>
+              <td className="p-3 border-b dark:border-gray-700">
+                <CupsTable cups={auditado.CUPS} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
     <div>‎</div>
     <Pagination
       currentPage={currentPage}
@@ -234,32 +230,48 @@ interface CupsTableProps {
 }
 
 const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
-  <table className="min-w-full border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
-    <thead>
-      <tr className="bg-gray-300 dark:bg-gray-700">
-        <th>Código</th>
-        <th>Descripción</th>
-        <th>Estado</th>
-        <th>Observación</th>
-        <th>Última modificación</th>
-        <th>Editar</th>
-      </tr>
-    </thead>
-    <tbody>
-      {cups.map((cup) => (
-        <tr key={cup.id}>
-          <td>{cup.code}</td>
-          <td>{cup.description}</td>
-          <td>{cup.status}</td>
-          <td>{cup.observation}</td>
-          <td>{formatDate(cup.modifyDate)}</td>
-          <td>
-            <ModalActualizarCupsAuditoria cup={cup} />
-          </td>
+  <div className="overflow-x-auto">
+    <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
+      <thead>
+        <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Observación</th>
+          <th>Última modificación</th>
+          <th>Editar</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {cups.map((cup) => (
+          <tr
+            className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+            key={cup.id}
+          >
+            <td className="p-3 border-b dark:border-gray-700">{cup.code}</td>
+            <td className="border-b dark:border-gray-700">
+              <span
+                className="block max-w-[150px] truncate cursor-pointer"
+                title={cup.description}
+              >
+                {cup.description}
+              </span>
+            </td>
+            <td className="p-3 border-b dark:border-gray-700">{cup.status}</td>
+            <td className="p-3 border-b dark:border-gray-700">
+              {cup.observation}
+            </td>
+            <td className="p-3 border-b dark:border-gray-700">
+              {formatDate(cup.modifyDate)}
+            </td>
+            <td className="p-3 border-b dark:border-gray-700">
+              <ModalActualizarCupsAuditoria cup={cup} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 export default TablaRegistrosAuditados;
