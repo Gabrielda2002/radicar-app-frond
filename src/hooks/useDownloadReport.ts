@@ -27,11 +27,12 @@ export const useDownloadReport = () => {
             document.body.appendChild(link);
       
             link.click();
-      
+            //limpiar el error si se descarga correctamente
+            setError(null);
             window.URL.revokeObjectURL(url);
       
           } catch (error) {
-            setError("Error al descargar el archivo" + error);
+            setError("Error al descargar el archivo. " + error);
           }
     };
 

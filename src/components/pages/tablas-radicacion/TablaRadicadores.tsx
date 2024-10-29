@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
+//*Icons
+import { IRadicador } from "../../../models/IRadicador";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -16,7 +18,7 @@ const ITEMS_PER_PAGE = 10;
 const TablaRadicadores = () => {
   const { dataRadicador, loading, errorRadicador } = useFetchRadicador();
   const [itemPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(dataRadicador, [
+  const { query, setQuery, filteredData } = useSearch<IRadicador>(dataRadicador, [
     "id",
     "name",
     "status",

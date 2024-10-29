@@ -1,34 +1,63 @@
-// src/hooks/useSearch.ts
-import { useState, useEffect } from "react";
+import { useState, useMemo } from 'react';
 
-const useSearch = <T>(data: T[], searchKeys: string[]) => {
-  const [query, setQuery] = useState("");
-  const [filteredData, setFilteredData] = useState<T[]>(data);
+// Tipo auxiliar para obtener el tipo de un valor anidado usando un path
+type NestedKeyOf<T> = {
+  [K in keyof T & (string | number)]: T[K] extends object
+    ? `${K}` | `${K}.${NestedKeyOf<T[K]>}`
+    : `${K}`;
+}[keyof T & (string | number)];
 
-  useEffect(() => {
-    if (query) {
-      const lowerCaseQuery = query.toLowerCase();
-      setFilteredData(
-        data.filter((item) =>
-          searchKeys.some((key) => {
-            const keys = key.split('.');
-            let value: any = item; // Cambiamos el tipo a 'any'
+// Función auxiliar para obtener el valor de una propiedad anidada
+function getNestedValue<T>(obj: T, path: string): any {
+  return path.split('.').reduce((curr: any, key: string) => {
+    return curr ? curr[key] : undefined;
+  }, obj);
+}
 
-            for (const k of keys) {
-              value = value[k as keyof typeof value]; // Usamos 'typeof value'
-              if (value === undefined) return false;
-            }
+function useSearch<T extends object>(data: T[], searchKeys: NestedKeyOf<T>[]) {
+  const [query, setQuery] = useState('');
 
-            return String(value).toLowerCase().includes(lowerCaseQuery);
-          })
-        )
-      );
-    } else {
-      setFilteredData(data);
+  const normalizedQuery = query.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    if (normalizedQuery === '') {
+      return data;
     }
-  }, [query, data, searchKeys]);
+
+    return data
+      .filter((item) =>
+        searchKeys.some((key) => {
+          const value = getNestedValue(item, key as string);
+          return value !== undefined && 
+                 String(value).toLowerCase().includes(normalizedQuery);
+        })
+      )
+      .sort((a, b) => {
+        const aMatch = searchKeys.some((key) => {
+          const value = getNestedValue(a, key as string);
+          return value !== undefined && 
+                 String(value).toLowerCase() === normalizedQuery;
+        });
+        const bMatch = searchKeys.some((key) => {
+          const value = getNestedValue(b, key as string);
+          return value !== undefined && 
+                 String(value).toLowerCase() === normalizedQuery;
+        });
+
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+
+        const firstKey = searchKeys[0];
+        if (firstKey) {
+          const aValue = getNestedValue(a, firstKey as string);
+          const bValue = getNestedValue(b, firstKey as string);
+          return aValue && bValue ? String(aValue).localeCompare(String(bValue)) : 0;
+        }
+        return 0;
+      });
+  }, [data, searchKeys, normalizedQuery]);
 
   return { query, setQuery, filteredData };
-};
+}
 
 export default useSearch;

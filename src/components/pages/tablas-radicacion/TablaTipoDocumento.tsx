@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
+//*Icons
+import { IDocumento } from "../../../models/IDocumento";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -19,7 +21,7 @@ const TablaTipoDocumento = () => {
     useFetchDocumento(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(dataDocumento, [
+  const { query, setQuery, filteredData } = useSearch<IDocumento>(dataDocumento, [
     "id",
     "name",
     "status",

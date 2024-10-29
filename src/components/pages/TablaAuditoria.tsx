@@ -12,6 +12,7 @@ import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
+import { IAuditar } from "../../models/IAuditar.ts";
 import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 
@@ -26,7 +27,7 @@ const TablaAuditoria = () => {
   const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IAuditar>(data, [
     "documentNumber",
     "namePatient",
     "convenio",

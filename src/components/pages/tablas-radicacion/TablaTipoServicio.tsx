@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
+//*Icons
+import { IServicios } from "../../../models/IServicio";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -17,7 +19,7 @@ const TablaTipoServicio = () => {
   const { data, loading, error } = useFetchServicios();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IServicios>(data, [
     "id",
     "name",
     "status",
