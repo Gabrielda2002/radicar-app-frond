@@ -1,11 +1,10 @@
 //*Funciones y Hooks
-import { Link } from "react-router-dom";
-import LoadingSpinner from "../../LoadingSpinner";
+import { useState } from "react";
 import ModalPaciente from "../modals/ModalPaciente";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
-//*Iconos
-import salir from "/assets/back.svg";
-import { useState } from "react";
+
+//*Properties
+import ModalSection from "../../ModalSection";
 
 const TablaPacientes = () => {
   const { data, error, getData } = useFetchPaciente();
@@ -18,9 +17,15 @@ const TablaPacientes = () => {
 
   return (
     <>
-      {/* nav-table */}
-
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+    <ModalSection
+      title="Módulo Pacientes"
+      breadcrumb={[
+        {label: "Inicio", path: "/Inicio"},
+        {label: "/ Servicio Pacientes", path: ""}
+      ]}
+    />
+      {/* nav-table-pacientes NO BORRAR */}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -45,7 +50,7 @@ const TablaPacientes = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}

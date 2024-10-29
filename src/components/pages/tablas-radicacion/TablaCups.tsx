@@ -1,15 +1,15 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Pagination from "../../Pagination";
+import ModalCups from "../modals/ModalCups";
+import useSearch from "../../../hooks/useSearch";
+import LoadingSpinner from "../../LoadingSpinner";
+import ModalActionCups from "../modals/ModalActionCups";
+import usePagination from "../../../hooks/usePagination";
 import { useFetchCups } from "../../../hooks/useFetchUsers";
 
-import Pagination from "../../Pagination";
-import LoadingSpinner from "../../LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
-import useSearch from "../../../hooks/useSearch";
-
-import ModalCups from "../modals/ModalCups";
-import ModalActionCups from "../modals/ModalActionCups";
+//*Properties
+import ModalSection from "../../ModalSection";
 
 //*Iconos
 import salir from "/assets/back.svg";
@@ -45,8 +45,15 @@ const TablaCups = () => {
 
   return (
     <>
-      {/* nav-table */}
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+    <ModalSection
+      title="Modulo Cups"
+      breadcrumb={[
+        {label: "Inicio", path: "/inicio"},
+        {label: "/ Servicio Cups", path: ""}
+      ]}
+    />
+      {/* nav-table-cups NO BORRAR */}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -71,7 +78,7 @@ const TablaCups = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       {/* container-table */}
       <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">

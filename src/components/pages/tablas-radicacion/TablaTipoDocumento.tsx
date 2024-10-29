@@ -1,16 +1,19 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
+import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IDocumento } from "../../../models/IDocumento";
+
+//*Properties
+import ModalSection from "../../ModalSection";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -44,9 +47,15 @@ const TablaTipoDocumento = () => {
 
   return (
     <>
-      {/* nav-table */}
-
-      <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+      <ModalSection
+        title="Módulo Tipo Documento"
+        breadcrumb={[
+          { label: "Inicio", path: "/Inicio" },
+          { label: "/ Servicio Tipo Documento", path: "" },
+        ]}
+      />
+      {/* nav-table-TipoDocumento NO BORRAR */}
+      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
         <LoadingSpinner duration={500} />
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-bold text-color dark:text-gray-200">
@@ -71,7 +80,7 @@ const TablaTipoDocumento = () => {
             <img src={salir} alt="Volver" className="w-6 h-6" />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
