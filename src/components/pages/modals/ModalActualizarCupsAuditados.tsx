@@ -29,15 +29,12 @@ const ModalActualizarCupsAuditoria: React.FC<
   // * el hook espera el loadEstados para cargar los estados, si es true carga los estados
   const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
 
-
   // * se agrega un efecto para cargar los estados cuando stadopen sea true, es decir cuando el modal se abra
   useEffect(() => {
     if (stadopen) {
       setLoadEstados(true);
     }
   }, [stadopen]);
-
-  
 
   const validationSchema = Yup.object({
     estado: Yup.string().required("El estado es requerido."),
@@ -118,63 +115,72 @@ const ModalActualizarCupsAuditoria: React.FC<
               >
                 <div className="p-5">
                   {cup && (
-                    <section
-                      className="grid grid-cols-4 gap-x-10"
-                      key={cup.code}
-                    >
-                      <div>
-                        <label htmlFor="">
-                          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
-                            Codigo CUPS:
-                          </span>
-                          <input
-                            name=""
-                            value={cup.code}
-                            readOnly
-                            className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          />
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="">
-                          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
-                            Descripción CUPS:
-                          </span>
-                          <textarea
-                            id=""
-                            name=""
-                            readOnly
-                            value={cup.description}
-                            className="w-full h-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          ></textarea>
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200 ">
-                            Estado CUP:
-                          </span>
-                          <select
-                            id=""
-                            name="estado"
-                            value={formik.values.estado}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            className="w-full p-2 px-3 mb-2 text-sm border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-                          >
-                            <option value="">- SELECT -</option>
-                            {dataEstados?.map((estado) => (
-                              <option key={estado.id} value={estado.id}>
-                                {estado.name}
-                              </option>
-                            ))}
-                          </select>
-                          {formik.touched.estado && formik.errors.estado && (
-                            <label className="text-sm text-red-500 ">
-                              {formik.errors.estado}
+                    <section className="grid grid-cols-1 gap-10" key={cup.code}>
+                      <div className="grid grid-cols-2 gap-10">
+                        {/* CUPS PROPERTIES */}
+                        <div className="grid grid-cols-2 gap-10">
+                          {/* CUPS CODE */}
+                          <div>
+                            <label htmlFor="">
+                              <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+                                Codigo CUPS:
+                              </span>
+                              <input
+                                name=""
+                                value={cup.code}
+                                readOnly
+                                className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                              />
                             </label>
-                          )}
-                        </label>
+                          </div>
+                          {/* CUP STATE */}
+                          <div className="">
+                            <label htmlFor="">
+                              <span className="flex text-base mb-2 font-bold text-gray-700  after:content-['*'] after:text-red-600 after:ml-2 dark:text-gray-200 ">
+                                Estado CUP:
+                              </span>
+                              <select
+                                id=""
+                                name="estado"
+                                value={formik.values.estado}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                className={` ${
+                                  formik.touched.estado && formik.errors.estado
+                                    ? "border-red-500"
+                                    : "border-gray-200"
+                                } w-full p-2 px-3 border-2 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800`}
+                              >
+                                <option value="">- SELECT -</option>
+                                {dataEstados?.map((estado) => (
+                                  <option key={estado.id} value={estado.id}>
+                                    {estado.name}
+                                  </option>
+                                ))}
+                              </select>
+                              {formik.touched.estado &&
+                                formik.errors.estado && (
+                                  <label className="text-sm text-red-500 ">
+                                    {formik.errors.estado}
+                                  </label>
+                                )}
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <label htmlFor="">
+                            <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+                              Descripción CUPS:
+                            </span>
+                            <textarea
+                              id=""
+                              name=""
+                              readOnly
+                              value={cup.description}
+                              className="w-full h-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            ></textarea>
+                          </label>
+                        </div>
                       </div>
                       <div>
                         <label htmlFor="">
