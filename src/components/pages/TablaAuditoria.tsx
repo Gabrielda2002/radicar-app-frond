@@ -12,9 +12,7 @@ import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
-import salir from "/assets/back.svg";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
-import { IAuditar, IStatusCup } from "../../models/IAuditar.ts";
+import { IAuditar } from "../../models/IAuditar.ts";
 import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 

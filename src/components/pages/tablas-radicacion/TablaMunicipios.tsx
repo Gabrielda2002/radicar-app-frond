@@ -8,8 +8,6 @@ import usePagination from "../../../hooks/usePagination";
 import ModalMunicipios from "../modals/ModalMunicipios";
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 //*Icons
-import salir from "/assets/back.svg";
-import { useState } from "react";
 import { IMunicipios } from "../../../models/IMunicipios";
 
 //*Properties

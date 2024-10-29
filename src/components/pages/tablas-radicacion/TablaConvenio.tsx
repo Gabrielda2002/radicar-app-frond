@@ -8,8 +8,6 @@ import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 //*Icons
-import salir from "/assets/back.svg";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IConvenios } from "../../../models/IConvenios";
 
 //*Properties

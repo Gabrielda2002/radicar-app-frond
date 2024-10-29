@@ -8,8 +8,6 @@ import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 //*Icons
-import salir from "/assets/back.svg";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IRadicador } from "../../../models/IRadicador";
 
 //*Properties

@@ -8,9 +8,6 @@ import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
 //*Icons
-import salir from "/assets/back.svg";
-import { useState } from "react";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IServicios } from "../../../models/IServicio";
 
 //*Properties

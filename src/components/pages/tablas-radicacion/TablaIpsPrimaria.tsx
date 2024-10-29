@@ -8,8 +8,6 @@ import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
 //*Icons
-import salir from "/assets/back.svg";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IIPSPrimaria } from "../../../models/IIpsPrimaria";
 
 //*Properties
