@@ -1,8 +1,11 @@
+//*Fuctions and Hooks
 import React from "react";
-import folderIcon from "../../../../public/assets/folder-sgc.svg";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
 
+//*Icons
+import { FolderIcon } from "@heroicons/react/24/outline";
+import folderIcon from "../../../../public/assets/folder-sgc.svg";
 interface Folder {
   id: string;
   name: string;
@@ -69,7 +72,8 @@ const FolderList: React.FC<FolderListProps> = ({
           className="relative flex flex-col items-center p-4 text-gray-700 bg-gray-200 rounded-md cursor-pointer dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
         >
           {/* Icono de la carpeta */}
-          <img src={folderIcon} alt="folder-icon" className="w-16 h-16 mb-2" />
+          {/* <img src={folderIcon} alt="folder-icon" className="w-16 h-16 mb-2" /> */}
+          <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
           {/* Menú en la esquina superior derecha */}
           <div
             className="absolute top-2 right-2"
@@ -82,7 +86,9 @@ const FolderList: React.FC<FolderListProps> = ({
           </div>
 
           {/* Nombre de la carpeta */}
-          <p className="text-sm font-bold text-center text-gray-700 dark:text-stone-200 ">{folder.name}</p>
+          <p className="flex flex-wrap text-sm font-bold text-center text-gray-700 dark:text-stone-200">
+            {folder.name}
+          </p>
         </div>
       ))}
     </div>
