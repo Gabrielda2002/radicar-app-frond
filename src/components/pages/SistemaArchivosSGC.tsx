@@ -122,10 +122,10 @@ const { rol } = useAuth();
                   />
                 </div>
               )}
-
+              <hr className="m-8"/>
               {hasFiles && (
                 <div>
-                  <h2 className="pt-2 mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300">
+                  <h2 className="pt-2 mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-300">
                     Archivos:
                   </h2>
                   <FileList
