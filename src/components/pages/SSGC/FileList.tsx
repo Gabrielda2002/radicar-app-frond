@@ -39,7 +39,7 @@ const FileList: React.FC<FileListProps> = ({
       case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
         return xlsxIcon;
       default:
-        return pdfIcon;
+        return docIcon;
     }
   };
 
@@ -92,7 +92,7 @@ const FileList: React.FC<FileListProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
       {files.map((file) => (
         <div
           key={file.id}
