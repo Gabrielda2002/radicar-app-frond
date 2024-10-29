@@ -10,7 +10,7 @@ import { useFetchAuditados } from "../../../hooks/useFetchUsers";
 import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
 
 //*Properties
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import ModalSection from "../../ModalSection";
 
 

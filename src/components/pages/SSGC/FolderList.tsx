@@ -5,7 +5,7 @@ import { Bounce, toast } from "react-toastify";
 
 //*Icons
 import { FolderIcon } from "@heroicons/react/24/outline";
-import folderIcon from "../../../../public/assets/folder-sgc.svg";
+// import folderIcon from "../../../../public/assets/folder-sgc.svg";
 interface Folder {
   id: string;
   name: string;
