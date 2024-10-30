@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
+//*Icons
+import { IIPSRemite } from "../../../models/IIpsRemite";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -17,7 +19,7 @@ const TablaIpsRemite = () => {
   const { data, loading, error } = useFetchIpsRemite();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IIPSRemite>(data, [
     "id",
     "name",
     "status",

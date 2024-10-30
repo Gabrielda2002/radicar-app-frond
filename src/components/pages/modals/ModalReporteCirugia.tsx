@@ -1,4 +1,6 @@
+import { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { useDownloadReport } from "../../../hooks/useDownloadReport";
 
 interface ModalCirugiaProps {
   isOpen: boolean;
@@ -9,13 +11,31 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
   isOpen,
   onCLose,
 }) => {
+  const { downloadReport, error } = useDownloadReport();
   const { showAnimation, closing } = useAnimation(isOpen, onCLose);
+
+  const [dateStartRadicado, setDateStartRadicado] = useState("");
+  const [dateEndRadicado, setDateEndRadicado] = useState("");
+
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Verificamos si el clic fue en el fondo (backdrop) y no en el contenido del modal
     if (e.target === e.currentTarget) {
       setTimeout(onCLose, 300);
     }
   };
+
+  const handleDownloadReport = async () => {
+    try {
+      const endPoint: string = "report-excel-cirugias-filtro";
+      await downloadReport(dateStartRadicado, dateEndRadicado, null, endPoint);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isDownloadDisabled = !dateStartRadicado || !dateEndRadicado;
+
+  if (!isOpen && !showAnimation) return null;
 
   return (
     <div
@@ -59,6 +79,7 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
                   <input
                     type="date"
                     name="dateStartCirugia"
+                    onChange={(e) => setDateStartRadicado(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
@@ -69,6 +90,7 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
                   <input
                     type="date"
                     name="dateEndCirugia"
+                    onChange={(e) => setDateEndRadicado(e.target.value)}
                     className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
@@ -87,10 +109,22 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
               Cerrar
             </button>
 
-            <button className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600">
+            <button
+              type="button"
+              onClick={handleDownloadReport}
+              disabled={isDownloadDisabled}
+              className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
+                isDownloadDisabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+             >
               Descargar
             </button>
           </div>
+          {error && (
+          <div className="mt-4 text-red-500">
+            {error}
+          </div>
+          )}
         </div>
       </section>
     </div>

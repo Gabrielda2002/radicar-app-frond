@@ -24,7 +24,7 @@ const formatDate = (date: Date | null) => {
 const TablaRegistrosAuditados: React.FC = () => {
   const { data, loading, error } = useFetchAuditados();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IAuditados>(data, [
     "id",
     "document",
     "patientName",

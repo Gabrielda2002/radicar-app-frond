@@ -11,6 +11,7 @@ import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 //*Icons
 import salir from "/assets/back.svg";
 import ModalActionUsuario from "./modals/ModalActionUsuario";
+import { IUsuarios } from "../../models/IUsuarios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -18,7 +19,7 @@ const Usuarios = () => {
   const { data, loading, error } = useFetchUsuarios();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<IUsuarios>(data, [
     "id",
     "dniNumber",
     "name",
