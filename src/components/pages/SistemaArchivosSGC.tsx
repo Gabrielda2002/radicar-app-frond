@@ -9,6 +9,8 @@ import { useFileManager } from "../../hooks/useFileManager";
 
 //*Icons
 import DropDownManu from "./SSGC/DropDownManu";
+import { FolderOpenIcon } from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 //*Properties
 import ModalSection from "../ModalSection";
@@ -32,51 +34,26 @@ const FileManager: React.FC = () => {
   const isInFolder = path.length > 1; // Si tienes más de un elemento en el path, estás dentro de una carpeta
 
   if (loading) return <LoadingSpinner duration={3000} />;
-  if (error) return <div className="flex justify-center text-lg dark:text-white">{error}</div>;
+  if (error)
+    return (
+      <div className="flex justify-center text-lg dark:text-white">{error}</div>
+    );
 
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
 
-const { rol } = useAuth();
+  const { rol } = useAuth();
 
   return (
     <>
-    <ModalSection
-      title="Sistema Gestión De Calidad"
-      breadcrumb={[
-        {label: "Inicio", path: "/Inicio"},
-        {label: "/ Sistema Gestión Calidad", path: ""}
-      ]}
-    />
-      {/* navbar table SGC NO BORRAR*/}
-      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
-        <LoadingSpinner duration={500} />
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
-            Módulo Sistema de Gestión de Calidad
-          </h1>
-          <nav>
-            <ol className="flex items-center space-x-2">
-              <Link to="/inicio">
-                <li className="text-slate-400 hover:underline">Inicio</li>
-              </Link>
-              <li className="text-slate-700 dark:text-gray-300">
-                / Servicio Gestión de Calidad
-              </li>
-            </ol>
-          </nav>
-        </div>
-        <div className="mt-4">
-          <button
-            onClick={() => window.history.back()}
-            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-          >
-            <img src={salir} alt="Volver" className="w-6 h-6" />
-          </button>
-        </div>
-      </section> */}
-
+      <ModalSection
+        title="Sistema Gestión De Calidad"
+        breadcrumb={[
+          { label: "Inicio", path: "/Inicio" },
+          { label: "/ Sistema Gestión Calidad", path: "" },
+        ]}
+      />
       <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
@@ -103,7 +80,7 @@ const { rol } = useAuth();
         <div>
           {isEmpty ? (
             <div>
-              <p className="text-center text-gray-500 dark:text-gray-100">
+              <p className="text-xl text-center text-gray-500 dark:text-gray-100">
                 Esta carpeta está vacía.
               </p>
             </div>
@@ -111,9 +88,12 @@ const { rol } = useAuth();
             <div className="grid grid-cols-1">
               {hasFolder && (
                 <div>
-                  <h2 className="pt-2 mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-300">
-                    Carpetas:
-                  </h2>
+                  <div className="flex items-center pb-3">
+                    <FolderOpenIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+                    <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
+                      Carpetas:
+                    </h2>
+                  </div>
                   <FolderList
                     folders={contents?.folders || []}
                     onFolderClick={setCurrentFolderId}
@@ -122,12 +102,15 @@ const { rol } = useAuth();
                   />
                 </div>
               )}
-              <hr className="m-8"/>
+              <hr className="m-8" />
               {hasFiles && (
                 <div>
-                  <h2 className="pt-2 mb-4 text-2xl font-semibold text-gray-700 dark:text-gray-300">
-                    Archivos:
-                  </h2>
+                  <div className="flex items-center pb-3">
+                    <DocumentDuplicateIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+                    <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
+                      Archivos:
+                    </h2>
+                  </div>
                   <FileList
                     files={contents?.files || []}
                     onDelete={deleteItemById}
