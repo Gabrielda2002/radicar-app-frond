@@ -12,7 +12,7 @@ interface ModalProps {
   formType: "Autorizacion" | "Radicacion";
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
+const ModalReporteRadicado: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
   const { formValues, handleChange } = useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [dateStartRadicado, setDateStartRadicado] = useState("");
@@ -29,7 +29,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
 
   const handleDownloadReport = async () => {
     try {
-      await downloadReport(dateStartRadicado, dateEndRadicado, cupsCode);
+      const endPoint: string = "report-excel-filtro";
+      await downloadReport(dateStartRadicado, dateEndRadicado, cupsCode, endPoint);
     } catch (error) {
       console.log(error);
     }
@@ -207,4 +208,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
   );
 };
 
-export default Modal;
+export default ModalReporteRadicado;
