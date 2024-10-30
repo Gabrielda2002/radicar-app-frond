@@ -158,7 +158,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               {/* container-header */}
               <div className="flex items-center justify-between px-4 py-3 bg-gray-100 border-b-2 rounded-t-lg dark:bg-gray-800 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-white">
-                  Programacion Cirugia
+                  Programación Cirugía
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -176,7 +176,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                       <h5 className="mb-4 text-xl text-left text-blue-500 dark:text-white">
                         Datos del Paciente:
                       </h5>
-                      <table className="w-full mb-12 text-sm border-collapse">
+                      <table className="w-full mb-8 text-sm border-collapse">
                         <thead className="bg-gray-100 dark:bg-gray-700">
                           <tr>
                             <th className="p-2">Nombre</th>
@@ -203,7 +203,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                         CUPS del radicado:
                       </h5>
 
-                      <table className="w-full mb-12 text-sm border-collapse">
+                      <table className="w-full mb-8 text-sm border-collapse">
                         <thead className="bg-gray-100 dark:bg-gray-700">
                           <tr>
                             <th className="p-2">Codigo</th>
@@ -276,7 +276,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                 type="checkbox"
                               />
                               <span className="text-sm dark:text-gray-300">
-                                3. Valoracion para anestesiologia.
+                                3. Valoracion para anestesiología.
                               </span>
                             </label>
 
@@ -310,12 +310,12 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                           <div className="">
                             <div>
                               <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
-                                Información Cirugía
+                                Información Pre Quirúrgica:
                               </h5>
                             </div>
 
                             <section className="grid grid-cols-3 text-sm gap-y-8 gap-x-4">
-                              {/* Especialista */}
+                              {/* Fecha Ordenamiento */}
                               <div className="">
                                 <label
                                   htmlFor=""
@@ -323,43 +323,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                 >
                                   <div className="flex">
                                     <h5 className="mb-2 text-base">
-                                      Especialista:
-                                    </h5>
-                                    <span className="ml-2 text-lg text-red-600">
-                                      *
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    id=""
-                                    name="especialista"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.especialista}
-                                    onBlur={formik.handleBlur}
-                                    className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
-                                      formik.touched.especialista &&
-                                      formik.errors.especialista
-                                        ? "border-red-500 dark:border-red-500"
-                                        : "border-gray-200 dark:border-gray-600"
-                                    } w-full px-3 py-2 mt-1 text-gray-700 border rounded dark:text-white dark:bg-gray-800`}
-                                  />
-                                  {formik.touched.especialista &&
-                                  formik.errors.especialista ? (
-                                    <div className="mt-2 text-base text-red-600">
-                                      {formik.errors.especialista}
-                                    </div>
-                                  ) : null}
-                                </label>
-                              </div>
-
-                              <div className="">
-                                <label
-                                  htmlFor=""
-                                  className="font-bold text-gray-700 dark:text-white"
-                                >
-                                  <div className="flex">
-                                    <h5 className="mb-2 text-base">
-                                      Fecha Ordenamiento de Cirugía
+                                      Fecha de Orden
                                     </h5>
                                     <span className="ml-2 text-lg text-red-600">
                                       *
@@ -387,20 +351,79 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                   ) : null}
                                 </label>
                               </div>
-                              {/* IPS Remite */}
+
+                              {/* Fecha Paraclinicos */}
                               <div className="">
-                                <InputAutocompletado
-                                  label="IPS Remite Cirugía"
-                                  onInputChanged={(value) =>
-                                    formik.setFieldValue("ips", value)
-                                  }
-                                  apiRoute="ips-remite-name"
-                                />
-                                {formik.touched.ips && formik.errors.ips ? (
-                                  <div className="mt-2 text-red-600">
-                                    {formik.errors.ips}
+                                <label
+                                  htmlFor=""
+                                  className="font-bold text-gray-700 dark:text-white"
+                                >
+                                  <div className="flex">
+                                    <h5 className="mb-2 text-base">
+                                      Fecha Paraclinicos
+                                    </h5>
+                                    <span className="ml-2 text-lg text-red-600">
+                                      *
+                                    </span>
                                   </div>
-                                ) : null}
+                                  <input
+                                    type="date"
+                                    id=""
+                                    name="fechaParaclinicos"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.fechaParaclinicos}
+                                    onBlur={formik.handleBlur}
+                                    className={` w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
+                                      formik.touched.fechaParaclinicos &&
+                                      formik.errors.fechaParaclinicos
+                                        ? "border-red-500 dark:border-red-500"
+                                        : "border-gray-200 dark:border-gray-600"
+                                    } w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:text-white dark:bg-gray-800`}
+                                  />
+                                  {formik.touched.fechaParaclinicos &&
+                                  formik.errors.fechaParaclinicos ? (
+                                    <div className="mt-2 text-base text-red-600">
+                                      {formik.errors.fechaParaclinicos}
+                                    </div>
+                                  ) : null}
+                                </label>
+                              </div>
+
+                              {/* Fecha Valoracion de Anestesiología */}
+                              <div className="">
+                                <label
+                                  htmlFor=""
+                                  className="font-bold text-gray-700 dark:text-white"
+                                >
+                                  <div className="flex">
+                                    <h5 className="mb-2 text-base">
+                                      Fecha V. Anestesiología
+                                    </h5>
+                                    <span className="ml-2 text-lg text-red-600">
+                                      *
+                                    </span>
+                                  </div>
+                                  <input
+                                    type="date"
+                                    id=""
+                                    name="fechaAnestesiología"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.fechaAnesteciologia}
+                                    onBlur={formik.handleBlur}
+                                    className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
+                                      formik.touched.fechaAnesteciologia &&
+                                      formik.errors.fechaAnesteciologia
+                                        ? "border-red-500 dark:border-red-500"
+                                        : "border-gray-200 dark:border-gray-600"
+                                    }`}
+                                  />
+                                  {formik.touched.fechaAnesteciologia &&
+                                  formik.errors.fechaAnesteciologia ? (
+                                    <div className="mt-2 text-base text-red-600">
+                                      {formik.errors.fechaAnesteciologia}
+                                    </div>
+                                  ) : null}
+                                </label>
                               </div>
                             </section>
                           </div>
@@ -408,10 +431,27 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                           {/* Sección Observación */}
                           <div className="grid grid-cols-1">
                             <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
-                              Observación:
+                              Información Cirugía:
                             </h5>
                             <div className="grid grid-cols-2 gap-8">
                               <div className="grid grid-cols-2 gap-8">
+                                {/* Lugar Cirugia */}
+                                <div className="">
+                                  <InputAutocompletado
+                                    label="Lugar de Cirugía"
+                                    onInputChanged={(value) =>
+                                      formik.setFieldValue("ips", value)
+                                    }
+                                    apiRoute="ips-remite-name"
+                                  />
+                                  {formik.touched.ips && formik.errors.ips ? (
+                                    <div className="mt-2 text-red-600">
+                                      {formik.errors.ips}
+                                    </div>
+                                  ) : null}
+                                </div>
+
+                                {/* Especialista */}
                                 <div className="">
                                   <label
                                     htmlFor=""
@@ -419,66 +459,30 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                   >
                                     <div className="flex">
                                       <h5 className="mb-2 text-base">
-                                        Fecha V. Anesteciologia
+                                        Especialista:
                                       </h5>
                                       <span className="ml-2 text-lg text-red-600">
                                         *
                                       </span>
                                     </div>
                                     <input
-                                      type="date"
+                                      type="text"
                                       id=""
-                                      name="fechaAnesteciologia"
+                                      name="especialista"
                                       onChange={formik.handleChange}
-                                      value={formik.values.fechaAnesteciologia}
+                                      value={formik.values.especialista}
                                       onBlur={formik.handleBlur}
                                       className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
-                                        formik.touched.fechaAnesteciologia &&
-                                        formik.errors.fechaAnesteciologia
+                                        formik.touched.especialista &&
+                                        formik.errors.especialista
                                           ? "border-red-500 dark:border-red-500"
                                           : "border-gray-200 dark:border-gray-600"
                                       } w-full px-3 py-2 mt-1 text-gray-700 border rounded dark:text-white dark:bg-gray-800`}
                                     />
-                                    {formik.touched.fechaAnesteciologia &&
-                                    formik.errors.fechaAnesteciologia ? (
+                                    {formik.touched.especialista &&
+                                    formik.errors.especialista ? (
                                       <div className="mt-2 text-base text-red-600">
-                                        {formik.errors.fechaAnesteciologia}
-                                      </div>
-                                    ) : null}
-                                  </label>
-                                </div>
-                                {/* Fecha Paraclinicos */}
-                                <div className="">
-                                  <label
-                                    htmlFor=""
-                                    className="font-bold text-gray-700 dark:text-white"
-                                  >
-                                    <div className="flex">
-                                      <h5 className="mb-2 text-base">
-                                        Fecha Paraclinicos
-                                      </h5>
-                                      <span className="ml-2 text-lg text-red-600">
-                                        *
-                                      </span>
-                                    </div>
-                                    <input
-                                      type="date"
-                                      id=""
-                                      name="fechaParaclinicos"
-                                      onChange={formik.handleChange}
-                                      value={formik.values.fechaParaclinicos}
-                                      onBlur={formik.handleBlur}
-                                      className={` w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
-                                        formik.touched.fechaParaclinicos &&
-                                        formik.errors.fechaParaclinicos
-                                          ? "border-red-500 dark:border-red-500"
-                                          : "border-gray-200 dark:border-gray-600"
-                                      } w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:text-white dark:bg-gray-800`}
-                                    />
-                                    {formik.touched.fechaParaclinicos &&
-                                    formik.errors.fechaParaclinicos ? (
-                                      <div className="mt-2 text-base text-red-600">
-                                        {formik.errors.fechaParaclinicos}
+                                        {formik.errors.especialista}
                                       </div>
                                     ) : null}
                                   </label>
@@ -528,7 +532,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                   >
                                     <div className="flex">
                                       <h5 className="mb-2 text-base">
-                                        Hora Programada:
+                                        Hora de Cirugía:
                                       </h5>
                                       <span className="ml-2 text-lg text-red-600">
                                         *
