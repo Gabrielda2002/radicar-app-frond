@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
+//*Icons
+import { ILugarRadicacion } from "../../../models/ILugarRadicado";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -17,7 +19,7 @@ const TablaLugarRadicacion = () => {
   const { data, loading, error } = useFetchLugarRadicado();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(data, [
+  const { query, setQuery, filteredData } = useSearch<ILugarRadicacion>(data, [
     "id",
     "name",
     "status",

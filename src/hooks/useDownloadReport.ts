@@ -5,11 +5,11 @@ export const useDownloadReport = () => {
 
     const [error, setError] = useState<string | null>(null);
 
-    const downloadReport = async (dateStartRadicado: string, dateEndRadicado: string, cupsCode: string) => {
+    const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string) => {
         try {
-            const response = await api.post("/report-excel-filtro", {
-              radicadoDateStart:  dateStartRadicado,
-              radicadoDateEnd: dateEndRadicado,
+            const response = await api.post(`/${endPoint}`, {
+              dateStart:  dateStart,
+              dateEnd: dateEnd,
               cupsCode: cupsCode
             },{
               responseType: 'blob',
@@ -27,11 +27,12 @@ export const useDownloadReport = () => {
             document.body.appendChild(link);
       
             link.click();
-      
+            //limpiar el error si se descarga correctamente
+            setError(null);
             window.URL.revokeObjectURL(url);
       
           } catch (error) {
-            setError("Error al descargar el archivo" + error);
+            setError("Error al descargar el archivo. " + error);
           }
     };
 

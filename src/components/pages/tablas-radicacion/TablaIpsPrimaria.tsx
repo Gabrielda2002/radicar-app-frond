@@ -7,6 +7,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
+//*Icons
+import { IIPSPrimaria } from "../../../models/IIpsPrimaria";
 
 //*Properties
 import ModalSection from "../../ModalSection";
@@ -19,7 +21,7 @@ const TablaIpsPrimaria = () => {
     useFetchIpsPrimaria(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch(dataIpsPrimaria, [
+  const { query, setQuery, filteredData } = useSearch<IIPSPrimaria>(dataIpsPrimaria, [
     "id",
     "name",
     "status",

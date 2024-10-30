@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import Cookies from "js-cookie";
-import Modal from "./modals/ModalReporte";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { FC, useRef, useState, useEffect } from "react";
@@ -23,6 +22,7 @@ import arrowUp from "/assets/arrow-up.svg";
 import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
 import taskList from "/assets/task-list.svg";
+import ModalReporteRadicado from "./modals/ModalReporteRadicado";
 
 const SideBar: FC = () => {
   //*constante para slide del sidebar y funciones
@@ -502,7 +502,7 @@ const SideBar: FC = () => {
             )}
 
             {/* Modal Component Radicacion*/}
-            <Modal
+            <ModalReporteRadicado
               isOpen={isModalOpen}
               onClose={closeModal}
               formType={"Autorizacion"}

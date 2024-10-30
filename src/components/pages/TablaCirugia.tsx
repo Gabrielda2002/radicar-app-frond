@@ -10,7 +10,7 @@ import { useFetchCirugias } from "../../hooks/useFetchUsers";
 //*iconos
 import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
-import { programacion } from "../../models/ICirugias";
+import { ICirugias, programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
 
@@ -29,7 +29,7 @@ const TablaCirugias = () => {
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch(dataCirugias, [
+  const { query, setQuery, filteredData } = useSearch<ICirugias>(dataCirugias, [
     "fechaRadicado",
     "id",
     "convenio",
