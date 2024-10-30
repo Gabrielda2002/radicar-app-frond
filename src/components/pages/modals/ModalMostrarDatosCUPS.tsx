@@ -7,6 +7,7 @@ interface ModalMostrarDatosProps {
   onClose: () => void;
   data: IStatusCup[] | null;
   cirugias: programacion | null;
+  dateOrder: Date | null;
 }
 
 const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
@@ -14,6 +15,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   data,
   cirugias,
+  dateOrder,
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || (!data && !cirugias)) return null;
@@ -66,7 +68,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                 <tbody className="text-center dark:text-gray-200">
                   <tr>
                     <td>
-                      {formatDate(cirugias.fechaProgramada)}
+                      {formatDate(dateOrder)}
                     </td>
                     <td>
                       {formatDate(cirugias.fechaCirugia)}

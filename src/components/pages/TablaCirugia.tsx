@@ -26,6 +26,7 @@ const TablaCirugias = () => {
   const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(
     null
   );
+  const [dateOrden, setDateOrden] = useState<Date | null>(null);
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
@@ -51,9 +52,10 @@ const TablaCirugias = () => {
     setSelectedCirugia(cirugias);
   };
 
-  const handleShowVer = (progCirugia: programacion) => {
+  const handleShowVer = (progCirugia: programacion, orderDate: Date) => {
     setIsOpenMostrar(true);
     setSelectedCirugia(progCirugia);
+    setDateOrden(orderDate);
   };
 
   if (loadingCirugias) return <LoadingSpinner />;
@@ -175,8 +177,8 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
-                            handleShowVer(cirugia.programacionCirugia[0])
-                          }
+                            handleShowVer(cirugia.programacionCirugia[0], cirugia.fechaOrden) // se pasa los datos de la cirugia programada y la fecha de orden de radicado
+                          } 
                         >
                           <img src={mostrar} alt="Gestion-icon" />
                         </button>
@@ -189,6 +191,7 @@ const TablaCirugias = () => {
                           landline={cirugia.telefonoFijo}
                           cups={cirugia.cups}
                           speciality={cirugia.especialidad}
+                          fechaOrden={cirugia.fechaOrden}
                           diagnostic={cirugia.diagnostico}
                           idGroupService={cirugia.idGrupoServicios}
                           idRadicado={cirugia.id}
@@ -218,6 +221,7 @@ const TablaCirugias = () => {
         isOpen={isOpenMostrar}
         onClose={() => setIsOpenMostrar(false)}
         data={null}
+        dateOrder={dateOrden}
         cirugias={selectedCirugia}
       />
       {/* modal gestion auxiliar cirugias */}
