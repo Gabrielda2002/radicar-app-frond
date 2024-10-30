@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Pagination from "../../Pagination";
 import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
@@ -10,7 +9,6 @@ import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-import salir from "/assets/back.svg";
 import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IEspecialidad } from "../../../models/IEspecialidad";
 
