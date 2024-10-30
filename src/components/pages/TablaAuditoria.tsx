@@ -8,7 +8,7 @@ import useSearch from "../../hooks/useSearch.ts";
 import { IStatusCup } from "../../models/IAuditar.ts";
 import usePagination from "../../hooks/usePagination.ts";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS.tsx";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos.tsx";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";

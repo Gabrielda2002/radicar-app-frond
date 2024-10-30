@@ -12,7 +12,7 @@ import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
 import { ICirugias, programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatosCUPS";
+import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos";
 
 //*Props
 import ModalSection from "../ModalSection";
