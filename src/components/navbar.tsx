@@ -79,6 +79,7 @@ const Navbar: React.FC = () => {
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
         <nav className="flex flex-wrap items-center text-base">
           <button
+          title="Abrir/Cerrar Sidebar"
             onClick={() => {
               toggleSideBar();
             }}
@@ -107,7 +108,7 @@ const Navbar: React.FC = () => {
           </button>
 
           <NavLink to="/home">
-            <img src={logo} className="w-10 h-10" alt="Logo" />
+            <img src={logo} className="w-10 h-10" alt="Logo" title="Home :)"/>
           </NavLink>
         </nav>
 

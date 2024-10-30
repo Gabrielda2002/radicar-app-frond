@@ -136,7 +136,7 @@ const SideBar: FC = () => {
     <aside
       ref={sidebarRef}
       className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
-        isCollapsed ? "-translate-x-full w-16 absolute" : "w-56 absolute"
+        isCollapsed ? "-translate-x-full w-16 absolute" : "w-60 absolute"
       } px-4 py-8 h-full`}
     >
       <div className="flex flex-col justify-between flex-1">
