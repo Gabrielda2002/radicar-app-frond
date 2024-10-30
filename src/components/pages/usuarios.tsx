@@ -1,17 +1,16 @@
 //*Funciones y Hooks
 import { useState } from "react";
 import Pagination from "../Pagination";
-import { Link } from "react-router-dom";
+import ModalSection from "../ModalSection";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
+import { IUsuarios } from "../../models/IUsuarios";
 import usePagination from "../../hooks/usePagination";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";
 // import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
 
-//*Icons
-import salir from "/assets/back.svg";
+//*Properties
 import ModalActionUsuario from "./modals/ModalActionUsuario";
-import { IUsuarios } from "../../models/IUsuarios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -43,29 +42,20 @@ const Usuarios = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <p className="flex justify-center text-lg dark:text-white">{error}</p>;
+  if (error)
+    return (
+      <p className="flex justify-center text-lg dark:text-white">{error}</p>
+    );
 
   return (
     <>
-      <section className="dark:bg-gray-900">
-        <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Módulo Usuarios
-        </h1>
-        <nav>
-          <ol className="flex mb-2">
-            <li className="text-slate-400 after:mr-2">Inicio</li>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Usuarios
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <Link to="/inicio">
-              <img src={salir} alt="Salir" className="" />
-            </Link>
-          </div>
-        </nav>
-      </section>
+      <ModalSection
+        title="Módulo Usuarios"
+        breadcrumb={[
+          { label: "Inicio", path: "/inicio" },
+          { label: "/ Usuarios", path: "" },
+        ]}
+      />
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-table */}
         <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
@@ -83,16 +73,14 @@ const Usuarios = () => {
 
           <div className="flex items-center space-x-2 pt-1-">
             <select
-              name=""
-              id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[100px] rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             >
               <option value="">Páginas</option>
-              <option value="1">10 Páginas</option>
-              <option value="2">20 Páginas</option>
-              <option value="3">30 Páginas</option>
+              <option value="10">10 Páginas</option>
+              <option value="20">20 Páginas</option>
+              <option value="30">30 Páginas</option>
             </select>
           </div>
         </section>
@@ -103,37 +91,55 @@ const Usuarios = () => {
           </div>
         ) : (
           <>
-            <div>
-              <table className="w-full mx-auto text-xs text-center dark:bg-gray-800 dark:text-gray-300">
-                <thead className="bg-gray-200 dark:bg-gray-700">
-                  <tr>
-                    <th className="px-4 py-2">ID</th>
-                    <th className="px-4 py-2">N.º Documento</th>
-                    <th className="px-4 py-2">Nombres</th>
-                    <th className="px-4 py-2">Apellidos</th>
-                    <th className="px-4 py-2">Tipo Documento</th>
-                    <th className="px-4 py-2">Mail</th>
-                    <th className="px-4 py-2">Estado</th>
-                    <th className="px-4 py-2">Rol</th>
-                    <th className="px-4 py-2">Municipio</th>
-                    <th className="px-4 py-2">Editar</th>
+            <div className="overflow-x-auto">
+              <table className="min-w-full mx-auto overflow-hidden text-sm text-center rounded-lg shadow-lg">
+                <thead>
+                  <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+                    <th>ID</th>
+                    <th>N.º Documento</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Tipo Documento</th>
+                    <th>Mail</th>
+                    <th>Estado</th>
+                    <th>Rol</th>
+                    <th>Municipio</th>
+                    <th>Editar</th>
                     {/* <th className="px-4 py-2">Acciones</th> */}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
                   {currentData().map((usuario) => (
-                    <tr>
-                      <td>{usuario.id}</td>
-                      <td>{usuario.dniNumber}</td>
-                      <td>{usuario.name}</td>
-                      <td>{usuario.lastName}</td>
-                      <td>{usuario.documento}</td>
-                      <td>{usuario.email}</td>
-                      <td>{usuario.status ? "Activo" : "Inactivo"}</td>
-                      <td>{usuario.roles}</td>
-                      <td>{usuario.municipio}</td>
+                    <tr className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.id}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.dniNumber}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.name}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.lastName}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.documento}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.email}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.status ? "Activo" : "Inactivo"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.roles}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {usuario.municipio}
+                      </td>
                       {/* RESERVA HACIA FUTURO ! NO BORAR ! */}
-                      <td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         <ModalActionUsuario
                           id={usuario.id}
                           ususario={usuario}
