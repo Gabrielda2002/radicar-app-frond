@@ -14,6 +14,7 @@ export interface ICirugias {
     grupoServicios:  string;
     diagnostico:     string;
     idGrupoServicios: number;
+    nombreSoporte:    string;
     programacionCirugia : programacion[];
 }
 

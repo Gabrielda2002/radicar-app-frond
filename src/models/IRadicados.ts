@@ -27,6 +27,22 @@ export interface IRadicados {
     cupsRadicadosRelation:       CupsRadicadosRelation[];
     diagnosticoRelation:         DiagnosticoRelation;
     soportesRelation:            SoportesRelation | null;
+    cirugiasRelation:            CirugiasRelation[];
+}
+
+export interface CirugiasRelation {
+    id:                 number;
+    surgeryDate:        Date;
+    scheduledTime:      string;
+    ipsRemite:          number;
+    observation:        string;
+    status:             boolean;
+    radicadoId:         number;
+    paraclinicalDate:   Date;
+    anesthesiologyDate: Date;
+    specialist:         string;
+    createdAt:          Date;
+    updatedAt:          Date;
 }
 
 export interface CupsRadicadosRelation {

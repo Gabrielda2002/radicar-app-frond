@@ -10,7 +10,7 @@ import usePagination from "../../hooks/usePagination";
 import ModalRadicacion from "./modals/ModalRadicacion";
 import { IRadicados } from "../../models/IRadicados.ts";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
-import ModalMostrarDatos from "./modals/ModalMostrarDatos.tsx";
+import ModalMostrarDatos from "./modals/ModalDatosRadicacion.tsx";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 
 //*Props
