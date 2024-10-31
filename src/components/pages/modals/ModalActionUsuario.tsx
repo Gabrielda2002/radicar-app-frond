@@ -191,8 +191,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
               <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-1 gap-6 p-4">
                   <div className="flex items-center">
-                    <InformationCircleIcon className="text-gray-500 w-7 h-7" />
-                    <h2 className="pl-1 text-xl text-color">
+                    <InformationCircleIcon className="text-gray-900 dark:text-gray-100 w-7 h-7" />
+                    <h2 className="pl-1 text-xl text-color dark:text-white">
                       Datos Personales:
                     </h2>
                   </div>
@@ -303,8 +303,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   </div>
                   {/* USER MAIL AND DATES */}
                   <div className="flex items-center">
-                    <IdentificationIcon className="text-gray-500 w-7 h-7" />
-                    <h2 className="pl-2 text-xl text-color">Contacto:</h2>
+                    <IdentificationIcon className="text-gray-900 dark:text-gray-100 w-7 h-7" />
+                    <h2 className="pl-2 text-xl text-color dark:text-gray-100">
+                      Contacto:
+                    </h2>
                   </div>
                   <div className="grid grid-cols-2 gap-3 px-3">
                     <div>
@@ -362,8 +364,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 </div>
                 <div className="grid grid-cols-1 gap-5 p-4">
                   <div className="flex items-center">
-                    <MapPinIcon className="text-gray-500 w-7 h-7" />
-                    <h2 className="pl-1 text-xl text-color">
+                    <MapPinIcon className="text-gray-900 dark:text-gray-100 w-7 h-7" />
+                    <h2 className="pl-1 text-xl text-color dark:text-white">
                       Rol y Contraseña:
                     </h2>
                   </div>

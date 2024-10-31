@@ -10,9 +10,6 @@ import { useFetchCups } from "../../../hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-
-//*Iconos
-import salir from "/assets/back.svg";
 import { ICups } from "../../../models/ICups";
 
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página

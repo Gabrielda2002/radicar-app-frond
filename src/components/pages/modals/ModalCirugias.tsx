@@ -259,7 +259,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                 }
                               />
                               <span className="text-sm dark:text-gray-300">
-                                2. Preclínicos (resultados clínicos).
+                                2. Paraclínicos (resultados clínicos).
                               </span>
                             </label>
 
