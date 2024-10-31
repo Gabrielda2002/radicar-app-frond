@@ -100,8 +100,33 @@ const ModalRadicacion = () => {
     onSubmit: async (values) => {
       console.log(values);
 
+      // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
+      // ! tambien se valida que no haya campos vacios
+      let errorCups = ""; 
+      if (servicios.length !== parseInt(cantidad)) {
+        errorCups = "La cantidad de códigos de CUPS no coincide con la cantidad especificada.";
+      } else if (descripciones.length !== parseInt(cantidad)) {
+        errorCups = "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
+      } else {
+        for (let i = 0; i < parseInt(cantidad); i++) {
+          if (!servicios[i]) {
+            errorCups = `Falta el código del CUPS N° ${i + 1}.`;
+            break; 
+          }
+          if (!descripciones[i]) {
+            errorCups = `Falta la descripción del CUPS N° ${i + 1}.`;
+            break; 
+          }
+        }
+      }
+    
+      if (errorCups) {
+        setErrorMessage(errorCups);
+        return;
+      }
       setSubmiting(true);
       setSuccess(false);
+
 
       const formData = new FormData();
       formData.append("landline", values.telefonoFijo);
@@ -121,8 +146,11 @@ const ModalRadicacion = () => {
         formData.append("file", values.soporte);
       }
       formData.append("idDiagnostico", values.idDiagnostico);
+
       formData.append("code", servicios.join(","));
       formData.append("DescriptionCode", descripciones.join(","));
+
+
       formData.append("idPatient", values.idPaciente);
 
       try {
@@ -130,7 +158,7 @@ const ModalRadicacion = () => {
 
         if (response?.status === 201) {
           setSuccess(true);
-
+          setErrorMessage(null)
           setTimeout(() => {
             setStadopen(false);
             window.location.reload();
@@ -213,7 +241,9 @@ const ModalRadicacion = () => {
   };
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCantidad(value);
+    if (/^[1-9]\d*$/.test(value) || value === "") {
+      setCantidad(value);
+    }
     // reiniciar arrays de servicios y descripciones
     setServicios(Array(Number(value)).fill(""));
     setDescripciones(Array(Number(value)).fill(""));
@@ -592,7 +622,7 @@ const ModalRadicacion = () => {
                           Cantidad de Servicios Solicitados
                         </span>
                         <input
-                          type="text"
+                          type="number"
                           id="cantidad"
                           name="cantidad"
                           maxLength={1}
