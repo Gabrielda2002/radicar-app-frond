@@ -9,7 +9,7 @@ interface ServicioFormProps {
   onDescripcionChange: (index: number, value: string) => void;
 }
 
-const ServicioForm: React.FC<ServicioFormProps> = ({
+const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
   cantidad,
   servicios,
   descripciones,

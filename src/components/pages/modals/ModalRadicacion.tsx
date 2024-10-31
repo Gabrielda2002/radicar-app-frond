@@ -1,7 +1,7 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import ServicioForm from "../../ServicioForm";
+import ServicioForm from "../../GenerarInputsCUPS";
 import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import InputAutocompletado from "../../InputAutocompletado";
