@@ -70,7 +70,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha Orden
                   </td>
-                  <td className="">{formatDate(radicacion.orderDate)}</td>
+                  <td className="">{formatDate(radicacion.orderDate )}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
