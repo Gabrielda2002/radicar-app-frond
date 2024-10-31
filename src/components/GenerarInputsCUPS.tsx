@@ -78,4 +78,4 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
   return <>{bloques}</>;
 };
 
-export default ServicioForm;
+export default GenerarInputsCUPS;
