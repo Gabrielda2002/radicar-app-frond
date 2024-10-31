@@ -7,7 +7,7 @@ import {
   useFetchUnidadFuncional,
 } from "../../../hooks/useFetchUsers";
 import LoadingSpinner from "../../LoadingSpinner";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   CupsDetail,
   FormikErrors,
@@ -15,8 +15,8 @@ import {
 } from "../../../models/IFotmikValues";
 import { submitAutorizacionRadicado } from "../../../services/submitAutorizacionRadicado";
 
-//*Icons
-import back from "/assets/back.svg";
+//*Properties
+import ModalSection from "../../ModalSection";
 
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -100,39 +100,22 @@ const FormularioAutorizacion = () => {
 
   if (error) return <h2>{error}</h2>;
   if (loading) return <LoadingSpinner duration={500} />;
-  if (errorEstados) return <h2 className="flex justify-center text-lg dark:text-white">{errorEstados}</h2>;
+  if (errorEstados)
+    return (
+      <h2 className="flex justify-center text-lg dark:text-white">
+        {errorEstados}
+      </h2>
+    );
 
   return (
     <>
-      <section className=" dark:bg-gray-900">
-        <LoadingSpinner duration={500} />
-        <h1 className="mb-4 text-4xl text-color dark:text-gray-100">
-          Autorización
-        </h1>
-        <nav>
-          <ol className="flex mb-2 text-gray-700 dark:text-gray-300">
-            <Link to="/inicio">
-              <li className="text-slate-400 after:mr-2">Inicio</li>
-            </Link>
-            <Link to="/tabla-auditoria">
-              <li className="text-slate-400 before:content-['/'] before:mr-2 after:mr-2 before:text-slate-400">
-                Servicio Auditoría
-              </li>
-            </Link>
-            <li className="text-slate-700 before:content-['/'] before:mr-2 before:text-slate-400">
-              Autorización Servicios
-            </li>
-          </ol>
-          <div className="w-10 pb-2">
-            <img
-              src={back}
-              alt="Back"
-              onClick={() => window.history.back()}
-              className="cursor-pointer"
-            />
-          </div>
-        </nav>
-      </section>
+     <ModalSection
+      title="Autorización de servicios"
+      breadcrumb={[
+        {label: "Inicio", path: "/Inicio"},
+        {label: "/ Autorizacion Servicios", path: ""}
+      ]}
+     />
       <div className="">
         {/* Formulario */}
         <div className="w-full p-6 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
