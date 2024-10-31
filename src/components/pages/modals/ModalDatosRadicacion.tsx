@@ -66,6 +66,12 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   </td>
                   <td className="">{radicacion.placeRelation.name}</td>
                 </tr>
+                <tr className="">
+                  <td className="bg-gray-400 dark:bg-gray-600">
+                    Fecha Orden
+                  </td>
+                  <td className="">{formatDate(radicacion.orderDate)}</td>
+                </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Remisión de IPS
@@ -230,6 +236,44 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </table>
 
             {/* Segunda tabla */}
+
+            {radicacion.cirugiasRelation.length > 0 ? (
+            <table className="mt-2 mb-8 text-sm border-2">
+              {radicacion.cirugiasRelation.map((cirugia) => (
+              <tbody key={cirugia.id} className="dark:text-gray-200">
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Fecha Cirugía</td>
+                  <td>{formatDate(cirugia.surgeryDate)}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Hora</td>
+                  <td>{cirugia.scheduledTime}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">IPS Cirugia</td>
+                  <td>{cirugia.ipsRemite}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Fecha paraclinico</td>
+                  <td>{formatDate(cirugia.paraclinicalDate)}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Fecha anestesiologia</td>
+                  <td>{formatDate(cirugia.anesthesiologyDate)}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Especialista cirugia</td>
+                  <td>{cirugia.specialist}</td>
+                </tr>
+                <tr>
+                  <td className="bg-gray-400 dark:bg-gray-600">Observación</td>
+                  <td>{cirugia.observation}</td>
+                </tr>
+              </tbody>
+              ))}
+              </table>
+            ): null}
+
           </div>
 
           {/* container-footer */}
