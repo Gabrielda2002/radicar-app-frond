@@ -8,11 +8,13 @@ export interface ICirugias {
     telefonoFijo:    string;
     email:           string;
     fechaAuditoria:  Date | null;
+    fechaOrden:      Date;
     especialidad:    string;
     cups:            Cup[];
     grupoServicios:  string;
     diagnostico:     string;
     idGrupoServicios: number;
+    nombreSoporte:    string;
     programacionCirugia : programacion[];
 }
 

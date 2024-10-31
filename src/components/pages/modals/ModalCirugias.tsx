@@ -9,6 +9,7 @@ import { createCirugia } from "../../../services/createCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
+import { format } from "date-fns";
 
 interface ModalCirugiasProps {
   name: string;
@@ -18,6 +19,7 @@ interface ModalCirugiasProps {
   cups: Cup[];
   speciality: string;
   diagnostic: string;
+  fechaOrden: Date;
   idGroupService: number;
   idRadicado: number;
   idCirugia: number[];
@@ -31,6 +33,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   cups,
   speciality,
   diagnostic,
+  fechaOrden,
   idGroupService,
   idRadicado,
   idCirugia,
@@ -74,7 +77,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   };
 
   const validationSchema = Yup.object({
-    fechaOrdenamiento: Yup.date().required("Campo requerido"),
     ips: Yup.string().required("Campo requerido"),
     fechaCirugia: Yup.date().required("Campo requerido"),
     horaProgramada: Yup.string().required("Campo requerido"),
@@ -92,7 +94,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
 
   const formik = useFormik({
     initialValues: {
-      fechaOrdenamiento: "",
       ips: "",
       fechaCirugia: "",
       horaProgramada: "",
@@ -107,7 +108,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
       try {
         const formData = new FormData();
 
-        formData.append("orderingDate", values.fechaOrdenamiento);
         formData.append("ipsRemite", values.ips);
         formData.append("surgeryDate", values.fechaCirugia);
         formData.append("scheduledTime", values.horaProgramada);
@@ -133,6 +133,11 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
       setSubmiting(false);
     },
   });
+
+ // * funcion para formatear la fecha
+ const formatDate = (date: Date | null) => {
+  return date ? format(date, "dd/MM/yyyy") : "N/A";
+};
 
   return (
     <>
@@ -329,26 +334,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                       *
                                     </span>
                                   </div>
-                                  <input
-                                    type="date"
-                                    id=""
-                                    name="fechaOrdenamiento"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.fechaOrdenamiento}
-                                    onBlur={formik.handleBlur}
-                                    className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
-                                      formik.touched.fechaOrdenamiento &&
-                                      formik.errors.fechaOrdenamiento
-                                        ? "border-red-500 dark:border-red-500"
-                                        : "border-gray-200 dark:border-gray-600"
-                                    } w-full px-3 py-2 mt-1 text-gray-700 border rounded dark:text-white dark:bg-gray-800`}
-                                  />
-                                  {formik.touched.fechaOrdenamiento &&
-                                  formik.errors.fechaOrdenamiento ? (
-                                    <div className="mt-2 text-base text-red-600">
-                                      {formik.errors.fechaOrdenamiento}
-                                    </div>
-                                  ) : null}
+                                  <div>
+                                    {formatDate(fechaOrden)}
+                                  </div>
                                 </label>
                               </div>
 
@@ -406,7 +394,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                   <input
                                     type="date"
                                     id=""
-                                    name="fechaAnestesiología"
+                                    name="fechaAnesteciologia"
                                     onChange={formik.handleChange}
                                     value={formik.values.fechaAnesteciologia}
                                     onBlur={formik.handleBlur}
