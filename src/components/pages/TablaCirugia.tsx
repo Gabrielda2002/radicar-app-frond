@@ -13,6 +13,8 @@ import gestion from "/assets/gestion.svg";
 import { ICirugias, programacion } from "../../models/ICirugias";
 import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
 import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos";
+import soporte from "/assets/soporte.svg";
+
 
 //*Props
 import ModalSection from "../ModalSection";
@@ -67,6 +69,19 @@ const TablaCirugias = () => {
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
     return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+  };
+
+  const handleOpenSoporte = (nombreSoporte: string | null) => {
+    if (!nombreSoporte) {
+      alert("No hay soporte para mostrar.");
+      return;
+    }
+
+    window.open(
+      `https://api.nordvitalips.com/api/v1/uploads/Soportes/${nombreSoporte}`,
+      "_blank"
+    );
+    return;
   };
 
   return (
@@ -126,6 +141,7 @@ const TablaCirugias = () => {
                     <th>Paciente</th>
                     <th>Especialidad</th>
                     <th>Ultimo Estado Gestion</th>
+                    <th>Soporte</th>
                     <th>Gestión Auxiliar</th>
                     <th>Mostrar</th>
                     <th>Programar</th>
@@ -164,6 +180,13 @@ const TablaCirugias = () => {
                               -1
                             )[0].estado
                           : "N/A"}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        <button
+                          onClick={() => handleOpenSoporte(cirugia.nombreSoporte)}
+                        >
+                          <img src={soporte} alt="soporte icon" />
+                        </button>
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
