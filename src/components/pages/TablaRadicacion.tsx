@@ -226,9 +226,7 @@ const TablaRadicacion = () => {
                         {radicacion.patientRelation.name}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.auditDate
-                          ? radicacion.auditDate.toISOString()
-                          : "N/A"}
+                        {formatDate(radicacion.auditDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.cupsRadicadosRelation.length > 0 && (

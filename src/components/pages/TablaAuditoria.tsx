@@ -208,9 +208,7 @@ const TablaAuditoria = () => {
                         {auditoria.ipsPrimary}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {auditoria.orderDate
-                          ? auditoria.orderDate.getTime()
-                          : "N/A"}
+                        {formatDate(auditoria.orderDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.place}
