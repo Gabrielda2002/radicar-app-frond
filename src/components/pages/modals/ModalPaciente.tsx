@@ -12,6 +12,15 @@ import {
 import { IPacientes } from "../../../models/IPacientes";
 import { updatePacienteEp } from "../../../utils/api-config";
 
+import {
+  IdentificationIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  UserCircleIcon,
+  BuildingOfficeIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline";
+
 interface ModalPacienteProps {
   id: number | null;
   update: boolean;
@@ -66,7 +75,8 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
       .required("El número de celular es obligatorio")
       .min(1, "El número de celular debe tener al menos 1 caracter")
       .max(10, "El número de celular debe tener como máximo 10 caracteres"),
-    numeroCelular2: Yup.string().optional()
+    numeroCelular2: Yup.string()
+      .optional()
       .min(1, "El número de celular debe tener al menos 1 caracter")
       .max(10, "El número de celular debe tener como máximo 10 caracteres"),
     ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
@@ -112,7 +122,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
           setError("");
-            setTimeout(() => {
+          setTimeout(() => {
             setIsOpen(false);
             window.location.reload();
           }, 2000);
@@ -189,7 +199,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   {tittle} Paciente
                 </h1>
                 <button
-                type="button"
+                  type="button"
                   onClick={toggleModal}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
                 >
@@ -199,275 +209,302 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
 
               {/* Contenido del formulario */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-3 p-4 mb-4 gap-x-6">
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Tipo Documento
-                    </label>
-                    <select
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.tipoDocumento &&
-                        formik.errors.tipoDocumento
-                          ? "border-red-500 dark:border-red-500"
-                          : "dark:border-gray-600 border-gray-200"
-                      }`}
-                      name="tipoDocumento"
-                      value={formik.values.tipoDocumento}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">SELECCIONE</option>
-                      {dataDocumento.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </select>
-                    {formik.touched.tipoDocumento &&
-                    formik.errors.tipoDocumento ? (
-                      <label className="text-red-500">
-                        {formik.errors.tipoDocumento}
+                <div className="px-5 overflow-y-auto max-h-[70vh]">
+                  <div className="grid grid-cols-3 gap-6 p-2 mt-2">
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <IdentificationIcon className="flex items-center w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Documento de Identidad
+                        </label>
+                      </div>
+                      <select
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.tipoDocumento &&
+                          formik.errors.tipoDocumento
+                            ? "border-red-500 dark:border-red-500"
+                            : "dark:border-gray-600 border-gray-200"
+                        }`}
+                        name="tipoDocumento"
+                        value={formik.values.tipoDocumento}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">SELECCIONE</option>
+                        {dataDocumento.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                      {formik.touched.tipoDocumento &&
+                      formik.errors.tipoDocumento ? (
+                        <label className="text-red-500">
+                          {formik.errors.tipoDocumento}
+                        </label>
+                      ) : null}
+                    </div>
+
+                    <div>
+                      <div className="flex items-center mb-1">
+                        <EnvelopeIcon className="w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Correo Electrónico
+                        </label>
+                      </div>
+                      <input
+                        type="mail"
+                        placeholder="Ingresa Correo..."
+                        name="correo"
+                        value={formik.values.correo}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.correo && formik.errors.correo
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        } `}
+                      />
+                      {formik.touched.correo && formik.errors.correo ? (
+                        <label className="text-red-500">
+                          {formik.errors.correo}
+                        </label>
+                      ) : null}
+                    </div>
+
+                    <div>
+                      <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                        Identificación
                       </label>
-                    ) : null}
+                      <input
+                        name="identificacion"
+                        value={formik.values.identificacion}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        type="number"
+                        placeholder="Ingrese Identificación..."
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.identificacion &&
+                          formik.errors.identificacion
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      {formik.touched.identificacion &&
+                      formik.errors.identificacion ? (
+                        <label className="text-red-500">
+                          {formik.errors.identificacion}
+                        </label>
+                      ) : null}
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Correo Electrónico
-                    </label>
-                    <input
-                      type="mail"
-                      placeholder="Ingresa Correo..."
-                      name="correo"
-                      value={formik.values.correo}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.correo && formik.errors.correo
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      } `}
-                    />
-                    {formik.touched.correo && formik.errors.correo ? (
-                      <label className="text-red-500">
-                        {formik.errors.correo}
-                      </label>
-                    ) : null}
+                  <div className="grid grid-cols-2 gap-10 p-2">
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <PhoneIcon className="w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Teléfono Fijo
+                        </label>
+                      </div>
+                      <input
+                        name="telefonoFijo"
+                        value={formik.values.telefonoFijo}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        type="number"
+                        placeholder="Ingrese Teléfono Fijo..."
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.telefonoFijo &&
+                          formik.errors.telefonoFijo
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        } `}
+                      />
+                      {formik.touched.telefonoFijo &&
+                      formik.errors.telefonoFijo ? (
+                        <label className="text-red-500">
+                          {formik.errors.telefonoFijo}
+                        </label>
+                      ) : null}
+                    </div>
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <UserCircleIcon className="w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Nombre completo
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        name="nombreCompleto"
+                        value={formik.values.nombreCompleto}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Ingrese Nombre Completo..."
+                        className={` ${
+                          formik.touched.nombreCompleto &&
+                          formik.errors.nombreCompleto
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        } w-full px-3 py-2 mb-2 border-2 rounded dark:bg-gray-700 dark:text-white`}
+                      />
+                      {formik.touched.nombreCompleto &&
+                      formik.errors.nombreCompleto ? (
+                        <label className="text-red-500">
+                          {formik.errors.nombreCompleto}
+                        </label>
+                      ) : null}
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Identificación
-                    </label>
-                    <input
-                      name="identificacion"
-                      value={formik.values.identificacion}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      type="number"
-                      placeholder="Ingrese Identificación..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.identificacion &&
-                        formik.errors.identificacion
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    {formik.touched.identificacion &&
-                    formik.errors.identificacion ? (
-                      <label className="text-red-500">
-                        {formik.errors.identificacion}
-                      </label>
-                    ) : null}
-                  </div>
-                </div>
+                  {/* Segunda parte del formulario */}
+                  <div className="grid grid-cols-2 p-2 mb-4 gap-x-10">
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <BuildingOfficeIcon className="w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Convenio
+                        </label>
+                      </div>
+                      <select
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.convenio && formik.errors.convenio
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                        name="convenio"
+                        value={formik.values.convenio}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">SELECCIONE</option>
+                        {dataConvenios.map((convenio) => (
+                          <option key={convenio.id} value={convenio.id}>
+                            {convenio.name}
+                          </option>
+                        ))}
+                      </select>
+                      {formik.touched.convenio && formik.errors.convenio ? (
+                        <label className="text-red-500">
+                          {formik.errors.convenio}
+                        </label>
+                      ) : null}
+                    </div>
 
-                <div className="grid grid-cols-2 p-4 mb-4 gap-x-10">
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Teléfono Fijo
-                    </label>
-                    <input
-                      name="telefonoFijo"
-                      value={formik.values.telefonoFijo}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      type="number"
-                      placeholder="Ingrese Teléfono Fijo..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.telefonoFijo &&
-                        formik.errors.telefonoFijo
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      } `}
-                    />
-                    {formik.touched.telefonoFijo &&
-                    formik.errors.telefonoFijo ? (
-                      <label className="text-red-500">
-                        {formik.errors.telefonoFijo}
-                      </label>
-                    ) : null}
-                  </div>
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Nombre completo
-                    </label>
-                    <input
-                      type="text"
-                      name="nombreCompleto"
-                      value={formik.values.nombreCompleto}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Ingrese Nombre Completo..."
-                      className={` ${
-                        formik.touched.nombreCompleto &&
-                        formik.errors.nombreCompleto
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      } w-full px-3 py-2 mb-2 border-2 rounded dark:bg-gray-700 dark:text-white`}
-                    />
-                    {formik.touched.nombreCompleto &&
-                    formik.errors.nombreCompleto ? (
-                      <label className="text-red-500">
-                        {formik.errors.nombreCompleto}
-                      </label>
-                    ) : null}
-                  </div>
-                </div>
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <MapPinIcon className="w-8 h-8 dark:text-gray-100" />
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Dirección
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        name="direccion"
+                        value={formik.values.direccion}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Ingrese Direccion..."
+                        className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.direccion && formik.errors.direccion
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      {formik.touched.direccion && formik.errors.direccion ? (
+                        <label className="text-red-500">
+                          {formik.errors.direccion}
+                        </label>
+                      ) : null}
+                    </div>
 
-                {/* Segunda parte del formulario */}
-                <div className="grid grid-cols-2 p-4 mb-4 gap-x-10">
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Convenio
-                    </label>
-                    <select
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.convenio && formik.errors.convenio
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                      name="convenio"
-                      value={formik.values.convenio}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">SELECCIONE</option>
-                      {dataConvenios.map((convenio) => (
-                        <option key={convenio.id} value={convenio.id}>
-                          {convenio.name}
-                        </option>
-                      ))}
-                    </select>
-                    {formik.touched.convenio && formik.errors.convenio ? (
-                      <label className="text-red-500">
-                        {formik.errors.convenio}
-                      </label>
-                    ) : null}
-                  </div>
+                    <div>
+                      <div className="flex items-center mb-2">
+                        <label className="block pl-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          IPS Primaria
+                        </label>
+                      </div>
+                      <select
+                        className={` ${
+                          formik.touched.ipsPrimaria &&
+                          formik.errors.ipsPrimaria
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        } w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:bg-gray-700 dark:text-white`}
+                        name="ipsPrimaria"
+                        value={formik.values.ipsPrimaria}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">SELECCIONE</option>
+                        {dataIpsPrimaria.map((ips) => (
+                          <option key={ips.id} value={ips.id}>
+                            {ips.name}
+                          </option>
+                        ))}
+                      </select>
+                      {formik.touched.ipsPrimaria &&
+                      formik.errors.ipsPrimaria ? (
+                        <label className="text-red-500">
+                          {formik.errors.ipsPrimaria}
+                        </label>
+                      ) : null}
+                    </div>
 
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Número de Celular
-                    </label>
-                    <input
-                      type="text"
-                      name="numeroCelular"
-                      value={formik.values.numeroCelular}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Ingrese Número..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.numeroCelular &&
-                        formik.errors.numeroCelular
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    {formik.touched.numeroCelular &&
-                    formik.errors.numeroCelular ? (
-                      <label className="text-red-500">
-                        {formik.errors.numeroCelular}
-                      </label>
-                    ) : null}
-                  </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Número de Celular
+                        </label>
+                        <input
+                          type="text"
+                          name="numeroCelular"
+                          value={formik.values.numeroCelular}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          placeholder="Ingrese Número..."
+                          className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                            formik.touched.numeroCelular &&
+                            formik.errors.numeroCelular
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        {formik.touched.numeroCelular &&
+                        formik.errors.numeroCelular ? (
+                          <label className="text-red-500">
+                            {formik.errors.numeroCelular}
+                          </label>
+                        ) : null}
+                      </div>
 
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Número de Celular 2
-                    </label>
-                    <input
-                      type="text"
-                      name="numeroCelular2"
-                      value={formik.values.numeroCelular2}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Ingrese Número..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.numeroCelular2 &&
-                        formik.errors.numeroCelular2
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    {formik.touched.numeroCelular2 &&
-                    formik.errors.numeroCelular2 ? (
-                      <label className="text-red-500">
-                        {formik.errors.numeroCelular2}
-                      </label>
-                    ) : null}
-                  </div>
-
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      Dirección
-                    </label>
-                    <input
-                      type="text"
-                      name="direccion"
-                      value={formik.values.direccion}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Ingrese Direccion..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                        formik.touched.direccion && formik.errors.direccion
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    {formik.touched.direccion && formik.errors.direccion ? (
-                      <label className="text-red-500">
-                        {formik.errors.direccion}
-                      </label>
-                    ) : null}
-                  </div>
-                  <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                      IPS Primaria
-                    </label>
-                    <select
-                      className={` ${
-                        formik.touched.ipsPrimaria && formik.errors.ipsPrimaria
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      } w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:bg-gray-700 dark:text-white`}
-                      name="ipsPrimaria"
-                      value={formik.values.ipsPrimaria}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">SELECCIONE</option>
-                      {dataIpsPrimaria.map((ips) => (
-                        <option key={ips.id} value={ips.id}>
-                          {ips.name}
-                        </option>
-                      ))}
-                    </select>
-                    {formik.touched.ipsPrimaria && formik.errors.ipsPrimaria ? (
-                      <label className="text-red-500">
-                        {formik.errors.ipsPrimaria}
-                      </label>
-                    ) : null}
+                      <div>
+                        <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                          Número de Celular 2
+                        </label>
+                        <input
+                          type="text"
+                          name="numeroCelular2"
+                          value={formik.values.numeroCelular2}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          placeholder="Ingrese Número..."
+                          className={` w-full px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                            formik.touched.numeroCelular2 &&
+                            formik.errors.numeroCelular2
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        {formik.touched.numeroCelular2 &&
+                        formik.errors.numeroCelular2 ? (
+                          <label className="text-red-500">
+                            {formik.errors.numeroCelular2}
+                          </label>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 </div>
 

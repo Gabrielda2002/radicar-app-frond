@@ -52,7 +52,7 @@ const Usuarios = () => {
       <ModalSection
         title="Módulo Usuarios"
         breadcrumb={[
-          { label: "Inicio", path: "/inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Usuarios", path: "" },
         ]}
       />

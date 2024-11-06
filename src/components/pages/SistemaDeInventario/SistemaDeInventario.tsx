@@ -17,8 +17,8 @@ const SistemaDeInventario = () => {
       <ModalSection
         title="Módulo Inventario"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
-          { label: "/ Sistema de Inventario", path: "" },
+          { label: "Inicio", path: "/home" },
+          { label: "/ Sistema De Inventario", path: "" },
         ]}
       />
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">

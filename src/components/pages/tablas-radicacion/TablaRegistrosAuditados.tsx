@@ -13,7 +13,6 @@ import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados
 // import { motion } from "framer-motion";
 import ModalSection from "../../ModalSection";
 
-
 const ITEMS_PER_PAGE = 10;
 
 // * funcion para formatear la fecha
@@ -68,7 +67,7 @@ const Header: React.FC = () => (
   <ModalSection
     title="Tabla Registros Auditados"
     breadcrumb={[
-      { label: "Inicio", path: "/inicio" },
+      { label: "Inicio", path: "/home" },
       { label: "/ Servicio Registros Auditados", path: "" },
     ]}
   />
