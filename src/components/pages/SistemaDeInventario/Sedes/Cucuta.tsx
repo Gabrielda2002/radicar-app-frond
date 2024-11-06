@@ -21,7 +21,7 @@ const Cucuta = () => {
       <ModalSection
         title="Módulo Inventario - Cúcuta"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema de Inventario", path: "/SistemaDeInventario" },
           { label: "/ Cúcuta", path: "" },
         ]}

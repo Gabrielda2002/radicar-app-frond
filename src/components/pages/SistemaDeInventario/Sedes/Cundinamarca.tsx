@@ -18,7 +18,7 @@ const Cundinamarca = () => {
       <ModalSection
         title="Módulo Inventario - Cundinamarca"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema de Inventario", path: "/SistemaDeInventario" },
           { label: "/ Cundinamarca", path: "" },
         ]}
