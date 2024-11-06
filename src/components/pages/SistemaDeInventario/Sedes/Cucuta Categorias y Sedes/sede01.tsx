@@ -32,7 +32,7 @@ const sede01 = () => {
       <ModalSection
         title="Sede Cúcuta - Sede 01"
         breadcrumb={[
-          { label: "Inicio", path: "/inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema De Inventario", path: "/SistemaDeInventario" },
           { label: "/ Cúcuta", path: "/SistemaDeInventario/Cucuta" },
           { label: "/ Sede 01", path: "" },

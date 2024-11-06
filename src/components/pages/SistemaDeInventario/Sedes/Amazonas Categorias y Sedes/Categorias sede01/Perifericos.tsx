@@ -130,7 +130,7 @@ const Perifericos = () => {
       <ModalSection
         title="Modulo Inventario - Periféricos"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema de Inventario", path: "/SistemaDeInventario" },
           {
             label: "/ Amazonas",

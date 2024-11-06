@@ -32,7 +32,7 @@ const sede03 = () => {
       <ModalSection
         title="Sede Cundinamarca - Sede 03"
         breadcrumb={[
-          { label: "Inicio", path: "/inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema De Inventario", path: "/SistemaDeInventario" },
           {
             label: "/ Cundinamarca",
