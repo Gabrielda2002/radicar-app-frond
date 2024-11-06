@@ -9,12 +9,6 @@ import SideBar from "./components/pages/sidebar";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
-import TablaCirugias from "./components/pages/TablaCirugia";
-import TablaAuditoria from "./components/pages/TablaAuditoria";
-import TablaRadicacion from "./components/pages/TablaRadicacion";
-import SistemaDeInventario from "./components/pages/SistemaDeInventario/SistemaDeInventario";
-import TablaAutorizarServicios from "./components/pages/tablas-radicacion/TablaAutorizarServicios";
-
 //*Lazy Components
 const Perfil = lazy(() => import("./components/pages/perfil.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
@@ -22,11 +16,25 @@ const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
   () => import("./components/pages/RegistrarUsuarios.tsx")
 );
+const SistemaDeInventario = lazy(
+  () => import("./components/pages/SistemaDeInventario/SistemaDeInventario.tsx")
+);
 
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
 const TableInventory = lazy(
   () => import("./components/Routes/TablesInventory.tsx")
+);
+const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
+const TablaAuditoria = lazy(
+  () => import("./components/pages/TablaAuditoria.tsx")
+);
+const TablaRadicacion = lazy(
+  () => import("./components/pages/TablaRadicacion.tsx")
+);
+const TablaAutorizarServicios = lazy(
+  () =>
+    import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
 );
 
 //*Contextos
