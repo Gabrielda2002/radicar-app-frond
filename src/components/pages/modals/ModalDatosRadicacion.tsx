@@ -48,7 +48,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           </div>
 
           {/* Contenedor para las dos tablas en columnas */}
-          <div className="grid grid-cols-2 gap-x-6 max-h-[70vh] overflow-auto px-4 gap-y-6">
+          <div className="grid grid-cols-3 gap-6 max-h-[70vh] overflow-auto p-2">
             {/* Primera tabla */}
             <table className="mt-2 mb-8 text-sm border-2 rounded-lg">
               <thead>
