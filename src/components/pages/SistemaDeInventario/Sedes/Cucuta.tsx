@@ -1,6 +1,6 @@
 //*Functions and Hooks
-import ModalSection from "../../../ModalSection";
 import { NavLink } from "react-router-dom";
+import ModalSection from "../../../ModalSection";
 //*Properties
 
 //*Icons
