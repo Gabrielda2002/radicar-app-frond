@@ -50,7 +50,7 @@ const FileManager: React.FC = () => {
       <ModalSection
         title="Sistema Gestión De Calidad"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema Gestión Calidad", path: "" },
         ]}
       />

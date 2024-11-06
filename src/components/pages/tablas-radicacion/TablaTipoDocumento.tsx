@@ -21,11 +21,10 @@ const TablaTipoDocumento = () => {
     useFetchDocumento(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch<IDocumento>(dataDocumento, [
-    "id",
-    "name",
-    "status",
-  ]);
+  const { query, setQuery, filteredData } = useSearch<IDocumento>(
+    dataDocumento,
+    ["id", "name", "status"]
+  );
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, itemsPerPage);
 
@@ -48,37 +47,10 @@ const TablaTipoDocumento = () => {
       <ModalSection
         title="Módulo Tipo Documento"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Servicio Tipo Documento", path: "" },
         ]}
       />
-      {/* nav-table-TipoDocumento NO BORRAR */}
-      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
-        <LoadingSpinner duration={500} />
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
-            Módulo Tipo Documento
-          </h1>
-          <nav>
-            <ol className="flex items-center space-x-2">
-              <Link to="/inicio">
-                <li className="text-slate-400 hover:underline">Inicio</li>
-              </Link>
-              <li className="text-slate-700 dark:text-gray-300">
-                / Servicio Tipo Documento
-              </li>
-            </ol>
-          </nav>
-        </div>
-        <div className="mt-4">
-          <button
-            onClick={() => window.history.back()}
-            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-          >
-            <img src={salir} alt="Volver" className="w-6 h-6" />
-          </button>
-        </div>
-      </section> */}
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
