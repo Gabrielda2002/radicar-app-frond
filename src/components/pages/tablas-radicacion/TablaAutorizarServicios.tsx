@@ -112,7 +112,7 @@ const FormularioAutorizacion = () => {
      <ModalSection
       title="Autorización de servicios"
       breadcrumb={[
-        {label: "Inicio", path: "/Inicio"},
+        {label: "Inicio", path: "/home"},
         {label: "/ Autorizacion Servicios", path: ""}
       ]}
      />

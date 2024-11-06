@@ -44,40 +44,13 @@ const TablaCups = () => {
 
   return (
     <>
-    <ModalSection
-      title="Modulo Cups"
-      breadcrumb={[
-        {label: "Inicio", path: "/inicio"},
-        {label: "/ Servicio Cups", path: ""}
-      ]}
-    />
-      {/* nav-table-cups NO BORRAR */}
-      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
-        <LoadingSpinner duration={500} />
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
-            Módulo Cups
-          </h1>
-          <nav>
-            <ol className="flex items-center space-x-2">
-              <Link to="/inicio">
-                <li className="text-slate-400 hover:underline">Inicio</li>
-              </Link>
-              <li className="text-slate-700 dark:text-gray-300">
-                / Servicio Cups
-              </li>
-            </ol>
-          </nav>
-        </div>
-        <div className="mt-4">
-          <button
-            onClick={() => window.history.back()}
-            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-          >
-            <img src={salir} alt="Volver" className="w-6 h-6" />
-          </button>
-        </div>
-      </section> */}
+      <ModalSection
+        title="Modulo Cups"
+        breadcrumb={[
+          { label: "Inicio", path: "/home" },
+          { label: "/ Servicio Cups", path: "" },
+        ]}
+      />
 
       {/* container-table */}
       <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">

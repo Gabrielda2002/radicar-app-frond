@@ -30,7 +30,7 @@ const TablaRadicacion = () => {
   //  se inicializan los estados para el paginado y la busqueda
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query ,setQuery, filteredData } = useSearch<IRadicados>(data, [
+  const { query, setQuery, filteredData } = useSearch<IRadicados>(data, [
     "createdAt",
     "id",
     "auditDate",
@@ -105,47 +105,20 @@ const TablaRadicacion = () => {
       </h2>
     );
 
-    // * funcion para formatear la fecha
+  // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
-  }
+    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+  };
 
   return (
     <>
       <ModalSection
         title="Módulo Radicación"
         breadcrumb={[
-          { label: "Inicio", path: "/inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Servicio Radicación", path: "" },
         ]}
       />
-      {/* NO BORRAR */}
-      {/* <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
-        <LoadingSpinner duration={500} />
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-color dark:text-gray-200">
-            Módulo Radicación
-          </h1>
-          <nav>
-            <ol className="flex items-center space-x-2">
-              <Link to="/inicio">
-                <li className="text-slate-400 hover:underline">Inicio</li>
-              </Link>
-              <li className="text-slate-700 dark:text-gray-300">
-                / Servicio Radicación
-              </li>
-            </ol>
-          </nav>
-        </div>
-        <div className="mt-4">
-          <button
-            onClick={() => window.history.back()}
-            className="p-2 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-          >
-            <img src={salir} alt="Volver" className="w-6 h-6" />
-          </button>
-        </div>
-      </section> */}
 
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
@@ -157,7 +130,7 @@ const TablaRadicacion = () => {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value) } // Escuchar eventos de teclado
+              onChange={(e) => setQuery(e.target.value)} // Escuchar eventos de teclado
               placeholder="Consultar..."
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />

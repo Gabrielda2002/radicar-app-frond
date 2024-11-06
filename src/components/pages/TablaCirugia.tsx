@@ -89,7 +89,7 @@ const TablaCirugias = () => {
       <ModalSection
         title="Módulo Cirugia"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Servicio Cirugia", path: "" },
         ]}
       />
