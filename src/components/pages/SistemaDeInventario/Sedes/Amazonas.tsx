@@ -15,7 +15,7 @@ const Amazonas = () => {
         <ModalSection
           title="Módulo Inventario - Amazonas"
           breadcrumb={[
-            { label: "Inicio", path: "/Inicio" },
+            { label: "Inicio", path: "/home" },
             { label: "/ Sistema de Inventario", path: "/SistemaDeInventario" },
             { label: "/ Amazonas", path: "" },
           ]}
