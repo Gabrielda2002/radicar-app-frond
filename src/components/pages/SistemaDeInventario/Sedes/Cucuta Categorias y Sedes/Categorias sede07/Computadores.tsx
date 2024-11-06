@@ -121,7 +121,7 @@ const Computadores = () => {
       <ModalSection
         title="Modulo Inventario - Computadores"
         breadcrumb={[
-          { label: "Inicio", path: "/Inicio" },
+          { label: "Inicio", path: "/home" },
           { label: "/ Sistema de Inventario", path: "/SistemaDeInventario" },
           { label: "/ Cúcuta", path: "/SistemaDeInventario/Cucuta" },
           { label: "/ Sede 07", path: "/SistemaDeInventario/Cucuta/Sede07" },
