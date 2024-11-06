@@ -258,36 +258,38 @@ const SideBar: FC = () => {
               </div>
             </div>
             <div></div>
-            <NavLink to="/SistemaDeInventario">
-              {({ isActive }) => (
-                <div
-                  className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
-                    "/SistemaDeInventario"
-                  )} ${
-                    isActive
-                      ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                      : ""
-                  }`}
-                >
-                  <img
-                    src={Box}
-                    alt=""
-                    className="w-5 h-5 group-hover:invert dark:invert"
-                  />
-                  {!isCollapsed && (
-                    <span
-                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                        isActive
-                          ? "text-white dark:text-gray-200"
-                          : "group-hover:text-white dark:group-hover:text-gray-200"
-                      }`}
-                    >
-                      Gestión de Inventarios
-                    </span>
-                  )}
-                </div>
-              )}
-            </NavLink>
+            {[1].includes(Number(rol)) && (
+              <NavLink to="/SistemaDeInventario">
+                {({ isActive }) => (
+                  <div
+                    className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
+                      "/SistemaDeInventario"
+                    )} ${
+                      isActive
+                        ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                        : ""
+                    }`}
+                  >
+                    <img
+                      src={Box}
+                      alt=""
+                      className="w-5 h-5 group-hover:invert dark:invert"
+                    />
+                    {!isCollapsed && (
+                      <span
+                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                          isActive
+                            ? "text-white dark:text-gray-200"
+                            : "group-hover:text-white dark:group-hover:text-gray-200"
+                        }`}
+                      >
+                        Gestión de Inventarios
+                      </span>
+                    )}
+                  </div>
+                )}
+              </NavLink>
+            )}
 
             {/*  MODULO GESTION SERVICIOS  */}
 
