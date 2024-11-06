@@ -35,7 +35,6 @@ export const fetchAuditoria = async (): Promise<IAuditar[]> => {
     const auditorias = response.data.map((auditoria: IAuditar) => ({
         ...auditoria,
         radicadoDate: new Date(auditoria.radicadoDate),
-        orderDate: new Date(auditoria.orderDate)
     }));
     return auditorias;
 }

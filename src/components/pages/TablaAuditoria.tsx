@@ -18,6 +18,7 @@ import autorizar from "/assets/autorizar.svg";
 
 //*Properties
 import ModalSection from "../ModalSection.tsx";
+import { toZonedTime } from "date-fns-tz";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -75,8 +76,10 @@ const TablaAuditoria = () => {
   };
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
-  }
+    if (!date) return 'N/A';
+    const utcDate = toZonedTime(date, 'America/Bogota'); // Reemplaza con la zona horaria deseada
+    return format(utcDate, 'dd/MM/yyyy');
+  };
 
   return (
     <>
