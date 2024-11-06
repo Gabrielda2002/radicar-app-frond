@@ -1,6 +1,6 @@
 //*Functions and Hooks
-import ModalSection from "../../../ModalSection";
 import { NavLink } from "react-router-dom";
+import ModalSection from "../../../ModalSection";
 //*Properties
 
 //*Icons
@@ -73,7 +73,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
@@ -113,7 +113,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
@@ -152,7 +152,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
@@ -192,7 +192,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
@@ -232,7 +232,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
@@ -272,7 +272,7 @@ const Cucuta = () => {
                     <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
                       <div className="flex items-center">
                         <h2 title="Click para ver las categorias completas">
-                          3 Categorias
+                          2 Categorias
                         </h2>
                       </div>
                     </button>
