@@ -37,6 +37,10 @@ const TablaAutorizarServicios = lazy(
     import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
 );
 
+const FileManager = lazy(
+  () => import("./components/pages/SistemaArchivosSGC.tsx")
+);
+
 //*Contextos
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/authContext";
@@ -44,7 +48,6 @@ import { useTheme } from "./context/blackWhiteContext";
 import { Bounce, ToastContainer } from "react-toastify";
 import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
-import FileManager from "./components/pages/SistemaArchivosSGC";
 import { UserProfileProvider } from "./context/userProfileContext";
 
 function AppRoutes() {
