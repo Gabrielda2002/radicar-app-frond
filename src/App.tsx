@@ -4,12 +4,12 @@ import Footer from "./components/footer";
 import Layout from "./components/layout";
 import Navbar from "./components/navbar";
 import Login from "./components/pages/login.tsx";
-import Inicio from "./components/pages/inicio.tsx";
 import SideBar from "./components/pages/sidebar";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 //*Lazy Components
+const Inicio = lazy(() => import("./components/pages/inicio.tsx"));
 const Perfil = lazy(() => import("./components/pages/perfil.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
 const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
