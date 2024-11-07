@@ -18,6 +18,7 @@ import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
 import { IPacientes } from "../models/IPacientes";
 import { ICirugias } from "../models/ICirugias";
+import { IDepartamentos } from "../models/IDepartamentos";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -228,4 +229,16 @@ export const fetchCirugias = async (): Promise<ICirugias[]> => {
         
     }));
     return cirugias;
+}
+
+// traer los departamentos
+export const fetchDepartarmentsEp = async (): Promise<IDepartamentos[]> => {
+    const response = await api.get("/departamentos");
+    console.log(response.data);
+    const departamentos = response.data.map((departamento: IDepartamentos) => ({
+        ...departamento,
+        updatedAt: new Date(departamento.updatedAt),
+        createdAt: new Date(departamento.createdAt)
+    }));
+    return departamentos;
 }

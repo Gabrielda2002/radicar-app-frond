@@ -46,6 +46,7 @@ import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import FileManager from "./components/pages/SistemaArchivosSGC";
 import { UserProfileProvider } from "./context/userProfileContext";
+import SistemaInventario from "./components/pages/SistemaDeInventario/SistemaInventario.tsx";
 
 function AppRoutes() {
   const { theme } = useTheme();
@@ -110,6 +111,10 @@ function AppRoutes() {
                           <Route
                             path="/SistemaDeInventario/*"
                             element={<TableInventory />}
+                          />
+                          <Route
+                            path="/SistemaInventario"
+                            element={<SistemaInventario />}
                           />
                           <Route path="*" element={<Navigate to="/home" />} />
                         </Routes>
