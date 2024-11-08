@@ -1,5 +1,6 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination.tsx";
@@ -8,11 +9,9 @@ import useSearch from "../../hooks/useSearch.ts";
 import { IStatusCup } from "../../models/IAuditar.ts";
 import usePagination from "../../hooks/usePagination.ts";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos.tsx";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
-import { IAuditar } from "../../models/IAuditar.ts";
 import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 
@@ -20,6 +19,9 @@ import autorizar from "/assets/autorizar.svg";
 import ModalSection from "../ModalSection.tsx";
 import { toZonedTime } from "date-fns-tz";
 
+const ModalMostrarDatosCUPS = lazy(
+  () => import("./modals/ModalMostrarDatos.tsx")
+);
 const ITEMS_PER_PAGE = 8;
 
 const TablaAuditoria = () => {
@@ -250,13 +252,15 @@ const TablaAuditoria = () => {
               </table>
             </div>
 
-            <ModalMostrarDatosCUPS
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-              data={selectedCups}
-              cirugias={null}
-              dateOrder={null}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalMostrarDatosCUPS
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                data={selectedCups}
+                cirugias={null}
+                dateOrder={null}
+              />
+            </Suspense>
             <div>‎</div>
             {/* pagination */}
             <Pagination

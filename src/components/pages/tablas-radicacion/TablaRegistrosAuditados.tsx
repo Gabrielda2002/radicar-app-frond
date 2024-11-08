@@ -1,17 +1,20 @@
 //*Fuctions and Hooks
 import { format } from "date-fns";
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import { Cup, IAuditados } from "../../../models/IAuditados";
 import { useFetchAuditados } from "../../../hooks/useFetchUsers";
-import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
+// import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
 
 //*Properties
 // import { motion } from "framer-motion";
 import ModalSection from "../../ModalSection";
+const ModalActualizarCupsAuditoria = lazy(
+  () => import("../modals/ModalActualizarCupsAuditados")
+);
 
 const ITEMS_PER_PAGE = 10;
 
@@ -264,7 +267,9 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
               {formatDate(cup.modifyDate)}
             </td>
             <td className="p-3 border-b dark:border-gray-700">
-              <ModalActualizarCupsAuditoria cup={cup} />
+              <Suspense fallback={<LoadingSpinner />}>
+                <ModalActualizarCupsAuditoria cup={cup} />
+              </Suspense>
             </td>
           </tr>
         ))}

@@ -1,10 +1,11 @@
 //*Funciones y Hooks
-import { useState } from "react";
-import ModalPaciente from "../modals/ModalPaciente";
+import { useState, lazy, Suspense } from "react";
+import LoadingSpinner from "../../LoadingSpinner";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+const ModalPaciente = lazy(() => import("../modals/ModalPaciente"));
 
 const TablaPacientes = () => {
   const { data, error, getData } = useFetchPaciente();
@@ -52,12 +53,14 @@ const TablaPacientes = () => {
             </div>
           </div>
           <div className="flex items-center pt-1 space-x-2">
-            <ModalPaciente
-              id={null}
-              update={false}
-              tittle="Crear"
-              paciente={null}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalPaciente
+                id={null}
+                update={false}
+                tittle="Crear"
+                paciente={null}
+              />
+            </Suspense>
           </div>
         </section>
 

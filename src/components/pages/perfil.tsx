@@ -4,8 +4,8 @@ import Cookies from "js-cookie";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import { api } from "../../utils/api-config";
-import { useEffect, useState, useRef } from "react";
-import ConfirmDeletePopup from "../ConfirmDeletePopup";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
+// import ConfirmDeletePopup from "../ConfirmDeletePopup";
 import { updateUserData } from "../../services/updateUserData";
 import { useUserProfile } from "../../context/userProfileContext";
 import defaultUserPicture from "../../../public/assets/icon-user.svg";
@@ -15,6 +15,9 @@ import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
+import LoadingSpinner from "../LoadingSpinner";
+
+const ConfirmDeletePopup = lazy(() => import("../ConfirmDeletePopup"));
 
 const Perfil = () => {
   const { updateUserProfile } = useUserProfile();
@@ -41,8 +44,6 @@ const Perfil = () => {
   const [formData, setFormData] = useState(profile);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-;
-
   // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   // useEffect(() => {
@@ -552,11 +553,13 @@ const Perfil = () => {
           </div>
         </div>
       </section>
-      <ConfirmDeletePopup
-        isOpen={isPopupOpen}
-        onClose={closeDeletePopup}
-        onConfirm={confirmDeletePhoto}
-      />
+      <Suspense fallback={<LoadingSpinner />}>
+        <ConfirmDeletePopup
+          isOpen={isPopupOpen}
+          onClose={closeDeletePopup}
+          onConfirm={confirmDeletePhoto}
+        />
+      </Suspense>
     </div>
   );
 };

@@ -1,10 +1,13 @@
 //*Fuctions and Hooks
-import Calendario from "./Calendario";
-import { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import HealthIndicators from "./HealthIndicators";
+import { useEffect, useState, lazy, Suspense } from "react";
+
+// TODO: Importar componentes y hooks necesarios
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
+
+const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
+const Calendario = lazy(() => import("./Calendario"));
 
 const Inicio = () => {
   const [isLoading, setisLoading] = useState(true);
@@ -54,8 +57,10 @@ const Inicio = () => {
                 avanzada y un equipo humano altamente capacitado.
               </p>
 
-              {/* Indicadores de rendimiento */}
-              <HealthIndicators />
+              <Suspense fallback={<LoadingSpinner />}>
+                {/* Indicadores de rendimiento */}
+                <IndicadoresSalud />
+              </Suspense>
 
               {/* Alerta de contraseña */}
               {showAlert && (
@@ -81,7 +86,9 @@ const Inicio = () => {
               <h1 className="pb-6 font-extrabold text-center text-7xl dark:text-white">
                 Calendario de Actividades
               </h1>
-              <Calendario />
+              <Suspense fallback={<LoadingSpinner />}>
+                <Calendario />
+              </Suspense>
             </div>
           </div>
         </section>
