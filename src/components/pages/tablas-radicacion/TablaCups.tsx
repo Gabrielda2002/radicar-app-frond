@@ -1,19 +1,18 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import Pagination from "../../Pagination";
-import ModalCups from "../modals/ModalCups";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
-import ModalActionCups from "../modals/ModalActionCups";
 import usePagination from "../../../hooks/usePagination";
 import { useFetchCups } from "../../../hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-
-//*Iconos
 import { ICups } from "../../../models/ICups";
 
+const ModalActionCups = lazy(() => import("../modals/ModalActionCups"));
+const ModalCups = lazy(() => import("../modals/ModalCups"));
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
@@ -81,7 +80,9 @@ const TablaCups = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalCups></ModalCups>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalCups></ModalCups>
+            </Suspense>
           </div>
         </section>
 
@@ -122,7 +123,9 @@ const TablaCups = () => {
                         {cups.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalActionCups id={cups.id} />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalActionCups id={cups.id} />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

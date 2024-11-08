@@ -1,18 +1,17 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchRadicador } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IRadicador } from "../../../models/IRadicador";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-
+import { IRadicador } from "../../../models/IRadicador";
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {
@@ -74,7 +73,9 @@ const TablaRadicadores = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="Radicador" endPoint="radicador" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="Radicador" endPoint="radicador" />
+            </Suspense>
           </div>
         </section>
 
@@ -111,11 +112,13 @@ const TablaRadicadores = () => {
                         {radicador.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          id={radicador.id}
-                          name="Radicador"
-                          endPoint="update-status-radicador"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            id={radicador.id}
+                            name="Radicador"
+                            endPoint="update-status-radicador"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

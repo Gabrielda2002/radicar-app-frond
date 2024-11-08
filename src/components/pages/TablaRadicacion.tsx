@@ -1,17 +1,22 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Pagination from "../Pagination";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-
 import usePagination from "../../hooks/usePagination";
-import ModalRadicacion from "./modals/ModalRadicacion";
 import { IRadicados } from "../../models/IRadicados.ts";
 import { useFetchUsers } from "../../hooks/useFetchUsers";
-import ModalMostrarDatos from "./modals/ModalDatosRadicacion.tsx";
-import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+
+//? Using lazy load functions for modals
+const ModalGestionAuxiliar = lazy(
+  () => import("./modals/ModalGestionAuxiliar.tsx")
+);
+const ModalMostrarDatos = lazy(
+  () => import("./modals/ModalDatosRadicacion.tsx")
+);
+const ModalRadicacion = lazy(() => import("./modals/ModalRadicacion.tsx"));
 
 //*Props
 import ModalSection from "../ModalSection.tsx";
@@ -146,7 +151,9 @@ const TablaRadicacion = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalRadicacion />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalRadicacion />
+            </Suspense>
           </div>
         </section>
 
@@ -358,18 +365,20 @@ const TablaRadicacion = () => {
 
             {/* modal mostrar datos */}
 
-            <ModalMostrarDatos
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-              radicacion={selectedRadicacion}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalMostrarDatos
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                radicacion={selectedRadicacion}
+              />
 
-            <ModalGestionAuxiliar
-              isOpen={isOpenGestionAuxiliar}
-              onClose={() => setIsOpenGestionAuxiliar(false)}
-              radicacion={selectedRadicacion}
-              cirugias={null}
-            />
+              <ModalGestionAuxiliar
+                isOpen={isOpenGestionAuxiliar}
+                onClose={() => setIsOpenGestionAuxiliar(false)}
+                radicacion={selectedRadicacion}
+                cirugias={null}
+              />
+            </Suspense>
 
             {/* Controles de la Paginacion */}
             <div>‎ </div>

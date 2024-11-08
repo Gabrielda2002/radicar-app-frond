@@ -1,13 +1,15 @@
 //*Fuctions and hooks
-import React, { useState } from "react";
-import ModalRenombrarItem from "../modals/ModalRenombrarItem";
-import ConfirmDeletePopupProps from "../../ConfirmDeletePopup";
+import React, { useState, lazy, Suspense } from "react";
 //*Icons
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import LoadingSpinner from "../../LoadingSpinner";
 
+//*Properties
+const ModalRenombrarItem = lazy(() => import("../modals/ModalRenombrarItem"));
+const ConfirmDeletePopupProps = lazy(() => import("../../ConfirmDeletePopup"));
 interface ItemManuProps {
   onDelete: () => void;
   renameItem: (newName: string) => void;
@@ -81,24 +83,26 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
           </div>
         </MenuItems>
 
-        {
-          <ModalRenombrarItem
-            toggleModal={toggleModalRename}
-            standOpen={stadOpenRename}
-            renameItem={renameItem}
-          />
-        }
+        <Suspense fallback={<LoadingSpinner />}>
+          {
+            <ModalRenombrarItem
+              toggleModal={toggleModalRename}
+              standOpen={stadOpenRename}
+              renameItem={renameItem}
+            />
+          }
 
-        {/* Mensaje confirmacion DELETE */}
-        {
-          <ConfirmDeletePopupProps
-            isOpen={stadOpenDelete} //condicion true
-            onClose={stadOffDelete} //cerrar modal
-            onConfirm={confirmDeleteItem} //eliminacion acertiva y cerrar el modal
-            iteamName="el elemento"
-            condicClase={true}
-          ></ConfirmDeletePopupProps> // pasar prop "cambio de nombre y clases"
-        }
+          {/* Mensaje confirmacion DELETE */}
+          {
+            <ConfirmDeletePopupProps
+              isOpen={stadOpenDelete} //condicion true
+              onClose={stadOffDelete} //cerrar modal
+              onConfirm={confirmDeleteItem} //eliminacion acertiva y cerrar el modal
+              iteamName="el elemento"
+              condicClase={true}
+            ></ConfirmDeletePopupProps> // pasar prop "cambio de nombre y clases"
+          }
+        </Suspense>
       </Menu>
     </>
   );

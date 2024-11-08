@@ -1,18 +1,19 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
+// import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
+// import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchLugarRadicado } from "../../../hooks/useFetchUsers";
-//*Icons
-import { ILugarRadicacion } from "../../../models/ILugarRadicado";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { ILugarRadicacion } from "../../../models/ILugarRadicado";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaLugarRadicacion = () => {
@@ -75,10 +76,12 @@ const TablaLugarRadicacion = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato
-              name="Lugar Radicacion"
-              endPoint="lugares-radicacion"
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato
+                name="Lugar Radicacion"
+                endPoint="lugares-radicacion"
+              />
+            </Suspense>
           </div>
         </section>
 
@@ -115,11 +118,13 @@ const TablaLugarRadicacion = () => {
                         {lugar.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Lugar Radicacion"
-                          id={lugar.id}
-                          endPoint="update-lugar-status"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Lugar Radicacion"
+                            id={lugar.id}
+                            endPoint="update-lugar-status"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

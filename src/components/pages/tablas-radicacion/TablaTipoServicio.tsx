@@ -1,18 +1,17 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchServicios } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IServicios } from "../../../models/IServicio";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IServicios } from "../../../models/IServicio";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoServicio = () => {
@@ -75,7 +74,9 @@ const TablaTipoServicio = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="Tipo Servicio" endPoint="servicios" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="Tipo Servicio" endPoint="servicios" />
+            </Suspense>
           </div>
         </section>
 
@@ -112,11 +113,13 @@ const TablaTipoServicio = () => {
                         {servicio.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Tipo Servicio"
-                          id={servicio.id}
-                          endPoint="update-status-servicio"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Tipo Servicio"
+                            id={servicio.id}
+                            endPoint="update-status-servicio"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

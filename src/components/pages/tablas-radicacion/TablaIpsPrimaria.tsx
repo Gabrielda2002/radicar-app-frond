@@ -1,17 +1,18 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchIpsPrimaria } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IIPSPrimaria } from "../../../models/IIpsPrimaria";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IIPSPrimaria } from "../../../models/IIpsPrimaria";
+
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 
 const ITEMS_PER_PAGE = 10;
 
@@ -21,11 +22,10 @@ const TablaIpsPrimaria = () => {
     useFetchIpsPrimaria(load);
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch<IIPSPrimaria>(dataIpsPrimaria, [
-    "id",
-    "name",
-    "status",
-  ]);
+  const { query, setQuery, filteredData } = useSearch<IIPSPrimaria>(
+    dataIpsPrimaria,
+    ["id", "name", "status"]
+  );
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, itemsPerPage);
   const handleItemsPerPageChange = (
@@ -77,7 +77,9 @@ const TablaIpsPrimaria = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="IPS Primaria" endPoint="ips-primaria" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="IPS Primaria" endPoint="ips-primaria" />
+            </Suspense>
           </div>
         </section>
 
@@ -114,11 +116,13 @@ const TablaIpsPrimaria = () => {
                         {ips.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          id={ips.id}
-                          name={ips.name}
-                          endPoint="update-status-ips-primaria"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            id={ips.id}
+                            name={ips.name}
+                            endPoint="update-status-ips-primaria"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

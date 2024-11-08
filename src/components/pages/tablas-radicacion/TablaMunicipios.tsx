@@ -1,18 +1,19 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
+
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalMunicipios from "../modals/ModalMunicipios";
+
 import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IMunicipios } from "../../../models/IMunicipios";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IMunicipios } from "../../../models/IMunicipios";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalMunicipios = lazy(() => import("../modals/ModalMunicipios"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
@@ -77,7 +78,9 @@ const TablaMunicipios = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalMunicipios></ModalMunicipios>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalMunicipios></ModalMunicipios>
+            </Suspense>
           </div>
         </section>
 
@@ -115,11 +118,13 @@ const TablaMunicipios = () => {
                         {municipio.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Municipio"
-                          id={municipio.id}
-                          endPoint="update-status-municipio"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Municipio"
+                            id={municipio.id}
+                            endPoint="update-status-municipio"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

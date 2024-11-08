@@ -1,18 +1,18 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IIPSRemite } from "../../../models/IIpsRemite";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IIPSRemite } from "../../../models/IIpsRemite";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaIpsRemite = () => {
@@ -50,7 +50,6 @@ const TablaIpsRemite = () => {
         ]}
       />
 
-
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
         <section className="flex items-center justify-between mb-4">
@@ -76,7 +75,9 @@ const TablaIpsRemite = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="IPS Remite" endPoint="ips-remite" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="IPS Remite" endPoint="ips-remite" />
+            </Suspense>
           </div>
         </section>
 
@@ -112,11 +113,13 @@ const TablaIpsRemite = () => {
                         {ips.status ? "Activo" : "Inactivo"}{" "}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="IPS Remite"
-                          id={ips.id}
-                          endPoint="update-status-ips-remite"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="IPS Remite"
+                            id={ips.id}
+                            endPoint="update-status-ips-remite"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}
