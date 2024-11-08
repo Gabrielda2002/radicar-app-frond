@@ -11,7 +11,7 @@ import DeviceCard from "../../DevicesCard";
 // Iconos
 import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
 import TELECO from "/src/components/pages/SistemaDeInventario/Images/TELECOMUNICACIONES.webp";
-import { ComputerDesktopIcon } from "@heroicons/react/24/outline";
+import { ComputerDesktopIcon, SignalIcon } from "@heroicons/react/24/outline";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -107,7 +107,7 @@ const SistemaInventario: React.FC = () => {
               title="Dispositivos de red"
               description="Contenido de la Sección"
               image={TELECO}
-              icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
+              icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
               onClick={() => {
                 setTipoItem("dispositivos-red");
                 setScreen("items");
@@ -117,7 +117,7 @@ const SistemaInventario: React.FC = () => {
         )}
 
         {screen === "items" && sedeSelect && tipoItem && (
-          <ItemsList invetario={items} tipoItem={tipoItem} />
+          <ItemsList invetario={items} tipoItem={tipoItem} idSede={sedeSelect} />
         )}
       </div>
     </div>
