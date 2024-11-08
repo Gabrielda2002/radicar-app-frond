@@ -212,15 +212,18 @@ import { IItemsNetworking } from "../../../models/IItemsNetworking";
                             <label htmlFor="typeEquipment" className="block mt-2 text-sm font-semibold">
                                 Tipo de Equipo
                             </label>
-                            <input
-                                type="text"
-                                id="typeEquipment"
+                            <select
                                 name="typeEquipment"
                                 value={formik.values.typeEquipment}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                            />
+                            >
+                                <option value="">Selecciona</option>
+                                <option value="TODO EN 1">Todo en 1</option>
+                                <option value="PORTATIL">Portatil</option>
+                                <option value="ESCRITORIO">Escritorio</option>
+                            </select>
                             {formik.touched.typeEquipment && formik.errors.typeEquipment ? (
                                 <div className="text-red-500">{formik.errors.typeEquipment}</div>
                             ) : null}
@@ -231,15 +234,21 @@ import { IItemsNetworking } from "../../../models/IItemsNetworking";
                         <label htmlFor="brand" className="block mt-2 text-sm font-semibold">
                             Marca
                         </label>
-                        <input
-                            type="text"
-                            id="brand"
+                        <select
                             name="brand"
                             value={formik.values.brand}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                        />
+                         >
+                            <option value="">Seleccione</option>
+                            <option value="LENOVO">Lenovo</option>
+                            <option value="COMPUMAX">Compumax</option>
+                            <option value="ASUS">Asus</option>
+                            <option value="ACER">Acer</option>
+                            <option value="HP">HP</option>
+                            <option value="DELL">Dell</option>
+                        </select>
                         {formik.touched.brand && formik.errors.brand ? (
                             <div className="text-red-500">{formik.errors.brand}</div>
                         ) : null}
@@ -286,15 +295,15 @@ import { IItemsNetworking } from "../../../models/IItemsNetworking";
                             <label htmlFor="operationalSystem" className="block mt-2 text-sm font-semibold">
                                 Sistema Operativo
                             </label>
-                            <input
-                                type="text"
-                                id="operationalSystem"
-                                name="operationalSystem"
-                                value={formik.values.operationalSystem}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                            />
+                            <select 
+                            name="" 
+                            id=""
+                            >
+                                <option value="">Select</option>
+                                <option value="WINDOWS 10">Windows 10</option>
+                                <option value="WINDOWS 11">Windows 11</option>
+                                <option value="WINDOWS 7">Windows 7</option>
+                            </select>
                             {formik.touched.operationalSystem && formik.errors.operationalSystem ? (
                                 <div className="text-red-500">{formik.errors.operationalSystem}</div>
                             ) : null}
@@ -477,9 +486,6 @@ import { IItemsNetworking } from "../../../models/IItemsNetworking";
                             ) : null}
                         </div>
                     )}
-
-                    {/* container-footer */}
-
                     
                   {/* container-footer */}
                   <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
