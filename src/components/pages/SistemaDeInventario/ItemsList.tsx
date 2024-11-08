@@ -2,6 +2,7 @@ import React from 'react'
 import { IItems } from '../../../models/IItems'
 import { IItemsNetworking } from '../../../models/IItemsNetworking';
 import ModalItemsDetails from '../modals/ModalItemsDetails';
+import ModalItemsForm from '../modals/ModalItemsForm';
 
 interface ItemsListProps {
     invetario: IItems[] | IItemsNetworking[]  | null;
@@ -11,7 +12,8 @@ interface ItemsListProps {
 
 const ItemsList: React.FC<ItemsListProps> = ({
     invetario,
-    tipoItem
+    tipoItem,
+    idSede
 }) => {
 
   const [ selected, setSelected ] = React.useState<IItems | IItemsNetworking | null>(null);
@@ -29,6 +31,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
       <h2>
         Inventario de {tipoItem}
       </h2>
+
+      <ModalItemsForm
+        idSede={idSede}
+        tipoItem={tipoItem}
+        items={null}
+      />
+
       <ul>
         {invetario?.map((item) => (
             <li key={item.id}>
