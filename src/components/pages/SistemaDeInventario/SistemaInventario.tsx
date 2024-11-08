@@ -6,6 +6,12 @@ import SedesList from "./sedesList";
 import useFetchItems from "../../../hooks/useFetchItems";
 import ItemsList from "./ItemsList";
 import ModalSection from "../../ModalSection";
+import DeviceCard from "../../DevicesCard";
+
+// Iconos
+import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
+import TELECO from "/src/components/pages/SistemaDeInventario/Images/TELECOMUNICACIONES.webp";
+import { ComputerDesktopIcon } from "@heroicons/react/24/outline";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -87,22 +93,26 @@ const SistemaInventario: React.FC = () => {
         {screen === "tipoItem" && sedeSelect && (
           <div>
             <h2>Selecciona el tipo de item</h2>
-            <button
+            <DeviceCard
+              title="Computadores"
+              description="Contenido de la Sección"
+              image={COMPUTO}
+              icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
               onClick={() => {
                 setTipoItem("equipos");
                 setScreen("items");
               }}
-            >
-              Computadores
-            </button>
-            <button
+            />
+            <DeviceCard
+              title="Dispositivos de red"
+              description="Contenido de la Sección"
+              image={TELECO}
+              icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
               onClick={() => {
                 setTipoItem("dispositivos-red");
                 setScreen("items");
               }}
-            >
-              Dispositivos de red
-            </button>
+            />
           </div>
         )}
 
