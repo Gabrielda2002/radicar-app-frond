@@ -43,7 +43,7 @@ const SedesList: React.FC<sedesListProps> = ({ sedes, onSelect }) => {
       <h2>Sedes</h2>
 
       {sedes?.map((s) => (
-        <div className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1">
+        <div key={s.id} className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1">
           {/* Imagen de fondo */}
           <button key={s.id} onClick={() => onSelect(s)}>
 
