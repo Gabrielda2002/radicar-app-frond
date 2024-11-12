@@ -164,11 +164,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             setSuccess(false);
             setStadopen(false);
           }, 3000);
+        }else{
+          setError("Error al enviar los datos");
         }
 
       } catch (error) {
-         setError("Error al enviar los datos");
-         console.log(error)
+         setError(`Error al envair los datos: ${error}`);
       }
       setSubmiting(false);
     },
