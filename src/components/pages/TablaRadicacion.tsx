@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Pagination from "../Pagination";
@@ -63,17 +63,17 @@ const TablaRadicacion = () => {
   //   }
   // };
 
-  const handleShowData = (radicacion: IRadicados) => {
+  const handleShowData = useCallback((radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
-  };
+  }, []);
 
-  const handleShowGestionAuxiliar = (radicacion: IRadicados) => {
+  const handleShowGestionAuxiliar = useCallback((radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
-  };
+  }, []);
 
-  const handleOpenSoporte = (nombreSoporte: string | null) => {
+  const handleOpenSoporte = useCallback((nombreSoporte: string | null) => {
     if (!nombreSoporte) {
       alert("No hay soporte para mostrar.");
       return;
@@ -84,7 +84,7 @@ const TablaRadicacion = () => {
       "_blank"
     );
     return;
-  };
+  }, []);
 
   //PRUEBA
   // Estado para mostrar el alerta de cookies
@@ -92,10 +92,10 @@ const TablaRadicacion = () => {
   const [cookieDescription, setCookieDescription] = useState("");
 
   // Función para abrir la alerta de cookies
-  const handleShowCookieAlert = (description: string) => {
+  const handleShowCookieAlert = useCallback((description: string) => {
     setCookieDescription(description);
     setShowCookieAlert(true);
-  };
+  }, []);
 
   // Función para cerrar la alerta de cookies
   const handleCloseCookieAlert = () => {

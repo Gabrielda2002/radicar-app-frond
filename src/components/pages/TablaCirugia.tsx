@@ -1,17 +1,19 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-
 import { format } from "date-fns";
 import Pagination from "../Pagination";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
+// import ModalCirugias from "./modals/ModalCirugias";
 import usePagination from "../../hooks/usePagination";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
-import { ICirugias, programacion } from "../../models/ICirugias";
 
 //*iconos
 import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
+import { ICirugias, programacion } from "../../models/ICirugias";
+// import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
+// import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos";
 import soporte from "/assets/soporte.svg";
 
 //*Props
@@ -251,7 +253,6 @@ const TablaCirugias = () => {
           currentPage={currentPage}
         />
       </div>
-
       <Suspense fallback={<LoadingSpinner />}>
         {/* modal mostrar registro cirugias */}
         <ModalMostrarDatosCUPS
