@@ -1,7 +1,7 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
@@ -9,9 +9,10 @@ import { useFetchEspecialidad } from "../../../hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { IEspecialidad } from "../../../models/IEspecialidad";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaEspecialidad = () => {
@@ -74,7 +75,9 @@ const TablaEspecialidad = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="Especialidad" endPoint="especialidades" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="Especialidad" endPoint="especialidades" />
+            </Suspense>
           </div>
         </section>
 
@@ -111,11 +114,13 @@ const TablaEspecialidad = () => {
                         {especialidad.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Especialidad"
-                          id={especialidad.id}
-                          endPoint="update-status-especialidad"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Especialidad"
+                            id={especialidad.id}
+                            endPoint="update-status-especialidad"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

@@ -109,13 +109,13 @@ const FormularioAutorizacion = () => {
 
   return (
     <>
-     <ModalSection
-      title="Autorización de servicios"
-      breadcrumb={[
-        {label: "Inicio", path: "/home"},
-        {label: "/ Autorizacion Servicios", path: ""}
-      ]}
-     />
+      <ModalSection
+        title="Autorización de servicios"
+        breadcrumb={[
+          { label: "Inicio", path: "/home" },
+          { label: "/ Autorizacion Servicios", path: "" },
+        ]}
+      />
       <div className="">
         {/* Formulario */}
         <div className="w-full p-6 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
@@ -140,7 +140,11 @@ const FormularioAutorizacion = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.auditora}
-                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                    formik.touched.auditora && formik.errors.auditora
+                      ? "border-red-500 dark:border-red-500"
+                      : "dark:border-gray-600 border-gray-200"
+                  }`}
                   placeholder="Nombre de la auditora"
                 />
                 {formik.touched.auditora && formik.errors.auditora && (
@@ -163,7 +167,12 @@ const FormularioAutorizacion = () => {
                   onBlur={formik.handleBlur}
                   value={formik.values.fechaAuditoria}
                   name="fechaAuditoria"
-                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                    formik.touched.fechaAuditoria &&
+                    formik.errors.fechaAuditoria
+                      ? "border-red-500 dark:border-red-500"
+                      : "dark:border-gray-600 border-gray-200"
+                  }`}
                 />
                 {formik.touched.fechaAuditoria &&
                   formik.errors.fechaAuditoria && (
@@ -188,7 +197,11 @@ const FormularioAutorizacion = () => {
                   value={formik.values.justificacion}
                   name="justificacion"
                   placeholder="Justificación"
-                  className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className={`w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                    formik.touched.justificacion && formik.errors.justificacion
+                      ? "border-red-500 dark:border-red-500"
+                      : "dark:border-gray-600 border-gray-200"
+                  }`}
                 />
                 {formik.touched.justificacion &&
                   formik.errors.justificacion && (
@@ -265,7 +278,11 @@ const FormularioAutorizacion = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.cupsDetails[index].observacionCups}
                       name={`cupsDetails[${index}].observacionCups`}
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                        formik.touched.cupsDetails && formik.errors.cupsDetails
+                          ? "border-red-500 dark:borde-red-500"
+                          : "dark:border-gray-600 border-gray-200"
+                      }`}
                       placeholder="Observación CUPS"
                     />
                     {formik.touched.cupsDetails?.[index]?.observacionCups &&

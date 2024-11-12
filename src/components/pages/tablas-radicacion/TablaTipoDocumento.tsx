@@ -1,18 +1,19 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
+// import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
+// import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchDocumento } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IDocumento } from "../../../models/IDocumento";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IDocumento } from "../../../models/IDocumento";
 
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoDocumento = () => {
@@ -77,7 +78,9 @@ const TablaTipoDocumento = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="Tipo Documento" endPoint="documento" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="Tipo Documento" endPoint="documento" />
+            </Suspense>
           </div>
         </section>
 
@@ -114,11 +117,13 @@ const TablaTipoDocumento = () => {
                         {documento.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Tipo Documento"
-                          id={documento.id}
-                          endPoint="update-status-documento"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Tipo Documento"
+                            id={documento.id}
+                            endPoint="update-status-documento"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}

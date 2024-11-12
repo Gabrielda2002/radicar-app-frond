@@ -1,23 +1,27 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
 import { format } from "date-fns";
 import Pagination from "../Pagination";
 import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-import ModalCirugias from "./modals/ModalCirugias";
 import usePagination from "../../hooks/usePagination";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
+import { ICirugias, programacion } from "../../models/ICirugias";
+
 //*iconos
 import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
-import { ICirugias, programacion } from "../../models/ICirugias";
-import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos";
 import soporte from "/assets/soporte.svg";
-
 
 //*Props
 import ModalSection from "../ModalSection";
+
+const ModalCirugias = lazy(() => import("./modals/ModalCirugias"));
+const ModalMostrarDatosCUPS = lazy(() => import("./modals/ModalMostrarDatos"));
+const ModalGestionAuxiliar = lazy(
+  () => import("./modals/ModalGestionAuxiliar")
+);
 
 const ITEMS_PER_PAGE = 8;
 
@@ -183,7 +187,9 @@ const TablaCirugias = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
-                          onClick={() => handleOpenSoporte(cirugia.nombreSoporte)}
+                          onClick={() =>
+                            handleOpenSoporte(cirugia.nombreSoporte)
+                          }
                         >
                           <img src={soporte} alt="soporte icon" />
                         </button>
@@ -199,29 +205,35 @@ const TablaCirugias = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
-                          onClick={() =>
-                            handleShowVer(cirugia.programacionCirugia[0], cirugia.fechaOrden) // se pasa los datos de la cirugia programada y la fecha de orden de radicado
-                          } 
+                          onClick={
+                            () =>
+                              handleShowVer(
+                                cirugia.programacionCirugia[0],
+                                cirugia.fechaOrden
+                              ) // se pasa los datos de la cirugia programada y la fecha de orden de radicado
+                          }
                         >
                           <img src={mostrar} alt="Gestion-icon" />
                         </button>
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalCirugias
-                          name={cirugia.nombrePaciente}
-                          phonneNumber={cirugia.numeroPaciente}
-                          email={cirugia.email}
-                          landline={cirugia.telefonoFijo}
-                          cups={cirugia.cups}
-                          speciality={cirugia.especialidad}
-                          fechaOrden={cirugia.fechaOrden}
-                          diagnostic={cirugia.diagnostico}
-                          idGroupService={cirugia.idGrupoServicios}
-                          idRadicado={cirugia.id}
-                          idCirugia={cirugia.programacionCirugia.map(
-                            (programacion) => programacion.id
-                          )}
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalCirugias
+                            name={cirugia.nombrePaciente}
+                            phonneNumber={cirugia.numeroPaciente}
+                            email={cirugia.email}
+                            landline={cirugia.telefonoFijo}
+                            cups={cirugia.cups}
+                            speciality={cirugia.especialidad}
+                            fechaOrden={cirugia.fechaOrden}
+                            diagnostic={cirugia.diagnostico}
+                            idGroupService={cirugia.idGrupoServicios}
+                            idRadicado={cirugia.id}
+                            idCirugia={cirugia.programacionCirugia.map(
+                              (programacion) => programacion.id
+                            )}
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}
@@ -239,21 +251,24 @@ const TablaCirugias = () => {
           currentPage={currentPage}
         />
       </div>
-      {/* modal mostrar registro cirugias */}
-      <ModalMostrarDatosCUPS
-        isOpen={isOpenMostrar}
-        onClose={() => setIsOpenMostrar(false)}
-        data={null}
-        dateOrder={dateOrden}
-        cirugias={selectedCirugia}
-      />
-      {/* modal gestion auxiliar cirugias */}
-      <ModalGestionAuxiliar
-        isOpen={isOpenGestion}
-        onClose={() => setIsOpenGestion(false)}
-        radicacion={null}
-        cirugias={selectedCirugia}
-      />
+
+      <Suspense fallback={<LoadingSpinner />}>
+        {/* modal mostrar registro cirugias */}
+        <ModalMostrarDatosCUPS
+          isOpen={isOpenMostrar}
+          onClose={() => setIsOpenMostrar(false)}
+          data={null}
+          dateOrder={dateOrden}
+          cirugias={selectedCirugia}
+        />
+        {/* modal gestion auxiliar cirugias */}
+        <ModalGestionAuxiliar
+          isOpen={isOpenGestion}
+          onClose={() => setIsOpenGestion(false)}
+          radicacion={null}
+          cirugias={selectedCirugia}
+        />
+      </Suspense>
     </>
   );
 };

@@ -4,12 +4,12 @@ import Footer from "./components/footer";
 import Layout from "./components/layout";
 import Navbar from "./components/navbar";
 import Login from "./components/pages/login.tsx";
-import Inicio from "./components/pages/inicio.tsx";
 import SideBar from "./components/pages/sidebar";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 //*Lazy Components
+const Inicio = lazy(() => import("./components/pages/inicio.tsx"));
 const Perfil = lazy(() => import("./components/pages/perfil.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
 const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
@@ -37,6 +37,10 @@ const TablaAutorizarServicios = lazy(
     import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
 );
 
+const FileManager = lazy(
+  () => import("./components/pages/SistemaArchivosSGC.tsx")
+);
+
 //*Contextos
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/authContext";
@@ -44,7 +48,6 @@ import { useTheme } from "./context/blackWhiteContext";
 import { Bounce, ToastContainer } from "react-toastify";
 import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
-import FileManager from "./components/pages/SistemaArchivosSGC";
 import { UserProfileProvider } from "./context/userProfileContext";
 import SistemaInventario from "./components/pages/SistemaDeInventario/SistemaInventario.tsx";
 

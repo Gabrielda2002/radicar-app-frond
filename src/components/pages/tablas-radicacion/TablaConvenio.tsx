@@ -1,17 +1,18 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import Pagination from "../../Pagination";
-import ModalAction from "../modals/ModalAction";
+// import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import ModalAgregarDato from "../modals/ModalAgregarDato";
+// import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
-//*Icons
-import { IConvenios } from "../../../models/IConvenios";
 
 //*Properties
 import ModalSection from "../../ModalSection";
+import { IConvenios } from "../../../models/IConvenios";
+const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
 
 const ITEMS_PER_PAGE = 10;
 
@@ -76,7 +77,9 @@ const TablaConvenios = () => {
               <option value="20">20 Paginas</option>
               <option value="30">30 Paginas</option>
             </select>
-            <ModalAgregarDato name="Convenio" endPoint="convenio" />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalAgregarDato name="Convenio" endPoint="convenio" />
+            </Suspense>
           </div>
         </section>
 
@@ -113,11 +116,13 @@ const TablaConvenios = () => {
                         {convenio.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        <ModalAction
-                          name="Convenio"
-                          id={convenio.id}
-                          endPoint="update-status-convenio"
-                        />
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ModalAction
+                            name="Convenio"
+                            id={convenio.id}
+                            endPoint="update-status-convenio"
+                          />
+                        </Suspense>
                       </td>
                     </tr>
                   ))}
