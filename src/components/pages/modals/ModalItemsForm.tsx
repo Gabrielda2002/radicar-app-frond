@@ -7,19 +7,28 @@ import onOff from "/assets/on-off.svg";
 import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
 import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import { createItem } from "../../../services/createItem";
 
 interface ModalItemsFormProps {
   idSede: number | null;
   tipoItem: "equipos" | "dispositivos-red" | null;
   items: IItems | IItemsNetworking | null;
+  update: boolean;
 }
 
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
   tipoItem,
   items,
+  update
 }) => {
   const [stadopen, setStadopen] = useState(false);
+
+  // estados para la reaccion del formulario
+  const [ success, setSuccess ] = useState(false);
+  const [ error, setError ] = useState<string | null>(null);
+  const [submiting, setSubmiting] = useState(false);
+
   const { showAnimation, closing } = useAnimation(
     stadopen,
     () => setStadopen(false),
@@ -89,7 +98,53 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
-      console.log(values);
+      setSubmiting(true);
+      try {
+        
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("brand", values.brand);
+        formData.append("model", values.model);
+        formData.append("serial", values.serial);
+        formData.append("inventoryNumber", values.inventoryNumber);
+        formData.append("addressIp", values.addressIp);
+        formData.append("mac", values.mac);
+        formData.append("sedeId", idSede?.toString() || "");
+
+        if (tipoItem === "equipos") {
+          formData.append("area", values.area);
+          formData.append("typeEquipment", values.typeEquipment);
+          formData.append("operationalSystem", values.operationalSystem);
+          formData.append("purchaseDate", values.purchaseDate);
+          formData.append("warrantyTime", values.warrantyTime);
+          formData.append("warranty", values.warranty);
+          formData.append("deliveryDate", values.deliveryDate);
+          
+        }else{
+          formData.append("otherData", values.otherData);
+          formData.append("status", values.status);
+        }
+
+        let response;
+        if (!update) {
+          response = await createItem(formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
+        }else{
+          // logica para actualizar
+        }
+
+        if (response?.status === 201 || response?.status === 200) {
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+            setStadopen(false);
+          }, 3000);
+        }
+
+      } catch (error) {
+         setError("Error al enviar los datos");
+         console.log(error)
+      }
+      setSubmiting(false);
     },
   });
 
@@ -108,7 +163,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         >
           <section className="">
             <div
-              className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
+                className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
                 showAnimation && !closing ? "translate-y-0" : "translate-y-10"
               }`}
             >
@@ -520,9 +575,15 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   <button
                     className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
+                    disabled={submiting}
                   >
                     Actualizando
                   </button>
+                  {success && (
+                    <div className="text-green-500">Datos enviados correctamente</div>
+                  )}
+
+                  {error && <div className="text-red-500">{error}</div>}
                 </div>
               </form>
             </div>
