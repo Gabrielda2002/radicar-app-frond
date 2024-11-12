@@ -7,7 +7,7 @@ export interface IItems {
     brand:            string;
     model:            string;
     serial:           string;
-    operatuingSystem: string;
+    operationalSystem: string;
     addressIp:        string;
     mac:              string;
     purchaseDate:     Date;

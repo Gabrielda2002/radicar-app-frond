@@ -184,3 +184,8 @@ export const updateUsuariosTableEp = async (data: FormData, id: number) => {
 export const createItemEp = async (data: FormData, ep: string) => {
     return api.post(`/${ep}`, data);
 }
+
+// actualizar item sistema inventario
+export const updateItemEp = async (data: FormData, id: number, ep: string) => {
+    return api.put(`/${ep}/${id}`, data);
+}

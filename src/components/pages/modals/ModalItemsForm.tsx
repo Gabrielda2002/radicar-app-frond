@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 //*Icons
@@ -8,19 +8,21 @@ import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
 import { IItemsNetworking } from "../../../models/IItemsNetworking";
 import { createItem } from "../../../services/createItem";
+import { updateItem } from "../../../services/updateItem";
+import { format } from "date-fns";
 
 interface ModalItemsFormProps {
   idSede: number | null;
   tipoItem: "equipos" | "dispositivos-red" | null;
   items: IItems | IItemsNetworking | null;
-  update: boolean;
+  idItem: number | null;
 }
 
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
   tipoItem,
   items,
-  update
+  idItem
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
@@ -99,6 +101,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
       setSubmiting(true);
+      console.log("entra a submit")
       try {
         
         const formData = new FormData();
@@ -126,14 +129,16 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         }
 
         let response;
-        if (!update) {
+        if (!idItem) {
           response = await createItem(formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
         }else{
-          // logica para actualizar
+          console.log("entra a update")
+          response = await updateItem(idItem, formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
         }
 
         if (response?.status === 201 || response?.status === 200) {
           setSuccess(true);
+          setError(null);
           setTimeout(() => {
             setSuccess(false);
             setStadopen(false);
@@ -147,6 +152,36 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       setSubmiting(false);
     },
   });
+
+  console.log(formik.errors)
+
+  const formatDate = (date: Date | string | null) => {
+  return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
+};
+
+  useEffect(() => {
+    if (items && idItem) {
+      formik.setValues({
+        name: items.name,
+        area: "area" in items ? items.area : "",
+        typeEquipment: "typeEquipment" in items ? items.typeEquipment : "",
+        brand: items.brand,
+        model: items.model,
+        serial: items.serial,
+        operationalSystem: "operationalSystem" in items ? items.operationalSystem : "",
+        mac: items.mac,
+        purchaseDate: "purchaseDate" in items ? formatDate(items.purchaseDate) : "", // falta formatear la fecha
+        warrantyTime: "warrantyTime" in items ? String(items.warrantyTime) : "",
+        warranty: "warranty" in items ? (items.warranty ? "1" : "0") : "",
+        deliveryDate: "deliveryDate" in items ? formatDate(items.deliveryDate) : "", // falta formatear la fecha
+        inventoryNumber: items.inventoryNumber,
+        addressIp: items.addressIp,
+        otherData: "otherData" in items ? items.otherData : "",
+        status: "status" in items ? items.status : "",
+      });
+    }
+  }, [items, idItem, tipoItem]);
+
 
   return (
     <>
@@ -429,15 +464,18 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     >
                       Garantia
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="warranty"
                       name="warranty"
                       value={formik.values.warranty}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
+                    >
+                      <option value="">- SELECT -</option>
+                      <option value={1}>Activa</option>
+                      <option value={0}>Inactiva</option>
+                    </select>
                     {formik.touched.warranty && formik.errors.warranty ? (
                       <div className="text-red-500">
                         {formik.errors.warranty}

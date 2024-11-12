@@ -36,6 +36,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
         idSede={idSede}
         tipoItem={tipoItem}
         items={null}
+        idItem={null}
       />
 
       <ul>
@@ -50,6 +51,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     >
                       ver mas detalles
                     </button>
+
+                    <ModalItemsForm
+                      idSede={null}
+                      tipoItem={tipoItem}
+                      items={item as IItems}
+                      idItem={(item as IItems).id}
+                    />
+                  
                     </>
                 ) : (
                     <>
@@ -60,6 +69,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     >
                       ver mas detalles
                     </button>
+
+                    <ModalItemsForm
+                      idSede={null}
+                      tipoItem={tipoItem}
+                      items={item as IItemsNetworking}
+                      idItem={(item as IItemsNetworking).id}
+                    />
+
                     </>
                 )}
             </li>
