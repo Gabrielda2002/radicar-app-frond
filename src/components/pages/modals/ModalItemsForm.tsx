@@ -37,7 +37,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     300
   );
 
-  console.log(idSede, tipoItem, items);
 
   const getValidationSchema = (typeItem: string | null) => {
     const validationSchema = {
@@ -45,23 +44,43 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         .required("El nombre es requerido")
         .min(2, "El nombre debe tener al menos 3 caracteres")
         .max(200, "El nombre debe tener como máximo 200 caracteres"),
-      brand: Yup.string().required("La marca es requerida"),
-      model: Yup.string().required("El modelo es requerido"),
-      serial: Yup.string().required("El serial es requerido"),
-      inventoryNumber: Yup.string().required("El inventario es requerido"),
-      addressIp: Yup.string().required("La direccion ip es requerida"),
-      mac: Yup.string().required("La mac es requerida"),
+      brand: Yup.string().required("La marca es requerida")
+        .min(3, "La marca debe tener al menos 3 caracteres")
+        .max(200, "La marca debe tener como máximo 200 caracteres"),
+      model: Yup.string().required("El modelo es requerido")
+        .min(3, "El modelo debe tener al menos 3 caracteres")
+        .max(200, "El modelo debe tener como máximo 200 caracteres"),
+      serial: Yup.string().required("El serial es requerido")
+        .min(3, "El serial debe tener al menos 3 caracteres")
+        .max(200, "El serial debe tener como máximo 200 caracteres"),
+      inventoryNumber: Yup.string().required("El inventario es requerido")
+        .min(3, "El inventario debe tener al menos 3 caracteres")
+        .max(200, "El inventario debe tener como máximo 200 caracteres"),
+      addressIp: Yup.string().required("La direccion ip es requerida")
+        .min(3, "La direccion ip debe tener al menos 3 caracteres")
+        .max(200, "La direccion ip debe tener como máximo 200 caracteres"),
+      mac: Yup.string().required("La mac es requerida")
+        .min(3, "La mac debe tener al menos 3 caracteres")
+        .max(200, "La mac debe tener como máximo 200 caracteres"),
     };
 
     if (typeItem === "equipos") {
       return {
         ...validationSchema,
-        area: Yup.string().required("El area es requerida"),
-        typeEquipment: Yup.string().required("El tipo de equipo es requerido"),
-        operationalSystem: Yup.string().required("El sistema operativo es requerido"),
+        area: Yup.string().required("El area es requerida")
+          .min(3, "El area debe tener al menos 3 caracteres")
+          .max(200, "El area debe tener como máximo 200 caracteres"),
+        typeEquipment: Yup.string().required("El tipo de equipo es requerido")
+          .min(3, "El tipo de equipo debe tener al menos 3 caracteres")
+          .max(200, "El tipo de equipo debe tener como máximo 200 caracteres"),
+        operationalSystem: Yup.string().required("El sistema operativo es requerido")
+          .min(3, "El sistema operativo debe tener al menos 3 caracteres")
+          .max(200, "El sistema operativo debe tener como máximo 200 caracteres"),
         purchaseDate: Yup.date().required("La fecha de compra es requerida"),
-        warrantyTime: Yup.string().required("El tiempo de garantia es requerido"),
-        warranty: Yup.string().required("La garantia es requerida"),
+        warrantyTime: Yup.string().required("El tiempo de garantia es requerido")
+          .min(3, "El tiempo de garantia debe tener al menos 3 caracteres")
+          .max(200, "El tiempo de garantia debe tener como máximo 200 caracteres"),
+        warranty: Yup.boolean().required("La garantia es requerida"),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
       }
     }
@@ -69,8 +88,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     if (typeItem === "dispositivos-red") {
       return {
         ...validationSchema,
-        otherData: Yup.string().required("Otros datos son requeridos"),
-        status: Yup.string().required("El estado es requerido"),
+        otherData: Yup.string().required("Otros datos son requeridos")
+          .min(3, "Otros datos deben tener al menos 3 caracteres")
+          .max(200, "Otros datos deben tener como máximo 200 caracteres"),
+        status: Yup.string().required("El estado es requerido")
+          .min(3, "El estado debe tener al menos 3 caracteres")
+          .max(200, "El estado debe tener como máximo 200 caracteres"),
       }
       
     }
@@ -101,7 +124,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
       setSubmiting(true);
-      console.log("entra a submit")
       try {
         
         const formData = new FormData();
@@ -132,7 +154,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         if (!idItem) {
           response = await createItem(formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
         }else{
-          console.log("entra a update")
           response = await updateItem(idItem, formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
         }
 
@@ -153,7 +174,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     },
   });
 
-  console.log(formik.errors)
+  // console.log(formik.errors)
 
   const formatDate = (date: Date | string | null) => {
   return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
@@ -205,7 +226,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Módulos
+                  {idItem ? "Actualizar Item" : "Crear Item"} 
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -615,7 +636,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     type="submit"
                     disabled={submiting}
                   >
-                    Actualizando
+                    {submiting ? "Enviando..." : "Enviar"}
                   </button>
                   {success && (
                     <div className="text-green-500">Datos enviados correctamente</div>

@@ -234,7 +234,6 @@ export const fetchCirugias = async (): Promise<ICirugias[]> => {
 // traer los departamentos
 export const fetchDepartarmentsEp = async (): Promise<IDepartamentos[]> => {
     const response = await api.get("/departamentos");
-    console.log(response.data);
     const departamentos = response.data.map((departamento: IDepartamentos) => ({
         ...departamento,
         updatedAt: new Date(departamento.updatedAt),
