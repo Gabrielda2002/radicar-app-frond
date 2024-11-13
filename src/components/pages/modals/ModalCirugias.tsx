@@ -1,15 +1,15 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
+import { format } from "date-fns";
 import { useFormik } from "formik";
-import React, { useState } from "react";
 import { Cup } from "../../../models/ICirugias";
+import React, { useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import InputAutocompletado from "../../InputAutocompletado";
 import { createCirugia } from "../../../services/createCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
-import { format } from "date-fns";
 
 interface ModalCirugiasProps {
   name: string;
@@ -135,9 +135,9 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   });
 
  // * funcion para formatear la fecha
- const formatDate = (date: Date | null) => {
+ const formatDate = useMemo(()=> (date: Date | null) => {
   return date ? format(date, "dd/MM/yyyy") : "N/A";
-};
+}, []);
 
   return (
     <>

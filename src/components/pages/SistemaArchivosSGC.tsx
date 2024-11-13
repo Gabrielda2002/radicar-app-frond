@@ -1,5 +1,5 @@
 //*Fuctions and hooks
-import React from "react";
+import React, { useMemo } from "react";
 import FileList from "./SSGC/FileList";
 import BreadCrumb from "./SSGC/BreadCrumb";
 import FolderList from "./SSGC/FolderList";
@@ -30,8 +30,8 @@ const FileManager: React.FC = () => {
     renameItem,
   } = useFileManager();
 
-  const currentFolderId = path[path.length - 1].id;
-  const isInFolder = path.length > 1; // Si tienes más de un elemento en el path, estás dentro de una carpeta
+  const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
+  const isInFolder = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
 
   if (loading) return <LoadingSpinner duration={3000} />;
   if (error)

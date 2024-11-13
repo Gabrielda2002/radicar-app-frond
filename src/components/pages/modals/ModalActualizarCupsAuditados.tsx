@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 //*Icons
 import editar from "/assets/editar.svg";
@@ -36,13 +36,13 @@ const ModalActualizarCupsAuditoria: React.FC<
     }
   }, [stadopen]);
 
-  const validationSchema = Yup.object({
+  const validationSchema = useMemo(()=> Yup.object({
     estado: Yup.string().required("El estado es requerido."),
     observacion: Yup.string()
       .min(1, "La observación debe tener al menos 1 caracteres.")
       .max(150, "La observación no debe exceder los 150 caracteres.")
       .required("La observación es requerida."),
-  });
+  }), []);
 
   // hook de formik
   const formik = useFormik({

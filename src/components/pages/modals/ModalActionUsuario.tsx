@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -47,7 +47,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     }
   }, [isOpen]);
 
-  const validationSchema = Yup.object({
+  const validationSchema = useMemo(()=> Yup.object({
     tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
     correo: Yup.string().required("El correo es obligatorio"),
     identificacion: Yup.string()
@@ -72,7 +72,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
         "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
       ),
-  });
+  }), []);
 
   const formik = useFormik({
     initialValues: {
@@ -400,7 +400,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                       ) : null}
                     </div>
 
-                    <div className="">
+                    <div className="">  
                       <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                         Contraseña
                       </label>
