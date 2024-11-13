@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useCallback } from "react";
 
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
@@ -47,11 +47,12 @@ const TablaAuditoria = () => {
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
 
-  const handleItemsPerPageChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setItemsPerPage(Number(e.target.value));
-  };
+  const handleItemsPerPageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setItemsPerPage(Number(e.target.value));
+    },
+    [setItemsPerPage]
+  );
 
   if (loading) return <LoadingSpinner duration={100000} />;
   if (error)

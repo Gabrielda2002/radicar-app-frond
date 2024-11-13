@@ -1,8 +1,8 @@
 //*Funciones y Hooks
-import { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useState, useMemo, useCallback } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 import { createCups } from "../../../services/createCups";
 
 const ModalCups = () => {
@@ -13,15 +13,19 @@ const ModalCups = () => {
     setStadopen(false)
   );
 
-  const toggleModal = () => {
-    setStadopen(!stadopen);
-  };
-  // Se agrega useEffect para controlar la animación de la ventana emergente
+  const toggleModal = useCallback(() => {
+    setStadopen((prev) => !prev);
+  }, []);
 
-  const validationSchema = Yup.object({
-    code: Yup.number().required("El código es obligatorio"),
-    description: Yup.string().required("La descripción es obligatoria"),
-  });
+  
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        code: Yup.number().required("El código es obligatorio"),
+        description: Yup.string().required("La descripción es obligatoria"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {

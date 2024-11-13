@@ -1,11 +1,12 @@
-  //*Funciones y Hooks
-import React, { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+//*Funciones y Hooks
 import * as Yup from "yup";
+import { useFormik } from "formik";
+import React, { useState, useMemo } from "react";
+import useAnimation from "../../../hooks/useAnimations";
+import { updateStatus } from "../../../services/updateStatus";
+
 //*Icons
 import onOff from "/assets/on-off.svg";
-import { useFormik } from "formik";
-import { updateStatus } from "../../../services/updateStatus";
 
 interface ModalActionProps {
   id: number;
@@ -24,14 +25,18 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
 
-  const validationSchema = Yup.object({
-    id: Yup.number().required("El ID es requerido"),
-    status: Yup.string().optional(),
-    name: Yup.string()
-      .optional()
-      .min(2, "El nombre debe tener al menos 3 caracteres")
-      .max(200, "El nombre debe tener como máximo 200 caracteres"),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        id: Yup.number().required("El ID es requerido"),
+        status: Yup.string().optional(),
+        name: Yup.string()
+          .optional()
+          .min(2, "El nombre debe tener al menos 3 caracteres")
+          .max(200, "El nombre debe tener como máximo 200 caracteres"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {

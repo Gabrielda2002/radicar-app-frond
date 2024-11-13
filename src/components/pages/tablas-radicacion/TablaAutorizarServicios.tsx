@@ -1,6 +1,6 @@
 //*Fuctions and Hooks
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useFormik } from "formik";
 import {
   useFetchEstados,
@@ -24,8 +24,11 @@ const FormularioAutorizacion = () => {
   const loadEstados = true;
 
   const location = useLocation();
-  const CUPS = location.state.CUPS || [];
-  const id = location.state.id || 0;
+  const memoizedCUPS = useMemo(
+    () => location.state.CUPS || [],
+    [location.state]
+  );
+  const memoizedId = useMemo(() => location.state.id || 0, [location.state]);
 
   const { data, error, loading } = useFetchUnidadFuncional();
   const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
@@ -58,11 +61,11 @@ const FormularioAutorizacion = () => {
 
   const formik = useFormik<FormikValues>({
     initialValues: {
-      id: id,
+      id: memoizedId,
       auditora: "",
       fechaAuditoria: "",
       justificacion: "",
-      cupsDetails: CUPS.map((cups: CupsDetail) => ({
+      cupsDetails: memoizedCUPS.map((cups: CupsDetail) => ({
         code: cups.code,
         description: cups.description,
         idCupsRadicado: cups.id,
@@ -78,7 +81,7 @@ const FormularioAutorizacion = () => {
       setSuccess(false);
 
       try {
-        const response = await submitAutorizacionRadicado(values, id);
+        const response = await submitAutorizacionRadicado(values, memoizedId);
 
         if (response?.status === 200) {
           setSuccess(true);
@@ -221,7 +224,7 @@ const FormularioAutorizacion = () => {
               </div>
             </div>
 
-            <div className="flex w-full grid-cols-1">
+            <div className="flex w-full grid-cols-1 gap-3">
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}

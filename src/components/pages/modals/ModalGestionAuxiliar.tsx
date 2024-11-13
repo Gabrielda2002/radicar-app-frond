@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import {
   IRadicados,
@@ -52,17 +52,24 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   }
 
   // obtener el ultimo estao de la cirugia y radicacion
-  const ultimoEstadoCirugia =
-    radicacion &&
-    radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
-      ? getUltimoEstado(
-          radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
-        )
-      : null;
-  const ultimoEstadoRadicacion =
-    cirugias && cirugias.gestionAuxiliarCirugia
-      ? getUltimoEstado(cirugias.gestionAuxiliarCirugia)
-      : null;
+  const ultimoEstadoCirugia = useMemo(
+    () =>
+      radicacion &&
+      radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+        ? getUltimoEstado(
+            radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+          )
+        : null,
+    []
+  );
+
+  const ultimoEstadoRadicacion = useMemo(
+    () =>
+      cirugias && cirugias.gestionAuxiliarCirugia
+        ? getUltimoEstado(cirugias.gestionAuxiliarCirugia)
+        : null,
+    []
+  );
 
   // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
   const isDisabled =
@@ -74,14 +81,14 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   // Si el modal no está abierto o no hay datos de radicación ni cirugías, no renderiza nada.
   if (!isOpen || (!cirugias && !radicacion)) return null;
 
-  const EventServicio = () => {
+  const EventServicio = useCallback(() => {
     setOpenServicio(true); // Abre el segundo modal
-  };
+  }, []);
 
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy HH:mm') : 'N/A';
-  }
+    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+  };
 
   return (
     <>
@@ -121,9 +128,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                     <tr key={c.id}>
                       <td>{c.observacion}</td>
                       <td>{c.estado}</td>
-                      <td>
-                        {formatDate(c.fechaCreacion)}
-                      </td>
+                      <td>{formatDate(c.fechaCreacion)}</td>
                     </tr>
                   ))}
                 </tbody>

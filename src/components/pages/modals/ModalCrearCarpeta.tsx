@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
+
 type ModalCrearCarpetaProps = {
   standOpen: boolean;
   toggleModal: () => void;
@@ -24,21 +25,24 @@ const ModalCrearCarpeta = ({
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regex = /^[a-zA-Z0-9\s]{1,60}$/;
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const regex = /^[a-zA-Z0-9\s]{1,60}$/;
 
-    const inputValue = e.target.value;
+      const inputValue = e.target.value;
 
-    if (!regex.test(inputValue)) {
-      setError(
-        "Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales"
-      );
-    } else {
-      setError("");
-    }
-    console.log(Error);
-    setFolderName(inputValue);
-  };
+      if (!regex.test(inputValue)) {
+        setError(
+          "Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales"
+        );
+      } else {
+        setError("");
+      }
+      console.log(Error);
+      setFolderName(inputValue);
+    },
+    [setError, setFolderName]
+  );
 
   return (
     <>

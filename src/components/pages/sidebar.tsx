@@ -2,7 +2,7 @@
 import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-import { FC, useRef, useState, useEffect } from "react";
+import { FC, useRef, useState, useEffect, useCallback } from "react";
 import { useSidebar } from "../../context/sidebarContext";
 import ModalReporteCirugia from "./modals/ModalReporteCirugia";
 
@@ -32,12 +32,13 @@ const SideBar: FC = () => {
 
   const [isModalCirugiaOpen, setIsModalCirugiaOpen] = useState(false);
 
-  const openModalCirugia = () => {
+  const openModalCirugia = useCallback(() => {
     setIsModalCirugiaOpen(true);
-  };
-  const closeModalCirugia = () => {
+  }, []);
+
+  const closeModalCirugia = useCallback(() => {
     setIsModalCirugiaOpen(false);
-  };
+  }, []);
 
   //*Variables para identificación de la tabla
   const [openAccordions, setOpenAccordions] = useState({
@@ -51,13 +52,13 @@ const SideBar: FC = () => {
   const accordionRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
   // const openModalCirugia = () => {
   //   setIsModalOpenCirugia(true);
@@ -70,11 +71,14 @@ const SideBar: FC = () => {
   const { rol } = useAuth(); // <! ITERA ROLES DESDE LOGIN !>
 
   //*Funcion para hacer el color de los botones del sidebar
-  const getLinkClass = (path: string) => {
-    return location.pathname === path
-      ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
-  };
+  const getLinkClass = useCallback(
+    (path: string) => {
+      return location.pathname === path
+        ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
+    },
+    [location.pathname]
+  );
   //*Función para manejar la lógica del sidebar, asegurando que solo un acordeón esté abierto a la vez
   const toggleAccordion = (key: keyof typeof openAccordions) => {
     setOpenAccordions((prev) => {
