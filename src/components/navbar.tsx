@@ -1,12 +1,13 @@
 //*Fuctions and Hooks
+import React from "react";
 import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
 import { useSidebar } from "../context/sidebarContext";
 import { useTheme } from "../context/blackWhiteContext";
 import { useUserProfile } from "../context/userProfileContext";
+import { useState, useEffect, useCallback, useMemo } from "react";
 //*Icons
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
@@ -16,7 +17,7 @@ import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 import logo from "../imgs/logo-navbar.png";
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
   const { userProfile } = useUserProfile();
@@ -37,38 +38,57 @@ const Navbar: React.FC = () => {
     }
   }, [userProfile]);
 
-  const userNavigation = [
-    { name: "Perfil", href: "/perfil" },
-    { name: "Cerrar Sesión", action: logout },
-  ];
+  //*Using callback to save components and void unnecesary re-renders
+  const handleToggleSidebar = useCallback(()=> {
+    toggleSideBar();
+  }, [toggleSideBar]);
+
+  const handleToggleTheme = useCallback(()=> {
+    toggleTheme();
+  }, [toggleTheme]);
+
+  const handleLogout = useCallback(()=> {
+    logout();
+  }, [logout]);
+
+  const userNavigation = useMemo(
+    () => [
+      { name: "Perfil", href: "/perfil" },
+      { name: "Cerrar Sesión", action: handleLogout },
+    ],
+    [handleLogout]
+  );
 
   // Array de enlaces de soporte
-  const supportLinks = [
-    {
-      name: "Soporte de Infraestructura",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLSdHshZOrObZv-CJRht81bIZCY7jUQLo1fy5D7scB-1nW_CF-g/viewform",
-    },
-    {
-      name: "Soporte de equipos biometricos",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLSe8UZprqV_FqNYIgC0rowHcVCyUDAyZxPmgRxPuHjNXrgOOag/viewform",
-    },
-    {
-      name: "Seguridad del Paciente",
-      href: "https://forms.office.com/pages/responsepage.aspx?id=h5gx0IxtRE6Nz0WYsPqRxS4uCKLheylNnxH7ATQR5cdUQkRMTFM5QkxNNlVZQTRDMUxZTlBWRkRKQiQlQCN0PWcu&route=shorturl",
-    },
-    {
-      name: "Soporte de Sistemas",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLSfZunq4zGfBLBecr_WZPenSgqnpMwRJaTSri9n2T46zW5l_qw/viewform",
-    },
-    {
-      name: "Salud y seguridad en el trabajo",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLSfXdBv2KCYylUdP8w9Lo1CoBsUEtjx7BIZkAcdBUd32QzBq4w/viewform",
-    },
-    {
-      name: "Comite de convivencia laboral",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLScXdjU2mbD3bifKzEje2ypBMgdS64h1w5-_ENI9VvenoVf98g/viewform?usp=sf_link",
-    },
-  ];
+  const supportLinks = useMemo(
+    () => [
+      {
+        name: "Soporte de Infraestructura",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSdHshZOrObZv-CJRht81bIZCY7jUQLo1fy5D7scB-1nW_CF-g/viewform",
+      },
+      {
+        name: "Soporte de equipos biometricos",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSe8UZprqV_FqNYIgC0rowHcVCyUDAyZxPmgRxPuHjNXrgOOag/viewform",
+      },
+      {
+        name: "Seguridad del Paciente",
+        href: "https://forms.office.com/pages/responsepage.aspx?id=h5gx0IxtRE6Nz0WYsPqRxS4uCKLheylNnxH7ATQR5cdUQkRMTFM5QkxNNlVZQTRDMUxZTlBWRkRKQiQlQCN0PWcu&route=shorturl",
+      },
+      {
+        name: "Soporte de Sistemas",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSfZunq4zGfBLBecr_WZPenSgqnpMwRJaTSri9n2T46zW5l_qw/viewform",
+      },
+      {
+        name: "Salud y seguridad en el trabajo",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSfXdBv2KCYylUdP8w9Lo1CoBsUEtjx7BIZkAcdBUd32QzBq4w/viewform",
+      },
+      {
+        name: "Comite de convivencia laboral",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLScXdjU2mbD3bifKzEje2ypBMgdS64h1w5-_ENI9VvenoVf98g/viewform?usp=sf_link",
+      },
+    ],
+    []
+  );
 
   return (
     <header
@@ -79,10 +99,8 @@ const Navbar: React.FC = () => {
       <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
         <nav className="flex flex-wrap items-center text-base">
           <button
-          title="Abrir/Cerrar Sidebar"
-            onClick={() => {
-              toggleSideBar();
-            }}
+            title="Abrir/Cerrar Sidebar"
+            onClick={handleToggleSidebar}
             className="p-1 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
           >
             <div className="relative w-8 h-8">
@@ -108,13 +126,14 @@ const Navbar: React.FC = () => {
           </button>
 
           <NavLink to="/home">
-            <img src={logo} className="w-10 h-10" alt="Logo" title="Home :)"/>
+            <img src={logo} className="w-10 h-10" alt="Logo" title="Home :)" />
           </NavLink>
         </nav>
 
         {/* Botón de Modo Oscuro con Tooltip */}
         <button
-          onClick={toggleTheme}
+          onClick={handleToggleTheme}
+          title="Modo Oscuro / Claro"
           className="relative p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
         >
           {theme === "light" ? (
@@ -218,6 +237,6 @@ const Navbar: React.FC = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Navbar;

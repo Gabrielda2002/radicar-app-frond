@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 //*Icons
@@ -21,12 +21,17 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
     300
   );
 
-  const validationSchema = Yup.object({
-    estado: Yup.string().optional(),
-    nombreCups: Yup.string().optional()
-      .min(1, "El nombre del cups debe tener al menos 1 caracter")
-      .max(100, "El nombre del cups debe tener como máximo 100 caracteres"),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        estado: Yup.string().optional(),
+        nombreCups: Yup.string()
+          .optional()
+          .min(1, "El nombre del cups debe tener al menos 1 caracter")
+          .max(100, "El nombre del cups debe tener como máximo 100 caracteres"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -36,9 +41,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-
       try {
-
         const formData = new FormData();
 
         if (values.nombreCups) {
@@ -48,7 +51,6 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
           formData.append("status", values.estado);
         }
 
-        
         const response = await updateCupsData(formData, id);
 
         if (response?.status === 200 || response?.status === 201) {
@@ -59,12 +61,12 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
             window.location.reload();
           }, 2000);
         }
-
       } catch (error) {
-        setError(`Ocurrió un error al intentar actualizar el estado del cups ${error}`);
+        setError(
+          `Ocurrió un error al intentar actualizar el estado del cups ${error}`
+        );
         setSuccess(false);
       }
-
     },
   });
 

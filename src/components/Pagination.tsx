@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import arrowLeft from "/assets/arrow-left.svg";
 import arrowLeft2 from "/assets/arrow-left2.svg";
 import arrowRight from "/assets/arrow-right.svg";
@@ -17,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const pageNumbersToShow = 5; // Número de botones de página que se mostrarán
   const halfPageNumbers = Math.floor(pageNumbersToShow / 2);
 
-  const getStartPage = () => {
+  const getStartPage = useCallback(() => {
     if (totalPages <= pageNumbersToShow) {
       return 1;
     }
@@ -28,16 +28,22 @@ const Pagination: React.FC<PaginationProps> = ({
       return totalPages - pageNumbersToShow + 1;
     }
     return currentPage - halfPageNumbers;
-  };
+  }, [currentPage, totalPages, halfPageNumbers]);
 
-  const startPage = getStartPage();
-  const endPage = Math.min(startPage + pageNumbersToShow - 1, totalPages);
+  const startPage = useMemo(() => getStartPage(), [getStartPage]);
+  const endPage = useMemo(
+    () => Math.min(startPage + pageNumbersToShow - 1, totalPages),
+    [startPage, totalPages, pageNumbersToShow]
+  );
 
-  const handleClick = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      onPageChange(page);
-    }
-  };
+  const handleClick = useCallback(
+    (page: number) => {
+      if (page >= 1 && page <= totalPages) {
+        onPageChange(page);
+      }
+    },
+    [onPageChange, totalPages]
+  );
 
   return (
     <div className="flex items-center justify-center space-x-1 ">
@@ -69,8 +75,8 @@ const Pagination: React.FC<PaginationProps> = ({
           title={`Pagina ${page}`}
           className={`inline-flex items-center justify-center w-10 h-8 text-sm font-bold border rounded shadow-md  text-stone-600 dark:text-white  bg-gray-200  dark:bg-color  hover:bg-gray-500 hover:text-white dark:hover:bg-teal-400 ${
             page === currentPage
-              ? " dark:bg-gray-900 border-teal-500 dark:border-white bg-red-700"//estilo de button activo (no funciona el bg-red ahhhhh!!!)
-              : " "//estilos de buttones inactivos
+              ? " dark:bg-gray-900 border-teal-500 dark:border-white bg-red-700" //estilo de button activo (no funciona el bg-red ahhhhh!!!)
+              : " " //estilos de buttones inactivos
           }`}
           onClick={() => handleClick(page)}
         >
