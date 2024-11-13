@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 //*Icons
-import onOff from "/assets/on-off.svg";
 import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
 import { IItemsNetworking } from "../../../models/IItemsNetworking";
@@ -208,7 +207,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   return (
     <>
       <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        <img className="dark:invert " src={onOff} alt="Configuraciones" />
+        {idItem ? "Actualizar Item" : "Crear Item"}
       </button>
 
       {/* init event modal */}
