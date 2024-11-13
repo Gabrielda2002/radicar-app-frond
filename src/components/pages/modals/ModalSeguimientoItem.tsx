@@ -81,17 +81,13 @@ import { createMonitoringItem } from "./createMonitoringItem";
   
         {/* init event modal */}
         {stadopen && (
-          <section
-            className={`fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-              showAnimation && !closing ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <section className="">
-              <div
-                className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
-                  showAnimation && !closing ? "translate-y-0" : "translate-y-10"
-                }`}
-              >
+          <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm">
+          <section className="fixed inset-0 z-50 flex justify-center items-center">
+            <div
+              className={`w-[60vw] h-[fit-content] overflow-auto bg-white rounded shadow-lg dark:bg-gray-600 transition-transform transform ${
+                showAnimation && !closing ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+              }`}
+            >
                 {/* container-header */}
                 <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                   <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
@@ -210,7 +206,7 @@ import { createMonitoringItem } from "./createMonitoringItem";
                 </form>
               </div>
             </section>
-          </section>
+          </div>
         )}
       </>
     );

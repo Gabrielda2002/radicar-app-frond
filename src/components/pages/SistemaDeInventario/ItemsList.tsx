@@ -3,7 +3,7 @@ import { IItems } from '../../../models/IItems'
 import { IItemsNetworking } from '../../../models/IItemsNetworking';
 import ModalItemsDetails from '../modals/ModalItemsDetails';
 import ModalItemsForm from '../modals/ModalItemsForm';
-import ModalSeguimientoItem from '../modals/ModalSeguimientoItem';
+import ModalTablaseguimientoItem from '../modals/ModalTablaSeguimientoItem';
 
 interface ItemsListProps {
     invetario: IItems[] | IItemsNetworking[]  | null;
@@ -60,8 +60,8 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       idItem={(item as IItems).id}
                     />
 
-                    <ModalSeguimientoItem
-                      id={(item as IItems).id}
+                    <ModalTablaseguimientoItem
+                      Items={item as IItems}
                       tipoItem={tipoItem}
                     />
                   
@@ -83,8 +83,8 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       idItem={(item as IItemsNetworking).id}
                     />
 
-                    <ModalSeguimientoItem
-                      id={(item as IItemsNetworking).id}
+                    <ModalTablaseguimientoItem
+                      Items={item as IItemsNetworking}
                       tipoItem={tipoItem}
                     />
 

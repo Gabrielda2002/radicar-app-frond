@@ -19,13 +19,16 @@ const SistemaInventario: React.FC = () => {
     loading: loadingDepartment,
     errordepartment,
   } = useFetchDepartment();
+  // estados para manejar los departamentos y sedes
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
+  // traer las sedes
   const { sedes } = useFetchSedes(departmentSelect);
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
     "equipos" | "dispositivos-red" | null
   >(null);
+  // traer los items
   const { items } = useFetchItems(sedeSelect, tipoItem);
 
   // estado para manejar la pantalla actual
