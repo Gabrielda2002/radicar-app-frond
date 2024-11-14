@@ -27,9 +27,11 @@ import { createMonitoringItem } from "./createMonitoringItem";
   const idUsuario = user ? JSON.parse(user).id : "";
   
     const validationSchema = Yup.object({
-      dateEvent: Yup.date().required("La fecha es requerida"),
+      dateEvent: Yup.date().required("La fecha es requerida"),  
       typeEvent: Yup.string().required("El tipo de evento es requerido"),
-      description: Yup.string().required("La descripción es requerida"),
+      description: Yup.string().required("La descripción es requerida")
+        .min(10, "La descripción debe tener al menos 10 caracteres")
+        .max(255, "La descripción debe tener como máximo 100 caracteres"),
     });
   
     const formik = useFormik({
@@ -51,7 +53,7 @@ import { createMonitoringItem } from "./createMonitoringItem";
           formData.append("description", values.description);
           formData.append("responsible", idUsuario);
 
-           const response = await createMonitoringItem(formData, tipoItem == "equipos" ? "seguimiento-equipos" : "networking-devices");
+           const response = await createMonitoringItem(formData, tipoItem == "equipos" ? "seguimiento-equipos" : "seguimiento-dispositivos-red");
 
            if (response?.status === 201 || response?.status === 200) {
             setSuccess(true);

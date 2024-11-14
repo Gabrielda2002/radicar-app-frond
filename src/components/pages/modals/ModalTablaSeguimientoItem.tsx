@@ -20,7 +20,7 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({ I
   );
 
   const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+    return date ? format(date, "dd/MM/yyyy") : "N/A";
   };
 
   return (
@@ -63,7 +63,7 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({ I
                     {Items.seguimientoEquipos.map((s, key) => {
                         return (
                             <div key={key}>
-                                <p>{formatDate(s.eventDate)}</p>
+                                <p>{formatDate(s.dateEvent)}</p>
                                 <p>{s.eventType}</p>
                                 <p>{s.description}</p>
                                 <p>{s.userRelation.name}</p>
@@ -78,7 +78,7 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({ I
                     {Items.seguimientoDispositivosRedRelation.map((s, key) => {
                         return (
                             <div key={key}>
-                                <p>{formatDate(s.eventDate)}</p>
+                                <p>{formatDate(s.dateEvent)}</p>
                                 <p>{s.eventType}</p>
                                 <p>{s.description}</p>
                                 <p>{s.userRelation.name}</p>

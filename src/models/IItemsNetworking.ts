@@ -18,7 +18,7 @@ export interface IItemsNetworking {
 export interface seguimientoDispositivosRedRelation {
     id:          number;
     equipmentId: number;
-    eventDate:   Date;
+    dateEvent:   Date;
     eventType:   string;
     description: string;
     responsible: number;

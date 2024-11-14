@@ -23,7 +23,7 @@ export interface IItems {
 export interface SeguimientoEquipo {
     id:          number;
     equipmentId: number;
-    eventDate:   Date;
+    dateEvent:   Date;
     eventType:   string;
     description: string;
     responsible: number;
