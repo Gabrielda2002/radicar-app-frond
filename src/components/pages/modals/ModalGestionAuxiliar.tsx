@@ -81,9 +81,9 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   // Si el modal no está abierto o no hay datos de radicación ni cirugías, no renderiza nada.
   if (!isOpen || (!cirugias && !radicacion)) return null;
 
-  const EventServicio = useCallback(() => {
+  const EventServicio = () => {
     setOpenServicio(true); // Abre el segundo modal
-  }, []);
+  };
 
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {

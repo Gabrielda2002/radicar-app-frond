@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
@@ -18,15 +18,19 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Esquema de validación con Yup
-  const validationSchema = Yup.object({
-    estadoSeguimiento: Yup.string().required(
-      "El estado de seguimiento es requerido."
-    ),
-    observacion: Yup.string()
-      .min(10, "La observación debe tener al menos 10 caracteres.")
-      .max(200, "La observación no debe exceder los 200 caracteres.")
-      .required("La observación es requerida."),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        estadoSeguimiento: Yup.string().required(
+          "El estado de seguimiento es requerido."
+        ),
+        observacion: Yup.string()
+          .min(10, "La observación debe tener al menos 10 caracteres.")
+          .max(200, "La observación no debe exceder los 200 caracteres.")
+          .required("La observación es requerida."),
+      }),
+    []
+  );
 
   // Hook de Formik
   const formik = useFormik({
