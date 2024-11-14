@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 import useSearch from "../../hooks/useSearch.ts";
-import { IStatusCup } from "../../models/IAuditar.ts";
+import { IAuditar, IStatusCup } from "../../models/IAuditar.ts";
 import usePagination from "../../hooks/usePagination.ts";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 

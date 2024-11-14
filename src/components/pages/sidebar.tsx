@@ -297,7 +297,7 @@ const SideBar: FC = () => {
 
             {/*  MODULO GESTION SERVICIOS  */}
 
-            {[10, 3, 1, 15].includes(Number(rol)) && (
+            {[10, 3, 1, 15, 6].includes(Number(rol)) && (
               <div>
                 <button
                   onClick={() => toggleAccordion("services")}
@@ -339,7 +339,7 @@ const SideBar: FC = () => {
                 </button>
                 {openAccordions.services && (
                   <div className="mt-2 space-y-3">
-                    {[10, 3, 1, 15].includes(Number(rol)) && (
+                    {[10, 3, 1, 15, 6].includes(Number(rol)) && (
                       <NavLink to="/tabla-radicacion">
                         {({ isActive }) => (
                           <div
