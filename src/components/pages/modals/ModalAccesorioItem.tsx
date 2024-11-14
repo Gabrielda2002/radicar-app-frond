@@ -3,12 +3,19 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
 
 //*Icons
 
 interface ModalAccesorioItemProps {
   id: number;
 }
+
+const inventoryOptions = {
+  hardware: ["RAM", "Procesador", "Disco Duro", "Tarjeta Madre"],
+  software: ["Windows", "Linux", "Office", "Photoshop"],
+  periferico: ["Mouse", "Teclado", "Monitor", "Impresora"],
+};
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -17,12 +24,15 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
     () => setStadopen(false),
     300
   );
-  //   const [success, setSuccess] = useState(false);
-  //   const [submitting, setSubmitting] = useState(false);
-  //   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>("");
 
   // estado para controlar que se va a agregar al equipo
   const [typeAdd, setTypeAdd] = useState<string>("");
+
+  const [search, setSearch] = useState<string>("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const getValidationSchema = (typeAdd: string) => {
     const baseValidationSchema = {
@@ -118,9 +128,87 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
     },
     validationSchema: getValidationSchema(typeAdd),
     onSubmit: async (values) => {
-      console.log(values);
+      try {
+        setSubmitting(true);
+
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("otherData", values.othersData);
+        formData.append("equipmentId", id.toString());
+
+
+        let ep: string = "";
+
+        if (typeAdd === "Periferico" || typeAdd === "hardware") {
+          formData.append("brand", values.brand);
+          formData.append("serial", values.serial);
+          formData.append("model", values.model);
+        }
+        if (typeAdd === "software") {
+          ep = "software";
+          formData.append("version", values.version);
+          formData.append("license", values.license);
+          formData.append("dateInstallation", values.dateInstallation);
+          formData.append("status", values.status);
+        }
+        if (typeAdd === "hardware") {
+          ep = "componentes";
+          formData.append("capacity", values.capacity);
+          formData.append("speed", values.speed);
+        }
+        if (typeAdd === "Periferico") {
+          ep = "accesorios-equipos";
+          formData.append("inventoryNumber", values.inventoryNumber);
+          formData.append("status", values.status);
+        }
+
+        const response = await createAccesoryEquipment(formData, ep);
+
+        if (response?.status === 200 || response?.status === 201) {
+          setSubmitting(false);
+          setSuccess(true);
+          setError(null);
+          setTimeout(() => {
+            setSuccess(false);
+            setStadopen(false);
+          }, 3000);
+        } else {
+          setSubmitting(false);
+          setSuccess(false);
+          setError("Error al crear el accesorio");
+        }
+      } catch (error) {
+        setError("Error al crear el accesorio" + error);
+      }
+      setSubmitting(false);
     },
   });
+
+interface HandleSearchChangeEvent {
+    target: {
+        value: string;
+    };
+}
+
+const handleSearchChange = (e: HandleSearchChangeEvent) => {
+    const query = e.target.value;
+    setSearch(query);
+
+    if (typeAdd && query) {
+        const filteredSuggestions = inventoryOptions[
+            typeAdd.toLowerCase() as keyof typeof inventoryOptions
+        ].filter((option) => option.toLowerCase().includes(query.toLowerCase()));
+        setSuggestions(filteredSuggestions);
+    } else {
+        setSuggestions([]);
+    }
+};
+
+  const handleSuggestionClick = (suggestion: string) => {
+    formik.setFieldValue("name", suggestion);
+    setSearch(suggestion);
+    setSuggestions([]);
+  };
 
   return (
     <>
@@ -144,7 +232,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Módulos
+                  Agregar Accesorio
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -183,20 +271,34 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                     </div>
                     {typeAdd && (
                       <>
-                        <div className="flex">
+                        <div className="relative">
                           <label htmlFor="">
                             <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
                               Nombre
                             </span>
-                            <select
+                            <input
                               name="name"
-                              value={formik.values.name}
-                              onChange={formik.handleChange}
+                              value={search}
+                              onChange={handleSearchChange}
                               onBlur={formik.handleBlur}
                               className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-                            >
-                              <option value="">SELECCIONE</option>
-                            </select>
+                            />
+
+                            {suggestions.length > 0 && (
+                              <ul className="absolute top-full mt-1 w-[200px] border border-gray-200 rounded bg-white dark:bg-gray-800 dark:border-gray-600 max-h-40 overflow-y-auto z-10">
+                                {suggestions.map((suggestion) => (
+                                  <li
+                                    key={suggestion}
+                                    onClick={() =>
+                                      handleSuggestionClick(suggestion)
+                                    }
+                                    className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
+                                  >
+                                    {suggestion}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
                             {formik.touched.name && formik.errors.name ? (
                               <label className="text-red-500">
                                 {formik.errors.name}
@@ -383,8 +485,9 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                             className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                           >
                             <option value="">- SELECT -</option>
-                            <option value={1}>Activo</option>
-                            <option value={0}>Inactivo</option>
+                            <option value="NUEVO">Nuevo</option>
+                            <option value="REGULAR">Regular</option>
+                            <option value="MALO">Malo</option>
                           </select>
                           {formik.touched.status && formik.errors.status ? (
                             <label className="text-red-500">
@@ -483,8 +586,9 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                             className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                           >
                             <option value="">- SELECT -</option>
-                            <option value={1}>Activo</option>
-                            <option value={0}>Inactivo</option>
+                            <option value="NUEVO">Nuevo</option>
+                            <option value="REGULAR">Regular</option>
+                            <option value="MALO">Malo</option>
                           </select>
                           {formik.touched.status && formik.errors.status ? (
                             <label className="text-red-500">
@@ -508,17 +612,17 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                   <button
                     className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
-                    // disabled={submitting}
+                    disabled={submitting}
                   >
                     Crear
-                    {/* {submitting ? "Actualizando..." : "Actualizando"} */}
+                    {submitting ? "Actualizando..." : "Actualizando"}
                   </button>
-                  {/* {success && (
+                  {success && (
                     <div className="text-green-500">
                       Estado actualizado con éxito
                     </div>
                   )}
-                  {error && <div className="text-red-500">{error}</div>} */}
+                  {error && <div className="text-red-500">{error}</div>}
                 </div>
               </form>
             </div>

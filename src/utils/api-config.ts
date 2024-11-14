@@ -194,3 +194,8 @@ export const updateItemEp = async (data: FormData, id: number, ep: string) => {
 export const createSeguimientoItemEp = async (data: FormData, ep: string) => {
     return api.post(`/${ep}`, data);
 }
+
+// crear accesorio item
+export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
+}
