@@ -4,6 +4,7 @@ import { IItemsNetworking } from '../../../models/IItemsNetworking';
 import ModalItemsDetails from '../modals/ModalItemsDetails';
 import ModalItemsForm from '../modals/ModalItemsForm';
 import ModalTablaseguimientoItem from '../modals/ModalTablaSeguimientoItem';
+import ModalAccesorioItem from '../modals/ModalAccesorioItem';
 
 interface ItemsListProps {
     invetario: IItems[] | IItemsNetworking[]  | null;
@@ -64,7 +65,11 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       Items={item as IItems}
                       tipoItem={tipoItem}
                     />
-                  
+
+                    {/* agregar accesorio */}
+                    <ModalAccesorioItem
+                      id={(item as IItems).id}
+                    />
                     </>
                 ) : (
                     <>
