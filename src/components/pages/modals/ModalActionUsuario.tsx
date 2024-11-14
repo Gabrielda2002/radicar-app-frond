@@ -405,7 +405,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         Contraseña
                       </label>
                       <input
-                        name="Contraseña"
+                        name="contrasena"
                         value={formik.values.contrasena}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}

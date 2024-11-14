@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination.tsx";
 import LoadingSpinner from "../LoadingSpinner";
 import useSearch from "../../hooks/useSearch.ts";
-import { IStatusCup } from "../../models/IAuditar.ts";
+import { IAuditar, IStatusCup } from "../../models/IAuditar.ts";
 import usePagination from "../../hooks/usePagination.ts";
 import { useFetchAuditoria } from "../../hooks/useFetchUsers";
 
@@ -17,7 +17,7 @@ import autorizar from "/assets/autorizar.svg";
 
 //*Properties
 import ModalSection from "../ModalSection.tsx";
-import { IAuditar } from "../../models/IAuditar.ts";
+import { toZonedTime } from "date-fns-tz";
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("./modals/ModalMostrarDatos.tsx")
@@ -79,7 +79,9 @@ const TablaAuditoria = () => {
   };
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
+    if (!date) return 'N/A';
+    const utcDate = toZonedTime(date, 'America/Bogota'); // Reemplaza con la zona horaria deseada
+    return format(utcDate, 'dd/MM/yyyy');
   };
 
   return (
@@ -185,9 +187,7 @@ const TablaAuditoria = () => {
                         {auditoria.ipsPrimary}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {auditoria.orderDate
-                          ? auditoria.orderDate.getTime()
-                          : "N/A"}
+                        {formatDate(auditoria.orderDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.place}

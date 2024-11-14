@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import arrowLeft from "/assets/arrow-left.svg";
 import arrowLeft2 from "/assets/arrow-left2.svg";
 import arrowRight from "/assets/arrow-right.svg";

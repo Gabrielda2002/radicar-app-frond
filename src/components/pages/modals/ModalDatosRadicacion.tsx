@@ -1,6 +1,7 @@
 import { IRadicados } from "../../../models/IRadicados";
 import useAnimation from "../../../hooks/useAnimations";
-import { format } from "date-fns";
+import { format  } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -13,13 +14,15 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   radicacion,
 }) => {
+  console.log(radicacion)
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || !radicacion) return null;
 
-  // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'dd/MM/yyyy') : 'N/A';
-  }
+    if (!date) return 'N/A';
+    const utcDate = toZonedTime(date, 'America/Bogota'); // Reemplaza con la zona horaria deseada
+    return format(utcDate, 'dd/MM/yyyy');
+  };
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -70,7 +73,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha Orden
                   </td>
-                  <td className="">{formatDate(radicacion.orderDate )}</td>
+                  <td className="">{formatDate(radicacion.orderDate)}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">

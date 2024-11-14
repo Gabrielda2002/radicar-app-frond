@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -55,33 +55,39 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
     }
   }, [isOpen]);
 
-  const validationSchema = Yup.object({
-    tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
-    correo: Yup.string().required("El correo es obligatorio"),
-    identificacion: Yup.string()
-      .required("La identificación es obligatoria")
-      .min(5, "La identificación debe tener al menos 5 caracteres")
-      .max(11, "La identificación debe tener como máximo 15 caracteres"),
-    telefonoFijo: Yup.string()
-      .required("El teléfono fijo es obligatorio")
-      .min(1, "El teléfono fijo debe tener al menos 1 caracter")
-      .max(10, "El teléfono fijo debe tener como máximo 20 caracteres"),
-    nombreCompleto: Yup.string()
-      .required("El nombre completo es obligatorio")
-      .min(3, "El nombre completo debe tener al menos 3 caracteres")
-      .max(100, "El nombre completo debe tener como máximo 100 caracteres"),
-    convenio: Yup.string().required("El convenio es obligatorio"),
-    numeroCelular: Yup.string()
-      .required("El número de celular es obligatorio")
-      .min(1, "El número de celular debe tener al menos 1 caracter")
-      .max(10, "El número de celular debe tener como máximo 10 caracteres"),
-    numeroCelular2: Yup.string()
-      .optional()
-      .min(1, "El número de celular debe tener al menos 1 caracter")
-      .max(10, "El número de celular debe tener como máximo 10 caracteres"),
-    ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
-    direccion: Yup.string().required("La dirección es obligatoria"),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        tipoDocumento: Yup.string().required(
+          "El tipo de documento es obligatorio"
+        ),
+        correo: Yup.string().required("El correo es obligatorio"),
+        identificacion: Yup.string()
+          .required("La identificación es obligatoria")
+          .min(5, "La identificación debe tener al menos 5 caracteres")
+          .max(11, "La identificación debe tener como máximo 15 caracteres"),
+        telefonoFijo: Yup.string()
+          .required("El teléfono fijo es obligatorio")
+          .min(1, "El teléfono fijo debe tener al menos 1 caracter")
+          .max(10, "El teléfono fijo debe tener como máximo 20 caracteres"),
+        nombreCompleto: Yup.string()
+          .required("El nombre completo es obligatorio")
+          .min(3, "El nombre completo debe tener al menos 3 caracteres")
+          .max(100, "El nombre completo debe tener como máximo 100 caracteres"),
+        convenio: Yup.string().required("El convenio es obligatorio"),
+        numeroCelular: Yup.string()
+          .required("El número de celular es obligatorio")
+          .min(1, "El número de celular debe tener al menos 1 caracter")
+          .max(10, "El número de celular debe tener como máximo 10 caracteres"),
+        numeroCelular2: Yup.string()
+          .optional()
+          .min(1, "El número de celular debe tener al menos 1 caracter")
+          .max(10, "El número de celular debe tener como máximo 10 caracteres"),
+        ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
+        direccion: Yup.string().required("La dirección es obligatoria"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {
