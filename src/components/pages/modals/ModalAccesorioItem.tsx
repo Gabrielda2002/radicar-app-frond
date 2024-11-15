@@ -4,17 +4,10 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
-
-//*Icons
+import inventoryOptions from "../../../data-dynamic/inventoryOptions.json";
 
 interface ModalAccesorioItemProps {
   id: number;
-}
-
-const inventoryOptions = {
-  hardware: ["RAM", "Procesador", "Disco Duro", "Tarjeta Madre"],
-  software: ["Windows", "Linux", "Office", "Photoshop"],
-  periferico: ["Mouse", "Teclado", "Monitor", "Impresora"],
 };
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
