@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, {  useState } from "react";
+import React, { useMemo, useState } from "react";
 import * as Yup from "yup";
 //*Icons
 import logo from "/src/imgs/logo.png";
@@ -12,8 +12,6 @@ import {
 import { createUser } from "../../services/createUser";
 
 const RegistrarUsuarios: React.FC = () => {
-
-  
   const isOpen = true;
   const { dataDocumento, errorDocumento } = useFetchDocumento(isOpen);
   const load = true;
@@ -32,38 +30,44 @@ const RegistrarUsuarios: React.FC = () => {
   //   setIsAccordionOpen(!isAccordionOpen);
   // };
 
-  const validationSchema = Yup.object({
-    municipio: Yup.string().required("El municipio es obligatorio"),
-    rol: Yup.string().required("El rol es obligatorio"),
-    tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
-    numeroDocumento: Yup.string()
-      .required("El número de documento es obligatorio")
-      .min(1, "El número de documento no puede ser menor a 1")
-      .max(10, "El número de documento no puede ser mayor a 10"),
-    nombresCompletos: Yup.string()
-      .required("Los nombres completos son obligatorios")
-      .min(2, "Debe tener minimo 2 caracteres")
-      .max(150, "Debe tener máximo 150 caracteres"),
-    apellidosCompletos: Yup.string()
-      .required("Los apellidos completos son obligatorios")
-      .min(2, "Debe tener minimo 2 caracteres")
-      .max(150, "Debe tener máximo 150 caracteres"),
-    correo: Yup.string()
-      .email("Correo inválido")
-      .required("El correo es obligatorio")
-      .email("Correo inválido")
-      .min(10, "Debe tener minimo 5 caracteres")
-      .max(150, "Debe tener máximo 150 caracteres"),
-    contraseña: Yup.string()
-      .required("La contraseña es obligatoria")
-      .min(8, "Debe tener minimo 8 caracteres")
-      .max(150, "Debe tener máximo 150 caracteres")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
-        "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
-      ),
-    date: Yup.date().required("La fecha de nacimiento es obligatoria"),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        municipio: Yup.string().required("El municipio es obligatorio"),
+        rol: Yup.string().required("El rol es obligatorio"),
+        tipoDocumento: Yup.string().required(
+          "El tipo de documento es obligatorio"
+        ),
+        numeroDocumento: Yup.string()
+          .required("El número de documento es obligatorio")
+          .min(1, "El número de documento no puede ser menor a 1")
+          .max(10, "El número de documento no puede ser mayor a 10"),
+        nombresCompletos: Yup.string()
+          .required("Los nombres completos son obligatorios")
+          .min(2, "Debe tener minimo 2 caracteres")
+          .max(150, "Debe tener máximo 150 caracteres"),
+        apellidosCompletos: Yup.string()
+          .required("Los apellidos completos son obligatorios")
+          .min(2, "Debe tener minimo 2 caracteres")
+          .max(150, "Debe tener máximo 150 caracteres"),
+        correo: Yup.string()
+          .email("Correo inválido")
+          .required("El correo es obligatorio")
+          .email("Correo inválido")
+          .min(10, "Debe tener minimo 5 caracteres")
+          .max(150, "Debe tener máximo 150 caracteres"),
+        contraseña: Yup.string()
+          .required("La contraseña es obligatoria")
+          .min(8, "Debe tener minimo 8 caracteres")
+          .max(150, "Debe tener máximo 150 caracteres")
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
+            "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
+          ),
+        date: Yup.date().required("La fecha de nacimiento es obligatoria"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -113,7 +117,9 @@ const RegistrarUsuarios: React.FC = () => {
 
   if (errorMunicipios)
     return (
-      <div className="flex justify-center text-lg dark:text-white">Error: {errorMunicipios}</div>
+      <div className="flex justify-center text-lg dark:text-white">
+        Error: {errorMunicipios}
+      </div>
     );
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
