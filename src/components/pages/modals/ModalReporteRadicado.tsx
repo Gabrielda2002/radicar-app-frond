@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { useModalReport } from "../../../hooks/useReport";
 import { useDownloadReport } from "../../../hooks/useDownloadReport";
@@ -12,7 +12,11 @@ interface ModalProps {
   formType: "Autorizacion" | "Radicacion";
 }
 
-const ModalReporteRadicado: React.FC<ModalProps> = ({ isOpen, onClose, formType }) => {
+const ModalReporteRadicado: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  formType,
+}) => {
   const { formValues, handleChange } = useModalReport();
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [dateStartRadicado, setDateStartRadicado] = useState("");
@@ -22,29 +26,40 @@ const ModalReporteRadicado: React.FC<ModalProps> = ({ isOpen, onClose, formType 
   const { downloadReport, error } = useDownloadReport();
   const { showAnimation, closing } = useAnimation(isOpen, onClose); // Hook con estado de cierre
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     // lógica de envío
-  };
+  }, []);
 
-  const handleDownloadReport = async () => {
+  const handleDownloadReport = useCallback(async () => {
     try {
       const endPoint: string = "report-excel-filtro";
-      await downloadReport(dateStartRadicado, dateEndRadicado, cupsCode, endPoint);
+      await downloadReport(
+        dateStartRadicado,
+        dateEndRadicado,
+        cupsCode,
+        endPoint
+      );
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  const handleOutsideClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      setShowSecondModal(false);
-      setTimeout(() => onClose(), 300);
-    }
-  };
+  const handleOutsideClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        setShowSecondModal(false);
+        setTimeout(() => onClose(), 300);
+      }
+    },
+    [onClose]
+  );
 
-  const modalTitle =
-    formType === "Autorizacion" ? "Autorizacion Reporte" : "Reporte Excel";
+  const modalTitle = useMemo(
+    () =>
+      formType === "Autorizacion" ? "Autorizacion Reporte" : "Reporte Excel",
+    [formType]
+  );
 
   if (!isOpen && !showAnimation) return null;
 
