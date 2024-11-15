@@ -22,16 +22,20 @@ const SistemaDeInventario = lazy(
 
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
+const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
+
 const TableInventory = lazy(
   () => import("./components/Routes/TablesInventory.tsx")
 );
-const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
+
 const TablaAuditoria = lazy(
   () => import("./components/pages/TablaAuditoria.tsx")
 );
+
 const TablaRadicacion = lazy(
   () => import("./components/pages/TablaRadicacion.tsx")
 );
+
 const TablaAutorizarServicios = lazy(
   () =>
     import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
@@ -52,9 +56,8 @@ import { UserProfileProvider } from "./context/userProfileContext";
 import SistemaInventario from "./components/pages/SistemaDeInventario/SistemaInventario.tsx";
 
 function AppRoutes() {
-  const { theme } = useTheme();
   return (
-    <div className={`font-semibold ${theme === "dark" ? "dark" : ""}`}>
+    <div>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
@@ -139,27 +142,30 @@ function AppRoutes() {
 }
 
 export function App() {
+  const { theme } = useTheme();
   return (
-    <AuthProvider>
-      <UserProfileProvider>
-        <SidebarProvider>
-          <CookieConsent />
-          <AppRoutes />
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            transition={Bounce}
-          />
-        </SidebarProvider>
-      </UserProfileProvider>
-    </AuthProvider>
+    <div className={`font-semibold ${theme === "dark" ? "dark" : ""}`}>
+      <AuthProvider>
+        <UserProfileProvider>
+          <SidebarProvider>
+            <CookieConsent />
+            <AppRoutes />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+              transition={Bounce}
+            />
+          </SidebarProvider>
+        </UserProfileProvider>
+      </AuthProvider>
+    </div>
   );
 }

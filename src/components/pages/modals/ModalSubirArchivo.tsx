@@ -1,5 +1,5 @@
 // ModalSubirArchivo.tsx
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import upload from "/assets/upload.svg";
 import { toast } from "react-toastify";
 
@@ -20,44 +20,47 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const allowedExtensions = /(\.pdf|\.doc|\.docx|\.xls|\.xlsx)$/i;
-      const filesArray = Array.from(e.target.files);
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const allowedExtensions = /(\.pdf|\.doc|\.docx|\.xls|\.xlsx)$/i;
+        const filesArray = Array.from(e.target.files);
 
-      const validFiles = filesArray.filter((file) =>
-        allowedExtensions.test(file.name)
-      );
-      const invalidFiles = filesArray.filter(
-        (file) => !allowedExtensions.test(file.name)
-      );
-
-      if (invalidFiles.length > 0) {
-        toast.error(
-          `Los siguientes archivos no son válidos: ${invalidFiles
-            .map((file) => file.name)
-            .join(", ")}`
+        const validFiles = filesArray.filter((file) =>
+          allowedExtensions.test(file.name)
         );
+        const invalidFiles = filesArray.filter(
+          (file) => !allowedExtensions.test(file.name)
+        );
+
+        if (invalidFiles.length > 0) {
+          toast.error(
+            `Los siguientes archivos no son válidos: ${invalidFiles
+              .map((file) => file.name)
+              .join(", ")}`
+          );
+        }
+
+        if (validFiles.length > 0) {
+          setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+
+          const dataTransfer = new DataTransfer();
+          validFiles.forEach((file) => dataTransfer.items.add(file));
+
+          const newEvent = {
+            ...e,
+            target: {
+              ...e.target,
+              files: dataTransfer.files,
+            },
+          };
+
+          onFileChange(newEvent as React.ChangeEvent<HTMLInputElement>);
+        }
       }
-
-      if (validFiles.length > 0) {
-        setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
-
-        const dataTransfer = new DataTransfer();
-        validFiles.forEach((file) => dataTransfer.items.add(file));
-
-        const newEvent = {
-          ...e,
-          target: {
-            ...e.target,
-            files: dataTransfer.files,
-          },
-        };
-
-        onFileChange(newEvent as React.ChangeEvent<HTMLInputElement>);
-      }
-    }
-  };
+    },
+    [onFileChange]
+  );
 
   const handleRemoveFile = (name: string) => {
     setSelectedFiles((prevFiles) =>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { useDownloadReport } from "../../../hooks/useDownloadReport";
 
@@ -17,12 +17,15 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
   const [dateStartRadicado, setDateStartRadicado] = useState("");
   const [dateEndRadicado, setDateEndRadicado] = useState("");
 
-  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Verificamos si el clic fue en el fondo (backdrop) y no en el contenido del modal
-    if (e.target === e.currentTarget) {
-      setTimeout(onCLose, 300);
-    }
-  };
+  const handleOutsideClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      // Verificamos si el clic fue en el fondo (backdrop) y no en el contenido del modal
+      if (e.target === e.currentTarget) {
+        setTimeout(onCLose, 300);
+      }
+    },
+    [onCLose]
+  );
 
   const handleDownloadReport = async () => {
     try {
@@ -116,15 +119,11 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
               className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
                 isDownloadDisabled ? "opacity-50 cursor-not-allowed" : ""
               }`}
-             >
+            >
               Descargar
             </button>
           </div>
-          {error && (
-          <div className="mt-4 text-red-500">
-            {error}
-          </div>
-          )}
+          {error && <div className="mt-4 text-red-500">{error}</div>}
         </div>
       </section>
     </div>

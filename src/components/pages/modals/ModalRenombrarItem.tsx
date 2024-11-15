@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 type ModalRenombrarItemProps = {
   standOpen: boolean;
@@ -14,16 +14,16 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   const [Error, setError] = useState("");
   const [folderNewName, setFolderNewName] = useState("");
 
-  const handleRename = () => {
+  const handleRename = useCallback(() => {
     if (folderNewName.trim()) {
       renameItem(folderNewName);
       toggleModal();
     } else {
       alert("El nombre de la carpeta es requerido");
     }
-  };
+  }, [folderNewName, renameItem, toggleModal]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback( (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[a-zA-Z0-9\s]{1,60}$/;
 
     const inputValue = e.target.value;
@@ -37,7 +37,7 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
     }
     console.log(Error);
     setFolderNewName(inputValue);
-  };
+  }, []);
 
   return (
     <div>

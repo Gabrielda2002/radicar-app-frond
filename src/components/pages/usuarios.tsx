@@ -110,7 +110,10 @@ const Usuarios = () => {
                 </thead>
                 <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
                   {currentData().map((usuario) => (
-                    <tr className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
+                    <tr
+                      key={usuario.id}
+                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                    >
                       <td className="p-3 border-b dark:border-gray-700">
                         {usuario.id}
                       </td>
