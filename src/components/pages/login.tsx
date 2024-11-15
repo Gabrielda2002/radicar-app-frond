@@ -32,7 +32,7 @@ const Login: React.FC = () => {
         navigate("/home");
       } // <! VALIDACION DE ROLES "TIENEN QUE ESTAR EN LA BASE" !>
     } catch (error) {
-      setError("Error al iniciar sesión, verifica tus credenciales" + error);
+      setError("Error al iniciar sesión, verifica tus credenciales o tu usuario esta inactivo" + error);
     }
   };
 
