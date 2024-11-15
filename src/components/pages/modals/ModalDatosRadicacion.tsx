@@ -1,7 +1,8 @@
 import { IRadicados } from "../../../models/IRadicados";
 import useAnimation from "../../../hooks/useAnimations";
-import { format  } from "date-fns";
+import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
+import { useAuth } from "../../../context/authContext";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -14,15 +15,17 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   radicacion,
 }) => {
-  console.log(radicacion)
+  console.log(radicacion);
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   if (!isOpen || !radicacion) return null;
 
   const formatDate = (date: Date | null) => {
-    if (!date) return 'N/A';
-    const utcDate = toZonedTime(date, 'America/Bogota'); // Reemplaza con la zona horaria deseada
-    return format(utcDate, 'dd/MM/yyyy');
+    if (!date) return "N/A";
+    const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
+    return format(utcDate, "dd/MM/yyyy");
   };
+
+  const { rol } = useAuth();
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -70,9 +73,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="">{radicacion.placeRelation.name}</td>
                 </tr>
                 <tr className="">
-                  <td className="bg-gray-400 dark:bg-gray-600">
-                    Fecha Orden
-                  </td>
+                  <td className="bg-gray-400 dark:bg-gray-600">Fecha Orden</td>
                   <td className="">{formatDate(radicacion.orderDate)}</td>
                 </tr>
                 <tr>
@@ -115,16 +116,16 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha Auditoría
                   </td>
-                  <td className="">
-                    {formatDate(radicacion.auditDate)}
-                  </td>
+                  <td className="">{formatDate(radicacion.auditDate)}</td>
                 </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">
-                    Justificación
-                  </td>
-                  <td className="">{radicacion.justify}</td>
-                </tr>
+                {[1, 3].includes(Number(rol)) && (
+                  <tr>
+                    <td className="bg-gray-400 dark:bg-gray-600">
+                      Justificación
+                    </td>
+                    <td className="">{radicacion.justify}</td>
+                  </tr>
+                )}
               </tbody>
             </table>
 
@@ -137,9 +138,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha - Hora del Radicado
                   </td>
-                  <td className="">
-                    {formatDate(radicacion.createdAt)}
-                  </td>
+                  <td className="">{formatDate(radicacion.createdAt)}</td>
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">N.º Radicado</td>
@@ -241,42 +240,53 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             {/* Segunda tabla */}
 
             {radicacion.cirugiasRelation.length > 0 ? (
-            <table className="mt-2 mb-8 text-sm border-2">
-              {radicacion.cirugiasRelation.map((cirugia) => (
-              <tbody key={cirugia.id} className="dark:text-gray-200">
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Fecha Cirugía</td>
-                  <td>{formatDate(cirugia.surgeryDate)}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Hora</td>
-                  <td>{cirugia.scheduledTime}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">IPS Cirugia</td>
-                  <td>{cirugia.ipsRemite}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Fecha paraclinico</td>
-                  <td>{formatDate(cirugia.paraclinicalDate)}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Fecha anestesiologia</td>
-                  <td>{formatDate(cirugia.anesthesiologyDate)}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Especialista cirugia</td>
-                  <td>{cirugia.specialist}</td>
-                </tr>
-                <tr>
-                  <td className="bg-gray-400 dark:bg-gray-600">Observación</td>
-                  <td>{cirugia.observation}</td>
-                </tr>
-              </tbody>
-              ))}
+              <table className="mt-2 mb-8 text-sm border-2">
+                {radicacion.cirugiasRelation.map((cirugia) => (
+                  <tbody key={cirugia.id} className="dark:text-gray-200">
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Fecha Cirugía
+                      </td>
+                      <td>{formatDate(cirugia.surgeryDate)}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">Hora</td>
+                      <td>{cirugia.scheduledTime}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        IPS Cirugia
+                      </td>
+                      <td>{cirugia.ipsRemite}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Fecha paraclinico
+                      </td>
+                      <td>{formatDate(cirugia.paraclinicalDate)}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Fecha anestesiologia
+                      </td>
+                      <td>{formatDate(cirugia.anesthesiologyDate)}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Especialista cirugia
+                      </td>
+                      <td>{cirugia.specialist}</td>
+                    </tr>
+                    <tr>
+                      <td className="bg-gray-400 dark:bg-gray-600">
+                        Observación
+                      </td>
+                      <td>{cirugia.observation}</td>
+                    </tr>
+                  </tbody>
+                ))}
               </table>
-            ): null}
-
+            ) : null}
           </div>
 
           {/* container-footer */}
