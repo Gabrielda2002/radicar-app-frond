@@ -18,7 +18,34 @@ export interface IItems {
     createAt:           Date;
     updateAt:           Date;
     seguimientoEquipos: SeguimientoEquipo[];
+    accessoriesRelation: AccessoriesRelation[];
+    componentRelation:   ComponentRelation[];
+    softwareRelation:    SoftwareRelation[];
 }
+
+export interface AccessoriesRelation {
+    id:              number;
+    equipmentId:     number;
+    name:            string;
+    brand:           string;
+    model:           string;
+    serial:          string;
+    otherData:       string;
+    status:          string;
+    inventoryNumber: string;
+}
+
+export interface ComponentRelation {
+    id:           number;
+    idEquipments: number;
+    name:         string;
+    brand:        string;
+    capacity:     string;
+    speed:        string;
+    otherData:    string;
+    model:        string;
+    serial:       string;
+}   
 
 export interface SeguimientoEquipo {
     id:          number;
@@ -28,6 +55,17 @@ export interface SeguimientoEquipo {
     description: string;
     responsible: number;
     userRelation: UserRelation
+}
+
+export interface SoftwareRelation {
+    id:          number;
+    equipmentId: number;
+    name:        string;
+    versions:    string;
+    license:     string;
+    otherData:   string;
+    installDate: Date;
+    status:      string;
 }
 export interface UserRelation {
     id:        number;

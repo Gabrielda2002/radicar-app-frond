@@ -206,7 +206,7 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
   return (
     <>
       <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        Agregar Periferico
+        Agregar Accesorio
       </button>
 
       {/* init event modal */}
