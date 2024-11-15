@@ -179,3 +179,23 @@ export const updatePasswordUsuarioEp = async (data: FormData, id: number) => {
 export const updateUsuariosTableEp = async (data: FormData, id: number) => {
     return api.put(`/usuario-update-table/${id}`, data);
 }
+
+// crear item sistema inventario
+export const createItemEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
+}
+
+// actualizar item sistema inventario
+export const updateItemEp = async (data: FormData, id: number, ep: string) => {
+    return api.put(`/${ep}/${id}`, data);
+}
+
+// crear seguimiento item
+export const createSeguimientoItemEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
+}
+
+// crear accesorio item
+export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
+}
