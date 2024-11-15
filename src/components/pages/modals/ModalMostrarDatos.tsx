@@ -66,7 +66,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                   </tr>
                 </thead>
                 <tbody className="text-center dark:text-gray-200">
-                  <tr>
+                  <tr key={cirugias.id}>
                     <td>
                       {formatDate(dateOrder)}
                     </td>
@@ -104,8 +104,8 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
 
                 {data &&
                   data.map((cups) => (
-                    <tbody className="text-center dark:text-gray-200">
-                      <tr>
+                    <tbody className="text-center dark:text-gray-200" key={cups.idRadicado}>
+                      <tr key={cups.idRadicado}>
                         <td className="">{cups.code}</td>
                         <td className="">{cups.description}</td>
                         <td className="">{cups.status}</td>

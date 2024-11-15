@@ -17,6 +17,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 }) => {
   console.log(radicacion);
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
+  const { rol } = useAuth();
   if (!isOpen || !radicacion) return null;
 
   const formatDate = (date: Date | null) => {
@@ -24,8 +25,6 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
     const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
     return format(utcDate, "dd/MM/yyyy");
   };
-
-  const { rol } = useAuth();
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
