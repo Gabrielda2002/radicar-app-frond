@@ -6,6 +6,7 @@ import {
   fetchConvenio,
   fetchCups,
   fetchDepartarmentsEp,
+  fetchDiagnosticos,
   fetchDocumento,
   fetchEspecialidad,
   fetchEstados,
@@ -39,6 +40,7 @@ import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
+import { IDiagnostico } from "../models/IDiagnostico";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -508,4 +510,29 @@ export const useFetchDepartment = () => {
     getData();
   }, []);
   return { department, loading, errordepartment };
+}
+
+// * traer diagnosticos
+
+export const useFetchDiagnostic = () => {
+  const [diagnostico, setDiagnostico] = useState<IDiagnostico[] | null>([]);
+  const [loading, setLoading] = useState(false);
+  const [errorDiagnostico, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const cirugias = await fetchDiagnosticos();
+        setDiagnostico(cirugias);
+        setError(null);
+      } catch (error) {
+        setError("Error al obtener los departamentos o no tienes los permisos necesarios. " + error);
+        setDiagnostico(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getData();
+  }, []);
+  return { diagnostico, loading, errorDiagnostico };
 }

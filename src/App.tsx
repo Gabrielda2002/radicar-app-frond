@@ -112,7 +112,7 @@ function AppRoutes() {
                             path="/SistemaDeInventario"
                             element={<SistemaDeInventario />}
                           />
-                          {/* TABLES ROUTES MAIN AND SECONDARY */}
+                          {/* rutas de las tablas radicacion */}
                           <Route path="*" element={<TableRoutes />} />
                           <Route
                             path="/SistemaDeInventario/*"

@@ -19,6 +19,7 @@ import { IRol } from "../models/IRol";
 import { IPacientes } from "../models/IPacientes";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
+import { IDiagnostico } from "../models/IDiagnostico";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -240,4 +241,14 @@ export const fetchDepartarmentsEp = async (): Promise<IDepartamentos[]> => {
         createdAt: new Date(departamento.createdAt)
     }));
     return departamentos;
+}
+
+export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
+    const response = await api.get('/diagnosticos');
+    const diagnosticos = response.data.map((diagnostico: ICups) => ({
+        ...diagnostico,
+        updatedAt: new Date(diagnostico.updatedAt),
+        createdAt: new Date(diagnostico.createdAt)
+    }));
+    return diagnosticos;
 }

@@ -5,25 +5,23 @@ import Pagination from "../../Pagination";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
-import { useFetchCups } from "../../../hooks/useFetchUsers";
+import {  useFetchDiagnostic } from "../../../hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "../../ModalSection";
-import { ICups } from "../../../models/ICups";
+import { IDiagnostico } from "../../../models/IDiagnostico";
 
 const ModalActionCups = lazy(() => import("../modals/ModalActionCups"));
 const ModalCups = lazy(() => import("../modals/ModalCups"));
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
-const TablaCups = () => {
-  const { data, loading, error } = useFetchCups();
+const TablaDiagnostico = () => {
+  const { diagnostico, loading, errorDiagnostico } = useFetchDiagnostic();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch<ICups>(data, [
+  const { query, setQuery, filteredData } = useSearch<IDiagnostico>(diagnostico || [], [
     "id",
     "code",
-    "name",
-    "status",
   ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -36,15 +34,15 @@ const TablaCups = () => {
   };
 
   if (loading) return <LoadingSpinner duration={500} />;
-  if (error)
+  if (errorDiagnostico)
     return (
-      <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>
+      <h2 className="flex justify-center text-lg dark:text-white">{errorDiagnostico}</h2>
     );
 
   return (
     <>
       <ModalSection
-        title="Modulo Cups"
+        title="Modulo Diagnosticos"
         breadcrumb={[
           { label: "Inicio", path: "/home" },
           { label: "/ Servicio Cups", path: "" },
@@ -58,7 +56,7 @@ const TablaCups = () => {
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Cups:
+              Buscar Diagnostico:
             </label>
             <input
               value={query}
@@ -98,8 +96,7 @@ const TablaCups = () => {
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                     <th className="w-[fit-content]">ID</th>
                     <th className="">Código</th>
-                    <th className="w-[fit-content]">Descripción CUPS</th>
-                    <th className="">Estado</th>
+                    <th className="w-[fit-content]">Descripción</th>
                     <th className="">Acciones</th>
                   </tr>
                 </thead>
@@ -117,16 +114,13 @@ const TablaCups = () => {
                         {cups.code}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {cups.name}
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        {cups.status ? "Activo" : "Inactivo"}
+                        {cups.description}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalActionCups
-                           id={cups.id} 
-                           modulo="cups"
+                           id={cups.id}
+                           modulo="diagnostico"
                            />
                         </Suspense>
                       </td>
@@ -149,4 +143,4 @@ const TablaCups = () => {
   );
 };
 
-export default TablaCups;
+export default TablaDiagnostico;

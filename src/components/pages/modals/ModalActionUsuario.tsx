@@ -72,6 +72,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
         "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
       ),
+    status: Yup.string().required("El estado es obligatorio")
   }), []);
 
   const formik = useFormik({
@@ -84,6 +85,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       rol: "",
       municipio: "",
       contrasena: "",
+      status: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -97,6 +99,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         formData.append("rol", values.rol);
         formData.append("municipio", values.municipio);
         formData.append("password", values.contrasena);
+        formData.append("status", values.status);
 
         const response = await updateUsuarios(id, formData);
 
@@ -130,6 +133,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         rol: ususario.idRol.toString(),
         municipio: ususario.idMunicipio.toString(),
         contrasena: "",
+        status: ususario.status ? "1" : "0",
       });
     }
   }, [ususario]);
@@ -423,6 +427,33 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         </label>
                       ) : null}
                     </div>
+
+                    <div>
+                      <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                        Estado
+                      </label>
+                      <select
+                        name="status"
+                        value={formik.values.status}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.status && formik.errors.status
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        } `}
+                      >
+                        <option value="">SELECCIONE</option>
+                        <option value={1}>Activo</option>
+                        <option value={0}>Inactivo</option>
+                      </select>
+                      {formik.touched.status && formik.errors.status ? (
+                        <label className="text-red-500">
+                          {formik.errors.status}
+                        </label>
+                      ) : null}
+                    </div>
+
                   </div>
                 </div>
 
