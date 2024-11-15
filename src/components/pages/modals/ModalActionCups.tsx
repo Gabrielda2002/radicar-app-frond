@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 //*Icons
@@ -9,9 +9,10 @@ import { updateCupsData } from "../../../services/updateCupsData";
 
 interface ModalActionCupsProps {
   id: number;
+  modulo: string;
 }
 
-const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
+const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -21,17 +22,19 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
     300
   );
 
-  const validationSchema = useMemo(
-    () =>
-      Yup.object({
-        estado: Yup.string().optional(),
-        nombreCups: Yup.string()
-          .optional()
-          .min(1, "El nombre del cups debe tener al menos 1 caracter")
-          .max(100, "El nombre del cups debe tener como máximo 100 caracteres"),
-      }),
-    []
-  );
+  const getValidationSchema = (Modulo: string) => {
+    const validationSchema = {
+      nombreCups: Yup.string().required("El nombre del cups es requerido"),
+    };
+
+    if (Modulo === "cups") {
+      return {
+        ...validationSchema,
+        estado: Yup.string().required("El estado del cups es requerido"),
+      };
+    }
+    return validationSchema;
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -39,7 +42,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
       estado: "",
       nombreCups: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: Yup.object(getValidationSchema(modulo)),
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
@@ -51,7 +54,13 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
           formData.append("status", values.estado);
         }
 
-        const response = await updateCupsData(formData, id);
+        const response = await updateCupsData(
+          formData,
+          id,
+          modulo === "cups"
+            ? "servicio-solicitado-update-table"
+            : "diagnosticos"
+        );
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
@@ -131,30 +140,32 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
                         ) : null}
                       </label>
                     </div>
-                    <div className="flex">
-                      <label htmlFor="">
-                        <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Estado:
-                        </span>
-                        <select
-                          id=""
-                          name="estado"
-                          value={formik.values.estado}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-                        >
-                          <option value="">- SELECT -</option>
-                          <option value={1}>Activo</option>
-                          <option value={0}>Inactivo</option>
-                        </select>
-                        {formik.touched.estado && formik.errors.estado ? (
-                          <label className="text-red-500">
-                            {formik.errors.estado}
-                          </label>
-                        ) : null}
-                      </label>
-                    </div>
+                    {modulo === "cups" && (
+                      <div className="flex">
+                        <label htmlFor="">
+                          <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Estado:
+                          </span>
+                          <select
+                            id=""
+                            name="estado"
+                            value={formik.values.estado}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                          >
+                            <option value="">- SELECT -</option>
+                            <option value={1}>Activo</option>
+                            <option value={0}>Inactivo</option>
+                          </select>
+                          {formik.touched.estado && formik.errors.estado ? (
+                            <label className="text-red-500">
+                              {formik.errors.estado}
+                            </label>
+                          ) : null}
+                        </label>
+                      </div>
+                    )}
                     <div className="">
                       <label htmlFor="">
                         <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
