@@ -583,7 +583,7 @@ const SideBar: FC = () => {
                             : "group-hover:text-white dark:group-hover:text-gray-200"
                         }`}
                       >
-                        Tabla Radicación
+                        Tablas Radicación
                       </span>
                     )}
                     {!isCollapsed && (
@@ -661,6 +661,39 @@ const SideBar: FC = () => {
                                 }`}
                               >
                                 Pacientes
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </NavLink>
+                      {/* Tabla radicación diagnosticos */}
+                      <NavLink to="/tabla-diagnostico">
+                        {({ isActive }) => (
+                          <div
+                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                              isActive
+                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
+                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                            }`}
+                          >
+                            <img
+                              src={report}
+                              alt=""
+                              className={`w-5 h-5 mx-2 ${
+                                isActive
+                                  ? "invert"
+                                  : "group-hover:invert dark:invert"
+                              }`}
+                            />
+                            {!isCollapsed && (
+                              <span
+                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                                  isActive
+                                    ? "text-white dark:text-gray-200"
+                                    : "group-hover:text-white dark:group-hover:text-gray-200"
+                                }`}
+                              >
+                                Diagnostico
                               </span>
                             )}
                           </div>
@@ -1017,7 +1050,7 @@ const SideBar: FC = () => {
                             : "group-hover:text-white dark:group-hover:text-gray-200"
                         }`}
                       >
-                        Perfil
+                        Gestión Usuarios
                       </span>
                     )}
                     {!isCollapsed && (
