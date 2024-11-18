@@ -7,12 +7,12 @@ import onOff from "/assets/on-off.svg";
 import { useFormik } from "formik";
 import { updateCupsData } from "../../../services/updateCupsData";
 
-interface ModalActionCupsProps {
+interface ModalUpdateCupsDiagnosticoProps {
   id: number;
   modulo: string;
 }
 
-const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
+const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({ id, modulo }) => {
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -223,4 +223,4 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
   );
 };
 
-export default ModalActionCups;
+export default ModalUpdateCupsDiagnostico;

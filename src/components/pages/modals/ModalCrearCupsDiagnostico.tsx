@@ -5,11 +5,11 @@ import React, { useState, useMemo, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { createCups } from "../../../services/createCups";
 
-interface ModalCupsProps{
+interface ModalCrearCupsDiagnosticoProps{
   modulo: string; 
 }
 
-const ModalCups: React.FC<ModalCupsProps> = ({
+const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
   modulo
 }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -188,4 +188,4 @@ const ModalCups: React.FC<ModalCupsProps> = ({
   );
 };
 
-export default ModalCups;
+export default ModalCrearCupsDiagnostico;

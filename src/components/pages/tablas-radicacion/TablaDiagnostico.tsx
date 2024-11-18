@@ -11,8 +11,8 @@ import {  useFetchDiagnostic } from "../../../hooks/useFetchUsers";
 import ModalSection from "../../ModalSection";
 import { IDiagnostico } from "../../../models/IDiagnostico";
 
-const ModalActionCups = lazy(() => import("../modals/ModalActionCups"));
-const ModalCups = lazy(() => import("../modals/ModalCups"));
+const ModalUpdateCupsDiagnostico = lazy(() => import("../modals/ModalUpdateCupsDiagnostico"));
+const ModalCrearCupsDiagnostico = lazy(() => import("../modals/ModalCrearCupsDiagnostico"));
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaDiagnostico = () => {
@@ -79,7 +79,7 @@ const TablaDiagnostico = () => {
               <option value="30">30 Paginas</option>
             </select>
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalCups
+              <ModalCrearCupsDiagnostico
                 modulo="diagnostico"
               />
             </Suspense>
@@ -120,7 +120,7 @@ const TablaDiagnostico = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
-                          <ModalActionCups
+                          <ModalUpdateCupsDiagnostico
                            id={cups.id}
                            modulo="diagnostico"
                            />
