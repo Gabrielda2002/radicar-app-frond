@@ -7,12 +7,12 @@ import onOff from "/assets/on-off.svg";
 import { useFormik } from "formik";
 import { updateCupsData } from "../../../services/updateCupsData";
 
-interface ModalActionCupsProps {
+interface ModalUpdateCupsDiagnosticoProps {
   id: number;
   modulo: string;
 }
 
-const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
+const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({ id, modulo }) => {
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -24,7 +24,9 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
 
   const getValidationSchema = (Modulo: string) => {
     const validationSchema = {
-      nombreCups: Yup.string().required("El nombre del cups es requerido"),
+      nombreCups: Yup.string().required("El nombre del cups es requerido")
+        .min(1, "El nombre del cups debe tener al menos 1 caracter")
+        .max(150, "El nombre del cups debe tener máximo 150 caracteres")
     };
 
     if (Modulo === "cups") {
@@ -72,7 +74,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
         }
       } catch (error) {
         setError(
-          `Ocurrió un error al intentar actualizar el estado del cups ${error}`
+          `Error al modificar ${modulo} ${error}`
         );
         setSuccess(false);
       }
@@ -103,7 +105,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
-                  Módulo Estado
+                  Modificar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -123,7 +125,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
                     <div className="flex">
                       <label htmlFor="" className="p-x-2">
                         <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          ID Cups:
+                          ID {modulo === "cups" ? "Cups" : "Diagnóstico"}:
                         </span>
                         <input
                           type="text"
@@ -169,7 +171,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
                     <div className="">
                       <label htmlFor="">
                         <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Nombre Cups:
+                          Descripción {modulo === "cups" ? "Cups" : "Diagnóstico"}:
                         </span>
                         <input
                           type="text"
@@ -223,4 +225,4 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id, modulo }) => {
   );
 };
 
-export default ModalActionCups;
+export default ModalUpdateCupsDiagnostico;
