@@ -24,7 +24,9 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
 
   const getValidationSchema = (Modulo: string) => {
     const validationSchema = {
-      nombreCups: Yup.string().required("El nombre del cups es requerido"),
+      nombreCups: Yup.string().required("El nombre del cups es requerido")
+        .min(1, "El nombre del cups debe tener al menos 1 caracter")
+        .max(150, "El nombre del cups debe tener máximo 150 caracteres")
     };
 
     if (Modulo === "cups") {
@@ -72,7 +74,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
         }
       } catch (error) {
         setError(
-          `Ocurrió un error al intentar actualizar el estado del cups ${error}`
+          `Error al modificar ${modulo} ${error}`
         );
         setSuccess(false);
       }
