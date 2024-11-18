@@ -151,8 +151,8 @@ export const updateCupsDataEp = async (data: FormData, id: number, ep: string) =
 }
 
 // crear CUPS
-export const createCupsEp = async (data: FormData) => {
-    return api.post(`/servicio-solicitado`, data);
+export const createCupsEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
 }
 
 // crear pacciente

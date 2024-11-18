@@ -1,11 +1,17 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { createCups } from "../../../services/createCups";
 
-const ModalCups = () => {
+interface ModalCupsProps{
+  modulo: string; 
+}
+
+const ModalCups: React.FC<ModalCupsProps> = ({
+  modulo
+}) => {
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -21,7 +27,7 @@ const ModalCups = () => {
   const validationSchema = useMemo(
     () =>
       Yup.object({
-        code: Yup.number().required("El código es obligatorio"),
+        code: Yup.string().required("El código es obligatorio"),
         description: Yup.string().required("La descripción es obligatoria"),
       }),
     []
@@ -39,7 +45,7 @@ const ModalCups = () => {
         formData.append("code", values.code);
         formData.append("name", values.description);
 
-        const response = await createCups(formData);
+        const response = await createCups(formData , modulo == "cups" ? "servicio-solicitado" : "diagnosticos");
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
@@ -62,7 +68,7 @@ const ModalCups = () => {
         className="border-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900 "
         onClick={() => setStadopen(true)}
       >
-        Agregar Cups
+        Agregar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
       </button>
 
       {stadopen && (
@@ -86,7 +92,7 @@ const ModalCups = () => {
             >
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
-                  Agregar CUPS
+                  Agregar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
                 </h1>
                 <button
                   onClick={toggleModal}

@@ -79,7 +79,9 @@ const TablaDiagnostico = () => {
               <option value="30">30 Paginas</option>
             </select>
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalCups></ModalCups>
+              <ModalCups
+                modulo="diagnostico"
+              />
             </Suspense>
           </div>
         </section>

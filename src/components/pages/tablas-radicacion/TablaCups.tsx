@@ -81,7 +81,7 @@ const TablaCups = () => {
               <option value="30">30 Paginas</option>
             </select>
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalCups></ModalCups>
+              <ModalCups modulo="cups" />
             </Suspense>
           </div>
         </section>
@@ -124,10 +124,7 @@ const TablaCups = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
-                          <ModalActionCups
-                           id={cups.id} 
-                           modulo="cups"
-                           />
+                          <ModalActionCups id={cups.id} modulo="cups" />
                         </Suspense>
                       </td>
                     </tr>
