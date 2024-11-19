@@ -13,6 +13,7 @@ import {
   fetchIpsPrimaria,
   fetchIpsRemite,
   fetchLugarRadicado,
+  fetchMonthRadicacionEp,
   fetchMunicipio,
   fetchRadicador,
   fetchRoles,
@@ -41,6 +42,7 @@ import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
+import { IMonthDataRadicacion } from "../models/IMonthDataRadicacion";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -535,4 +537,27 @@ export const useFetchDiagnostic = () => {
     getData();
   }, []);
   return { diagnostico, loading, errorDiagnostico };
+}
+// traer datos 
+export const useFetchMonth = () => {
+  const [dataMonth, setDataMonth] = useState<IMonthDataRadicacion[] | null>([]);
+  const [loading, setLoading] = useState(false);
+  const [errorDataMonth, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const cirugias = await fetchMonthRadicacionEp();
+        setDataMonth(cirugias);
+        setError(null);
+      } catch (error) {
+        setError("Error al obtener los departamentos o no tienes los permisos necesarios. " + error);
+        setDataMonth(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getData();
+  }, []);
+  return { dataMonth, loading, errorDataMonth };
 }
