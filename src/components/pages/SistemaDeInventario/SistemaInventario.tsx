@@ -8,10 +8,14 @@ import ItemsList from "./ItemsList";
 import ModalSection from "../../ModalSection";
 import DeviceCard from "../../DevicesCard";
 
-// Iconos
+//*Icons and Images
 import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
 import TELECO from "/src/components/pages/SistemaDeInventario/Images/TELECOMUNICACIONES.webp";
-import { ComputerDesktopIcon, SignalIcon } from "@heroicons/react/24/outline";
+import {
+  ComputerDesktopIcon,
+  SignalIcon,
+  ArrowUturnLeftIcon,
+} from "@heroicons/react/24/outline";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -63,65 +67,82 @@ const SistemaInventario: React.FC = () => {
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* si scree en diferente a departamentos se muestra la flecha */}
         {screen !== "departamentos" && (
-          <button onClick={handleBack} className="btn btn-secondary">
-            Atras
-          </button>
-        )}
-
-        {screen === "departamentos" &&
-          (loadingDepartment ? (
-            <p>Cargando departamentos...</p>
-          ) : errordepartment ? (
-            <p>{errordepartment}</p>
-          ) : (
-            <DepartamentosList
-              departamentos={departments}
-              onSelected={(departamento) => {
-                setDepartmentSelect(departamento.id);
-                setScreen("sedes"); // cambia la pantalla a sedes
-              }}
-            />
-          ))}
-
-        {screen === "sedes" && departmentSelect && (
-          <SedesList
-            sedes={sedes}
-            onSelect={(sede) => {
-              setSedeSelect(sede.id);
-              setScreen("tipoItem"); // cambia la pantalla a items
-            }}
-          />
-        )}
-
-        {screen === "tipoItem" && sedeSelect && (
-          <div>
-            <h2>Selecciona el tipo de item</h2>
-            <DeviceCard
-              title="Computadores"
-              description="Contenido de la Sección"
-              image={COMPUTO}
-              icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
-              onClick={() => {
-                setTipoItem("equipos");
-                setScreen("items");
-              }}
-            />
-            <DeviceCard
-              title="Dispositivos de red"
-              description="Contenido de la Sección"
-              image={TELECO}
-              icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
-              onClick={() => {
-                setTipoItem("dispositivos-red");
-                setScreen("items");
-              }}
-            />
+          <div className="">
+            <button
+              title="Atras"
+              onClick={handleBack}
+              className="flex items-center p-2 mb-4 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md btn btn-secondary hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+            >
+              <ArrowUturnLeftIcon className="w-6 h-6 mr-2" />
+              <span className="flex items-center pt-1">ATRAS</span>
+            </button>
           </div>
         )}
 
-        {screen === "items" && sedeSelect && tipoItem && (
-          <ItemsList invetario={items} tipoItem={tipoItem} idSede={sedeSelect} />
-        )}
+        <div>
+          <div>
+            {screen === "departamentos" && (
+              <div className="grid grid-cols-3 gap-8">
+                {loadingDepartment ? (
+                  <p>Cargando departamentos...</p>
+                ) : errordepartment ? (
+                  <p>{errordepartment}</p>
+                ) : (
+                  <DepartamentosList
+                    departamentos={departments}
+                    onSelected={(departamento) => {
+                      setDepartmentSelect(departamento.id);
+                      setScreen("sedes");
+                    }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+
+          {screen === "sedes" && departmentSelect && (
+            <SedesList
+              sedes={sedes}
+              onSelect={(sede) => {
+                setSedeSelect(sede.id);
+                setScreen("tipoItem"); // cambia la pantalla a items
+              }}
+            />
+          )}
+
+          {screen === "tipoItem" && sedeSelect && (
+            <div className="grid grid-cols-2 gap-8">
+              <DeviceCard
+                title="Computadores"
+                description="Contenido de la Sección"
+                image={COMPUTO}
+                icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
+                onClick={() => {
+                  setTipoItem("equipos");
+                  setScreen("items");
+                }}
+              />
+              <DeviceCard
+                title="Dispositivos de red"
+                description="Contenido de la Sección"
+                image={TELECO}
+                icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
+                onClick={() => {
+                  setTipoItem("dispositivos-red");
+                  setScreen("items");
+                }}
+              />
+            </div>
+          )}
+
+          {screen === "items" && sedeSelect && tipoItem && (
+            <ItemsList
+              invetario={items}
+              tipoItem={tipoItem}
+              idSede={sedeSelect}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
