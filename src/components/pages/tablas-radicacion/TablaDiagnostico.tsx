@@ -103,7 +103,7 @@ const TablaDiagnostico = () => {
                   </tr>
                 </thead>
 
-                <tbody className="text-xs text-center dark:text-gray-200">
+                <tbody className="text-sm text-center dark:text-gray-200">
                   {currentData().map((cups) => (
                     <tr
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
