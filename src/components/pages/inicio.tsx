@@ -6,7 +6,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
 
-const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
+// const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
 
 const Inicio = () => {
@@ -56,11 +56,6 @@ const Inicio = () => {
                 asegurando el bienestar de nuestros pacientes con tecnología
                 avanzada y un equipo humano altamente capacitado.
               </p>
-
-              <Suspense fallback={<LoadingSpinner />}>
-                {/* Indicadores de rendimiento */}
-                <IndicadoresSalud />
-              </Suspense>
 
               {/* Alerta de contraseña */}
               {showAlert && (

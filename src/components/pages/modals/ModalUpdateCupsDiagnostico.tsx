@@ -1,11 +1,11 @@
 //*Funciones y Hooks
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useFormik } from "formik";
 import useAnimation from "../../../hooks/useAnimations";
-import * as Yup from "yup";
+import { updateCupsData } from "../../../services/updateCupsData";
 //*Icons
 import onOff from "/assets/on-off.svg";
-import { useFormik } from "formik";
-import { updateCupsData } from "../../../services/updateCupsData";
 
 interface ModalUpdateCupsDiagnosticoProps {
   id: number;
@@ -13,6 +13,17 @@ interface ModalUpdateCupsDiagnosticoProps {
 }
 
 const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({ id, modulo }) => {
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -135,11 +146,11 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                           className="w-[200px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                           disabled
                         />
-                        {formik.touched.id && formik.errors.id ? (
-                          <label className="text-red-500">
-                            {formik.errors.id}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.id && formik.errors.id ? (
+                            <ErrorMessage>{formik.errors.id}</ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     {modulo === "cups" && (
@@ -182,12 +193,14 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                           onBlur={formik.handleBlur}
                           className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
-                        {formik.touched.nombreCups &&
-                        formik.errors.nombreCups ? (
-                          <label className="text-red-500">
-                            {formik.errors.nombreCups}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.nombreCups &&
+                          formik.errors.nombreCups ? (
+                            <ErrorMessage>
+                              {formik.errors.nombreCups}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                   </section>

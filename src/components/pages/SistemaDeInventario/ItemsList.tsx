@@ -1,108 +1,114 @@
-import React from 'react'
-import { IItems } from '../../../models/IItems'
-import { IItemsNetworking } from '../../../models/IItemsNetworking';
-import ModalItemsDetails from '../modals/ModalItemsDetails';
-import ModalItemsForm from '../modals/ModalItemsForm';
-import ModalTablaseguimientoItem from '../modals/ModalTablaSeguimientoItem';
-import ModalAccesorioItem from '../modals/ModalAccesorioItem';
+import React, { useEffect, useState } from "react";
+import { IItems } from "../../../models/IItems";
+import LoadingSpinner from "../../LoadingSpinner";
+import ModalItemsForm from "../modals/ModalItemsForm";
+import ModalItemsDetails from "../modals/ModalItemsDetails";
+import ModalAccesorioItem from "../modals/ModalAccesorioItem";
+import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import ModalTablaseguimientoItem from "../modals/ModalTablaSeguimientoItem";
 
 interface ItemsListProps {
-    invetario: IItems[] | IItemsNetworking[]  | null;
-    tipoItem: 'equipos' | 'dispositivos-red' | null;
-    idSede: number | null;
+  invetario: IItems[] | IItemsNetworking[] | null;
+  tipoItem: "equipos" | "dispositivos-red" | null;
+  idSede: number | null;
 }
 
 const ItemsList: React.FC<ItemsListProps> = ({
-    invetario,
-    tipoItem,
-    idSede
+  invetario,
+  tipoItem,
+  idSede,
 }) => {
+  const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [ selected, setSelected ] = React.useState<IItems | IItemsNetworking | null>(null);
+  useEffect(() => {
+    // Simular una carga inicial (puedes usar tu lógica real aquí)
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1 segundo de simulación de carga
+    return () => clearTimeout(timeout);
+  }, [tipoItem]); // Recalcula cuando cambia la categoría
 
   const handleViewDetails = (item: IItems | IItemsNetworking) => {
     setSelected(item);
-  }
+  };
 
   const closeModal = () => {
     setSelected(null);
-  }
+  };
 
   return (
     <>
-      <h2>
-        Inventario de {tipoItem}
-      </h2>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div>
+          <div className="flex justify-between mb-8">
+            <h2 className="flex text-2xl dark:text-white">
+              Inventario de {tipoItem}
+            </h2>
+            <div>
+              <ModalItemsForm
+                idSede={idSede}
+                tipoItem={tipoItem}
+                items={null}
+                idItem={null}
+              />
+            </div>
+          </div>
 
-      <ModalItemsForm
-        idSede={idSede}
-        tipoItem={tipoItem}
-        items={null}
-        idItem={null}
-      />
-
-      <ul>
-        {invetario?.map((item) => (
-            <li key={item.id}>
-                {tipoItem === 'equipos' ? (
-                    <>
-                    <p>{(item as IItems).name}</p>
-                    <button 
+          {invetario && invetario.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {invetario.map((item) => (
+                <div key={item.id} className="relative p-4 border-2 rounded-md">
+                  <h3 className="mb-2 text-2xl font-semibold dark:text-white">
+                    {tipoItem === "equipos"
+                      ? (item as IItems).name
+                      : (item as IItemsNetworking).name}
+                  </h3>
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    {item.model}
+                  </p>
+                  <div className="flex flex-wrap justify-between gap-2">
+                    <button
                       onClick={() => handleViewDetails(item)}
-                      className="btn btn-primary"
+                      className="px-3 py-1 text-sm transition-colors duration-300 bg-gray-300 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
                     >
-                      ver mas detalles
+                      Ver detalles
                     </button>
-
-                    <ModalItemsForm
-                      idSede={null}
-                      tipoItem={tipoItem}
-                      items={item as IItems}
-                      idItem={(item as IItems).id}
-                    />
-
-                    <ModalTablaseguimientoItem
-                      Items={item as IItems}
-                      tipoItem={tipoItem}
-                    />
-
-                    {/* agregar accesorio */}
-                    <ModalAccesorioItem
-                      id={(item as IItems).id}
-                    />
-                    </>
-                ) : (
-                    <>
-                    <p>{(item as IItemsNetworking).name}</p>
-                    <button 
-                      onClick={() => handleViewDetails(item)}
-                      className="btn btn-primary"
-                    >
-                      ver mas detalles
-                    </button>
-
-                    <ModalItemsForm
-                      idSede={null}
-                      tipoItem={tipoItem}
-                      items={item as IItemsNetworking}
-                      idItem={(item as IItemsNetworking).id}
-                    />
-
-                    <ModalTablaseguimientoItem
-                      Items={item as IItemsNetworking}
-                      tipoItem={tipoItem}
-                    />
-
-                    </>
-                )}
-            </li>
-        ))}
-      </ul>
-      {selected && (
-        <ModalItemsDetails  item={selected} onClose={closeModal} />
+                    <div className="flex flex-wrap gap-2">
+                      <ModalItemsForm
+                        idSede={null}
+                        tipoItem={tipoItem}
+                        items={item}
+                        idItem={item.id}
+                      />
+                      <ModalTablaseguimientoItem
+                        Items={item}
+                        tipoItem={tipoItem}
+                      />
+                      {tipoItem === "equipos" && (
+                        <ModalAccesorioItem id={(item as IItems).id} />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-4 text-xl font-bold text-center text-gray-600 dark:text-white">
+              No hay ningún artículo incluido o creado
+            </p>
+          )}
+          {selected && (
+            <ModalItemsDetails item={selected} onClose={closeModal} />
+          )}
+        </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ItemsList
+export default ItemsList;

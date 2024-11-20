@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
 
 interface ModalGestionServicioProps {
@@ -8,6 +9,18 @@ interface ModalGestionServicioProps {
   idRadicado: number | null;
   idCirugias: number | null;
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   onClose,
@@ -118,12 +131,14 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                     <option value="7">Reprogramado</option>
                     <option value="9">Programado</option>
                   </select>
-                  {formik.touched.estadoSeguimiento &&
-                    formik.errors.estadoSeguimiento && (
-                      <p className="mt-2 text-red-500">
-                        {formik.errors.estadoSeguimiento}
-                      </p>
-                    )}
+                  <AnimatePresence>
+                    {formik.touched.estadoSeguimiento &&
+                      formik.errors.estadoSeguimiento && (
+                        <ErrorMessage>
+                          {formik.errors.estadoSeguimiento}
+                        </ErrorMessage>
+                      )}
+                  </AnimatePresence>
                 </label>
               </div>
 
@@ -145,9 +160,14 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
                         : "border-gray-300"
                     }`}
                   ></textarea>
-                  {formik.touched.observacion && formik.errors.observacion && (
-                    <p className="text-red-500 ">{formik.errors.observacion}</p>
-                  )}
+                  <AnimatePresence>
+                    {formik.touched.observacion &&
+                      formik.errors.observacion && (
+                        <ErrorMessage>
+                          {formik.errors.observacion}
+                        </ErrorMessage>
+                      )}
+                  </AnimatePresence>
                 </label>
               </div>
             </section>

@@ -1,14 +1,34 @@
 //*Funciones y Hooks
-import React, { useEffect, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
-//*Icons
+import { format } from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
-import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import React, { useEffect, useState } from "react";
+import useAnimation from "../../../hooks/useAnimations";
 import { createItem } from "../../../services/createItem";
 import { updateItem } from "../../../services/updateItem";
-import { format } from "date-fns";
+import { IItemsNetworking } from "../../../models/IItemsNetworking";
+
+//*Icons
+import {
+  TagIcon,
+  MapIcon,
+  ComputerDesktopIcon,
+  TvIcon,
+  InformationCircleIcon,
+  FingerPrintIcon,
+  GlobeAltIcon,
+  MapPinIcon,
+  CalendarIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  KeyIcon,
+  CalendarDaysIcon,
+  LockClosedIcon,
+  PencilSquareIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -17,17 +37,29 @@ interface ModalItemsFormProps {
   idItem: number | null;
 }
 
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
+
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
   tipoItem,
   items,
-  idItem
+  idItem,
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
   // estados para la reaccion del formulario
-  const [ success, setSuccess ] = useState(false);
-  const [ error, setError ] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
 
   const { showAnimation, closing } = useAnimation(
@@ -36,29 +68,34 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     300
   );
 
-
   const getValidationSchema = (typeItem: string | null) => {
     const validationSchema = {
       name: Yup.string()
         .required("El nombre es requerido")
         .min(2, "El nombre debe tener al menos 3 caracteres")
         .max(200, "El nombre debe tener como máximo 200 caracteres"),
-      brand: Yup.string().required("La marca es requerida")
+      brand: Yup.string()
+        .required("La marca es requerida")
         .min(3, "La marca debe tener al menos 3 caracteres")
         .max(200, "La marca debe tener como máximo 200 caracteres"),
-      model: Yup.string().required("El modelo es requerido")
+      model: Yup.string()
+        .required("El modelo es requerido")
         .min(3, "El modelo debe tener al menos 3 caracteres")
         .max(200, "El modelo debe tener como máximo 200 caracteres"),
-      serial: Yup.string().required("El serial es requerido")
+      serial: Yup.string()
+        .required("El serial es requerido")
         .min(3, "El serial debe tener al menos 3 caracteres")
         .max(200, "El serial debe tener como máximo 200 caracteres"),
-      inventoryNumber: Yup.string().required("El inventario es requerido")
+      inventoryNumber: Yup.string()
+        .required("El inventario es requerido")
         .min(3, "El inventario debe tener al menos 3 caracteres")
         .max(200, "El inventario debe tener como máximo 200 caracteres"),
-      addressIp: Yup.string().required("La direccion ip es requerida")
+      addressIp: Yup.string()
+        .required("La direccion ip es requerida")
         .min(3, "La direccion ip debe tener al menos 3 caracteres")
         .max(200, "La direccion ip debe tener como máximo 200 caracteres"),
-      mac: Yup.string().required("La mac es requerida")
+      mac: Yup.string()
+        .required("La mac es requerida")
         .min(3, "La mac debe tener al menos 3 caracteres")
         .max(200, "La mac debe tener como máximo 200 caracteres"),
     };
@@ -66,39 +103,49 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     if (typeItem === "equipos") {
       return {
         ...validationSchema,
-        area: Yup.string().required("El area es requerida")
+        area: Yup.string()
+          .required("El area es requerida")
           .min(3, "El area debe tener al menos 3 caracteres")
           .max(200, "El area debe tener como máximo 200 caracteres"),
-        typeEquipment: Yup.string().required("El tipo de equipo es requerido")
+        typeEquipment: Yup.string()
+          .required("El tipo de equipo es requerido")
           .min(3, "El tipo de equipo debe tener al menos 3 caracteres")
           .max(200, "El tipo de equipo debe tener como máximo 200 caracteres"),
-        operationalSystem: Yup.string().required("El sistema operativo es requerido")
+        operationalSystem: Yup.string()
+          .required("El sistema operativo es requerido")
           .min(3, "El sistema operativo debe tener al menos 3 caracteres")
-          .max(200, "El sistema operativo debe tener como máximo 200 caracteres"),
+          .max(
+            200,
+            "El sistema operativo debe tener como máximo 200 caracteres"
+          ),
         purchaseDate: Yup.date().required("La fecha de compra es requerida"),
-        warrantyTime: Yup.string().required("El tiempo de garantia es requerido")
+        warrantyTime: Yup.string()
+          .required("El tiempo de garantia es requerido")
           .min(3, "El tiempo de garantia debe tener al menos 3 caracteres")
-          .max(200, "El tiempo de garantia debe tener como máximo 200 caracteres"),
+          .max(
+            200,
+            "El tiempo de garantia debe tener como máximo 200 caracteres"
+          ),
         warranty: Yup.boolean().required("La garantia es requerida"),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
-      }
+      };
     }
 
     if (typeItem === "dispositivos-red") {
       return {
         ...validationSchema,
-        otherData: Yup.string().required("Otros datos son requeridos")
+        otherData: Yup.string()
+          .required("Otros datos son requeridos")
           .min(3, "Otros datos deben tener al menos 3 caracteres")
           .max(200, "Otros datos deben tener como máximo 200 caracteres"),
-        status: Yup.string().required("El estado es requerido")
+        status: Yup.string()
+          .required("El estado es requerido")
           .min(3, "El estado debe tener al menos 3 caracteres")
           .max(200, "El estado debe tener como máximo 200 caracteres"),
-      }
-      
+      };
     }
 
     return validationSchema;
-
   };
 
   const formik = useFormik({
@@ -124,7 +171,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     onSubmit: async (values) => {
       setSubmiting(true);
       try {
-        
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("brand", values.brand);
@@ -143,17 +189,23 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           formData.append("warrantyTime", values.warrantyTime);
           formData.append("warranty", values.warranty);
           formData.append("deliveryDate", values.deliveryDate);
-          
-        }else{
+        } else {
           formData.append("otherData", values.otherData);
           formData.append("status", values.status);
         }
 
         let response;
         if (!idItem) {
-          response = await createItem(formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
-        }else{
-          response = await updateItem(idItem, formData, tipoItem == "equipos" ? "equipos" : "dispositivos-red");
+          response = await createItem(
+            formData,
+            tipoItem == "equipos" ? "equipos" : "dispositivos-red"
+          );
+        } else {
+          response = await updateItem(
+            idItem,
+            formData,
+            tipoItem == "equipos" ? "equipos" : "dispositivos-red"
+          );
         }
 
         if (response?.status === 201 || response?.status === 200) {
@@ -163,12 +215,11 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             setSuccess(false);
             setStadopen(false);
           }, 3000);
-        }else{
+        } else {
           setError("Error al enviar los datos");
         }
-
       } catch (error) {
-         setError(`Error al envair los datos: ${error}`);
+        setError(`Error al envair los datos: ${error}`);
       }
       setSubmiting(false);
     },
@@ -177,8 +228,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   // console.log(formik.errors)
 
   const formatDate = (date: Date | string | null) => {
-  return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
-};
+    return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
+  };
 
   useEffect(() => {
     if (items && idItem) {
@@ -189,12 +240,15 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         brand: items.brand,
         model: items.model,
         serial: items.serial,
-        operationalSystem: "operationalSystem" in items ? items.operationalSystem : "",
+        operationalSystem:
+          "operationalSystem" in items ? items.operationalSystem : "",
         mac: items.mac,
-        purchaseDate: "purchaseDate" in items ? formatDate(items.purchaseDate) : "", // falta formatear la fecha
+        purchaseDate:
+          "purchaseDate" in items ? formatDate(items.purchaseDate) : "", // falta formatear la fecha
         warrantyTime: "warrantyTime" in items ? String(items.warrantyTime) : "",
         warranty: "warranty" in items ? (items.warranty ? "1" : "0") : "",
-        deliveryDate: "deliveryDate" in items ? formatDate(items.deliveryDate) : "", // falta formatear la fecha
+        deliveryDate:
+          "deliveryDate" in items ? formatDate(items.deliveryDate) : "", // falta formatear la fecha
         inventoryNumber: items.inventoryNumber,
         addressIp: items.addressIp,
         otherData: "otherData" in items ? items.otherData : "",
@@ -203,12 +257,29 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     }
   }, [items, idItem, tipoItem]);
 
-
   return (
     <>
-      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        {idItem ? "Actualizar Item" : "Crear Item"}
-      </button>
+      <div className="">
+        <button
+          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          onClick={() => setStadopen(true)}
+          title="Actualizar Item"
+        >
+          {idItem ? (
+            <PencilSquareIcon
+              className="w-7 h-7"
+              aria-label="Actualizar Item"
+            />
+          ) : (
+            <>
+              <div className="flex items-center">
+                <span>Crear Item</span>
+                <PlusCircleIcon className="w-5 h-5 ml-2" />
+              </div>
+            </>
+          )}
+        </button>
+      </div>
 
       {/* init event modal */}
       {stadopen && (
@@ -219,14 +290,14 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         >
           <section className="">
             <div
-                className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
+              className={`w-[1000px] overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
                 showAnimation && !closing ? "translate-y-0" : "translate-y-10"
               }`}
             >
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  {idItem ? "Actualizar Item" : "Crear Item"} 
+                  {idItem ? "Actualizar Item" : "Crear Item"}
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -241,388 +312,548 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                 onSubmit={formik.handleSubmit}
                 className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
-                {/* formularios */}
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.name && formik.errors.name ? (
-                    <div className="text-red-500">{formik.errors.name}</div>
-                  ) : null}
-                </div>
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="area"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Area
-                    </label>
-                    <input
-                      type="text"
-                      id="area"
-                      name="area"
-                      value={formik.values.area}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
-                    {formik.touched.area && formik.errors.area ? (
-                      <div className="text-red-500">{formik.errors.area}</div>
-                    ) : null}
-                  </div>
-                )}
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="typeEquipment"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Tipo de Equipo
-                    </label>
-                    <select
-                      name="typeEquipment"
-                      value={formik.values.typeEquipment}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    >
-                      <option value="">Selecciona</option>
-                      <option value="TODO EN 1">Todo en 1</option>
-                      <option value="PORTATIL">Portatil</option>
-                      <option value="ESCRITORIO">Escritorio</option>
-                    </select>
-                    {formik.touched.typeEquipment &&
-                    formik.errors.typeEquipment ? (
-                      <div className="text-red-500">
-                        {formik.errors.typeEquipment}
+                <div className="px-8 py-2">
+                  {/* formularios */}
+                  <div className="grid grid-cols-3 gap-8 mt-2">
+                    <div>
+                      <div className="flex items-center">
+                        <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="name"
+                          className="block text-lg font-semibold"
+                        >
+                          Nombre Del Item
+                        </label>
                       </div>
-                    ) : null}
-                  </div>
-                )}
-                
-                <div>
-                  <label
-                    htmlFor="brand"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Marca
-                  </label>
-                  <select
-                    name="brand"
-                    value={formik.values.brand}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="LENOVO">Lenovo</option>
-                    <option value="COMPUMAX">Compumax</option>
-                    <option value="ASUS">Asus</option>
-                    <option value="ACER">Acer</option>
-                    <option value="HP">HP</option>
-                    <option value="DELL">Dell</option>
-                  </select>
-                  {formik.touched.brand && formik.errors.brand ? (
-                    <div className="text-red-500">{formik.errors.brand}</div>
-                  ) : null}
-                </div>
-                <div>
-                  <label
-                    htmlFor="model"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Modelo
-                  </label>
-                  <input
-                    type="text"
-                    id="model"
-                    name="model"
-                    value={formik.values.model}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.model && formik.errors.model ? (
-                    <div className="text-red-500">{formik.errors.model}</div>
-                  ) : null}
-                </div>
-                <div>
-                  <label
-                    htmlFor="serial"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Serial
-                  </label>
-                  <input
-                    type="text"
-                    id="serial"
-                    name="serial"
-                    value={formik.values.serial}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.serial && formik.errors.serial ? (
-                    <div className="text-red-500">{formik.errors.serial}</div>
-                  ) : null}
-                </div>
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="operationalSystem"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Sistema Operativo
-                    </label>
-                    <select                     
-                      name="operationalSystem"
-                      value={formik.values.operationalSystem}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    >
-                      <option value="">Select</option>
-                      <option value="WINDOWS 10">Windows 10</option>
-                      <option value="WINDOWS 11">Windows 11</option>
-                      <option value="WINDOWS 7">Windows 7</option>
-                    </select>
-                    {formik.touched.operationalSystem &&
-                    formik.errors.operationalSystem ? (
-                      <div className="text-red-500">
-                        {formik.errors.operationalSystem}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-                <div>
-                  <label
-                    htmlFor="mac"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Mac
-                  </label>
-                  <input
-                    type="text"
-                    id="mac"
-                    name="mac"
-                    value={formik.values.mac}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.mac && formik.errors.mac ? (
-                    <div className="text-red-500">{formik.errors.mac}</div>
-                  ) : null}
-                </div>
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="purchaseDate"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Fecha de Compra
-                    </label>
-                    <input
-                      type="date"
-                      id="purchaseDate"
-                      name="purchaseDate"
-                      value={formik.values.purchaseDate}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
-                    {formik.touched.purchaseDate &&
-                    formik.errors.purchaseDate ? (
-                      <div className="text-red-500">
-                        {formik.errors.purchaseDate}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="warrantyTime"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Tiempo de Garantia
-                    </label>
-                    <input
-                      type="text"
-                      id="warrantyTime"
-                      name="warrantyTime"
-                      value={formik.values.warrantyTime}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
-                    {formik.touched.warrantyTime &&
-                    formik.errors.warrantyTime ? (
-                      <div className="text-red-500">
-                        {formik.errors.warrantyTime}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="warranty"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Garantia
-                    </label>
-                    <select
-                      id="warranty"
-                      name="warranty"
-                      value={formik.values.warranty}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    >
-                      <option value="">- SELECT -</option>
-                      <option value={1}>Activa</option>
-                      <option value={0}>Inactiva</option>
-                    </select>
-                    {formik.touched.warranty && formik.errors.warranty ? (
-                      <div className="text-red-500">
-                        {formik.errors.warranty}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-                {tipoItem === "equipos" && (
-                  <div>
-                    <label
-                      htmlFor="deliveryDate"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Fecha Entrega
-                    </label>
-                    <input
-                      type="date"
-                      id="deliveryDate"
-                      name="deliveryDate"
-                      value={formik.values.deliveryDate}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
-                    {formik.touched.deliveryDate &&
-                    formik.errors.deliveryDate ? (
-                      <div className="text-red-500">
-                        {formik.errors.deliveryDate}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-                <div>
-                  <label
-                    htmlFor="inventoryNumber"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Numero de Inventario
-                  </label>
-                  <input
-                    type="text"
-                    id="inventoryNumber"
-                    name="inventoryNumber"
-                    value={formik.values.inventoryNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.inventoryNumber &&
-                  formik.errors.inventoryNumber ? (
-                    <div className="text-red-500">
-                      {formik.errors.inventoryNumber}
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.name && formik.errors.name
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.name && formik.errors.name ? (
+                          <ErrorMessage>{formik.errors.name}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
-                  ) : null}
-                </div>
-                <div>
-                  <label
-                    htmlFor="addressIp"
-                    className="block mt-2 text-sm font-semibold"
-                  >
-                    Direccion Ip
-                  </label>
-                  <input
-                    type="text"
-                    id="addressIp"
-                    name="addressIp"
-                    value={formik.values.addressIp}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                  />
-                  {formik.touched.addressIp && formik.errors.addressIp ? (
-                    <div className="text-red-500">
-                      {formik.errors.addressIp}
-                    </div>
-                  ) : null}
-                </div>
-                {tipoItem === "dispositivos-red" && (
-                  <div>
-                    <label
-                      htmlFor="otherData"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Otros Datos
-                    </label>
-                    <input
-                      type="text"
-                      id="otherData"
-                      name="otherData"
-                      value={formik.values.otherData}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    />
-                    {formik.touched.otherData && formik.errors.otherData ? (
-                      <div className="text-red-500">
-                        {formik.errors.otherData}
+                    {tipoItem === "equipos" && (
+                      <div>
+                        <div className="flex items-center">
+                          <MapIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="area"
+                            className="block text-lg font-semibold"
+                          >
+                            Area
+                          </label>
+                        </div>
+                        <input
+                          type="text"
+                          id="area"
+                          name="area"
+                          value={formik.values.area}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.area && formik.errors.area
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        <AnimatePresence>
+                          {formik.touched.area && formik.errors.area ? (
+                            <ErrorMessage>{formik.errors.area}</ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </div>
-                    ) : null}
+                    )}
+                    {tipoItem === "equipos" && (
+                      <div>
+                        <div className="flex items-center">
+                          <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="typeEquipment"
+                            className="block text-lg font-semibold"
+                          >
+                            Tipo de Equipo
+                          </label>
+                        </div>
+                        <select
+                          name="typeEquipment"
+                          value={formik.values.typeEquipment}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.typeEquipment &&
+                            formik.errors.typeEquipment
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        >
+                          <option value="">Selecciona</option>
+                          <option value="TODO EN 1">Todo en 1</option>
+                          <option value="PORTATIL">Portatil</option>
+                          <option value="ESCRITORIO">Escritorio</option>
+                        </select>
+                        <AnimatePresence>
+                          {formik.touched.typeEquipment &&
+                          formik.errors.typeEquipment ? (
+                            <ErrorMessage>
+                              {formik.errors.typeEquipment}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    )}
                   </div>
-                )}
-                {tipoItem === "dispositivos-red" && (
-                  <div>
-                    <label
-                      htmlFor="status"
-                      className="block mt-2 text-sm font-semibold"
-                    >
-                      Estado
-                    </label>
-                    <select
-                      id="status"
-                      name="status"
-                      value={formik.values.status}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200"
-                    >
-                      <option value="">- SELECT -</option>
-                      <option value="Activo">Activo</option>
-                      <option value="Inactivo">Inactivo</option>
-                    </select>
-                    {formik.touched.status && formik.errors.status ? (
-                      <div className="text-red-500">{formik.errors.status}</div>
-                    ) : null}
+
+                  <div className="grid grid-cols-2 mt-5 gap-x-6 gap-y-2">
+                    <div>
+                      <div className="flex items-center">
+                        <TvIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="brand"
+                          className="block text-lg font-semibold"
+                        >
+                          Marca
+                        </label>
+                      </div>
+                      <select
+                        name="brand"
+                        value={formik.values.brand}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.brand && formik.errors.brand
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">Seleccione</option>
+                        <option value="LENOVO">Lenovo</option>
+                        <option value="COMPUMAX">Compumax</option>
+                        <option value="ASUS">Asus</option>
+                        <option value="ACER">Acer</option>
+                        <option value="HP">HP</option>
+                        <option value="DELL">Dell</option>
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.brand && formik.errors.brand ? (
+                          <ErrorMessage>{formik.errors.brand}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <InformationCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="model"
+                          className="block text-lg font-semibold"
+                        >
+                          Modelo
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        id="model"
+                        name="model"
+                        value={formik.values.model}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.model && formik.errors.model
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.model && formik.errors.model ? (
+                          <ErrorMessage>{formik.errors.model}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <FingerPrintIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="serial"
+                          className="block text-lg font-semibold"
+                        >
+                          Serial
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        id="serial"
+                        name="serial"
+                        value={formik.values.serial}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.serial && formik.errors.serial
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.serial && formik.errors.serial ? (
+                          <ErrorMessage>{formik.errors.serial}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+
+                    {tipoItem === "equipos" && (
+                      <div>
+                        <div className="flex items-center">
+                          <GlobeAltIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="operationalSystem"
+                            className="block text-lg font-semibold"
+                          >
+                            Sistema Operativo
+                          </label>
+                        </div>
+                        <select
+                          name="operationalSystem"
+                          value={formik.values.operationalSystem}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.operationalSystem &&
+                            formik.errors.operationalSystem
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        >
+                          <option value="">Select</option>
+                          <option value="WINDOWS 10">Windows 10</option>
+                          <option value="WINDOWS 11">Windows 11</option>
+                          <option value="WINDOWS 7">Windows 7</option>
+                        </select>
+                        <AnimatePresence>
+                          {formik.touched.operationalSystem &&
+                          formik.errors.operationalSystem ? (
+                            <ErrorMessage>
+                              {formik.errors.operationalSystem}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                    <div>
+                      <div className="flex items-center">
+                        <MapPinIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="mac"
+                          className="block text-lg font-semibold"
+                        >
+                          Dirección Mac
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        id="mac"
+                        name="mac"
+                        value={formik.values.mac}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.mac && formik.errors.mac
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.mac && formik.errors.mac ? (
+                          <ErrorMessage>{formik.errors.mac}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
                   </div>
-                )}
+
+                  <div className="grid grid-cols-2 gap-8 mt-10 mb-12">
+                    <div>
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center">
+                            <CalendarIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="purchaseDate"
+                              className="block text-lg font-semibold"
+                            >
+                              Fecha de Compra
+                            </label>
+                          </div>
+                          <input
+                            type="date"
+                            id="purchaseDate"
+                            name="purchaseDate"
+                            value={formik.values.purchaseDate}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.purchaseDate &&
+                              formik.errors.purchaseDate
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.purchaseDate &&
+                            formik.errors.purchaseDate ? (
+                              <ErrorMessage>
+                                {formik.errors.purchaseDate}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center mt-2">
+                            <ClockIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="warrantyTime"
+                              className="block text-lg font-semibold"
+                            >
+                              Tiempo de Garantia
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="warrantyTime"
+                            name="warrantyTime"
+                            value={formik.values.warrantyTime}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.warrantyTime &&
+                              formik.errors.warrantyTime
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.warrantyTime &&
+                            formik.errors.warrantyTime ? (
+                              <ErrorMessage>
+                                {formik.errors.warrantyTime}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center mt-2">
+                          <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="addressIp"
+                            className="block text-lg font-semibold"
+                          >
+                            Direccion Ip
+                          </label>
+                        </div>
+                        <input
+                          type="text"
+                          id="addressIp"
+                          name="addressIp"
+                          value={formik.values.addressIp}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.addressIp && formik.errors.addressIp
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        <AnimatePresence>
+                          {formik.touched.addressIp &&
+                          formik.errors.addressIp ? (
+                            <ErrorMessage>
+                              {formik.errors.addressIp}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+
+                    <div>
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center">
+                            <CalendarDaysIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="deliveryDate"
+                              className="block text-lg font-semibold"
+                            >
+                              Fecha Entrega
+                            </label>
+                          </div>
+                          <input
+                            type="date"
+                            id="deliveryDate"
+                            name="deliveryDate"
+                            value={formik.values.deliveryDate}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.deliveryDate &&
+                              formik.errors.deliveryDate
+                                ? "border-red-500 dark:border-red-500"
+                                : "borde-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.deliveryDate &&
+                            formik.errors.deliveryDate ? (
+                              <ErrorMessage>
+                                {formik.errors.deliveryDate}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center mt-2">
+                            <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="warranty"
+                              className="block text-lg font-semibold"
+                            >
+                              Garantia
+                            </label>
+                          </div>
+                          <select
+                            id="warranty"
+                            name="warranty"
+                            value={formik.values.warranty}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.warranty && formik.errors.warranty
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          >
+                            <option value="">- SELECT -</option>
+                            <option value={1}>Activa</option>
+                            <option value={0}>Inactiva</option>
+                          </select>
+                          <AnimatePresence>
+                            {formik.touched.warranty &&
+                            formik.errors.warranty ? (
+                              <ErrorMessage>
+                                {formik.errors.warranty}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center mt-2">
+                          <KeyIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="inventoryNumber"
+                            className="block text-lg font-semibold"
+                          >
+                            Número de Inventario
+                          </label>
+                        </div>
+                        <input
+                          type="text"
+                          id="inventoryNumber"
+                          name="inventoryNumber"
+                          value={formik.values.inventoryNumber}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.inventoryNumber &&
+                            formik.errors.inventoryNumber
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        <AnimatePresence>
+                          {formik.touched.inventoryNumber &&
+                          formik.errors.inventoryNumber ? (
+                            <ErrorMessage>
+                              {formik.errors.inventoryNumber}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
+                  {tipoItem === "dispositivos-red" && (
+                    <div>
+                      <label
+                        htmlFor="otherData"
+                        className="block mt-2 text-sm font-semibold"
+                      >
+                        Otros Datos
+                      </label>
+                      <input
+                        type="text"
+                        id="otherData"
+                        name="otherData"
+                        value={formik.values.otherData}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.otherData && formik.errors.otherData
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.otherData && formik.errors.otherData ? (
+                          <ErrorMessage>{formik.errors.otherData}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                  {tipoItem === "dispositivos-red" && (
+                    <div>
+                      <label
+                        htmlFor="status"
+                        className="block mt-2 text-sm font-semibold"
+                      >
+                        Estado
+                      </label>
+                      <select
+                        id="status"
+                        name="status"
+                        value={formik.values.status}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.status && formik.errors.status
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">- SELECT -</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.status && formik.errors.status ? (
+                          <ErrorMessage>{formik.errors.status}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </div>
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
@@ -639,7 +870,9 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     {submiting ? "Enviando..." : "Enviar"}
                   </button>
                   {success && (
-                    <div className="text-green-500">Datos enviados correctamente</div>
+                    <div className="text-green-500">
+                      Datos enviados correctamente
+                    </div>
                   )}
 
                   {error && <div className="text-red-500">{error}</div>}

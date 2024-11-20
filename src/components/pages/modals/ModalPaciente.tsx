@@ -11,7 +11,9 @@ import {
 } from "../../../hooks/useFetchUsers";
 import { IPacientes } from "../../../models/IPacientes";
 import { updatePacienteEp } from "../../../utils/api-config";
+import { motion, AnimatePresence } from "framer-motion";
 
+//*Icons
 import {
   IdentificationIcon,
   EnvelopeIcon,
@@ -27,6 +29,18 @@ interface ModalPacienteProps {
   tittle: string;
   paciente: IPacientes | null;
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalPaciente: React.FC<ModalPacienteProps> = ({
   id,
@@ -244,12 +258,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                             </option>
                           ))}
                         </select>
-                        {formik.touched.tipoDocumento &&
-                        formik.errors.tipoDocumento ? (
-                          <label className="text-red-500">
-                            {formik.errors.tipoDocumento}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.tipoDocumento &&
+                          formik.errors.tipoDocumento ? (
+                            <ErrorMessage>
+                              {formik.errors.tipoDocumento}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </div>
 
                       <div>
@@ -270,12 +286,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        {formik.touched.identificacion &&
-                        formik.errors.identificacion ? (
-                          <label className="text-red-500">
-                            {formik.errors.identificacion}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.identificacion &&
+                          formik.errors.identificacion ? (
+                            <ErrorMessage>
+                              {formik.errors.identificacion}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </div>
                     </div>
 
@@ -300,12 +318,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         } w-full px-3 py-2 mb-2 border-2 rounded dark:bg-gray-700 dark:text-white`}
                       />
-                      {formik.touched.nombreCompleto &&
-                      formik.errors.nombreCompleto ? (
-                        <label className="text-red-500">
-                          {formik.errors.nombreCompleto}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.nombreCompleto &&
+                        formik.errors.nombreCompleto ? (
+                          <ErrorMessage>
+                            {formik.errors.nombreCompleto}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   </div>
 
@@ -331,12 +351,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         } `}
                       />
-                      {formik.touched.telefonoFijo &&
-                      formik.errors.telefonoFijo ? (
-                        <label className="text-red-500">
-                          {formik.errors.telefonoFijo}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.telefonoFijo &&
+                        formik.errors.telefonoFijo ? (
+                          <ErrorMessage>
+                            {formik.errors.telefonoFijo}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
@@ -358,12 +380,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        {formik.touched.numeroCelular &&
-                        formik.errors.numeroCelular ? (
-                          <label className="text-red-500">
-                            {formik.errors.numeroCelular}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.numeroCelular &&
+                          formik.errors.numeroCelular ? (
+                            <ErrorMessage>
+                              {formik.errors.numeroCelular}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </div>
 
                       <div>
@@ -384,12 +408,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        {formik.touched.numeroCelular2 &&
-                        formik.errors.numeroCelular2 ? (
-                          <label className="text-red-500">
-                            {formik.errors.numeroCelular2}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.numeroCelular2 &&
+                          formik.errors.numeroCelular2 ? (
+                            <ErrorMessage>
+                              {formik.errors.numeroCelular2}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </div>
                     </div>
                   </div>
@@ -416,11 +442,11 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         }`}
                       />
-                      {formik.touched.direccion && formik.errors.direccion ? (
-                        <label className="text-red-500">
-                          {formik.errors.direccion}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.direccion && formik.errors.direccion ? (
+                          <ErrorMessage>{formik.errors.direccion}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -443,11 +469,11 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         } `}
                       />
-                      {formik.touched.correo && formik.errors.correo ? (
-                        <label className="text-red-500">
-                          {formik.errors.correo}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.correo && formik.errors.correo ? (
+                          <ErrorMessage>{formik.errors.correo}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -475,12 +501,14 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                           </option>
                         ))}
                       </select>
-                      {formik.touched.ipsPrimaria &&
-                      formik.errors.ipsPrimaria ? (
-                        <label className="text-red-500">
-                          {formik.errors.ipsPrimaria}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.ipsPrimaria &&
+                        formik.errors.ipsPrimaria ? (
+                          <ErrorMessage>
+                            {formik.errors.ipsPrimaria}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -508,11 +536,13 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                           </option>
                         ))}
                       </select>
-                      {formik.touched.convenio && formik.errors.convenio ? (
-                        <label className="text-red-500">
-                          {formik.errors.convenio}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.convenio && formik.errors.convenio ? (
+                          <ErrorMessage>
+                            {formik.errors.convenio}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
