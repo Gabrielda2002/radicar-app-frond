@@ -263,7 +263,7 @@ const SideBar: FC = () => {
             </div>
             <div></div>
             {[1].includes(Number(rol)) && (
-              <NavLink to="/SistemaDeInventario">
+              <NavLink to="/SistemaInventario">
                 {({ isActive }) => (
                   <div
                     className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
