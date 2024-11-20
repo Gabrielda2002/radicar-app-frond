@@ -90,9 +90,18 @@ const Navbar: React.FC = React.memo(() => {
     []
   );
 
+  const toUpperCamelCase = (str: string) => {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const user = localStorage.getItem("user");
   const nombreUsuario = user
-  ? JSON.parse(user).nombre: "";
+    ? toUpperCamelCase(JSON.parse(user).nombre)
+    : "";
 
   return (
     <header
@@ -136,8 +145,7 @@ const Navbar: React.FC = React.memo(() => {
 
         <div className="flex items-center ml-auto space-x-4">
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-            <span className="text-2xl">👋</span>
-            {nombreUsuario}
+            Hola {nombreUsuario}
           </h2>
         </div>
 
