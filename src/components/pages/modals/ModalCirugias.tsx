@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { Cup } from "../../../models/ICirugias";
 import React, { useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { motion, AnimatePresence } from "framer-motion";
 import InputAutocompletado from "../../InputAutocompletado";
 import { createCirugia } from "../../../services/createCirugia";
 
@@ -24,6 +25,18 @@ interface ModalCirugiasProps {
   idRadicado: number;
   idCirugia: number[];
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-base text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   name,
@@ -134,10 +147,13 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
     },
   });
 
- // * funcion para formatear la fecha
- const formatDate = useMemo(()=> (date: Date | null) => {
-  return date ? format(date, "dd/MM/yyyy") : "N/A";
-}, []);
+  // * funcion para formatear la fecha
+  const formatDate = useMemo(
+    () => (date: Date | null) => {
+      return date ? format(date, "dd/MM/yyyy") : "N/A";
+    },
+    []
+  );
 
   return (
     <>
@@ -334,9 +350,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                       *
                                     </span>
                                   </div>
-                                  <div>
-                                    {formatDate(fechaOrden)}
-                                  </div>
+                                  <div>{formatDate(fechaOrden)}</div>
                                 </label>
                               </div>
 
@@ -368,12 +382,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                         : "border-gray-200 dark:border-gray-600"
                                     } w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:text-white dark:bg-gray-800`}
                                   />
-                                  {formik.touched.fechaParaclinicos &&
-                                  formik.errors.fechaParaclinicos ? (
-                                    <div className="mt-2 text-base text-red-600">
-                                      {formik.errors.fechaParaclinicos}
-                                    </div>
-                                  ) : null}
+                                  <AnimatePresence>
+                                    {formik.touched.fechaParaclinicos &&
+                                    formik.errors.fechaParaclinicos ? (
+                                      <ErrorMessage>
+                                        {formik.errors.fechaParaclinicos}
+                                      </ErrorMessage>
+                                    ) : null}
+                                  </AnimatePresence>
                                 </label>
                               </div>
 
@@ -405,12 +421,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                         : "border-gray-200 dark:border-gray-600"
                                     }`}
                                   />
-                                  {formik.touched.fechaAnesteciologia &&
-                                  formik.errors.fechaAnesteciologia ? (
-                                    <div className="mt-2 text-base text-red-600">
-                                      {formik.errors.fechaAnesteciologia}
-                                    </div>
-                                  ) : null}
+                                  <AnimatePresence>
+                                    {formik.touched.fechaAnesteciologia &&
+                                    formik.errors.fechaAnesteciologia ? (
+                                      <ErrorMessage>
+                                        {formik.errors.fechaAnesteciologia}
+                                      </ErrorMessage>
+                                    ) : null}
+                                  </AnimatePresence>
                                 </label>
                               </div>
                             </section>
@@ -432,11 +450,13 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     }
                                     apiRoute="ips-remite-name"
                                   />
-                                  {formik.touched.ips && formik.errors.ips ? (
-                                    <div className="mt-2 text-red-600">
-                                      {formik.errors.ips}
-                                    </div>
-                                  ) : null}
+                                  <AnimatePresence>
+                                    {formik.touched.ips && formik.errors.ips ? (
+                                      <ErrorMessage>
+                                        {formik.errors.ips}
+                                      </ErrorMessage>
+                                    ) : null}
+                                  </AnimatePresence>
                                 </div>
 
                                 {/* Especialista */}
@@ -467,12 +487,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                           : "border-gray-200 dark:border-gray-600"
                                       } w-full px-3 py-2 mt-1 text-gray-700 border rounded dark:text-white dark:bg-gray-800`}
                                     />
-                                    {formik.touched.especialista &&
-                                    formik.errors.especialista ? (
-                                      <div className="mt-2 text-base text-red-600">
-                                        {formik.errors.especialista}
-                                      </div>
-                                    ) : null}
+                                    <AnimatePresence>
+                                      {formik.touched.especialista &&
+                                      formik.errors.especialista ? (
+                                        <ErrorMessage>
+                                          {formik.errors.especialista}
+                                        </ErrorMessage>
+                                      ) : null}
+                                    </AnimatePresence>
                                   </label>
                                 </div>
 
@@ -503,12 +525,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                           : "border-gray-200 dark:border-gray-600"
                                       }`}
                                     />
-                                    {formik.touched.fechaCirugia &&
-                                    formik.errors.fechaCirugia ? (
-                                      <div className="mt-2 text-base text-red-600">
-                                        {formik.errors.fechaCirugia}
-                                      </div>
-                                    ) : null}
+                                    <AnimatePresence>
+                                      {formik.touched.fechaCirugia &&
+                                      formik.errors.fechaCirugia ? (
+                                        <ErrorMessage>
+                                          {formik.errors.fechaCirugia}
+                                        </ErrorMessage>
+                                      ) : null}
+                                    </AnimatePresence>
                                   </label>
                                 </div>
 
@@ -540,12 +564,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                           : "border-gray-200 dark:border-gray-600"
                                       } w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:text-white dark:bg-gray-800`}
                                     />
-                                    {formik.touched.horaProgramada &&
-                                    formik.errors.horaProgramada ? (
-                                      <div className="mt-2 text-base text-red-600">
-                                        {formik.errors.horaProgramada}
-                                      </div>
-                                    ) : null}
+                                    <AnimatePresence>
+                                      {formik.touched.horaProgramada &&
+                                      formik.errors.horaProgramada ? (
+                                        <ErrorMessage>
+                                          {formik.errors.horaProgramada}
+                                        </ErrorMessage>
+                                      ) : null}
+                                    </AnimatePresence>
                                   </label>
                                 </div>
                               </div>
@@ -571,12 +597,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                       : "border-gray-200 dark:border-gray-600"
                                   } `}
                                 ></textarea>
-                                {formik.touched.observacion &&
-                                  formik.errors.observacion && (
-                                    <div className="mt-1 text-base text-red-500">
-                                      {formik.errors.observacion}
-                                    </div>
-                                  )}
+                                <AnimatePresence>
+                                  {formik.touched.observacion &&
+                                    formik.errors.observacion && (
+                                      <ErrorMessage>
+                                        {formik.errors.observacion}
+                                      </ErrorMessage>
+                                    )}
+                                </AnimatePresence>
                               </div>
                             </div>
                           </div>

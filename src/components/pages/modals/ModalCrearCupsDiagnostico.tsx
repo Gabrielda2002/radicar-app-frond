@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { motion, AnimatePresence } from "framer-motion";
 import { createCups } from "../../../services/createCups";
 
 interface ModalCrearCupsDiagnosticoProps{
@@ -139,11 +140,11 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
                           : "border-gray-200 dark:border-gray-600"
                       }`}
                     />
-                    {formik.touched.code && formik.errors.code ? (
-                      <label className="text-red-500">
-                        {formik.errors.code}
-                      </label>
-                    ) : null}
+                    <AnimatePresence>
+                      {formik.touched.code && formik.errors.code ? (
+                        <ErrorMessage>{formik.errors.code}</ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
                   </div>
                   <div>
                     <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
@@ -162,11 +163,14 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
                           : "border-gray-200 dark:border-gray-600"
                       }`}
                     />
-                    {formik.touched.description && formik.errors.description ? (
-                      <label className="text-red-500">
-                        {formik.errors.description}
-                      </label>
-                    ) : null}
+                    <AnimatePresence>
+                      {formik.touched.description &&
+                      formik.errors.description ? (
+                        <ErrorMessage>
+                          {formik.errors.description}
+                        </ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
                   </div>
                 </div>
 

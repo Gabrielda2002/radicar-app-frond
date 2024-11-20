@@ -1,17 +1,30 @@
 //*Funciones y Hooks
-import React, { useEffect, useState, useMemo } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-//*Icons
-import editar from "/assets/editar.svg";
-import { Cup } from "../../../models/IAuditados";
-import { useFetchEstados } from "../../../hooks/useFetchUsers";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { Cup } from "../../../models/IAuditados";
+import useAnimation from "../../../hooks/useAnimations";
+import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState, useMemo } from "react";
+import { useFetchEstados } from "../../../hooks/useFetchUsers";
 import { sendCupsAuditados } from "../../../services/updateCupsAuditados";
+//*Icons
+import editar from "/assets/editar.svg";
 
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalActualizarCupsAuditoria: React.FC<
   ModalActualizarCupsAuditadosProps
@@ -36,13 +49,17 @@ const ModalActualizarCupsAuditoria: React.FC<
     }
   }, [stadopen]);
 
-  const validationSchema = useMemo(()=> Yup.object({
-    estado: Yup.string().required("El estado es requerido."),
-    observacion: Yup.string()
-      .min(1, "La observación debe tener al menos 1 caracteres.")
-      .max(150, "La observación no debe exceder los 150 caracteres.")
-      .required("La observación es requerida."),
-  }), []);
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        estado: Yup.string().required("El estado es requerido."),
+        observacion: Yup.string()
+          .min(1, "La observación debe tener al menos 1 caracteres.")
+          .max(150, "La observación no debe exceder los 150 caracteres.")
+          .required("La observación es requerida."),
+      }),
+    []
+  );
 
   // hook de formik
   const formik = useFormik({
@@ -158,12 +175,14 @@ const ModalActualizarCupsAuditoria: React.FC<
                                   </option>
                                 ))}
                               </select>
-                              {formik.touched.estado &&
-                                formik.errors.estado && (
-                                  <label className="text-sm text-red-500 ">
-                                    {formik.errors.estado}
-                                  </label>
-                                )}
+                              <AnimatePresence>
+                                {formik.touched.estado &&
+                                  formik.errors.estado && (
+                                    <ErrorMessage>
+                                      {formik.errors.estado}
+                                    </ErrorMessage>
+                                  )}
+                              </AnimatePresence>
                             </label>
                           </div>
                         </div>
@@ -195,12 +214,14 @@ const ModalActualizarCupsAuditoria: React.FC<
                             onBlur={formik.handleBlur}
                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           ></textarea>
-                          {formik.touched.observacion &&
-                            formik.errors.observacion && (
-                              <label className="text-red-500">
-                                {formik.errors.observacion}
-                              </label>
-                            )}
+                          <AnimatePresence>
+                            {formik.touched.observacion &&
+                              formik.errors.observacion && (
+                                <ErrorMessage>
+                                  {formik.errors.observacion}
+                                </ErrorMessage>
+                              )}
+                          </AnimatePresence>
                         </label>
                       </div>
                     </section>

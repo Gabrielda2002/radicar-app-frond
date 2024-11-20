@@ -33,7 +33,10 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
   return (
     <>
       {departamentos?.map((d) => (
-        <div key={d.id} className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1">
+        <div
+          key={d.id}
+          className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
+        >
           <button key={d.id} onClick={() => onSelected(d)}>
             <div className="absolute top-0 left-0 w-56 h-full">
               {/* Imagen de fondo */}

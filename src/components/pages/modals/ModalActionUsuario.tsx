@@ -9,6 +9,7 @@ import {
   useFetchRoles,
 } from "../../../hooks/useFetchUsers";
 import { IUsuarios } from "../../../models/IUsuarios";
+import { motion, AnimatePresence } from "framer-motion";
 import { updateUsuarios } from "../../../services/updarteUsuarios";
 
 //*Icons
@@ -21,6 +22,18 @@ interface ModalActionUsuarioProps {
   //   update: boolean;
   ususario: IUsuarios | null;
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   id,
@@ -219,11 +232,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         }`}
                       />
-                      {formik.touched.nombres && formik.errors.nombres ? (
-                        <label className="text-red-500">
-                          {formik.errors.nombres}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.nombres && formik.errors.nombres ? (
+                          <ErrorMessage>{formik.errors.nombres}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <div>
                       <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
@@ -242,11 +255,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         }`}
                       />
-                      {formik.touched.apellidos && formik.errors.apellidos ? (
-                        <label className="text-red-500">
-                          {formik.errors.apellidos}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.apellidos && formik.errors.apellidos ? (
+                          <ErrorMessage>{formik.errors.apellidos}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <div>
                       <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
@@ -271,12 +284,14 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           </option>
                         ))}
                       </select>
-                      {formik.touched.tipoDocumento &&
-                      formik.errors.tipoDocumento ? (
-                        <label className="text-red-500">
-                          {formik.errors.tipoDocumento}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.tipoDocumento &&
+                        formik.errors.tipoDocumento ? (
+                          <ErrorMessage>
+                            {formik.errors.tipoDocumento}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -297,12 +312,14 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         }`}
                       />
-                      {formik.touched.identificacion &&
-                      formik.errors.identificacion ? (
-                        <label className="text-red-500">
-                          {formik.errors.identificacion}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.identificacion &&
+                        formik.errors.identificacion ? (
+                          <ErrorMessage>
+                            {formik.errors.identificacion}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   </div>
                   {/* USER MAIL AND DATES */}
@@ -330,11 +347,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         } `}
                       />
-                      {formik.touched.correo && formik.errors.correo ? (
-                        <label className="text-red-500">
-                          {formik.errors.correo}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.correo && formik.errors.correo ? (
+                          <ErrorMessage>{formik.errors.correo}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -358,11 +375,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           </option>
                         ))}
                       </select>
-                      {formik.touched.municipio && formik.errors.municipio ? (
-                        <label className="text-red-500">
-                          {formik.errors.municipio}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.municipio && formik.errors.municipio ? (
+                          <ErrorMessage>{formik.errors.municipio}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
@@ -397,14 +414,14 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           </option>
                         ))}
                       </select>
-                      {formik.touched.rol && formik.errors.rol ? (
-                        <label className="text-red-500">
-                          {formik.errors.rol}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.rol && formik.errors.rol ? (
+                          <ErrorMessage>{formik.errors.rol}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
-                    <div className="">  
+                    <div className="">
                       <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                         Contraseña
                       </label>
@@ -421,11 +438,14 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         } `}
                       />
-                      {formik.touched.contrasena && formik.errors.contrasena ? (
-                        <label className="text-red-500">
-                          {formik.errors.contrasena}
-                        </label>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.contrasena &&
+                        formik.errors.contrasena ? (
+                          <ErrorMessage>
+                            {formik.errors.contrasena}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
 
                     <div>

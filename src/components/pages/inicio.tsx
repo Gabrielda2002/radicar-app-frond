@@ -9,7 +9,7 @@ import { useFetchMonth } from "../../hooks/useFetchUsers";
 import { IMonthDataRadicacion } from "../../models/IMonthDataRadicacion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
-const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
+// const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
 
 const Inicio = () => {

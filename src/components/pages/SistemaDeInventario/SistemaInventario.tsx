@@ -1,17 +1,23 @@
+//*Fuctions and Hooks
+import ItemsList from "./ItemsList";
+import SedesList from "./sedesList";
 import React, { useState } from "react";
-import { useFetchDepartment } from "../../../hooks/useFetchUsers";
+import DeviceCard from "../../DevicesCard";
+import ModalSection from "../../ModalSection";
 import DepartamentosList from "./DepartamentosList";
 import useFetchSedes from "../../../hooks/useFetchSedes";
-import SedesList from "./sedesList";
 import useFetchItems from "../../../hooks/useFetchItems";
-import ItemsList from "./ItemsList";
-import ModalSection from "../../ModalSection";
-import DeviceCard from "../../DevicesCard";
+import { useFetchDepartment } from "../../../hooks/useFetchUsers";
 
-// Iconos
+//*Icons and Images
 import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
 import TELECO from "/src/components/pages/SistemaDeInventario/Images/TELECOMUNICACIONES.webp";
-import { ComputerDesktopIcon, SignalIcon } from "@heroicons/react/24/outline";
+import {
+  ComputerDesktopIcon,
+  SignalIcon,
+  ArrowUturnLeftIcon,
+} from "@heroicons/react/24/outline";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -49,81 +55,123 @@ const SistemaInventario: React.FC = () => {
       setDepartmentSelect(null);
     }
   };
+  //*Logica para implementar el sistema de Loading
+  const [isLoading, setisLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+
+  const handleFinishLoading = () => {
+    setisLoading(false);
+    setShowContent(true);
+  };
 
   return (
-    <div>
-      <ModalSection
-        title="Módulo Inventario"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Sistema De Inventario", path: "" },
-        ]}
-      />
-
-      <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        {/* si scree en diferente a departamentos se muestra la flecha */}
-        {screen !== "departamentos" && (
-          <button onClick={handleBack} className="btn btn-secondary">
-            Atras
-          </button>
-        )}
-
-        {screen === "departamentos" &&
-          (loadingDepartment ? (
-            <p>Cargando departamentos...</p>
-          ) : errordepartment ? (
-            <p>{errordepartment}</p>
-          ) : (
-            <DepartamentosList
-              departamentos={departments}
-              onSelected={(departamento) => {
-                setDepartmentSelect(departamento.id);
-                setScreen("sedes"); // cambia la pantalla a sedes
-              }}
-            />
-          ))}
-
-        {screen === "sedes" && departmentSelect && (
-          <SedesList
-            sedes={sedes}
-            onSelect={(sede) => {
-              setSedeSelect(sede.id);
-              setScreen("tipoItem"); // cambia la pantalla a items
-            }}
-          />
-        )}
-
-        {screen === "tipoItem" && sedeSelect && (
+    <>
+      {isLoading ? (
+        <LoadingSpinner duration={200} onFinish={handleFinishLoading} />
+      ) : (
+        <div className={` ${showContent ? "opacity-100" : "opacity-0"}`}>
           <div>
-            <h2>Selecciona el tipo de item</h2>
-            <DeviceCard
-              title="Computadores"
-              description="Contenido de la Sección"
-              image={COMPUTO}
-              icon={<ComputerDesktopIcon className="w-8 h-8 text-gray-200" />}
-              onClick={() => {
-                setTipoItem("equipos");
-                setScreen("items");
-              }}
+            <ModalSection
+              title="Módulo Inventario"
+              breadcrumb={[
+                { label: "Inicio", path: "/home" },
+                { label: "/ Sistema De Inventario", path: "" },
+              ]}
             />
-            <DeviceCard
-              title="Dispositivos de red"
-              description="Contenido de la Sección"
-              image={TELECO}
-              icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
-              onClick={() => {
-                setTipoItem("dispositivos-red");
-                setScreen("items");
-              }}
-            />
-          </div>
-        )}
 
-        {screen === "items" && sedeSelect && tipoItem && (
-          <ItemsList invetario={items} tipoItem={tipoItem} idSede={sedeSelect} />
-        )}
-      </div>
-    </div>
+            <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
+              {/* si scree en diferente a departamentos se muestra la flecha */}
+              {screen !== "departamentos" && (
+                <div className="">
+                  <button
+                    title="Atras"
+                    onClick={handleBack}
+                    className="flex items-center p-2 mb-4 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md btn btn-secondary hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+                  >
+                    <ArrowUturnLeftIcon className="w-6 h-6 mr-2" />
+                    <span className="flex items-center pt-1">ATRAS</span>
+                  </button>
+                </div>
+              )}
+
+              <div>
+                <div>
+                  {screen === "departamentos" && (
+                    <div className="grid grid-cols-3 gap-8">
+                      {loadingDepartment ? (  
+                        <LoadingSpinner />
+                      ) : errordepartment ? (
+                        <p>{errordepartment}</p>
+                      ) : (
+                        <DepartamentosList
+                          departamentos={departments}
+                          onSelected={(departamento) => {
+                            setDepartmentSelect(departamento.id);
+                            setScreen("sedes");
+                          }}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {screen === "sedes" && departmentSelect && (
+                  <SedesList
+                    sedes={sedes}
+                    onSelect={(sede) => {
+                      setSedeSelect(sede.id);
+                      setScreen("tipoItem"); // cambia la pantalla a items
+                    }}
+                  />
+                )}
+
+                {screen === "tipoItem" && sedeSelect && (
+                  <>
+                    <div>
+                      <h2 className="mb-4 text-3xl dark:text-white">
+                        Categorías
+                      </h2>
+                    </div>
+                    <div className="grid grid-cols-2 gap-8">
+                      <DeviceCard
+                        title="Computadores"
+                        description="Contenido de la Sección"
+                        image={COMPUTO}
+                        icon={
+                          <ComputerDesktopIcon className="w-8 h-8 text-gray-200" />
+                        }
+                        onClick={() => {
+                          setTipoItem("equipos");
+                          setScreen("items");
+                        }}
+                      />
+                      <DeviceCard
+                        title="Dispositivos de red"
+                        description="Contenido de la Sección"
+                        image={TELECO}
+                        icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
+                        onClick={() => {
+                          setTipoItem("dispositivos-red");
+                          setScreen("items");
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
+
+                {screen === "items" && sedeSelect && tipoItem && (
+                  <ItemsList
+                    invetario={items}
+                    tipoItem={tipoItem}
+                    idSede={sedeSelect}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
