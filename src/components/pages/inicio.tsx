@@ -97,11 +97,6 @@ const Inicio = () => {
                 <Bar dataKey="cantidad" fill="#8884d8" />
               </BarChart>
 
-              <Suspense fallback={<LoadingSpinner />}>
-                {/* Indicadores de rendimiento */}
-                <IndicadoresSalud />
-              </Suspense>
-
               {/* Alerta de contraseña */}
               {showAlert && (
                 <section
