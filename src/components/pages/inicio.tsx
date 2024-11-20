@@ -57,11 +57,6 @@ const Inicio = () => {
                 avanzada y un equipo humano altamente capacitado.
               </p>
 
-              <Suspense fallback={<LoadingSpinner />}>
-                {/* Indicadores de rendimiento */}
-                <IndicadoresSalud />
-              </Suspense>
-
               {/* Alerta de contraseña */}
               {showAlert && (
                 <section
