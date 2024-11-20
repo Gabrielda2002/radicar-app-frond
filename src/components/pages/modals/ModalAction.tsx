@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { motion, AnimatePresence } from "framer-motion";
 import { updateStatus } from "../../../services/updateStatus";
 
 //*Icons
@@ -13,6 +14,18 @@ interface ModalActionProps {
   name: string;
   endPoint: string;
 }
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -128,11 +141,11 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                           className="w-[200px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
                           disabled
                         />
-                        {formik.touched.id && formik.errors.id ? (
-                          <label className="text-red-500">
-                            {formik.errors.id}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.id && formik.errors.id ? (
+                            <ErrorMessage>{formik.errors.id}</ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div className="flex">
@@ -152,11 +165,11 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                           <option value={1}>Activo</option>
                           <option value={0}>Inactivo</option>
                         </select>
-                        {formik.touched.status && formik.errors.status ? (
-                          <label className="text-red-500">
-                            {formik.errors.status}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.status && formik.errors.status ? (
+                            <ErrorMessage>{formik.errors.status}</ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div className="">
@@ -173,11 +186,13 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                           onBlur={formik.handleBlur}
                           className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
-                        {formik.touched.name && formik.errors.name ? (
-                          <label className="text-red-500">
-                            {formik.errors.name}
-                          </label>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.name && formik.errors.name ? (
+                            <ErrorMessage>
+                              {formik.errors.name}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                   </section>

@@ -9,12 +9,26 @@ import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
+//*Icons
 import id from "/assets/id.svg";
 import phone from "/assets/phone.svg";
 import email from "/assets/email.svg";
 import adress from "/assets/adress.svg";
 import telephone from "/assets/telephone.svg";
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="mt-2 text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -58,7 +72,8 @@ const ModalRadicacion = () => {
       .required("Campo requerido")
       .min(1, "El número debe tener al menos 10 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
-    numeroCelular2: Yup.string().optional()
+    numeroCelular2: Yup.string()
+      .optional()
       .min(1, "El número debe tener al menos 10 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
     direccion: Yup.string().required("Campo requerido"),
@@ -102,31 +117,32 @@ const ModalRadicacion = () => {
 
       // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
       // ! tambien se valida que no haya campos vacios
-      let errorCups = ""; 
+      let errorCups = "";
       if (servicios.length !== parseInt(cantidad)) {
-        errorCups = "La cantidad de códigos de CUPS no coincide con la cantidad especificada.";
+        errorCups =
+          "La cantidad de códigos de CUPS no coincide con la cantidad especificada.";
       } else if (descripciones.length !== parseInt(cantidad)) {
-        errorCups = "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
+        errorCups =
+          "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
       } else {
         for (let i = 0; i < parseInt(cantidad); i++) {
           if (!servicios[i]) {
             errorCups = `Falta el código del CUPS N° ${i + 1}.`;
-            break; 
+            break;
           }
           if (!descripciones[i]) {
             errorCups = `Falta la descripción del CUPS N° ${i + 1}.`;
-            break; 
+            break;
           }
         }
       }
-    
+
       if (errorCups) {
         setErrorMessage(errorCups);
         return;
       }
       setSubmiting(true);
       setSuccess(false);
-
 
       const formData = new FormData();
       formData.append("landline", values.telefonoFijo);
@@ -150,7 +166,6 @@ const ModalRadicacion = () => {
       formData.append("code", servicios.join(","));
       formData.append("DescriptionCode", descripciones.join(","));
 
-
       formData.append("idPatient", values.idPaciente);
 
       try {
@@ -158,7 +173,7 @@ const ModalRadicacion = () => {
 
         if (response?.status === 201) {
           setSuccess(true);
-          setErrorMessage(null)
+          setErrorMessage(null);
           setTimeout(() => {
             setStadopen(false);
             window.location.reload();
@@ -233,7 +248,7 @@ const ModalRadicacion = () => {
 
   // ? redirigir al usuario a la tabla de pacientes para registrar un nuevo paciente
   const handleRegisterPaciente = () => {
-     navigate("/tabla-pacientes", {state: {openModal: true}});
+    navigate("/tabla-pacientes", { state: { openModal: true } });
   };
 
   const closeModal = () => {
@@ -296,7 +311,7 @@ const ModalRadicacion = () => {
                   Radicación de Servicios
                 </h1>
                 <button
-                type="button"
+                  type="button"
                   onClick={() => setStadopen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
@@ -343,7 +358,7 @@ const ModalRadicacion = () => {
                       <div className="text-red-500 dark:text-red-300">
                         {error}
                         <div></div>
-                        <button 
+                        <button
                           type="button"
                           className="text-blue-500 dark:text-blue-300"
                           onClick={handleRegisterPaciente}
@@ -463,12 +478,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        {formik.touched.telefonoFijo &&
-                        formik.errors.telefonoFijo ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.telefonoFijo}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.telefonoFijo &&
+                          formik.errors.telefonoFijo ? (
+                            <ErrorMessage>
+                              {formik.errors.telefonoFijo}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -498,12 +515,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.numeroCelular &&
-                        formik.errors.numeroCelular ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.numeroCelular}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.numeroCelular &&
+                          formik.errors.numeroCelular ? (
+                            <ErrorMessage>
+                              {formik.errors.numeroCelular}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -533,12 +552,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.numeroCelular2 &&
-                        formik.errors.numeroCelular2 ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.numeroCelular2}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.numeroCelular2 &&
+                          formik.errors.numeroCelular2 ? (
+                            <ErrorMessage>
+                              {formik.errors.numeroCelular2}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -567,11 +588,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.direccion && formik.errors.direccion ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.direccion}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.direccion &&
+                          formik.errors.direccion ? (
+                            <ErrorMessage>
+                              {formik.errors.direccion}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -600,11 +624,13 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.email && formik.errors.email ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.email}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.email && formik.errors.email ? (
+                            <div className="mt-2 text-red-500 dark:text-red-300">
+                              {formik.errors.email}
+                            </div>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                   </section>
@@ -664,12 +690,14 @@ const ModalRadicacion = () => {
                           !!formik.errors.idIpsRemite
                         }
                       />
-                      {formik.touched.idIpsRemite &&
-                      formik.errors.idIpsRemite ? (
-                        <div className="text-red-500 dark:text-red-300">
-                          {formik.errors.idIpsRemite}
-                        </div>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.idIpsRemite &&
+                        formik.errors.idIpsRemite ? (
+                          <ErrorMessage>
+                            {formik.errors.idIpsRemite}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <div>
                       <InputAutocompletado
@@ -710,12 +738,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.nombreProfesional &&
-                        formik.errors.nombreProfesional ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.nombreProfesional}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.nombreProfesional &&
+                          formik.errors.nombreProfesional ? (
+                            <ErrorMessage>
+                              {formik.errors.nombreProfesional}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -736,11 +766,14 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.dateOrden && formik.errors.dateOrden ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.dateOrden}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.dateOrden &&
+                          formik.errors.dateOrden ? (
+                            <ErrorMessage>
+                              {formik.errors.dateOrden}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>
@@ -755,12 +788,14 @@ const ModalRadicacion = () => {
                           !!formik.errors.idGrupoServicios
                         }
                       />
-                      {formik.touched.idGrupoServicios &&
-                      formik.errors.idGrupoServicios ? (
-                        <div className="mt-2 text-red-500 dark:text-red-300">
-                          {formik.errors.idGrupoServicios}
-                        </div>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.idGrupoServicios &&
+                        formik.errors.idGrupoServicios ? (
+                          <ErrorMessage>
+                            {formik.errors.idGrupoServicios}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <div>
                       <InputAutocompletado
@@ -774,12 +809,14 @@ const ModalRadicacion = () => {
                           !!formik.errors.idTipoServicios
                         }
                       />
-                      {formik.touched.idTipoServicios &&
-                      formik.errors.idTipoServicios ? (
-                        <div className="mt-2 text-red-500 dark:text-red-300">
-                          {formik.errors.idTipoServicios}
-                        </div>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.idTipoServicios &&
+                        formik.errors.idTipoServicios ? (
+                          <ErrorMessage>
+                            {formik.errors.idTipoServicios}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <div>
                       <InputAutocompletado
@@ -793,12 +830,14 @@ const ModalRadicacion = () => {
                           !!formik.errors.idLugarRadicacion
                         }
                       />
-                      {formik.touched.idLugarRadicacion &&
-                      formik.errors.idLugarRadicacion ? (
-                        <div className="mt-2 text-red-500 dark:text-red-300">
-                          {formik.errors.idLugarRadicacion}
-                        </div>
-                      ) : null}
+                      <AnimatePresence>
+                        {formik.touched.idLugarRadicacion &&
+                        formik.errors.idLugarRadicacion ? (
+                          <ErrorMessage>
+                            {formik.errors.idLugarRadicacion}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                     <br />
                     <div className="grid grid-cols-1">
@@ -880,11 +919,13 @@ const ModalRadicacion = () => {
                               : "border-gray-200 dark:border-gray-600"
                           } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
                         />
-                        {formik.touched.soporte && formik.errors.soporte ? (
-                          <div className="mt-2 text-red-500 dark:text-red-300">
-                            {formik.errors.soporte}
-                          </div>
-                        ) : null}
+                        <AnimatePresence>
+                          {formik.touched.soporte && formik.errors.soporte ? (
+                            <ErrorMessage>
+                              {formik.errors.soporte}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
                       </label>
                     </div>
                     <div>

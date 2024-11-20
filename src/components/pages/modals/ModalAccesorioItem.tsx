@@ -3,12 +3,42 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
+import { motion, AnimatePresence } from "framer-motion";
 import inventoryOptions from "../../../data-dynamic/inventoryOptions.json";
+import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
 
+//*Icons
+import {
+  SquaresPlusIcon,
+  TagIcon,
+  InformationCircleIcon,
+  PuzzlePieceIcon,
+  ShieldCheckIcon,
+  SwatchIcon,
+  MapPinIcon,
+  CheckCircleIcon,
+  CircleStackIcon,
+  WifiIcon,
+  CodeBracketIcon,
+  KeyIcon,
+  CalendarIcon,
+  CheckBadgeIcon,
+} from "@heroicons/react/24/outline";
 interface ModalAccesorioItemProps {
   id: number;
-};
+}
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -129,7 +159,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
         formData.append("otherData", values.othersData);
         formData.append("equipmentId", id.toString());
 
-
         let ep: string = "";
 
         if (typeAdd === "Periferico" || typeAdd === "hardware") {
@@ -177,25 +206,25 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
     },
   });
 
-interface HandleSearchChangeEvent {
+  interface HandleSearchChangeEvent {
     target: {
-        value: string;
+      value: string;
     };
-}
+  }
 
-const handleSearchChange = (e: HandleSearchChangeEvent) => {
+  const handleSearchChange = (e: HandleSearchChangeEvent) => {
     const query = e.target.value;
     setSearch(query);
 
     if (typeAdd && query) {
-        const filteredSuggestions = inventoryOptions[
-            typeAdd.toLowerCase() as keyof typeof inventoryOptions
-        ].filter((option) => option.toLowerCase().includes(query.toLowerCase()));
-        setSuggestions(filteredSuggestions);
+      const filteredSuggestions = inventoryOptions[
+        typeAdd.toLowerCase() as keyof typeof inventoryOptions
+      ].filter((option) => option.toLowerCase().includes(query.toLowerCase()));
+      setSuggestions(filteredSuggestions);
     } else {
-        setSuggestions([]);
+      setSuggestions([]);
     }
-};
+  };
 
   const handleSuggestionClick = (suggestion: string) => {
     formik.setFieldValue("name", suggestion);
@@ -205,8 +234,12 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
 
   return (
     <>
-      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        Agregar Accesorio
+      <button
+        className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+        onClick={() => setStadopen(true)}
+        title="Agregar Accesorio"
+      >
+        <SquaresPlusIcon className="w-7 h-7" />
       </button>
 
       {/* init event modal */}
@@ -216,7 +249,7 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >
-          <section className="">
+          <section className="w-[900px]">
             <div
               className={`w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
                 showAnimation && !closing ? "translate-y-0" : "translate-y-10"
@@ -240,45 +273,51 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                 onSubmit={formik.handleSubmit}
                 className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
-                <div className="p-6">
-                  <section className="grid grid-cols-3">
+                <div className="p-8">
+                  <div className="flex mb-8">
+                    <label className="">
+                      <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                        Tipo de Accesorio
+                      </span>
+                      <select
+                        name="typeAdd"
+                        value={typeAdd}
+                        onChange={(e) => setTypeAdd(e.target.value)}
+                        className="w-[200px] p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                      >
+                        <option value="">SELECCIONE</option>
+                        <option value="Periferico">Periferico</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="software">Software</option>
+                      </select>
+                    </label>
+                  </div>
+                  <section className="grid grid-cols-2 gap-x-7">
                     {/* validar que va crear el usuario y en base a esa seleccion mostrar el fomrulario correspondiente */}
-
-                    <div className="flex">
-                      <label htmlFor="">
-                        <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Tipo de Accesorio
-                        </span>
-                        <select
-                          name="typeAdd"
-                          value={typeAdd}
-                          onChange={(e) => setTypeAdd(e.target.value)}
-                          className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-                        >
-                          <option value="">SELECCIONE</option>
-                          <option value="Periferico">Periferico</option>
-                          <option value="hardware">Hardware</option>
-                          <option value="software">Software</option>
-                        </select>
-                      </label>
-                    </div>
                     {typeAdd && (
                       <>
-                        <div className="relative">
-                          <label htmlFor="">
-                            <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                              Nombre
-                            </span>
+                        <div className="flex w-full">
+                          <label className="w-full mb-4">
+                            <div className="flex items-center mb-2">
+                              <TagIcon className="w-8 h-8 mr-2 dark:text-white" />
+                              <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                                Nombre
+                              </span>
+                            </div>
                             <input
                               name="name"
                               value={search}
                               onChange={handleSearchChange}
                               onBlur={formik.handleBlur}
-                              className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                              className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                                formik.touched.name && formik.errors.name
+                                  ? "border-red-500 dark:border-red-500"
+                                  : "border-gray-200 dark:border-gray-600"
+                              }`}
                             />
 
                             {suggestions.length > 0 && (
-                              <ul className="absolute top-full mt-1 w-[200px] border border-gray-200 rounded bg-white dark:bg-gray-800 dark:border-gray-600 max-h-40 overflow-y-auto z-10">
+                              <ul className="absolute top-full mt-1 w-[200px] border-2 border-gray-200 rounded bg-white dark:bg-gray-800 dark:border-gray-600 max-h-40 overflow-y-auto z-10">
                                 {suggestions.map((suggestion) => (
                                   <li
                                     key={suggestion}
@@ -292,32 +331,44 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                                 ))}
                               </ul>
                             )}
-                            {formik.touched.name && formik.errors.name ? (
-                              <label className="text-red-500">
-                                {formik.errors.name}
-                              </label>
-                            ) : null}
+                            <AnimatePresence>
+                              {formik.touched.name && formik.errors.name ? (
+                                <ErrorMessage>
+                                  {formik.errors.name}
+                                </ErrorMessage>
+                              ) : null}
+                            </AnimatePresence>
                           </label>
                         </div>
 
                         <div className="flex">
-                          <label htmlFor="">
-                            <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                              Otros Datos
-                            </span>
+                          <label className="w-full mb-4">
+                            <div className="flex items-center mb-2">
+                              <InformationCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                              <span className="flex text-lg font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                                Otros Datos
+                              </span>
+                            </div>
                             <textarea
                               name="othersData"
                               value={formik.values.othersData}
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
-                              className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                              className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                                formik.touched.othersData &&
+                                formik.errors.othersData
+                                  ? "border-red-500 dark:border-red-500"
+                                  : "border-gray-200 dark:border-gray-600"
+                              }`}
                             ></textarea>
-                            {formik.touched.othersData &&
-                            formik.errors.othersData ? (
-                              <label className="text-red-500">
-                                {formik.errors.othersData}
-                              </label>
-                            ) : null}
+                            <AnimatePresence>
+                              {formik.touched.othersData &&
+                              formik.errors.othersData ? (
+                                <ErrorMessage>
+                                  {formik.errors.othersData}
+                                </ErrorMessage>
+                              ) : null}
+                            </AnimatePresence>
                           </label>
                         </div>
                       </>
@@ -325,69 +376,92 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                     {/* Si typeAdd es igual a periferico que muestre los campos correspondientes para el registro de esos datos */}
                     {(typeAdd === "Periferico" || typeAdd === "hardware") && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Marca
-                          </span>
+                        <label className="w-full mb-4">
+                          <div className="flex items-center mb-2">
+                            <PuzzlePieceIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Marca
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="brand"
                             value={formik.values.brand}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.brand && formik.errors.brand
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.brand && formik.errors.brand ? (
-                            <label className="text-red-500">
-                              {formik.errors.brand}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.brand && formik.errors.brand ? (
+                              <ErrorMessage>{formik.errors.brand}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {(typeAdd === "Periferico" || typeAdd === "hardware") && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Serial
-                          </span>
+                        <label className="w-full mb-4">
+                          <div className="flex items-center mb-2">
+                            <ShieldCheckIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Serial
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="serial"
                             value={formik.values.serial}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.serial && formik.errors.serial
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.serial && formik.errors.serial ? (
-                            <label className="text-red-500">
-                              {formik.errors.serial}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.serial && formik.errors.serial ? (
+                              <ErrorMessage>
+                                {formik.errors.serial}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {(typeAdd === "Periferico" || typeAdd === "hardware") && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Modelo
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <SwatchIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Modelo
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="model"
                             value={formik.values.model}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.model && formik.errors.model
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.model && formik.errors.model ? (
-                            <label className="text-red-500">
-                              {formik.errors.model}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.model && formik.errors.model ? (
+                              <ErrorMessage>{formik.errors.model}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
@@ -395,98 +469,135 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                     {/* Si typeAdd es igual a software que muestre los campos correspondientes para el registro de esos datos */}
                     {typeAdd === "software" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Versión
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <CodeBracketIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Versión
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="version"
                             value={formik.values.version}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.version && formik.errors.version
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.version && formik.errors.version ? (
-                            <label className="text-red-500">
-                              {formik.errors.version}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.version && formik.errors.version ? (
+                              <ErrorMessage>
+                                {formik.errors.version}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {typeAdd === "software" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Licencia
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <KeyIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Licencia
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="license"
                             value={formik.values.license}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.license && formik.errors.license
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.license && formik.errors.license ? (
-                            <label className="text-red-500">
-                              {formik.errors.license}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.license && formik.errors.license ? (
+                              <ErrorMessage>
+                                {formik.errors.license}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {typeAdd === "software" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Fecha de Instalación
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <CalendarIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Fecha de Instalación
+                            </span>
+                          </div>
                           <input
                             type="date"
                             name="dateInstallation"
                             value={formik.values.dateInstallation}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.dateInstallation &&
+                              formik.errors.dateInstallation
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.dateInstallation &&
-                          formik.errors.dateInstallation ? (
-                            <label className="text-red-500">
-                              {formik.errors.dateInstallation}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.dateInstallation &&
+                            formik.errors.dateInstallation ? (
+                              <ErrorMessage>
+                                {formik.errors.dateInstallation}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {typeAdd === "software" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Estado
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <CheckBadgeIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Estado
+                            </span>
+                          </div>
                           <select
                             id=""
                             name="status"
                             value={formik.values.status}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.status && formik.errors.status
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           >
                             <option value="">- SELECT -</option>
                             <option value="NUEVO">Nuevo</option>
                             <option value="REGULAR">Regular</option>
                             <option value="MALO">Malo</option>
                           </select>
-                          {formik.touched.status && formik.errors.status ? (
-                            <label className="text-red-500">
-                              {formik.errors.status}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.status && formik.errors.status ? (
+                              <ErrorMessage>
+                                {formik.errors.status}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
@@ -495,46 +606,63 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
 
                     {typeAdd === "hardware" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Capacidad
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <CircleStackIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Capacidad
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="capacity"
                             value={formik.values.capacity}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.capacity && formik.errors.capacity
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.capacity && formik.errors.capacity ? (
-                            <label className="text-red-500">
-                              {formik.errors.capacity}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.capacity &&
+                            formik.errors.capacity ? (
+                              <ErrorMessage>
+                                {formik.errors.capacity}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {typeAdd === "hardware" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Velocidad
-                          </span>
+                        <label className="w-full">
+                          <div className="flex items-center mb-2">
+                            <WifiIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Velocidad
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="speed"
                             value={formik.values.speed}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.speed && formik.errors.speed
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.speed && formik.errors.speed ? (
-                            <label className="text-red-500">
-                              {formik.errors.speed}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.speed && formik.errors.speed ? (
+                              <ErrorMessage>{formik.errors.speed}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
@@ -542,52 +670,71 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                     {/* Si typeAdd es igual a periferico que muestre los campos correspondientes para el registro de esos datos */}
                     {typeAdd === "Periferico" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Número de Inventario
-                          </span>
+                        <label className="w-full mb-2">
+                          <div className="flex items-center mb-2">
+                            <MapPinIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Número de Inventario
+                            </span>
+                          </div>
                           <input
                             type="text"
                             name="inventoryNumber"
                             value={formik.values.inventoryNumber}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.inventoryNumber &&
+                              formik.errors.inventoryNumber
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           />
-                          {formik.touched.inventoryNumber &&
-                          formik.errors.inventoryNumber ? (
-                            <label className="text-red-500">
-                              {formik.errors.inventoryNumber}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.inventoryNumber &&
+                            formik.errors.inventoryNumber ? (
+                              <ErrorMessage>
+                                {formik.errors.inventoryNumber}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
 
                     {typeAdd === "Periferico" && (
                       <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                            Estado
-                          </span>
+                        <label className="">
+                          <div className="flex items-center mb-2">
+                            <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                              Estado
+                            </span>
+                          </div>
                           <select
                             id=""
                             name="status"
                             value={formik.values.status}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-[200px] p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.status && formik.errors.status
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           >
                             <option value="">- SELECT -</option>
                             <option value="NUEVO">Nuevo</option>
                             <option value="REGULAR">Regular</option>
                             <option value="MALO">Malo</option>
                           </select>
-                          {formik.touched.status && formik.errors.status ? (
-                            <label className="text-red-500">
-                              {formik.errors.status}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.status && formik.errors.status ? (
+                              <ErrorMessage>
+                                {formik.errors.status}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
@@ -607,7 +754,6 @@ const handleSearchChange = (e: HandleSearchChangeEvent) => {
                     type="submit"
                     disabled={submitting}
                   >
-                    Crear
                     {submitting ? "Actualizando..." : "Actualizando"}
                   </button>
                   {success && (

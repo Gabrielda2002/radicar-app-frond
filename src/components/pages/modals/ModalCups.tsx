@@ -3,7 +3,20 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useState, useMemo, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
+import { motion, AnimatePresence } from "framer-motion";
 import { createCups } from "../../../services/createCups";
+
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalCups = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -17,7 +30,6 @@ const ModalCups = () => {
     setStadopen((prev) => !prev);
   }, []);
 
-  
   const validationSchema = useMemo(
     () =>
       Yup.object({
@@ -116,11 +128,11 @@ const ModalCups = () => {
                           : "border-gray-200 dark:border-gray-600"
                       }`}
                     />
-                    {formik.touched.code && formik.errors.code ? (
-                      <label className="text-red-500">
-                        {formik.errors.code}
-                      </label>
-                    ) : null}
+                    <AnimatePresence>
+                      {formik.touched.code && formik.errors.code ? (
+                        <ErrorMessage>{formik.errors.code}</ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
                   </div>
                   <div>
                     <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
@@ -139,11 +151,14 @@ const ModalCups = () => {
                           : "border-gray-200 dark:border-gray-600"
                       }`}
                     />
-                    {formik.touched.description && formik.errors.description ? (
-                      <label className="text-red-500">
-                        {formik.errors.description}
-                      </label>
-                    ) : null}
+                    <AnimatePresence>
+                      {formik.touched.description &&
+                      formik.errors.description ? (
+                        <ErrorMessage>
+                          {formik.errors.description}
+                        </ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
                   </div>
                 </div>
 
