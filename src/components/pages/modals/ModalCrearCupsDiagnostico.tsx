@@ -80,10 +80,22 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
     },
   });
 
+  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      className="text-red-500"
+    >
+      {children}
+    </motion.div>
+  );
+
   return (
     <>
       <button
-        className="border-2 w-[120px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900 "
+        className="border-2 w-[170px] p-2 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900 "
         onClick={() => setStadopen(true)}
       >
         Agregar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
