@@ -1,17 +1,18 @@
 //*Funciones y Hooks
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFormik } from "formik";
 import useAnimation from "../../../hooks/useAnimations";
 import { updateCupsData } from "../../../services/updateCupsData";
 //*Icons
 import onOff from "/assets/on-off.svg";
 
-interface ModalActionCupsProps {
+interface ModalUpdateCupsDiagnosticoProps {
   id: number;
+  modulo: string;
 }
 
+const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({ id, modulo }) => {
 const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
@@ -23,8 +24,6 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
     {children}
   </motion.div>
 );
-
-const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -34,17 +33,21 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
     300
   );
 
-  const validationSchema = useMemo(
-    () =>
-      Yup.object({
-        estado: Yup.string().optional(),
-        nombreCups: Yup.string()
-          .optional()
-          .min(1, "El nombre del cups debe tener al menos 1 caracter")
-          .max(100, "El nombre del cups debe tener como máximo 100 caracteres"),
-      }),
-    []
-  );
+  const getValidationSchema = (Modulo: string) => {
+    const validationSchema = {
+      nombreCups: Yup.string().required("El nombre del cups es requerido")
+        .min(1, "El nombre del cups debe tener al menos 1 caracter")
+        .max(150, "El nombre del cups debe tener máximo 150 caracteres")
+    };
+
+    if (Modulo === "cups") {
+      return {
+        ...validationSchema,
+        estado: Yup.string().required("El estado del cups es requerido"),
+      };
+    }
+    return validationSchema;
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +55,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
       estado: "",
       nombreCups: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: Yup.object(getValidationSchema(modulo)),
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
@@ -64,7 +67,13 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
           formData.append("status", values.estado);
         }
 
-        const response = await updateCupsData(formData, id);
+        const response = await updateCupsData(
+          formData,
+          id,
+          modulo === "cups"
+            ? "servicio-solicitado-update-table"
+            : "diagnosticos"
+        );
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
@@ -76,7 +85,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
         }
       } catch (error) {
         setError(
-          `Ocurrió un error al intentar actualizar el estado del cups ${error}`
+          `Error al modificar ${modulo} ${error}`
         );
         setSuccess(false);
       }
@@ -107,7 +116,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
-                  Módulo Estado
+                  Modificar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
@@ -127,7 +136,7 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
                     <div className="flex">
                       <label htmlFor="" className="p-x-2">
                         <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          ID Cups:
+                          ID {modulo === "cups" ? "Cups" : "Diagnóstico"}:
                         </span>
                         <input
                           type="text"
@@ -144,34 +153,36 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
                         </AnimatePresence>
                       </label>
                     </div>
-                    <div className="flex">
-                      <label htmlFor="">
-                        <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Estado:
-                        </span>
-                        <select
-                          id=""
-                          name="estado"
-                          value={formik.values.estado}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-                        >
-                          <option value="">- SELECT -</option>
-                          <option value={1}>Activo</option>
-                          <option value={0}>Inactivo</option>
-                        </select>
-                        <AnimatePresence>
+                    {modulo === "cups" && (
+                      <div className="flex">
+                        <label htmlFor="">
+                          <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                            Estado:
+                          </span>
+                          <select
+                            id=""
+                            name="estado"
+                            value={formik.values.estado}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                          >
+                            <option value="">- SELECT -</option>
+                            <option value={1}>Activo</option>
+                            <option value={0}>Inactivo</option>
+                          </select>
                           {formik.touched.estado && formik.errors.estado ? (
-                            <ErrorMessage>{formik.errors.estado}</ErrorMessage>
+                            <label className="text-red-500">
+                              {formik.errors.estado}
+                            </label>
                           ) : null}
-                        </AnimatePresence>
-                      </label>
-                    </div>
+                        </label>
+                      </div>
+                    )}
                     <div className="">
                       <label htmlFor="">
                         <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Nombre Cups:
+                          Descripción {modulo === "cups" ? "Cups" : "Diagnóstico"}:
                         </span>
                         <input
                           type="text"
@@ -227,4 +238,4 @@ const ModalActionCups: React.FC<ModalActionCupsProps> = ({ id }) => {
   );
 };
 
-export default ModalActionCups;
+export default ModalUpdateCupsDiagnostico;

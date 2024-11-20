@@ -146,13 +146,13 @@ export const updateUserDataEp = async (data: FormData, id: string) => {
 }
 
 // actualizar datos de cups
-export const updateCupsDataEp = async (data: FormData, id: number) => {
-    return api.put(`/servicio-solicitado-update-table/${id}`, data);
+export const updateCupsDataEp = async (data: FormData, id: number, ep: string) => {
+    return api.put(`/${ep}/${id}`, data);
 }
 
 // crear CUPS
-export const createCupsEp = async (data: FormData) => {
-    return api.post(`/servicio-solicitado`, data);
+export const createCupsEp = async (data: FormData, ep: string) => {
+    return api.post(`/${ep}`, data);
 }
 
 // crear pacciente
