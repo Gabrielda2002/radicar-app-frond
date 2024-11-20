@@ -143,7 +143,7 @@ const Navbar: React.FC = React.memo(() => {
           </NavLink>
         </nav>
 
-        <div className="flex items-center ml-auto space-x-4">
+        <div className="flex items-center ml-auto space-x-4 text-right">
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
             Hola {nombreUsuario}
           </h2>
