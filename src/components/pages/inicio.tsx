@@ -6,7 +6,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
 
-const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
+// const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
 
 const Inicio = () => {
