@@ -234,13 +234,20 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
 
   return (
     <>
-      <button
-        className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-        onClick={() => setStadopen(true)}
-        title="Agregar Accesorio"
-      >
-        <SquaresPlusIcon className="w-7 h-7" />
-      </button>
+      <div className="relative group">
+        <button
+          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          onClick={() => setStadopen(true)}
+        >
+          <SquaresPlusIcon className="w-7 h-7" />
+        </button>
+        {/* Tooltip */}
+        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none w-[134px] left-1/2 group-hover:opacity-100 dark:bg-gray-700">
+          Agregar Accesorio
+          {/* Flechita indicativa */}
+          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-700"></div>
+        </div>
+      </div>
 
       {/* init event modal */}
       {stadopen && (
@@ -296,8 +303,8 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                     {/* validar que va crear el usuario y en base a esa seleccion mostrar el fomrulario correspondiente */}
                     {typeAdd && (
                       <>
-                        <div className="flex w-full">
-                          <label className="w-full mb-4">
+                        <div className="relative">
+                          <label className="w-full mb-2" htmlFor="">
                             <div className="flex items-center mb-2">
                               <TagIcon className="w-8 h-8 mr-2 dark:text-white" />
                               <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
@@ -315,9 +322,8 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                                   : "border-gray-200 dark:border-gray-600"
                               }`}
                             />
-
                             {suggestions.length > 0 && (
-                              <ul className="absolute top-full mt-1 w-[200px] border-2 border-gray-200 rounded bg-white dark:bg-gray-800 dark:border-gray-600 max-h-40 overflow-y-auto z-10">
+                              <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
                                 {suggestions.map((suggestion) => (
                                   <li
                                     key={suggestion}

@@ -259,11 +259,10 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
 
   return (
     <>
-      <div className="">
+      <div className="relative group">
         <button
           className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
           onClick={() => setStadopen(true)}
-          title="Actualizar Item"
         >
           {idItem ? (
             <PencilSquareIcon
@@ -271,14 +270,20 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               aria-label="Actualizar Item"
             />
           ) : (
-            <>
-              <div className="flex items-center">
-                <span>Crear Item</span>
-                <PlusCircleIcon className="w-5 h-5 ml-2" />
-              </div>
-            </>
+            <div className="flex items-center">
+              <span>Crear Item</span>
+              <PlusCircleIcon className="w-5 h-5 ml-2" />
+            </div>
           )}
         </button>
+        {/* Tooltip */}
+        {idItem && (
+          <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-700">
+            Actualizar Item
+            {/* Flechita detrás del texto */}
+            <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-700"></div>
+          </div>
+        )}
       </div>
 
       {/* init event modal */}

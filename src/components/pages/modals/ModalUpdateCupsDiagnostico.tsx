@@ -1,4 +1,5 @@
 //*Funciones y Hooks
+import * as Yup from "yup";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
@@ -12,18 +13,21 @@ interface ModalUpdateCupsDiagnosticoProps {
   modulo: string;
 }
 
-const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({ id, modulo }) => {
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
+const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
+  id,
+  modulo,
+}) => {
+  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      className="text-base text-red-500"
+    >
+      {children}
+    </motion.div>
+  );
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -35,9 +39,10 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
 
   const getValidationSchema = (Modulo: string) => {
     const validationSchema = {
-      nombreCups: Yup.string().required("El nombre del cups es requerido")
+      nombreCups: Yup.string()
+        .required("El nombre del cups es requerido")
         .min(1, "El nombre del cups debe tener al menos 1 caracter")
-        .max(150, "El nombre del cups debe tener máximo 150 caracteres")
+        .max(150, "El nombre del cups debe tener máximo 150 caracteres"),
     };
 
     if (Modulo === "cups") {
@@ -84,9 +89,7 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
           }, 2000);
         }
       } catch (error) {
-        setError(
-          `Error al modificar ${modulo} ${error}`
-        );
+        setError(`Error al modificar ${modulo} ${error}`);
         setSuccess(false);
       }
     },
@@ -143,7 +146,11 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
                           id=""
                           name="id"
                           value={formik.values.id}
-                          className="w-[200px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed"
+                          className={`w-[200px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed ${
+                            formik.touched.id && formik.errors.id
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
                           disabled
                         />
                         <AnimatePresence>
@@ -165,24 +172,31 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
                             value={formik.values.estado}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[200px] p-2 px-3 py-2 border border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                            className={` w-[200px] p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.estado && formik.errors.estado
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
                           >
                             <option value="">- SELECT -</option>
                             <option value={1}>Activo</option>
                             <option value={0}>Inactivo</option>
                           </select>
-                          {formik.touched.estado && formik.errors.estado ? (
-                            <label className="text-red-500">
-                              {formik.errors.estado}
-                            </label>
-                          ) : null}
+                          <AnimatePresence>
+                            {formik.touched.estado && formik.errors.estado ? (
+                              <ErrorMessage>
+                                {formik.errors.estado}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </label>
                       </div>
                     )}
                     <div className="">
                       <label htmlFor="">
                         <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Descripción {modulo === "cups" ? "Cups" : "Diagnóstico"}:
+                          Descripción{" "}
+                          {modulo === "cups" ? "Cups" : "Diagnóstico"}:
                         </span>
                         <input
                           type="text"
@@ -191,7 +205,12 @@ const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
                           value={formik.values.nombreCups}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className={` w-[250px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                            formik.touched.nombreCups &&
+                            formik.errors.nombreCups
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
                         />
                         <AnimatePresence>
                           {formik.touched.nombreCups &&
