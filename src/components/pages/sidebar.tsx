@@ -64,11 +64,17 @@ const SideBar: FC = () => {
 
   // * funcion para abrir y cerrar los acordeones
   // * el argumento key debe ser el nombre de la propiedad del estado openAccordions
-  // * En resumen: Esta función maneja el estado de apertura/cierre 
+  // * En resumen: Esta función maneja el estado de apertura/cierre
   // * de múltiples acordeones en el sidebar, permitiendo alternar individualmente cada sección mientras mantiene el estado de las demás.
   const toggleAccordion = (key: keyof typeof openAccordions) =>
     setOpenAccordions((prev) => {
-      const newState = { services: false, quality: false, reports: false, tablets: false, admin: false };
+      const newState = {
+        services: false,
+        quality: false,
+        reports: false,
+        tablets: false,
+        admin: false,
+      };
       newState[key] = !prev[key];
       return newState;
     });
@@ -137,7 +143,7 @@ const SideBar: FC = () => {
                     src={home}
                     alt=""
                     className="w-5 h-5 group-hover:invert dark:invert"
-                  />  
+                  />
                   {!isCollapsed && (
                     <span
                       className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
@@ -153,7 +159,7 @@ const SideBar: FC = () => {
               )}
             </NavLink>
 
-           {/* Categoria Gestiones */}
+            {/* Categoria Gestiones */}
             <Category
               title="Gestión de Calidad"
               icon={folder}
@@ -166,14 +172,14 @@ const SideBar: FC = () => {
                 title="Norte de Santander"
                 isCollapsed={isCollapsed}
               />
-            {[1].includes(Number(rol)) && (
-              <SubCategory
-                to="/SistemaInventario"
-                icon={Box}
-                title="Gestión de Inventarios"
-                isCollapsed={isCollapsed}
-              />
-            )}
+              {[1].includes(Number(rol)) && (
+                <SubCategory
+                  to="/SistemaInventario"
+                  icon={Box}
+                  title="Gestión de Inventarios"
+                  isCollapsed={isCollapsed}
+                />
+              )}
             </Category>
 
             {/* Categoria de servicios */}
@@ -266,23 +272,6 @@ const SideBar: FC = () => {
               </Category>
             )}
 
-            {/* Modal de reportes radicador */}  
-            {isModalOpen && (
-            <ModalReporteRadicado
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              formType={"Autorizacion"}
-            />
-            )}          
-              
-            {/* Modal de reportes cirugias */}
-            {isModalCirugiaOpen && (
-              <ModalReporteCirugia
-                isOpen={isModalCirugiaOpen}
-                onCLose={closeModalCirugia}
-              />
-            )}
-
             {/* Categoria de tablas de radicado */}
             {[1].includes(Number(rol)) && (
               <Category
@@ -371,7 +360,7 @@ const SideBar: FC = () => {
               <div className="flex flex-col mx-3 space-y-3">
                 {!isCollapsed && (
                   <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
-                    Configuraciones
+                    Administrador
                   </label>
                 )}
                 <Category
@@ -400,6 +389,22 @@ const SideBar: FC = () => {
                   />
                 </Category>
               </div>
+            )}
+            {/* Modal de reportes radicador */}
+            {isModalOpen && (
+              <ModalReporteRadicado
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                formType={"Autorizacion"}
+              />
+            )}
+
+            {/* Modal de reportes cirugias */}
+            {isModalCirugiaOpen && (
+              <ModalReporteCirugia
+                isOpen={isModalCirugiaOpen}
+                onCLose={closeModalCirugia}
+              />
             )}
           </div>
         </nav>
