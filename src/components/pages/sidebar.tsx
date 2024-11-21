@@ -41,7 +41,6 @@ const SideBar: FC = () => {
     tablets: false,
     admin: false,
   });
-  console.log(openAccordions);
   // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -68,7 +67,11 @@ const SideBar: FC = () => {
   // * En resumen: Esta función maneja el estado de apertura/cierre 
   // * de múltiples acordeones en el sidebar, permitiendo alternar individualmente cada sección mientras mantiene el estado de las demás.
   const toggleAccordion = (key: keyof typeof openAccordions) =>
-    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+    setOpenAccordions((prev) => {
+      const newState = { services: false, quality: false, reports: false, tablets: false, admin: false };
+      newState[key] = !prev[key];
+      return newState;
+    });
 
   // * efecto para controlar la altura del acordeon
   useEffect(() => {
