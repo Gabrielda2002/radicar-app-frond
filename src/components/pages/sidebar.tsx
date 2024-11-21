@@ -5,6 +5,9 @@ import { useAuth } from "../../context/authContext";
 import { FC, useRef, useState, useEffect, useCallback } from "react";
 import { useSidebar } from "../../context/sidebarContext";
 import ModalReporteCirugia from "./modals/ModalReporteCirugia";
+import ModalReporteRadicado from "./modals/ModalReporteRadicado";
+import Category from "./CategoriaSideBar";
+import SubCategory from "./SubCategoriaSideBar";
 
 //*Icons
 import Box from "/assets/box.svg";
@@ -19,28 +22,18 @@ import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
 import filling from "/assets/filling.svg";
 import surgery from "/assets/surgery.svg";
-import arrowUp from "/assets/arrow-up.svg";
 import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
 import taskList from "/assets/task-list.svg";
-import ModalReporteRadicado from "./modals/ModalReporteRadicado";
 
 const SideBar: FC = () => {
-  //*constante para slide del sidebar y funciones
   const { isCollapsed, toggleSideBar } = useSidebar();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // * stado para abrir y cerrar el modal de reportes
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCirugiaOpen, setIsModalCirugiaOpen] = useState(false);
 
-  const openModalCirugia = useCallback(() => {
-    setIsModalCirugiaOpen(true);
-  }, []);
-
-  const closeModalCirugia = useCallback(() => {
-    setIsModalCirugiaOpen(false);
-  }, []);
-
-  //*Variables para identificación de la tabla
+  // * estado para abrir y cerrar los acordeones
   const [openAccordions, setOpenAccordions] = useState({
     services: false,
     quality: false,
@@ -48,93 +41,66 @@ const SideBar: FC = () => {
     tablets: false,
     admin: false,
   });
-  //*constante para el acordion del sidebar
+  console.log(openAccordions);
+  // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  // * hook para obtener el rol del usuario autenticado
+  // * y controlar los permisos de acceso a las rutas
+  const { rol } = useAuth();
 
-  const openModal = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
+  const openModal = useCallback(() => setIsModalOpen(true), []);
+  const closeModal = useCallback(() => setIsModalOpen(false), []);
+  const openModalCirugia = useCallback(() => setIsModalCirugiaOpen(true), []);
+  const closeModalCirugia = useCallback(() => setIsModalCirugiaOpen(false), []);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
-  // const openModalCirugia = () => {
-  //   setIsModalOpenCirugia(true);
-  // };
-  // const closeModalCirugia = () => {
-  //   setIsModalOpenCirugia(false);
-  // };
-
-  //*Accede al rol del usuario
-  const { rol } = useAuth(); // <! ITERA ROLES DESDE LOGIN !>
-
-  //*Funcion para hacer el color de los botones del sidebar
+  // * funcion para obtener los estilos  de los links activos
   const getLinkClass = useCallback(
-    (path: string) => {
-      return location.pathname === path
+    (path: string) =>
+      location.pathname === path
         ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white";
-    },
-    [location.pathname]
+        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-700 dark:hover:text-white",
+    []
   );
-  //*Función para manejar la lógica del sidebar, asegurando que solo un acordeón esté abierto a la vez
-  const toggleAccordion = (key: keyof typeof openAccordions) => {
-    setOpenAccordions((prev) => {
-      // Si el acordeón que se clicó ya está abierto, simplemente lo cerramos
-      const isSameAccordionOpen = prev[key];
 
-      // Cerrar todos los acordeones y abrir solo el que se clicó, a menos que ya estuviera abierto
-      return {
-        services: false,
-        quality: false,
-        reports: false,
-        tablets: false,
-        admin: false,
-        [key]: !isSameAccordionOpen, // Solo abrir el clicado, o cerrarlo si ya estaba abierto
-      };
-    });
-  };
+  // * funcion para abrir y cerrar los acordeones
+  // * el argumento key debe ser el nombre de la propiedad del estado openAccordions
+  // * En resumen: Esta función maneja el estado de apertura/cierre 
+  // * de múltiples acordeones en el sidebar, permitiendo alternar individualmente cada sección mientras mantiene el estado de las demás.
+  const toggleAccordion = (key: keyof typeof openAccordions) =>
+    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  // * efecto para controlar la altura del acordeon
   useEffect(() => {
-    if (accordionRef.current) {
+    if (accordionRef.current)
       accordionRef.current.style.maxHeight = openAccordions.quality
         ? `${accordionRef.current.scrollHeight}px`
         : "0px";
-    }
   }, [openAccordions.quality]);
 
   useEffect(() => {
     const savedState = Cookies.get("sidebarState");
-    if (savedState && savedState === "collapsed" && !isCollapsed) {
-      toggleSideBar(); // Colapsa el sidebar si está guardado en la cookie como colapsado
-    }
-  }, []); // Solo se ejecuta al montar el componente
+    if (savedState && savedState === "collapsed" && !isCollapsed)
+      toggleSideBar();
+  }, [isCollapsed, toggleSideBar]);
 
-  //* Guardar el estado del sidebar en la cookie cada vez que cambie
+  // * efecto para guardar el estado del sidebar en las cookies
   useEffect(() => {
     Cookies.set("sidebarState", isCollapsed ? "collapsed" : "expanded");
   }, [isCollapsed]);
 
+  // * efecto para cerrar el sidebar al hacer click fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target as Node) &&
-        !isCollapsed //*Solo cerrar si el sidebar está abierto
-      ) {
+        !isCollapsed
+      )
         toggleSideBar();
-      }
     };
-
-    //*Añadir el event listener
     document.addEventListener("mousedown", handleClickOutside);
-
-    //*Limpiar el event listener cuando el componente se desmonte
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isCollapsed, toggleSideBar]);
 
   return (
@@ -152,6 +118,7 @@ const SideBar: FC = () => {
                 Servicios
               </label>
             )}
+            {/* Categoria de inicio */}
             <NavLink to="/home">
               {({ isActive }) => (
                 <div
@@ -167,7 +134,7 @@ const SideBar: FC = () => {
                     src={home}
                     alt=""
                     className="w-5 h-5 group-hover:invert dark:invert"
-                  />
+                  />  
                   {!isCollapsed && (
                     <span
                       className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
@@ -183,369 +150,129 @@ const SideBar: FC = () => {
               )}
             </NavLink>
 
-            {/* Modulo de acordion 2*/}
-            {/* < -- MODULO GESTION CALIDAD -- > */}
-            <div className="space-y-3">
-              <div>
+           {/* Categoria Gestiones */}
+            <Category
+              title="Gestión de Calidad"
+              icon={folder}
+              isOpen={openAccordions.quality}
+              toggle={() => toggleAccordion("quality")}
+            >
+              <SubCategory
+                to="/SistemGestionCalidad"
+                icon={flag}
+                title="Norte de Santander"
+                isCollapsed={isCollapsed}
+              />
+            {[1].includes(Number(rol)) && (
+              <SubCategory
+                to="/SistemaInventario"
+                icon={Box}
+                title="Gestión de Inventarios"
+                isCollapsed={isCollapsed}
+              />
+            )}
+            </Category>
+
+            {/* Categoria de servicios */}
+            {[10, 3, 1, 15, 6].includes(Number(rol)) && (
+              <Category
+                title="Gestión de Servicios"
+                icon={services}
+                isOpen={openAccordions.services}
+                toggle={() => toggleAccordion("services")}
+              >
+                {/* subcategoria Radicador */}
+                {[10, 3, 1, 15, 6].includes(Number(rol)) && (
+                  <SubCategory
+                    to="/tabla-radicacion"
+                    icon={taskList}
+                    title="Radicador"
+                    isCollapsed={isCollapsed}
+                  />
+                )}
+                {/* subcategoria cirugias */}
+                {[15, 1].includes(Number(rol)) && (
+                  <SubCategory
+                    to="/tabla-cirugias"
+                    icon={surgery}
+                    title="Cirugía"
+                    isCollapsed={isCollapsed}
+                  />
+                )}
+                {/* auditoria de radicados */}
+                {[3, 1].includes(Number(rol)) && (
+                  <SubCategory
+                    to="/tabla-auditoria"
+                    icon={audit}
+                    title="Auditoría"
+                    isCollapsed={isCollapsed}
+                  />
+                )}
+              </Category>
+            )}
+
+            {/* Categoria de reportes */}
+            {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
+              <Category
+                title="Gestión de Reportes"
+                icon={filling}
+                isOpen={openAccordions.reports}
+                toggle={() => toggleAccordion("reports")}
+              >
+                {/* boton que abre el modal de reportes excel */}
                 <button
-                  onClick={() => toggleAccordion("quality")}
+                  onClick={openModal}
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                     openAccordions.quality
                       ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                   } w-full`}
                 >
                   <img
-                    src={folder}
+                    src={report}
                     alt=""
-                    className={`w-5 h-5 ${
-                      openAccordions.quality
-                        ? "invert"
-                        : "group-hover:invert dark:invert"
-                    }`}
+                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                   />
                   {!isCollapsed && (
-                    <span
-                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75]  ${
-                        openAccordions.quality
-                          ? "text-white dark:text-gray-200"
-                          : ""
-                      }`}
-                    >
-                      Gestión de Calidad
+                    <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
+                      Reporte de Radicación
                     </span>
                   )}
-                  {!isCollapsed && (
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                        openAccordions.quality ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
                 </button>
-                {openAccordions.quality && (
-                  <div className="mt-2 space-y-3">
-                    <NavLink to="/SistemGestionCalidad">
-                      {({ isActive }) => (
-                        <div
-                          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                            isActive
-                              ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                              : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                          }`}
-                        >
-                          <img
-                            src={flag}
-                            alt=""
-                            className={`w-5 h-5 mx-2 ${
-                              isActive
-                                ? "invert"
-                                : "group-hover:invert dark:invert"
-                            }`}
-                          />
-                          {!isCollapsed && (
-                            <span
-                              className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                isActive ? "text-white dark:text-gray-200" : ""
-                              }`}
-                            >
-                              Norte de Santander
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </NavLink>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div></div>
-            {[1].includes(Number(rol)) && (
-              <NavLink to="/SistemaInventario">
-                {({ isActive }) => (
-                  <div
-                    className={`flex items-center px-3 py-2 transition-colors duration-500 transform rounded-lg group relative ${getLinkClass(
-                      "/SistemaDeInventario"
-                    )} ${
-                      isActive
-                        ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                        : ""
-                    }`}
-                  >
-                    <img
-                      src={Box}
-                      alt=""
-                      className="w-5 h-5 group-hover:invert dark:invert"
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          isActive
-                            ? "text-white dark:text-gray-200"
-                            : "group-hover:text-white dark:group-hover:text-gray-200"
-                        }`}
-                      >
-                        Gestión de Inventarios
-                      </span>
-                    )}
-                  </div>
-                )}
-              </NavLink>
-            )}
 
-            {/*  MODULO GESTION SERVICIOS  */}
-
-            {[10, 3, 1, 15, 6].includes(Number(rol)) && (
-              <div>
+                {/* boton que abre el modal de reportes de cirugias */}
                 <button
-                  onClick={() => toggleAccordion("services")}
+                  onClick={openModalCirugia}
                   className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                    openAccordions.services
+                    openAccordions.quality
                       ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                   } w-full`}
                 >
                   <img
-                    src={services}
+                    src={report}
                     alt=""
-                    className={`w-5 h-5 ${
-                      openAccordions.services
-                        ? "invert"
-                        : "group-hover:invert dark:invert"
-                    }`}
+                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                   />
                   {!isCollapsed && (
-                    <span
-                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                        openAccordions.services
-                          ? "text-white dark:text-gray-200"
-                          : ""
-                      }`}
-                    >
-                      Gestión de Servicios
+                    <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
+                      Reporte de Cirugía
                     </span>
                   )}
-                  {!isCollapsed && (
-                    <img
-                      src={arrowUp}
-                      alt=""
-                      className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                        openAccordions.services ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
                 </button>
-                {openAccordions.services && (
-                  <div className="mt-2 space-y-3">
-                    {[10, 3, 1, 15, 6].includes(Number(rol)) && (
-                      <NavLink to="/tabla-radicacion">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={taskList}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Radicador
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                    <div></div>
-                    {[15, 1].includes(Number(rol)) && (
-                      <NavLink to="/tabla-cirugias">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={surgery}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Cirugía
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                    <div></div>
-                    {[3, 1].includes(Number(rol)) && (
-                      <NavLink to="/tabla-auditoria">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={audit}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Auditoría
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    )}
-                  </div>
-                )}
-              </div>
+              </Category>
             )}
 
-            {/* MODULO GESTION REPORTES  */}
-            {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
-              <div className="space-y-3">
-                <div>
-                  <button
-                    onClick={() => toggleAccordion("reports")}
-                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                      openAccordions.reports
-                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                    } w-full`}
-                  >
-                    {/* Icono y texto para el tercer acordeón */}
-                    <img
-                      src={filling}
-                      alt=""
-                      className={`w-5 h-5 ${
-                        openAccordions.reports
-                          ? "invert"
-                          : "group-hover:invert dark:invert"
-                      }`}
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          openAccordions.reports
-                            ? "text-white dark:text-gray-200"
-                            : ""
-                        }`}
-                      >
-                        Gestión de Reportes
-                      </span>
-                    )}
-                    {!isCollapsed && (
-                      <img
-                        src={arrowUp}
-                        alt=""
-                        className={`w-6 h-6 ml-auto transition-transform duration-300 dark:invert ${
-                          openAccordions.reports ? "rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </button>
-                  {openAccordions.reports && (
-                    <div className="mt-2 space-y-3">
-                      {/* Modal Reportes */}
-                      <button
-                        onClick={openModal}
-                        className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                          openAccordions.quality
-                            ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                        } w-full`}
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                            Reporte de Radicación
-                          </span>
-                        )}
-                      </button>
-                      {/* Modal Reportes Cirugia */}
-                      <button
-                        onClick={openModalCirugia}
-                        className={` flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                          openAccordions.quality
-                            ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                            : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                        } w-full`}
-                      >
-                        <img
-                          src={report}
-                          alt=""
-                          className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                        />
-                        {!isCollapsed && (
-                          <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                            Reporte de Cirugía
-                          </span>
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Modal Component Radicacion*/}
+            {/* Modal de reportes radicador */}  
+            {isModalOpen && (
             <ModalReporteRadicado
               isOpen={isModalOpen}
               onClose={closeModal}
               formType={"Autorizacion"}
             />
-
+            )}          
+              
+            {/* Modal de reportes cirugias */}
             {isModalCirugiaOpen && (
               <ModalReporteCirugia
                 isOpen={isModalCirugiaOpen}
@@ -553,622 +280,125 @@ const SideBar: FC = () => {
               />
             )}
 
-            {/* MODULO TABLAS RADICACION */}
+            {/* Categoria de tablas de radicado */}
             {[1].includes(Number(rol)) && (
-              <div className="space-y-3">
-                <div>
-                  <button
-                    onClick={() => toggleAccordion("tablets")}
-                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                      openAccordions.tablets
-                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                    } w-full`}
-                  >
-                    {/* Icono y texto para el cuarto acordeón */}
-                    <img
-                      src={table}
-                      alt=""
-                      className={`w-5 h-5 ${
-                        openAccordions.tablets
-                          ? "invert"
-                          : "group-hover:invert dark:invert"
-                      }`}
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          openAccordions.tablets
-                            ? "text-white dark:text-gray-200"
-                            : "group-hover:text-white dark:group-hover:text-gray-200"
-                        }`}
-                      >
-                        Tablas Radicación
-                      </span>
-                    )}
-                    {!isCollapsed && (
-                      <img
-                        src={arrowUp}
-                        alt=""
-                        className={`w-6 h-6 ml-auto transition-transform duration-300 ${
-                          openAccordions.tablets ? "rotate-180" : ""
-                        } dark:invert`}
-                      />
-                    )}
-                  </button>
+              <Category
+                title="Tablas Radicación"
+                icon={table}
+                isOpen={openAccordions.tablets}
+                toggle={() => toggleAccordion("tablets")}
+              >
+                <SubCategory
+                  to="/tabla-cups"
+                  icon={report}
+                  title="Cups"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-pacientes"
+                  icon={report}
+                  title="Pacientes"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-diagnostico"
+                  icon={report}
+                  title="Diagnostico"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-radicadores"
+                  icon={report}
+                  title="Radicadores"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-municipios"
+                  icon={report}
+                  title="Municipios"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-convenios"
+                  icon={report}
+                  title="Convenios"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-tipo-documento"
+                  icon={report}
+                  title="Tipo Documento"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-ips-primaria"
+                  icon={report}
+                  title="IPS Primaria"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-lugar-radicacion"
+                  icon={report}
+                  title="Lugar Radicación"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-ips-remite"
+                  icon={report}
+                  title="IPS Remitente"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-especialidad"
+                  icon={report}
+                  title="Especialidad"
+                  isCollapsed={isCollapsed}
+                />
+                <SubCategory
+                  to="/tabla-tipo-servicio"
+                  icon={report}
+                  title="Tipo Servicio"
+                  isCollapsed={isCollapsed}
+                />
+              </Category>
+            )}
 
-                  {openAccordions.tablets && (
-                    <div className="mt-2 space-y-3">
-                      {/* Tabla radicación Cups */}
-                      <NavLink to="/tabla-cups">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Cups
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Pacientes */}
-                      <NavLink to="/tabla-pacientes">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Pacientes
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      {/* Tabla radicación diagnosticos */}
-                      <NavLink to="/tabla-diagnostico">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Diagnostico
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Radicadores */}
-                      <NavLink to="/tabla-radicadores">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Radicadores
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Municipios */}
-                      <NavLink to="/tabla-municipios">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Municipios
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Convenios */}
-                      <NavLink to="/tabla-convenios">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Convenios
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Tipo Documento */}
-                      <NavLink to="/tabla-tipo-documento">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Tipo Documento
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación IPS Primaria */}
-                      <NavLink to="/tabla-ips-primaria">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                IPS Primaria
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Lugar Radicación */}
-                      <NavLink to="/tabla-lugar-radicacion">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Lugar Radicación
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación IPS Remitente */}
-                      <NavLink to="/tabla-ips-remite">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                IPS Remitente
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Especialidad */}
-                      <NavLink to="/tabla-especialidad">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Especialidad
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      {/* Tabla radicación Tipo Servicio */}
-                      <NavLink to="/tabla-tipo-servicio">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                            }`}
-                          >
-                            <img
-                              src={report}
-                              alt=""
-                              className={`w-5 h-5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : "group-hover:text-white dark:group-hover:text-gray-200"
-                                }`}
-                              >
-                                Tipo Servicio
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    </div>
-                  )}
-                </div>
+            {/* Categoria de administrador */}
+            {[1].includes(Number(rol)) && (
+              <div className="flex flex-col mx-3 space-y-3">
+                {!isCollapsed && (
+                  <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
+                    Configuraciones
+                  </label>
+                )}
+                <Category
+                  title="Gestión Usuarios"
+                  icon={userMain}
+                  isOpen={openAccordions.admin}
+                  toggle={() => toggleAccordion("admin")}
+                >
+                  <SubCategory
+                    to="/Perfil"
+                    icon={user}
+                    title="Mi Perfil"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/Usuarios"
+                    icon={user1}
+                    title="Usuarios"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/registrar-usuarios"
+                    icon={user2}
+                    title="Registrar Usuarios"
+                    isCollapsed={isCollapsed}
+                  />
+                </Category>
               </div>
             )}
           </div>
-
-          {/*Tabla Configuraciones*/}
-          {[1].includes(Number(rol)) && (
-            <div className="flex flex-col mx-3 space-y-3">
-              {!isCollapsed && (
-                <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
-                  Configuraciones
-                </label>
-              )}
-
-              {/* Tabla Configuraciones 1 */}
-              {/* < -- MODULO ADIM (PERFIL) -- > */}
-              <div className="flex flex-col -mx-3 space-y-3">
-                <div>
-                  <button
-                    onClick={() => toggleAccordion("admin")}
-                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                      openAccordions.admin
-                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white dark:hover:bg-gray-600"
-                    } w-full`}
-                  >
-                    <img
-                      src={userMain}
-                      alt=""
-                      className={`w-5 h-5 ${
-                        openAccordions.admin
-                          ? "invert"
-                          : "group-hover:invert dark:invert"
-                      }`}
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          openAccordions.admin
-                            ? "text-white dark:text-gray-200"
-                            : "group-hover:text-white dark:group-hover:text-gray-200"
-                        }`}
-                      >
-                        Gestión Usuarios
-                      </span>
-                    )}
-                    {!isCollapsed && (
-                      <img
-                        src={arrowUp}
-                        alt=""
-                        className={`w-6 h-6 ml-auto transition-transform duration-300 ${
-                          openAccordions.admin ? "rotate-180" : ""
-                        } dark:invert`}
-                      />
-                    )}
-                  </button>
-                  {openAccordions.admin && (
-                    <div className="mt-2 space-y-3">
-                      <NavLink to="/Perfil">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
-                            }`}
-                          >
-                            <img
-                              src={user}
-                              alt=""
-                              className={`w-5.8 h-5.5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-10 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Mi Perfil
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      <NavLink to="/Usuarios">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
-                            }`}
-                          >
-                            <img
-                              src={user1}
-                              alt=""
-                              className={`w-5.8 h-5.5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-10 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Usuarios
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                      <div></div>
-                      <NavLink to="/registrar-usuarios">
-                        {({ isActive }) => (
-                          <div
-                            className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                              isActive
-                                ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
-                                : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white dark:hover:bg-gray-600"
-                            }`}
-                          >
-                            <img
-                              src={user2}
-                              alt=""
-                              className={`w-5.5 h-5.5 mx-2 ${
-                                isActive
-                                  ? "invert"
-                                  : "group-hover:invert dark:invert"
-                              }`}
-                            />
-                            {!isCollapsed && (
-                              <span
-                                className={`absolute left-10 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                                  isActive
-                                    ? "text-white dark:text-gray-200"
-                                    : ""
-                                }`}
-                              >
-                                Registrar Usuarios
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </NavLink>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
         </nav>
       </div>
     </aside>
