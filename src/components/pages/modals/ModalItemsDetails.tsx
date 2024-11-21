@@ -28,130 +28,142 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     return format(utcDate, "dd/MM/yyyy");
   };
 
+  const TableWrapper = ({ children }: { children: React.ReactNode }) => (
+    <div className="max-h-[calc(100vh-400px)] overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800">
+      <div className="inline-block min-w-full align-middle">{children}</div>
+    </div>
+  );
+
   const renderPerifericosTable = () => {
     return (
-      <table className="w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md">
-        <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
-          <tr>
-            <th>Nombre:</th>
-            <th>Marca:</th>
-            <th>Modelo:</th>
-            <th>Serial:</th>
-            <th>Otros Datos:</th>
-            <th>Estado:</th>
-            <th>Numero Inventario:</th>
-          </tr>
-        </thead>
-        <tbody className="text-center dark:bg-gray-800">
-          {item &&
-          "accessoriesRelation" in item &&
-          item.accessoriesRelation.length > 0 ? (
-            <>
-              {item.accessoriesRelation.map((acc) => (
-                <tr key={acc.id} className="dark:text-white">
-                  <td>{acc.name}</td>
-                  <td>{acc.brand}</td>
-                  <td>{acc.model}</td>
-                  <td>{acc.serial}</td>
-                  <td>{acc.otherData}</td>
-                  <td>{acc.status}</td>
-                  <td>{acc.inventoryNumber}</td>
-                </tr>
-              ))}
-            </>
-          ) : (
+      <TableWrapper>
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md">
+          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <td colSpan={7} className="text-center dark:text-white">
-                No hay Periféricos agregados
-              </td>
+              <th>Nombre:</th>
+              <th>Marca:</th>
+              <th>Modelo:</th>
+              <th>Serial:</th>
+              <th>Otros Datos:</th>
+              <th>Estado:</th>
+              <th>Numero Inventario:</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center dark:bg-gray-800">
+            {item &&
+            "accessoriesRelation" in item &&
+            item.accessoriesRelation.length > 0 ? (
+              <>
+                {item.accessoriesRelation.map((acc) => (
+                  <tr key={acc.id} className="dark:text-white">
+                    <td>{acc.name}</td>
+                    <td>{acc.brand}</td>
+                    <td>{acc.model}</td>
+                    <td>{acc.serial}</td>
+                    <td>{acc.otherData}</td>
+                    <td>{acc.status}</td>
+                    <td>{acc.inventoryNumber}</td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center dark:text-white">
+                  No hay Periféricos agregados
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </TableWrapper>
     );
   };
 
   const renderComponentesTable = () => {
     return (
-      <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto">
-        <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
-          <tr>
-            <th>Nombre:</th>
-            <th>Marca:</th>
-            <th>Capacidad:</th>
-            <th>Velocidad:</th>
-            <th>Otros Datos:</th>
-            <th>Modelo:</th>
-            <th>Serial:</th>
-          </tr>
-        </thead>
-        <tbody className="text-center dark:bg-gray-800">
-          {item &&
-          "componentRelation" in item &&
-          item.componentRelation.length > 0 ? (
-            <>
-              {item.componentRelation.map((comp) => (
-                <tr key={comp.id} className="dark:text-white">
-                  <td>{comp.name}</td>
-                  <td>{comp.brand}</td>
-                  <td>{comp.capacity}</td>
-                  <td>{comp.speed}</td>
-                  <td>{comp.otherData}</td>
-                  <td>{comp.model}</td>
-                  <td>{comp.serial}</td>
-                </tr>
-              ))}
-            </>
-          ) : (
+      <TableWrapper>
+        <table className="w-full overflow-auto bg-white border-collapse rounded-lg shadow-md ">
+          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <td colSpan={7} className="text-center dark:text-white">
-                No hay Componentes agregados
-              </td>
+              <th>Nombre:</th>
+              <th>Marca:</th>
+              <th>Capacidad:</th>
+              <th>Velocidad:</th>
+              <th>Otros Datos:</th>
+              <th>Modelo:</th>
+              <th>Serial:</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center dark:bg-gray-800">
+            {item &&
+            "componentRelation" in item &&
+            item.componentRelation.length > 0 ? (
+              <>
+                {item.componentRelation.map((comp) => (
+                  <tr key={comp.id} className="dark:text-white">
+                    <td>{comp.name}</td>
+                    <td>{comp.brand}</td>
+                    <td>{comp.capacity}</td>
+                    <td>{comp.speed}</td>
+                    <td>{comp.otherData}</td>
+                    <td>{comp.model}</td>
+                    <td>{comp.serial}</td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center dark:text-white">
+                  No hay Componentes agregados
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </TableWrapper>
     );
   };
 
   const renderSoftwareTable = () => {
     return (
-      <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto">
-        <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
-          <tr>
-            <th>Nombre:</th>
-            <th>Version:</th>
-            <th>Licencia:</th>
-            <th>Otros datos:</th>
-            <th>Fecha Instalacion:</th>
-            <th>Estado:</th>
-          </tr>
-        </thead>
-        <tbody className="text-center dark:bg-gray-800">
-          {item &&
-          "softwareRelation" in item &&
-          item.softwareRelation.length > 0 ? (
-            <>
-              {item.softwareRelation.map((soft) => (
-                <tr key={soft.id} className="dark:text-white">
-                  <td>{soft.name}</td>
-                  <td>{soft.versions}</td>
-                  <td>{soft.license}</td>
-                  <td>{soft.otherData}</td>
-                  <td>{formatDate(soft.installDate)}</td>
-                  <td>{soft.status}</td>
-                </tr>
-              ))}
-            </>
-          ) : (
+      <TableWrapper>
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto">
+          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <td colSpan={6} className="text-center dark:text-white">
-                No hay Software agregado
-              </td>
+              <th>Nombre:</th>
+              <th>Version:</th>
+              <th>Licencia:</th>
+              <th>Otros datos:</th>
+              <th>Fecha Instalacion:</th>
+              <th>Estado:</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center dark:bg-gray-800">
+            {item &&
+            "softwareRelation" in item &&
+            item.softwareRelation.length > 0 ? (
+              <>
+                {item.softwareRelation.map((soft) => (
+                  <tr key={soft.id} className="dark:text-white">
+                    <td>{soft.name}</td>
+                    <td>{soft.versions}</td>
+                    <td>{soft.license}</td>
+                    <td>{soft.otherData}</td>
+                    <td>{formatDate(soft.installDate)}</td>
+                    <td>{soft.status}</td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <tr>
+                <td colSpan={6} className="text-center dark:text-white">
+                  No hay Software agregado
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </TableWrapper>
     );
   };
 
@@ -320,7 +332,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   };
 
   return (
-    <section className="fixed inset-0 flex items-center justify-center p-56 bg-gray-800 bg-opacity-50">
+    <section className="fixed inset-0 flex items-center justify-center p-40 bg-gray-800 bg-opacity-50">
       <div className="w-full p-6 bg-white rounded-md shadow-lg dark:bg-gray-900">
         <h3 className="mb-4 text-3xl font-semibold dark:text-white">
           Detalles del dispositivo
