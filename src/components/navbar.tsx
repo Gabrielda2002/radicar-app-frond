@@ -90,6 +90,19 @@ const Navbar: React.FC = React.memo(() => {
     []
   );
 
+  const toUpperCamelCase = (str: string) => {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  const user = localStorage.getItem("user");
+  const nombreUsuario = user
+    ? toUpperCamelCase(JSON.parse(user).nombre)
+    : "";
+
   return (
     <header
       className={`text-gray-900 body-font ${
@@ -126,9 +139,15 @@ const Navbar: React.FC = React.memo(() => {
           </button>
 
           <NavLink to="/home">
-            <img src={logo} className="w-10 h-10" alt="Logo" title="Home :)" />
+            <img src={logo} className="w-10 h-10" alt="Logo" title="Inicio" />
           </NavLink>
         </nav>
+
+        <div className="flex items-center ml-auto space-x-4 text-right">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+            Hola {nombreUsuario}
+          </h2>
+        </div>
 
         {/* Botón de Modo Oscuro con Tooltip */}
         <button
@@ -148,7 +167,7 @@ const Navbar: React.FC = React.memo(() => {
         </button>
 
         {/* Menú de Soporte con Enlaces */}
-        <Menu as="div" className="relative">
+        <Menu as="div" className="relative" title="Soportes">
           <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
             Soportes
           </MenuButton>
@@ -184,6 +203,7 @@ const Navbar: React.FC = React.memo(() => {
         <Menu
           as="div"
           className="relative border-2 rounded-lg dark:border-white"
+          title="Perfil"
         >
           <MenuButton className="flex items-center px-3 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
             <img
