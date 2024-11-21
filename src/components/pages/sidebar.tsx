@@ -666,6 +666,7 @@ const SideBar: FC = () => {
                           </div>
                         )}
                       </NavLink>
+                      <div></div>
                       {/* Tabla radicación diagnosticos */}
                       <NavLink to="/tabla-diagnostico">
                         {({ isActive }) => (
