@@ -1,6 +1,8 @@
 //*Funciones y Hooks
-import React, { useMemo, useState } from "react";
 import * as Yup from "yup";
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { createUser } from "../../services/createUser";
 //*Icons
 import logo from "/src/imgs/logo.png";
 import { useFormik } from "formik";
@@ -9,7 +11,6 @@ import {
   useFetchMunicipio,
   useFetchRoles,
 } from "../../hooks/useFetchUsers";
-import { createUser } from "../../services/createUser";
 
 const RegistrarUsuarios: React.FC = () => {
   const isOpen = true;
@@ -29,6 +30,18 @@ const RegistrarUsuarios: React.FC = () => {
   // const toggleAccordion = () => {
   //   setIsAccordionOpen(!isAccordionOpen);
   // };
+
+  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      className="text-red-500"
+    >
+      {children}
+    </motion.div>
+  );
 
   const validationSchema = useMemo(
     () =>
@@ -137,54 +150,6 @@ const RegistrarUsuarios: React.FC = () => {
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
-            {/* Municipio */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Municipio
-              </label>
-              <select
-                name="municipio"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                value={formik.values.municipio}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {municipios.map((municipio) => (
-                  <option key={municipio.id} value={municipio.id}>
-                    {municipio.name}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.municipio && formik.errors.municipio ? (
-                <div className="text-red-500">{formik.errors.municipio}</div>
-              ) : null}
-            </div>
-
-            {/* Rol */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Rol
-              </label>
-              <select
-                name="rol"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                value={formik.values.rol}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {dataRol.map((rol) => (
-                  <option key={rol.id} value={rol.id}>
-                    {rol.name}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.rol && formik.errors.rol ? (
-                <div className="text-red-500">{formik.errors.rol}</div>
-              ) : null}
-            </div>
-
             {/* Tipo de Documento */}
             <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
@@ -192,7 +157,11 @@ const RegistrarUsuarios: React.FC = () => {
               </label>
               <select
                 name="tipoDocumento"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.tipoDocumento && formik.errors.tipoDocumento
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.tipoDocumento}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -204,28 +173,11 @@ const RegistrarUsuarios: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {formik.touched.tipoDocumento && formik.errors.tipoDocumento ? (
-                <div className="text-red-500">
-                  {formik.errors.tipoDocumento}
-                </div>
-              ) : null}
-            </div>
-
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Fecha nacimiento
-              </label>
-              <input
-                type="date"
-                name="date"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                value={formik.values.date}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.date && formik.errors.date ? (
-                <div className="text-red-500">{formik.errors.date}</div>
-              ) : null}
+              <AnimatePresence>
+                {formik.touched.tipoDocumento && formik.errors.tipoDocumento ? (
+                  <ErrorMessage>{formik.errors.tipoDocumento}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
             </div>
 
             {/* Número Documento */}
@@ -236,17 +188,76 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="numeroDocumento"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.numeroDocumento &&
+                  formik.errors.numeroDocumento
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.numeroDocumento}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.numeroDocumento &&
-              formik.errors.numeroDocumento ? (
-                <div className="text-red-500">
-                  {formik.errors.numeroDocumento}
-                </div>
-              ) : null}
+              <AnimatePresence>
+                {formik.touched.numeroDocumento &&
+                formik.errors.numeroDocumento ? (
+                  <ErrorMessage>{formik.errors.numeroDocumento}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            {/* Fecha de Nacimiento */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Fecha nacimiento
+              </label>
+              <input
+                type="date"
+                name="date"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.date && formik.errors.date
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.date}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <AnimatePresence>
+                {formik.touched.date && formik.errors.date ? (
+                  <ErrorMessage>{formik.errors.date}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            {/* Municipio */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Municipio
+              </label>
+              <select
+                name="municipio"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.municipio && formik.errors.municipio
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.municipio}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">SELECCIONE</option>
+                {municipios.map((municipio) => (
+                  <option key={municipio.id} value={municipio.id}>
+                    {municipio.name}
+                  </option>
+                ))}
+              </select>
+              <AnimatePresence>
+                {formik.touched.municipio && formik.errors.municipio ? (
+                  <ErrorMessage>{formik.errors.municipio}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
             </div>
 
             {/* Nombres Completos */}
@@ -257,17 +268,22 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="nombresCompletos"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.nombresCompletos &&
+                  formik.errors.nombresCompletos
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.nombresCompletos}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.nombresCompletos &&
-              formik.errors.nombresCompletos ? (
-                <div className="text-red-500">
-                  {formik.errors.nombresCompletos}
-                </div>
-              ) : null}
+              <AnimatePresence>
+                {formik.touched.nombresCompletos &&
+                formik.errors.nombresCompletos ? (
+                  <ErrorMessage>{formik.errors.nombresCompletos}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
             </div>
 
             {/* Apellidos Completos */}
@@ -278,17 +294,54 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="apellidosCompletos"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.apellidosCompletos &&
+                  formik.errors.apellidosCompletos
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.apellidosCompletos}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.apellidosCompletos &&
-              formik.errors.apellidosCompletos ? (
-                <div className="text-red-500">
-                  {formik.errors.apellidosCompletos}
-                </div>
-              ) : null}
+              <AnimatePresence>
+                {formik.touched.apellidosCompletos &&
+                formik.errors.apellidosCompletos ? (
+                  <ErrorMessage>
+                    {formik.errors.apellidosCompletos}
+                  </ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            {/* Rol */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Rol
+              </label>
+              <select
+                name="rol"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.rol && formik.errors.rol
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.rol}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">SELECCIONE</option>
+                {dataRol.map((rol) => (
+                  <option key={rol.id} value={rol.id}>
+                    {rol.name}
+                  </option>
+                ))}
+              </select>
+              <AnimatePresence>
+                {formik.touched.rol && formik.errors.rol ? (
+                  <ErrorMessage>{formik.errors.rol}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
             </div>
 
             {/* Correo */}
@@ -299,14 +352,20 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="email"
                 name="correo"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.correo && formik.errors.correo
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.correo}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.correo && formik.errors.correo ? (
-                <div className="text-red-500">{formik.errors.correo}</div>
-              ) : null}
+              <AnimatePresence>
+                {formik.touched.correo && formik.errors.correo ? (
+                  <ErrorMessage>{formik.errors.correo}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
             </div>
 
             {/* Contraseña */}
@@ -317,7 +376,11 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="password"
                 name="contraseña"
-                className="w-full px-3 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.contraseña && formik.errors.contraseña
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
                 value={formik.values.contraseña}
                 onChange={formik.handleChange}
               />
