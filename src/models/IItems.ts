@@ -16,6 +16,7 @@ export interface IItems {
     deliveryDate:     Date;
     inventoryNumber:  string;
     dhcp:             boolean;
+    idUsuario:        number | null;
     createAt:           Date;
     updateAt:           Date;
     seguimientoEquipos: SeguimientoEquipo[];

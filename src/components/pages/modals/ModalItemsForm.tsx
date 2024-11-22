@@ -29,6 +29,7 @@ import {
   PencilSquareIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
+import InputAutocompletado from "../../InputAutocompletado";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -130,7 +131,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           ),
         warranty: Yup.boolean().required("La garantia es requerida"),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
-        dhcp: Yup.boolean(),
+        manager: Yup.string().optional(),
       };
     }
 
@@ -143,7 +144,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           .max(200, "Otros datos deben tener como máximo 200 caracteres"),
         status: Yup.string()
           .required("El estado es requerido")
-          .min(3, "El estado debe tener al menos 3 caracteres")
+          .min(3, "El estado debe tener al menos 3  caracteres")
           .max(200, "El estado debe tener como máximo 200 caracteres"),
       };
     }
@@ -170,6 +171,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       otherData: "",
       status: "",
       dhcp: false,
+      manager: "",
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -194,6 +196,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           formData.append("warrantyTime", values.warrantyTime);
           formData.append("warranty", values.warranty);
           formData.append("deliveryDate", values.deliveryDate);
+          formData.append("managerId", values.manager);
         } else {
           formData.append("otherData", values.otherData);
           formData.append("status", values.status);
@@ -230,8 +233,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     },
   });
 
-  // console.log(formik.values.dhcp);
-  console.log(formik.errors)
+  // console.log(formik.values.manager);
+  // console.log(formik.errors)
 
   const formatDate = (date: Date | string | null) => {
     return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
@@ -260,6 +263,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         otherData: "otherData" in items ? items.otherData : "",
         status: "status" in items ? items.status : "",
         dhcp: "dhcp" in items ? items.dhcp : false,
+        manager: "idUsuario" in items ? String(items.idUsuario) : "",
       });
     }
   }, [items, idItem, tipoItem]);
@@ -387,6 +391,18 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
+
+                    {tipoItem === "equipos" && (
+                      <InputAutocompletado
+                        label="Responsable"
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("manager", value)
+                        }
+                        apiRoute="search-user-by-name"
+                        error={formik.touched.manager && !!formik.errors.manager}
+                      />
+                    )}
+
                     {tipoItem === "equipos" && (
                       <div>
                         <div className="flex items-center">
@@ -619,7 +635,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                           </AnimatePresence>
                         </>
                       )}
-                      {tipoItem === "equipos" && !formik.values.dhcp && (
+                      {!formik.values.dhcp && (
                         <div>
                           <div className="flex items-center mt-2">
                             <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
