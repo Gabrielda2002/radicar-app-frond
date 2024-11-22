@@ -15,7 +15,6 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
   onClose,
   radicacion,
 }) => {
-  console.log(radicacion);
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   const { rol } = useAuth();
   if (!isOpen || !radicacion) return null;
