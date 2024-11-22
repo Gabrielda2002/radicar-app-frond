@@ -4,8 +4,9 @@ import { format } from "date-fns";
 import { useFormik } from "formik";
 import { Cup } from "../../../models/ICirugias";
 import React, { useState, useMemo } from "react";
+import ErrorMessage from "../../ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import InputAutocompletado from "../../InputAutocompletado";
 import { createCirugia } from "../../../services/createCirugia";
 
@@ -26,17 +27,6 @@ interface ModalCirugiasProps {
   idCirugia: number[];
 }
 
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-base text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   name,

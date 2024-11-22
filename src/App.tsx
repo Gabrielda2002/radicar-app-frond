@@ -24,10 +24,6 @@ const SistemaDeInventario = lazy(
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
 const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
 
-const TableInventory = lazy(
-  () => import("./components/Routes/TablesInventory.tsx")
-);
-
 const TablaAuditoria = lazy(
   () => import("./components/pages/TablaAuditoria.tsx")
 );
@@ -114,10 +110,6 @@ function AppRoutes() {
                           />
                           {/* rutas de las tablas radicacion */}
                           <Route path="*" element={<TableRoutes />} />
-                          <Route
-                            path="/SistemaDeInventario/*"
-                            element={<TableInventory />}
-                          />
                           <Route
                             path="/SistemaInventario"
                             element={<SistemaInventario />}

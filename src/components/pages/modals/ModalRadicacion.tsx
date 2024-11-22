@@ -9,7 +9,8 @@ import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 
 //*Icons
 import id from "/assets/id.svg";
@@ -17,18 +18,6 @@ import phone from "/assets/phone.svg";
 import email from "/assets/email.svg";
 import adress from "/assets/adress.svg";
 import telephone from "/assets/telephone.svg";
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="mt-2 text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);

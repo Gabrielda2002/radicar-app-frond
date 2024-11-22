@@ -1,7 +1,8 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { format } from "date-fns";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
 import React, { useEffect, useState } from "react";
@@ -37,17 +38,6 @@ interface ModalItemsFormProps {
   idItem: number | null;
 }
 
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
