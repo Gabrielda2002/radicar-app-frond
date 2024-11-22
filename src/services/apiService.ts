@@ -20,6 +20,7 @@ import { IPacientes } from "../models/IPacientes";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
+import { IMonthDataRadicacion } from "../models/IMonthDataRadicacion";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -251,4 +252,10 @@ export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
         createdAt: new Date(diagnostico.createdAt)
     }));
     return diagnosticos;
+}
+
+export const fetchMonthRadicacionEp = async (): Promise<IMonthDataRadicacion[]> => {
+    const response = await api.get('/radicacion-month');
+    
+    return response.data;
 }
