@@ -51,6 +51,11 @@ const ModalRadicacion = () => {
   const [servicios, setServicios] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
+  const items = servicios.map((servicio, index) => ({
+    code: servicio,
+    description: descripciones[index],
+  }))
+
   // * usar formik y yup para validar los campos
   const validationSchema = Yup.object({
     telefonoFijo: Yup.string()
@@ -102,7 +107,7 @@ const ModalRadicacion = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
 
       // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
       // ! tambien se valida que no haya campos vacios
@@ -151,16 +156,17 @@ const ModalRadicacion = () => {
         formData.append("file", values.soporte);
       }
       formData.append("idDiagnostico", values.idDiagnostico);
+      formData.append("items", JSON.stringify(items));
+      // formData.append("code", servicios.join(","));
+      // formData.append("DescriptionCode", descripciones.join(","));
 
-      formData.append("code", servicios.join(","));
-      formData.append("DescriptionCode", descripciones.join(","));
 
       formData.append("idPatient", values.idPaciente);
 
       try {
         const response = await submitRadicado(formData, values.idPaciente);
 
-        if (response?.status === 201) {
+        if (response?.status === 201 || response?.status === 200) {
           setSuccess(true);
           setErrorMessage(null);
           setTimeout(() => {
@@ -177,6 +183,8 @@ const ModalRadicacion = () => {
       setSubmiting(false);
     },
   });
+
+  // console.log(formik.values);
 
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
