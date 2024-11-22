@@ -45,7 +45,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   return (
     <div className="relative">
       <label>
-        <span className="flex mb-3 text-base font-bold text-gray-700 dark:text-gray-200">
+        <span className="flex mb-1 text-lg font-bold text-gray-700 dark:text-gray-200">
           {label}
         </span>
         <input
@@ -59,7 +59,9 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         />
       </label>
 
-        {fetchError && <p className="text-red-500 dark:text-red-300">{fetchError}</p>}
+      {fetchError && (
+        <p className="text-red-500 dark:text-red-300">{fetchError}</p>
+      )}
 
       {/* Mostrar sugerencias */}
       {showSuggestions && data && (
