@@ -1,8 +1,7 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { format } from "date-fns";
-import ErrorMessage from "../../ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "../../../models/IItems";
 import React, { useEffect, useState } from "react";
@@ -22,7 +21,7 @@ import {
   GlobeAltIcon,
   MapPinIcon,
   CalendarIcon,
-  ShieldCheckIcon,
+  ClockIcon,
   CheckCircleIcon,
   KeyIcon,
   CalendarDaysIcon,
@@ -39,6 +38,17 @@ interface ModalItemsFormProps {
   idItem: number | null;
 }
 
+const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ duration: 0.3 }}
+    className="text-red-500"
+  >
+    {children}
+  </motion.div>
+);
 
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
@@ -261,38 +271,36 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   return (
     <>
       <div className="relative group">
-        <div>
-          <button
-            className="p-2 duration-200 border rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() => setStadopen(true)}
-          >
-            {idItem ? (
-              <PencilSquareIcon
-                className="w-7 h-7"
-                aria-label="Actualizar Item"
-              />
-            ) : (
-              <div className="flex items-center text-lg">
-                <span>Crear Item</span>
-                <PlusCircleIcon className="w-6 h-6 ml-2" />
-              </div>
-            )}
-          </button>
-          {/* Tooltip */}
-          {idItem && (
-            <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
-              Actualizar Item
-              {/* Flechita detrás del texto */}
-              <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+        <button
+          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          onClick={() => setStadopen(true)}
+        >
+          {idItem ? (
+            <PencilSquareIcon
+              className="w-7 h-7"
+              aria-label="Actualizar Item"
+            />
+          ) : (
+            <div className="flex items-center">
+              <span>Crear Item</span>
+              <PlusCircleIcon className="w-5 h-5 ml-2" />
             </div>
           )}
-        </div>
+        </button>
+        {/* Tooltip */}
+        {idItem && (
+          <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-700">
+            Actualizar Item
+            {/* Flechita detrás del texto */}
+            <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-700"></div>
+          </div>
+        )}
       </div>
 
       {/* init event modal */}
       {stadopen && (
         <section
-          className={`fixed inset-0 z-10 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+          className={`fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -322,7 +330,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               >
                 <div className="px-8 py-2">
                   {/* formularios */}
-                  <div className="grid grid-cols-2 gap-8 mt-2 mb-6">
+                  <div className="grid grid-cols-3 gap-8 mt-2">
                     <div>
                       <div className="flex items-center">
                         <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
@@ -384,42 +392,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </div>
                     )}
 
-                    <div>
-                      <div className="flex items-center">
-                        <TvIcon className="w-8 h-8 mr-2 dark:text-white" />
-                        <label
-                          htmlFor="brand"
-                          className="block text-lg font-semibold"
-                        >
-                          Marca
-                        </label>
-                      </div>
-                      <select
-                        name="brand"
-                        value={formik.values.brand}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.brand && formik.errors.brand
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">Seleccione</option>
-                        <option value="LENOVO">Lenovo</option>
-                        <option value="COMPUMAX">Compumax</option>
-                        <option value="ASUS">Asus</option>
-                        <option value="ACER">Acer</option>
-                        <option value="HP">HP</option>
-                        <option value="DELL">Dell</option>
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.brand && formik.errors.brand ? (
-                          <ErrorMessage>{formik.errors.brand}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
-
                     {tipoItem === "equipos" && (
                       <InputAutocompletado
                         label="Responsable"
@@ -470,8 +442,43 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </div>
                     )}
                   </div>
-                  <hr className="border-gray-400 dark:border-gray-950" />
-                  <div className="grid grid-cols-2 mt-4 mb-4 gap-x-6 gap-y-2">
+
+                  <div className="grid grid-cols-2 mt-5 gap-x-6 gap-y-2">
+                    <div>
+                      <div className="flex items-center">
+                        <TvIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="brand"
+                          className="block text-lg font-semibold"
+                        >
+                          Marca
+                        </label>
+                      </div>
+                      <select
+                        name="brand"
+                        value={formik.values.brand}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.brand && formik.errors.brand
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">Seleccione</option>
+                        <option value="LENOVO">Lenovo</option>
+                        <option value="COMPUMAX">Compumax</option>
+                        <option value="ASUS">Asus</option>
+                        <option value="ACER">Acer</option>
+                        <option value="HP">HP</option>
+                        <option value="DELL">Dell</option>
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.brand && formik.errors.brand ? (
+                          <ErrorMessage>{formik.errors.brand}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
                     <div>
                       <div className="flex items-center">
                         <InformationCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -599,8 +606,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </AnimatePresence>
                     </div>
                   </div>
-                  <hr className="border-gray-400 dark:border-gray-950" />
-                  <div className="grid grid-cols-2 gap-8 mt-2"></div>
 
                   <div className="grid grid-cols-2 gap-8 mt-10 mb-12">
                     <div>
@@ -699,40 +704,40 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                             ) : null}
                           </AnimatePresence>
                         </div>
-                        <input
-                          type="date"
-                          id="purchaseDate"
-                          name="purchaseDate"
-                          value={formik.values.purchaseDate}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.purchaseDate &&
-                            formik.errors.purchaseDate
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.purchaseDate &&
-                          formik.errors.purchaseDate ? (
-                            <ErrorMessage>
-                              {formik.errors.purchaseDate}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                    {tipoItem === "equipos" && (
-                      <div>
-                        <div className="flex items-center">
-                          <CalendarDaysIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="deliveryDate"
-                            className="block text-lg font-semibold"
-                          >
-                            Fecha Entrega
-                          </label>
+                      )}
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center mt-2">
+                            <ClockIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="warrantyTime"
+                              className="block text-lg font-semibold"
+                            >
+                              Tiempo de Garantia
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="warrantyTime"
+                            name="warrantyTime"
+                            value={formik.values.warrantyTime}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.warrantyTime &&
+                              formik.errors.warrantyTime
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.warrantyTime &&
+                            formik.errors.warrantyTime ? (
+                              <ErrorMessage>
+                                {formik.errors.warrantyTime}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </div>
                       )}
                       
@@ -798,36 +803,20 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                                 : "border-gray-200 dark:border-gray-600"
                             }`}
                           >
-                            Estado
-                          </label>
+                            <option value="">- SELECT -</option>
+                            <option value={1}>Activa</option>
+                            <option value={0}>Inactiva</option>
+                          </select>
+                          <AnimatePresence>
+                            {formik.touched.warranty &&
+                            formik.errors.warranty ? (
+                              <ErrorMessage>
+                                {formik.errors.warranty}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
                         </div>
-                        <select
-                          id="status"
-                          name="status"
-                          value={formik.values.status}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.status && formik.errors.status
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        >
-                          <option value="">- SELECT -</option>
-                          <option value="Activo">Activo</option>
-                          <option value="Inactivo">Inactivo</option>
-                        </select>
-                        <AnimatePresence>
-                          {formik.touched.status && formik.errors.status ? (
-                            <ErrorMessage>{formik.errors.status}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                  </div>
-                  <hr className="border-gray-400 dark:border-gray-950" />
-                  <div className="grid grid-cols-1 gap-1 mt-4 mb-4">
-                    <div>
+                      )}
                       <div>
                         <div className="flex items-center mt-2">
                           <KeyIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -863,6 +852,65 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </div>
                     </div>
                   </div>
+                  {tipoItem === "dispositivos-red" && (
+                    <div>
+                      <label
+                        htmlFor="otherData"
+                        className="block mt-2 text-sm font-semibold"
+                      >
+                        Otros Datos
+                      </label>
+                      <input
+                        type="text"
+                        id="otherData"
+                        name="otherData"
+                        value={formik.values.otherData}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.otherData && formik.errors.otherData
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.otherData && formik.errors.otherData ? (
+                          <ErrorMessage>{formik.errors.otherData}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                  {tipoItem === "dispositivos-red" && (
+                    <div>
+                      <label
+                        htmlFor="status"
+                        className="block mt-2 text-sm font-semibold"
+                      >
+                        Estado
+                      </label>
+                      <select
+                        id="status"
+                        name="status"
+                        value={formik.values.status}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.status && formik.errors.status
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">- SELECT -</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.status && formik.errors.status ? (
+                          <ErrorMessage>{formik.errors.status}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                  )}
                 </div>
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
