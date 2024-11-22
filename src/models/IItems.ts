@@ -23,6 +23,8 @@ export interface IItems {
     accessoriesRelation: AccessoriesRelation[];
     componentRelation:   ComponentRelation[];
     softwareRelation:    SoftwareRelation[];
+    userRelation:        UserRelation;
+    
 }
 
 export interface AccessoriesRelation {
