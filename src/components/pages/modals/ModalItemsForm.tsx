@@ -28,7 +28,8 @@ import {
   LockClosedIcon,
   PencilSquareIcon,
   PlusCircleIcon,
-  ClockIcon,
+  FingerPrintIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import InputAutocompletado from "../../InputAutocompletado";
 
@@ -576,6 +577,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         ) : null}
                       </AnimatePresence>
                     </div>
+                  )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-8 mt-10 mb-12">
