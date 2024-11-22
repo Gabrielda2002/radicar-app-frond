@@ -16,10 +16,10 @@ import {
   MapIcon,
   ComputerDesktopIcon,
   TvIcon,
-  InformationCircleIcon,
-  FingerPrintIcon,
-  GlobeAltIcon,
-  MapPinIcon,
+  // InformationCircleIcon,
+  // FingerPrintIcon,
+  // GlobeAltIcon,
+  // MapPinIcon,
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
@@ -28,6 +28,8 @@ import {
   LockClosedIcon,
   PencilSquareIcon,
   PlusCircleIcon,
+  FingerPrintIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import InputAutocompletado from "../../InputAutocompletado";
 
@@ -93,7 +95,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         .max(200, "El inventario debe tener como máximo 200 caracteres"),
       dhcp: Yup.boolean().optional(),
       addressIp: Yup.string().when("dhcp", {
-        is: (value: boolean) => !value ,
+        is: (value: boolean) => !value,
         then: (schema) => schema.required("La direccion ip es requerida"),
         otherwise: (schema) => schema.optional(),
       }),
@@ -234,7 +236,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   });
 
   // console.log(formik.values.manager);
-  // console.log(formik.errors)
+   console.log(formik.errors)
 
   const formatDate = (date: Date | string | null) => {
     return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
@@ -538,73 +540,44 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </AnimatePresence>
                     </div>
 
-                    {tipoItem === "equipos" && (
-                      <div>
-                        <div className="flex items-center">
-                          <GlobeAltIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="operationalSystem"
-                            className="block text-lg font-semibold"
-                          >
-                            Sistema Operativo
-                          </label>
-                        </div>
-                        <select
-                          name="operationalSystem"
-                          value={formik.values.operationalSystem}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.operationalSystem &&
-                            formik.errors.operationalSystem
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        >
-                          <option value="">Select</option>
-                          <option value="WINDOWS 10">Windows 10</option>
-                          <option value="WINDOWS 11">Windows 11</option>
-                          <option value="WINDOWS 7">Windows 7</option>
-                        </select>
-                        <AnimatePresence>
-                          {formik.touched.operationalSystem &&
-                          formik.errors.operationalSystem ? (
-                            <ErrorMessage>
-                              {formik.errors.operationalSystem}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
+                  {tipoItem === "equipos" && (
                     <div>
                       <div className="flex items-center">
-                        <MapPinIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
                         <label
-                          htmlFor="mac"
+                          htmlFor="typeEquipment"
                           className="block text-lg font-semibold"
                         >
-                          Dirección Mac
+                          Tipo de Equipo
                         </label>
                       </div>
-                      <input
-                        type="text"
-                        id="mac"
-                        name="mac"
-                        value={formik.values.mac}
+                      <select
+                        name="typeEquipment"
+                        value={formik.values.typeEquipment}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.mac && formik.errors.mac
+                          formik.touched.typeEquipment &&
+                          formik.errors.typeEquipment
                             ? "border-red-500 dark:border-red-500"
                             : "border-gray-200 dark:border-gray-600"
                         }`}
-                      />
+                      >
+                        <option value="">Selecciona</option>
+                        <option value="TODO EN 1">Todo en 1</option>
+                        <option value="PORTATIL">Portatil</option>
+                        <option value="ESCRITORIO">Escritorio</option>
+                      </select>
                       <AnimatePresence>
-                        {formik.touched.mac && formik.errors.mac ? (
-                          <ErrorMessage>{formik.errors.mac}</ErrorMessage>
+                        {formik.touched.typeEquipment &&
+                        formik.errors.typeEquipment ? (
+                          <ErrorMessage>
+                            {formik.errors.typeEquipment}
+                          </ErrorMessage>
                         ) : null}
                       </AnimatePresence>
                     </div>
+                  )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-8 mt-10 mb-12">
@@ -740,7 +713,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                           </AnimatePresence>
                         </div>
                       )}
-                      
                     </div>
 
                     <div>
