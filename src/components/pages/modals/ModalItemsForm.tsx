@@ -76,7 +76,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         .max(200, "El nombre debe tener como máximo 200 caracteres"),
       brand: Yup.string()
         .required("La marca es requerida")
-        .min(3, "La marca debe tener al menos 3 caracteres")
+        .min(2, "La marca debe tener al menos 3 caracteres")
         .max(200, "La marca debe tener como máximo 200 caracteres"),
       model: Yup.string()
         .required("El modelo es requerido")
@@ -90,10 +90,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         .required("El inventario es requerido")
         .min(3, "El inventario debe tener al menos 3 caracteres")
         .max(200, "El inventario debe tener como máximo 200 caracteres"),
-      addressIp: Yup.string()
-        .required("La direccion ip es requerida")
-        .min(3, "La direccion ip debe tener al menos 3 caracteres")
-        .max(200, "La direccion ip debe tener como máximo 200 caracteres"),
+      dhcp: Yup.boolean().optional(),
+      addressIp: Yup.string().when("dhcp", {
+        is: (value: boolean) => !value ,
+        then: (schema) => schema.required("La direccion ip es requerida"),
+        otherwise: (schema) => schema.optional(),
+      }),
       mac: Yup.string()
         .required("La mac es requerida")
         .min(3, "La mac debe tener al menos 3 caracteres")
@@ -128,6 +130,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           ),
         warranty: Yup.boolean().required("La garantia es requerida"),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
+        dhcp: Yup.boolean(),
       };
     }
 
@@ -166,6 +169,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       addressIp: "",
       otherData: "",
       status: "",
+      dhcp: false,
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -180,6 +184,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         formData.append("addressIp", values.addressIp);
         formData.append("mac", values.mac);
         formData.append("sedeId", idSede?.toString() || "");
+        formData.append("dhcp", values.dhcp.toString());
 
         if (tipoItem === "equipos") {
           formData.append("area", values.area);
@@ -225,7 +230,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     },
   });
 
-  // console.log(formik.errors)
+  // console.log(formik.values.dhcp);
+  console.log(formik.errors)
 
   const formatDate = (date: Date | string | null) => {
     return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
@@ -253,6 +259,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         addressIp: items.addressIp,
         otherData: "otherData" in items ? items.otherData : "",
         status: "status" in items ? items.status : "",
+        dhcp: "dhcp" in items ? items.dhcp : false,
       });
     }
   }, [items, idItem, tipoItem]);
@@ -587,6 +594,67 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   <div className="grid grid-cols-2 gap-8 mt-10 mb-12">
                     <div>
                       {tipoItem === "equipos" && (
+                        <>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id="dhcp"
+                              name="dhcp"
+                              checked={formik.values.dhcp}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="mr-2"
+                            />
+                            <label
+                              htmlFor="dhcp"
+                              className="block text-lg font-semibold"
+                            >
+                              DHCP
+                            </label>
+                          </div>
+                          <AnimatePresence>
+                            {formik.touched.dhcp && formik.errors.dhcp ? (
+                              <ErrorMessage>{formik.errors.dhcp}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </>
+                      )}
+                      {tipoItem === "equipos" && !formik.values.dhcp && (
+                        <div>
+                          <div className="flex items-center mt-2">
+                            <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="addressIp"
+                              className="block text-lg font-semibold"
+                            >
+                              Direccion Ip
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="addressIp"
+                            name="addressIp"
+                            value={formik.values.addressIp}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.addressIp &&
+                              formik.errors.addressIp
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.addressIp &&
+                            formik.errors.addressIp ? (
+                              <ErrorMessage>
+                                {formik.errors.addressIp}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                      {tipoItem === "equipos" && (
                         <div>
                           <div className="flex items-center">
                             <CalendarIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -656,38 +724,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                           </AnimatePresence>
                         </div>
                       )}
-                      <div>
-                        <div className="flex items-center mt-2">
-                          <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="addressIp"
-                            className="block text-lg font-semibold"
-                          >
-                            Direccion Ip
-                          </label>
-                        </div>
-                        <input
-                          type="text"
-                          id="addressIp"
-                          name="addressIp"
-                          value={formik.values.addressIp}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.addressIp && formik.errors.addressIp
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.addressIp &&
-                          formik.errors.addressIp ? (
-                            <ErrorMessage>
-                              {formik.errors.addressIp}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
+                      
                     </div>
 
                     <div>

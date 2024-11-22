@@ -15,6 +15,7 @@ export interface IItems {
     warranty:         boolean;
     deliveryDate:     Date;
     inventoryNumber:  string;
+    dhcp:             boolean;
     createAt:           Date;
     updateAt:           Date;
     seguimientoEquipos: SeguimientoEquipo[];
