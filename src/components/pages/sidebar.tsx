@@ -357,9 +357,9 @@ const SideBar: FC = () => {
 
             {/* Categoria de administrador */}
             {[1].includes(Number(rol)) && (
-              <div className="flex flex-col mx-3 space-y-3">
+              <div className="flex flex-col space-y-3">
                 {!isCollapsed && (
-                  <label className="-px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
+                  <label className="px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
                     Administrador
                   </label>
                 )}
