@@ -2,6 +2,8 @@
 import * as Yup from "yup";
 import { useState, useMemo } from "react";
 import { useFormik } from "formik";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import {
   useFetchEstados,
   useFetchUnidadFuncional,
@@ -150,9 +152,11 @@ const FormularioAutorizacion = () => {
                   }`}
                   placeholder="Nombre de la auditora"
                 />
-                {formik.touched.auditora && formik.errors.auditora && (
-                  <p className="text-red-500">{formik.errors.auditora}</p>
-                )}
+                <AnimatePresence>
+                  {formik.touched.auditora && formik.errors.auditora && (
+                    <ErrorMessage>{formik.errors.auditora}</ErrorMessage>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Fecha Auditoría */}
@@ -177,12 +181,14 @@ const FormularioAutorizacion = () => {
                       : "dark:border-gray-600 border-gray-200"
                   }`}
                 />
-                {formik.touched.fechaAuditoria &&
-                  formik.errors.fechaAuditoria && (
-                    <p className="text-red-500">
-                      {formik.errors.fechaAuditoria}
-                    </p>
-                  )}
+                <AnimatePresence>
+                  {formik.touched.fechaAuditoria &&
+                    formik.errors.fechaAuditoria && (
+                      <ErrorMessage>
+                        {formik.errors.fechaAuditoria}
+                      </ErrorMessage>
+                    )}
+                </AnimatePresence>
               </div>
               {/* Justificación Concepto Auditor */}
               <div className="flex flex-col">
@@ -206,12 +212,12 @@ const FormularioAutorizacion = () => {
                       : "dark:border-gray-600 border-gray-200"
                   }`}
                 />
-                {formik.touched.justificacion &&
-                  formik.errors.justificacion && (
-                    <p className="text-red-500">
-                      {formik.errors.justificacion}
-                    </p>
-                  )}
+                <AnimatePresence>
+                  {formik.touched.justificacion &&
+                    formik.errors.justificacion && (
+                      <ErrorMessage>{formik.errors.justificacion}</ErrorMessage>
+                    )}
+                </AnimatePresence>
               </div>
               <div className="flex translate-y-48">
                 <button
@@ -288,15 +294,18 @@ const FormularioAutorizacion = () => {
                       }`}
                       placeholder="Observación CUPS"
                     />
-                    {formik.touched.cupsDetails?.[index]?.observacionCups &&
-                      formik.errors.cupsDetails &&
-                      typeof formik.errors.cupsDetails !== "string" &&
-                      (formik.errors.cupsDetails as Array<FormikErrors>)[index]
-                        ?.observacionCups && (
-                        <p className="text-red-500">
-                          Requerido, máximo 150 caracteres.
-                        </p>
-                      )}
+                    <AnimatePresence>
+                      {formik.touched.cupsDetails?.[index]?.observacionCups &&
+                        formik.errors.cupsDetails &&
+                        typeof formik.errors.cupsDetails !== "string" &&
+                        (formik.errors.cupsDetails as Array<FormikErrors>)[
+                          index
+                        ]?.observacionCups && (
+                          <ErrorMessage>
+                            Requerido, máximo 150 caracteres.
+                          </ErrorMessage>
+                        )}
+                    </AnimatePresence>
                   </div>
 
                   {/* Unidad Funcional */}
@@ -322,13 +331,16 @@ const FormularioAutorizacion = () => {
                         </option>
                       ))}
                     </select>
-                    {formik.touched.cupsDetails?.[index]?.unidadFuncional &&
-                      formik.errors.cupsDetails &&
-                      typeof formik.errors.cupsDetails !== "string" &&
-                      (formik.errors.cupsDetails as Array<FormikErrors>)[index]
-                        ?.unidadFuncional && (
-                        <p className="text-red-500">Requerido.</p>
-                      )}
+                    <AnimatePresence>
+                      {formik.touched.cupsDetails?.[index]?.unidadFuncional &&
+                        formik.errors.cupsDetails &&
+                        typeof formik.errors.cupsDetails !== "string" &&
+                        (formik.errors.cupsDetails as Array<FormikErrors>)[
+                          index
+                        ]?.unidadFuncional && (
+                          <ErrorMessage>Requerido.</ErrorMessage>
+                        )}
+                    </AnimatePresence>
                   </div>
 
                   {/* Estado CUPS 2*/}
@@ -354,13 +366,16 @@ const FormularioAutorizacion = () => {
                         </option>
                       ))}
                     </select>
-                    {formik.touched.cupsDetails?.[index]?.estadoCups &&
-                      formik.errors.cupsDetails &&
-                      typeof formik.errors.cupsDetails !== "string" &&
-                      (formik.errors.cupsDetails as Array<FormikErrors>)[index]
-                        ?.estadoCups && (
-                        <p className="text-red-500">Requerido.</p>
-                      )}
+                    <AnimatePresence>
+                      {formik.touched.cupsDetails?.[index]?.estadoCups &&
+                        formik.errors.cupsDetails &&
+                        typeof formik.errors.cupsDetails !== "string" &&
+                        (formik.errors.cupsDetails as Array<FormikErrors>)[
+                          index
+                        ]?.estadoCups && (
+                          <ErrorMessage>Requerido.</ErrorMessage>
+                        )}
+                    </AnimatePresence>
                   </div>
                 </div>
               ))}

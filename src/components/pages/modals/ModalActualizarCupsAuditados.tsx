@@ -3,7 +3,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Cup } from "../../../models/IAuditados";
 import useAnimation from "../../../hooks/useAnimations";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState, useMemo } from "react";
 import { useFetchEstados } from "../../../hooks/useFetchUsers";
 import { sendCupsAuditados } from "../../../services/updateCupsAuditados";
@@ -13,18 +14,6 @@ import editar from "/assets/editar.svg";
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalActualizarCupsAuditoria: React.FC<
   ModalActualizarCupsAuditadosProps
@@ -217,7 +206,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                           <AnimatePresence>
                             {formik.touched.observacion &&
                               formik.errors.observacion && (
-                                <ErrorMessage>
+                                <ErrorMessage className="">
                                   {formik.errors.observacion}
                                 </ErrorMessage>
                               )}

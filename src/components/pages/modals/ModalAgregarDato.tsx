@@ -2,7 +2,8 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {  AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
 import { createDataTableRadicacion } from "../../../services/createDataTableRadicacion";
 
@@ -10,18 +11,6 @@ interface ModalTipoServicioProps {
   name: string;
   endPoint: string;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
   name,

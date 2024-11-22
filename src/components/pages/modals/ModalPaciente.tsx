@@ -11,7 +11,8 @@ import {
 } from "../../../hooks/useFetchUsers";
 import { IPacientes } from "../../../models/IPacientes";
 import { updatePacienteEp } from "../../../utils/api-config";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 
 //*Icons
 import {
@@ -29,18 +30,6 @@ interface ModalPacienteProps {
   tittle: string;
   paciente: IPacientes | null;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalPaciente: React.FC<ModalPacienteProps> = ({
   id,

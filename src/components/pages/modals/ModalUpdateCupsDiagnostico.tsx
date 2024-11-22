@@ -1,7 +1,8 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import useAnimation from "../../../hooks/useAnimations";
 import { updateCupsData } from "../../../services/updateCupsData";
@@ -17,17 +18,6 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   id,
   modulo,
 }) => {
-  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.3 }}
-      className="text-base text-red-500"
-    >
-      {children}
-    </motion.div>
-  );
   const [stadopen, setStadopen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
@@ -215,7 +205,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                         <AnimatePresence>
                           {formik.touched.nombreCups &&
                           formik.errors.nombreCups ? (
-                            <ErrorMessage>
+                            <ErrorMessage className="text-base">
                               {formik.errors.nombreCups}
                             </ErrorMessage>
                           ) : null}

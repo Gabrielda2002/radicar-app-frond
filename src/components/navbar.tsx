@@ -143,17 +143,16 @@ const Navbar: React.FC = React.memo(() => {
           </NavLink>
         </nav>
 
-        <div className="flex items-center ml-auto space-x-4 text-right">
-          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-            Hola {nombreUsuario}
+        <div className="flex items-center mr-2">
+          <h2 className="p-2 text-base font-medium text-black dark:text-white">
+            Hola, {nombreUsuario} ✌️
           </h2>
         </div>
-
         {/* Botón de Modo Oscuro con Tooltip */}
         <button
           onClick={handleToggleTheme}
           title="Modo Oscuro / Claro"
-          className="relative p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
+          className="relative p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
         >
           {theme === "light" ? (
             <img
@@ -168,7 +167,7 @@ const Navbar: React.FC = React.memo(() => {
 
         {/* Menú de Soporte con Enlaces */}
         <Menu as="div" className="relative" title="Soportes">
-          <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 border rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
+          <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
             Soportes
           </MenuButton>
 
@@ -202,7 +201,7 @@ const Navbar: React.FC = React.memo(() => {
 
         <Menu
           as="div"
-          className="relative border-2 rounded-lg dark:border-white"
+          className="relative border-2 rounded-lg dark:border-gray-800"
           title="Perfil"
         >
           <MenuButton className="flex items-center px-3 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">

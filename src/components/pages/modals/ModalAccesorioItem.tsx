@@ -3,7 +3,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
 import inventoryOptions from "../../../data-dynamic/inventoryOptions.json";
 import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
 
@@ -28,17 +29,6 @@ interface ModalAccesorioItemProps {
   id: number;
 }
 
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -254,16 +244,16 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
     <>
       <div className="relative group">
         <button
-          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          className="p-2 duration-200 border rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
           onClick={() => setStadopen(true)}
         >
           <SquaresPlusIcon className="w-7 h-7" />
         </button>
         {/* Tooltip */}
-        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none w-[134px] left-1/2 group-hover:opacity-100 dark:bg-gray-700">
+        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none w-[134px] left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           Agregar Accesorio
           {/* Flechita indicativa */}
-          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-700"></div>
+          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
         </div>
       </div>
 
