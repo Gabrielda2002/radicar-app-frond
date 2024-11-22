@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import TablaDiagnostico from "../pages/tablas-radicacion/TablaDiagnostico";
 
 const TablaCups = lazy(() => import("../pages/tablas-radicacion/TablaCups"));
 const TablaConvenio = lazy(
@@ -39,6 +38,9 @@ const TablaAutorizarServicios = lazy(
 const TablaRegistrosAuditados = lazy(
   () => import("../pages/tablas-radicacion/TablaRegistrosAuditados")
 );
+const TablaDiagnostico = lazy(
+  () => import("../pages/tablas-radicacion/TablaDiagnostico")
+);
 
 export default function TablaRoutes() {
   return (
@@ -67,7 +69,6 @@ export default function TablaRoutes() {
         <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />
         <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
         <Route path="/tabla-diagnostico" element={<TablaDiagnostico />} />
-
       </Routes>
     </Suspense>
   );

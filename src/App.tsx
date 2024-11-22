@@ -17,7 +17,6 @@ const RegistrarUsuarios = lazy(
   () => import("./components/pages/RegistrarUsuarios.tsx")
 );
 
-
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
 const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
@@ -39,15 +38,18 @@ const FileManager = lazy(
   () => import("./components/pages/SistemaArchivosSGC.tsx")
 );
 
+const SistemaInventario = lazy(
+  () => import("./components/pages/SistemaDeInventario/SistemaInventario.tsx")
+);
+
 //*Contextos
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"; 
 import { AuthProvider } from "./context/authContext";
 import { useTheme } from "./context/blackWhiteContext";
 import { Bounce, ToastContainer } from "react-toastify";
 import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
-import SistemaInventario from "./components/pages/SistemaDeInventario/SistemaInventario.tsx";
 
 function AppRoutes() {
   return (
