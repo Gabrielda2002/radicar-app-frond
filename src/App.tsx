@@ -16,9 +16,7 @@ const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
   () => import("./components/pages/RegistrarUsuarios.tsx")
 );
-const SistemaDeInventario = lazy(
-  () => import("./components/pages/SistemaDeInventario/SistemaDeInventario.tsx")
-);
+
 
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
@@ -103,10 +101,6 @@ function AppRoutes() {
                           <Route
                             path="/SistemGestionCalidad"
                             element={<FileManager />}
-                          />
-                          <Route
-                            path="/SistemaDeInventario"
-                            element={<SistemaDeInventario />}
                           />
                           {/* rutas de las tablas radicacion */}
                           <Route path="*" element={<TableRoutes />} />
