@@ -18,7 +18,7 @@ const SubCategory: React.FC<SubCategoryProps> = ({
     <NavLink to={to}>
       {({ isActive }) => (
         <div
-          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+          className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group mb-2 ${
             isActive
               ? "bg-color2 text-white dark:bg-gray-700 dark:text-gray-200"
               : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
