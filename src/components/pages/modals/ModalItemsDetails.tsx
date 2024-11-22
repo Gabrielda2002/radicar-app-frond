@@ -190,7 +190,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                   {item && "userRelation" in item && (
                       <li>
                         <strong>Responsable: </strong>
-                        {item.userRelation.name} {item.userRelation.lastName}
+                        {item.userRelation?.name || "N/A"} {item.userRelation?.lastName || "N/A"} 
                       </li>
                     )}
                     <li>
