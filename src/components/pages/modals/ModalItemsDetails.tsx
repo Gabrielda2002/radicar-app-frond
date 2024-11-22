@@ -187,6 +187,12 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul>
+                  {item && "userRelation" in item && (
+                      <li>
+                        <strong>Responsable: </strong>
+                        {item.userRelation?.name || "N/A"} {item.userRelation?.lastName || "N/A"} 
+                      </li>
+                    )}
                     <li>
                       <strong>Nombre: </strong>
                       {item?.name}

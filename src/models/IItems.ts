@@ -15,12 +15,16 @@ export interface IItems {
     warranty:         boolean;
     deliveryDate:     Date;
     inventoryNumber:  string;
+    dhcp:             boolean;
+    idUsuario:        number | null;
     createAt:           Date;
     updateAt:           Date;
     seguimientoEquipos: SeguimientoEquipo[];
     accessoriesRelation: AccessoriesRelation[];
     componentRelation:   ComponentRelation[];
     softwareRelation:    SoftwareRelation[];
+    userRelation:        UserRelation;
+    
 }
 
 export interface AccessoriesRelation {
