@@ -2,8 +2,9 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useMemo } from "react";
+import ErrorMessage from "../../ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { updateStatus } from "../../../services/updateStatus";
 
 //*Icons
@@ -14,18 +15,6 @@ interface ModalActionProps {
   name: string;
   endPoint: string;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
   const [stadopen, setStadopen] = useState(false);

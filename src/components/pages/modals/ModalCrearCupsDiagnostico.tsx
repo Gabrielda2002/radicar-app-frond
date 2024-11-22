@@ -3,7 +3,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useCallback } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import { createCups } from "../../../services/createCups";
 
 interface ModalCrearCupsDiagnosticoProps{
@@ -79,18 +80,6 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
       }
     },
   });
-
-  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.3 }}
-      className="text-red-500"
-    >
-      {children}
-    </motion.div>
-  );
 
   return (
     <>

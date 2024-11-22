@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import ErrorMessage from "../../ErrorMessageModals";
 import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
 
 interface ModalGestionServicioProps {
@@ -9,18 +10,6 @@ interface ModalGestionServicioProps {
   idRadicado: number | null;
   idCirugias: number | null;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   onClose,

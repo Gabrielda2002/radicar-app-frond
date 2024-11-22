@@ -1,7 +1,8 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import React, { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "../ErrorMessageModals";
+import { AnimatePresence } from "framer-motion";
 import { createUser } from "../../services/createUser";
 //*Icons
 import logo from "/src/imgs/logo.png";
@@ -30,18 +31,6 @@ const RegistrarUsuarios: React.FC = () => {
   // const toggleAccordion = () => {
   //   setIsAccordionOpen(!isAccordionOpen);
   // };
-
-  const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.3 }}
-      className="text-red-500"
-    >
-      {children}
-    </motion.div>
-  );
 
   const validationSchema = useMemo(
     () =>
