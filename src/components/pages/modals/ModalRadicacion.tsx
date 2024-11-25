@@ -109,6 +109,13 @@ const ModalRadicacion = () => {
     onSubmit: async (values) => {
       // console.log(values);
 
+
+      // ? validar que cantidad no este vacia y sea mayor a 0 
+      if (!cantidad || parseInt(cantidad) <= 0) {
+        setErrorMessage("La cantidad de servicios solicitados no puede estar vacía.");
+        return;
+      }
+
       // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
       // ! tambien se valida que no haya campos vacios
       let errorCups = "";
@@ -251,6 +258,8 @@ const ModalRadicacion = () => {
   const closeModal = () => {
     setStadopen(false);
   };
+
+  // ? validar que la cantidad de servicios sea un número entero mayor a 0
   const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^[1-9]\d*$/.test(value) || value === "") {
@@ -644,8 +653,8 @@ const ModalRadicacion = () => {
                         <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Cantidad de Servicios Solicitados
                         </span>
-                        <input
-                          type="number"
+                          <input
+                          type="text"
                           id="cantidad"
                           name="cantidad"
                           maxLength={1}
