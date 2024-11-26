@@ -18,7 +18,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
 }) => {
   return (
     <div
-      className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
+      className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg shadow-sm cursor-pointer dark:shadow-indigo-500 dark:hover:shadow-indigo-600 hover:shadow-lg dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
       onClick={onClick}
     >
       <div className="absolute top-0 left-0 h-full w-72">
