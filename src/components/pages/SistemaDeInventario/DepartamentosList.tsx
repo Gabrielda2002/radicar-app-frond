@@ -16,7 +16,6 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
   departamentos,
   onSelected,
 }) => {
-  // imagen segun el departamento
   const getIcon = (name: string) => {
     switch (name) {
       case "Norte de Santander":
@@ -35,20 +34,18 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
       {departamentos?.map((d) => (
         <div
           key={d.id}
-          className="relative w-full p-8 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
+          className="relative w-full h-full p-10 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg shadow-sm cursor-pointer hover:shadow-lg dark:hover:shadow-indigo-600 dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
         >
           <button key={d.id} onClick={() => onSelected(d)}>
-            <div className="absolute top-0 left-0 w-56 h-full">
-              {/* Imagen de fondo */}
-              <img
-                src={getIcon(d.name)}
-                alt=""
-                className="absolute top-0 left-0 w-56 -z-0 opacity-30"
-              />
-              <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-900"></div>
-            </div>
+            {/* Imagen de fondo */}
+            <img
+              src={getIcon(d.name)}
+              alt=""
+              className="absolute top-0 left-0 object-cover w-full h-full opacity-25 dark:opacity-30"
+            />
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-900"></div>
 
-            {/* Contenido principal con z-index positivo */}
+            {/* Contenido principal */}
             <div className="relative">
               <div className="flex justify-between space-x-8">
                 <div className="flex items-center">
@@ -59,19 +56,7 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
                     <h1 className="pl-3 text-3xl font-semibold">{d.name}</h1>
                   </div>
                 </div>
-
-                {/* Numero de sedes */}
-                {/* <div className="flex items-center">
-                  <button className="flex p-2 text-sm text-white bg-gray-700 rounded-full dark:bg-teal-600">
-                    <div className="flex items-center">
-                      <h2 title="Click para ver las categorias completas">
-                        6 Sedes
-                      </h2>
-                    </div>
-                  </button>
-                </div> */}
               </div>
-              <div></div>
             </div>
           </button>
         </div>
