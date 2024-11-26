@@ -1,6 +1,7 @@
 //*Fuctions and Hooks
 import { format } from "date-fns";
 import React, { useState, lazy, Suspense } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Pagination from "../../Pagination";
 import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -9,8 +10,9 @@ import { Cup, IAuditados } from "../../../models/IAuditados";
 import { useFetchAuditados } from "../../../hooks/useFetchUsers";
 // import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
 
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+
 //*Properties
-// import { motion } from "framer-motion";
 import ModalSection from "../../ModalSection";
 const ModalActualizarCupsAuditoria = lazy(
   () => import("../modals/ModalActualizarCupsAuditados")
@@ -140,18 +142,18 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
       Buscar registros Auditados:
     </label>
     <section className="flex justify-between pb-6">
-      <div className="flex items-center">
+      <div className="flex items-center w-full">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           placeholder=" Consultar..."
         />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center ml-4">
         <select
-          className="border-2 h-12 w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="border-2 h-10 w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           onChange={handleItemsPerPageChange}
           value={itemsPerPage}
         >
@@ -183,49 +185,86 @@ const TableContent: React.FC<TableContentProps> = ({
   currentPage,
   totalPages,
   paginate,
-}) => (
-  <>
-    <div className="overflow-x-auto">
-      <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg dark:text-gray-100">
-        <thead className="bg-gray-200 dark:bg-gray-700">
-          <tr className="text-base text-center shadow-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
-            <th className="px-2">ID Radicación</th>
-            <th>Número Documento</th>
-            <th>Nombre Paciente</th>
-            <th>CUPS</th>
-          </tr>
-        </thead>
-        <tbody className="text-xs text-center dark:text-gray-200">
-          {currentData().map((auditado) => (
-            <tr
-              className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-              key={auditado.id}
-            >
-              <td className="p-3 border-b dark:border-gray-700">
-                {auditado.id}
-              </td>
-              <td className="p-3 border-b dark:border-gray-700">
-                {auditado.document}
-              </td>
-              <td className="p-3 border-b dark:border-gray-700">
-                {auditado.patientName}
-              </td>
-              <td className="p-3 border-b dark:border-gray-700">
-                <CupsTable cups={auditado.CUPS} />
-              </td>
+}) => {
+  const [expandedRow, setExpandedRow] = useState<number | null>(null); // Estado para controlar el acordeón
+
+  const toggleRow = (id: number) => {
+    setExpandedRow(expandedRow === id ? null : id); // Alternar entre expandir y colapsar
+  };
+
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg dark:text-gray-100">
+          <thead className="bg-gray-200 dark:bg-gray-700">
+            <tr className="text-base text-center shadow-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
+              <th className="px-2">ID Radicación</th>
+              <th>Número Documento</th>
+              <th>Nombre Paciente</th>
+              <th>CUPS</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <div>‎</div>
-    <Pagination
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={paginate}
-    />
-  </>
-);
+          </thead>
+          <tbody className="text-xs text-center dark:text-gray-200">
+            {currentData().map((auditado) => (
+              <React.Fragment key={auditado.id}>
+                {/* Fila principal */}
+                <tr className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
+                  <td className="p-3 border-b dark:border-gray-700">
+                    {auditado.id}
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    {auditado.document}
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    {auditado.patientName}
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    <button
+                      title="Ver Cups Auditados"
+                      onClick={() => toggleRow(auditado.id)}
+                      className="px-4 py-2 text-white bg-gray-100 rounded hover:bg-gray-100 dark:bg-color dark:hover:bg-teal-600"
+                    >
+                      {expandedRow === auditado.id ? (
+                        <>
+                          <ChevronDownIcon className="w-6 h-6 text-black dark:text-white" />
+                        </>
+                      ) : (
+                        <>
+                          <ChevronUpIcon className="w-6 h-6 text-black dark:text-white" />
+                        </>
+                      )}
+                    </button>
+                  </td>
+                </tr>
+                <AnimatePresence>
+                  {/* Fila expandible */}
+                  {expandedRow === auditado.id && (
+                    <motion.tr
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden bg-gray-100 dark:bg-gray-900"
+                    >
+                      <td colSpan={4} className="p-3">
+                        <CupsTable cups={auditado.CUPS} />
+                      </td>
+                    </motion.tr>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div>‎ </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={paginate}
+      />
+    </>
+  );
+};
 
 interface CupsTableProps {
   cups: Cup[];
@@ -253,7 +292,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
             <td className="p-3 border-b dark:border-gray-700">{cup.code}</td>
             <td className="border-b dark:border-gray-700">
               <span
-                className="block max-w-[150px] truncate cursor-pointer"
+                className="block cursor-pointer w-30%"
                 title={cup.description}
               >
                 {cup.description}
