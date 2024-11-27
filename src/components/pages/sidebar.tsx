@@ -395,7 +395,6 @@ const SideBar: FC = () => {
               <ModalReporteRadicado
                 isOpen={isModalOpen}
                 onClose={closeModal}
-                formType={"Autorizacion"}
               />
             )}
 

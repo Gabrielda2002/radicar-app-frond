@@ -5,12 +5,13 @@ export const useDownloadReport = () => {
 
     const [error, setError] = useState<string | null>(null);
 
-    const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string) => {
+    const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string, statusCups: string) => {
         try {
             const response = await api.post(`/${endPoint}`, {
               dateStart:  dateStart,
               dateEnd: dateEnd,
-              cupsCode: cupsCode
+              cupsCode: cupsCode,
+              statusCups: statusCups
             },{
               responseType: 'blob',
             });
