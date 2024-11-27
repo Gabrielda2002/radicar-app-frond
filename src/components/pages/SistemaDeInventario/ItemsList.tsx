@@ -1,4 +1,6 @@
+// * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { IItems } from "../../../models/IItems";
 import LoadingSpinner from "../../LoadingSpinner";
 import ModalItemsForm from "../modals/ModalItemsForm";
@@ -7,12 +9,13 @@ import ModalAccesorioItem from "../modals/ModalAccesorioItem";
 import { IItemsNetworking } from "../../../models/IItemsNetworking";
 import ModalTablaseguimientoItem from "../modals/ModalTablaSeguimientoItem";
 
+// * Interface
 interface ItemsListProps {
   invetario: IItems[] | IItemsNetworking[] | null;
   tipoItem: "equipos" | "dispositivos-red" | null;
   idSede: number | null;
 }
-
+// * Icons
 import {
   ListBulletIcon,
   Squares2X2Icon,
@@ -29,12 +32,31 @@ const ItemsList: React.FC<ItemsListProps> = ({
     null
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [isGridView, setIsGridView] = useState(true); // * Estado para alternar vistas
+  const [isGridView, setIsGridView] = useState(true); // * Estado para alternar vistas (Lista o de cuadrícula)
+
+  // * Efecto para almacenar una cookie para el estado de la vista
+
+  useEffect(() => {
+    const savedView = Cookies.get("itemsViewMode");
+    if (savedView === "list") {
+      setIsGridView(false);
+    }
+  }, []);
+
+  // * Efecto para guardar el estado de la vista
+
+  const toggleViewMode = () => {
+    const newViewMode = !isGridView ? "grid" : "list";
+    Cookies.set("itemsViewMode", newViewMode, { expires: 7 });
+    setIsGridView(!isGridView);
+  };
+
+  // * Efecto para determinar el cierre del modal o apertura del mismo
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // * Simular carga inicial
+    }, 1000); // Simular carga inicial
     return () => clearTimeout(timeout);
   }, [tipoItem]);
 
@@ -46,8 +68,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
     setSelected(null);
   };
 
-   // 
-  // * Iconos que, dependediendo del Item de Inventario, se muestre el icono de Inventario
+  // * Funcion para mostrar el tipo de icon (en modo de lista)
+  // * Iconos que, dependediendo del Item de Inventario, se muestre el icono del Dispositivo
+
   const getIcon = () => {
     if (tipoItem === "equipos") {
       return <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />;
@@ -83,10 +106,22 @@ const ItemsList: React.FC<ItemsListProps> = ({
               type="text"
               className="w-full p-2 border-2 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-white"
               placeholder="Busqueda de Dispositivo..."
+              // value={query}
+              // onChange={(e) =>setQuery(e.target.value)}
             />
+            <select
+              name=""
+              id=""
+              className="border-2 ml-2 border-stone-300 h-[45px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="">Paginas</option>
+              <option value="">10 items</option>
+              <option value="">20 items</option>
+              <option value="">30 items</option>
+            </select>
             <button
-              className="flex items-center px-4 py-1 ml-4 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-              onClick={() => setIsGridView(!isGridView)} // Alternar vista
+              className="flex items-center px-4 py-1 ml-2 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+              onClick={toggleViewMode} // * Alternar vista
             >
               {isGridView ? (
                 <>
@@ -103,13 +138,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
           </div>
 
           {/* Renderizado Condicional */}
+          {/* {filteredData.length > 0 ? ()} */}
           {invetario && invetario.length > 0 ? (
             isGridView ? (
               <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
                 {invetario.map((item) => (
                   <div
                     key={item.id}
-                    className="relative p-4 duration-500 border rounded-md shadow-md dark:shadow-md dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-950 dark:border-gray-700"
+                    className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                   >
                     <div className="flex items-center justify-between mb-14">
                       <h3 className="mb-2 text-2xl font-semibold dark:text-white">
@@ -155,7 +191,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                 {invetario.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-md dark:border-gray-700 dark:shadow-md dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-950"
+                    className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-sm dark:border-gray-700 dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-600"
                   >
                     <div>
                       <div className="flex items-center">
