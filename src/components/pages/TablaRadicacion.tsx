@@ -97,8 +97,8 @@ const TablaRadicacion = () => {
 
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
-        <section className="flex items-center justify-between mb-4">
-          <div className="flex flex-col">
+        <section className="flex items-end justify-between w-full mb-4">
+          <div className="flex flex-col w-full">
             <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
               Buscar radicado :
             </label>

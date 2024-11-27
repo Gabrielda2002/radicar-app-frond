@@ -44,48 +44,28 @@ const FileList: React.FC<FileListProps> = ({
   };
 
   const handleFileOpen = (file: File) => {
-    // Validar que solo se puedan abrir archivos PDF
     if (file.mimeType === "application/pdf") {
-      window.open(
-        `http://localhost:3600/api/v1/v1${file.path}`,
-        "_blank"
-      );
-      return;
+      window.open(`http://localhost:3600/api/v1/v1${file.path}`, "_blank");
     } else {
       onDownload(file.id, file.name);
     }
   };
 
   const handleDelete = (fileId: string) => {
-    // Llama a la función de eliminación
     onDelete(fileId, "archivo");
-
-    // Mostrar notificación después de eliminar el archivo
     toast.success("Archivo eliminado con éxito!", {
       position: "bottom-right",
       autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
       theme: "colored",
       transition: Bounce,
     });
   };
 
   const handleRename = (fileId: string, newName: string) => {
-    //LLama la funcion de renombrar archivo
     renameItem(fileId, newName, "archivo");
-    //Mostrar notificación después de renombrar el archivo
     toast.success("Archivo renombrado con éxito!", {
       position: "bottom-right",
       autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
       theme: "colored",
       transition: Bounce,
     });
@@ -96,10 +76,21 @@ const FileList: React.FC<FileListProps> = ({
       {files.map((file) => (
         <div
           key={file.id}
-          className="relative flex flex-col items-center p-4 bg-gray-200 rounded-md cursor-pointer dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600"
+          className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer group dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300"
           title={`${file.name} - ${file.size / 1024} KB`}
         >
-          {/* Contenedor para el icono y el nombre del archivo */}
+          {/* Menú de opciones */}
+          <div
+            className="absolute top-2 right-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ItemManu
+              onDelete={() => handleDelete(file.id)}
+              renameItem={(newName: string) => handleRename(file.id, newName)}
+            />
+          </div>
+
+          {/* Icono del archivo */}
           <div
             onClick={() => handleFileOpen(file)}
             className="flex flex-col items-center"
@@ -109,22 +100,20 @@ const FileList: React.FC<FileListProps> = ({
               alt="file-icon"
               className="w-16 h-16 mb-2"
             />
-
-            <p className="w-full text-sm font-medium text-center text-gray-700 truncate dark:text-gray-300">
-              {file.name}
-            </p>
           </div>
 
-          {/* Menú en la esquina superior derecha */}
-          <div
-            className="absolute top-0 right-0 mt-2 mr-2"
-            onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra el archivo
+          {/* Nombre del archivo */}
+          <p
+            className="w-full text-sm font-medium text-center truncate dark:text-gray-300"
+            style={{
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+            }}
+            title={file.name} // Descripción completa en el title
           >
-            <ItemManu
-              onDelete={() => handleDelete(file.id)}
-              renameItem={(newName: string) => handleRename(file.id, newName)}
-            />
-          </div>
+            {file.name}
+          </p>
         </div>
       ))}
     </div>

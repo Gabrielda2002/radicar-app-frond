@@ -7,7 +7,15 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import cookieX from "/assets/cookie-X.svg";
 import { useFetchMonth } from "../../hooks/useFetchUsers";
 import { IMonthDataRadicacion } from "../../models/IMonthDataRadicacion";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
@@ -67,65 +75,84 @@ const Inicio = () => {
           }`}
         >
           <div className="container mx-auto">
+            {/* Contenido */}
+            <div className="p-4 mb-8 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
+              <div>
+                <div>
+                  <h1 className="p-2 text-5xl font-bold border-black rounded-lg dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
+                    Bienvenidos a Nordvital IPS
+                  </h1>
+                </div>
+                <p className="p-2 text-lg font-light text-gray-700 dark:text-gray-300">
+                  Nuestra misión es brindar servicios de salud de alta calidad,
+                  asegurando el bienestar de nuestros pacientes con tecnología
+                  avanzada y un equipo humano altamente capacitado.
+                </p>
+              </div>
+            </div>
             {/* Sección de bienvenida */}
-            <div className="flex flex-col items-center w-full pb-10 mb-10 text-center border-2 border-black rounded-lg dark:border-color bg-gray-50 dark:bg-gray-700">
-              <h1 className="px-2 mt-10 mb-6 text-5xl font-extrabold border-2 border-black rounded-lg dark:border-color box-decoration-clone bg-gradient-to-r from-color to-color2 title-font dark:text-gray-200 text-gray-50">
-                Bienvenidos a Nordvital IPS
-              </h1>
-              <p className="mb-8 text-lg font-medium text-gray-700 dark:text-gray-300">
-                Nuestra misión es brindar servicios de salud de alta calidad,
-                asegurando el bienestar de nuestros pacientes con tecnología
-                avanzada y un equipo humano altamente capacitado.
-              </p>
-
-              <BarChart
-                width={600}
-                height={300}
-                data={formatedData}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="mes" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="cantidad" fill="#8884d8" />
-              </BarChart>
-
-              {/* Alerta de contraseña */}
-              {showAlert && (
-                <section
-                  className={`absolute z-50 flex items-center justify-between max-w-4xl p-4 mx-auto border border-gray-200 shadow-md bg-amber-500 dark:bg-gray-900 left-12 bottom-16 dark:shadow-gray-900 shadow-gray-100 md:gap-x-4 dark:border-gray-700 rounded-2xl transition-opacity duration-300 ${
-                    alertFadeOut ? "opacity-0" : "opacity-100"
-                  }`}
-                >
-                  <p className="text-sm text-gray-50 dark:text-gray-300">
-                    Recuerde actualizar su contraseña cada 3 meses para mantener
-                    la seguridad de su cuenta.
-                  </p>
-                  <button
-                    className="flex items-center justify-center text-gray-700 transition-colors duration-300 rounded-full shrink-0 dark:text-gray-200 dark:hover:bg-red-500 w-7 h-7 focus:outline-none hover:bg-gray-100"
-                    onClick={handleCloseAlert}
+            <div className="flex flex-col w-full pb-10 mb-10 border-2 rounded-lg shadow-md dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
+              <div className="mb-5">
+                <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
+                  Estadísticas:
+                </h2>
+                <div className="grid grid-cols-2 gap-2">
+                  <BarChart
+                    width={600}
+                    height={300}
+                    data={formatedData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
                   >
-                    <img src={cookieX} alt="" className="w-5 h-5 dark:invert" />
-                  </button>
-                </section>
-              )}
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="mes" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="cantidad" fill="#8884d8" />
+                  </BarChart>
+                </div>
+              </div>
 
-              {/* Calendario de actividades */}
-              <h1 className="pb-6 font-extrabold text-center text-7xl dark:text-white">
-                Calendario de Actividades
-              </h1>
-              <Suspense fallback={<LoadingSpinner />}>
-                <Calendario />
-              </Suspense>
+              <div className="px-12">
+                <hr className="border-gray-600 dark:border-color" />
+              </div>
+
+              <div className="mt-5">
+                {/* Calendario de actividades */}
+                <h1 className="pl-10 text-5xl font-bold dark:text-white">
+                  Calendario de Actividades:
+                </h1>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Calendario />
+                </Suspense>
+              </div>
             </div>
           </div>
+
+          {/* Alerta de contraseña */}
+          {showAlert && (
+            <section
+              className={`absolute z-50 flex items-center justify-between max-w-4xl p-4 mx-auto border border-gray-200 shadow-md bg-amber-500 dark:bg-gray-900 left-12 bottom-16 dark:shadow-gray-900 shadow-gray-100 md:gap-x-4 dark:border-gray-700 rounded-2xl transition-opacity duration-300 ${
+                alertFadeOut ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              <p className="text-sm text-gray-50 dark:text-gray-300">
+                Recuerde actualizar su contraseña cada 3 meses para mantener la
+                seguridad de su cuenta.
+              </p>
+              <button
+                className="flex items-center justify-center text-gray-700 transition-colors duration-300 rounded-full shrink-0 dark:text-gray-200 dark:hover:bg-red-500 w-7 h-7 focus:outline-none hover:bg-gray-100"
+                onClick={handleCloseAlert}
+              >
+                <img src={cookieX} alt="" className="w-5 h-5 dark:invert" />
+              </button>
+            </section>
+          )}
         </section>
       )}
     </>

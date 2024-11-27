@@ -39,15 +39,15 @@ const Navbar: React.FC = React.memo(() => {
   }, [userProfile]);
 
   //*Using callback to save components and void unnecesary re-renders
-  const handleToggleSidebar = useCallback(()=> {
+  const handleToggleSidebar = useCallback(() => {
     toggleSideBar();
   }, [toggleSideBar]);
 
-  const handleToggleTheme = useCallback(()=> {
+  const handleToggleTheme = useCallback(() => {
     toggleTheme();
   }, [toggleTheme]);
 
-  const handleLogout = useCallback(()=> {
+  const handleLogout = useCallback(() => {
     logout();
   }, [logout]);
 
@@ -93,15 +93,13 @@ const Navbar: React.FC = React.memo(() => {
   const toUpperCamelCase = (str: string) => {
     return str
       .toLowerCase()
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   const user = localStorage.getItem("user");
-  const nombreUsuario = user
-    ? toUpperCamelCase(JSON.parse(user).nombre)
-    : "";
+  const nombreUsuario = user ? toUpperCamelCase(JSON.parse(user).nombre) : "";
 
   return (
     <header
@@ -109,8 +107,8 @@ const Navbar: React.FC = React.memo(() => {
         theme === "dark" ? "bg-gray-800 dark-mode" : "bg-white light-mode"
       }`}
     >
-      <div className="flex flex-wrap p-5 mx-auto border-b-2 border-black dark:border-white">
-        <nav className="flex flex-wrap items-center text-base">
+      <div className="flex p-5 mx-auto border-b-2 border-black dark:border-white">
+        <nav className="flex items-center text-base">
           <button
             title="Abrir/Cerrar Sidebar"
             onClick={handleToggleSidebar}
@@ -143,116 +141,118 @@ const Navbar: React.FC = React.memo(() => {
           </NavLink>
         </nav>
 
-        <div className="flex items-center mr-2">
-          <h2 className="p-2 text-base font-medium text-black dark:text-white">
-            Hola, {nombreUsuario} ✌️
-          </h2>
-        </div>
-        {/* Botón de Modo Oscuro con Tooltip */}
-        <button
-          onClick={handleToggleTheme}
-          title="Modo Oscuro / Claro"
-          className="relative p-2 ml-auto mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
-        >
-          {theme === "light" ? (
-            <img
-              src={moon}
-              alt="Moon Icon"
-              className="w-6 h-6 group-hover:invert"
-            />
-          ) : (
-            <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
-          )}
-        </button>
-
-        {/* Menú de Soporte con Enlaces */}
-        <Menu as="div" className="relative" title="Soportes">
-          <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
-            Soportes
-          </MenuButton>
-
-          <Menu.Items
-            className={`absolute right-0 mt-2 z-50 w-60 origin-top-right bg-white dark:bg-gray-500 rounded-md shadow-lg ring-1 ring-black ring-opacity-5   ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}
+        <div className="flex justify-end w-full">
+          <div className="flex items-center mr-2">
+            <h2 className="p-2 text-base font-medium text-black dark:text-white">
+              Hola, {nombreUsuario} ✌️
+            </h2>
+          </div>
+          {/* Botón de Modo Oscuro con Tooltip */}
+          <button
+            onClick={handleToggleTheme}
+            title="Modo Oscuro / Claro"
+            className="relative p-2 mr-4 text-gray-800 duration-300 ease-in-out bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 focus:outline-none group hover:translate-y-0"
           >
-            <div className="flex-grow w-full py-2 mt-1">
-              {supportLinks.map((link) => (
-                <Menu.Item key={link.name}>
-                  {({ active }) => (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${
-                        active
-                          ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600" //hover-dark
-                          : "text-gray-700 dark:text-gray-200" //hover-claro
-                      } group flex  items-center w-full px-2 py-2 text-sm `}
+            {theme === "light" ? (
+              <img
+                src={moon}
+                alt="Moon Icon"
+                className="w-6 h-6 group-hover:invert"
+              />
+            ) : (
+              <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
+            )}
+          </button>
+
+          {/* Menú de Soporte con Enlaces */}
+          <Menu as="div" className="relative" title="Soportes">
+            <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
+              Soportes
+            </MenuButton>
+
+            <Menu.Items
+              className={`absolute right-0 origin-top-right mt-2 z-50 w-60 bg-white dark:bg-gray-500 rounded-md shadow-lg ring-1 ring-black ring-opacity-5   ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              }`}
+            >
+              <div className="flex-grow w-full py-2 mt-1">
+                {supportLinks.map((link) => (
+                  <Menu.Item key={link.name}>
+                    {({ active }) => (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${
+                          active
+                            ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600" //hover-dark
+                            : "text-gray-700 dark:text-gray-200" //hover-claro
+                        } group flex  items-center w-full px-2 py-2 text-sm `}
+                      >
+                        {link.name}
+                      </a>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+            </Menu.Items>
+          </Menu>
+
+          <Menu
+            as="div"
+            className="relative border-2 rounded-lg dark:border-gray-800"
+            title="Perfil"
+          >
+            <MenuButton className="flex items-center px-3 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
+              <img
+                alt="Profile"
+                src={imageUrl || defaultUserPicture}
+                className="object-cover w-8 h-8 border-2 rounded-full dark:border-white"
+              />
+              <img
+                src={userLogo}
+                alt="User Logo"
+                className="w-8 h-8 text-white group-hover:invert dark:invert"
+              />
+            </MenuButton>
+            <Menu.Items
+              transition
+              className={`absolute right-0 z-50 w-56 py-2 rounded-md top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5  ${
+                theme === "dark" ? "bg-gray-500" : "bg-white"
+              }`}
+            >
+              {userNavigation.map((item) => (
+                <Menu.Item key={item.name}>
+                  {item.action ? (
+                    <button
+                      onClick={() => {
+                        item.action();
+                      }}
+                      className={`block  py-2  ps-2 text-sm w-full text-left ${
+                        theme === "dark"
+                          ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
+                          : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
+                      }  transition-colors duration-300`}
                     >
-                      {link.name}
-                    </a>
+                      {item.name}
+                    </button>
+                  ) : (
+                    <NavLink
+                      to={item.href}
+                      className={`block  py-2 text-sm ps-2 ${
+                        theme === "dark"
+                          ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
+                          : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
+                      } transition-colors duration-300`}
+                    >
+                      {item.name}
+                    </NavLink>
                   )}
                 </Menu.Item>
               ))}
-            </div>
-          </Menu.Items>
-        </Menu>
-
-        <Menu
-          as="div"
-          className="relative border-2 rounded-lg dark:border-gray-800"
-          title="Perfil"
-        >
-          <MenuButton className="flex items-center px-3 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
-            <img
-              alt="Profile"
-              src={imageUrl || defaultUserPicture}
-              className="object-cover w-8 h-8 border-2 rounded-full dark:border-white"
-            />
-            <img
-              src={userLogo}
-              alt="User Logo"
-              className="w-8 h-8 text-white group-hover:invert dark:invert"
-            />
-          </MenuButton>
-          <Menu.Items
-            transition
-            className={`absolute right-0 z-50 w-56 py-2 rounded-md top-16 lg:top-12 shadow-lg ring-1 ring-black ring-opacity-5  ${
-              theme === "dark" ? "bg-gray-500" : "bg-white"
-            }`}
-          >
-            {userNavigation.map((item) => (
-              <Menu.Item key={item.name}>
-                {item.action ? (
-                  <button
-                    onClick={() => {
-                      item.action();
-                    }}
-                    className={`block  py-2  ps-2 text-sm w-full text-left ${
-                      theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
-                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
-                    }  transition-colors duration-300`}
-                  >
-                    {item.name}
-                  </button>
-                ) : (
-                  <NavLink
-                    to={item.href}
-                    className={`block  py-2 text-sm ps-2 ${
-                      theme === "dark"
-                        ? "text-gray-200 hover:bg-gray-600 hover:text-white" //hover-dark
-                        : "text-gray-700 hover:bg-blue-100 hover:text-gray-900" //hover-claro
-                    } transition-colors duration-300`}
-                  >
-                    {item.name}
-                  </NavLink>
-                )}
-              </Menu.Item>
-            ))}
-          </Menu.Items>
-        </Menu>
+            </Menu.Items>
+          </Menu>
+        </div>
       </div>
     </header>
   );

@@ -99,15 +99,15 @@ const TablaAuditoria = () => {
           Buscar registro Auditoría :
         </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
-          <div className="flex items-center space-x-2 container-filter">
+          <div className="flex items-center w-full space-x-2 container-filter">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <div className="flex items-center space-x-[10px] pt-1-">
+          <div className="flex items-center space-x-[10px] ml-4">
             <select
               name=""
               id=""
