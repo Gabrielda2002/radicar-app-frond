@@ -3,7 +3,7 @@ import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import LoadingSpinner from "../LoadingSpinner";
-import { IRadicados } from "../../models/IRadicados.ts";
+import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
 import { useFetchDocumentoRadicado } from "../../hooks/useFetchUsers";
 
 //? Using lazy load functions for modals
@@ -37,14 +37,14 @@ const TablaRadicacion = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
   const [selectedRadicacion, setSelectedRadicacion] =
-    useState<IRadicados | null>(null);
+    useState<CupsRadicadosRelation | IRadicados | null>(null);
 
   const handleShowData = useCallback((radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
   }, []);
 
-  const handleShowGestionAuxiliar = useCallback((radicacion: IRadicados) => {
+  const handleShowGestionAuxiliar = useCallback((radicacion: CupsRadicadosRelation) => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
   }, []);
@@ -252,7 +252,7 @@ const TablaRadicacion = () => {
                                     <td className="p-3 border-b dark:border-gray-700">
                                       <button
                                         onClick={() =>
-                                          handleShowGestionAuxiliar(radicacion)
+                                          handleShowGestionAuxiliar(cup)
                                         }
                                       >
                                         <img
@@ -337,13 +337,13 @@ const TablaRadicacion = () => {
               <ModalMostrarDatos
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                radicacion={selectedRadicacion}
+                radicacion={selectedRadicacion as IRadicados | null} // Se asegura que sea IRadicados
               />
 
               <ModalGestionAuxiliar
                 isOpen={isOpenGestionAuxiliar}
                 onClose={() => setIsOpenGestionAuxiliar(false)}
-                radicacion={selectedRadicacion}
+                radicacion={selectedRadicacion as CupsRadicadosRelation | null} // Se asegura que sea CupsRadicadosRelation
                 cirugias={null}
               />
             </Suspense>

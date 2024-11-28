@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import {
-  IRadicados,
+  CupsRadicadosRelation,
   SeguimientoAuxiliarRelation,
 } from "../../../models/IRadicados";
 import ModalGestionServicio from "./ModalGestionServicio";
@@ -14,7 +14,7 @@ import { format } from "date-fns";
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
   onClose: () => void;
-  radicacion: IRadicados | null;
+  radicacion: CupsRadicadosRelation | null;
   cirugias: programacion | null;
 }
 
@@ -55,9 +55,9 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   const ultimoEstadoCirugia = useMemo(
     () =>
       radicacion &&
-      radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+      radicacion.seguimientoAuxiliarRelation
         ? getUltimoEstado(
-            radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+            radicacion.seguimientoAuxiliarRelation
           )
         : null,
     []
@@ -142,7 +142,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
             {/* Segunda tabla: Radicaciones */}
             {radicacion &&
-            radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation
+            radicacion.seguimientoAuxiliarRelation
               .length > 0 ? (
               <div className="flex justify-center w-full p-2">
                 <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
@@ -155,7 +155,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                     </tr>
                   </thead>
                   <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
-                    {radicacion.cupsRadicadosRelation[0].seguimientoAuxiliarRelation.map(
+                    {radicacion.seguimientoAuxiliarRelation.map(
                       (seguimiento) => (
                         <tr key={seguimiento.id}>
                           <td className="">{seguimiento.codeCups}</td>
@@ -211,7 +211,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
       {openServicio && (
         <ModalGestionServicio
           onClose={() => setOpenServicio(false)}
-          idRadicado={radicacion?.cupsRadicadosRelation[0].id || null}
+          idRadicado={radicacion?.id || null}
           idCirugias={cirugias?.id || null}
         />
       )}
