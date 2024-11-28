@@ -19,6 +19,10 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  const user = localStorage.getItem("user");
+
+  const idUsuario = user ? JSON.parse(user).id : "";
+
   // Esquema de validación con Yup
   const validationSchema = useMemo(
     () =>
@@ -53,11 +57,12 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
         let endPoint: string = "";
 
         if (idCirugias !== null) {
-          formData.append("surgeryId", idCirugias.toString());
+          formData.append("surgeryId", idCirugias.toString());  
           endPoint = "seguimiento-auxiliar-cirugia";
         } else if (idRadicado !== null) {
           formData.append("idRadicacion", idRadicado.toString());
-          endPoint = "seguimientos-auxiliares";
+          formData.append("userId", idUsuario);
+          endPoint = "seguimientos-auxiliares"; 
         }
 
         const response = await submitGestionAuxiliar(formData, endPoint);
