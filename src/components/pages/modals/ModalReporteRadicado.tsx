@@ -25,6 +25,9 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
   const [cupsCode, setCupsCode] = useState("");
   const [estadoCups, setEstadoCups] = useState("");
 
+  // Estado para manejar el tipo de reporte
+  const [reportType, setReportType] = useState("");
+
   const { downloadReport, error } = useDownloadReport();
   const { showAnimation, closing } = useAnimation(isOpen, onClose); // Hook con estado de cierre
 
@@ -35,7 +38,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
 
   const handleDownloadReport = async () => {
     try {
-      const endPoint: string = "report-excel-filtro";
+      const endPoint: string = reportType == "1" ? "report-excel-filtro" : "report-excel-gestion-auxiliar";
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -101,8 +104,17 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
             <div className="px-4">
               <div className="flex items-center mt-4 mb-4">
                 <label className="block text-xl font-medium text-blue-500 dark:text-white">
-                  Opciones de Reporte
+                  Opciones de Reporte:
                 </label>
+                <select 
+                  name="reportType"
+                  onChange={(e) => setReportType(e.target.value)}
+                  className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:ring-gray-500 dark:focus:bg-slate-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="">Seleccione</option>
+                  <option value="1">Radicados</option>
+                  <option value="2">Gestion Servicios Radicados</option>
+                </select>
               </div>
               {/* rango fecchas radicado */}
               <div className="mb-8">
@@ -112,7 +124,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-2 text-gray-700 dark:text-gray-300">
-                      Inicio
+                      Inicio:
                     </label>
                     <input
                       type="date"
@@ -123,7 +135,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   </div>
                   <div>
                     <label className="block mb-2 text-gray-700 dark:text-gray-300">
-                      Fin
+                      Fin:
                     </label>
                     <input
                       type="date"
@@ -135,6 +147,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                 </div>
               </div>
               {/* Código CUPS */}
+              {reportType == "1" && (
               <div className="mb-6">
                 <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white">
                   Código CUPS:
@@ -149,7 +162,9 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:ring-gray-500 dark:focus:bg-slate-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>
+              )}
               {/* estado de cups radicados */}
+              {reportType == "1" && (
               <div className="mb-6">
                   <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white">
                     Estado de los servicios radicados:
@@ -172,6 +187,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                     <p className="mt-2 text-red-500">{errorEstados}</p>
                   )}
               </div>
+              )}
             </div>
 
             {/* container-footer */}
