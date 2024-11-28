@@ -1,9 +1,12 @@
 // * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import Pagination from "../../Pagination";
 import { IItems } from "../../../models/IItems";
+import useSearch from "../../../hooks/useSearch";
 import LoadingSpinner from "../../LoadingSpinner";
 import ModalItemsForm from "../modals/ModalItemsForm";
+import usePagination from "../../../hooks/usePagination";
 import ModalItemsDetails from "../modals/ModalItemsDetails";
 import ModalAccesorioItem from "../modals/ModalAccesorioItem";
 import { IItemsNetworking } from "../../../models/IItemsNetworking";
@@ -28,13 +31,45 @@ const ItemsList: React.FC<ItemsListProps> = ({
   tipoItem,
   idSede,
 }) => {
+  // * Estados para almacenar datos
+
   const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isGridView, setIsGridView] = useState(true); // * Estado para alternar vistas (Lista o de cuadrícula)
+  const ITEMS_PER_PAGE = 6; // * Asignación de numero fijo para mejor compresion de datos y equipos
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  // * Efecto para almacenar una cookie para el estado de la vista
+  // * Ajuste de lógica para la búsqueda
+  // * Implementación de la lógica de búsqueda usando un array de parámetros
+  // * El primer parámetro es un hook personalizado para filtrar listas, con un fallback en caso de datos vacíos
+  // * El segundo parámetro es un arreglo de strings que define las propiedades a filtrar de los objetos en 'invetario' (en este caso, 'name', 'brand' y 'model')
+  // ? Estas propiedades están pendientes de confirmación para asegurar que las asignaciones sean correctas
+
+  const { query, setQuery, filteredData } = useSearch<
+    IItems | IItemsNetworking
+  >(
+    invetario || [],
+    tipoItem === "equipos"
+      ? ["name", "brand", "model"]
+      : ["name", "brand", "model"]
+  );
+
+  // * Lógica de paginación para gestionar la navegación entre páginas
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
+
+  // * Función para cambiar el número de elementos por página
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+
+  // * Implementación de cookie para almacenar el estado de la vista (grid/lista)
+  // * Efecto para leer y aplicar la vista guardada de la cookie
 
   useEffect(() => {
     const savedView = Cookies.get("itemsViewMode");
@@ -43,7 +78,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
     }
   }, []);
 
-  // * Efecto para guardar el estado de la vista
+  // * Subcomponente para alternar entre vista en "grid" o "lista", y guardar la preferencia en cookie
 
   const toggleViewMode = () => {
     const newViewMode = !isGridView ? "grid" : "list";
@@ -51,7 +86,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
     setIsGridView(!isGridView);
   };
 
-  // * Efecto para determinar el cierre del modal o apertura del mismo
+  // * Efecto para manejar el cierre o apertura del modal después de un retraso
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -60,16 +95,18 @@ const ItemsList: React.FC<ItemsListProps> = ({
     return () => clearTimeout(timeout);
   }, [tipoItem]);
 
+  // * Función para establecer el ítem seleccionado al hacer clic
   const handleViewDetails = (item: IItems | IItemsNetworking) => {
     setSelected(item);
   };
 
+  // * Función para cerrar el modal y resetear el ítem seleccionado
   const closeModal = () => {
     setSelected(null);
   };
 
-  // * Funcion para mostrar el tipo de icon (en modo de lista)
-  // * Iconos que, dependediendo del Item de Inventario, se muestre el icono del Dispositivo
+  // * Función para determinar el ícono a mostrar basado en el tipo de ítem
+  // * Muestra el ícono correspondiente según el tipo de inventario (equipos o dispositivos)
 
   const getIcon = () => {
     if (tipoItem === "equipos") {
@@ -106,18 +143,19 @@ const ItemsList: React.FC<ItemsListProps> = ({
               type="text"
               className="w-full p-2 border-2 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-white"
               placeholder="Busqueda de Dispositivo..."
-              // value={query}
-              // onChange={(e) =>setQuery(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
             <select
-              name=""
+              name="itemsPerPage"
               id=""
+              onChange={handleItemsPerPageChange}
               className="border-2 ml-2 border-stone-300 h-[45px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Paginas</option>
-              <option value="">10 items</option>
-              <option value="">20 items</option>
-              <option value="">30 items</option>
+              <option value="10">10 items</option>
+              <option value="20">20 items</option>
+              <option value="30">30 items</option>
             </select>
             <button
               className="flex items-center px-4 py-1 ml-2 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
@@ -137,15 +175,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
             </button>
           </div>
 
-          {/* Renderizado Condicional */}
-          {/* {filteredData.length > 0 ? ()} */}
-          {invetario && invetario.length > 0 ? (
+          {filteredData.length > 0 && invetario && invetario.length > 0 ? (
             isGridView ? (
               <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
-                {invetario.map((item) => (
+                {currentData().map((item) => (
                   <div
                     key={item.id}
-                    className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700 hover:-translate-y-1"
+                    className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                   >
                     <div className="flex items-center justify-between mb-14">
                       <h3 className="mb-2 text-2xl font-semibold dark:text-white">
@@ -188,10 +224,10 @@ const ItemsList: React.FC<ItemsListProps> = ({
               </div>
             ) : (
               <div className="flex flex-col gap-4 transition-all duration-500 ease-in-out">
-                {invetario.map((item) => (
+                {currentData().map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-sm dark:border-gray-700 dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-600 hover:-translate-y-2"
+                    className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-sm dark:border-gray-700 dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-600"
                   >
                     <div>
                       <div className="flex items-center">
@@ -238,6 +274,12 @@ const ItemsList: React.FC<ItemsListProps> = ({
               No hay ningún artículo incluido o creado
             </p>
           )}
+          <div>‎</div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={paginate}
+          />
           {selected && (
             <ModalItemsDetails item={selected} onClose={closeModal} />
           )}

@@ -145,8 +145,7 @@ const TablaRadicacion = () => {
                     <th>Paciente</th>
                     <th>Fecha Auditoría</th>
                     <th>Gestión del servicio</th>
-                    <th>Soporte</th>
-                    <th>Mostrar</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
 
@@ -156,103 +155,117 @@ const TablaRadicacion = () => {
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                       key={radicacion.id}
                     >
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {formatDate(radicacion.createdAt)}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {radicacion.id}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {radicacion.patientRelation.documentNumber}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {radicacion.patientRelation.convenioRelation.name}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {radicacion.patientRelation.documentRelation.name}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {radicacion.patientRelation.name}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="border-b dark:border-gray-700">
                         {formatDate(radicacion.auditDate)}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.cupsRadicadosRelation.length > 0 && (
-                          <div className="overflow-x-auto">
-                            <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
-                              <thead>
-                                <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
-                                  <th>CUPS</th>
-                                  <th>Descripción</th>
-                                  <th>Auditoria</th>
-                                  <th>Gestion</th>
-                                  <th>Auxiliar</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {radicacion.cupsRadicadosRelation.map((cup) => (
-                                  <tr
-                                    key={cup.id}
-                                    className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                  >
-                                    <td className="p-3 border-b dark:border-gray-700">
-                                      {cup.code}
-                                    </td>
-                                    <td className="px-4 py-2 border-b dark:border-gray-700">
-                                      <span
-                                        className="block max-w-[200px] truncate cursor-pointer"
-                                        title="Click para ver descripción completa"
-                                        onClick={() =>
-                                          handleShowCookieAlert(
-                                            cup.DescriptionCode
-                                          )
-                                        }
+                      <td className="border-b dark:border-gray-700">
+                        <div className="">
+                          {radicacion.cupsRadicadosRelation.length > 0 ? (
+                            <div
+                              className={` ${
+                                radicacion.cupsRadicadosRelation.length > 0
+                                  ? "max-h-[200px] overflow-y-auto"
+                                  : ""
+                              }`}
+                            >
+                              <table className="w-full text-left bg-gray-100 border border-separate rounded-md dark:bg-gray-800 dark:border-gray-900">
+                                <thead className="text-sm font-medium text-center text-gray-900 bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                                  <tr>
+                                    <th className="border-b dark:border-gray-700">
+                                      CUPS
+                                    </th>
+                                    <th className="border-b dark:border-gray-700">
+                                      Descripción
+                                    </th>
+                                    <th className="border-b dark:border-gray-700">
+                                      Auditoría
+                                    </th>
+                                    <th className="border-b dark:border-gray-700">
+                                      Gestión
+                                    </th>
+                                    <th className="border-b dark:border-gray-700">
+                                      Auxiliar
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {radicacion.cupsRadicadosRelation.map(
+                                    (cup, index) => (
+                                      <tr
+                                        key={cup.id}
+                                        className={`transition text-center duration-200 ease-in-out ${
+                                          index % 2 === 0
+                                            ? "bg-gray-50 dark:bg-gray-700"
+                                            : "bg-gray-200 dark:bg-gray-700"
+                                        } hover:bg-gray-300 dark:hover:bg-gray-500`}
                                       >
-                                        {cup.DescriptionCode}
-                                      </span>
-                                    </td>
-
-                                    <td
-                                      className="p-3 border-b dark:border-gray-700"
-                                      style={{
-                                        backgroundColor:
-                                          cup.statusRelation.name &&
-                                          cup.statusRelation.name ===
-                                            "AUTORIZADO"
-                                            ? "green"
-                                            : "transparent",
-                                      }}
-                                    >
-                                      {cup.statusRelation.name}
-                                    </td>
-                                    {/*  Se agrega el estado del seguimiento auxiliar  */}
-                                    {/*  y dependiendo del estado se cambia el color */}
-                                    <td
-                                      className="p-3 border-b dark:border-gray-700"
-                                      style={{
-                                        backgroundColor:
-                                          cup.seguimientoAuxiliarRelation
+                                        <td className="border-b dark:border-gray-700">
+                                          {cup.code}
+                                        </td>
+                                        <td className="border-b dark:border-gray-700">
+                                          <span
+                                            className="block max-w-[290px] max-h-[] truncate cursor-pointer"
+                                            title={cup.DescriptionCode}
+                                            onClick={() =>
+                                              handleShowCookieAlert(
+                                                cup.DescriptionCode
+                                              )
+                                            }
+                                          >
+                                            {cup.DescriptionCode}
+                                          </span>
+                                        </td>
+                                        <td
+                                          className="border-b dark:border-gray-700"
+                                          style={{
+                                            backgroundColor:
+                                              cup.statusRelation.name ===
+                                              "AUTORIZADO"
+                                                ? "rgba(34, 197, 94, 0.2)" // Verde suave
+                                                : "transparent",
+                                          }}
+                                        >
+                                          {cup.statusRelation.name}
+                                        </td>
+                                        <td
+                                          className="border-b dark:border-gray-700"
+                                          style={{
+                                            backgroundColor:
+                                              cup.seguimientoAuxiliarRelation
+                                                .length > 0 &&
+                                              cup.seguimientoAuxiliarRelation[0]
+                                                .estadoSeguimientoRelation
+                                                .name === "Asignado"
+                                                ? "rgba(34, 197, 94, 0.2)" // Verde suave
+                                                : "transparent",
+                                          }}
+                                        >
+                                          {cup.seguimientoAuxiliarRelation
                                             .length > 0 &&
                                           cup.seguimientoAuxiliarRelation[0]
-                                            .estadoSeguimientoRelation.name ===
-                                            "Asignado"
-                                            ? "green"
-                                            : "transparent",
-                                      }}
-                                    >
-                                      {cup.seguimientoAuxiliarRelation.length >
-                                        0 &&
-                                      cup.seguimientoAuxiliarRelation[0]
-                                        .estadoSeguimientoRelation.name
-                                        ? cup.seguimientoAuxiliarRelation[0]
                                             .estadoSeguimientoRelation.name
                                         : "N/A"}
                                     </td>
-                                    <td className="p-3 border-b dark:border-gray-700">
                                       <button
                                         onClick={() =>
-                                          handleShowGestionAuxiliar(cup)
                                         }
                                       >
                                         <img
@@ -268,23 +281,40 @@ const TablaRadicacion = () => {
                             </table>
                           </div>
                         )}
+                                    <td className="p-3 border-b dark:border-gray-700">
+                                          handleShowGestionAuxiliar(cup)
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        <button
-                          onClick={() =>
-                            radicacion.soportesRelation &&
-                            handleOpenSoporte(
-                              radicacion.soportesRelation.nameSaved
-                            )
-                          }
-                        >
-                          <img className="dark:invert" src={soporte} alt="" />
-                        </button>
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        <button onClick={() => handleShowData(radicacion)}>
-                          <img className="dark:invert" src={mostrar} alt="" />
-                        </button>
+
+                      <td className="border-b dark:border-gray-700">
+                        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                          <button
+                            title="Ver Soporte"
+                            onClick={() =>
+                              radicacion.soportesRelation &&
+                              handleOpenSoporte(
+                                radicacion.soportesRelation.nameSaved
+                              )
+                            }
+                            className="p-1 duration-300 rounded-md dark:bg-gray-900 dark:hover:bg-gray-600"
+                          >
+                            <img
+                              className="dark:invert"
+                              src={soporte}
+                              alt="Soporte"
+                            />
+                          </button>
+                          <button
+                            title="Ver Radicación"
+                            onClick={() => handleShowData(radicacion)}
+                            className="p-1 duration-300 rounded-md dark:bg-gray-900 dark:hover:bg-gray-600"
+                          >
+                            <img
+                              className="dark:invert"
+                              src={mostrar}
+                              alt="Radicación"
+                            />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
