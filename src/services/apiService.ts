@@ -20,7 +20,7 @@ import { IPacientes } from "../models/IPacientes";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
-import { IMonthDataRadicacion } from "../models/IMonthDataRadicacion";
+import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -254,8 +254,8 @@ export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
     return diagnosticos;
 }
 
-export const fetchMonthRadicacionEp = async (): Promise<IMonthDataRadicacion[]> => {
-    const response = await api.get('/radicacion-month');
+export const fetchMonthRadicacionEp = async (): Promise<IEstadisticaCups[]> => {
+    const response = await api.get('/estadistica-cups-estado');
     
     return response.data;
 }
