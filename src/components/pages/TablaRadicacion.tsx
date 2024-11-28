@@ -2,12 +2,9 @@
 import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import Pagination from "../Pagination";
-import useSearch from "../../hooks/useSearch";
 import LoadingSpinner from "../LoadingSpinner";
-import usePagination from "../../hooks/usePagination";
-import { IRadicados } from "../../models/IRadicados.ts";
-import { useFetchUsers } from "../../hooks/useFetchUsers";
+import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
+import { useFetchDocumentoRadicado } from "../../hooks/useFetchUsers";
 
 //? Using lazy load functions for modals
 const ModalGestionAuxiliar = lazy(
@@ -26,49 +23,28 @@ import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
 
-const ITEMS_PER_PAGE = 8;
+// const ITEMS_PER_PAGE = 8;
 
 const TablaRadicacion = () => {
-  //  se traen los datos de la api
-  const { data, loading, error } = useFetchUsers();
 
-  //  se inicializan los estados para el paginado y la busqueda
-  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
+  // estado para el numero de documento del paciente
+  const [documento, setDocumento] = useState<string>("");
 
-  const { query, setQuery, filteredData } = useSearch<IRadicados>(data, [
-    "createdAt",
-    "id",
-    "auditDate",
-    "patientRelation.documentNumber",
-    "patientRelation.name",
-  ]);
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination(filteredData, ITEMS_PER_PAGE);
+  // hook para buscar radicado por numero documento paciente
+  const { radicados, loading, errorRadicados, getData } = useFetchDocumentoRadicado();
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
   const [selectedRadicacion, setSelectedRadicacion] =
-    useState<IRadicados | null>(null);
-
-  const handleItemsPerPageChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
-  };
-
-  // const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === 'Enter') {
-  //     setQuery((e.target as HTMLInputElement).value); // Actualiza el estado de la búsqueda solo al presionar Enter
-  //   }
-  // };
+    useState<CupsRadicadosRelation | IRadicados | null>(null);
 
   const handleShowData = useCallback((radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
   }, []);
 
-  const handleShowGestionAuxiliar = useCallback((radicacion: IRadicados) => {
+  const handleShowGestionAuxiliar = useCallback((radicacion: CupsRadicadosRelation) => {
     setSelectedRadicacion(radicacion);
     setIsOpenGestionAuxiliar(true);
   }, []);
@@ -103,12 +79,6 @@ const TablaRadicacion = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error)
-    return (
-      <h2 className="flex justify-center text-center dark:text-white">
-        {error}
-      </h2>
-    );
 
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
@@ -128,40 +98,39 @@ const TablaRadicacion = () => {
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
         <section className="flex items-end justify-between w-full mb-4">
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col">
             <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar registro Radicación :
+              Buscar radicado :
             </label>
             <input
               type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)} // Escuchar eventos de teclado
-              placeholder="Consultar..."
-              className="w-full h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            />
-          </div>
-          <div className="flex items-end ml-4 space-x-4">
-            <select
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              value={documento}
+              onChange={(e) => setDocumento(e.target.value)} // Escuchar eventos de teclado
+              placeholder="Documento Paciente"
+              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            /> 
+            <button
+              className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
+              onClick={() => getData(documento)}
             >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+              Buscar
+            </button>
+            {errorRadicados && (
+              <h2 className="text-center text-red-500 dark:text-red-400">
+                {errorRadicados}
+              </h2>
+            )}
+          </div>
+          
+
+          <div className="flex items-center space-x-4">
             <Suspense fallback={<LoadingSpinner />}>
               <ModalRadicacion />
             </Suspense>
           </div>
         </section>
 
-        {filteredData.length === 0 ? (
-          <div className="text-center text-red-500 dark:text-red-300">
-            No se encontraron resultados para la busqueda.
-          </div>
-        ) : (
+        {radicados && radicados?.length > 0 && (
           <>
             {/* Contenedor para la tabla con overflow-x-auto */}
             <div className="overflow-x-auto">
@@ -181,7 +150,7 @@ const TablaRadicacion = () => {
                 </thead>
 
                 <tbody className="text-xs text-center dark:text-gray-200">
-                  {currentData().map((radicacion) => (
+                  {radicados?.map((radicacion) => (
                     <tr
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                       key={radicacion.id}
@@ -293,38 +262,27 @@ const TablaRadicacion = () => {
                                             .length > 0 &&
                                           cup.seguimientoAuxiliarRelation[0]
                                             .estadoSeguimientoRelation.name
-                                            ? cup.seguimientoAuxiliarRelation[0]
-                                                .estadoSeguimientoRelation.name
-                                            : "N/A"}
-                                        </td>
-                                        <td className="border-b dark:border-gray-700">
-                                          <button
-                                            onClick={() =>
-                                              handleShowGestionAuxiliar(
-                                                radicacion
-                                              )
-                                            }
-                                            className="px-3 py-1 text-white"
-                                          >
-                                            <img
-                                              className="w-6 h-6 dark:invert"
-                                              src={gestion}
-                                              alt="Gestión"
-                                            />
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          ) : (
-                            <div className="text-sm text-center text-black dark:text-white">
-                              Radicado no valido.
-                            </div>
-                          )}
-                        </div>
+                                        : "N/A"}
+                                    </td>
+                                      <button
+                                        onClick={() =>
+                                        }
+                                      >
+                                        <img
+                                          className="w-8 h-8 dark:invert"
+                                          src={gestion}
+                                          alt=""
+                                        />
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                                    <td className="p-3 border-b dark:border-gray-700">
+                                          handleShowGestionAuxiliar(cup)
                       </td>
 
                       <td className="border-b dark:border-gray-700">
@@ -360,6 +318,7 @@ const TablaRadicacion = () => {
                       </td>
                     </tr>
                   ))}
+                  
                   {showCookieAlert && (
                     <motion.div
                       className="fixed flex items-center justify-center transition-opacity bg-black -inset-5 bg-opacity-10 backdrop-blur-sm"
@@ -408,24 +367,24 @@ const TablaRadicacion = () => {
               <ModalMostrarDatos
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                radicacion={selectedRadicacion}
+                radicacion={selectedRadicacion as IRadicados | null} // Se asegura que sea IRadicados
               />
 
               <ModalGestionAuxiliar
                 isOpen={isOpenGestionAuxiliar}
                 onClose={() => setIsOpenGestionAuxiliar(false)}
-                radicacion={selectedRadicacion}
+                radicacion={selectedRadicacion as CupsRadicadosRelation | null} // Se asegura que sea CupsRadicadosRelation
                 cirugias={null}
               />
             </Suspense>
 
             {/* Controles de la Paginacion */}
-            <div>‎ </div>
+            {/* <div>‎ </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={paginate}
-            />
+            /> */}
           </>
         )}
       </section>
