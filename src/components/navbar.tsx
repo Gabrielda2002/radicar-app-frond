@@ -7,6 +7,7 @@ import { Menu, MenuButton } from "@headlessui/react";
 import { useSidebar } from "../context/sidebarContext";
 import { useTheme } from "../context/blackWhiteContext";
 import { useUserProfile } from "../context/userProfileContext";
+import ModalPausasActivas from "./pages/modals/ModalPausasActivas";
 import { useState, useEffect, useCallback, useMemo } from "react";
 //*Icons
 import sun from "/assets/sun.svg";
@@ -58,6 +59,14 @@ const Navbar: React.FC = React.memo(() => {
     ],
     [handleLogout]
   );
+
+  // // * Componente para dar la logica y abrir el modal para el boton de pausas activas
+  // const [isModalPausasOpen, setIsModalPausasOpen] = useState(false);
+
+  // // * Funcion para el boton de pausas activas
+  // const toggleModal = () => {
+  //   setIsModalPausasOpen(!isModalPausasOpen);
+  // };
 
   // Array de enlaces de soporte
   const supportLinks = useMemo(
@@ -163,7 +172,9 @@ const Navbar: React.FC = React.memo(() => {
               <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
             )}
           </button>
-
+          <div>
+            <ModalPausasActivas />
+          </div>
           {/* Menú de Soporte con Enlaces */}
           <Menu as="div" className="relative" title="Soportes">
             <MenuButton className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
