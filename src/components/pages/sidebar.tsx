@@ -37,6 +37,7 @@ const SideBar: FC = () => {
   const [openAccordions, setOpenAccordions] = useState({
     services: false,
     quality: false,
+    inventary: false, // * se adapta nuevo sistema de inventario
     reports: false,
     tablets: false,
     admin: false,
@@ -70,6 +71,7 @@ const SideBar: FC = () => {
     setOpenAccordions((prev) => {
       const newState = {
         services: false,
+        inventary: false, // * se adapta nuevo sistema de inventario
         quality: false,
         reports: false,
         tablets: false,
@@ -172,11 +174,20 @@ const SideBar: FC = () => {
                 title="Norte de Santander"
                 isCollapsed={isCollapsed}
               />
+            </Category>
+
+            {/* Categoria de Inventario */}
+            <Category
+              title="Gestión de Inventarios"
+              icon={Box}
+              isOpen={openAccordions.inventary}
+              toggle={() => toggleAccordion("inventary")}
+            >
               {[1].includes(Number(rol)) && (
                 <SubCategory
                   to="/SistemaInventario"
-                  icon={Box}
-                  title="Gestión de Inventarios"
+                  icon={flag}
+                  title="Inventario Tecnologico"
                   isCollapsed={isCollapsed}
                 />
               )}
@@ -392,10 +403,7 @@ const SideBar: FC = () => {
             )}
             {/* Modal de reportes radicador */}
             {isModalOpen && (
-              <ModalReporteRadicado
-                isOpen={isModalOpen}
-                onClose={closeModal}
-              />
+              <ModalReporteRadicado isOpen={isModalOpen} onClose={closeModal} />
             )}
 
             {/* Modal de reportes cirugias */}
