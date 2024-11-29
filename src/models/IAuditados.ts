@@ -1,5 +1,6 @@
 export interface IAuditados {
     id:          number;
+    radicadoDate: Date;
     document:    number;
     patientName: string;
     CUPS:        Cup[];

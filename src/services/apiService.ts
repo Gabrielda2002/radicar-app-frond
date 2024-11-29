@@ -180,6 +180,7 @@ export const fetchAuditados = async (): Promise<IAuditados[]> => {
     const response = await api.get('/auditoria-auditados');
     const auditados = response.data.map((auditado: IAuditados) => ({
         ...auditado,
+        radicadoDate: auditado.radicadoDate,
         CUPS: auditado.CUPS.map((cups) => ({
             ...cups,
             modifyDate: cups.modifyDate ? new Date(cups.modifyDate) : null
