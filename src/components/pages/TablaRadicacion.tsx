@@ -1,10 +1,11 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
-import { motion } from "framer-motion";
 import LoadingSpinner from "../LoadingSpinner";
-import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
+import ErrorMessage from "../ErrorMessageModals.tsx";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFetchDocumentoRadicado } from "../../hooks/useFetchUsers";
+import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
 
 //? Using lazy load functions for modals
 const ModalGestionAuxiliar = lazy(
@@ -26,28 +27,32 @@ import soporte from "/assets/soporte.svg";
 // const ITEMS_PER_PAGE = 8;
 
 const TablaRadicacion = () => {
-
   // estado para el numero de documento del paciente
   const [documento, setDocumento] = useState<string>("");
 
   // hook para buscar radicado por numero documento paciente
-  const { radicados, loading, errorRadicados, getData } = useFetchDocumentoRadicado();
+  const { radicados, loading, errorRadicados, getData } =
+    useFetchDocumentoRadicado();
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
-  const [selectedRadicacion, setSelectedRadicacion] =
-    useState<CupsRadicadosRelation | IRadicados | null>(null);
+  const [selectedRadicacion, setSelectedRadicacion] = useState<
+    CupsRadicadosRelation | IRadicados | null
+  >(null);
 
   const handleShowData = useCallback((radicacion: IRadicados) => {
     setSelectedRadicacion(radicacion);
     setIsOpen(true);
   }, []);
 
-  const handleShowGestionAuxiliar = useCallback((radicacion: CupsRadicadosRelation) => {
-    setSelectedRadicacion(radicacion);
-    setIsOpenGestionAuxiliar(true);
-  }, []);
+  const handleShowGestionAuxiliar = useCallback(
+    (radicacion: CupsRadicadosRelation) => {
+      setSelectedRadicacion(radicacion);
+      setIsOpenGestionAuxiliar(true);
+    },
+    []
+  );
 
   const handleOpenSoporte = useCallback((nombreSoporte: string | null) => {
     if (!nombreSoporte) {
@@ -108,20 +113,21 @@ const TablaRadicacion = () => {
               onChange={(e) => setDocumento(e.target.value)} // Escuchar eventos de teclado
               placeholder="Documento Paciente"
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            /> 
+            />
             <button
               className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
               onClick={() => getData(documento)}
             >
               Buscar
             </button>
-            {errorRadicados && (
-              <h2 className="text-center text-red-500 dark:text-red-400">
-                {errorRadicados}
-              </h2>
-            )}
+            <AnimatePresence>
+              {errorRadicados && (
+                <ErrorMessage className="text-center">
+                  {errorRadicados}
+                </ErrorMessage>
+              )}
+            </AnimatePresence>
           </div>
-          
 
           <div className="flex items-center space-x-4">
             <Suspense fallback={<LoadingSpinner />}>
@@ -288,7 +294,7 @@ const TablaRadicacion = () => {
                       </td>
                     </tr>
                   ))}
-                  
+
                   {showCookieAlert && (
                     <motion.div
                       className="fixed flex items-center justify-center transition-opacity bg-black -inset-5 bg-opacity-10 backdrop-blur-sm"

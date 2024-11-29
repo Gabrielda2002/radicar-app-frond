@@ -79,9 +79,9 @@ const TablaAuditoria = () => {
   };
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
-    if (!date) return 'N/A';
-    const utcDate = toZonedTime(date, 'America/Bogota'); // Reemplaza con la zona horaria deseada
-    return format(utcDate, 'dd/MM/yyyy');
+    if (!date) return "N/A";
+    const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
+    return format(utcDate, "dd/MM/yyyy");
   };
 
   return (
@@ -144,8 +144,8 @@ const TablaAuditoria = () => {
                 <thead>
                   <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                     <th>Fecha</th>
-                    <th>N. Documento </th>
-                    <th>Identificación</th>
+                    <th>N. Documento</th>
+                    <th>N. Identidad</th>
                     <th>Nombre Completo</th>
                     <th>Convenio</th>
                     <th>IPS Primaria</th>
@@ -154,11 +154,9 @@ const TablaAuditoria = () => {
                     <th>IPS Remite</th>
                     <th>Profesional</th>
                     <th>Especialidad</th>
-                    <th>Tipo Servicio</th>
-                    <th>Quién Radica</th>
-                    <th>Soporte</th>
-                    <th>Ver Servicios</th>
-                    <th>Autorizar Servicios</th>
+                    <th>Servicio</th>
+                    <th>Radicador</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
 
@@ -177,7 +175,10 @@ const TablaAuditoria = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.documentNumber}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td
+                        className="p-3 truncate border-b max-w-[100px] dark:border-gray-700"
+                        title={auditoria.namePatient}
+                      >
                         {auditoria.namePatient}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
@@ -195,7 +196,10 @@ const TablaAuditoria = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.ipsRemitente}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td
+                        className="p-3 truncate border-b max-w-[100px] dark:border-gray-700"
+                        title={auditoria.profetional}
+                      >
                         {auditoria.profetional}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
@@ -207,45 +211,55 @@ const TablaAuditoria = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.radicador}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        <button
-                          onClick={() => handleOpenSoporte(auditoria.soportes)}
-                        >
-                          <img
-                            src={soporte}
-                            alt="soporte-icon"
-                            className="dark:invert"
-                          />
-                        </button>
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        <button
-                          onClick={
-                            () => handleShowServicios(auditoria.statusCups) // *
-                          }
-                        >
-                          <img
-                            src={mostrar}
-                            alt="mostrar-icon"
-                            className="dark:invert"
-                          />
-                        </button>
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        <Link
-                          to="/tabla-autorizar-servicios"
-                          state={{
-                            CUPS: auditoria.statusCups,
-                            id: auditoria.id,
-                          }}
-                        >
-                          <img
-                            className="dark:invert "
-                            src={autorizar}
-                            alt="autorizar-icon"
-                          />
-                        </Link>
-                        {/* ! no se le puede colocar | focus:outline-none | ! */}
+                      <td className="p-2 border-b dark:border-gray-700">
+                        <div className="grid items-center justify-center grid-cols-1 gap-1 2xl:grid-cols-3 sm:gap-1">
+                          {/* Botón Ver Soporte */}
+                          <button
+                            onClick={() =>
+                              handleOpenSoporte(auditoria.soportes)
+                            }
+                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
+                            title="Ver Soporte"
+                          >
+                            <img
+                              src={soporte}
+                              alt="soporte-icon"
+                              className="w-7 h-7 dark:invert"
+                            />
+                          </button>
+
+                          {/* Botón Mostrar Servicios */}
+                          <button
+                            onClick={() =>
+                              handleShowServicios(auditoria.statusCups)
+                            }
+                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
+                            title="Mostrar Servicios"
+                          >
+                            <img
+                              src={mostrar}
+                              alt="mostrar-icon"
+                              className="w-7 h-7 dark:invert"
+                            />
+                          </button>
+
+                          {/* Enlace Autorizar Servicios */}
+                          <Link
+                            to="/tabla-autorizar-servicios"
+                            state={{
+                              CUPS: auditoria.statusCups,
+                              id: auditoria.id,
+                            }}
+                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
+                            title="Autorizar Servicios"
+                          >
+                            <img
+                              className="w-7 h-7 dark:invert"
+                              src={autorizar}
+                              alt="autorizar-icon"
+                            />
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}
