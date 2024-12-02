@@ -68,11 +68,11 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         identificacion: Yup.string()
           .required("La identificación es obligatoria")
           .min(5, "La identificación debe tener al menos 5 caracteres")
-          .max(11, "La identificación debe tener como máximo 15 caracteres"),
+          .max(16, "La identificación debe tener como máximo 16 caracteres"),
         telefonoFijo: Yup.string()
           .required("El teléfono fijo es obligatorio")
           .min(1, "El teléfono fijo debe tener al menos 1 caracter")
-          .max(10, "El teléfono fijo debe tener como máximo 20 caracteres"),
+          .max(10, "El teléfono fijo debe tener como máximo 10 caracteres"),
         nombreCompleto: Yup.string()
           .required("El nombre completo es obligatorio")
           .min(3, "El nombre completo debe tener al menos 3 caracteres")
