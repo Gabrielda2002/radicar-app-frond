@@ -153,7 +153,7 @@ const Navbar: React.FC = React.memo(() => {
         <div className="flex justify-end w-full">
           <div className="flex items-center mr-2">
             <h2 className="p-2 text-base font-medium text-black dark:text-white">
-              Hola, {nombreUsuario} ✌️
+              Hola, {nombreUsuario}
             </h2>
           </div>
           {/* Botón de Modo Oscuro con Tooltip */}
