@@ -32,6 +32,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import InputAutocompletado from "../../InputAutocompletado";
+import { toast } from "react-toastify";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -230,15 +231,45 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         if (response?.status === 201 || response?.status === 200) {
           setSuccess(true);
           setError(null);
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           setTimeout(() => {
             setSuccess(false);
             setStadopen(false);
           }, 3000);
         } else {
           setError("Error al enviar los datos");
+          toast.error("Error al enviar los datos", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
-        setError(`Error al envair los datos: ${error}`);
+        setError(`Error al enviar los datos: ${error}`);
+        toast.error(`Error al enviar los datos: ${error}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
       setSubmiting(false);
     },
@@ -962,12 +993,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   >
                     {submiting ? "Enviando..." : "Enviar"}
                   </button>
-                  {success && (
-                    <div className="text-green-500">
-                      Datos enviados correctamente
-                    </div>
-                  )}
-
+                  {success && null}
                   {error && <div className="text-red-500">{error}</div>}
                 </div>
               </form>

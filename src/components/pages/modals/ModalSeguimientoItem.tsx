@@ -6,12 +6,12 @@ import useAnimation from "../../../hooks/useAnimations";
 import ErrorMessage from "../../ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createMonitoringItem } from "./createMonitoringItem";
+import { toast } from "react-toastify";
 
 interface ModalSeguimientoItemProps {
   id: number;
   tipoItem: string | null;
 }
-
 
 const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
   id,
@@ -69,14 +69,44 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
           setSuccess(true);
           setSubmitting(false);
           setError(null);
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           setTimeout(() => {
             setStadopen(false);
           }, 2000);
         } else {
           setError("Ocurrio un error al intentar crear el seguimiento");
+          toast.error("Ocurrio un error al intentar crear el seguimiento", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
         setError(`Ocurrio un error al intentar crear el seguimiento ${error}`);
+        toast.error(`Error al enviar los datos: ${error}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
       setSubmitting(false);
     },
@@ -194,36 +224,36 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                       </label>
                     </div>
                   </section>
-                    <div className="w-full h-full">
-                      <label className="">
-                        <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Descripcion del evento
-                        </span>
-                        <input
-                          type="text"
-                          id=""
-                          name="description"
-                          value={formik.values.description}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={`w-full h-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                            formik.touched.description &&
-                            formik.errors.description
-                              ? "border-red-500 dark:borde-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <div></div>
-                        <AnimatePresence>
-                          {formik.touched.description &&
-                          formik.errors.description ? (
-                            <ErrorMessage>
-                              {formik.errors.description}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </label>
-                    </div>
+                  <div className="w-full h-full">
+                    <label className="">
+                      <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
+                        Descripcion del evento
+                      </span>
+                      <input
+                        type="text"
+                        id=""
+                        name="description"
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full h-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                          formik.touched.description &&
+                          formik.errors.description
+                            ? "border-red-500 dark:borde-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <div></div>
+                      <AnimatePresence>
+                        {formik.touched.description &&
+                        formik.errors.description ? (
+                          <ErrorMessage>
+                            {formik.errors.description}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </label>
+                  </div>
                 </div>
 
                 {/* container-footer */}
@@ -242,12 +272,8 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                     {/* {submitting ? "Actualizando..." : "Actualizando"} */}
                     Enviar
                   </button>
-                  {success && (
-                    <div className="text-green-500">
-                      Estado actualizado con éxito
-                    </div>
-                  )}
-                  {error && <div className="text-red-500">{error}</div>}
+                  {success && null}
+                  {error && <>{error}</>}
                 </div>
               </form>
             </div>
