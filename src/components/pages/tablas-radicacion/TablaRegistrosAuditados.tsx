@@ -192,6 +192,8 @@ const TableContent: React.FC<TableContentProps> = ({
     setExpandedRow(expandedRow === id ? null : id); // Alternar entre expandir y colapsar
   };
 
+  
+
   return (
     <>
       <div className="overflow-x-auto">
@@ -199,6 +201,7 @@ const TableContent: React.FC<TableContentProps> = ({
           <thead className="bg-gray-200 dark:bg-gray-700">
             <tr className="text-base text-center shadow-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
               <th className="px-2">ID Radicación</th>
+              <th>Fecha Radicado</th>
               <th>Número Documento</th>
               <th>Nombre Paciente</th>
               <th>CUPS</th>
@@ -211,6 +214,9 @@ const TableContent: React.FC<TableContentProps> = ({
                 <tr className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
                   <td className="p-3 border-b dark:border-gray-700">
                     {auditado.id}
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    {formatDate(auditado.radicadoDate)}
                   </td>
                   <td className="p-3 border-b dark:border-gray-700">
                     {auditado.document}

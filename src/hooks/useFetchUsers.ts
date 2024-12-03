@@ -43,7 +43,7 @@ import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
-import { IMonthDataRadicacion } from "../models/IMonthDataRadicacion";
+import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -541,7 +541,7 @@ export const useFetchDiagnostic = () => {
 }
 // traer datos 
 export const useFetchMonth = () => {
-  const [dataMonth, setDataMonth] = useState<IMonthDataRadicacion[] | null>([]);
+  const [dataMonth, setDataMonth] = useState<IEstadisticaCups[] | null>([]);
   const [loading, setLoading] = useState(false);
   const [errorDataMonth, setError] = useState<string | null>(null);
 
