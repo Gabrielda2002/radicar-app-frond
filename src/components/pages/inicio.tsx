@@ -6,15 +6,17 @@ import { useEffect, useState, lazy, Suspense } from "react";
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
 import { useFetchMonth } from "../../hooks/useFetchUsers";
-import { IMonthDataRadicacion } from "../../models/IMonthDataRadicacion";
+import {
+  IEstadisticaCups,
+} from "../../models/IMonthDataRadicacion";
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
@@ -49,20 +51,17 @@ const Inicio = () => {
   // traer cantidad de radicados de los ultimos 3 meses
   const { dataMonth } = useFetchMonth();
 
-  const formatData = (data: IMonthDataRadicacion[] | null) => {
-    if (!data) return []; // Si no hay datos, retorna un array vacío
 
-    return data.map((item) => {
-      const [year, month] = String(item.mes).split("-");
-      const monthName = new Date(
-        Number(year),
-        Number(month) - 1
-      ).toLocaleString("es-ES", { month: "long" });
-      return { ...item, mes: `${monthName} ${year}` };
-    });
+  const transformDataForChart = (data: IEstadisticaCups[]) => {
+    if (!data) return [];
+
+    return data.map((item) => ({
+      estado: item.estado,
+      cantidad: item.cantidad,
+    }));
   };
 
-  const formatedData = formatData(dataMonth);
+  const chartData = transformDataForChart(dataMonth || []);
 
   return (
     <>
@@ -97,24 +96,15 @@ const Inicio = () => {
                   Estadísticas:
                 </h2>
                 <div className="grid grid-cols-2 gap-2">
-                  <BarChart
-                    width={600}
-                    height={300}
-                    data={formatedData}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="mes" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="cantidad" fill="#8884d8" />
-                  </BarChart>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={chartData}>
+                      <XAxis dataKey="estado" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="cantidad" fill="#00776f" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
 

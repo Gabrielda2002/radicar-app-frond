@@ -13,7 +13,7 @@ import { IItemsNetworking } from "../../../models/IItemsNetworking";
 //*Icons
 import {
   TagIcon,
-  MapIcon,
+  // MapIcon,
   ComputerDesktopIcon,
   TvIcon,
   // InformationCircleIcon,
@@ -23,7 +23,7 @@ import {
   CalendarIcon,
   ClockIcon,
   CheckCircleIcon,
-  KeyIcon,
+  // KeyIcon,
   CalendarDaysIcon,
   LockClosedIcon,
   PencilSquareIcon,
@@ -90,10 +90,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         .required("El serial es requerido")
         .min(3, "El serial debe tener al menos 3 caracteres")
         .max(200, "El serial debe tener como máximo 200 caracteres"),
-      inventoryNumber: Yup.string()
-        .required("El inventario es requerido")
-        .min(3, "El inventario debe tener al menos 3 caracteres")
-        .max(200, "El inventario debe tener como máximo 200 caracteres"),
       dhcp: Yup.boolean().optional(),
       addressIp: Yup.string().when("dhcp", {
         is: (value: boolean) => !value,
@@ -109,10 +105,14 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     if (typeItem === "equipos") {
       return {
         ...validationSchema,
-        area: Yup.string()
-          .required("El area es requerida")
-          .min(3, "El area debe tener al menos 3 caracteres")
-          .max(200, "El area debe tener como máximo 200 caracteres"),
+        candado: Yup.boolean().optional(),
+        codigo: Yup.string().when("candado", {
+          is: (value: boolean) => value,
+          then: (schema) => schema.required("El codigo es requerido")
+                            .min(1, "El codigo debe tener al menos 1 caracter")
+                            .max(4, "El codigo debe tener como máximo 4 caracteres"),
+          otherwise: (schema) => schema.optional(),
+        }),
         typeEquipment: Yup.string()
           .required("El tipo de equipo es requerido")
           .min(3, "El tipo de equipo debe tener al menos 3 caracteres")
@@ -125,14 +125,19 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             "El sistema operativo debe tener como máximo 200 caracteres"
           ),
         purchaseDate: Yup.date().required("La fecha de compra es requerida"),
-        warrantyTime: Yup.string()
-          .required("El tiempo de garantia es requerido")
-          .min(3, "El tiempo de garantia debe tener al menos 3 caracteres")
-          .max(
-            200,
-            "El tiempo de garantia debe tener como máximo 200 caracteres"
-          ),
         warranty: Yup.boolean().required("La garantia es requerida"),
+        warrantyTime: Yup.string().when("warranty", {
+          is: (value: boolean) => value,
+          then: (schema) =>
+            schema
+              .required("El tiempo de garantia es requerido")
+              .min(3, "El tiempo de garantia debe tener al menos 3 caracteres")
+              .max(
+                200,
+                "El tiempo de garantia debe tener como máximo 200 caracteres"
+              ),
+          otherwise: (schema) => schema.optional(),
+        }),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
         manager: Yup.string().optional(),
       };
@@ -158,7 +163,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   const formik = useFormik({
     initialValues: {
       name: "",
-      area: "",
+      // area: "",
       typeEquipment: "",
       brand: "",
       model: "",
@@ -167,14 +172,16 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       mac: "",
       purchaseDate: "",
       warrantyTime: "",
-      warranty: "",
+      warranty: false,
       deliveryDate: "",
-      inventoryNumber: "",
+      // inventoryNumber: "",
       addressIp: "",
       otherData: "",
       status: "",
       dhcp: false,
       manager: "",
+      candado: false,
+      codigo: "",
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -185,21 +192,23 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         formData.append("brand", values.brand);
         formData.append("model", values.model);
         formData.append("serial", values.serial);
-        formData.append("inventoryNumber", values.inventoryNumber);
+        // formData.append("inventoryNumber", values.inventoryNumber);
         formData.append("addressIp", values.addressIp);
         formData.append("mac", values.mac);
         formData.append("sedeId", idSede?.toString() || "");
         formData.append("dhcp", values.dhcp.toString());
 
         if (tipoItem === "equipos") {
-          formData.append("area", values.area);
+          // formData.append("area", values.area);
           formData.append("typeEquipment", values.typeEquipment);
           formData.append("operationalSystem", values.operationalSystem);
           formData.append("purchaseDate", values.purchaseDate);
           formData.append("warrantyTime", values.warrantyTime);
-          formData.append("warranty", values.warranty);
+          formData.append("warranty", values.warranty.toString());
           formData.append("deliveryDate", values.deliveryDate);
           formData.append("managerId", values.manager);
+          formData.append("lock", values.candado.toString());
+          formData.append("codeLock", values.codigo);
         } else {
           formData.append("otherData", values.otherData);
           formData.append("status", values.status);
@@ -267,7 +276,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   });
 
   // console.log(formik.values.manager);
-  console.log(formik.errors);
+  // console.log(formik.errors);
 
   const formatDate = (date: Date | string | null) => {
     return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
@@ -277,7 +286,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     if (items && idItem) {
       formik.setValues({
         name: items.name,
-        area: "area" in items ? items.area : "",
+        // area: "area" in items ? items.area : "",
         typeEquipment: "typeEquipment" in items ? items.typeEquipment : "",
         brand: items.brand,
         model: items.model,
@@ -288,15 +297,17 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         purchaseDate:
           "purchaseDate" in items ? formatDate(items.purchaseDate) : "", // falta formatear la fecha
         warrantyTime: "warrantyTime" in items ? String(items.warrantyTime) : "",
-        warranty: "warranty" in items ? (items.warranty ? "1" : "0") : "",
+        warranty: "warranty" in items ? items.warranty : false,
         deliveryDate:
           "deliveryDate" in items ? formatDate(items.deliveryDate) : "", // falta formatear la fecha
-        inventoryNumber: items.inventoryNumber,
+        // inventoryNumber: items.inventoryNumber,
         addressIp: items.addressIp,
         otherData: "otherData" in items ? items.otherData : "",
         status: "status" in items ? items.status : "",
         dhcp: "dhcp" in items ? items.dhcp : false,
         manager: "idUsuario" in items ? String(items.idUsuario) : "",
+        candado: "lock" in items ? items.lock : false,
+        codigo: "lockKey" in items ? String(items.lockKey) : "",
       });
     }
   }, [items, idItem, tipoItem]);
@@ -395,31 +406,59 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     </div>
                     {tipoItem === "equipos" && (
                       <div>
+                        <div className="flex items-center"></div>
+                        <input
+                          type="checkbox"
+                          id="candado"
+                          name="candado"
+                          checked={formik.values.candado}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className="w-5 h-5 mr-2"
+                        />
+
+                        <label
+                          htmlFor="candado"
+                          className="block text-lg font-semibold text-gray-500 dark:text-white"
+                        >
+                          Candado
+                        </label>
+
+                        <AnimatePresence>
+                          {formik.touched.candado && formik.errors.candado ? (
+                            <ErrorMessage>{formik.errors.candado}</ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    )}
+
+                    {formik.values.candado && (
+                      <div>
                         <div className="flex items-center">
-                          <MapIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
                           <label
-                            htmlFor="area"
+                            htmlFor="codigo"
                             className="block text-lg font-semibold"
                           >
-                            Area
+                            Codigo
                           </label>
                         </div>
                         <input
                           type="text"
-                          id="area"
-                          name="area"
-                          value={formik.values.area}
+                          id="codigo"
+                          name="codigo"
+                          value={formik.values.codigo}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.area && formik.errors.area
+                            formik.touched.codigo && formik.errors.codigo
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
                         <AnimatePresence>
-                          {formik.touched.area && formik.errors.area ? (
-                            <ErrorMessage>{formik.errors.area}</ErrorMessage>
+                          {formik.touched.codigo && formik.errors.codigo ? (
+                            <ErrorMessage>{formik.errors.codigo}</ErrorMessage>
                           ) : null}
                         </AnimatePresence>
                       </div>
@@ -461,10 +500,10 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         >
-                          <option value="">Selecciona</option>
+                          <option value="">- SELECT -</option>
                           <option value="TODO EN 1">Todo en 1</option>
-                          <option value="PORTATIL">Portatil</option>
-                          <option value="ESCRITORIO">Escritorio</option>
+                          <option value="LAPTOP">Portatil</option>
+                          <option value="PC MESA">Escritorio</option>
                         </select>
                         <AnimatePresence>
                           {formik.touched.typeEquipment &&
@@ -500,7 +539,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                             : "border-gray-200 dark:border-gray-600"
                         }`}
                       >
-                        <option value="">Seleccione</option>
+                        <option value="">- SELECT -</option>
                         <option value="LENOVO">Lenovo</option>
                         <option value="COMPUMAX">Compumax</option>
                         <option value="ASUS">Asus</option>
@@ -595,7 +634,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         >
-                          <option value="">Select</option>
+                          <option value="">- SELECT -</option>
                           <option value="WINDOWS 10">Windows 10</option>
                           <option value="WINDOWS 11">Windows 11</option>
                           <option value="WINDOWS 7">Windows 7</option>
@@ -717,6 +756,36 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     {tipoItem === "equipos" && (
                       <div>
                         <div className="flex items-center mt-2">
+                          <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                          <label
+                            htmlFor="warranty"
+                            className="block text-lg font-semibold"
+                          >
+                            Garantia
+                          </label>
+                        </div>
+                       <input
+                        type="checkbox"
+                        id="warranty"
+                        name="warranty"
+                        checked={formik.values.warranty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className="w-5 h-5 mr-2"
+                        />
+                        <AnimatePresence>
+                          {formik.touched.warranty && formik.errors.warranty ? (
+                            <ErrorMessage>
+                              {formik.errors.warranty}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    )}
+
+                    {tipoItem === "equipos" && formik.values.warranty && (
+                      <div>
+                        <div className="flex items-center mt-2">
                           <ClockIcon className="w-8 h-8 mr-2 dark:text-white" />
                           <label
                             htmlFor="warrantyTime"
@@ -750,42 +819,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </div>
                     )}
 
-                    {tipoItem === "equipos" && (
-                      <div>
-                        <div className="flex items-center mt-2">
-                          <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="warranty"
-                            className="block text-lg font-semibold"
-                          >
-                            Garantia
-                          </label>
-                        </div>
-                        <select
-                          id="warranty"
-                          name="warranty"
-                          value={formik.values.warranty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.warranty && formik.errors.warranty
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        >
-                          <option value="">- SELECT -</option>
-                          <option value={1}>Activa</option>
-                          <option value={0}>Inactiva</option>
-                        </select>
-                        <AnimatePresence>
-                          {formik.touched.warranty && formik.errors.warranty ? (
-                            <ErrorMessage>
-                              {formik.errors.warranty}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
                     <div className="grid">
                       {tipoItem === "equipos" && (
                         <>
@@ -821,7 +854,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                               htmlFor="addressIp"
                               className="block text-lg font-semibold"
                             >
-                              Direccion Ip (estatica)
+                              Direccion Ip (estática)
                             </label>
                           </div>
                           <input
@@ -850,7 +883,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       )}
                     </div>
 
-                    <div>
+                    {/* <div>
                       <div className="flex items-center mt-2">
                         <KeyIcon className="w-8 h-8 mr-2 dark:text-white" />
                         <label
@@ -882,7 +915,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                           </ErrorMessage>
                         ) : null}
                       </AnimatePresence>
-                    </div>
+                    </div> */}
                   </div>
                   <hr className="border-gray-400 dark:border-gray-600" />
                   {tipoItem === "dispositivos-red" && (
