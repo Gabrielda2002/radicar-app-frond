@@ -17,6 +17,8 @@ export interface IItems {
     inventoryNumber:  string;
     dhcp:             boolean;
     idUsuario:        number | null;
+    lock:             boolean;
+    lockKey:          number | null;
     createAt:           Date;
     updateAt:           Date;
     seguimientoEquipos: SeguimientoEquipo[];
