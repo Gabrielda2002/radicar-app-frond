@@ -25,10 +25,10 @@ import {
   CalendarIcon,
   CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 interface ModalAccesorioItemProps {
   id: number;
 }
-
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
@@ -181,6 +181,16 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
         if (response?.status === 200 || response?.status === 201) {
           setSubmitting(false);
           setSuccess(true);
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           setError(null);
           setTimeout(() => {
             setSuccess(false);
@@ -190,9 +200,29 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
           setSubmitting(false);
           setSuccess(false);
           setError("Error al crear el accesorio");
+          toast.error("Error al enviar los datos", {
+            position: "bottom-right",
+            pauseOnHover: true,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
         setError("Error al crear el accesorio" + error);
+        toast.error(`Error al crear el accesorio: ${error}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
       setSubmitting(false);
     },
@@ -207,31 +237,31 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   /**
    * Maneja los cambios en el campo de búsqueda de accesorios
    * @param {HandleSearchChangeEvent} e - Evento de cambio del input de búsqueda
-   * 
+   *
    * @description
    * Esta función realiza las siguientes acciones:
    * 1. Actualiza el estado de búsqueda con el valor ingresado
    * 2. Filtra las sugerencias basadas en el tipo de accesorio seleccionado
    * 3. Muestra solo las opciones que coinciden con el texto buscado
-   * 
+   *
    * @example
    * <input onChange={handleSearchChange} />
    */
   const handleSearchChange = (e: HandleSearchChangeEvent) => {
-      // Obtiene el valor actual del campo de búsqueda
-      const query = e.target.value;
-      setSearch(query);
-  
-      // Filtra las sugerencias si hay un tipo seleccionado y texto de búsqueda
-      if (typeAdd && query) {
-        const filteredSuggestions = inventoryOptions[
-          typeAdd.toLowerCase() as keyof typeof inventoryOptions
-        ].filter((option) => option.toLowerCase().includes(query.toLowerCase()));
-        setSuggestions(filteredSuggestions);
-      } else {
-        // Limpia las sugerencias si no hay criterios de búsqueda
-        setSuggestions([]);
-      }
+    // Obtiene el valor actual del campo de búsqueda
+    const query = e.target.value;
+    setSearch(query);
+
+    // Filtra las sugerencias si hay un tipo seleccionado y texto de búsqueda
+    if (typeAdd && query) {
+      const filteredSuggestions = inventoryOptions[
+        typeAdd.toLowerCase() as keyof typeof inventoryOptions
+      ].filter((option) => option.toLowerCase().includes(query.toLowerCase()));
+      setSuggestions(filteredSuggestions);
+    } else {
+      // Limpia las sugerencias si no hay criterios de búsqueda
+      setSuggestions([]);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -770,12 +800,8 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                   >
                     {submitting ? "Actualizando..." : "Actualizando"}
                   </button>
-                  {success && (
-                    <div className="text-green-500">
-                      Estado actualizado con éxito
-                    </div>
-                  )}
-                  {error && <div className="text-red-500">{error}</div>}
+                  {success && null}
+                  {error && <>{error}</>}
                 </div>
               </form>
             </div>
