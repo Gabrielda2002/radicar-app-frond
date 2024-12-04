@@ -34,6 +34,19 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
   };
 
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setStadopen(false);
+  };
+  if (stadopen) {
+    openModal();
+  }
+
   const renderTrackingTable = (trackingData: any[]) => {
     if (trackingData.length === 0) {
       return (
@@ -124,7 +137,7 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                   Seguimiento de Módulos
                 </h1>
                 <button
-                  onClick={() => setStadopen(false)}
+                  onClick={closeModal}
                   className="text-gray-500 transition-colors hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
                 >
                   <XMarkIcon className="w-6 h-6" />
@@ -138,7 +151,7 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 />
               </div>
 
-              <div className="">
+              <div>
                 {Items && "seguimientoEquipos" in Items
                   ? renderTrackingTable(Items.seguimientoEquipos)
                   : null}

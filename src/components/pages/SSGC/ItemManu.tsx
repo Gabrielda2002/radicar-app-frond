@@ -21,18 +21,23 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
 
   const toggleModalRename = () => {
     setStadOpenRename(!stadOpenRename);
+    document.body.style.overflow = "";
   };
 
   const handleModalOpenRename = () => {
     setStadOpenRename(true);
+    document.body.style.overflow = "hidden";
   };
 
   const handleModalOpenDelete = () => {
     setStadOpenDelete(true);
+    document.body.style.overflow = "hidden";
+    
   };
 
   const stadOffDelete = () => {
     setStadOpenDelete(false);
+    document.body.style.overflow = "";
   };
 
   const confirmDeleteItem = () => {
