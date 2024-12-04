@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logoutHelper } from '../utils/Logout-helper'
 
 const token = localStorage.getItem('token')
 
@@ -25,6 +26,25 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+)
+
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+
+
+        if (error.response && error.response.status === 401){
+
+            if (error.response.headers['token-status'] === 'expired' ) {
+                alert('Tu sesión ha expirado. Inicia nuevamente.')
+                logoutHelper()
+            }
+
+        }
         return Promise.reject(error);
     }
 )
