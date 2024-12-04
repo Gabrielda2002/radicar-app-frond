@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logoutHelper } from '../utils/Logout-helper'
 
 const token = localStorage.getItem('token')
 
@@ -25,6 +26,25 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+)
+
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+
+
+        if (error.response && error.response.status === 401){
+
+            if (error.response.headers['token-status'] === 'expired' ) {
+                alert('Tu sesión ha expirado. Inicia nuevamente.')
+                logoutHelper()
+            }
+
+        }
         return Promise.reject(error);
     }
 )
@@ -198,4 +218,9 @@ export const createSeguimientoItemEp = async (data: FormData, ep: string) => {
 // crear accesorio item
 export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
     return api.post(`/${ep}`, data);
+}
+
+// crear observacion item
+export const createActiveBreakesEp = async (data: FormData) => {
+    return api.post(`/active-brakes`, data);
 }
