@@ -83,6 +83,18 @@ const ModalActualizarCupsAuditoria: React.FC<
       setIsSubmiting(false);
     },
   });
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setStadopen(false);
+  };
+  if (stadopen) {
+    openModal();
+  }
 
   if (errorEstados) return <h2>Error Al cargar Estados {errorEstados}</h2>;
 
@@ -107,7 +119,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                   Actualizar CUPS Auditados
                 </h1>
                 <button
-                  onClick={() => setStadopen(false)}
+                  onClick={closeModal}
                   className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:bg-gray-300 hover:text-gray-900"
                 >
                   &times;
@@ -221,7 +233,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
-                    onClick={() => setStadopen(false)}
+                    onClick={closeModal}
                   >
                     Cerrar
                   </button>

@@ -27,7 +27,6 @@ interface ModalCirugiasProps {
   idCirugia: number[];
 }
 
-
 const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   name,
   phonneNumber,
@@ -47,6 +46,19 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
     () => setStadopen(false),
     300
   );
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setStadopen(false);
+  };
+  if (stadopen) {
+    openModal();
+  }
 
   // hook para traer las ips remite
 
@@ -172,7 +184,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                   Programación Cirugía
                 </h1>
                 <button
-                  onClick={() => setStadopen(false)}
+                  onClick={closeModal}
                   className="text-lg text-gray-400 duration-200 rounded-lg hover:text-gray-900 hover:bg-gray-400 dark:text-gray-300 dark:hover:text-gray-800 w-7 h-7"
                 >
                   &times;
@@ -637,7 +649,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-black shadow-md dark:border-white gap-x-2 h-14 dark:bg-gray-800">
                 <button
                   className="w-24 h-8 text-blue-600 transition-colors duration-200 ease-in-out border-2 border-gray-400 rounded-md hover:text-red-500 hover:border-red-500 hover:bg-gray-100 active:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600 dark:active:bg-gray-500"
-                  onClick={() => setStadopen(false)}
+                  onClick={closeModal}
                 >
                   Cerrar
                 </button>

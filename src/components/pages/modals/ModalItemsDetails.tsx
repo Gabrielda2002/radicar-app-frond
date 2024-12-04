@@ -27,6 +27,18 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
     return format(utcDate, "dd/MM/yyyy");
   };
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  }
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    onClose();
+  }
+  if (item){
+    openModal();
+  }
 
   const TableWrapper = ({ children }: { children: React.ReactNode }) => (
     <div className="max-h-[calc(100vh-400px)] overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800">
@@ -187,10 +199,11 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul>
-                  {item && "userRelation" in item && (
+                    {item && "userRelation" in item && (
                       <li>
                         <strong>Responsable: </strong>
-                        {item.userRelation?.name || "N/A"} {item.userRelation?.lastName || "N/A"} 
+                        {item.userRelation?.name || "N/A"}{" "}
+                        {item.userRelation?.lastName || "N/A"}
                       </li>
                     )}
                     <li>
@@ -406,7 +419,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </motion.div>
         </div>
         <button
-          onClick={onClose}
+          onClick={closeModal}
           className="p-2 px-12 mt-4 duration-200 border rounded btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
         >
           Cerrar

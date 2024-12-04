@@ -9,6 +9,19 @@ const ModalPausasActivas = () => {
     setIsModalPausasOpen(false)
   );
 
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  }
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setIsModalPausasOpen(false);
+  }
+  if (isModalPausasOpen) {
+    openModal();
+  }
+
   return (
     <>
       {/* Botón para abrir el modal */}
@@ -40,7 +53,7 @@ const ModalPausasActivas = () => {
                 Pausas Activas
               </h1>
               <button
-                onClick={() => setIsModalPausasOpen(false)}
+                onClick={closeModal}
                 className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
               >
                 &times;

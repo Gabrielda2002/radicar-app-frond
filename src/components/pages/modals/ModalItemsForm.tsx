@@ -21,7 +21,6 @@ import {
   GlobeAltIcon,
   MapPinIcon,
   CalendarIcon,
-  ClockIcon,
   CheckCircleIcon,
   // KeyIcon,
   CalendarDaysIcon,
@@ -108,9 +107,11 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         candado: Yup.boolean().optional(),
         codigo: Yup.string().when("candado", {
           is: (value: boolean) => value,
-          then: (schema) => schema.required("El codigo es requerido")
-                            .min(1, "El codigo debe tener al menos 1 caracter")
-                            .max(4, "El codigo debe tener como máximo 4 caracteres"),
+          then: (schema) =>
+            schema
+              .required("El codigo es requerido")
+              .min(1, "El codigo debe tener al menos 1 caracter")
+              .max(4, "El codigo debe tener como máximo 4 caracteres"),
           otherwise: (schema) => schema.optional(),
         }),
         typeEquipment: Yup.string()
@@ -312,6 +313,19 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     }
   }, [items, idItem, tipoItem]);
 
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setStadopen(false);
+  };
+  if (stadopen) {
+    openModal();
+  }
+
   return (
     <>
       <div className="relative group">
@@ -360,7 +374,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   {idItem ? "Actualizar Item" : "Crear Item"}
                 </h1>
                 <button
-                  onClick={() => setStadopen(false)}
+                  onClick={closeModal}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
@@ -374,7 +388,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               >
                 <div className="px-8 py-2">
                   {/* formularios */}
-                  <div className="grid grid-cols-2 gap-8 mt-2">
+                  <div className="grid grid-cols-2 gap-8 mt-2 mb-6">
+                    {/* NOMBRE */}
                     <div>
                       <div className="flex items-center">
                         <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
@@ -404,78 +419,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         ) : null}
                       </AnimatePresence>
                     </div>
-                    {tipoItem === "equipos" && (
-                      <div>
-                        <div className="flex items-center"></div>
-                        <input
-                          type="checkbox"
-                          id="candado"
-                          name="candado"
-                          checked={formik.values.candado}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="w-5 h-5 mr-2"
-                        />
 
-                        <label
-                          htmlFor="candado"
-                          className="block text-lg font-semibold text-gray-500 dark:text-white"
-                        >
-                          Candado
-                        </label>
-
-                        <AnimatePresence>
-                          {formik.touched.candado && formik.errors.candado ? (
-                            <ErrorMessage>{formik.errors.candado}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-
-                    {formik.values.candado && (
-                      <div>
-                        <div className="flex items-center">
-                          <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="codigo"
-                            className="block text-lg font-semibold"
-                          >
-                            Codigo
-                          </label>
-                        </div>
-                        <input
-                          type="text"
-                          id="codigo"
-                          name="codigo"
-                          value={formik.values.codigo}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.codigo && formik.errors.codigo
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.codigo && formik.errors.codigo ? (
-                            <ErrorMessage>{formik.errors.codigo}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-
-                    {tipoItem === "equipos" && (
-                      <InputAutocompletado
-                        label="Responsable"
-                        onInputChanged={(value) =>
-                          formik.setFieldValue("manager", value)
-                        }
-                        apiRoute="search-user-by-name"
-                        error={
-                          formik.touched.manager && !!formik.errors.manager
-                        }
-                      />
-                    )}
+                    {/* TIPO  */}
 
                     {tipoItem === "equipos" && (
                       <div>
@@ -515,9 +460,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
-                  </div>
-
-                  <div className="grid grid-cols-2 mt-5 mb-3 gap-x-6 gap-y-2">
+                    {/* MARCA */}
                     <div>
                       <div className="flex items-center">
                         <TvIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -553,6 +496,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         ) : null}
                       </AnimatePresence>
                     </div>
+                    {/* MODELO */}
                     <div>
                       <div className="flex items-center">
                         <InformationCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -582,35 +526,20 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         ) : null}
                       </AnimatePresence>
                     </div>
-                    <div>
-                      <div className="flex items-center">
-                        <FingerPrintIcon className="w-8 h-8 mr-2 dark:text-white" />
-                        <label
-                          htmlFor="serial"
-                          className="block text-lg font-semibold"
-                        >
-                          Serial
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="serial"
-                        name="serial"
-                        value={formik.values.serial}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.serial && formik.errors.serial
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
+                    {/* RESPONSABLE */}
+                    {tipoItem === "equipos" && (
+                      <InputAutocompletado
+                        label="Responsable"
+                        onInputChanged={(value) =>
+                          formik.setFieldValue("manager", value)
+                        }
+                        apiRoute="search-user-by-name"
+                        error={
+                          formik.touched.manager && !!formik.errors.manager
+                        }
                       />
-                      <AnimatePresence>
-                        {formik.touched.serial && formik.errors.serial ? (
-                          <ErrorMessage>{formik.errors.serial}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+                    )}
+                    {/* SISTEMA OPERATIVO */}
                     {tipoItem === "equipos" && (
                       <div>
                         <div className="flex items-center">
@@ -649,6 +578,37 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
+                    {/* SERIAL */}
+                    <div>
+                      <div className="flex items-center">
+                        <FingerPrintIcon className="w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="serial"
+                          className="block text-lg font-semibold"
+                        >
+                          Serial
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        id="serial"
+                        name="serial"
+                        value={formik.values.serial}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.serial && formik.errors.serial
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.serial && formik.errors.serial ? (
+                          <ErrorMessage>{formik.errors.serial}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    {/* DIR MAC */}
                     <div>
                       <div className="flex items-center">
                         <MapPinIcon className="w-8 h-8 mr-2 dark:text-white" />
@@ -679,8 +639,9 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </AnimatePresence>
                     </div>
                   </div>
-                  <hr className="border-gray-400 dark:border-gray-600" />
-                  <div className="grid grid-cols-2 mt-10 mb-12 gap-x-6 gap-y-2">
+                  {/* <hr className="border-gray-400 dark:border-gray-600" /> */}
+                  {/* INFO ADD */}
+                  <div className="grid grid-cols-2 mt-2 mb-12 gap-x-6 gap-y-2">
                     {tipoItem === "equipos" && (
                       <div>
                         <div className="flex items-center">
@@ -752,136 +713,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
-
-                    {tipoItem === "equipos" && (
-                      <div>
-                        <div className="flex items-center mt-2">
-                          <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="warranty"
-                            className="block text-lg font-semibold"
-                          >
-                            Garantia
-                          </label>
-                        </div>
-                       <input
-                        type="checkbox"
-                        id="warranty"
-                        name="warranty"
-                        checked={formik.values.warranty}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-5 h-5 mr-2"
-                        />
-                        <AnimatePresence>
-                          {formik.touched.warranty && formik.errors.warranty ? (
-                            <ErrorMessage>
-                              {formik.errors.warranty}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-
-                    {tipoItem === "equipos" && formik.values.warranty && (
-                      <div>
-                        <div className="flex items-center mt-2">
-                          <ClockIcon className="w-8 h-8 mr-2 dark:text-white" />
-                          <label
-                            htmlFor="warrantyTime"
-                            className="block text-lg font-semibold"
-                          >
-                            Tiempo de Garantia
-                          </label>
-                        </div>
-                        <input
-                          type="text"
-                          id="warrantyTime"
-                          name="warrantyTime"
-                          value={formik.values.warrantyTime}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.warrantyTime &&
-                            formik.errors.warrantyTime
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.warrantyTime &&
-                          formik.errors.warrantyTime ? (
-                            <ErrorMessage>
-                              {formik.errors.warrantyTime}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-
-                    <div className="grid">
-                      {tipoItem === "equipos" && (
-                        <>
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              id="dhcp"
-                              name="dhcp"
-                              checked={formik.values.dhcp}
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              className="w-5 h-5 mr-2"
-                            />
-                            <label
-                              htmlFor="dhcp"
-                              className="block text-lg font-semibold text-gray-500 dark:text-white"
-                            >
-                              Dirección DCHP(IPV4 - AUTOMATICA)
-                            </label>
-                          </div>
-                          <AnimatePresence>
-                            {formik.touched.dhcp && formik.errors.dhcp ? (
-                              <ErrorMessage>{formik.errors.dhcp}</ErrorMessage>
-                            ) : null}
-                          </AnimatePresence>
-                        </>
-                      )}
-                      {!formik.values.dhcp && (
-                        <div>
-                          <div className="flex items-center">
-                            <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
-                            <label
-                              htmlFor="addressIp"
-                              className="block text-lg font-semibold"
-                            >
-                              Direccion Ip (estática)
-                            </label>
-                          </div>
-                          <input
-                            type="text"
-                            id="addressIp"
-                            name="addressIp"
-                            value={formik.values.addressIp}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                              formik.touched.addressIp &&
-                              formik.errors.addressIp
-                                ? "border-red-500 dark:border-red-500"
-                                : "border-gray-200 dark:border-gray-600"
-                            }`}
-                          />
-                          <AnimatePresence>
-                            {formik.touched.addressIp &&
-                            formik.errors.addressIp ? (
-                              <ErrorMessage>
-                                {formik.errors.addressIp}
-                              </ErrorMessage>
-                            ) : null}
-                          </AnimatePresence>
-                        </div>
-                      )}
-                    </div>
 
                     {/* <div>
                       <div className="flex items-center mt-2">
@@ -977,12 +808,252 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       </AnimatePresence>
                     </div>
                   )}
+                  {tipoItem === "dispositivos-red" && (
+                    <>
+                      {!formik.values.dhcp && (
+                        <div>
+                          <div className="flex items-center">
+                            <label
+                              htmlFor="addressIp"
+                              className="block text-lg font-semibold"
+                            >
+                              Direccion Ip (estática)
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="addressIp"
+                            name="addressIp"
+                            value={formik.values.addressIp}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.addressIp &&
+                              formik.errors.addressIp
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.addressIp &&
+                            formik.errors.addressIp ? (
+                              <ErrorMessage>
+                                {formik.errors.addressIp}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+                <div className="px-4 py-4">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="">
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center">
+                            <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <input
+                              type="checkbox"
+                              id="warranty"
+                              name="warranty"
+                              checked={formik.values.warranty}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="w-5 h-5 mr-2"
+                            />
+                            <label
+                              htmlFor="warranty"
+                              className="block text-lg font-semibold"
+                            >
+                              Garantía
+                            </label>
+                          </div>
+                          <AnimatePresence>
+                            {formik.touched.warranty &&
+                            formik.errors.warranty ? (
+                              <ErrorMessage>
+                                {formik.errors.warranty}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+
+                      {tipoItem === "equipos" && formik.values.warranty && (
+                        <div>
+                          <div className="flex items-center">
+                            <label
+                              htmlFor="warrantyTime"
+                              className="block text-lg font-semibold"
+                            >
+                              Tiempo de Garantia
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="warrantyTime"
+                            name="warrantyTime"
+                            value={formik.values.warrantyTime}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.warrantyTime &&
+                              formik.errors.warrantyTime
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.warrantyTime &&
+                            formik.errors.warrantyTime ? (
+                              <ErrorMessage>
+                                {formik.errors.warrantyTime}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid">
+                      {tipoItem === "equipos" && (
+                        <>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id="dhcp"
+                              name="dhcp"
+                              checked={formik.values.dhcp}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="w-5 h-5 mr-2"
+                            />
+                            <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="dhcp"
+                              className="block text-lg font-semibold text-gray-500 dark:text-white"
+                            >
+                              Dirección DCHP
+                            </label>
+                          </div>
+                          <AnimatePresence>
+                            {formik.touched.dhcp && formik.errors.dhcp ? (
+                              <ErrorMessage>{formik.errors.dhcp}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </>
+                      )}
+                      {tipoItem === "equipos" && (
+                        <>
+                          {!formik.values.dhcp && (
+                            <div>
+                              <div className="flex items-center">
+                                <label
+                                  htmlFor="addressIp"
+                                  className="block text-lg font-semibold"
+                                >
+                                  Direccion Ip (estática)
+                                </label>
+                              </div>
+                              <input
+                                type="text"
+                                id="addressIp"
+                                name="addressIp"
+                                value={formik.values.addressIp}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                                  formik.touched.addressIp &&
+                                  formik.errors.addressIp
+                                    ? "border-red-500 dark:border-red-500"
+                                    : "border-gray-200 dark:border-gray-600"
+                                }`}
+                              />
+                              <AnimatePresence>
+                                {formik.touched.addressIp &&
+                                formik.errors.addressIp ? (
+                                  <ErrorMessage>
+                                    {formik.errors.addressIp}
+                                  </ErrorMessage>
+                                ) : null}
+                              </AnimatePresence>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      {tipoItem === "equipos" && (
+                        <div>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id="candado"
+                              name="candado"
+                              checked={formik.values.candado}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              className="w-5 h-5 mr-2"
+                            />
+                            <LockClosedIcon className="w-8 h-8 mr-2 dark:text-white" />
+                            <label
+                              htmlFor="candado"
+                              className="block text-lg font-semibold text-gray-500 dark:text-white"
+                            >
+                              Candado
+                            </label>
+                          </div>
+                          <AnimatePresence>
+                            {formik.touched.candado && formik.errors.candado ? (
+                              <ErrorMessage>
+                                {formik.errors.candado}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                      {formik.values.candado && (
+                        <div>
+                          <div className="flex items-center">
+                            <label
+                              htmlFor="codigo"
+                              className="block text-lg font-semibold"
+                            >
+                              Combinación Código
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            id="codigo"
+                            name="codigo"
+                            value={formik.values.codigo}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.codigo && formik.errors.codigo
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.codigo && formik.errors.codigo ? (
+                              <ErrorMessage>
+                                {formik.errors.codigo}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={() => setStadopen(false)}
+                    onClick={closeModal}
                   >
                     Cerrar
                   </button>
@@ -994,7 +1065,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                     {submiting ? "Enviando..." : "Enviar"}
                   </button>
                   {success && null}
-                  {error && <div className="text-red-500">{error}</div>}
+                  {error && null}
                 </div>
               </form>
             </div>
