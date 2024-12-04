@@ -71,6 +71,18 @@ const Calendario: React.FC = () => {
     setSelectedEvent(null);
     setShowModal(true);
   };
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    setShowModal(false);
+  };
+  if (showModal) {
+    openModal();
+  }
 
   return (
     <div className="flex flex-col items-center w-full p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
@@ -119,7 +131,7 @@ const Calendario: React.FC = () => {
           <section>
             <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 bg-white rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
               <button
-                onClick={() => setShowModal(false)} // Cerrar modal al hacer clic en "X"
+                onClick={closeModal} // Cerrar modal al hacer clic en "X"
                 className="absolute top-2 right-2"
               >
                 <div className="pr-2 text-xl text-gray-500 hover-gray-700">
@@ -204,18 +216,20 @@ const Calendario: React.FC = () => {
                       }
                       className="w-full p-2 px-3 mb-4 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                     />
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 ml-2 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      onClick={handleAddEvent}
-                      className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                    >
-                      Guardar Evento
-                    </button>
+                    <div className="flex justify-center gap-12">
+                      <button
+                        onClick={closeModal}
+                        className="px-4 py-2 ml-2 text-blue-400 rounded-md hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={handleAddEvent}
+                        className="px-4 py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                      >
+                        Guardar Evento
+                      </button>
+                    </div>
                   </div>
                 </>
               )}
