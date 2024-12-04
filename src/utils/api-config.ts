@@ -219,3 +219,8 @@ export const createSeguimientoItemEp = async (data: FormData, ep: string) => {
 export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
     return api.post(`/${ep}`, data);
 }
+
+// crear observacion item
+export const createActiveBreakesEp = async (data: FormData) => {
+    return api.post(`/active-brakes`, data);
+}

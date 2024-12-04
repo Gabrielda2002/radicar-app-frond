@@ -1,13 +1,67 @@
 // * Functions and hooks
 import { useState } from "react";
+import * as Yup from "yup";
 import useAnimation from "../../../hooks/useAnimations";
 import VideoFile from "../../../imgs/Pink Floyd – Time (Official Audio) (1).mp4";
+import { useFormik } from "formik";
+import { CreateActiveBreakes } from "../../../services/createActiveBreakes";
 const ModalPausasActivas = () => {
   // * Constants
   const [isModalPausasOpen, setIsModalPausasOpen] = useState(false);
   const { showAnimation, closing } = useAnimation(isModalPausasOpen, () =>
     setIsModalPausasOpen(false)
   );
+
+  const [success , setSuccess] = useState<boolean>(false)
+  const [error , setError] = useState<string>("")
+  const [loading , setLoading] = useState<boolean>(false)
+  
+  const user = localStorage.getItem("user");
+
+  const idUsuario = user ? JSON.parse(user).id : "";
+
+  const validationSchema = Yup.object({
+    observacion: Yup.string().optional()
+      .min(2, "La observación debe tener al menos 2 caracteres")
+      .max(200, "La observación debe tener como máximo 100 caracteres")
+  })
+
+  const formik = useFormik({
+    initialValues: {
+      observacion: ''
+    },
+    validationSchema,
+    onSubmit: async values => {
+
+      try {
+
+        setLoading(true)
+
+        const formData = new FormData()
+
+        formData.append('observation', values.observacion)
+        formData.append("userId", idUsuario)
+
+        const response = await CreateActiveBreakes(formData)
+
+        if (response?.status === 200 || response?.status === 201) {
+          setSuccess(true)
+          setError("")
+          setTimeout(() => {
+            setIsModalPausasOpen(false)
+            window.location.reload()
+          }, 2000)
+        }else{
+          setError("SUcedio un error al subir la observación")
+        }
+
+      } catch (error) {
+        setError(`Error inesperado ${error}`)
+      }
+
+      setLoading(false)
+    }
+  })
 
   return (
     <>
@@ -62,20 +116,35 @@ const ModalPausasActivas = () => {
               </div>
 
               {/* Caja de comentarios */}
-              <div>
+            <form onSubmit={formik.handleSubmit}>
                 <h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
                   Comentarios
                 </h3>
                 <div className="p-2 overflow-y-auto border rounded-lg dark:border-gray-700 dark:bg-gray-900 max-h-48">
                   <textarea
+                    name="observacion"
+                    onChange={formik.handleChange}
+                    value={formik.values.observacion}
+                    onBlur={formik.handleBlur}
                     className="w-full h-16 p-2 border rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                     placeholder="Escribe tu comentario aquí..."
                   ></textarea>
-                  <button className="px-4 py-2 mt-2 text-sm font-semibold text-white bg-teal-600 rounded hover:bg-teal-700">
+                  {formik.touched.observacion && formik.errors.observacion ? (
+                    <div className="text-red-500">{formik.errors.observacion}</div>
+                  ) : null}
+                  <button 
+                    type="submit"
+                    disabled={loading}
+                    className="px-4 py-2 mt-2 text-sm font-semibold text-white bg-teal-600 rounded hover:bg-teal-700"
+                  >
                     Enviar
                   </button>
+                  
+                  {success && <div className="text-green-500">Observación enviada correctamente</div>}
+                  {error && <div className="text-red-500">{error}</div>}
+
                 </div>
-              </div>
+              </form>
             </div>
           </section>
         </section>
