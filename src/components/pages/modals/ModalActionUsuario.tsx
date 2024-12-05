@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
   useFetchDocumento,
+  useFetchLugarRadicado,
   useFetchMunicipio,
   useFetchRoles,
 } from "../../../hooks/useFetchUsers";
@@ -24,7 +25,6 @@ interface ModalActionUsuarioProps {
   ususario: IUsuarios | null;
 }
 
-
 const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   id,
   ususario,
@@ -43,6 +43,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
   // hook para traer  las municipios
   const { municipios, errorMunicipios } = useFetchMunicipio(load);
+
+  // hook para traer las sedes
+  const { data } = useFetchLugarRadicado();
 
   useEffect(() => {
     if (isOpen) {
@@ -80,6 +83,18 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
             "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
           ),
         status: Yup.string().required("El estado es obligatorio"),
+        area: Yup.string()
+          .required("El área es obligatoria")
+          .min(2, "El área debe tener al menos 2 caracteres")
+          .max(100, "El área debe tener como máximo 100 caracteres"),
+        cargo: Yup.string()
+          .required("El cargo es obligatorio")
+          .min(2, "El cargo debe tener al menos 2 caracteres")
+          .max(200, "El cargo debe tener como máximo 200 caracteres"),
+        sede: Yup.string().required("La sede es obligatoria"),
+        celular: Yup.number()
+          .required("El celular es obligatorio")
+          .max(10, "El celular debe tener como máximo 10 caracteres"),
       }),
     []
   );
@@ -95,6 +110,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       municipio: "",
       contrasena: "",
       status: "",
+      area: "",
+      cargo: "",
+      sede: "",
+      celular: 0,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -143,6 +162,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         municipio: ususario.idMunicipio.toString(),
         contrasena: "",
         status: ususario.status ? "1" : "0",
+        area: ususario.area,
+        cargo: ususario.cargo,
+        sede: ususario.sedeId.toString(),
+        celular: ususario.celular,
       });
     }
   }, [ususario]);
@@ -160,13 +183,13 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
-  }
+  };
   const closeModal = () => {
     document.body.style.overflow = "auto";
-    toggleModal()
-  }
+    toggleModal();
+  };
   if (isOpen) {
-    openModal()
+    openModal();
   }
 
   if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
@@ -330,7 +353,105 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         ) : null}
                       </AnimatePresence>
                     </div>
+                    <div>
+                      <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                        Celular
+                      </label>
+                      <input
+                        name="celular"
+                        value={formik.values.celular}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        type="number"
+                        placeholder="Ingrese Celular..."
+                        className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.celular && formik.errors.celular
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.celular && formik.errors.celular ? (
+                          <ErrorMessage>{formik.errors.celular}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                        Area
+                      </label>
+                      <input
+                        name="area"
+                        value={formik.values.area}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        type="text"
+                        placeholder="Ingrese Area..."
+                        className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.area && formik.errors.area
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.area && formik.errors.area ? (
+                          <ErrorMessage>{formik.errors.area}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                        Cargo
+                      </label>
+                      <input
+                        name="cargo"
+                        value={formik.values.cargo}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        type="text"
+                        placeholder="Ingrese Cargo..."
+                        className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          formik.touched.cargo && formik.errors.cargo
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.cargo && formik.errors.cargo ? (
+                          <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                        Sede
+                      </label>
+                      <select
+                       name="sede" 
+                       id="sede"
+                       value={formik.values.sede}
+                       onChange={formik.handleChange}
+                       onBlur={formik.handleBlur}
+                       className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.sede && formik.errors.sede
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600" }`} 
+                       >
+                        <option value="">SELECCIONE</option>
+                        {data.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.sede && formik.errors.sede ? (
+                          <ErrorMessage>{formik.errors.sede}</ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
                   </div>
+
                   {/* USER MAIL AND DATES */}
                   <div className="flex items-center">
                     <IdentificationIcon className="text-gray-900 dark:text-gray-100 w-7 h-7" />

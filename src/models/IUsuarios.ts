@@ -13,4 +13,8 @@ export interface IUsuarios {
     idRol:       number;
     municipio:   string;
     idMunicipio: number;
+    area:       string;
+    cargo:       string;
+    sedeId:      number;
+    celular:     number;
 }
