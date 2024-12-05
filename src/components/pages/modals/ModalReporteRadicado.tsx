@@ -14,7 +14,6 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
   isOpen,
   onClose,
 }) => {
-
   // hook que trae los estados de CUPS
   const loadEstados = true;
   const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
@@ -38,7 +37,10 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
 
   const handleDownloadReport = async () => {
     try {
-      const endPoint: string = reportType == "1" ? "report-excel-filtro" : "report-excel-gestion-auxiliar";
+      const endPoint: string =
+        reportType == "1"
+          ? "report-excel-filtro"
+          : "report-excel-gestion-auxiliar";
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -61,12 +63,24 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
     [onClose]
   );
 
-
   const isDownloadDisabled = useMemo(() => {
     return !dateStartRadicado && !dateEndRadicado && !cupsCode && !estadoCups;
   }, [dateStartRadicado, dateEndRadicado, cupsCode, estadoCups]);
 
   if (!isOpen && !showAnimation) return null;
+
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    onClose();
+  };
+  if (isOpen) {
+    openModal();
+  }
 
   return (
     <div
@@ -92,7 +106,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
               className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 dark:text-gray-200 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
               onClick={() => {
                 // setShowSecondModal(false);
-                setTimeout(onClose, 300);
+                setTimeout(closeModal, 300);
               }}
             >
               &times;
@@ -106,7 +120,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                 <label className="block text-xl font-medium text-blue-500 dark:text-white">
                   Opciones de Reporte:
                 </label>
-                <select 
+                <select
                   name="reportType"
                   onChange={(e) => setReportType(e.target.value)}
                   className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:ring-gray-500 dark:focus:bg-slate-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -118,7 +132,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
               </div>
               {/* rango fecchas radicado */}
               <div className="mb-8">
-                <h3 className="mb-4 block text-gray-700 dark:text-gray-300">
+                <h3 className="block mb-4 text-gray-700 dark:text-gray-300">
                   Seleccione el rango del periodo de reporte:
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -148,24 +162,24 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
               </div>
               {/* Código CUPS */}
               {reportType == "1" && (
-              <div className="mb-6">
-                <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white">
-                  Código CUPS:
-                </label>
-                <input
-                  type="text"
-                  name="cupsCode"
-                  onChange={(e) => {
-                    setCupsCode(e.target.value);
-                  }}
-                  placeholder="Ingrese código..."
-                  className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:ring-gray-500 dark:focus:bg-slate-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                />
-              </div>
+                <div className="mb-6">
+                  <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white">
+                    Código CUPS:
+                  </label>
+                  <input
+                    type="text"
+                    name="cupsCode"
+                    onChange={(e) => {
+                      setCupsCode(e.target.value);
+                    }}
+                    placeholder="Ingrese código..."
+                    className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring dark:ring-gray-500 dark:focus:bg-slate-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
               )}
               {/* estado de cups radicados */}
               {reportType == "1" && (
-              <div className="mb-6">
+                <div className="mb-6">
                   <label className="flex mb-2 text-xl font-semibold text-blue-500 dark:text-white">
                     Estado de los servicios radicados:
                   </label>
@@ -186,7 +200,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   {errorEstados && (
                     <p className="mt-2 text-red-500">{errorEstados}</p>
                   )}
-              </div>
+                </div>
               )}
             </div>
 
@@ -196,7 +210,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                 type="button"
                 onClick={() => {
                   // setShowSecondModal(false);
-                  setTimeout(onClose, 300);
+                  setTimeout(closeModal, 300);
                 }}
                 className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
@@ -204,7 +218,9 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
               </button>
               <button
                 type="submit"
-                className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${isDownloadDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
+                  isDownloadDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 onClick={handleDownloadReport}
                 disabled={isDownloadDisabled}
               >

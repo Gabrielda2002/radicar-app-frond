@@ -50,33 +50,39 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     }
   }, [isOpen]);
 
-  const validationSchema = useMemo(()=> Yup.object({
-    tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
-    correo: Yup.string().required("El correo es obligatorio"),
-    identificacion: Yup.string()
-      .required("La identificación es obligatoria")
-      .min(5, "La identificación debe tener al menos 5 caracteres")
-      .max(11, "La identificación debe tener como máximo 15 caracteres"),
-    nombres: Yup.string()
-      .required("El nombre completo es obligatorio")
-      .min(2, "El nombre completo debe tener al menos 2 caracteres")
-      .max(150, "El nombre completo debe tener como máximo 150 caracteres"),
-    apellidos: Yup.string()
-      .required("El nombre completo es obligatorio")
-      .min(2, "El nombre completo debe tener al menos 2 caracteres")
-      .max(150, "El nombre completo debe tener como máximo 150 caracteres"),
-    rol: Yup.string().required("El rol es obligatorio"),
-    municipio: Yup.string().required("El municipio es obligatorio"),
-    contrasena: Yup.string()
-      .optional()
-      .min(8, "Debe tener minimo 8 caracteres")
-      .max(150, "Debe tener máximo 150 caracteres")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
-        "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
-      ),
-    status: Yup.string().required("El estado es obligatorio")
-  }), []);
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        tipoDocumento: Yup.string().required(
+          "El tipo de documento es obligatorio"
+        ),
+        correo: Yup.string().required("El correo es obligatorio"),
+        identificacion: Yup.string()
+          .required("La identificación es obligatoria")
+          .min(5, "La identificación debe tener al menos 5 caracteres")
+          .max(11, "La identificación debe tener como máximo 15 caracteres"),
+        nombres: Yup.string()
+          .required("El nombre completo es obligatorio")
+          .min(2, "El nombre completo debe tener al menos 2 caracteres")
+          .max(150, "El nombre completo debe tener como máximo 150 caracteres"),
+        apellidos: Yup.string()
+          .required("El nombre completo es obligatorio")
+          .min(2, "El nombre completo debe tener al menos 2 caracteres")
+          .max(150, "El nombre completo debe tener como máximo 150 caracteres"),
+        rol: Yup.string().required("El rol es obligatorio"),
+        municipio: Yup.string().required("El municipio es obligatorio"),
+        contrasena: Yup.string()
+          .optional()
+          .min(8, "Debe tener minimo 8 caracteres")
+          .max(150, "Debe tener máximo 150 caracteres")
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
+            "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
+          ),
+        status: Yup.string().required("El estado es obligatorio"),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -149,6 +155,19 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  }
+  const closeModal = () => {
+    document.body.style.overflow = "auto";
+    toggleModal()
+  }
+  if (isOpen) {
+    openModal()
+  }
 
   if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
   if (errorMunicipios) return <p>Error al cargar los convenios</p>;
@@ -187,7 +206,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 </h1>
                 <button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={closeModal}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
                 >
                   &times;
@@ -463,14 +482,13 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         </label>
                       ) : null}
                     </div>
-
                   </div>
                 </div>
 
                 {/* Botones */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-t-gray-900 dark:border-t-white h-14 dark:bg-gray-600">
                   <button
-                    onClick={toggleModal}
+                    onClick={closeModal}
                     type="button"
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >

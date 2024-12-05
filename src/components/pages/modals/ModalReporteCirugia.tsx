@@ -39,6 +39,18 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
   const isDownloadDisabled = !dateStartRadicado || !dateEndRadicado;
 
   if (!isOpen && !showAnimation) return null;
+  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
+  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+  }
+  const closeModal = () => {
+    document.body.style.overflow = "";
+    onCLose();
+  }
+  if(isOpen) {
+    openModal()
+  }
 
   return (
     <div
@@ -63,7 +75,7 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
             <button
               className="text-xl text-gray-500 duration-200 rounded-md w-7 h.7 dark:text-gray-200 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
               onClick={() => {
-                setTimeout(onCLose, 300);
+                setTimeout(closeModal, 300);
               }}
             >
               &times;
@@ -105,7 +117,7 @@ const ModalReporteCirugia: React.FC<ModalCirugiaProps> = ({
             <button
               type="button"
               onClick={() => {
-                setTimeout(onCLose, 300);
+                setTimeout(closeModal, 300);
               }}
               className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
             >
