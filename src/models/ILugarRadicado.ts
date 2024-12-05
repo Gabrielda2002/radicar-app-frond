@@ -9,6 +9,7 @@ export interface ILugarRadicacion {
     createdAt:          Date;
     departmentRelation: Relation;
     municipioRelation:  Relation;
+    numeroSede:         number;
 }
 
 export interface Relation {
