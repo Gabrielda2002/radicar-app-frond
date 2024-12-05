@@ -92,8 +92,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
           .min(2, "El cargo debe tener al menos 2 caracteres")
           .max(200, "El cargo debe tener como máximo 200 caracteres"),
         sede: Yup.string().required("La sede es obligatoria"),
-        celular: Yup.number()
+        celular: Yup.string()
           .required("El celular es obligatorio")
+          .min(1, "El celular debe tener al menos 1 caracteres")
           .max(10, "El celular debe tener como máximo 10 caracteres"),
       }),
     []
@@ -113,7 +114,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       area: "",
       cargo: "",
       sede: "",
-      celular: 0,
+      celular: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -128,6 +129,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         formData.append("municipio", values.municipio);
         formData.append("password", values.contrasena);
         formData.append("status", values.status);
+        formData.append("area", values.area);
+        formData.append("position", values.cargo);
+        formData.append("headquarters", values.sede);
+        formData.append("phoneNumber", values.celular);
 
         const response = await updateUsuarios(id, formData);
 
@@ -165,7 +170,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         area: ususario.area,
         cargo: ususario.cargo,
         sede: ususario.sedeId.toString(),
-        celular: ususario.celular,
+        celular: ususario.celular.toString(),
       });
     }
   }, [ususario]);
@@ -362,7 +367,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         value={formik.values.celular}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        type="number"
+                        type="text"
                         placeholder="Ingrese Celular..."
                         className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                           formik.touched.celular && formik.errors.celular
