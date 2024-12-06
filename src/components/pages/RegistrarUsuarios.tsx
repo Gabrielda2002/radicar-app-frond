@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import ErrorMessage from "../ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createUser } from "../../services/createUser";
+import areas from '../../data-dynamic/areas.json'; 
 //*Icons
 import logo from "/src/imgs/logo.png";
 import { useFormik } from "formik";
@@ -94,8 +95,8 @@ const RegistrarUsuarios: React.FC = () => {
       apellidosCompletos: "",
       correo: "",
       contraseña: "",
-      date: "",
       area: "",
+      date: "",
       cargo: "",
       sede: "",
       celular: ""
@@ -245,9 +246,9 @@ const RegistrarUsuarios: React.FC = () => {
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
                 Area
               </label>
-              <input
-                type="text"
-                name="area"
+              <select
+               name="area" 
+               id="area"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.area && formik.errors.area
                     ? "border-red-500 dark:border-red-500"
@@ -256,7 +257,16 @@ const RegistrarUsuarios: React.FC = () => {
                 value={formik.values.area}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-              />
+               >
+                <option value="">SELECCIONE</option>
+                {
+                  areas.areas.map((area) => (
+                    <option key={area.id} value={area.id}>
+                      {area.name}
+                    </option>
+                  ))
+                }
+               </select>
               <AnimatePresence>
                 {formik.touched.area && formik.errors.area ? (
                   <ErrorMessage>{formik.errors.area}</ErrorMessage>
@@ -269,8 +279,7 @@ const RegistrarUsuarios: React.FC = () => {
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
                 Cargo
               </label>
-              <input
-                type="text"
+              <select
                 name="cargo"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.cargo && formik.errors.cargo
@@ -280,7 +289,16 @@ const RegistrarUsuarios: React.FC = () => {
                 value={formik.values.cargo}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-              />
+              >
+                <option value="">SELECCIONE</option>
+                {
+                  areas.cargos.map((cargo) => (
+                    <option key={cargo.id} value={cargo.id}>
+                      {cargo.name}
+                    </option>
+                  ))
+                }
+              </select>
               <AnimatePresence>
                 {formik.touched.cargo && formik.errors.cargo ? (
                   <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
