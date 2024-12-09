@@ -3,9 +3,15 @@ import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import * as Yup from 'yup'
 import ErrorMessage from '../../ErrorMessageModals'
+import { createEvent } from '../../../services/createEvent'
 
 const ModalCrearEvento = () => {
 
+    // * estados para controloar las respuestas del formulario
+    const [error, setError] = useState<string | null>("")
+    const [success, setSuccess] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    
     const [modalOpen, setModalOpen] = useState(false)
 
     const validationSchema = Yup.object({
@@ -30,8 +36,37 @@ const ModalCrearEvento = () => {
             fechaFin: ""
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values)
+        onSubmit: async (values) => {
+            try {
+                
+                setLoading(true)
+
+                const formData = new FormData()
+                formData.append("title", values.titulo)
+                formData.append("description", values.descripcion)
+                formData.append("color", values.color)
+                formData.append("dateStart", values.fechaInicio)
+                formData.append("dateEnd", values.fechaFin)
+
+                const response = await createEvent(formData)
+
+                if (response?.status === 200 || response?.status === 201) {
+                    setSuccess(true)
+                    formik.resetForm()
+                    setError(null)
+                    setTimeout(() => {
+                        setModalOpen(false)
+                    }, 2000)
+                }else{
+                    setError("Ocurrió un error al crear el evento.")
+                }
+
+            } catch (error) {
+                setError(`Ocurrió un error inesperado: ${error}`)
+            }finally{
+                setLoading(false)
+            }
+
         }
     })
 
@@ -105,7 +140,7 @@ const ModalCrearEvento = () => {
                     </label>
                     <input
                       type="text"
-                      name="description"
+                      name="descripcion"
                       value={formik.values.descripcion}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -203,26 +238,27 @@ const ModalCrearEvento = () => {
                   <button
                     onClick={closeModal}
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-500 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                    disabled={loading}
                   >
                     Cerrar
                   </button>
                   <button
                     className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
                     type="submit"
+                    disabled={loading}
                   >
                     Subir
                   </button>
-                  {/* {success && (
+                   {success && (
                     <div className="text-green-500 dark:text-green-300">
-                      {modulo == "cups" ? "CUPS" : "Diagnostico"} creado
-                      correctamente.
+                      Evento creado correctamente.
                     </div>
                   )}
                   {error && (
                     <div className="text-red-500 dark:text-red-300">
                       {error}
                     </div>
-                  )} */}
+                  )} 
                 </div>
               </form>
 
