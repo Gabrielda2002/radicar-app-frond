@@ -595,12 +595,15 @@ export const useFetchDocumentoRadicado = () => {
  return { radicados, loading, errorRadicados, getData };
 }
 
-export const useFetchEvents = () => {
+export const useFetchEvents = (shouldFetch: boolean) => {
   const [evetns, setEvents] = useState<IEventos[] | null>([]);
   const [loadingEventos, setLoadingEventos] = useState(false);
   const [errorEventos, setErrorEventos] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
     const getData = async () => {
       try {
         const events = await fetchEventosEp();
@@ -614,7 +617,7 @@ export const useFetchEvents = () => {
       }
     }
     getData();
-  })
+  }, [shouldFetch]);
   return { evetns, loadingEventos, errorEventos };
 
 } 
