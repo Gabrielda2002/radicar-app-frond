@@ -73,12 +73,8 @@ const RegistrarUsuarios: React.FC = () => {
             "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
           ),
         // date: Yup.date().required("La fecha de nacimiento es obligatoria"),
-        area: Yup.string().required("El área es obligatoria")
-          .min(2, "Debe tener minimo 2 caracteres")
-          .max(100, "Debe tener máximo 100 caracteres"),
-        cargo: Yup.string().required("El cargo es obligatorio")
-          .min(2, "Debe tener minimo 2 caracteres")
-          .max(200, "Debe tener máximo 200 caracteres"),
+        area: Yup.string().required("El área es obligatoria"),
+        cargo: Yup.string().required("El cargo es obligatorio"),
         sede: Yup.string().required("La sede es obligatoria"),
         celular: Yup.string().required("El celular es obligatorio")
       }),
@@ -103,7 +99,6 @@ const RegistrarUsuarios: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
 
       const formData = new FormData();
       formData.append("municipio", values.municipio);
@@ -130,6 +125,8 @@ const RegistrarUsuarios: React.FC = () => {
           setSuccess(true);
           setErrorPage(null);
           formik.resetForm();
+        }else{
+          setErrorPage(`Ocurrio un error al registrar el usuario: ${response?.data.message}`);
         }
       } catch (error) {
         setErrorPage(`Ocurrio un error al registrar el usuario: ${error}`);
@@ -261,7 +258,7 @@ const RegistrarUsuarios: React.FC = () => {
                 <option value="">SELECCIONE</option>
                 {
                   areas.areas.map((area) => (
-                    <option key={area.id} value={area.id}>
+                    <option key={area.id} value={area.name}>
                       {area.name}
                     </option>
                   ))
@@ -293,7 +290,7 @@ const RegistrarUsuarios: React.FC = () => {
                 <option value="">SELECCIONE</option>
                 {
                   areas.cargos.map((cargo) => (
-                    <option key={cargo.id} value={cargo.id}>
+                    <option key={cargo.id} value={cargo.name}>
                       {cargo.name}
                     </option>
                   ))
