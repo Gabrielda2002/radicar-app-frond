@@ -1,103 +1,71 @@
 //*Fuctions and Hooks
 import "moment/locale/es";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, momentLocalizer, Event } from "react-big-calendar";
+import { Calendar, momentLocalizer,  } from "react-big-calendar";
+// import { IEventos } from "../../models/IEventos";
+// import { useFetchEvents } from "../../hooks/useFetchUsers";
+import ModalCrearEvento from "./modals/ModalCrearEvento";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");
 
-interface MyEvent extends Event {
-  description: string;
-  images: string[];
-  color: string;
-}
 
 const Calendario: React.FC = () => {
-  const [events, setEvents] = useState<MyEvent[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<MyEvent | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [newEvent, setNewEvent] = useState<MyEvent>({
-    title: "",
-    start: new Date(),
-    end: new Date(),
-    description: "",
-    images: [],
-    color: "#00776f",
-  });
+  // const [events, setEvents] = useState<IEventos[]>([]);
+  // const [selectedEvent, setSelectedEvent] = useState<IEventos | null>(null);
+  // const [showModal, setShowModal] = useState(false);
+  // hook para traer los eventos
+  // const  { evetns, loadingEventos, errorEventos } = useFetchEvents();
 
   const { rol } = useAuth();
 
-  //*Cargar los eventos desde el localStorage al cargar la página
-  useEffect(() => {
-    const storedEvents = localStorage.getItem("events");
-    if (storedEvents) {
-      setEvents(JSON.parse(storedEvents));
-    }
-  }, []);
+  // //*Función para agregar nuevos eventos y guardarlos en localStorage
+  // const handleAddEvent = () => {
+  //   const updatedEvents = [...events, newEvent];
+  //   setEvents(updatedEvents);
+  //   localStorage.setItem("events", JSON.stringify(updatedEvents));
+  //   setShowModal(false); //*Cerrar el modal
+  //   setNewEvent({
+  //     title: "",
+  //     start: new Date(),
+  //     end: new Date(),
+  //     description: "",
+  //     images: [],
+  //     color: "#00776f", //*Restablecer color por defecto
+  //   });
+  // };
 
-  //*Función para agregar nuevos eventos y guardarlos en localStorage
-  const handleAddEvent = () => {
-    const updatedEvents = [...events, newEvent];
-    setEvents(updatedEvents);
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
-    setShowModal(false); //*Cerrar el modal
-    setNewEvent({
-      title: "",
-      start: new Date(),
-      end: new Date(),
-      description: "",
-      images: [],
-      color: "#00776f", //*Restablecer color por defecto
-    });
-  };
+  // //*Función para eliminar un evento
+  // const handleDeleteEvent = (eventToDelete: MyEvent) => {
+  //   const updatedEvents = events.filter((event) => event !== eventToDelete);
+  //   setEvents(updatedEvents);
+  //   localStorage.setItem("events", JSON.stringify(updatedEvents));
+  //   setSelectedEvent(null); //*Restablecer el evento seleccionado
+  // };
 
-  //*Función para eliminar un evento
-  const handleDeleteEvent = (eventToDelete: MyEvent) => {
-    const updatedEvents = events.filter((event) => event !== eventToDelete);
-    setEvents(updatedEvents);
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
-    setSelectedEvent(null); //*Restablecer el evento seleccionado
-  };
+  // const handleSelectEvent = (event: MyEvent) => {
+  //   setSelectedEvent(event);
+  //   setShowModal(true); //*Mostrar modal al seleccionar un evento
+  // };
 
-  const handleSelectEvent = (event: MyEvent) => {
-    setSelectedEvent(event);
-    setShowModal(true); //*Mostrar modal al seleccionar un evento
-  };
-
-  const handleAddEventClick = () => {
-    setSelectedEvent(null);
-    setShowModal(true);
-  };
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setShowModal(false);
-  };
-  if (showModal) {
-    openModal();
-  }
 
   return (
     <div className="flex flex-col items-center w-full p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
       <div className="w-full dark:text-gray-200">
         <Calendar
           localizer={localizer}
-          events={events}
+          // events={events}
           views={["month", "agenda"]}
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
-          onSelectEvent={handleSelectEvent}
-          eventPropGetter={(event) => ({
-            style: { backgroundColor: event.color }, //*Asignar color al evento
-          })}
+          // onSelectEvent={handleSelectEvent}
+          // eventPropGetter={(event) => ({
+          //   style: { backgroundColor: event.color }, //*Asignar color al evento
+          // })}
           messages={{
             today: "Hoy",
             previous: "Anterior",
@@ -117,16 +85,11 @@ const Calendario: React.FC = () => {
       </div>
       <br />
       {[1, 2].includes(Number(rol)) && (
-        <button
-          onClick={handleAddEventClick}
-          className="px-4 py-2 mb-4 text-black duration-300 ease-in-out bg-gray-300 rounded-md hover:bg-gray-700 hover:text-white dark:text-white active:bg-emerald-950 dark:bg-color dark:hover:bg-teal-600"
-        >
-          Agregar Evento
-        </button>
+        <ModalCrearEvento/>
       )}
 
       {/* Modal para mostrar eventos y agregar uno nuevo */}
-      {showModal && (
+      {/* {showModal && (
         <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
           <section>
             <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 bg-white rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
@@ -236,7 +199,7 @@ const Calendario: React.FC = () => {
             </div>
           </section>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
