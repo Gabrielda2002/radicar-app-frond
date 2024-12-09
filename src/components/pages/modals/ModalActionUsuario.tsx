@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import areas from '../../../data-dynamic/areas.json'; 
 import {
   useFetchDocumento,
   useFetchLugarRadicado,
@@ -389,19 +390,24 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Area
                         </label>
-                        <input
+                        <select
                           name="area"
                           value={formik.values.area}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          type="text"
-                          placeholder="Ingrese Area..."
                           className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                             formik.touched.area && formik.errors.area
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
-                        />
+                        >
+                          <option value="">SELECCIONE</option>
+                          {areas.areas.map((item) => (
+                            <option key={item.id} value={item.name}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
                         <AnimatePresence>
                           {formik.touched.area && formik.errors.area ? (
                             <ErrorMessage>{formik.errors.area}</ErrorMessage>
@@ -412,19 +418,26 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Cargo
                         </label>
-                        <input
+                        <select
                           name="cargo"
                           value={formik.values.cargo}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          type="text"
-                          placeholder="Ingrese Cargo..."
                           className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                             formik.touched.cargo && formik.errors.cargo
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
-                        />
+                        >
+                          <option value="">SELECCIONE</option>  
+                          {
+                            areas.cargos.map((item) => (
+                              <option key={item.id} value={item.name}>
+                                {item.name}
+                              </option>
+                            ))
+                          }
+                        </select>
                         <AnimatePresence>
                           {formik.touched.cargo && formik.errors.cargo ? (
                             <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
