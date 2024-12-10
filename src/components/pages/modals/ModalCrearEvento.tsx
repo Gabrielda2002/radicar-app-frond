@@ -6,6 +6,7 @@ import ErrorMessage from "../../ErrorMessageModals";
 import { createEvent } from "../../../services/createEvent";
 import { IEventos } from "../../../models/IEventos";
 import { format } from "date-fns";
+import { useAuth } from "../../../context/authContext";
 
 interface ModalCrearEventoProps {
   isOpen: boolean;
@@ -88,6 +89,8 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     },
   });
 
+
+  const { rol } = useAuth();
   
 
   return (
@@ -227,7 +230,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
 
                 {/* Botones */}
 
-                {!isEditing && initialData && (
+                {!isEditing && initialData && [1, 2].includes(Number(rol)) && (
                   <button
                     type="button"
                     onClick={onEdit}
@@ -244,6 +247,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   >
                     Cerrar
                   </button>
+                  {[1, 2].includes(Number(rol)) && (
                   <button
                     className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
                     type="submit"
@@ -251,6 +255,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   >
                     Subir
                   </button>
+                  )}
                   {success && (
                     <div className="text-green-500 dark:text-green-300">
                       Evento creado correctamente.
