@@ -9,6 +9,8 @@ import { Calendar, momentLocalizer,  } from "react-big-calendar";
 import { useFetchEvents } from "../../hooks/useFetchUsers";
 import ModalCrearEvento from "./modals/ModalCrearEvento";
 import LoadingSpinner from "../LoadingSpinner";
+import { useEventModal } from "../../hooks/useEventModal";
+import { IEventos } from "../../models/IEventos";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");
@@ -16,11 +18,20 @@ moment.locale("es");
 
 const Calendario: React.FC = () => {
 
+    const {
+      selectedEvent,
+      isModalOpen,
+      isEditing,
+      handleEventSelect,
+      handleEditMode,
+      handleCloseModal
+    } = useEventModal();
+
   const load = true;
    const  { evetns, loadingEventos, errorEventos } = useFetchEvents(load);
-   console.log(evetns)
 
    const calendarEvents = evetns?.map((event) => ({
+      ...event,
       title: event.title,
       start: new Date(event.dateStart),
       end: new Date(event.dateEnd),
@@ -50,6 +61,17 @@ const Calendario: React.FC = () => {
               borderRadius: '5px'
             }
           })}
+          onSelectEvent={(event: IEventos) => {
+            const selectedEvent = {
+              id: event.id,
+              title: event.title,
+              dateStart: event.dateStart,
+              dateEnd: event.dateEnd,
+              description: event.description,
+              color: event.color,
+            }
+            handleEventSelect(selectedEvent);
+          }}
           messages={{
             today: "Hoy",
             previous: "Anterior",
@@ -69,8 +91,20 @@ const Calendario: React.FC = () => {
       </div>
       <br />
       {[1, 2].includes(Number(rol)) && (
-        <ModalCrearEvento/>
+        <button 
+        onClick={() => handleEventSelect(null)}
+        className="mt-4 btn-primary"
+      >
+        Crear Evento
+      </button>
       )}
+      <ModalCrearEvento
+        isOpen={isModalOpen}
+        isEditing={isEditing}
+        initialData={selectedEvent || undefined}
+        onClose={handleCloseModal}
+        onEdit={handleEditMode}
+      />
     </div>
   );
 };
