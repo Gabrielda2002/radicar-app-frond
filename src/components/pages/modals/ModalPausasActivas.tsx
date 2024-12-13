@@ -191,29 +191,57 @@ const ModalPausasActivas = () => {
 
               {/* Caja de comentarios */}
               <form onSubmit={formik.handleSubmit}>
-                <h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
-                  Comentarios
-                </h3>
-                <div className="p-2 overflow-y-auto border rounded-lg dark:border-gray-700 dark:bg-gray-900 max-h-48">
-                  <textarea
-                    name="observacion"
-                    onChange={formik.handleChange}
-                    value={formik.values.observacion}
-                    onBlur={formik.handleBlur}
-                    className="w-full h-16 p-2 border rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    placeholder="Escribe tu comentario aquí..."
-                  ></textarea>
-                  {formik.touched.observacion && formik.errors.observacion ? (
-                    <div className="text-red-500">
-                      {formik.errors.observacion}
-                    </div>
-                  ) : null}
+                <div className="mb-2 bg-gray-700">
+                  <p className="text-sm text-gray-800 dark:text-white p-2 border-l-4 rounded-lg border-yellow-300 dark:border-yellow-500">
+                    <span className="inline-flex items-center px-2 py-1 text-xs font-bold text-yellow-800 bg-yellow-300 rounded-full">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 9v2m0 4h.01M12 5.5a7.5 7.5 0 11-7.5 7.5 7.5 7.5 0 017.5-7.5z"
+                        ></path>
+                      </svg>
+                      Advertencia
+                    </span>
+                    Para que sea registrada la pausa activa se debe ver el video
+                    completo, la ventana se cerrará automáticamente una vez
+                    terminado el video. Los botones de accion estaran bloqueados
+                    durante la reproduccion de la pausa activa.
+                  </p>
+                </div>
+
+                <div className="mb-4">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
+                    Comentario de la pausa activa:
+                  </h3>
+                  <div className="p-2 overflow-y-auto border rounded-lg dark:border-gray-700 dark:bg-gray-900 max-h-48">
+                    <textarea
+                      name="observacion"
+                      onChange={formik.handleChange}
+                      value={formik.values.observacion}
+                      onBlur={formik.handleBlur}
+                      className="w-full h-16 p-2 border rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                      placeholder="Escribe tu comentario aquí..."
+                    ></textarea>
+                    {formik.touched.observacion && formik.errors.observacion ? (
+                      <div className="text-red-500">
+                        {formik.errors.observacion}
+                      </div>
+                    ) : null}
+                  </div>
                   <button
                     type="submit"
                     disabled={!videoCompleted || loading}
                     className="px-4 py-2 mt-2 text-sm font-semibold text-white bg-teal-600 rounded hover:bg-teal-700"
                   >
-                    {loading ? "Enviando..." : "Registrar pausa activas"}
+                    {loading ? "Enviando..." : "Registrar pausa activa"}
                   </button>
 
                   {success && (
