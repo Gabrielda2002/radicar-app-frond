@@ -10,6 +10,7 @@ import {
   fetchDocumento,
   fetchEspecialidad,
   fetchEstados,
+  fetchEventosEp,
   fetchIpsPrimaria,
   fetchIpsRemite,
   fetchLugarRadicado,
@@ -44,6 +45,7 @@ import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
+import { IEventos } from "../models/IEventos";
 
 export const useFetchUsers = () => {
   const [data, setData] = useState<IRadicados[]>([]);
@@ -592,3 +594,30 @@ export const useFetchDocumentoRadicado = () => {
   }
  return { radicados, loading, errorRadicados, getData };
 }
+
+export const useFetchEvents = (shouldFetch: boolean) => {
+  const [evetns, setEvents] = useState<IEventos[] | null>([]);
+  const [loadingEventos, setLoadingEventos] = useState(false);
+  const [errorEventos, setErrorEventos] = useState<string | null>(null);
+
+  useEffect(() => {
+
+    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
+
+    const getData = async () => {
+      try {
+        const events = await fetchEventosEp();
+        setEvents(events);
+        setErrorEventos(null);
+      } catch (error) {
+        setErrorEventos("Error al obtener los eventos o no tienes los permisos necesarios. " + error);
+        setEvents(null);
+      } finally {
+        setLoadingEventos(false);
+      }
+    }
+    getData();
+  }, [shouldFetch]);
+  return { evetns, loadingEventos, errorEventos };
+
+} 

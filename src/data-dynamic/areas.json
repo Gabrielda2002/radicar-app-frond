@@ -1,0 +1,406 @@
+{
+    "areas": [
+        {
+            "id": 1,
+            "type": "area",
+            "name": "LABORATORIO CLINICO"
+        },
+        {
+            "id": 2,
+            "type": "area",
+            "name": "ODONTOLOGIA"
+        },
+        {
+            "id": 3,
+            "type": "area",
+            "name": "ENFERMERIA"
+        },
+        {
+            "id": 4,
+            "type": "area",
+            "name": "TERAPEUTICO"
+        },
+        {
+            "id": 5,
+            "type": "area",
+            "name": "ADMINISTRATIVA"
+        },
+        {
+            "id": 6,
+            "type": "area",
+            "name": "MEDICINA GENERAL"
+        },
+        {
+            "id": 7,
+            "type": "area",
+            "name": "SERVICIO AL CLIENTE"
+        },
+        {
+            "id": 8,
+            "type": "area",
+            "name": "SSTSG"
+        },
+        {
+            "id": 9,
+            "type": "area",
+            "name": "SISTEMAS"
+        },
+        {
+            "id": 10,
+            "type": "area",
+            "name": "OPTICA"
+        },
+        {
+            "id": 11,
+            "type": "area",
+            "name": "LOGISTICO"
+        },
+        {
+            "id": 12,
+            "type": "area",
+            "name": "SIAU"
+        },
+        {
+            "id": 13,
+            "type": "area",
+            "name": "DIRECCION MEDICA"
+        },
+        {
+            "id": 14,
+            "type": "area",
+            "name": "GERENCIA"
+        },
+        {
+            "id": 15,
+            "type": "area",
+            "name": "CONTABILIDAD"
+        },
+        {
+            "id": 16,
+            "type": "area",
+            "name": "COMPRAS"
+        },
+        {
+            "id": 17,
+            "type": "area",
+            "name": "REDES SOCIALES Y COMUNICACIONES"
+        },
+        {
+            "id": 18,
+            "type": "area",
+            "name": "CALIDAD"
+        },
+        {
+            "id": 19,
+            "type": "area",
+            "name": "GESTION HUMANA"
+        },
+        {
+            "id": 20,
+            "type": "area",
+            "name": "JURIDICA"
+        },
+        {
+            "id": 21,
+            "type": "area",
+            "name": "ARCHIVO CLINICO"
+        }
+    ],
+    "cargos": [
+        {
+            "id": 22,
+            "type": "cargo",
+            "name": "AUXILIAR LABORATORIO"
+        },
+        {
+            "id": 23,
+            "type": "cargo",
+            "name": "ODONTOLOGO"
+        },
+        {
+            "id": 24,
+            "type": "cargo",
+            "name": "AUXILIAR ENFERMERIA"
+        },
+        {
+            "id": 25,
+            "type": "cargo",
+            "name": "FISIOTERAPEUTA"
+        },
+        {
+            "id": 26,
+            "type": "cargo",
+            "name": "NUTRICIONISTA"
+        },
+        {
+            "id": 27,
+            "type": "cargo",
+            "name": "AUXILIAR ADMINISTRATIVO"
+        },
+        {
+            "id": 28,
+            "type": "cargo",
+            "name": "MEDICO GENERAL"
+        },
+        {
+            "id": 29,
+            "type": "cargo",
+            "name": "AUXILIAR DE SERVICIO AL USUARIO"
+        },
+        {
+            "id": 30,
+            "type": "cargo",
+            "name": "AUXILIAR DE SGSST"
+        },
+        {
+            "id": 31,
+            "type": "cargo",
+            "name": "COORDINADORA DE ENFERMERIA"
+        },
+        {
+            "id": 32,
+            "type": "cargo",
+            "name": "COORDINADOR EN SISTEMAS DE INFORMACION NACIONAL"
+        },
+        {
+            "id": 33,
+            "type": "cargo",
+            "name": "AUX ADMINISTRATIVO-OPTICA"
+        },
+        {
+            "id": 34,
+            "type": "cargo",
+            "name": "FISIOTERAPEUTA COORD"
+        },
+        {
+            "id": 35,
+            "type": "cargo",
+            "name": "ENFERMERA JEFE"
+        },
+        {
+            "id": 36,
+            "type": "cargo",
+            "name": "AUXILIAR SERVICIOS GENERALES"
+        },
+        {
+            "id": 37,
+            "type": "cargo",
+            "name": "BACTERIOLOGO"
+        },
+        {
+            "id": 38,
+            "type": "cargo",
+            "name": "TRABAJADORA SOCIAL"
+        },
+        {
+            "id": 39,
+            "type": "cargo",
+            "name": "AUXILIAR DE ENFERMERIA"
+        },
+        {
+            "id": 40,
+            "type": "cargo",
+            "name": "AUXILIAR SISTEMAS"
+        },
+        {
+            "id": 41,
+            "type": "cargo",
+            "name": "AUXILIAR ADMINISTRATIVO"
+        },
+        {
+            "id": 42,
+            "type": "cargo",
+            "name": "JEFE DE AUTORIZACIONES"
+        },
+        {
+            "id": 43,
+            "type": "cargo",
+            "name": "JEFE SERVICIO AL USUARIO"
+        },
+        {
+            "id": 44,
+            "type": "cargo",
+            "name": "COORDINADOR RECURSOS FISICOS Y DE APOYO REGIONAL"
+        },
+        {
+            "id": 45,
+            "type": "cargo",
+            "name": "COORDINADOR ADMINISTRATIVO DE SEDE"
+        },
+        {
+            "id": 46,
+            "type": "cargo",
+            "name": "GERENTE"
+        },
+        {
+            "id": 47,
+            "type": "cargo",
+            "name": "PROFESIONAL ADMINISTRATIVO OPTICA"
+        },
+        {
+            "id": 48,
+            "type": "cargo",
+            "name": "COORDINADOR ADMINISTRATIVO"
+        },
+        {
+            "id": 49,
+            "type": "cargo",
+            "name": "AUXILIAR CONTABLE"
+        },
+        {
+            "id": 50,
+            "type": "cargo",
+            "name": "AUXILIAR ENFERMERIA PYM"
+        },
+        {
+            "id": 51,
+            "type": "cargo",
+            "name": "AUXILIAR SERVICIO AL USUARIO"
+        },
+        {
+            "id": 52,
+            "type": "cargo",
+            "name": "LIDER DE COMPRAS"
+        },
+        {
+            "id": 53,
+            "type": "cargo",
+            "name": "ORIENTADOR"
+        },
+        {
+            "id": 54,
+            "type": "cargo",
+            "name": "ASISTENTE ADMINISTRATIVO (CONTABILIDAD-COMPRAS)"
+        },
+        {
+            "id": 55,
+            "type": "cargo",
+            "name": "ENFERMERA JEFE - COORDINADORA"
+        },
+        {
+            "id": 56,
+            "type": "cargo",
+            "name": "PSICOLOGO"
+        },
+        {
+            "id": 57,
+            "type": "cargo",
+            "name": "FONOAUDIOLOGA"
+        },
+        {
+            "id": 58,
+            "type": "cargo",
+            "name": "DISEÑADOR GRAFICO"
+        },
+        {
+            "id": 59,
+            "type": "cargo",
+            "name": "DIRECTOR MEDICO NACIONAL"
+        },
+        {
+            "id": 60,
+            "type": "cargo",
+            "name": "AUXILIAR ODONTOLOGIA"
+        },
+        {
+            "id": 61,
+            "type": "cargo",
+            "name": "AUXILIAR DE ADMINISTRATIVO"
+        },
+        {
+            "id": 62,
+            "type": "cargo",
+            "name": "COORDINADOR DE LABORATORIO NACIONAL"
+        },
+        {
+            "id": 63,
+            "type": "cargo",
+            "name": "ASISTENTE CENTRO DE INFORMACION"
+        },
+        {
+            "id": 64,
+            "type": "cargo",
+            "name": "LIDER DE CALIDAD"
+        },
+        {
+            "id": 65,
+            "type": "cargo",
+            "name": "JEFE DE SISTEMAS"
+        },
+        {
+            "id": 66,
+            "type": "cargo",
+            "name": "OFICIAL DE CUMPLIMIENTO"
+        },
+        {
+            "id": 67,
+            "type": "cargo",
+            "name": "COORDINADOR NACIONAL DE GESTION HUMANA"
+        },
+        {
+            "id": 68,
+            "type": "cargo",
+            "name": "FACTURADOR"
+        },
+        {
+            "id": 69,
+            "type": "cargo",
+            "name": "ASISTENTE ADMINISTRATIVO"
+        },
+        {
+            "id": 70,
+            "type": "cargo",
+            "name": "FONOAUDIOLOGO"
+        },
+        {
+            "id": 71,
+            "type": "cargo",
+            "name": "AUXILIAR SERVICIO AL USUARIO"
+        },
+        {
+            "id": 72,
+            "type": "cargo",
+            "name": "AUXILIAR JURIDICO"
+        },
+        {
+            "id": 73,
+            "type": "cargo",
+            "name": "AUXILIAR DE COMPRAS"
+        },
+        {
+            "id": 74,
+            "type": "cargo",
+            "name": "AUXILIAR ARCHIVO"
+        },
+        {
+            "id": 75,
+            "type": "cargo",
+            "name": "COORDINADOR SERVICIO AL USUARIO REGIONAL"
+        },
+        {
+            "id": 76,
+            "type": "cargo",
+            "name": "OPTOMETRA"
+        },
+        {
+            "id": 77,
+            "type": "cargo",
+            "name": "COORDINADOR DE CALIDAD NACIONAL"
+        },
+        {
+            "id": 78,
+            "type": "cargo",
+            "name": "COORDINADORA SEDE"
+        },
+        {
+            "id": 79,
+            "type": "cargo",
+            "name": "AUXILIAR MANTENIMIENTO"
+        },
+        {
+            "id": 80,
+            "type": "cargo",
+            "name": "MEDICO GENERAL"
+        }
+    ]
+}
