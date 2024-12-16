@@ -114,7 +114,7 @@ const ModalPausasActivas = () => {
       {/* Modal */}
       {isModalPausasOpen && (
         <section
-          className={`fixed inset-0 z-50 flex items-center justify-center pt-12 pb-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+          className={`fixed inset-0 z-50 flex items-center justify-center pt-10 pb-10 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -140,9 +140,9 @@ const ModalPausasActivas = () => {
             </div>
 
             {/* Contenido del modal */}
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-3">
               {/* Video */}
-              <div className="relative aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
+              <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[38/16]">
                 <video
                   src={VideoFile}
                   ref={videoRef}
@@ -153,9 +153,7 @@ const ModalPausasActivas = () => {
                 />
                 <button
                   onClick={handlePlayPause}
-                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2
-                 bg-white/80 hover:bg-white dark:bg-gray-700/80 dark:hover:bg-gray-800
-                 rounded-full p-3 transition-all duration-200"
+                  className="absolute p-3 transition-all duration-200 transform -translate-x-1/2 rounded-full bottom-4 left-1/2 bg-white/80 hover:bg-white dark:bg-gray-100/90 dark:hover:bg-gray-300/90"
                 >
                   {isPaused ? (
                     <svg
@@ -178,7 +176,7 @@ const ModalPausasActivas = () => {
 
                 {/* Indicador de progreso (opcional) */}
                 <div
-                  className="absolute bottom-0 left-0 h-1 bg-blue-500 transition-all"
+                  className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500"
                   style={{
                     width: `${
                       ((videoRef.current?.currentTime || 0) /
@@ -191,8 +189,8 @@ const ModalPausasActivas = () => {
 
               {/* Caja de comentarios */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="mb-2 bg-gray-700">
-                  <p className="text-sm text-gray-800 dark:text-white p-2 border-l-4 rounded-lg border-yellow-300 dark:border-yellow-500">
+                <div className="mb-2 bg-gray-800/20">
+                  <p className="p-2 text-sm text-gray-800 border-l-4 border-yellow-300 rounded-lg dark:text-gray-200 dark:border-yellow-500">
                     <span className="inline-flex items-center px-2 py-1 text-xs font-bold text-yellow-800 bg-yellow-300 rounded-full">
                       <svg
                         className="w-4 h-4 mr-1"
