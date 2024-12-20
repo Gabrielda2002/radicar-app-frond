@@ -142,7 +142,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
           setError("");
           setTimeout(() => {
             setIsOpen(false);
-            // window.location.reload();
+            window.location.reload();
           }, 2000);
         } else {
           setSuccess(false);
