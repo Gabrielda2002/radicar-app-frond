@@ -3,21 +3,21 @@ import * as Yup from "yup";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
-import { api } from "../../utils/api-config";
+import { api } from "../../../utils/api-config";
 import { useEffect, useState, useRef, lazy, Suspense } from "react";
 // import ConfirmDeletePopup from "../ConfirmDeletePopup";
-import { updateUserData } from "../../services/updateUserData";
-import { useUserProfile } from "../../context/userProfileContext";
-import defaultUserPicture from "../../../public/assets/icon-user.svg";
-import { updatePasswordUsuario } from "../../services/updatePasswordUsuario";
+import { useUserProfile } from "../../../context/userProfileContext";
+import defaultUserPicture from "../../../../public/assets/icon-user.svg";
+import { updatePasswordUsuario } from "../../../services/updatePasswordUsuario";
 //*Icons
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../LoadingSpinner";
+import { updateUserData } from "../../../services/updateUserData";
 
-const ConfirmDeletePopup = lazy(() => import("../ConfirmDeletePopup"));
+const ConfirmDeletePopup = lazy(() => import("../../ConfirmDeletePopup"));
 
 const Perfil = () => {
   const { updateUserProfile } = useUserProfile();
@@ -44,21 +44,10 @@ const Perfil = () => {
   const [formData, setFormData] = useState(profile);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  // useEffect(() => {
-  //   const isFormChanged = Object.keys(profile).some(
-  //     (key) =>
-  //       formData[key as keyof typeof formData] !==
-  //       profile[key as keyof typeof profile]
-  //   );
-  //   setIsButtonDisabled(!isFormChanged);
-  // }, [formData, profile]);
 
   useEffect(() => {
     const baseUrl = "http://localhost:3600/api/v1";
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
-
     if (userData) {
       setProfile(userData);
       userData.photo = userData.photo
