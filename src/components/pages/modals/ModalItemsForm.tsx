@@ -140,7 +140,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           otherwise: (schema) => schema.optional(),
         }),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
-        manager: Yup.string().optional(),
+        manager: Yup.string().required(),
       };
     }
 
