@@ -82,7 +82,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
           onChange={formikPassword.handleChange}
           onBlur={formikPassword.handleBlur}
           value={formikPassword.values.currentPassword}
-          className="w-full px-3 py-2 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+          className="w-full px-3 py-2 text-gray-900 bg-white rounded-md dark:bg-gray-700 dark:text-gray-300"
         />
         {formikPassword.touched.currentPassword &&
           formikPassword.errors.currentPassword && (
@@ -94,7 +94,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
       <div className="mb-4">
         <label
           htmlFor="newPassword"
-          className="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+          className="block mb-1 text-sm text-gray-800 dark:text-gray-300"
         >
           Contraseña nueva
         </label>
@@ -105,7 +105,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
           onChange={formikPassword.handleChange}
           onBlur={formikPassword.handleBlur}
           value={formikPassword.values.newPassword}
-          className="w-full px-3 py-2 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+          className="w-full px-3 py-2 text-gray-900 bg-white rounded-md dark:bg-gray-700 dark:text-gray-300"
         />
         {formikPassword.touched.newPassword &&
           formikPassword.errors.newPassword && (
@@ -117,7 +117,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
       <div className="mb-4">
         <label
           htmlFor="confirmPassword"
-          className="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+          className="block mb-1 text-sm text-gray-800 dark:text-gray-300"
         >
           Confirmar contraseña
         </label>

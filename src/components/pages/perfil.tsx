@@ -128,7 +128,7 @@ const Perfil = () => {
            <div className="flex flex-row">
              {/* Perfil Section */}
              <div className="w-full max-w-lg p-4">
-               <div className="min-w-[500px] max-w-full p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-stone-200 dark:bg-gray-800 dark:text-gray-300">
+               <div className="min-w-[500px] max-w-full p-8 text-gray-800 rounded shadow-md sm:flex sm:space-x-6 bg-gray-300 dark:bg-gray-800 dark:text-gray-300">
                  <div className="flex-shrink-0 w-full mb-6 sm:h-32 sm:w-32 sm:mb-0">
                    <img
                      src={profile.photo || defaultUserPicture}
@@ -144,7 +144,7 @@ const Perfil = () => {
                    </div>
                    {/* Información de Rol */}
                    <div className="space-y-1">
-                     <span className="text-sm text-gray-600 dark:text-gray-400">
+                     <span className="text-sm text-gray-800 dark:text-gray-400">
                        Rol: {profile.rol}
                      </span>
                      <span className="flex items-center space-x-2">
@@ -153,7 +153,7 @@ const Perfil = () => {
                          alt="Mail Icon"
                          className="w-5 h-5 dark:invert"
                        />
-                       <span className="text-gray-600 break-words dark:text-gray-400">
+                       <span className="text-gray-800 break-words dark:text-gray-400">
                          {profile.email}
                        </span>
                      </span>
@@ -164,14 +164,14 @@ const Perfil = () => {
                          alt="Phone Icon"
                          className="w-5 h-5 dark:invert"
                        />
-                       <span className="text-gray-600 dark:text-gray-400">
+                       <span className="text-gray-800 dark:text-gray-400">
                          Teléfono: {profile.phone}
                        </span>
                      </span>
                    </div>
                    <div className="flex justify-center mt-4 space-x-4">
                      <button
-                       className="px-4 py-2 duration-200 rounded shadow hover:bg-color dark:hover:bg-color dark:bg-gray-700"
+                       className="px-4 py-2 duration-200 rounded shadow bg-gray-600/20 hover:bg-color dark:hover:bg-color dark:bg-gray-700"
                        onClick={triggerFileInput}
                        >
                        <img
@@ -182,7 +182,7 @@ const Perfil = () => {
                        />
                      </button>
                      <button
-                       className="px-4 py-2 duration-200 rounded shadow hover:bg-red-500 dark:hover:bg-red-600 dark:bg-gray-700"
+                       className="px-4 py-2 duration-200 rounded shadow bg-gray-600/20 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-gray-700"
                        onClick={openDeletePopup}
                      >
                        <img
@@ -205,7 +205,7 @@ const Perfil = () => {
 
              {/* Formulario Section */}
              <div className="flex gap-4 p-4 ">
-               <div className="flex-1 p-8 rounded shadow-md bg-stone-200 dark:bg-gray-800 min-w-[500px]">
+               <div className="flex-1 p-8 rounded shadow-md bg-gray-300 dark:bg-gray-800 min-w-[500px]">
                  <motion.div
                    initial="hidden"
                    animate="visible"

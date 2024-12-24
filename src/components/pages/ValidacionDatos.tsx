@@ -120,8 +120,8 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
           onClick={() => setShowPasswordForm(false)}
           className={`px-4 py-2 text-sm ${
             !showPasswordForm
-              ? "bg-gray-600 text-white rounded border-teal-500 border-b"
-              : "text-gray-400 hover:text-white"
+              ? "bg-white text-gray-800 rounded border-teal-400 border-b dark:bg-gray-600 dark:text-white"
+              : "text-gray-400 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
           }`}
         >
           Actualizar Datos
@@ -130,8 +130,8 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
           onClick={() => setShowPasswordForm(true)}
           className={`px-4 py-2 text-sm ${
             showPasswordForm
-              ? "border-b border-teal-500 text-white bg-gray-600"
-              : "text-gray-400 hover:text-white"
+              ? "bg-white text-gray-800 rounded border-teal-400 border-b dark:bg-gray-600 dark:text-white"
+              : "text-gray-400 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
           }`}
         >
           Actualizar Contraseña
@@ -147,14 +147,14 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <h2 className="mb-6 text-xl font-semibold text-white">
+            <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
               Editar Información
             </h2>
             <form onSubmit={formik.handleSubmit} className="space-y-4">
               <div>
                 <label
                   htmlFor="nombre"
-                  className="block mb-2 text-sm text-gray-300"
+                  className="block mb-2 text-sm text-gray-800 dark:text-gray-300"
                 >
                   Nombre
                 </label>
@@ -165,14 +165,14 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.nombre}
-                  className="w-full px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:border-teal-500"
+                  className="w-full px-3 py-2 text-gray-800 bg-white border rounded-md dark:border-gray-600 focus:outline-none focus:border-teal-500 dark:text-gray-300 dark:bg-gray-700"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="apellido"
-                  className="block mb-2 text-sm text-gray-300"
+                  className="block mb-2 text-sm text-gray-800 dark:text-gray-300"
                 >
                   Apellido
                 </label>
@@ -183,14 +183,14 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.apellido}
-                  className="w-full px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:border-teal-500"
+                  className="w-full px-3 py-2 text-gray-800 bg-white border rounded-md dark:border-gray-600 focus:outline-none focus:border-teal-500 dark:text-gray-300 dark:bg-gray-700"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm text-gray-300"
+                  className="block mb-2 text-sm text-gray-800 dark:text-gray-300"
                 >
                   Correo Electrónico
                 </label>
@@ -201,34 +201,33 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  className="w-full px-3 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:border-teal-500"
-                /> {formik.touched.email && formik.errors.email ? (
-                          <div className="text-red-500">
-                            {formik.errors.email}
-                          </div>
-                        ) : null}
-                      </div>
+                  className="w-full px-3 py-2 text-gray-800 bg-white border rounded-md dark:border-gray-600 focus:outline-none focus:border-teal-500 dark:text-gray-300 dark:bg-gray-700"
+                />{" "}
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500">{formik.errors.email}</div>
+                ) : null}
+              </div>
 
-                      <div className="flex justify-between ">
-                        <button
-                          type="submit"
-                          disabled={!formik.dirty || formik.isSubmitting}
-                          className={`px-4 py-2 text-white rounded-md bg-teal-900    hover:bg-dark duration-200 
+              <div className="flex justify-between ">
+                <button
+                  type="submit"
+                  disabled={!formik.dirty || formik.isSubmitting}
+                  className={`px-4 py-2 text-white rounded-md bg-teal-900    hover:bg-dark duration-200 
                         ${
                           !formik.dirty || formik.isSubmitting
                             ? "opacity-50 cursor-not-allowed"
                             : "active:bg-emerald-950 dark:bg-teal-600 dark:hover:bg-teal-800"
                         }`}
-                        >
-                          Guardar Cambios
-                        </button>
-                        {success && (
-                          <div className="text-green-500">
-                            Cambios guardados exitosamente.
-                          </div>
-                        )}
-                        {error && <div className="text-red-500">{error}</div>}
-                        </div>
+                >
+                  Guardar Cambios
+                </button>
+                {success && (
+                  <div className="text-green-500">
+                    Cambios guardados exitosamente.
+                  </div>
+                )}
+                {error && <div className="text-red-500">{error}</div>}
+              </div>
             </form>
           </motion.div>
         ) : (
@@ -239,8 +238,7 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-           <PasswordUpdateForm userId={""} />
-
+            <PasswordUpdateForm userId={""} />
           </motion.div>
         )}
       </AnimatePresence>
