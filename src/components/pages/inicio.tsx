@@ -1,6 +1,7 @@
 //*Fuctions and Hooks
 import LoadingSpinner from "../LoadingSpinner";
 import { useEffect, useState, lazy, Suspense } from "react";
+import {AnimatePresence} from 'framer-motion'
 
 // TODO: Importar componentes y hooks necesarios
 //*Icons
@@ -18,7 +19,7 @@ const Inicio = () => {
   const [codigo, setCodigo] = useState("");
 
   // hook consultar servicios
-  const { servicios, loadingServicios, errorServicios, getData } =
+  const { servicios, errorServicios, getData } =
     useFetchServicioContratado();
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const Inicio = () => {
                 </h2>
                 <div className="grid grid-cols-2 gap-2">
                   <label htmlFor="">
-                    Ingrese codigo del servicio
+                    Ingrese codigo del servicio:
                     <input
                       type="text"
                       value={codigo}
@@ -128,6 +129,15 @@ const Inicio = () => {
                         </tbody>
                       </table>
                     ))}
+                    <AnimatePresence>
+                      {
+                        errorServicios && (
+                          <div className="text-red-500">
+                            {errorServicios}
+                          </div>
+                        )
+                      }
+                    </AnimatePresence>
                   </label>
                 </div>
               </div>

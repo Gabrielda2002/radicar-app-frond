@@ -645,7 +645,7 @@ export const useFetchServicioContratado = () => {
 
     } catch (error) {
       setServicios(null);
-      setErrorServicios(`Error inesperado ${error}` )
+      setErrorServicios(`Servicio no encontrado ${error}` )
     }finally{
       setLoadingServicios(false);
     }
