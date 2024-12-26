@@ -2,7 +2,11 @@ export interface IServiciosContratados {
     id:          number;
     code:        string;
     description: string;
-    convenio:    string[];
-    sede:        string[];
-    isContrated: boolean;
+    Relations:   Relation[];
+}
+
+export interface Relation {
+    nameConvenio: string;
+    nameSede:     string;
+    isContrated:  boolean;
 }

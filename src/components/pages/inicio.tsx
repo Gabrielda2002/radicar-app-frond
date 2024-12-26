@@ -5,8 +5,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 // TODO: Importar componentes y hooks necesarios
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
-
-
+import { useFetchServicioContratado } from "../../hooks/useFetchUsers";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
@@ -16,6 +15,11 @@ const Inicio = () => {
   const [showContent, setShowContent] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertFadeOut, setAlertFadeOut] = useState(false);
+  const [codigo, setCodigo] = useState("");
+
+  // hook consultar servicios
+  const { servicios, loadingServicios, errorServicios, getData } =
+    useFetchServicioContratado();
 
   useEffect(() => {
     const alertClosed = localStorage.getItem("alertClosed");
@@ -65,36 +69,70 @@ const Inicio = () => {
             </div>
             {/* Sección de bienvenida */}
             <div className="flex flex-col w-full pb-10 mb-10 border-2 rounded-lg shadow-md dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
-
               <div className="p-4">
                 <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
-                  Consultar Servicios Contratados: 
+                  Consultar Servicios Contratados:
                 </h2>
                 <div className="grid grid-cols-2 gap-2">
                   <label htmlFor="">
                     Ingrese codigo del servicio
-
-                    <input 
+                    <input
                       type="text"
+                      value={codigo}
+                      onChange={(e) => setCodigo(e.target.value)}
                       className="border-2 border-gray-300 p-2 w-full rounded-lg"
                       placeholder="Codigo del servicio"
                     />
-
-                    <table>
-                      <tr>
-                        <td>Codigo Servicio</td>
-                        <td>Descripcion Servicio</td>
-                        <td>Eps</td>
-                        <td>Contratado</td>
-                        <td>Sede</td>
-                      </tr>
-                    </table>
-
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => getData(codigo)}
+                    >
+                      Consultar
+                    </button>
+                    {servicios?.map((servicio) => (
+                      <table>
+                        <thead>
+                          <tr>
+                            <td>Codigo</td>
+                            <td>Descripcion Servicio</td>
+                            <td></td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{servicio.code}</td>
+                            <td>{servicio.description}</td>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <td>Eps</td>
+                                  <td>Sede</td>
+                                  <td>Estado</td>
+                                </tr>
+                              </thead>
+                              {servicio.Relations.map((r) => (
+                                <tbody>
+                                  <tr>
+                                    <td>{r.nameConvenio}</td>
+                                    <td>{r.nameSede}</td>
+                                    <td>
+                                      {r.isContrated
+                                        ? "Contratado"
+                                        : "No Contratado"}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              ))}
+                            </table>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))}
                   </label>
                 </div>
               </div>
 
-            {/*
+              {/*
               <div className="mb-5">
                 <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
                   Estadísticas:
