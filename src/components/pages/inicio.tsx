@@ -5,19 +5,8 @@ import { useEffect, useState, lazy, Suspense } from "react";
 // TODO: Importar componentes y hooks necesarios
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
-import { useFetchMonth } from "../../hooks/useFetchUsers";
-import {
-  IEstadisticaCups,
-} from "../../models/IMonthDataRadicacion";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+
+
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
@@ -48,21 +37,6 @@ const Inicio = () => {
     setShowContent(true);
   };
 
-  // traer cantidad de radicados de los ultimos 3 meses
-  const { dataMonth } = useFetchMonth();
-
-
-  const transformDataForChart = (data: IEstadisticaCups[]) => {
-    if (!data) return [];
-
-    return data.map((item) => ({
-      estado: item.estado,
-      cantidad: item.cantidad,
-    }));
-  };
-
-  const chartData = transformDataForChart(dataMonth || []);
-
   return (
     <>
       {isLoading ? (
@@ -91,6 +65,36 @@ const Inicio = () => {
             </div>
             {/* Sección de bienvenida */}
             <div className="flex flex-col w-full pb-10 mb-10 border-2 rounded-lg shadow-md dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
+
+              <div className="p-4">
+                <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
+                  Consultar Servicios Contratados: 
+                </h2>
+                <div className="grid grid-cols-2 gap-2">
+                  <label htmlFor="">
+                    Ingrese codigo del servicio
+
+                    <input 
+                      type="text"
+                      className="border-2 border-gray-300 p-2 w-full rounded-lg"
+                      placeholder="Codigo del servicio"
+                    />
+
+                    <table>
+                      <tr>
+                        <td>Codigo Servicio</td>
+                        <td>Descripcion Servicio</td>
+                        <td>Eps</td>
+                        <td>Contratado</td>
+                        <td>Sede</td>
+                      </tr>
+                    </table>
+
+                  </label>
+                </div>
+              </div>
+
+            {/*
               <div className="mb-5">
                 <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
                   Estadísticas:
@@ -107,6 +111,7 @@ const Inicio = () => {
                   </ResponsiveContainer>
                 </div>
               </div>
+            */}
 
               <div className="px-12">
                 <hr className="border-gray-600 dark:border-color" />
