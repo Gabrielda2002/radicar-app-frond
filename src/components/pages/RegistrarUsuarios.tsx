@@ -4,11 +4,13 @@ import React, { useMemo, useState } from "react";
 import ErrorMessage from "../ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createUser } from "../../services/createUser";
+import areas from '../../data-dynamic/areas.json'; 
 //*Icons
 import logo from "/src/imgs/logo.png";
 import { useFormik } from "formik";
 import {
   useFetchDocumento,
+  useFetchLugarRadicado,
   useFetchMunicipio,
   useFetchRoles,
 } from "../../hooks/useFetchUsers";
@@ -22,6 +24,10 @@ const RegistrarUsuarios: React.FC = () => {
   const { dataRol, errorRol } = useFetchRoles(load);
   // traer los datos de los municipios
   const { municipios, errorMunicipios } = useFetchMunicipio(load);
+
+  // hook pora traer las sedes
+  const { data } = useFetchLugarRadicado();
+
 
   // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -66,7 +72,11 @@ const RegistrarUsuarios: React.FC = () => {
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
             "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
           ),
-        date: Yup.date().required("La fecha de nacimiento es obligatoria"),
+        // date: Yup.date().required("La fecha de nacimiento es obligatoria"),
+        area: Yup.string().required("El área es obligatoria"),
+        cargo: Yup.string().required("El cargo es obligatorio"),
+        sede: Yup.string().required("La sede es obligatoria"),
+        celular: Yup.string().required("El celular es obligatorio")
       }),
     []
   );
@@ -81,11 +91,14 @@ const RegistrarUsuarios: React.FC = () => {
       apellidosCompletos: "",
       correo: "",
       contraseña: "",
+      area: "",
       date: "",
+      cargo: "",
+      sede: "",
+      celular: ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
 
       const formData = new FormData();
       formData.append("municipio", values.municipio);
@@ -96,7 +109,11 @@ const RegistrarUsuarios: React.FC = () => {
       formData.append("lastName", values.apellidosCompletos);
       formData.append("email", values.correo);
       formData.append("password", values.contraseña);
-      formData.append("date", values.date);
+      // formData.append("date", values.date);
+      formData.append("area", values.area);
+      formData.append("cargo", values.cargo);
+      formData.append("sedeId", values.sede);
+      formData.append("phoneNumber", values.celular);
 
       try {
         setSubmitting(true);
@@ -108,6 +125,8 @@ const RegistrarUsuarios: React.FC = () => {
           setSuccess(true);
           setErrorPage(null);
           formik.resetForm();
+        }else{
+          setErrorPage(`Ocurrio un error al registrar el usuario: ${response?.data.message}`);
         }
       } catch (error) {
         setErrorPage(`Ocurrio un error al registrar el usuario: ${error}`);
@@ -196,7 +215,7 @@ const RegistrarUsuarios: React.FC = () => {
             </div>
 
             {/* Fecha de Nacimiento */}
-            <div>
+            {/* <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
                 Fecha nacimiento
               </label>
@@ -215,6 +234,126 @@ const RegistrarUsuarios: React.FC = () => {
               <AnimatePresence>
                 {formik.touched.date && formik.errors.date ? (
                   <ErrorMessage>{formik.errors.date}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div> */}
+
+            {/* Area */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Area
+              </label>
+              <select
+               name="area" 
+               id="area"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.area && formik.errors.area
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.area}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+               >
+                <option value="">SELECCIONE</option>
+                {
+                  areas.areas.map((area) => (
+                    <option key={area.id} value={area.name}>
+                      {area.name}
+                    </option>
+                  ))
+                }
+               </select>
+              <AnimatePresence>
+                {formik.touched.area && formik.errors.area ? (
+                  <ErrorMessage>{formik.errors.area}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            {/* Cargo */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Cargo
+              </label>
+              <select
+                name="cargo"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.cargo && formik.errors.cargo
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.cargo}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">SELECCIONE</option>
+                {
+                  areas.cargos.map((cargo) => (
+                    <option key={cargo.id} value={cargo.name}>
+                      {cargo.name}
+                    </option>
+                  ))
+                }
+              </select>
+              <AnimatePresence>
+                {formik.touched.cargo && formik.errors.cargo ? (
+                  <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            {/* Sede */}
+            
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Sede
+              </label>
+              <select
+                name="sede"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.sede && formik.errors.sede
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.sede}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">SELECCIONE</option>
+                {data?.map((sede) => (
+                  <option key={sede.id} value={sede.id}>
+                    {sede.name}
+                  </option>
+                ))}
+              </select>
+              <AnimatePresence>
+                {formik.touched.sede && formik.errors.sede ? (
+                  <ErrorMessage>{formik.errors.sede}</ErrorMessage>
+                ) : null}
+              </AnimatePresence>
+            </div>
+              
+              {/* Celular */}
+            <div>
+              <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                Celular
+              </label>
+              <input
+                type="text"
+                name="celular"
+                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                  formik.touched.celular && formik.errors.celular
+                    ? "border-red-500 dark:border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                }`}
+                value={formik.values.celular}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <AnimatePresence>
+                {formik.touched.celular && formik.errors.celular ? (
+                  <ErrorMessage>{formik.errors.celular}</ErrorMessage>
                 ) : null}
               </AnimatePresence>
             </div>

@@ -224,3 +224,8 @@ export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
 export const createActiveBreakesEp = async (data: FormData) => {
     return api.post(`/active-brakes`, data);
 }
+
+// crear evento
+export const createEventEp = async (data: FormData) => {
+    return api.post(`/eventos`, data);
+}
