@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import areas from '../../../data-dynamic/areas.json'; 
+import areas from "../../../data-dynamic/areas.json";
 import {
   useFetchDocumento,
   useFetchLugarRadicado,
@@ -33,6 +33,12 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
+
+  // estados para inputs autocompletado de areas
+  const [searchArea, setSearchArea] = useState<string>("");
+  const [suggestionsArea, setSuggestionsArea] = useState<string[]>([]);
+  const [searchCargo, setSearchCargo] = useState<string>("");
+  const [suggestionsCargo, setSuggestionsCargo] = useState<string[]>([]);
 
   const [load, setLoad] = useState(false);
 
@@ -173,8 +179,51 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         sede: ususario.sedeId.toString(),
         celular: ususario.celular.toString(),
       });
+      setSearchArea(ususario.area);
+      setSearchCargo(ususario.cargo);
     }
   }, [ususario]);
+
+  // funciones para el autocompletado de inputs
+  const handleSearchChangeArea = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchArea(query);
+
+    if (query) {
+      const filteredSuggestions = areas.areas
+    .filter((option) => option.name.toLowerCase().includes(query.toLowerCase()))
+    .map((option) => option.name);
+  setSuggestionsArea(filteredSuggestions);
+    } else {
+      setSuggestionsArea([]);
+    }
+  };
+
+  const handleSuggestionClickArea = (suggestion: string) => {
+    formik.setFieldValue("area", suggestion);
+    setSearchArea(suggestion);
+    setSuggestionsArea([]);
+  };
+
+  const handleSearchChangeCargo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchCargo(query);
+
+    if (query) {
+      const filteredSuggestions = areas.cargos
+      .filter((option) => option.name.toLowerCase().includes(query.toLowerCase()))
+      .map((option) => option.name);
+    setSuggestionsCargo(filteredSuggestions);
+    } else {
+      setSuggestionsCargo([]);
+    }
+  };
+
+  const handleSuggestionClickCargo = (suggestion: string) => {
+    formik.setFieldValue("cargo", suggestion);
+    setSearchCargo(suggestion);
+    setSuggestionsCargo([]);
+  };
 
   const { showAnimation, closing } = useAnimation(
     isOpen,
@@ -386,58 +435,74 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           ) : null}
                         </AnimatePresence>
                       </div>
-                      <div>
+                      <div className="relative">
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Area
                         </label>
-                        <select
+                        <input
                           name="area"
-                          value={formik.values.area}
-                          onChange={formik.handleChange}
+                          value={searchArea}
+                          onChange={handleSearchChangeArea}
                           onBlur={formik.handleBlur}
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          autoComplete="off"
+                          className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
                             formik.touched.area && formik.errors.area
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
-                        >
-                          <option value="">SELECCIONE</option>
-                          {areas.areas.map((item) => (
-                            <option key={item.id} value={item.name}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
+                        />
+                        {suggestionsArea.length > 0 && (
+                          <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
+                            {suggestionsArea.map((suggestion) => (
+                              <li
+                                key={areas.areas.find((a) => a.name === suggestion)?.id} 
+                                onClick={() =>
+                                  handleSuggestionClickArea(suggestion)
+                                }
+                                className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
+                              >
+                                {suggestion}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                         <AnimatePresence>
                           {formik.touched.area && formik.errors.area ? (
                             <ErrorMessage>{formik.errors.area}</ErrorMessage>
                           ) : null}
                         </AnimatePresence>
                       </div>
-                      <div>
+                      <div className="relative">
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Cargo
                         </label>
-                        <select
+                        <input
                           name="cargo"
-                          value={formik.values.cargo}
-                          onChange={formik.handleChange}
+                          value={searchCargo}
+                          onChange={handleSearchChangeCargo}
                           onBlur={formik.handleBlur}
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                          autoComplete="off"
+                          className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
                             formik.touched.cargo && formik.errors.cargo
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
-                        >
-                          <option value="">SELECCIONE</option>  
-                          {
-                            areas.cargos.map((item) => (
-                              <option key={item.id} value={item.name}>
-                                {item.name}
-                              </option>
-                            ))
-                          }
-                        </select>
+                        />
+                        {suggestionsCargo.length > 0 && (
+                          <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
+                            {suggestionsCargo.map((suggestion) => (
+                              <li
+                                key={areas.cargos.find((cargo) => cargo.name === suggestion)?.id}
+                                onClick={() =>
+                                  handleSuggestionClickCargo(suggestion)
+                                }
+                                className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
+                              >
+                                {suggestion}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                         <AnimatePresence>
                           {formik.touched.cargo && formik.errors.cargo ? (
                             <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
