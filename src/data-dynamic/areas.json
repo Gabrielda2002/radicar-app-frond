@@ -104,6 +104,11 @@
             "id": 21,
             "type": "area",
             "name": "ARCHIVO CLINICO"
+        },
+        {
+            "id": 22,
+            "type": "area",
+            "name": "ASISTENCIAL"
         }
     ],
     "cargos": [
@@ -401,6 +406,16 @@
             "id": 80,
             "type": "cargo",
             "name": "MEDICO GENERAL"
+        },
+        {
+            "id": 81,
+            "type": "cargo",
+            "name": "LIDER CALLCENTER"  
+        },
+        {
+            "id": 82,
+            "type": "cargo",
+            "name": "JEFE SIAU"
         }
     ]
 }

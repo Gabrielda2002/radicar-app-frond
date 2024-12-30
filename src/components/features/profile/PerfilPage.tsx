@@ -1,16 +1,16 @@
 import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
-import ValidacionDatos from "./ValidacionDatos";
-import LoadingSpinner from "../LoadingSpinner";
 
 // Icons
 import mail from "/assets/mail.svg";
-import phone from "/assets/phone.svg";
+import phone from "/assets/phone.svg";    
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
-import { usePerfil } from "../../hooks/usePerfil";
+import { usePerfil } from "@/hooks/usePerfil";
+import UserDataUpdateForm from "@/components/features/profile/components/UserDataUpdateForm";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
-const ConfirmDeletePopup = lazy(() => import("../ConfirmDeletePopup"));
+const ConfirmDeletePopup = lazy(() => import("@/components/ConfirmDeletePopup"));
 
 const Perfil: React.FC = () => {
   const {
@@ -123,7 +123,7 @@ const Perfil: React.FC = () => {
                   variants={variantes}
                   className="mt-3"
                 >
-                  <ValidacionDatos initialUserData={profile} />
+                  <UserDataUpdateForm initialUserData={profile} />
                 </motion.div>
               </div>
             </div>
