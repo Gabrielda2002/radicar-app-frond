@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
-import { updateUserData } from "../../../../services/updateUserData";
-import { updatePasswordUsuario } from "../../../../services/updatePasswordUsuario";
-import { useUserProfile } from "../../../../context/userProfileContext";
+import { updateUserData } from "@/services/updateUserData";
+import { useUserProfile } from "@/context/userProfileContext";
 import PasswordUpdateForm from "./PasswordUpdateForm";
 
 interface UserDataUpdateFormProps {
@@ -69,45 +68,6 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
         }
       } catch (error) {
         setError(`Error al actualizar la información del usuario. ${error}`);
-      }
-    },
-  });
-
-  const passwordFormik = useFormik({
-    initialValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-    validationSchema: Yup.object({
-      currentPassword: Yup.string().required(
-        "La contraseña actual es requerida"
-      ),
-      newPassword: Yup.string()
-        .required("La nueva contraseña es requerida")
-        .min(8, "La nueva contraseña debe tener al menos 8 caracteres"),
-      confirmPassword: Yup.string()
-        .required("La confirmación de la contraseña es requerida")
-        .oneOf([Yup.ref("newPassword")], "Las contraseñas no coinciden"),
-    }),
-    onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-        formData.append("currentPassword", values.currentPassword);
-        formData.append("newPassword", values.newPassword);
-        formData.append("confirmPassword", values.confirmPassword);
-
-        const response = await updatePasswordUsuario(
-          formData,
-          parseInt(initialUserData.id)
-        );
-        if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
-          setError("");
-          passwordFormik.resetForm();
-        }
-      } catch (error) {
-        setError(`Error al actualizar la contraseña del usuario. ${error}`);
       }
     },
   });

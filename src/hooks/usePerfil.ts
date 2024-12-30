@@ -2,22 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { api } from "../utils/api-config";
 import defaultUserPicture from "../../public/assets/icon-user.svg";
+import { IProfile } from "@/models/IProfile";
 
-interface Profile {
-  nombre: string;
-  apellido: string;
-  email: string;
-  phone: string;
-  photo: string;
-  rol: string;
-  status: string;
-  municipio: string;
-  date: string;
-  dniNumber: string;
-  id: string;
-}
 export const usePerfil = () => {
-  const [profile, setProfile] = useState<Profile>({
+  const [profile, setProfile] = useState<IProfile>({
     nombre: "",
     apellido: "",
     email: "",

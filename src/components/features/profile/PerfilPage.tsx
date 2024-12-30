@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 
 // Icons
 import mail from "/assets/mail.svg";
-import phone from "/assets/phone.svg";
+import phone from "/assets/phone.svg";    
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import { usePerfil } from "@/hooks/usePerfil";
 import UserDataUpdateForm from "@/components/features/profile/components/UserDataUpdateForm";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-const ConfirmDeletePopup = lazy(() => import("../../ConfirmDeletePopup"));
+const ConfirmDeletePopup = lazy(() => import("@/components/ConfirmDeletePopup"));
 
 const Perfil: React.FC = () => {
   const {
