@@ -3,10 +3,9 @@ import LoadingSpinner from "../LoadingSpinner";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 
-// TODO: Importar componentes y hooks necesarios
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
-import { useFetchServicioContratado } from "../../hooks/useFetchUsers";
+import { useFetchServicioContratado } from "@/hooks/useFetchUsers";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("./Calendario"));
@@ -74,7 +73,10 @@ const Inicio = () => {
                   Consultar Servicios Contratados:
                 </h2>
                 <div className="p-2 m-5 rounded-lg ">
-                  <label htmlFor="" className="w-5/6 dark:text-gray-200 text-[24px]">
+                  <label
+                    htmlFor=""
+                    className="w-5/6 dark:text-gray-200 text-[24px]"
+                  >
                     Ingrese el código del servicio:
                     <div>
                       <input
@@ -84,17 +86,17 @@ const Inicio = () => {
                         className="p-2 mt-3 mr-4 border-2 border-gray-400 rounded-lg b-2 w-60 dark:text-gray-700 text-[17px]"
                         placeholder="Código del servicio"
                       />
-                    <button
-                      className="px-5 font-bold text-white bg-teal-500 rounded-md shadow-md mt-23 py-2 hover:bg-teal-600 hover:shadow-teal-600 dark:hover:shadow-teal-500 text-[16px]"
-                      onClick={() => getData(codigo)}
+                      <button
+                        className="px-5 font-bold text-white bg-teal-500 rounded-md shadow-md mt-23 py-2 hover:bg-teal-600 hover:shadow-teal-600 dark:hover:shadow-teal-500 text-[16px]"
+                        onClick={() => getData(codigo)}
                       >
-                      Consultar
-                    </button>
-                      </div>
+                        Consultar
+                      </button>
+                    </div>
                   </label>
                   <div className="flex flex-col w-full mt-4 justify-items-center dark:text-gray-200">
                     {servicios?.map((servicio) => (
-                      <div  
+                      <div
                         key={servicio.code}
                         className="overflow-x-auto border rounded-lg"
                       >
@@ -107,15 +109,7 @@ const Inicio = () => {
                               <th className="px-2 py-3 text-center">
                                 Descripción Servicio
                               </th>
-                              <th className="px-3 py-3 text-center whitespace-nowrap">
-                                Sede
-                              </th>
-                              <th className="py-3 text-center px-14 whitespace-nowrap">
-                                Eps
-                              </th>
-                              <th className="px-6 py-3 text-center whitespace-nowrap">
-                                Estado
-                              </th>
+                              <th className="px-2 py-3 text-center"></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -126,39 +120,56 @@ const Inicio = () => {
                               <td className="px-1 py-3 text-sm text-center">
                                 {servicio.description}
                               </td>
-                              <td colSpan={3} className="px-2 py-3">
-                                <table className="w-full">
-                                  <tbody>
-                                    {servicio.Relations.map((r, index) => (
-                                      <tr
-                                        key={`${r.nameConvenio}-${r.nameSede}-${index}`}
-                                        className="border-b border-gray-400 dark:border-gray-400"
-                                      >
-                                        <td className="px-2 py-2 text-center whitespace-nowrap">
-                                          {r.nameConvenio}
-                                        </td>
-                                        <td className="px-2 py-2 text-center whitespace-nowrap">
-                                          {r.nameSede}
-                                        </td>
-                                        <td className="px-2 py-2 text-center">
-                                          <span
-                                            className={`inline-flex rounded-full px-3
-                                               py-1 text-xs font-semibold ${
-                                              r.isContrated
-                                                ? "bg-teal-500 text-gray-800 dark:bg-teal-600 dark:text-white"
-                                                : "bg-red-500 text-gray-800 dark:bg-red-600 dark:text-white"
-                                            }`}
-                                          >
-                                            {r.isContrated
-                                              ? "Contratado"
-                                              : "No Contratado"}
-                                          </span>
-                                        </td>
+                              {servicio.Relations.length > 0 ? (
+                                <td colSpan={3} className="px-2 py-3">
+                                  <table className="w-full">
+                                    <thead>
+                                      <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                                        <th className="px-3 py-3 text-center whitespace-nowrap">
+                                          Sede
+                                        </th>
+                                        <th className="py-3 text-center px-14 whitespace-nowrap">
+                                          Eps
+                                        </th>
+                                        <th className="px-6 py-3 text-center whitespace-nowrap">
+                                          Estado
+                                        </th>
                                       </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              </td>
+                                    </thead>
+                                    <tbody>
+                                      {servicio.Relations.map((r, index) => (
+                                        <tr
+                                          key={`${r.nameConvenio}-${r.nameSede}-${index}`}
+                                          className="border-b border-gray-400 dark:border-gray-400"
+                                        >
+                                          <td className="px-2 py-2 text-center whitespace-nowrap">
+                                            {r.nameConvenio || "N/A"}
+                                          </td>
+                                          <td className="px-2 py-2 text-center whitespace-nowrap">
+                                            {r.nameSede || "N/A"}
+                                          </td>
+                                          <td className="px-2 py-2 text-center">
+                                            <span
+                                              className={`inline-flex rounded-full px-3
+                                               py-1 text-xs font-semibold ${
+                                                 r.isContrated
+                                                   ? "bg-teal-500 text-gray-800 dark:bg-teal-600 dark:text-white"
+                                                   : "bg-red-500 text-gray-800 dark:bg-red-600 dark:text-white"
+                                               }`}
+                                            >
+                                              {r.isContrated
+                                                ? "Contratado"
+                                                : "No Contratado"}
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </td>
+                              ) : (
+                                <td className="px-2 py-3 text-center">N/A</td>
+                              )}
                             </tr>
                           </tbody>
                         </table>
