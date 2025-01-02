@@ -102,20 +102,6 @@ const Login: React.FC = () => {
                 >
                   Iniciar Sesión
                 </button>
-
-                <div className="flex justify-center mt-6">
-                  <p className="text-sm font-light text-gray-800 dark:text-white">
-                    ¿No tienes una cuenta?{" "}
-                    <a
-                      href="https://api.whatsapp.com/send?phone=573102208521&text=Ingeniero Jorge Machucca"
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Contáctanos
-                    </a>
-                  </p>
-                </div>
               </div>
             </form>
           </div>

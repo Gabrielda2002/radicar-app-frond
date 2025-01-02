@@ -1,23 +1,17 @@
 // * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Pagination from "../../Pagination";
-import { IItems } from "../../../models/IItems";
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../LoadingSpinner";
-import ModalItemsForm from "../modals/ModalItemsForm";
-import usePagination from "../../../hooks/usePagination";
-import ModalItemsDetails from "../modals/ModalItemsDetails";
-import ModalAccesorioItem from "../modals/ModalAccesorioItem";
-import { IItemsNetworking } from "../../../models/IItemsNetworking";
-import ModalTablaseguimientoItem from "../modals/ModalTablaSeguimientoItem";
+import Pagination from "@/components/Pagination";
+import { IItems } from "@/models/IItems";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import ModalItemsForm from "@/components/pages/modals/ModalItemsForm";
+import usePagination from "@/hooks/usePagination";
+import ModalItemsDetails from "@/components/pages/modals/ModalItemsDetails";
+import ModalAccesorioItem from "@/components/pages/modals/ModalAccesorioItem";
+import { IItemsNetworking } from "@/models/IItemsNetworking";
+import ModalTablaseguimientoItem from "@/components/pages/modals/ModalTablaSeguimientoItem";
 
-// * Interface
-interface ItemsListProps {
-  invetario: IItems[] | IItemsNetworking[] | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
-  idSede: number | null;
-}
 // * Icons
 import {
   ListBulletIcon,
@@ -26,27 +20,29 @@ import {
   CpuChipIcon,
 } from "@heroicons/react/24/outline";
 
+// * Interface
+interface ItemsListProps {
+  invetario: IItems[] | IItemsNetworking[] | null;
+  tipoItem: "equipos" | "dispositivos-red" | null;
+  idSede: number | null;
+}
+
 const ItemsList: React.FC<ItemsListProps> = ({
   invetario,
   tipoItem,
-  idSede,
+  idSede
 }) => {
   // * Estados para almacenar datos
-
   const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
     null
   );
+
   const [isLoading, setIsLoading] = useState(true);
   const [isGridView, setIsGridView] = useState(true); // * Estado para alternar vistas (Lista o de cuadrícula)
-  const ITEMS_PER_PAGE = 6; // * Asignación de numero fijo para mejor compresion de datos y equipos
+  const ITEMS_PER_PAGE = 9; // * Asignación de numero fijo para mejor compresion de datos y equipos
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   // * Ajuste de lógica para la búsqueda
-  // * Implementación de la lógica de búsqueda usando un array de parámetros
-  // * El primer parámetro es un hook personalizado para filtrar listas, con un fallback en caso de datos vacíos
-  // * El segundo parámetro es un arreglo de strings que define las propiedades a filtrar de los objetos en 'invetario' (en este caso, 'name', 'brand' y 'model')
-  // ? Estas propiedades están pendientes de confirmación para asegurar que las asignaciones sean correctas
-
   const { query, setQuery, filteredData } = useSearch<
     IItems | IItemsNetworking
   >(
@@ -61,7 +57,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
     usePagination(filteredData, itemsPerPage);
 
   // * Función para cambiar el número de elementos por página
-
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -70,7 +65,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
 
   // * Implementación de cookie para almacenar el estado de la vista (grid/lista)
   // * Efecto para leer y aplicar la vista guardada de la cookie
-
   useEffect(() => {
     const savedView = Cookies.get("itemsViewMode");
     if (savedView === "list") {
@@ -79,7 +73,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
   }, []);
 
   // * Subcomponente para alternar entre vista en "grid" o "lista", y guardar la preferencia en cookie
-
   const toggleViewMode = () => {
     const newViewMode = !isGridView ? "grid" : "list";
     Cookies.set("itemsViewMode", newViewMode, { expires: 7 });
@@ -87,7 +80,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
   };
 
   // * Efecto para manejar el cierre o apertura del modal después de un retraso
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
@@ -108,12 +100,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
   // * Función para determinar el ícono a mostrar basado en el tipo de ítem
   // * Muestra el ícono correspondiente según el tipo de inventario (equipos o dispositivos)
 
-  const getIcon = () => {
-    if (tipoItem === "equipos") {
-      return <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />;
-    } else if (tipoItem === "dispositivos-red") {
-      return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />;
-    }
+  const getIcon = () => {      
+      return tipoItem === "equipos"  ? <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" /> :
+             <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
   };
 
   return (
@@ -136,13 +125,12 @@ const ItemsList: React.FC<ItemsListProps> = ({
               />
             </div>
           </div>
-
           {/* Search Form */}
           <div className="relative flex items-center mt-6 mb-6">
             <input
               type="text"
               className="w-full p-2 border-2 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-              placeholder="Busqueda de Dispositivo..."
+              placeholder="Buscar"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -184,6 +172,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                   >
                     <div className="flex items-center justify-between mb-14">
+                      <div className="flex items-center gap-2">
+                        {getIcon()}
+                      </div>
                       <h3 className="mb-2 text-2xl font-semibold dark:text-white">
                         {tipoItem === "equipos"
                           ? (item as IItems).name
@@ -271,7 +262,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
             )
           ) : (
             <p className="mt-4 text-xl font-bold text-center text-gray-600 dark:text-white">
-              No hay ningún artículo incluido o creado
+              No hay registros
             </p>
           )}
           <div>‎</div>

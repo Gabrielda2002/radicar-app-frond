@@ -76,7 +76,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       name: Yup.string()
         .required("El nombre es requerido")
         .min(2, "El nombre debe tener al menos 3 caracteres")
-        .max(200, "El nombre debe tener como máximo 200 caracteres"),
+        .max(100, "El nombre debe tener como máximo 200 caracteres"),
       brand: Yup.string()
         .required("La marca es requerida")
         .min(2, "La marca debe tener al menos 3 caracteres")
