@@ -4,10 +4,10 @@ import { format } from "date-fns";
 import { useFormik } from "formik";
 import { Cup } from "../../../models/ICirugias";
 import React, { useState, useMemo } from "react";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
-import InputAutocompletado from "../../InputAutocompletado";
+import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
 import { createCirugia } from "../../../services/createCirugia";
 
 //*Icons

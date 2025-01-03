@@ -3,8 +3,8 @@ import { useState, lazy, Suspense, useCallback } from "react";
 
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import Pagination from "../Pagination.tsx";
-import LoadingSpinner from "../LoadingSpinner";
+import Pagination from "../common/PaginationTable/PaginationTable.tsx";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner.tsx";
 import useSearch from "../../hooks/useSearch.ts";
 import { IAuditar, IStatusCup } from "../../models/IAuditar.ts";
 import usePagination from "../../hooks/usePagination.ts";
@@ -16,7 +16,7 @@ import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 
 //*Properties
-import ModalSection from "../ModalSection.tsx";
+import ModalSection from "../common/HeaderPage/HeaderPage.tsx";
 import { toZonedTime } from "date-fns-tz";
 
 const ModalMostrarDatosCUPS = lazy(

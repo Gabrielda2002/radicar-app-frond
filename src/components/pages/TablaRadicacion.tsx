@@ -1,8 +1,8 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
-import LoadingSpinner from "../LoadingSpinner";
-import ErrorMessage from "../ErrorMessageModals.tsx";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner.tsx";
+import ErrorMessage from "../common/ErrorMessageModal/ErrorMessageModals.tsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFetchDocumentoRadicado } from "../../hooks/useFetchUsers";
 import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
@@ -17,7 +17,7 @@ const ModalMostrarDatos = lazy(
 const ModalRadicacion = lazy(() => import("./modals/ModalRadicacion.tsx"));
 
 //*Props
-import ModalSection from "../ModalSection.tsx";
+import ModalSection from "../common/HeaderPage/HeaderPage.tsx";
 
 //*Iconos
 import gestion from "/assets/gestion.svg";

@@ -1,14 +1,14 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
 
-import Pagination from "../../Pagination";
+import Pagination from "../../common/PaginationTable/PaginationTable";
 import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 import { useFetchIpsRemite } from "../../../hooks/useFetchUsers";
 
 //*Properties
-import ModalSection from "../../ModalSection";
+import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IIPSRemite } from "../../../models/IIpsRemite";
 
 const ModalAction = lazy(() => import("../modals/ModalAction"));

@@ -30,7 +30,7 @@ import {
   FingerPrintIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import InputAutocompletado from "../../InputAutocompletado";
+import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
 import { toast } from "react-toastify";
 
 interface ModalItemsFormProps {

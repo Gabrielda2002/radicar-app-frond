@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
 
 interface ModalGestionServicioProps {

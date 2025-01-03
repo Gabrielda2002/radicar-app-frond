@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useFetchEspecialidadAtcp from "../hooks/useFetchInputAtcp";
+import useFetchEspecialidadAtcp from "../../../hooks/useFetchInputAtcp";
 
 interface InputAutocompletadoProps {
   label: string;

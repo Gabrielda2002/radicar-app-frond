@@ -1,7 +1,7 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import React, { useMemo, useState } from "react";
-import ErrorMessage from "../ErrorMessageModals";
+import ErrorMessage from "../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createUser } from "../../services/createUser";
 import areas from '../../data-dynamic/areas.json'; 

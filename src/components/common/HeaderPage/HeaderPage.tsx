@@ -1,18 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LoadingSpinner from "./LoadingSpinner"; // Asegúrate de importar tu componente de spinner
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; // Asegúrate de importar tu componente de spinner
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 interface ModuleSectionProps {
   title: string;
   breadcrumb: { label: string; path: string }[];
-  duration?: number; // Duración opcional para el spinner
+  duration?: number;
 }
 
 const ModalSection: React.FC<ModuleSectionProps> = ({
   title,
   breadcrumb,
-  duration = 500, // Valor por defecto
+  duration = 500,
 }) => {
   return (
     <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">

@@ -1,10 +1,10 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 
 //*Properties
-import ModalSection from "../../ModalSection";
+import ModalSection from "../../common/HeaderPage/HeaderPage";
 const ModalPaciente = lazy(() => import("../modals/ModalPaciente"));
 
 const TablaPacientes = () => {

@@ -5,7 +5,7 @@ import { useAuth } from "@/context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer,  } from "react-big-calendar";
 import ModalCrearEvento from "./ModalCrearEvento";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useEventModal } from "../hooks/useEventModal";
 import { IEventos } from "@/models/IEventos";
 import { useFetchEvents } from "../hooks/UseFetchEvents";

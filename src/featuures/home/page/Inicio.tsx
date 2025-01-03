@@ -1,5 +1,5 @@
 //*Fuctions and Hooks
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import LoadingSpinner from "../../../components/common/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 

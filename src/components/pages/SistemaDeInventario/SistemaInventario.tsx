@@ -2,8 +2,8 @@
 import ItemsList from "./ItemsList";
 import SedesList from "./sedesList";
 import React, { useState } from "react";
-import DeviceCard from "../../DevicesCard";
-import ModalSection from "../../ModalSection";
+import DeviceCard from "../../common/DevicesCard/DevicesCard";
+import ModalSection from "../../common/HeaderPage/HeaderPage";
 import DepartamentosList from "./DepartamentosList";
 import useFetchSedes from "../../../hooks/useFetchSedes";
 import useFetchItems from "../../../hooks/useFetchItems";
@@ -17,7 +17,7 @@ import {
   SignalIcon,
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 const SistemaInventario: React.FC = () => {
   const {

@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import FileList from "./SSGC/FileList";
 import BreadCrumb from "./SSGC/BreadCrumb";
 import FolderList from "./SSGC/FolderList";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
 import { useAuth } from "../../context/authContext";
 import { useFileManager } from "../../hooks/useFileManager";
 
@@ -13,7 +13,7 @@ import { FolderOpenIcon } from "@heroicons/react/24/outline";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 //*Properties
-import ModalSection from "../ModalSection";
+import ModalSection from "../common/HeaderPage/HeaderPage";
 
 const FileManager: React.FC = () => {
   const {

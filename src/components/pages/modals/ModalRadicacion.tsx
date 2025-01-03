@@ -4,12 +4,12 @@ import { useFormik } from "formik";
 import ServicioForm from "../../GenerarInputsCUPS";
 import React, { useEffect, useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import InputAutocompletado from "../../InputAutocompletado";
+import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
 import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
 import { submitRadicado } from "../../../services/submitRadicado";
 import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 
 //*Icons

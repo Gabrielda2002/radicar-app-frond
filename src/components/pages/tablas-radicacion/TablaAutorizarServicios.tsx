@@ -2,13 +2,13 @@
 import * as Yup from "yup";
 import { useState, useMemo } from "react";
 import { useFormik } from "formik";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import {
   useFetchEstados,
   useFetchUnidadFuncional,
 } from "../../../hooks/useFetchUsers";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import { useLocation } from "react-router-dom";
 import {
   CupsDetail,
@@ -18,7 +18,7 @@ import {
 import { submitAutorizacionRadicado } from "../../../services/submitAutorizacionRadicado";
 
 //*Properties
-import ModalSection from "../../ModalSection";
+import ModalSection from "../../common/HeaderPage/HeaderPage";
 
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);

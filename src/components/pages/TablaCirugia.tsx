@@ -1,9 +1,9 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
 import { format } from "date-fns";
-import Pagination from "../Pagination";
+import Pagination from "../common/PaginationTable/PaginationTable";
 import useSearch from "../../hooks/useSearch";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
 // import ModalCirugias from "./modals/ModalCirugias";
 import usePagination from "../../hooks/usePagination";
 import { useFetchCirugias } from "../../hooks/useFetchUsers";
@@ -17,7 +17,7 @@ import { ICirugias, programacion } from "../../models/ICirugias";
 import soporte from "/assets/soporte.svg";
 
 //*Props
-import ModalSection from "../ModalSection";
+import ModalSection from "../common/HeaderPage/HeaderPage";
 
 const ModalCirugias = lazy(() => import("./modals/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(() => import("./modals/ModalMostrarDatos"));

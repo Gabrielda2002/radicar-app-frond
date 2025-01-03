@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createMonitoringItem } from "./createMonitoringItem";
 import { toast } from "react-toastify";

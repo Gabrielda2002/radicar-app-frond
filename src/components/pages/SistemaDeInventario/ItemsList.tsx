@@ -1,10 +1,10 @@
 // * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import { IItems } from "@/models/IItems";
 import useSearch from "@/hooks/useSearch";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalItemsForm from "@/components/pages/modals/ModalItemsForm";
 import usePagination from "@/hooks/usePagination";
 import ModalItemsDetails from "@/components/pages/modals/ModalItemsDetails";

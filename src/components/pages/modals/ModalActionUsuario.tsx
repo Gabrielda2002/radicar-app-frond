@@ -12,7 +12,7 @@ import {
 } from "../../../hooks/useFetchUsers";
 import { IUsuarios } from "../../../models/IUsuarios";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { updateUsuarios } from "../../../services/updarteUsuarios";
 
 //*Icons

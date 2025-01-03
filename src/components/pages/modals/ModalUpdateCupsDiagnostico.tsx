@@ -1,7 +1,7 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useState } from "react";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import useAnimation from "../../../hooks/useAnimations";

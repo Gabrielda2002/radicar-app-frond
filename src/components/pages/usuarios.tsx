@@ -1,9 +1,9 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import Pagination from "../Pagination";
-import ModalSection from "../ModalSection";
+import Pagination from "../common/PaginationTable/PaginationTable";
+import ModalSection from "../common/HeaderPage/HeaderPage";
 import useSearch from "../../hooks/useSearch";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
 import { IUsuarios } from "../../models/IUsuarios";
 import usePagination from "../../hooks/usePagination";
 import { useFetchUsuarios } from "../../hooks/useFetchUsers";

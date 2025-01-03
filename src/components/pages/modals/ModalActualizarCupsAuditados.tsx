@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Cup } from "../../../models/IAuditados";
 import useAnimation from "../../../hooks/useAnimations";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState, useMemo } from "react";
 import { useFetchEstados } from "../../../hooks/useFetchUsers";

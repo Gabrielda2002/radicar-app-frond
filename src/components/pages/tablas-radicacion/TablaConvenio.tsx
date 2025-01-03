@@ -1,15 +1,15 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import Pagination from "../../Pagination";
+import Pagination from "../../common/PaginationTable/PaginationTable";
 // import ModalAction from "../modals/ModalAction";
 import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import usePagination from "../../../hooks/usePagination";
 // import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchConvenio } from "../../../hooks/useFetchUsers";
 
 //*Properties
-import ModalSection from "../../ModalSection";
+import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IConvenios } from "../../../models/IConvenios";
 const ModalAction = lazy(() => import("../modals/ModalAction"));
 const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));

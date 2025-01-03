@@ -8,9 +8,9 @@ import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
 import UserDataUpdateForm from "@/featuures/profile/components/UserDataUpdateForm";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
-const ConfirmDeletePopup = lazy(() => import("@/components/ConfirmDeletePopup"));
+const ConfirmDeletePopup = lazy(() => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp"));
 
 const Perfil: React.FC = () => {
   const {

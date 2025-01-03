@@ -2,7 +2,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useMemo } from "react";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
 import { updateStatus } from "../../../services/updateStatus";

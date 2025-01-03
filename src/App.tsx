@@ -6,7 +6,7 @@ import Navbar from "./components/layout/navbar/page/NavBar.tsx";
 import Login from "./components/pages/login.tsx";
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 import { Route, Routes, Navigate } from "react-router-dom";
-import LoadingSpinner from "./components/LoadingSpinner.tsx";
+import LoadingSpinner from "./components/common/LoadingSpinner/LoadingSpinner.tsx";
 
 //*Lazy Components
 const Inicio = lazy(() => import("./featuures/home/page/Inicio.tsx"));

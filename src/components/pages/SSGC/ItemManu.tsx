@@ -5,11 +5,11 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 //*Properties
 const ModalRenombrarItem = lazy(() => import("../modals/ModalRenombrarItem"));
-const ConfirmDeletePopupProps = lazy(() => import("../../ConfirmDeletePopup"));
+const ConfirmDeletePopupProps = lazy(() => import("../../common/ConfirmDeletePopUp/ConfirmDeletePopUp"));
 interface ItemManuProps {
   onDelete: () => void;
   renameItem: (newName: string) => void;

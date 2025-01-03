@@ -11,7 +11,7 @@ import {
 } from "../../../hooks/useFetchUsers";
 import { IPacientes } from "../../../models/IPacientes";
 import { updatePacienteEp } from "../../../utils/api-config";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 
 //*Icons

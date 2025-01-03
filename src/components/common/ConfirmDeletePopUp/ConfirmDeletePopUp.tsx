@@ -1,6 +1,6 @@
 import React from "react";
 
-import danger from "../../public/assets/danger.svg";
+import danger from "@/../public/assets/danger.svg";
 
 interface ConfirmDeletePopupProps {
   isOpen: boolean;

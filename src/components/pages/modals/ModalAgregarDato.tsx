@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import useAnimation from "../../../hooks/useAnimations";
 import { createDataTableRadicacion } from "../../../services/createDataTableRadicacion";
 

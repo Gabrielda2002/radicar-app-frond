@@ -6,7 +6,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import LoadingSpinner from "../../LoadingSpinner";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 const ModalSubirArchivo = lazy(() => import("../modals/ModalSubirArchivo"));
 const ModalCrearCarpeta = lazy(() => import("../modals/ModalCrearCarpeta"));

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import useAnimation from "../../../hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../ErrorMessageModals";
+import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
 import inventoryOptions from "../../../data-dynamic/inventoryOptions.json";
 import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
 
