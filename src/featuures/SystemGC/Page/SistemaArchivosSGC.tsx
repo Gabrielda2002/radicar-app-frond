@@ -1,19 +1,19 @@
 //*Fuctions and hooks
 import React, { useMemo } from "react";
-import FileList from "./SSGC/FileList";
-import BreadCrumb from "./SSGC/BreadCrumb";
-import FolderList from "./SSGC/FolderList";
-import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
-import { useAuth } from "../../context/authContext";
-import { useFileManager } from "../../hooks/useFileManager";
+import FileList from "@/featuures/SystemGC/Components/FileList";
+import BreadCrumb from "@/featuures/SystemGC/Components/BreadCrumb";
+import FolderList from "@/featuures/SystemGC/Components/FolderList";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { useAuth } from "@/context/authContext";
+import { useFileManager } from "@/featuures/SystemGC/Hooks/useFileManager";
+import DropDownManu from "@/featuures/SystemGC/Components/DropDownManu";
 
 //*Icons
-import DropDownManu from "./SSGC/DropDownManu";
 import { FolderOpenIcon } from "@heroicons/react/24/outline";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 //*Properties
-import ModalSection from "../common/HeaderPage/HeaderPage";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
 const FileManager: React.FC = () => {
   const {

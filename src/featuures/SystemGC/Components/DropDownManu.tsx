@@ -1,15 +1,15 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
-import { useUploadFile } from "../../../hooks/useUploadFile";
+import { useUploadFile } from "../Hooks/UseUploadFile";
 //*Icons
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
-const ModalSubirArchivo = lazy(() => import("../modals/ModalSubirArchivo"));
-const ModalCrearCarpeta = lazy(() => import("../modals/ModalCrearCarpeta"));
+const ModalSubirArchivo = lazy(() => import("./ModalSubirArchivo"));
+const ModalCrearCarpeta = lazy(() => import("./ModalCrearCarpeta"));
 
 interface DropDownManuProps {
   currentFolderId: string;

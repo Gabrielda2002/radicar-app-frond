@@ -1,7 +1,7 @@
 import React from "react";
-import pdfIcon from "../../../../public/assets/pdf-file.svg";
-import docIcon from "../../../../public/assets/docx-file.svg";
-import xlsxIcon from "../../../../public/assets/excel-file.svg";
+import pdfIcon from "@/../public/assets/pdf-file.svg";
+import docIcon from "@/../public/assets/docx-file.svg";
+import xlsxIcon from "@/../public/assets/excel-file.svg";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
 

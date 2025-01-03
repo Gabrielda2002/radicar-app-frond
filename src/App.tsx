@@ -35,7 +35,7 @@ const TablaAutorizarServicios = lazy(
 );
 
 const FileManager = lazy(
-  () => import("./components/pages/SistemaArchivosSGC.tsx")
+  () => import("./featuures/SystemGC/Page/SistemaArchivosSGC.tsx")
 );
 
 const SistemaInventario = lazy(

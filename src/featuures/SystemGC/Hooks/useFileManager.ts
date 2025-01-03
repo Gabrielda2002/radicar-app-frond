@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "../utils/api-config";
+import { createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "@/utils/api-config";
 
 interface FileItem { // Renombrado de File a FileItem
     id: string;
