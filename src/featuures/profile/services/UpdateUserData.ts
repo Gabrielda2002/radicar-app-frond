@@ -1,4 +1,4 @@
-import { updateUserDataEp } from "../utils/api-config";
+import { updateUserDataEp } from "@/utils/api-config";
 
 export const updateUserData = async (data: FormData, id: string) => {
     try {

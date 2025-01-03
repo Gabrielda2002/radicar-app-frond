@@ -10,7 +10,7 @@ import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 //*Lazy Components
 const Inicio = lazy(() => import("./components/pages/inicio.tsx"));
-const Perfil = lazy(() => import("./components/features/profile/PerfilPage.tsx"));
+const Perfil = lazy(() => import("./featuures/profile/page/PerfilPage.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
 const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
