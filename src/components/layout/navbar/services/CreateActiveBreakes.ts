@@ -1,4 +1,4 @@
-import { createActiveBreakesEp } from "../utils/api-config"
+import { createActiveBreakesEp } from "@/utils/api-config"
 
 export const CreateActiveBreakes = async (data: FormData) => {
     try {

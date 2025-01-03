@@ -1,13 +1,13 @@
 //*Funciones y Hooks
 import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "@/context/authContext";
 import { FC, useRef, useState, useEffect, useCallback } from "react";
-import { useSidebar } from "../../context/sidebarContext";
-import ModalReporteCirugia from "./modals/ModalReporteCirugia";
-import ModalReporteRadicado from "./modals/ModalReporteRadicado";
-import Category from "./CategoriaSideBar";
-import SubCategory from "./SubCategoriaSideBar";
+import { useSidebar } from "@/context/sidebarContext";
+import ModalReporteCirugia from "../components/ModalReporteCirugia";
+import ModalReporteRadicado from "../components/ModalReporteRadicado";
+import Category from "../components/CategoriaSideBar";
+import SubCategory from "../components/SubCategoriaSideBar";
 
 //*Icons
 import Box from "/assets/box.svg";

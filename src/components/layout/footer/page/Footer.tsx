@@ -5,7 +5,7 @@ import flask from "/assets/flask.svg";
 import youtube from "/assets/youtube.svg";
 import facebook from "/assets/facebook.svg";
 import instagram from "/assets/instagram.svg";
-import logoFooter from "../imgs/logo-footer.png";
+import logoFooter from "@/imgs/logo-footer.png";
 
 const Footer = () => {
   return (

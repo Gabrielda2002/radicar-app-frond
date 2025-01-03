@@ -2,12 +2,12 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "@/context/authContext";
 import { Menu, MenuButton } from "@headlessui/react";
-import { useSidebar } from "../context/sidebarContext";
-import { useTheme } from "../context/blackWhiteContext";
-import { useUserProfile } from "../context/userProfileContext";
-import ModalPausasActivas from "./pages/modals/ModalPausasActivas";
+import { useSidebar } from "@/context/sidebarContext";
+import { useTheme } from "@/context/blackWhiteContext";
+import { useUserProfile } from "@/context/userProfileContext";
+import ModalPausasActivas from "../components/ModalPausasActivas";
 import { useState, useEffect, useCallback, useMemo } from "react";
 //*Icons
 import sun from "/assets/sun.svg";
@@ -16,7 +16,7 @@ import menu from "/assets/menu.svg";
 import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
-import logo from "../imgs/logo-navbar.png";
+import logo from "@/imgs/logo-navbar.png";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();

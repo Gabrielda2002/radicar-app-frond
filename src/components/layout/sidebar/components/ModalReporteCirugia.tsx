@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import { useDownloadReport } from "../../../hooks/useDownloadReport";
+import useAnimation from "@/hooks/useAnimations";
+import { useDownloadReport } from "@/components/layout/sidebar/hooks/UseDownloadReport";
 
 interface ModalCirugiaProps {
   isOpen: boolean;

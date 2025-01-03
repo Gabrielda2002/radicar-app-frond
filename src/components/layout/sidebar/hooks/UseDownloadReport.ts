@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api } from "../utils/api-config";
+import { api } from "@/utils/api-config";
 
 export const useDownloadReport = () => {
 

@@ -1,8 +1,8 @@
 //*Funciones y Hooks
 import React, { useCallback, useMemo, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import { useDownloadReport } from "../../../hooks/useDownloadReport";
-import { useFetchEstados } from "../../../hooks/useFetchUsers";
+import useAnimation from "@/hooks/useAnimations";
+import { useDownloadReport } from "../hooks/UseDownloadReport";
+import { useFetchEstados } from "@/hooks/useFetchUsers";
 //*Icons
 // import back from "../../../assets/icons/back.svg";
 interface ModalReporteRadicadoProps {
