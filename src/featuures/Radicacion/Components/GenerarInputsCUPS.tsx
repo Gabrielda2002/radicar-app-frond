@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useFetchCups from "../hooks/useFetchCups";
+import useFetchCups from "@/hooks/useFetchCups";
 
 interface ServicioFormProps {
   cantidad: string;

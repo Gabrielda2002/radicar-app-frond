@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+import useAnimation from "@/hooks/useAnimations";
 import {
   CupsRadicadosRelation,
   SeguimientoAuxiliarRelation,
-} from "../../../models/IRadicados";
-import ModalGestionServicio from "./ModalGestionServicio";
+} from "@/models/IRadicados";
+import ModalGestionServicio from "./Components/ModalGestionServicio";
 import {
   GestionAuxiliarCirugia,
   programacion,
-} from "../../../models/ICirugias";
+} from "@/models/ICirugias";
 import { format } from "date-fns";
 
 interface ModalGestionAuxiliarProps {

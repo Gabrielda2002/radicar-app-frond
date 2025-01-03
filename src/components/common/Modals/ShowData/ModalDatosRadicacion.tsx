@@ -1,8 +1,8 @@
-import { IRadicados } from "../../../models/IRadicados";
-import useAnimation from "../../../hooks/useAnimations";
+import { IRadicados } from "@/models/IRadicados";
+import useAnimation from "@/hooks/useAnimations";
 import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
-import { useAuth } from "../../../context/authContext";
+import { useAuth } from "@/context/authContext";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;

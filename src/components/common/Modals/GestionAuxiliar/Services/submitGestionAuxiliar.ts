@@ -1,4 +1,4 @@
-import { saveGestionAuxiliar } from "../utils/api-config"
+import { saveGestionAuxiliar } from "@/utils/api-config"
 
 export const  submitGestionAuxiliar = async (data: FormData, endpoint: string) => {
     try {

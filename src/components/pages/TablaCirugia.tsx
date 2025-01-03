@@ -22,7 +22,7 @@ import ModalSection from "../common/HeaderPage/HeaderPage";
 const ModalCirugias = lazy(() => import("./modals/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(() => import("./modals/ModalMostrarDatos"));
 const ModalGestionAuxiliar = lazy(
-  () => import("./modals/ModalGestionAuxiliar")
+  () => import("../common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
 );
 
 const ITEMS_PER_PAGE = 8;

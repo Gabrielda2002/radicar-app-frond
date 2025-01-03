@@ -1,23 +1,23 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
 import { format } from "date-fns";
-import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner.tsx";
-import ErrorMessage from "../common/ErrorMessageModal/ErrorMessageModals.tsx";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals.tsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFetchDocumentoRadicado } from "../../hooks/useFetchUsers";
-import { CupsRadicadosRelation, IRadicados } from "../../models/IRadicados.ts";
+import { CupsRadicadosRelation, IRadicados } from "@/models/IRadicados.ts";
+import { useFetchDocumentoRadicado } from "../Hooks/UseFetchDocumentRadicado.ts";
 
 //? Using lazy load functions for modals
 const ModalGestionAuxiliar = lazy(
-  () => import("./modals/ModalGestionAuxiliar.tsx")
+  () => import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar.tsx")
 );
 const ModalMostrarDatos = lazy(
-  () => import("./modals/ModalDatosRadicacion.tsx")
+  () => import("@/components/common/Modals/ShowData/ModalDatosRadicacion.tsx")
 );
-const ModalRadicacion = lazy(() => import("./modals/ModalRadicacion.tsx"));
+const ModalRadicacion = lazy(() => import("../Components/ModalRadicacion.tsx"));
 
 //*Props
-import ModalSection from "../common/HeaderPage/HeaderPage.tsx";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 
 //*Iconos
 import gestion from "/assets/gestion.svg";

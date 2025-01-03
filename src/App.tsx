@@ -26,7 +26,7 @@ const TablaAuditoria = lazy(
 );
 
 const TablaRadicacion = lazy(
-  () => import("./components/pages/TablaRadicacion.tsx")
+  () => import("./featuures/Radicacion/Page/TablaRadicacion.tsx")
 );
 
 const TablaAutorizarServicios = lazy(

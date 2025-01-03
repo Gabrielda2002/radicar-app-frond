@@ -1,15 +1,15 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import ServicioForm from "../../GenerarInputsCUPS";
+import ServicioForm from "./GenerarInputsCUPS";
 import React, { useEffect, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
-import useFetchDiagnostico from "../../../hooks/useFetchDiagnostico";
-import { submitRadicado } from "../../../services/submitRadicado";
-import { useFetchPaciente } from "../../../hooks/useFetchPaciente";
+import useAnimation from "@/hooks/useAnimations";
+import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import useFetchDiagnostico from "@/featuures/Radicacion/Hooks/useFetchDiagnostico";
+import { submitRadicado } from "../Services/submitRadicado";
+import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 
 //*Icons

@@ -1,4 +1,4 @@
-import { saveCups, saveFileRadicar, saveRadicar, updatePatientData } from "../utils/api-config"
+import { saveCups, saveFileRadicar, saveRadicar, updatePatientData } from "@/utils/api-config"
 
 export const submitRadicado = async (data: FormData, idPaciente: string) => {
     try {

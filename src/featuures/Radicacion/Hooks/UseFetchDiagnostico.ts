@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IDiagnostico } from "../models/IDiagnostico";
-import { api } from "../utils/api-config";
+import { IDiagnostico } from "@/models/IDiagnostico";
+import { api } from "@/utils/api-config";
 
 const useFetchDiagnostico = () => {
   const [diagnostico, setDiagnostico] = useState<IDiagnostico[] | null>([]);

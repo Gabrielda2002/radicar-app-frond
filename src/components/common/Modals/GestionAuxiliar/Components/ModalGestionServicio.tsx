@@ -2,8 +2,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
-import { submitGestionAuxiliar } from "../../../services/submitGestionAuxiliar";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import { submitGestionAuxiliar } from "../Services/submitGestionAuxiliar";
 
 interface ModalGestionServicioProps {
   onClose: () => void;
