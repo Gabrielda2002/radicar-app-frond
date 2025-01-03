@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout";
 import Navbar from "./components/layout/navbar/page/NavBar.tsx";
-import Login from "./components/pages/login.tsx";
+import Login from "./featuures/auth/Page/login.tsx";
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoadingSpinner from "./components/common/LoadingSpinner/LoadingSpinner.tsx";

@@ -1,8 +1,8 @@
 //*Funciones y hooks
 import React, { useState } from "react";
-import { api } from "../../utils/api-config";
+import { api } from "@/utils/api-config";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "@/context/authContext";
 
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
 
