@@ -2,11 +2,11 @@ import { useFormik } from "formik";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import * as Yup from "yup";
-import ErrorMessage from "../../ErrorMessageModals";
-import { createEvent } from "../../../services/createEvent";
-import { IEventos } from "../../../models/IEventos";
+import ErrorMessage from "@/components/ErrorMessageModals";
+import { createEvent } from "../services/createEvent";
+import { IEventos } from "@/models/IEventos";
 import { format } from "date-fns";
-import { useAuth } from "../../../context/authContext";
+import { useAuth } from "@/context/authContext";
 
 interface ModalCrearEventoProps {
   isOpen: boolean;

@@ -9,7 +9,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 //*Lazy Components
-const Inicio = lazy(() => import("./components/pages/inicio.tsx"));
+const Inicio = lazy(() => import("./featuures/home/page/Inicio.tsx"));
 const Perfil = lazy(() => import("./featuures/profile/page/PerfilPage.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
 const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));

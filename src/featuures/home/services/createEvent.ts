@@ -1,4 +1,4 @@
-import { createEventEp } from "../utils/api-config"
+import { createEventEp } from "@/utils/api-config"
 
 export const createEvent = async (data: FormData) => {
     try {

@@ -22,7 +22,6 @@ import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
-import { IServiciosContratados } from "../models/IServiciosContratados";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -283,15 +282,4 @@ export const fetchEventosEp = async (): Promise<IEventos[]> => {
         dateEnd: new Date(evento.dateEnd)
     }));
     return eventos;
-}
-
-export const fetchServicioContratadoEp = async (codigo: string): Promise<IServiciosContratados[]> => {
-    const response = await api.post('/servicio-contratado', {
-        code: codigo
-    });
-
-    const serviciosContratados = response.data.map((servicio: IServiciosContratados) => ({
-        ...servicio
-    }));
-    return serviciosContratados;
 }

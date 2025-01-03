@@ -1,6 +1,6 @@
 // src/hooks/useEventModal.ts
 import { useState } from 'react';
-import { IEventos } from '../models/IEventos';
+import { IEventos } from '@/models/IEventos';
 
 export const useEventModal = () => {
   const [selectedEvent, setSelectedEvent] = useState<IEventos | null>(null);

@@ -1,16 +1,14 @@
 //*Fuctions and Hooks
 import "moment/locale/es";
 import moment from "moment";
-// import React, { useState, useEffect } from "react";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "@/context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer,  } from "react-big-calendar";
-// import { IEventos } from "../../models/IEventos";
-import { useFetchEvents } from "../../hooks/useFetchUsers";
-import ModalCrearEvento from "./modals/ModalCrearEvento";
-import LoadingSpinner from "../LoadingSpinner";
-import { useEventModal } from "../../hooks/useEventModal";
-import { IEventos } from "../../models/IEventos";
+import ModalCrearEvento from "./ModalCrearEvento";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { useEventModal } from "../hooks/useEventModal";
+import { IEventos } from "@/models/IEventos";
+import { useFetchEvents } from "../hooks/UseFetchEvents";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");

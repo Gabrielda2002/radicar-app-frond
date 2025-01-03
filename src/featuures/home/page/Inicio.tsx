@@ -1,14 +1,14 @@
 //*Fuctions and Hooks
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 
-//*Icons
+//*Icons 
 import cookieX from "/assets/cookie-X.svg";
-import { useFetchServicioContratado } from "@/hooks/useFetchUsers";
+import { useFetchServicioContratado } from "../hooks/UseFetchServiciosContratados";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
-const Calendario = lazy(() => import("./Calendario"));
+const Calendario = lazy(() => import("../components/Calendario"));
 
 const Inicio = () => {
   const [isLoading, setisLoading] = useState(true);
