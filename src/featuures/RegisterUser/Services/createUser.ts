@@ -1,4 +1,4 @@
-import { createUsuario } from "../utils/api-config"
+import { createUsuario } from "@/utils/api-config"
 
 export const createUser = async (data: FormData) => {
     try {

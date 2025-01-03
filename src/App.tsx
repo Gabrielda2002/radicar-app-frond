@@ -14,7 +14,7 @@ const Perfil = lazy(() => import("./featuures/profile/page/PerfilPage.tsx"));
 const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
 const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
-  () => import("./components/pages/RegistrarUsuarios.tsx")
+  () => import("./featuures/RegisterUser/Page/RegisterUser.tsx")
 );
 
 //*Lazy Principale Tables

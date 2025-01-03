@@ -1,19 +1,19 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import React, { useMemo, useState } from "react";
-import ErrorMessage from "../common/ErrorMessageModal/ErrorMessageModals";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import { createUser } from "../../services/createUser";
-import areas from '../../data-dynamic/areas.json'; 
-//*Icons
-import logo from "/src/imgs/logo.png";
-import { useFormik } from "formik";
+import { createUser } from "@/featuures/RegisterUser/Services/createUser";
+import areas from '@/data-dynamic/areas.json'; 
 import {
   useFetchDocumento,
   useFetchLugarRadicado,
   useFetchMunicipio,
   useFetchRoles,
-} from "../../hooks/useFetchUsers";
+} from "@/hooks/useFetchUsers";
+//*Icons
+import logo from "@/imgs/logo.png";
+import { useFormik } from "formik";
 
 const RegistrarUsuarios: React.FC = () => {
   const isOpen = true;
