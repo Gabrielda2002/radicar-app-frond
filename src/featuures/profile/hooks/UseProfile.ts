@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { api } from "@/utils/api-config";
-import defaultUserPicture from "../../public/assets/icon-user.svg";
+import defaultUserPicture from "@/../public/assets/icon-user.svg";
 import { IProfile } from "@/models/IProfile";
 
 export const usePerfil = () => {

@@ -5,7 +5,7 @@ import BreadCrumb from "@/featuures/SystemGC/Components/BreadCrumb";
 import FolderList from "@/featuures/SystemGC/Components/FolderList";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useAuth } from "@/context/authContext";
-import { useFileManager } from "@/featuures/SystemGC/Hooks/useFileManager";
+import { useFileManager } from "../Hooks/UseFileManager";
 import DropDownManu from "@/featuures/SystemGC/Components/DropDownManu";
 
 //*Icons

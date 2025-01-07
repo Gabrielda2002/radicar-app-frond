@@ -5,8 +5,6 @@ import ServicioForm from "./GenerarInputsCUPS";
 import React, { useEffect, useState } from "react";
 import useAnimation from "@/hooks/useAnimations";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import useFetchDiagnostico from "@/featuures/Radicacion/Hooks/useFetchDiagnostico";
-import { submitRadicado } from "../Services/submitRadicado";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
@@ -18,6 +16,8 @@ import phone from "/assets/phone.svg";
 import email from "/assets/email.svg";
 import adress from "/assets/adress.svg";
 import telephone from "/assets/telephone.svg";
+import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
+import { submitRadicado } from "../Services/SubmitRadicado";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);

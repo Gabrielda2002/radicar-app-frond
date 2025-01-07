@@ -6,9 +6,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer,  } from "react-big-calendar";
 import ModalCrearEvento from "./ModalCrearEvento";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { useEventModal } from "../hooks/useEventModal";
 import { IEventos } from "@/models/IEventos";
 import { useFetchEvents } from "../hooks/UseFetchEvents";
+import { useEventModal } from "../hooks/UseEventModal";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");

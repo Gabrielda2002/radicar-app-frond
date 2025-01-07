@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import useAnimation from "@/hooks/useAnimations";
 import VideoFile from "@/../public/videos/Pausas-activas-prueba.mp4";
 import { useFormik } from "formik";
-import { CreateActiveBreakes } from "../services/createActiveBreakes";
+import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
 
 const ModalPausasActivas = () => {
   // * Constants

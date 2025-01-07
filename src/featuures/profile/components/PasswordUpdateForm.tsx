@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { updatePasswordUsuario } from "@/featuures/profile/services/updatePasswordUsuario";
+import { updatePasswordUsuario } from "../services/UpdatePasswordUsuario";
 
 interface PasswordUpdateFormProps {
   userId: string;

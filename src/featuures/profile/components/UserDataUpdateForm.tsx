@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
-import { updateUserData } from "@/featuures/profile/services/updateUserData";
 import { useUserProfile } from "@/context/userProfileContext";
 import PasswordUpdateForm from "./PasswordUpdateForm";
+import { updateUserData } from "../services/UpdateUserData";
 
 interface UserDataUpdateFormProps {
   initialUserData: {
