@@ -12,7 +12,7 @@ import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
 import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IMunicipios } from "../../../models/IMunicipios";
 
-const ModalAction = lazy(() => import("../modals/ModalAction"));
+const ModalAction = lazy(() => import("../../common/Modals/ActionTables/ModalAction"));
 const ModalMunicipios = lazy(() => import("../modals/ModalMunicipios"));
 const ITEMS_PER_PAGE = 10;
 

@@ -1,4 +1,4 @@
-import { updateStatusData } from "../utils/api-config"
+import { updateStatusData } from "@/utils/api-config"
 
 export const updateStatus = async (id: number, data: FormData, endPonint: string) => {
     try {

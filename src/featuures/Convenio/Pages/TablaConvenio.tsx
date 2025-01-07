@@ -1,18 +1,18 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import Pagination from "../../common/PaginationTable/PaginationTable";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
 // import ModalAction from "../modals/ModalAction";
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
 // import ModalAgregarDato from "../modals/ModalAgregarDato";
-import { useFetchConvenio } from "../../../hooks/useFetchUsers";
+import { useFetchConvenio } from "@/hooks/useFetchUsers";
+import { IConvenios } from "@/models/IConvenios";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
-import { IConvenios } from "../../../models/IConvenios";
-const ModalAction = lazy(() => import("../modals/ModalAction"));
-const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
+const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
 
 const ITEMS_PER_PAGE = 10;
 

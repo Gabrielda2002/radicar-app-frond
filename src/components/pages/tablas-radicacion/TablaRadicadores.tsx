@@ -10,8 +10,8 @@ import { useFetchRadicador } from "../../../hooks/useFetchUsers";
 //*Properties
 import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IRadicador } from "../../../models/IRadicador";
-const ModalAction = lazy(() => import("../modals/ModalAction"));
-const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
+const ModalAction = lazy(() => import("../../common/Modals/ActionTables/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../../common/Modals/CrearDataTables/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaRadicadores = () => {

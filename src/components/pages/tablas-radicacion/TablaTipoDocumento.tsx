@@ -12,8 +12,8 @@ import { useFetchDocumento } from "../../../hooks/useFetchUsers";
 import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IDocumento } from "../../../models/IDocumento";
 
-const ModalAction = lazy(() => import("../modals/ModalAction"));
-const ModalAgregarDato = lazy(() => import("../modals/ModalAgregarDato"));
+const ModalAction = lazy(() => import("../../common/Modals/ActionTables/ModalAction"));
+const ModalAgregarDato = lazy(() => import("../../common/Modals/CrearDataTables/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoDocumento = () => {

@@ -1,4 +1,4 @@
-import { createTableRadicacion } from "../utils/api-config";
+import { createTableRadicacion } from "@/utils/api-config";
 
 export const createDataTableRadicacion = async (name: string, endPoint: string) => {
     try {

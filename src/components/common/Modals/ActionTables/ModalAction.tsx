@@ -2,10 +2,10 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useMemo } from "react";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
-import useAnimation from "../../../hooks/useAnimations";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import useAnimation from "@/hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
-import { updateStatus } from "../../../services/updateStatus";
+import { updateStatus } from "./Services/UpdateStatus";
 
 //*Icons
 import onOff from "/assets/on-off.svg";
