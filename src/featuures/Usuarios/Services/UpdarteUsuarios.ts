@@ -1,4 +1,4 @@
-import { updateUsuariosTableEp } from "../utils/api-config"
+import { updateUsuariosTableEp } from "../../../utils/api-config"
 
 export const updateUsuarios = async (id: number, data: FormData) => {
     

@@ -1,19 +1,19 @@
 //*Funciones y Hooks
 import React, { useEffect, useState, useMemo } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+import useAnimation from "@/hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import areas from "../../../data-dynamic/areas.json";
+import areas from "@/data-dynamic/areas.json";
 import {
   useFetchDocumento,
   useFetchLugarRadicado,
   useFetchMunicipio,
   useFetchRoles,
-} from "../../../hooks/useFetchUsers";
-import { IUsuarios } from "../../../models/IUsuarios";
+} from "@/hooks/useFetchUsers";
+import { IUsuarios } from "@/models/IUsuarios";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
-import { updateUsuarios } from "../../../services/updarteUsuarios";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import { updateUsuarios } from "../Services/updarteUsuarios";
 
 //*Icons
 import { MapPinIcon } from "@heroicons/react/24/outline";
@@ -22,7 +22,6 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 interface ModalActionUsuarioProps {
   id: number;
-  //   update: boolean;
   ususario: IUsuarios | null;
 }
 

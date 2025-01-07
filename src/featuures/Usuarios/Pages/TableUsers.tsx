@@ -1,16 +1,15 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import Pagination from "../common/PaginationTable/PaginationTable";
-import ModalSection from "../common/HeaderPage/HeaderPage";
-import useSearch from "../../hooks/useSearch";
-import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
-import { IUsuarios } from "../../models/IUsuarios";
-import usePagination from "../../hooks/usePagination";
-import { useFetchUsuarios } from "../../hooks/useFetchUsers";
-// import ModalActionUsuario from "../pages/modals/ModalActionUsuarios";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { IUsuarios } from "@/models/IUsuarios";
+import usePagination from "@/hooks/usePagination";
+import { useFetchUsuarios } from "../Hooks/UseFetchUsers";
 
 //*Properties
-import ModalActionUsuario from "./modals/ModalActionUsuario";
+import ModalActionUsuario from "../Components/ModalUpdateUsers";
 
 const ITEMS_PER_PAGE = 10;
 

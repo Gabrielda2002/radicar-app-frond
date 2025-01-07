@@ -18,7 +18,6 @@ import {
   fetchServicio,
   fetchUnidadFuncional,
   fetchUsers,
-  fetchUsuario,
 } from "../services/apiService";
 import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
@@ -30,7 +29,6 @@ import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IIPSRemite } from "../models/IIpsRemite";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
-import { IUsuarios } from "../models/IUsuarios";
 import { IRadicados } from "../models/IRadicados";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
@@ -295,29 +293,6 @@ export const useFetchServicios = () => {
             setData(servicios);
         } catch (error) {
             setError("Error al obtener los datos de la tabla servicios o no tienes los permisos necesarios. " + error);
-        } finally {
-            setLoading(false);
-        }
-        };
-    
-        getData();
-    }, []);
-    
-    return { data, loading, error };
-}
-
-export const useFetchUsuarios = () => {
-    const [data, setData] = useState<IUsuarios[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    
-    useEffect(() => {
-        const getData = async () => {
-        try {
-            const usuarios = await fetchUsuario();
-            setData(usuarios);
-        } catch (error) {
-            setError("Error al obtener los datos de la tabla usuarios o no tienes los permisos necesarios. " + error);
         } finally {
             setLoading(false);
         }
