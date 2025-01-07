@@ -33,7 +33,7 @@ const TablaLugarRadicacion = lazy(
   () => import("../pages/tablas-radicacion/TablaLugarRadicacion")
 );
 const TablaAutorizarServicios = lazy(
-  () => import("../pages/tablas-radicacion/TablaAutorizarServicios")
+  () => import("../../featuures/AuthorizeService/Pages/TablaAutorizarServicios")
 );
 const TablaRegistrosAuditados = lazy(
   () => import("../pages/tablas-radicacion/TablaRegistrosAuditados")

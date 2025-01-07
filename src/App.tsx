@@ -31,7 +31,7 @@ const TablaRadicacion = lazy(
 
 const TablaAutorizarServicios = lazy(
   () =>
-    import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
+    import("./featuures/AuthorizeService/Pages/TablaAutorizarServicios.tsx")
 );
 
 const FileManager = lazy(

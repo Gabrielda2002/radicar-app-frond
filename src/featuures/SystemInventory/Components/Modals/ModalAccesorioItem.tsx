@@ -25,7 +25,7 @@ import {
   CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
-import { createAccesoryEquipment } from "@/featuures/SystemInventory/Services/createAccesoryEquipment";
+import { createAccesoryEquipment } from "@/featuures/SystemInventory/Services/CreateAccesoryEquipment";
 
 interface ModalAccesorioItemProps {
   id: number;

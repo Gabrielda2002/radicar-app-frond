@@ -2,23 +2,23 @@
 import * as Yup from "yup";
 import { useState, useMemo } from "react";
 import { useFormik } from "formik";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import {
   useFetchEstados,
   useFetchUnidadFuncional,
 } from "../../../hooks/useFetchUsers";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLocation } from "react-router-dom";
 import {
   CupsDetail,
   FormikErrors,
   FormikValues,
-} from "../../../models/IFotmikValues";
-import { submitAutorizacionRadicado } from "../../../services/submitAutorizacionRadicado";
+} from "@/models/IFotmikValues";
+import { UpdateService } from "../Services/UpdateService";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -83,7 +83,7 @@ const FormularioAutorizacion = () => {
       setSuccess(false);
 
       try {
-        const response = await submitAutorizacionRadicado(values, memoizedId);
+        const response = await UpdateService(values, memoizedId);
 
         if (response?.status === 200) {
           setSuccess(true);
