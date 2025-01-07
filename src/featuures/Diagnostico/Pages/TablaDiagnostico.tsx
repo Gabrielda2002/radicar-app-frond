@@ -1,18 +1,18 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
 
-import Pagination from "../../common/PaginationTable/PaginationTable";
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
-import {  useFetchDiagnostic } from "../../../hooks/useFetchUsers";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
+import {  useFetchDiagnostic } from "../Hooks/UseFetchDiagnostic";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
-import { IDiagnostico } from "../../../models/IDiagnostico";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { IDiagnostico } from "@/models/IDiagnostico";
 
-const ModalUpdateCupsDiagnostico = lazy(() => import("../../common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
-const ModalCrearCupsDiagnostico = lazy(() => import("../../common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
+const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
+const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaDiagnostico = () => {

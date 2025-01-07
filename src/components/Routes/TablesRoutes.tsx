@@ -39,7 +39,7 @@ const TablaRegistrosAuditados = lazy(
   () => import("../pages/tablas-radicacion/TablaRegistrosAuditados")
 );
 const TablaDiagnostico = lazy(
-  () => import("../pages/tablas-radicacion/TablaDiagnostico")
+  () => import("../../featuures/Diagnostico/Pages/TablaDiagnostico")
 );
 
 export default function TablaRoutes() {

@@ -3,7 +3,6 @@ import {
   fetchAuditados,
   fetchConvenio,
   fetchCups,
-  fetchDiagnosticos,
   fetchDocumento,
   fetchEspecialidad,
   fetchEstados,
@@ -33,7 +32,6 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
-import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 
 export const useFetchUsers = () => {
@@ -412,31 +410,6 @@ export const useFetchRoles = (shouldFetch: boolean) => {
   }, [ shouldFetch ]);
 
   return { dataRol, loadingRol, errorRol };
-}
-
-// * traer diagnosticos
-
-export const useFetchDiagnostic = () => {
-  const [diagnostico, setDiagnostico] = useState<IDiagnostico[] | null>([]);
-  const [loading, setLoading] = useState(false);
-  const [errorDiagnostico, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const cirugias = await fetchDiagnosticos();
-        setDiagnostico(cirugias);
-        setError(null);
-      } catch (error) {
-        setError("Error al obtener los departamentos o no tienes los permisos necesarios. " + error);
-        setDiagnostico(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    getData();
-  }, []);
-  return { diagnostico, loading, errorDiagnostico };
 }
 // traer datos 
 export const useFetchMonth = () => {
