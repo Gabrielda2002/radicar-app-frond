@@ -6,8 +6,8 @@ import { useFormik } from "formik";
 import { IItems } from "@/models/IItems";
 import React, { useEffect, useState } from "react";
 import useAnimation from "@/hooks/useAnimations";
-import { createItem } from "@/featuures/SystemInventory/Services/createItem";
-import { updateItem } from "@/featuures/SystemInventory/Services/updateItem";
+import { createItem } from "@/featuures/SystemInventory/Services/CreateItem";
+import { updateItem } from "@/featuures/SystemInventory/Services/UpdateItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 

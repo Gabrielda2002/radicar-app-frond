@@ -5,13 +5,13 @@ import React, { useState } from "react";
 import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
-import useFetchSedes from "../Hooks/useFetchSedes";
-import useFetchItems from "../Hooks/useFetchItems";
+import useFetchSedes from "../Hooks/UseFetchSedes";
+import useFetchItems from "../Hooks/UseFetchItems";
 import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
 
 //*Icons and Images
-import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
-import TELECO from "/src/components/pages/SistemaDeInventario/Images/TELECOMUNICACIONES.webp";
+import COMPUTO from "@/assets/InvetorySystem/Images/COMPUTOS.jpg";
+import TELECO from "@/assets/InvetorySystem/Images/TELECOMUNICACIONES.webp";
 import {
   ComputerDesktopIcon,
   SignalIcon,

@@ -3,12 +3,12 @@ import { ILugarRadicacion } from "@/models/ILugarRadicado";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 //img
-import Sede01 from "./Images/SEDE-01-cucuta.webp";
-import Sede03 from "./Images/SEDE-03-cucuta.webp";
-import Sede04 from "./Images/SEDE-04-cucuta.webp";
-import Sede05 from "./Images/SEDE-05-cucuta.webp";
-import Sede06 from "./Images/SEDE-06-cucuta.webp";
-import Sede07 from "./Images/SEDE-07-cucuta.webp";
+import Sede01 from "@/assets/InvetorySystem/Images//SEDE-01-cucuta.webp";
+import Sede03 from "@/assets/InvetorySystem/Images//SEDE-03-cucuta.webp";
+import Sede04 from "@/assets/InvetorySystem/Images//SEDE-04-cucuta.webp";
+import Sede05 from "@/assets/InvetorySystem/Images//SEDE-05-cucuta.webp";
+import Sede06 from "@/assets/InvetorySystem/Images//SEDE-06-cucuta.webp";
+import Sede07 from "@/assets/InvetorySystem/Images//SEDE-07-cucuta.webp";
 
 interface sedesListProps {
   sedes: ILugarRadicacion[] | null;

@@ -3,9 +3,9 @@ import { IDepartamentos } from "@/models/IDepartamentos";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 // imgs
-import Cucuta from "./Images/DEPART-cucuta.jpg";
-import Cundinamarca from "./Images/DEPART-cundinamarca.jpg";
-import Leticia from "./Images/DEPART-leticia.jpg";
+import Cucuta from "@/assets/InvetorySystem/Images/DEPART-cucuta.jpg";
+import Cundinamarca from "@/assets/InvetorySystem/Images/DEPART-cundinamarca.jpg";
+import Leticia from "@/assets/InvetorySystem/Images/DEPART-leticia.jpg";
 
 interface DepartamentosListProps {
   departamentos: IDepartamentos[] | null;
