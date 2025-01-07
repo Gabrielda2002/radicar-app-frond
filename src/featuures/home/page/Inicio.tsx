@@ -125,11 +125,11 @@ const Inicio = () => {
                                   <table className="w-full">
                                     <thead>
                                       <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                                        <th className="px-3 py-3 text-center whitespace-nowrap">
-                                          Sede
-                                        </th>
                                         <th className="py-3 text-center px-14 whitespace-nowrap">
                                           Eps
+                                        </th>
+                                        <th className="px-3 py-3 text-center whitespace-nowrap">
+                                          Sede
                                         </th>
                                         <th className="px-6 py-3 text-center whitespace-nowrap">
                                           Estado
