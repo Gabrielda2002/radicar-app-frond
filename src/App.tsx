@@ -22,7 +22,7 @@ const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
 const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
 
 const TablaAuditoria = lazy(
-  () => import("./components/pages/TablaAuditoria.tsx")
+  () => import("./featuures/Auditoria/Pages/TablaAuditoria.tsx")
 );
 
 const TablaRadicacion = lazy(

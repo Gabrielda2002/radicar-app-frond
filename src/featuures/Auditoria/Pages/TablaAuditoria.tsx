@@ -3,12 +3,13 @@ import { useState, lazy, Suspense, useCallback } from "react";
 
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import Pagination from "../common/PaginationTable/PaginationTable.tsx";
-import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner.tsx";
-import useSearch from "../../hooks/useSearch.ts";
-import { IAuditar, IStatusCup } from "../../models/IAuditar.ts";
-import usePagination from "../../hooks/usePagination.ts";
-import { useFetchAuditoria } from "../../hooks/useFetchUsers";
+import Pagination from "@/components/common/PaginationTable/PaginationTable.tsx";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
+import useSearch from "@/hooks/useSearch.ts";
+import { IAuditar, IStatusCup } from "@/models/IAuditar.ts";
+import usePagination from "@/hooks/usePagination.ts";
+import { useFetchAuditoria } from "../Hooks/UseFetchAuditar";
+import { toZonedTime } from "date-fns-tz";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
@@ -16,11 +17,10 @@ import soporte from "/assets/soporte.svg";
 import autorizar from "/assets/autorizar.svg";
 
 //*Properties
-import ModalSection from "../common/HeaderPage/HeaderPage.tsx";
-import { toZonedTime } from "date-fns-tz";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 
 const ModalMostrarDatosCUPS = lazy(
-  () => import("./modals/ModalMostrarDatos.tsx")
+  () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
 );
 const ITEMS_PER_PAGE = 8;
 

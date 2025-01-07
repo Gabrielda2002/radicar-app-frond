@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   fetchAuditados,
-  fetchAuditoria,
   fetchCirugias,
   fetchConvenio,
   fetchCups,
@@ -34,7 +33,6 @@ import { IEspecialidad } from "../models/IEspecialidad";
 import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
 import { IRadicados } from "../models/IRadicados";
-import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
@@ -67,28 +65,6 @@ export const useFetchUsers = () => {
   return { data, loading, error };
 };
 
-export const useFetchAuditoria = () => {
-  const [data, setData] = useState<IAuditar[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const auditorias = await fetchAuditoria();
-        setData(auditorias);
-      } catch (error) {
-        setError("Error al obtener los datos por Auditar o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getData();
-  }, []);
-
-  return { data, loading, error };
-};
 
 export const useFetchCups = () => {
   const [data, setData] = useState<ICups[]>([]);

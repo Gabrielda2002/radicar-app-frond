@@ -1,6 +1,6 @@
-import { IStatusCup } from "../../../models/IAuditar";
-import useAnimation from "../../../hooks/useAnimations";
-import { programacion } from "../../../models/ICirugias";
+import { IStatusCup } from "@/models/IAuditar";
+import useAnimation from "@/hooks/useAnimations";
+import { programacion } from "@/models/ICirugias";
 import { format } from "date-fns";
 interface ModalMostrarDatosProps {
   isOpen: boolean;

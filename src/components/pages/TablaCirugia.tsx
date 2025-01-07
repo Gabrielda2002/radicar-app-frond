@@ -20,7 +20,7 @@ import soporte from "/assets/soporte.svg";
 import ModalSection from "../common/HeaderPage/HeaderPage";
 
 const ModalCirugias = lazy(() => import("./modals/ModalCirugias"));
-const ModalMostrarDatosCUPS = lazy(() => import("./modals/ModalMostrarDatos"));
+const ModalMostrarDatosCUPS = lazy(() => import("../common/Modals/MostrarCUPS/ModalMostrarDatos"));
 const ModalGestionAuxiliar = lazy(
   () => import("../common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
 );
