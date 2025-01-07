@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { toZonedTime } from "date-fns-tz";
-import { IItems } from "../../../models/IItems";
+import { IItems } from "@/models/IItems";
 import { motion } from "framer-motion";
-import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 //*Icons
 import {

@@ -1,5 +1,5 @@
 import React from "react";
-import { IDepartamentos } from "../../../models/IDepartamentos";
+import { IDepartamentos } from "@/models/IDepartamentos";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 // imgs

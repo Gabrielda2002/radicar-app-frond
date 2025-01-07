@@ -3,7 +3,6 @@ import {
   fetchAuditados,
   fetchConvenio,
   fetchCups,
-  fetchDepartarmentsEp,
   fetchDiagnosticos,
   fetchDocumento,
   fetchEspecialidad,
@@ -34,7 +33,6 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
-import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 
@@ -414,31 +412,6 @@ export const useFetchRoles = (shouldFetch: boolean) => {
   }, [ shouldFetch ]);
 
   return { dataRol, loadingRol, errorRol };
-}
-
-// * traer departamentos
-
-export const useFetchDepartment = () => {
-  const [department, setDepartment] = useState<IDepartamentos[] | null>([]);
-  const [loading, setLoading] = useState(false);
-  const [errordepartment, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const cirugias = await fetchDepartarmentsEp();
-        setDepartment(cirugias);
-        setError(null);
-      } catch (error) {
-        setError("Error al obtener los departamentos o no tienes los permisos necesarios. " + error);
-        setDepartment(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    getData();
-  }, []);
-  return { department, loading, errordepartment };
 }
 
 // * traer diagnosticos

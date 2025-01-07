@@ -1,5 +1,5 @@
 import React from "react";
-import { ILugarRadicacion } from "../../../models/ILugarRadicado";
+import { ILugarRadicacion } from "@/models/ILugarRadicado";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
 //img

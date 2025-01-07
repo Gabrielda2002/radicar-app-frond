@@ -5,12 +5,12 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import { IItems } from "@/models/IItems";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import ModalItemsForm from "@/components/pages/modals/ModalItemsForm";
+import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import usePagination from "@/hooks/usePagination";
-import ModalItemsDetails from "@/components/pages/modals/ModalItemsDetails";
-import ModalAccesorioItem from "@/components/pages/modals/ModalAccesorioItem";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
+import ModalAccesorioItem from "../Components/Modals/ModalAccesorioItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
-import ModalTablaseguimientoItem from "@/components/pages/modals/ModalTablaSeguimientoItem";
+import ModalTablaseguimientoItem from "./Modals/ModalTablaSeguimientoItem";
 
 // * Icons
 import {

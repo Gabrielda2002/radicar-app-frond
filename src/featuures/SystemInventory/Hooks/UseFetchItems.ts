@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "../utils/api-config";
-import { IItems } from "../models/IItems";
-import { IItemsNetworking } from "../models/IItemsNetworking";
+import { api } from "@/utils/api-config";
+import { IItems } from "@/models/IItems";
+import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-red" | null) => {
 

@@ -1,13 +1,13 @@
 //*Fuctions and Hooks
-import ItemsList from "./ItemsList";
-import SedesList from "./sedesList";
+import ItemsList from "../Components/ItemsList";
+import SedesList from "../Components/sedesList";
 import React, { useState } from "react";
-import DeviceCard from "../../common/DevicesCard/DevicesCard";
-import ModalSection from "../../common/HeaderPage/HeaderPage";
-import DepartamentosList from "./DepartamentosList";
-import useFetchSedes from "../../../hooks/useFetchSedes";
-import useFetchItems from "../../../hooks/useFetchItems";
-import { useFetchDepartment } from "../../../hooks/useFetchUsers";
+import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import DepartamentosList from "../Components/DepartamentosList";
+import useFetchSedes from "../Hooks/useFetchSedes";
+import useFetchItems from "../Hooks/useFetchItems";
+import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
 
 //*Icons and Images
 import COMPUTO from "/src/components/pages/SistemaDeInventario/Images/COMPUTOS.jpg";
@@ -17,7 +17,7 @@ import {
   SignalIcon,
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
 const SistemaInventario: React.FC = () => {
   const {

@@ -1,4 +1,4 @@
-import { createItemEp } from "../utils/api-config";
+import { createItemEp } from "@/utils/api-config";
 
 export const createItem = async (item: FormData, ep: string) => {
 

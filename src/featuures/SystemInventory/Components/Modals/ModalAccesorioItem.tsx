@@ -2,11 +2,10 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+import useAnimation from "@/hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
-import inventoryOptions from "../../../data-dynamic/inventoryOptions.json";
-import { createAccesoryEquipment } from "../../../services/createAccesoryEquipment";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import inventoryOptions from "@/data-dynamic/inventoryOptions.json";
 
 //*Icons
 import {
@@ -26,6 +25,8 @@ import {
   CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import { createAccesoryEquipment } from "@/featuures/SystemInventory/Services/createAccesoryEquipment";
+
 interface ModalAccesorioItemProps {
   id: number;
 }

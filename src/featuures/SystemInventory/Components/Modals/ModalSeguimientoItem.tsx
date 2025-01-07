@@ -2,10 +2,10 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import useAnimation from "@/hooks/useAnimations";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import { createMonitoringItem } from "./createMonitoringItem";
+import { createMonitoringItem } from "@/featuures/SystemInventory/Services/createMonitoringItem";
 import { toast } from "react-toastify";
 
 interface ModalSeguimientoItemProps {

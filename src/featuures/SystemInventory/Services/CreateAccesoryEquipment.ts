@@ -1,4 +1,4 @@
-import { createAccesoryEquipmentEp } from "../utils/api-config"
+import { createAccesoryEquipmentEp } from "@/utils/api-config"
 
 export const createAccesoryEquipment = async (data: FormData, ep: string) => {
     try {

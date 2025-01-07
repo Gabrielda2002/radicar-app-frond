@@ -1,4 +1,4 @@
-import { updateItemEp } from "../utils/api-config"
+import { updateItemEp } from "@/utils/api-config"
 
 export const updateItem = async (id: number, data: FormData, endPoint: string) => {
     try {

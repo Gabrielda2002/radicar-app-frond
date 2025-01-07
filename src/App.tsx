@@ -39,7 +39,7 @@ const FileManager = lazy(
 );
 
 const SistemaInventario = lazy(
-  () => import("./components/pages/SistemaDeInventario/SistemaInventario.tsx")
+  () => import("./featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
 
 //*Contextos

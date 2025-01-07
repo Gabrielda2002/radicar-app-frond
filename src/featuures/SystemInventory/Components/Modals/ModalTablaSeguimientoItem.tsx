@@ -1,10 +1,10 @@
 //*Fuctions and Hooks
 import { format } from "date-fns";
 import React, { useState } from "react";
-import { IItems } from "../../../models/IItems";
-import useAnimation from "../../../hooks/useAnimations";
+import { IItems } from "../../../../models/IItems";
+import useAnimation from "../../../../hooks/useAnimations";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
-import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import { IItemsNetworking } from "@/models/IItemsNetworking";
 //*Icons
 import {
   ClockIcon,
@@ -19,7 +19,7 @@ interface ModalTablaseguimientoItemProps {
   tipoItem: "equipos" | "dispositivos-red" | null;
 }
 
-const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
+const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   Items,
   tipoItem,
 }) => {
@@ -170,4 +170,4 @@ const ModalTablaseguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   );
 };
 
-export default ModalTablaseguimientoItem;
+export default ModalTablaSeguimientoItem;

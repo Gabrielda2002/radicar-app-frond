@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { api } from "../utils/api-config";
-import { ILugarRadicacion } from "../models/ILugarRadicado";
+import { api } from "@/utils/api-config";
+import { ILugarRadicacion } from "@/models/ILugarRadicado";
 
 const useFetchSedes = (id: number | null) => {
 

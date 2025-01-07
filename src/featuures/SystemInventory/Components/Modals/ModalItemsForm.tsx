@@ -3,12 +3,13 @@ import * as Yup from "yup";
 import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
-import { IItems } from "../../../models/IItems";
+import { IItems } from "@/models/IItems";
 import React, { useEffect, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import { createItem } from "../../../services/createItem";
-import { updateItem } from "../../../services/updateItem";
-import { IItemsNetworking } from "../../../models/IItemsNetworking";
+import useAnimation from "@/hooks/useAnimations";
+import { createItem } from "@/featuures/SystemInventory/Services/createItem";
+import { updateItem } from "@/featuures/SystemInventory/Services/updateItem";
+import { IItemsNetworking } from "@/models/IItemsNetworking";
+import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 
 //*Icons
 import {
@@ -30,7 +31,6 @@ import {
   FingerPrintIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
 import { toast } from "react-toastify";
 
 interface ModalItemsFormProps {
