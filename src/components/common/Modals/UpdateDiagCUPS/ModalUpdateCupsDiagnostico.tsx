@@ -1,11 +1,11 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useState } from "react";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
-import useAnimation from "../../../hooks/useAnimations";
-import { updateCupsData } from "../../../services/updateCupsData";
+import useAnimation from "@/hooks/useAnimations";
+import { updateCupsData } from "./Services/UpdateData";
 //*Icons
 import onOff from "/assets/on-off.svg";
 

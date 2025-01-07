@@ -1,4 +1,4 @@
-import { createCupsEp } from "../utils/api-config";
+import { createCupsEp } from "@/utils/api-config";
 
 export async function createCups(data: FormData, ep: string) {
 

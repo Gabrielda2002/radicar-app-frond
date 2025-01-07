@@ -11,8 +11,8 @@ import {  useFetchDiagnostic } from "../../../hooks/useFetchUsers";
 import ModalSection from "../../common/HeaderPage/HeaderPage";
 import { IDiagnostico } from "../../../models/IDiagnostico";
 
-const ModalUpdateCupsDiagnostico = lazy(() => import("../modals/ModalUpdateCupsDiagnostico"));
-const ModalCrearCupsDiagnostico = lazy(() => import("../modals/ModalCrearCupsDiagnostico"));
+const ModalUpdateCupsDiagnostico = lazy(() => import("../../common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
+const ModalCrearCupsDiagnostico = lazy(() => import("../../common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaDiagnostico = () => {

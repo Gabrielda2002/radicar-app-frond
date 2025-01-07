@@ -1,4 +1,4 @@
-import { updateCupsDataEp } from "../utils/api-config";
+import { updateCupsDataEp } from "@/utils/api-config";
 
 export async function updateCupsData(data: FormData, id: number, ep: string) {
 

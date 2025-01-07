@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-const TablaCups = lazy(() => import("../pages/tablas-radicacion/TablaCups"));
+const TablaCups = lazy(() => import("../../featuures/CUPS/Pages/TablaCups"));
 const TablaConvenio = lazy(
-  () => import("../pages/tablas-radicacion/TablaConvenio")
+  () => import("@/featuures/Convenio/Pages/TablaConvenio")
 );
 const TablaPacientes = lazy(
   () => import("../pages/tablas-radicacion/TablaPacientes")

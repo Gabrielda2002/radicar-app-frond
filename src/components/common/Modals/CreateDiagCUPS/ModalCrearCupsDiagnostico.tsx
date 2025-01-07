@@ -2,10 +2,10 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState, useCallback } from "react";
-import useAnimation from "../../../hooks/useAnimations";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import useAnimation from "@/hooks/useAnimations";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import { createCups } from "../../../services/createCups";
+import { createCups } from "./Services/UpdateData";
 
 interface ModalCrearCupsDiagnosticoProps {
   modulo: string;
