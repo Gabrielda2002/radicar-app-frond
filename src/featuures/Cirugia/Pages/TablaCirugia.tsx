@@ -1,28 +1,24 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
 import { format } from "date-fns";
-import Pagination from "../common/PaginationTable/PaginationTable";
-import useSearch from "../../hooks/useSearch";
-import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
-// import ModalCirugias from "./modals/ModalCirugias";
-import usePagination from "../../hooks/usePagination";
-import { useFetchCirugias } from "../../hooks/useFetchUsers";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
+import { useFetchCirugias } from "../Hooks/UseFetchCirugias";
+import { ICirugias, programacion } from "@/models/ICirugias";
 
 //*iconos
 import mostrar from "/assets/mostrar.svg";
 import gestion from "/assets/gestion.svg";
-import { ICirugias, programacion } from "../../models/ICirugias";
-// import ModalGestionAuxiliar from "./modals/ModalGestionAuxiliar";
-// import ModalMostrarDatosCUPS from "./modals/ModalMostrarDatos";
 import soporte from "/assets/soporte.svg";
 
-//*Props
-import ModalSection from "../common/HeaderPage/HeaderPage";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
-const ModalCirugias = lazy(() => import("./modals/ModalCirugias"));
-const ModalMostrarDatosCUPS = lazy(() => import("../common/Modals/MostrarCUPS/ModalMostrarDatos"));
+const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
+const ModalMostrarDatosCUPS = lazy(() => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos"));
 const ModalGestionAuxiliar = lazy(
-  () => import("../common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
+  () => import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
 );
 
 const ITEMS_PER_PAGE = 8;

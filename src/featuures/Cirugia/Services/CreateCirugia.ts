@@ -1,6 +1,6 @@
-import { createProgramacionCirugia } from "../utils/api-config"
+import { createProgramacionCirugia } from "../../../utils/api-config"
 
-export const createCirugia = async (data: FormData) => {
+export const CreateCirugia = async (data: FormData) => {
     try {
         
         const response = await createProgramacionCirugia(data)

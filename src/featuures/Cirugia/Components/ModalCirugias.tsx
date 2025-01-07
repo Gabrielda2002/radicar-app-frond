@@ -2,13 +2,13 @@
 import * as Yup from "yup";
 import { format } from "date-fns";
 import { useFormik } from "formik";
-import { Cup } from "../../../models/ICirugias";
+import { Cup } from "@/models/ICirugias";
 import React, { useState, useMemo } from "react";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
-import useAnimation from "../../../hooks/useAnimations";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import useAnimation from "@/hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
-import InputAutocompletado from "../../common/InputAutoCompletado/InputAutoCompletado";
-import { createCirugia } from "../../../services/createCirugia";
+import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import { CreateCirugia } from "../Services/CreateCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
@@ -132,7 +132,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
         formData.append("anesthesiologyDate", values.fechaAnesteciologia);
         formData.append("paraclinicalDate", values.fechaParaclinicos);
 
-        const response = await createCirugia(formData);
+        const response = await CreateCirugia(formData);
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);

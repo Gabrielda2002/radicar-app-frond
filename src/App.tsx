@@ -19,7 +19,7 @@ const RegistrarUsuarios = lazy(
 
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
-const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
+const TablaCirugias = lazy(() => import("./featuures/Cirugia/Pages/TablaCirugia.tsx"));
 
 const TablaAuditoria = lazy(
   () => import("./featuures/Auditoria/Pages/TablaAuditoria.tsx")

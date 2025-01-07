@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   fetchAuditados,
-  fetchCirugias,
   fetchConvenio,
   fetchCups,
   fetchDepartarmentsEp,
@@ -37,7 +36,6 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
-import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
@@ -441,28 +439,6 @@ export const useFetchRoles = (shouldFetch: boolean) => {
   }, [ shouldFetch ]);
 
   return { dataRol, loadingRol, errorRol };
-}
-
-// * traer cirugias
-export const useFetchCirugias = () => {
-  const [dataCirugias, setDataCirugias] = useState<ICirugias[]>([]);
-  const [loadingCirugias, setLoadingCirugias] = useState<boolean>(true);
-  const [errorCirugias, setErrorCirugias] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const cirugias = await fetchCirugias();
-        setDataCirugias(cirugias);
-      } catch (error) {
-        setErrorCirugias("Error al obtener los datos de la tabla cirugias o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoadingCirugias(false);
-      }
-    }
-    getData();
-  }, []);
-  return { dataCirugias, loadingCirugias, errorCirugias };
 }
 
 // * traer departamentos
