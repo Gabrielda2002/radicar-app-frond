@@ -1,7 +1,7 @@
 //*Componentes
 import { lazy, Suspense } from "react";
 import Footer from "./components/layout/footer/page/Footer.tsx";
-import Layout from "./components/layout";
+import Layout from "./components/layout/layout.tsx";
 import Navbar from "./components/layout/navbar/page/NavBar.tsx";
 import Login from "./featuures/auth/Page/login.tsx";
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
@@ -12,7 +12,7 @@ import LoadingSpinner from "./components/common/LoadingSpinner/LoadingSpinner.ts
 const Inicio = lazy(() => import("./featuures/home/page/Inicio.tsx"));
 const Perfil = lazy(() => import("./featuures/profile/page/PerfilPage.tsx"));
 const Usuarios = lazy(() => import("./featuures/Usuarios/Pages/TableUsers.tsx"));
-const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
+const CookieConsent = lazy(() => import("./components/common/CookieConsent/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
   () => import("./featuures/RegisterUser/Page/RegisterUser.tsx")
 );

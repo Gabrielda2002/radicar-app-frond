@@ -12,7 +12,7 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IMunicipios } from "@/models/IMunicipios";
 
 const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
-const ModalMunicipios = lazy(() => import("@/components/pages/modals/ModalMunicipios"));
+const ModalMunicipios = lazy(() => import("../Components/ModalMunicipios"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {

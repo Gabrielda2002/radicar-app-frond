@@ -1,6 +1,7 @@
 //*Funciones y Hooks
 import { useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+import useAnimation from "@/hooks/useAnimations";
+
 const ModalMunicipios = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { showAnimation, closing } = useAnimation(isOpen, () =>
@@ -10,9 +11,6 @@ const ModalMunicipios = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-  
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
