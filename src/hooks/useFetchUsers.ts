@@ -6,7 +6,6 @@ import {
   fetchDocumento,
   fetchEstados,
   fetchIpsPrimaria,
-  fetchIpsRemite,
   fetchLugarRadicado,
   fetchMonthRadicacionEp,
   fetchMunicipio,
@@ -23,7 +22,6 @@ import { IConvenios } from "../models/IConvenios";
 import { IDocumento } from "../models/IDocumento";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
-import { IIPSRemite } from "../models/IIpsRemite";
 import { IServicios } from "../models/IServicio";
 import { IRadicados } from "../models/IRadicados";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
@@ -218,29 +216,6 @@ export const useFetchLugarRadicado = () => {
         setData(lugarRadicado);
       } catch (error) {
         setError("Error al obtener los datos de la tabla lugar radicacion o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getData();
-  }, []);
-
-  return { data, loading, error };
-};
-
-export const useFetchIpsRemite = () => {
-  const [data, setData] = useState<IIPSRemite[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const ipsRemite = await fetchIpsRemite();
-        setData(ipsRemite);
-      } catch (error) {
-        setError("Error al obtener los datos de la tabla IPS remite o no tienes los permisos necesarios. " + error);
       } finally {
         setLoading(false);
       }
