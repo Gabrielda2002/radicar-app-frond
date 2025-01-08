@@ -16,7 +16,7 @@ import menu from "/assets/menu.svg";
 import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
-import logo from "@/imgs/logo-navbar.png";
+import logo from "@/assets/Layout/logo-navbar.png";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
