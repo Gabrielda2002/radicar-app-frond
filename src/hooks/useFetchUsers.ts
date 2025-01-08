@@ -9,14 +9,12 @@ import {
   fetchLugarRadicado,
   fetchMonthRadicacionEp,
   fetchMunicipio,
-  fetchRadicador,
   fetchRoles,
   fetchServicio,
   fetchUnidadFuncional,
   fetchUsers,
 } from "../services/apiService";
 import { ICups } from "../models/ICups";
-import { IRadicador } from "../models/IRadicador";
 import { IMunicipios } from "../models/IMunicipios";
 import { IConvenios } from "../models/IConvenios";
 import { IDocumento } from "../models/IDocumento";
@@ -75,29 +73,6 @@ export const useFetchCups = () => {
   }, []);
 
   return { data, loading, error };
-};
-
-export const useFetchRadicador = () => {
-  const [dataRadicador, setDataRadicador] = useState<IRadicador[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [errorRadicador, setErrorRadicador] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const radicadores = await fetchRadicador();
-        setDataRadicador(radicadores);
-      } catch (error) {
-        setErrorRadicador("Error al obtener los datos de la tabla radicadores o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getData();
-  }, []);
-
-  return { dataRadicador, loading, errorRadicador };
 };
 
 export const useFetchMunicipio = (shouldFetch: boolean) => {
