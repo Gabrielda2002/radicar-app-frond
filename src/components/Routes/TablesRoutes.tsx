@@ -12,7 +12,7 @@ const TablaIpsRemite = lazy(
   () => import("../pages/tablas-radicacion/TablaIpsRemite")
 );
 const TablaMunicipios = lazy(
-  () => import("../pages/tablas-radicacion/TablaMunicipios")
+  () => import("../../featuures/Municipality/Pages/TablaMunicipios")
 );
 const TablaIpsPrimaria = lazy(
   () => import("../../featuures/IpsPrimaria/Pages/TablaIpsPrimaria")

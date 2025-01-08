@@ -1,19 +1,18 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import Pagination from "../../common/PaginationTable/PaginationTable";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
 
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
-
-import { useFetchMunicipio } from "../../../hooks/useFetchUsers";
+import { useFetchMunicipio } from "@/hooks/useFetchUsers";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
-import { IMunicipios } from "../../../models/IMunicipios";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { IMunicipios } from "@/models/IMunicipios";
 
-const ModalAction = lazy(() => import("../../common/Modals/ActionTables/ModalAction"));
-const ModalMunicipios = lazy(() => import("../modals/ModalMunicipios"));
+const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
+const ModalMunicipios = lazy(() => import("@/components/pages/modals/ModalMunicipios"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
