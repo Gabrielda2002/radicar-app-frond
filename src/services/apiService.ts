@@ -22,7 +22,6 @@ import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
-import { IServiciosContratados } from "../models/IServiciosContratados";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -263,18 +262,6 @@ export const fetchMonthRadicacionEp = async (): Promise<IEstadisticaCups[]> => {
     return response.data;
 }
 
-export const fetchRadicadoDocumentoEp = async (documento: string): Promise<IRadicados[]> => {
-    const response = await api.post('/radicado-doc-patient', {
-        documento: documento
-    });
-    const radicados = response.data.map((radicado: IRadicados) => ({
-        ...radicado,
-        createdAt: new Date(radicado.createdAt),
-        auditDate: radicado.auditDate ? new Date(radicado.auditDate) : null
-    }));
-    return radicados;
-}
-
 export const fetchEventosEp = async (): Promise<IEventos[]> => {
     const response = await api.get('/eventos');
     const eventos = response.data.map((evento: IEventos) => ({
@@ -283,15 +270,4 @@ export const fetchEventosEp = async (): Promise<IEventos[]> => {
         dateEnd: new Date(evento.dateEnd)
     }));
     return eventos;
-}
-
-export const fetchServicioContratadoEp = async (codigo: string): Promise<IServiciosContratados[]> => {
-    const response = await api.post('/servicio-contratado', {
-        code: codigo
-    });
-
-    const serviciosContratados = response.data.map((servicio: IServiciosContratados) => ({
-        ...servicio
-    }));
-    return serviciosContratados;
 }

@@ -1,45 +1,45 @@
 //*Componentes
 import { lazy, Suspense } from "react";
-import Footer from "./components/footer";
-import Layout from "./components/layout";
-import Navbar from "./components/navbar";
-import Login from "./components/pages/login.tsx";
-import SideBar from "./components/pages/sidebar";
+import Footer from "./components/layout/footer/page/Footer.tsx";
+import Layout from "./components/layout/layout.tsx";
+import Navbar from "./components/layout/navbar/page/NavBar.tsx";
+import Login from "./featuures/auth/Page/login.tsx";
+import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 import { Route, Routes, Navigate } from "react-router-dom";
-import LoadingSpinner from "./components/LoadingSpinner.tsx";
+import LoadingSpinner from "./components/common/LoadingSpinner/LoadingSpinner.tsx";
 
 //*Lazy Components
-const Inicio = lazy(() => import("./components/pages/inicio.tsx"));
-const Perfil = lazy(() => import("./components/features/profile/PerfilPage.tsx"));
-const Usuarios = lazy(() => import("./components/pages/usuarios.tsx"));
-const CookieConsent = lazy(() => import("./components/PopCookie.tsx"));
+const Inicio = lazy(() => import("./featuures/home/page/Inicio.tsx"));
+const Perfil = lazy(() => import("./featuures/profile/page/PerfilPage.tsx"));
+const Usuarios = lazy(() => import("./featuures/Usuarios/Pages/TableUsers.tsx"));
+const CookieConsent = lazy(() => import("./components/common/CookieConsent/PopCookie.tsx"));
 const RegistrarUsuarios = lazy(
-  () => import("./components/pages/RegistrarUsuarios.tsx")
+  () => import("./featuures/RegisterUser/Page/RegisterUser.tsx")
 );
 
 //*Lazy Principale Tables
 const TableRoutes = lazy(() => import("./components/Routes/TablesRoutes.tsx"));
-const TablaCirugias = lazy(() => import("./components/pages/TablaCirugia.tsx"));
+const TablaCirugias = lazy(() => import("./featuures/Cirugia/Pages/TablaCirugia.tsx"));
 
 const TablaAuditoria = lazy(
-  () => import("./components/pages/TablaAuditoria.tsx")
+  () => import("./featuures/Auditoria/Pages/TablaAuditoria.tsx")
 );
 
 const TablaRadicacion = lazy(
-  () => import("./components/pages/TablaRadicacion.tsx")
+  () => import("./featuures/Radicacion/Page/TablaRadicacion.tsx")
 );
 
 const TablaAutorizarServicios = lazy(
   () =>
-    import("./components/pages/tablas-radicacion/TablaAutorizarServicios.tsx")
+    import("./featuures/AuthorizeService/Pages/TablaAutorizarServicios.tsx")
 );
 
 const FileManager = lazy(
-  () => import("./components/pages/SistemaArchivosSGC.tsx")
+  () => import("./featuures/SystemGC/Page/SistemaArchivosSGC.tsx")
 );
 
 const SistemaInventario = lazy(
-  () => import("./components/pages/SistemaDeInventario/SistemaInventario.tsx")
+  () => import("./featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
 
 //*Contextos

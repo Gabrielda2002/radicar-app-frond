@@ -1,45 +1,45 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-const TablaCups = lazy(() => import("../pages/tablas-radicacion/TablaCups"));
+const TablaCups = lazy(() => import("../../featuures/CUPS/Pages/TablaCups"));
 const TablaConvenio = lazy(
-  () => import("../pages/tablas-radicacion/TablaConvenio")
+  () => import("@/featuures/Convenio/Pages/TablaConvenio")
 );
 const TablaPacientes = lazy(
-  () => import("../pages/tablas-radicacion/TablaPacientes")
+  () => import("@/featuures/Patient/Pages/TablaPacientes")
 );
 const TablaIpsRemite = lazy(
-  () => import("../pages/tablas-radicacion/TablaIpsRemite")
+  () => import("@/featuures/IpsRemite/Pages/TablaIpsRemite")
 );
 const TablaMunicipios = lazy(
-  () => import("../pages/tablas-radicacion/TablaMunicipios")
+  () => import("../../featuures/Municipality/Pages/TablaMunicipios")
 );
 const TablaIpsPrimaria = lazy(
-  () => import("../pages/tablas-radicacion/TablaIpsPrimaria")
+  () => import("../../featuures/IpsPrimaria/Pages/TablaIpsPrimaria")
 );
 const TablaRadicadores = lazy(
-  () => import("../pages/tablas-radicacion/TablaRadicadores")
+  () => import("@/featuures/Radicador/Pages/TablaRadicadores")
 );
 const TablaEspecialidad = lazy(
-  () => import("../pages/tablas-radicacion/TablaEspecialidad")
+  () => import("../../featuures/Especialidad/Pages/TablaEspecialidad")
 );
 const TablaTipoServicio = lazy(
-  () => import("../pages/tablas-radicacion/TablaTipoServicio")
+  () => import("@/featuures/TypeService/Pages/TablaTipoServicio")
 );
 const TablaTipoDocumento = lazy(
-  () => import("../pages/tablas-radicacion/TablaTipoDocumento")
+  () => import("@/featuures/DocumentType/Pages/TablaTipoDocumento")
 );
 const TablaLugarRadicacion = lazy(
-  () => import("../pages/tablas-radicacion/TablaLugarRadicacion")
+  () => import("@/featuures/Sede/Pages/TablaLugarRadicacion")
 );
 const TablaAutorizarServicios = lazy(
-  () => import("../pages/tablas-radicacion/TablaAutorizarServicios")
+  () => import("../../featuures/AuthorizeService/Pages/TablaAutorizarServicios")
 );
 const TablaRegistrosAuditados = lazy(
-  () => import("../pages/tablas-radicacion/TablaRegistrosAuditados")
+  () => import("@/featuures/Auditados/Pages/TablaRegistrosAuditados")
 );
 const TablaDiagnostico = lazy(
-  () => import("../pages/tablas-radicacion/TablaDiagnostico")
+  () => import("../../featuures/Diagnostico/Pages/TablaDiagnostico")
 );
 
 export default function TablaRoutes() {
