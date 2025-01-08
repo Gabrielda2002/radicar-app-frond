@@ -21,7 +21,7 @@ const TablaRadicadores = lazy(
   () => import("../pages/tablas-radicacion/TablaRadicadores")
 );
 const TablaEspecialidad = lazy(
-  () => import("../pages/tablas-radicacion/TablaEspecialidad")
+  () => import("../../featuures/Especialidad/Pages/TablaEspecialidad")
 );
 const TablaTipoServicio = lazy(
   () => import("../pages/tablas-radicacion/TablaTipoServicio")
