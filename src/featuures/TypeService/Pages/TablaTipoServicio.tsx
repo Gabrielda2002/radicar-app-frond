@@ -1,21 +1,21 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import Pagination from "../../common/PaginationTable/PaginationTable";
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
-import { useFetchServicios } from "../../../hooks/useFetchUsers";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
+import { useFetchService } from "../Hooks/UseFetchService";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
-import { IServicios } from "../../../models/IServicio";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { IServicios } from "@/models/IServicio";
 
-const ModalAction = lazy(() => import("../../common/Modals/ActionTables/ModalAction"));
-const ModalAgregarDato = lazy(() => import("../../common/Modals/CrearDataTables/ModalAgregarDato"));
+const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
+const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaTipoServicio = () => {
-  const { data, loading, error } = useFetchServicios();
+  const { data, loading, error } = useFetchService();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IServicios>(data, [

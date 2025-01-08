@@ -9,7 +9,6 @@ import {
   fetchMonthRadicacionEp,
   fetchMunicipio,
   fetchRoles,
-  fetchServicio,
   fetchUnidadFuncional,
   fetchUsers,
 } from "../services/apiService";
@@ -19,7 +18,6 @@ import { IConvenios } from "../models/IConvenios";
 import { IDocumento } from "../models/IDocumento";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
-import { IServicios } from "../models/IServicio";
 import { IRadicados } from "../models/IRadicados";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
@@ -199,29 +197,6 @@ export const useFetchLugarRadicado = () => {
 
   return { data, loading, error };
 };
-
-export const useFetchServicios = () => {
-    const [data, setData] = useState<IServicios[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    
-    useEffect(() => {
-        const getData = async () => {
-        try {
-            const servicios = await fetchServicio();
-            setData(servicios);
-        } catch (error) {
-            setError("Error al obtener los datos de la tabla servicios o no tienes los permisos necesarios. " + error);
-        } finally {
-            setLoading(false);
-        }
-        };
-    
-        getData();
-    }, []);
-    
-    return { data, loading, error };
-}
 
 export const useFetchUnidadFuncional = () => {
     const [data, setData] = useState<IUnidadFuncional[]>([]);
