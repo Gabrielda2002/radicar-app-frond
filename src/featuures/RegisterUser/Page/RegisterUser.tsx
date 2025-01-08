@@ -11,7 +11,7 @@ import {
 import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 
 //*Icons
-import logo from "@/imgs/logo.png";
+import logo from "@/assets/Layout/logo.png";
 import { useFormik } from "formik";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 import { useFetchSede } from "@/hooks/UseFetchSede";
