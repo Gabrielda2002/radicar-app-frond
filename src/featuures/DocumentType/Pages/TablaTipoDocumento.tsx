@@ -5,7 +5,7 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import { useFetchDocumento } from "@/hooks/useFetchUsers";
+import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";

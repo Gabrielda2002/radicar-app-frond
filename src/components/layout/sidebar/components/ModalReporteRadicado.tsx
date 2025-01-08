@@ -2,7 +2,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import useAnimation from "@/hooks/useAnimations";
 import { useDownloadReport } from "../hooks/UseDownloadReport";
-import { useFetchEstados } from "@/hooks/useFetchUsers";
+import { useFetchStatus } from "@/hooks/UseFetchStatus";
 //*Icons
 // import back from "../../../assets/icons/back.svg";
 interface ModalReporteRadicadoProps {
@@ -16,7 +16,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
 }) => {
   // hook que trae los estados de CUPS
   const loadEstados = true;
-  const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
+  const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
 
   // const [showSecondModal, setShowSecondModal] = useState(false);
   const [dateStartRadicado, setDateStartRadicado] = useState("");

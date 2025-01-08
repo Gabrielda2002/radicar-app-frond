@@ -5,7 +5,7 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import { useFetchCups } from "@/hooks/useFetchUsers";
+import { useFetchCups } from "@/hooks/UseFetchCup";
 import { ICups } from "@/models/ICups";
 
 //*Properties

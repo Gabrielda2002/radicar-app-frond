@@ -4,10 +4,6 @@ import { useState, useMemo } from "react";
 import { useFormik } from "formik";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import {
-  useFetchEstados,
-  useFetchUnidadFuncional,
-} from "../../../hooks/useFetchUsers";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLocation } from "react-router-dom";
 import {
@@ -16,9 +12,11 @@ import {
   FormikValues,
 } from "@/models/IFotmikValues";
 import { UpdateService } from "../Services/UpdateService";
+import { useFetchFuntionalUnit } from "../Hooks/UseFetchFuntionalUnit";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { useFetchStatus } from "@/hooks/UseFetchStatus";
 
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -32,8 +30,8 @@ const FormularioAutorizacion = () => {
   );
   const memoizedId = useMemo(() => location.state.id || 0, [location.state]);
 
-  const { data, error, loading } = useFetchUnidadFuncional();
-  const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
+  const { data, error, loading } = useFetchFuntionalUnit();
+  const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
 
   const validationSchema = Yup.object({
     auditora: Yup.string()

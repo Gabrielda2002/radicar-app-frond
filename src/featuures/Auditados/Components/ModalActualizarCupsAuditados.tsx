@@ -6,8 +6,8 @@ import useAnimation from "@/hooks/useAnimations";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState, useMemo } from "react";
-import { useFetchEstados } from "@/hooks/useFetchUsers";
 import { UpdateCupsAuditados } from "../Services/UpdateCupsAuditados";
+import { useFetchStatus } from "@/hooks/UseFetchStatus";
 //*Icons
 import editar from "/assets/editar.svg";
 
@@ -29,7 +29,7 @@ const ModalActualizarCupsAuditoria: React.FC<
   // * se agreaga estado para el control de la carga de los estados
   const [loadEstados, setLoadEstados] = useState(false);
   // * el hook espera el loadEstados para cargar los estados, si es true carga los estados
-  const { dataEstados, errorEstados } = useFetchEstados(loadEstados);
+  const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
 
   // * se agrega un efecto para cargar los estados cuando stadopen sea true, es decir cuando el modal se abra
   useEffect(() => {

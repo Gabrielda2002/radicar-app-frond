@@ -4,18 +4,18 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import { useFetchLugarRadicado } from "@/hooks/useFetchUsers";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { ILugarRadicacion } from "@/models/ILugarRadicado";
+import { useFetchSede } from "@/hooks/UseFetchSede";
 
 const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
 const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
 const ITEMS_PER_PAGE = 8;
 
 const TablaLugarRadicacion = () => {
-  const { data, loading, error } = useFetchLugarRadicado();
+  const { data, loading, error } = useFetchSede();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<ILugarRadicacion>(data, [

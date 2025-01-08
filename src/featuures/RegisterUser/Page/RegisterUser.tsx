@@ -6,14 +6,15 @@ import { AnimatePresence } from "framer-motion";
 import { createUser } from "@/featuures/RegisterUser/Services/createUser";
 import areas from '@/data-dynamic/areas.json'; 
 import {
-  useFetchDocumento,
-  useFetchLugarRadicado,
-  useFetchMunicipio,
   useFetchRoles,
-} from "@/hooks/useFetchUsers";
+} from "@/hooks/UseFetchRoles";
+import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
+
 //*Icons
 import logo from "@/imgs/logo.png";
 import { useFormik } from "formik";
+import { useFetchDocumento } from "@/hooks/UseFetchDocument";
+import { useFetchSede } from "@/hooks/UseFetchSede";
 
 const RegistrarUsuarios: React.FC = () => {
   const isOpen = true;
@@ -26,7 +27,7 @@ const RegistrarUsuarios: React.FC = () => {
   const { municipios, errorMunicipios } = useFetchMunicipio(load);
 
   // hook pora traer las sedes
-  const { data } = useFetchLugarRadicado();
+  const { data } = useFetchSede();
 
 
   // const [isAccordionOpen, setIsAccordionOpen] = useState(false);

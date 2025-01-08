@@ -6,7 +6,7 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 // import ModalAgregarDato from "../modals/ModalAgregarDato";
-import { useFetchConvenio } from "@/hooks/useFetchUsers";
+import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
 import { IConvenios } from "@/models/IConvenios";
 
 //*Properties

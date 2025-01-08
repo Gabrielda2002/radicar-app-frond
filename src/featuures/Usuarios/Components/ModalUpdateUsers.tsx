@@ -5,20 +5,20 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import areas from "@/data-dynamic/areas.json";
 import {
-  useFetchDocumento,
-  useFetchLugarRadicado,
-  useFetchMunicipio,
   useFetchRoles,
-} from "@/hooks/useFetchUsers";
+} from "@/hooks/UseFetchRoles";
 import { IUsuarios } from "@/models/IUsuarios";
 import { AnimatePresence } from "framer-motion";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { updateUsuarios } from "../Services/updarteUsuarios";
+import { updateUsuarios } from "../Services/UpdarteUsuarios";
+import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
+import { useFetchSede } from "@/hooks/UseFetchSede";
 
 //*Icons
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -51,7 +51,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const { municipios, errorMunicipios } = useFetchMunicipio(load);
 
   // hook para traer las sedes
-  const { data } = useFetchLugarRadicado();
+  const { data } = useFetchSede();
 
   useEffect(() => {
     if (isOpen) {
