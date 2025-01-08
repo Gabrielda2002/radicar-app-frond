@@ -1,17 +1,17 @@
 //*Funciones y Hooks
 import React, { useEffect, useMemo, useState } from "react";
-import useAnimation from "../../../hooks/useAnimations";
+import useAnimation from "@/hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { createPaciente } from "../../../services/createPaciente";
+import { createPaciente } from "../Services/createPaciente";
 import {
   useFetchConvenio,
   useFetchDocumento,
   useFetchIpsPrimaria,
-} from "../../../hooks/useFetchUsers";
-import { IPacientes } from "../../../models/IPacientes";
-import { updatePacienteEp } from "../../../utils/api-config";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+} from "@/hooks/useFetchUsers";
+import { IPacientes } from "@/models/IPacientes";
+import { updatePacienteEp } from "@/utils/api-config";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 
 //*Icons

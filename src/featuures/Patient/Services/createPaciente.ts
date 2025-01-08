@@ -1,4 +1,4 @@
-import { createPacienteEp, updatePacienteEp } from "../utils/api-config";
+import { createPacienteEp, updatePacienteEp } from "@/utils/api-config";
 
 export async function createPaciente(data: FormData) {
   try {
