@@ -1,13 +1,13 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Cup } from "../../../models/IAuditados";
-import useAnimation from "../../../hooks/useAnimations";
-import ErrorMessage from "../../common/ErrorMessageModal/ErrorMessageModals";
+import { Cup } from "@/models/IAuditados";
+import useAnimation from "@/hooks/useAnimations";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState, useMemo } from "react";
-import { useFetchEstados } from "../../../hooks/useFetchUsers";
-import { sendCupsAuditados } from "../../../services/updateCupsAuditados";
+import { useFetchEstados } from "@/hooks/useFetchUsers";
+import { UpdateCupsAuditados } from "../Services/UpdateCupsAuditados";
 //*Icons
 import editar from "/assets/editar.svg";
 
@@ -66,7 +66,7 @@ const ModalActualizarCupsAuditoria: React.FC<
       formData.append("status", values.estado);
 
       try {
-        const response = await sendCupsAuditados(cup.id, formData);
+        const response = await UpdateCupsAuditados(cup.id, formData);
 
         if (response && response.status === 200) {
           setSuccess(true);

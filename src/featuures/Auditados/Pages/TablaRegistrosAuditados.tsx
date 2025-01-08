@@ -2,20 +2,19 @@
 import { format } from "date-fns";
 import React, { useState, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Pagination from "../../common/PaginationTable/PaginationTable";
-import useSearch from "../../../hooks/useSearch";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import usePagination from "../../../hooks/usePagination";
-import { Cup, IAuditados } from "../../../models/IAuditados";
-import { useFetchAuditados } from "../../../hooks/useFetchUsers";
-// import ModalActualizarCupsAuditoria from "../modals/ModalActualizarCupsAuditados";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import useSearch from "@/hooks/useSearch";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import usePagination from "@/hooks/usePagination";
+import { Cup, IAuditados } from "@/models/IAuditados";
+import { useFetchAuditados } from "../Hooks/UseFetchAuditados";
 
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 //*Properties
-import ModalSection from "../../common/HeaderPage/HeaderPage";
+import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 const ModalActualizarCupsAuditoria = lazy(
-  () => import("../modals/ModalActualizarCupsAuditados")
+  () => import("../Components/ModalActualizarCupsAuditados")
 );
 
 const ITEMS_PER_PAGE = 10;

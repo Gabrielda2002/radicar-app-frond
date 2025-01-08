@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  fetchAuditados,
   fetchConvenio,
   fetchCups,
   fetchDocumento,
@@ -24,7 +23,6 @@ import { IServicios } from "../models/IServicio";
 import { IRadicados } from "../models/IRadicados";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
-import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 
@@ -273,42 +271,6 @@ export const useFetchEstados = (shouldFetch: boolean) => {
 
   return { dataEstados, loading, errorEstados };
 };
-
-
-// traer datos para los registros auditados de auditoria
-
-export const useFetchAuditados = () => {
-  const [data, setData] = useState<IAuditados[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-  
-    const getData = async () => {
-      try {
-        const auditados = await fetchAuditados();
-        if (isMounted) {
-          setData(auditados);
-        }
-      } catch (error) {
-        setError("Error al obtener los datos de la tabla auditados o no tienes los permisos necesarios. " + error);
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-  
-    getData();
-  
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  return { data, loading, error };
-}
 
 // * traer roles
 export const useFetchRoles = (shouldFetch: boolean) => {

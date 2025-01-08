@@ -1,6 +1,6 @@
-import { updateCupsAuditados } from "../utils/api-config"
+import { updateCupsAuditados } from "@/utils/api-config"
 
-export const sendCupsAuditados = async (id: number, data: FormData) => {
+export const UpdateCupsAuditados = async (id: number, data: FormData) => {
 
     try {
         
