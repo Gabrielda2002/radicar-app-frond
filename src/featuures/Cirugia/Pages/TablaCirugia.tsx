@@ -217,19 +217,7 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalCirugias
-                            name={cirugia.nombrePaciente}
-                            phonneNumber={cirugia.numeroPaciente}
-                            email={cirugia.email}
-                            landline={cirugia.telefonoFijo}
-                            cups={cirugia.cups}
-                            speciality={cirugia.especialidad}
-                            fechaOrden={cirugia.fechaOrden}
-                            diagnostic={cirugia.diagnostico}
-                            idGroupService={cirugia.idGrupoServicios}
-                            idRadicado={cirugia.id}
-                            idCirugia={cirugia.programacionCirugia.map(
-                              (programacion) => programacion.id
-                            )}
+                            data={cirugia}
                           />
                         </Suspense>
                       </td>

@@ -88,7 +88,7 @@ const Footer = () => {
               {" "}
               {/* max-w-md limita el ancho máximo */}
               <p className="text-justify text-gray-900 dark:text-gray-100">
-                En 2024, buscamos ser líderes regionales y reconocidos
+                En 2025, buscamos ser líderes regionales y reconocidos
                 nacionalmente como una IPS que cumple con altos estándares de
                 calidad. Nos comprometemos a proporcionar atención amable,
                 segura y confiable, con el objetivo de alcanzar la plena
@@ -107,7 +107,7 @@ const Footer = () => {
               className="ml-1 text-gray-600"
               target="_blank"
             >
-              Nordvital IPS © 2024
+              Nordvital IPS © 2025
             </a>
           </p>
           <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
