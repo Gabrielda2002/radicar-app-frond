@@ -218,7 +218,7 @@ const Navbar: React.FC = React.memo(() => {
               <img
                 alt="Profile"
                 src={imageUrl || defaultUserPicture}
-                className="object-cover w-8 h-8 border-2 rounded-full dark:border-white"
+                className="object-cover w-8 h-8 rounded-full dark:border-white"
               />
               <img
                 src={userLogo}
