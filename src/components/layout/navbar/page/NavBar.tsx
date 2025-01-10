@@ -108,7 +108,7 @@ const Navbar: React.FC = React.memo(() => {
   };
 
   const user = localStorage.getItem("user");
-  const nombreUsuario = user ? toUpperCamelCase(JSON.parse(user).nombre) : "";
+  const nombreUsuario = user ? toUpperCamelCase(JSON.parse(user).name) : "";
 
   return (
     <header

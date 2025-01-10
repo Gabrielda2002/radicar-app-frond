@@ -48,7 +48,7 @@ const Perfil: React.FC = () => {
                 <div className="flex flex-col space-y-4">
                   <div>
                     <h2 className="text-2xl font-semibold">
-                      {profile.nombre} {profile.apellido}
+                      {profile.name} {profile.lastname}
                     </h2>
                   </div>
                   {/* Información de Rol */}

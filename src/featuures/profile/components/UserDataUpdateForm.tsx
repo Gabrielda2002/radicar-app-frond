@@ -8,8 +8,8 @@ import { updateUserData } from "../services/UpdateUserData";
 
 interface UserDataUpdateFormProps {
   initialUserData: {
-    nombre: string;
-    apellido: string;
+    name: string;
+    lastname: string;
     email: string;
     id: string;
   };
@@ -41,8 +41,8 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
 
   const formik = useFormik({
     initialValues: {
-      nombre: initialUserData.nombre,
-      apellido: initialUserData.apellido,
+      nombre: initialUserData.name,
+      apellido: initialUserData.lastname,
       email: initialUserData.email,
     },
     enableReinitialize: true,
