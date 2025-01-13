@@ -2,7 +2,7 @@
 import * as Yup from "yup";
 import { format } from "date-fns";
 import { useFormik } from "formik";
-import { Cup } from "@/models/ICirugias";
+import { ICirugias } from "@/models/ICirugias";
 import React, { useState, useMemo } from "react";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import useAnimation from "@/hooks/useAnimations";
@@ -14,31 +14,11 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 import programar from "/assets/programar.svg";
 
 interface ModalCirugiasProps {
-  name: string;
-  phonneNumber: string;
-  email: string;
-  landline: string;
-  cups: Cup[];
-  speciality: string;
-  diagnostic: string;
-  fechaOrden: Date;
-  idGroupService: number;
-  idRadicado: number;
-  idCirugia: number[];
+  data: ICirugias;
 }
 
 const ModalCirugias: React.FC<ModalCirugiasProps> = ({
-  name,
-  phonneNumber,
-  email,
-  landline,
-  cups,
-  speciality,
-  diagnostic,
-  fechaOrden,
-  idGroupService,
-  idRadicado,
-  idCirugia,
+  data
 }) => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
@@ -72,14 +52,13 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
   const [error, setError] = useState<string>("");
 
   const handleValidation = () => {
-    if (idGroupService === 6) {
+    if (data.idGrupoServicios === 6) {
       setError("");
       setIsValidate(true);
       return;
     }
 
-    if (idGroupService === 9) {
-      console.log("entro a la segunda condicion");
+    if (data.idGrupoServicios === 9) {
       if (soporte && paraclinicos && valoracion) {
         setIsValidate(true);
         setError("");
@@ -127,7 +106,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
         formData.append("surgeryDate", values.fechaCirugia);
         formData.append("scheduledTime", values.horaProgramada);
         formData.append("observation", values.observacion);
-        formData.append("radicadoId", idRadicado.toString());
+        formData.append("radicadoId", data.id.toString());
         formData.append("specialist", values.especialista);
         formData.append("anesthesiologyDate", values.fechaAnesteciologia);
         formData.append("paraclinicalDate", values.fechaParaclinicos);
@@ -192,7 +171,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               </div>
               {/* validacion si el radicado ya tiene una cirugia programada se muestra el contenido del modal con normalidad de lo contrario se mostrara un error */}
               <div className="p-6 overflow-y-auto max-h-[80vh]">
-                {idCirugia.length == 0 ? (
+                { data.programacionCirugia.length == 0 ? (
                   // validacion de datos del paciente para programacion
                   <div className="">
                     <div>
@@ -212,12 +191,12 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                         </thead>
                         <tbody>
                           <tr className="text-center border-t dark:border-gray-600">
-                            <td className="p-2">{name}</td>
-                            <td className="p-2">{landline}</td>
-                            <td className="p-2">{phonneNumber}</td>
-                            <td className="p-2">{email}</td>
-                            <td className="p-2">{speciality}</td>
-                            <td className="p-2">{diagnostic}</td>
+                            <td className="p-2">{data.nombrePaciente}</td>
+                            <td className="p-2">{data.telefonoFijo}</td>
+                            <td className="p-2">{data.numeroPaciente}</td>
+                            <td className="p-2">{data.email}</td>
+                            <td className="p-2">{data.especialidad}</td>
+                            <td className="p-2">{data.diagnostico}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -234,7 +213,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                           </tr>
                         </thead>
                         <tbody>
-                          {cups.map((cup) => (
+                          {data.cups.map((cup) => (
                             <tr
                               key={cup.id}
                               className="text-center border-t dark:border-gray-600"
@@ -246,7 +225,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                         </tbody>
                       </table>
 
-                      {idGroupService === 9 && (
+                      {data.idGrupoServicios === 9 && (
                         <div className="mb-6">
                           <h4 className="mb-4 text-lg text-blue-500 dark:text-white">
                             Validacion de requisitos para programacion
@@ -323,7 +302,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                       )}
                     </div>
 
-                    {idGroupService === 6 || isValidate ? (
+                    {data.idGrupoServicios === 6 || isValidate ? (
                       // formulario de programacion de cirugias
                       <form
                         onSubmit={formik.handleSubmit}
@@ -352,7 +331,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                       *
                                     </span>
                                   </div>
-                                  <div>{formatDate(fechaOrden)}</div>
+                                  <div>{formatDate(data.fechaOrden)}</div>
                                 </label>
                               </div>
 

@@ -98,7 +98,9 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
           <section>
-            <div className="relative flex flex-col items-center max-w-lg gap-4 p-6 bg-white rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-800 dark:text-white">
+            <div
+              className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white"
+            >
               <button
                 onClick={onClose} // Cerrar modal al hacer clic en "X"
                 className="absolute top-2 right-2"

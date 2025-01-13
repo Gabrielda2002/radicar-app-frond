@@ -6,17 +6,19 @@ import { IProfile } from "@/models/IProfile";
 
 export const usePerfil = () => {
   const [profile, setProfile] = useState<IProfile>({
-    nombre: "",
-    apellido: "",
+    name: "",
+    lastname: "",
     email: "",
     phone: "",
     photo: "",
     rol: "",
     status: "",
-    municipio: "",
-    date: "",
+    municipality: "",
     dniNumber: "",
     id: "",
+    area: "",
+    position: "",
+    headquarters: "",
   });
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);

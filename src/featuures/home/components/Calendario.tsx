@@ -52,11 +52,11 @@ const Calendario: React.FC = () => {
           views={["month", "agenda"]}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ height: 500, width: "100%", margin: "0 auto", padding: "10px" }}
           eventPropGetter={(event) => ({
             style: { 
               backgroundColor: event.color,
-              borderRadius: '5px'
+              borderRadius: '6px',
             }
           })}
           onSelectEvent={(event: IEventos) => {
@@ -81,13 +81,12 @@ const Calendario: React.FC = () => {
             date: "Fecha",
             time: "Hora",
             event: "Evento",
-            noEventsInRange: "No hay eventos en este rango.",
+            noEventsInRange: "Sin eventos.",
             allDay: "Todo el día",
           }}
-          className="bg-white border-2 rounded-lg dark:bg-gray-800 dark:text-white dark:border-color"
+          className="bg-gray-200 border-2 rounded-lg dark:bg-gray-800"
         />
       </div>
-      <br />
       {[1, 2].includes(Number(rol)) && (
         <button 
         onClick={() => handleEventSelect(null)}

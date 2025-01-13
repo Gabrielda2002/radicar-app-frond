@@ -64,3 +64,88 @@ body.dark .border-black {
         }
     }
 } */
+
+/* Estilos personalizados para react-big-calendar */
+.rbc-calendar {
+  @apply dark:bg-gray-700;
+}
+
+/* ? barra botones calendario */
+.rbc-toolbar button {
+  @apply dark:bg-gray-600 dark:text-white dark:border-gray-500;
+}
+
+/* ? hover botones barra */
+.rbc-toolbar button:hover {
+  @apply dark:bg-gray-500 dark:text-gray-300 dark:border-none;
+}
+
+.rbc-toolbar button.rbc-active {
+  @apply dark:bg-gray-400 dark:border-gray-500 dark:text-white;
+}
+
+/* header days*/
+.rbc-header {
+  @apply dark:text-white dark:border-gray-600;
+}
+/* ? dias fuera del rango dias del mes*/
+.rbc-off-range-bg {
+  @apply dark:bg-gray-600;
+}
+
+.rbc-today {
+  @apply dark:bg-gray-500 dark:text-white;
+}
+
+.rbc-event {
+  @apply dark:border-gray-600;
+}
+
+.rbc-day-bg + .rbc-day-bg,
+.rbc-month-row {
+  @apply dark:border-gray-600;
+}
+
+.rbc-month-view {
+  @apply dark:border-gray-600;
+}
+
+.rbc-date-cell {
+  @apply dark:text-white;
+}
+
+.rbc-agenda-view table.rbc-agenda-table {
+  @apply dark:border-gray-600 dark:text-white;
+}
+
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  @apply dark:border-gray-600;
+}
+
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  @apply dark:border-gray-600 dark:bg-gray-800;
+}
+
+/* ? mensaje agenda vacia*/
+.rbc-agenda-empty {
+  @apply dark:text-white text-center;
+}
+
+.rbc-toolbar-label {
+  @apply dark:text-white;
+}
+
+.rbc-event :hover {
+  @apply ease-in duration-200 text-black rounded-md;
+}
+
+.rbc-show-more {
+  @apply dark:bg-gray-600 dark:text-white;
+}
+
+.rbc-show-more:hover {
+  @apply dark:bg-gray-500 dark:text-white;
+}
+.rbc-button-link {
+  @apply dark:text-white;
+}

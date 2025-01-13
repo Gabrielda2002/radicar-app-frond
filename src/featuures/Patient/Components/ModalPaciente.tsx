@@ -3,13 +3,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import useAnimation from "@/hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { createPaciente } from "../Services/createPaciente";
+import { createPaciente } from "../Services/CreatePatient";
 import { IPacientes } from "@/models/IPacientes";
-import { updatePacienteEp } from "@/utils/api-config";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
+import { UpdatePatient } from "../Services/UpdatePatient";
+import { useFetchIpsPrimaria } from "@/hooks/UseFetchIpsPrimaria";
 
 //*Icons
 import {
@@ -20,7 +21,6 @@ import {
   BuildingOfficeIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
-import { useFetchIpsPrimaria } from "@/hooks/UseFetchIpsPrimaria";
 
 interface ModalPacienteProps {
   id: number | null;
@@ -121,7 +121,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         let response;
 
         if (update && id) {
-          response = await updatePacienteEp(formData, id);
+          response = await UpdatePatient(formData, id);
         } else {
           response = await createPaciente(formData);
         }
