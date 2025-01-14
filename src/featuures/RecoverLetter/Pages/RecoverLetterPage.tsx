@@ -3,8 +3,16 @@ import { UseFetchRequestLetter } from "../Hooks/UseFetchRequestLetter";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { format } from "date-fns";
 
+import gestion from "/assets/gestion.svg";
+import { Suspense, useState } from "react";
+import ModalRequestForm from "../Components/ModalRequestForm";
+
+
 const RecoverLetterPage = () => {
   // * hook trae radicados a los que se puede solicitar carta de recobro
+
+  // estados manejo apertura modal
+  const [isOpen, setIsOpen] = useState(false);
 
   const { requestLetter, loading, error } = UseFetchRequestLetter();
 
@@ -36,6 +44,7 @@ const RecoverLetterPage = () => {
                 <th>Convenio</th>
                 <th>Profesional</th>
                 <th>CUPS</th>
+                <th>Solicitar</th>
               </tr>
             </thead>
 
@@ -99,13 +108,29 @@ const RecoverLetterPage = () => {
                       </div>
                     )}
                   </td>
+                  <td
+                    className="p-3 border-b dark:border-gray-700"
+                  >
+                    <button
+                      onClick={() => setIsOpen(true)}
+                    >
+                      <img src={gestion} alt="request-icon" />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      <Suspense fallback={<LoadingSpinner />}>
+             <ModalRequestForm
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+             />
+      </Suspense>
     </>
+
   );
 };
 
