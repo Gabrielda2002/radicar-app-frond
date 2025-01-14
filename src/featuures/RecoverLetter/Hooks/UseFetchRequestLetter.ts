@@ -17,9 +17,10 @@ export const UseFetchRequestLetter = () => {
         if (response.length > 0) {
           setRequestLetter(response);
           setError(null);
+        }else{
+            setError("No se encontraron solicitudes");
+            setRequestLetter(null);
         }
-        setError("No se encontraron solicitudes");
-        setRequestLetter(null);
       } catch (error) {
         setError("Error inesperado al obtener las solicitudes. " + error);
       } finally {
