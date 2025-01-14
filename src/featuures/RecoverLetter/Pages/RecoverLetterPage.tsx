@@ -14,6 +14,8 @@ const RecoverLetterPage = () => {
   // estados manejo apertura modal
   const [isOpen, setIsOpen] = useState(false);
 
+  const [idRadicado, setIdRadicado] = useState<number>(0);
+
   const { requestLetter, loading, error } = UseFetchRequestLetter();
 
   const formatDate = (date: Date | null) => {
@@ -112,7 +114,10 @@ const RecoverLetterPage = () => {
                     className="p-3 border-b dark:border-gray-700"
                   >
                     <button
-                      onClick={() => setIsOpen(true)}
+                      onClick={() => {
+                        setIsOpen(true)
+                        setIdRadicado(r.id)
+                      } }
                     >
                       <img src={gestion} alt="request-icon" />
                     </button>
@@ -127,6 +132,7 @@ const RecoverLetterPage = () => {
              <ModalRequestForm
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
+              idRadicado={idRadicado}
              />
       </Suspense>
     </>
