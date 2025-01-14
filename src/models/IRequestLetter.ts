@@ -3,6 +3,7 @@ export interface IRequestLetter {
     profetional:    string;
     creatAt:        Date;
     dniNumber:      number;
+    patientName:    string;
     dniType:        string;
     agreement:      string;
     cupsAuthorized: CupsAuthorized[];
