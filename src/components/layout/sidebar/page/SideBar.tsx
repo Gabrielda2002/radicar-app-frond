@@ -35,6 +35,7 @@ const SideBar: FC = () => {
 
   // * estado para abrir y cerrar los acordeones
   const [openAccordions, setOpenAccordions] = useState({
+    reccoverLetter: false,
     services: false,
     quality: false,
     inventary: false, // * se adapta nuevo sistema de inventario
@@ -70,6 +71,7 @@ const SideBar: FC = () => {
   const toggleAccordion = (key: keyof typeof openAccordions) =>
     setOpenAccordions((prev) => {
       const newState = {
+        reccoverLetter: false,
         services: false,
         inventary: false, // * se adapta nuevo sistema de inventario
         quality: false,
@@ -192,6 +194,24 @@ const SideBar: FC = () => {
                 />
               )}
             </Category>
+
+              {/* carta recobro */}
+
+              {[1].includes(Number(rol)) && (
+                <Category
+                  title="Gestión Carta Recobro"
+                  icon={flag}
+                  isOpen={openAccordions.reccoverLetter}
+                  toggle={() => toggleAccordion("reccoverLetter")}
+                >
+                  <SubCategory
+                    to="/carta-recobro"
+                    icon={flag}
+                    title="Solicitar"
+                    isCollapsed={isCollapsed}
+                  />
+                  </Category>
+              )}
 
             {/* Categoria de servicios */}
             {[10, 3, 1, 15, 6].includes(Number(rol)) && (
