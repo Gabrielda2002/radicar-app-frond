@@ -14,15 +14,17 @@ const RecoverLetterPage = () => {
   // estados manejo apertura modal
   const [isOpen, setIsOpen] = useState(false);
 
+  const [document, setDocument] = useState<string>("");
+
   const [idRadicado, setIdRadicado] = useState<number>(0);
 
-  const { requestLetter, loading, error } = UseFetchRequestLetter();
+  const { requestLetter, loading, error, getData } = UseFetchRequestLetter();
 
   const formatDate = (date: Date | null) => {
     return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
   };
 
-  if (loading) return <LoadingSpinner duration={100000} />;
+  // if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <div>{error}</div>;
 
   return (
@@ -33,9 +35,31 @@ const RecoverLetterPage = () => {
       />
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        <section>{/*barra de busqueda*/}</section>
+        <section className="flex items-end justify-between w-full mb-4">
+          <div className="flex flex-col">
+            <label
+              className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300"
+            >
+              Buscar Solicitudes:
+            </label>
+            <input
+              type="text"
+              placeholder="Documento del paciente"
+              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              value={document}
+              onChange={(e) => setDocument(e.target.value)}
+            />
+            <button
+              className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
+              onClick={() => getData(document)}
+            >
+              Buscar
+            </button>
+          </div>
+        </section>
 
         <div className="overflow-x-auto">
+          { requestLetter && requestLetter?.length > 0 && (
           <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
             <thead className="bg-gray-200 dark:bg-gray-700">
               <tr className="shadow-md dark:text-gray-300 rounded-t-md">
@@ -126,6 +150,8 @@ const RecoverLetterPage = () => {
               ))}
             </tbody>
           </table>
+            
+          )}
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>
