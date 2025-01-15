@@ -25,6 +25,9 @@ import surgery from "/assets/surgery.svg";
 import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
 import taskList from "/assets/task-list.svg";
+import recobro from "/assets/recobro.svg";
+import carta from "/assets/carta.svg";
+import auditoria from "/assets/auditoria.svg";
 
 const SideBar: FC = () => {
   const { isCollapsed, toggleSideBar } = useSidebar();
@@ -200,16 +203,24 @@ const SideBar: FC = () => {
               {[1].includes(Number(rol)) && (
                 <Category
                   title="Gestión Carta Recobro"
-                  icon={flag}
+                  icon={recobro}
                   isOpen={openAccordions.reccoverLetter}
                   toggle={() => toggleAccordion("reccoverLetter")}
                 >
                   <SubCategory
                     to="/carta-recobro"
-                    icon={flag}
+                    icon={carta}
                     title="Solicitar"
                     isCollapsed={isCollapsed}
                   />
+                   {[1].includes(Number(rol)) && (
+                  <SubCategory
+                    to="/auditoria"
+                    icon={auditoria}
+                    title="Auditoria"
+                    isCollapsed={isCollapsed}
+                  />
+                   )}
                   </Category>
               )}
 
