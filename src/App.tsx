@@ -51,6 +51,7 @@ import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import RecoverLetterPage from "./featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
+import RecoverLastPage from "./featuures/RecoverLetter/Pages/RecoverLastPage.tsx";
 
 function AppRoutes() {
   return (
@@ -108,6 +109,10 @@ function AppRoutes() {
                           <Route
                             path="/carta-recobro"
                             element={<RecoverLetterPage/>}
+                          />
+                          <Route
+                            path="/auditoria"
+                            element={<RecoverLastPage />}
                           />
                           {/* rutas de las tablas radicacion */}
                           <Route path="*" element={<TableRoutes />} />
