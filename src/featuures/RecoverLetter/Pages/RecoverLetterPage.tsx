@@ -3,7 +3,7 @@ import { UseFetchRequestLetter } from "../Hooks/UseFetchRequestLetter";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { format } from "date-fns";
 
-import gestion from "/assets/gestion.svg";
+import carta from "/assets/carta.svg";
 import { Suspense, useState } from "react";
 import ModalRequestForm from "../Components/ModalRequestForm";
 
@@ -110,16 +110,18 @@ const RecoverLetterPage = () => {
                       </div>
                     )}
                   </td>
-                  <td
-                    className="p-3 border-b dark:border-gray-700"
-                  >
+                  <td className="p-3 border-b dark:border-gray-700">
                     <button
                       onClick={() => {
-                        setIsOpen(true)
-                        setIdRadicado(r.id)
-                      } }
+                        setIsOpen(true);
+                        setIdRadicado(r.id);
+                      }}
                     >
-                      <img src={gestion} alt="request-icon" />
+                      <img
+                        src={carta}
+                        alt="request-icon"
+                        className="w-12 h-12 dark:filter dark:invert "
+                      />
                     </button>
                   </td>
                 </tr>
@@ -129,14 +131,13 @@ const RecoverLetterPage = () => {
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>
-             <ModalRequestForm
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-              idRadicado={idRadicado}
-             />
+        <ModalRequestForm
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          idRadicado={idRadicado}
+        />
       </Suspense>
     </>
-
   );
 };
 
