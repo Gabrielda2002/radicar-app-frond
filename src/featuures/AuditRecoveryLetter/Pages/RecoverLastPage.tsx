@@ -3,16 +3,16 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
 import { Suspense, useState } from "react";
-import ModalRequestForm from "../Components/ModalRequestForm";
 
 import auditoria from "/assets/auditoria.svg"
+import ModalAuditForm from "../Components/ModalAuditForm";
 
 const RecoverLastPage = () => {
 
   // estados manejo apertura modal
   const [isOpen, setIsOpen] = useState(false);
 
-  const [idRadicado] = useState<number>(0);
+  // const [idRadicado] = useState<number>(0);
 
 
   return (
@@ -66,10 +66,9 @@ const RecoverLastPage = () => {
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>
-        <ModalRequestForm
+        <ModalAuditForm
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          idRadicado={idRadicado}
         />
       </Suspense>
     </>
