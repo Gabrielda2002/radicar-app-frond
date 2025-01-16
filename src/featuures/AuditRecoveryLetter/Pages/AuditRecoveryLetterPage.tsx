@@ -7,9 +7,13 @@ import { Suspense, useState } from "react";
 import auditoria from "/assets/auditoria.svg";
 import ModalAuditForm from "../Components/ModalAuditForm";
 import { useFetchAuditLetter } from "../Hook/useFetchAuditLetter";
+import { CupsAuthorizedLetter } from "@/models/IAuditLetter";
 
 const RecoverLastPage = () => {
   const { auditLetter, loading, error } = useFetchAuditLetter();
+
+  // estado para pasar cups al modal
+  const [cupsAuthorized, setCupsAuthorized] = useState<CupsAuthorizedLetter[]>([]);
 
   // estados manejo apertura modal
   const [isOpen, setIsOpen] = useState(false);
@@ -65,6 +69,7 @@ const RecoverLastPage = () => {
                     <button
                       onClick={() => {
                         setIsOpen(true);
+                        setCupsAuthorized(a.cupsAuthorized);
                       }}
                     >
                       <img
@@ -81,7 +86,7 @@ const RecoverLastPage = () => {
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>
-        <ModalAuditForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <ModalAuditForm isOpen={isOpen} onClose={() => setIsOpen(false)} cupsAuthorized={cupsAuthorized} />
       </Suspense>
     </>
   );

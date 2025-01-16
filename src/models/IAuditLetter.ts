@@ -5,10 +5,10 @@ export interface IAuditLetter {
     dniNumber:      number;
     dniType:        string;
     agreement:      string;
-    cupsAuthorized: CupsAuthorized[];
+    cupsAuthorized: CupsAuthorizedLetter[];
 }
 
-export interface CupsAuthorized {
+export interface CupsAuthorizedLetter {
     id:              number;
     code:            number;
     DescriptionCode: string;
