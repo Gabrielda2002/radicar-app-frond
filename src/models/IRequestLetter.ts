@@ -14,4 +14,5 @@ export interface CupsAuthorized {
     code:            number;
     DescriptionCode: string;
     status:          string;
+    statusLetter:   string;
 }

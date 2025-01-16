@@ -18,13 +18,12 @@ const RecoverLetterPage = () => {
 
   const [idRadicado, setIdRadicado] = useState<number>(0);
 
-  const { requestLetter, loading, error, getData } = UseFetchRequestLetter();
+  const { requestLetter, error, getData } = UseFetchRequestLetter();
 
   const formatDate = (date: Date | null) => {
     return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
   };
 
-  // if (loading) return <LoadingSpinner duration={100000} />;
   if (error) return <div>{error}</div>;
 
   return (
@@ -63,6 +62,7 @@ const RecoverLetterPage = () => {
           <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
             <thead className="bg-gray-200 dark:bg-gray-700">
               <tr className="shadow-md dark:text-gray-300 rounded-t-md">
+                <th>N* Radicado</th>
                 <th>Fecha-hora Radicado</th>
                 <th>Tipo Documento Paciente</th>
                 <th>N. Documento Paciente</th>
@@ -80,6 +80,9 @@ const RecoverLetterPage = () => {
                   className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                   key={r.id}
                 >
+                  <td className="p-3 border-b dark:border-gray-700">
+                    {r.id}
+                  </td>
                   <td className="p-3 border-b dark:border-gray-700">
                     {formatDate(r.creatAt)}
                   </td>
@@ -106,7 +109,8 @@ const RecoverLetterPage = () => {
                             <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
                               <th>CUPS</th>
                               <th>Descricion</th>
-                              <th>Estado</th>
+                              <th>Estado CUPS</th>
+                              <th>Estado Carta Recobro</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -126,6 +130,9 @@ const RecoverLetterPage = () => {
                                 </td>
                                 <td className="p-3 border-b dark:border-gray-700">
                                   {c.status}
+                                </td>
+                                <td className="p-3 border-b dark:border-gray-700">
+                                  {c.statusLetter}
                                 </td>
                               </tr>
                             ))}
