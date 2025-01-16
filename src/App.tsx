@@ -51,7 +51,7 @@ import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import RecoverLetterPage from "./featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
-import RecoverLastPage from "./featuures/AuditRecoveryLetter/Pages/RecoverLastPage.tsx";
+import RecoverLastPage from "./featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
 
 function AppRoutes() {
   return (
