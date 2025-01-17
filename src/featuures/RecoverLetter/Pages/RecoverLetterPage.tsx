@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import carta from "/assets/carta.svg";
 import { Suspense, useState } from "react";
 import ModalRequestForm from "../Components/ModalRequestForm";
+import { handleDownload } from "../Utils/HandleDownload";
+import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
 
 const RecoverLetterPage = () => {
@@ -72,6 +74,7 @@ const RecoverLetterPage = () => {
                 <th>Profesional</th>
                 <th>CUPS</th>
                 <th>Solicitar</th>
+                <th>Descargar Carta</th>
               </tr>
             </thead>
 
@@ -156,6 +159,16 @@ const RecoverLetterPage = () => {
                         className="w-12 h-12 dark:filter dark:invert "
                       />
                     </button>
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    { r.datePrint == null && r.cupsAuthorized.some(c => c.statusLetter === 'Autorizado') && (
+                      <button
+                        onClick={() => handleDownload(r.id.toString(), r.idRequest)}
+                        title="Descargar PDF"
+                      >
+                       <DocumentArrowDownIcon className="w-6 h-6" /> 
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
