@@ -9,12 +9,14 @@ interface ModalRequestFormProps {
   isOpen: boolean;
   onClose: () => void;
   idRadicado: number;
+  isRequested?: boolean;
 }
 
 const ModalRequestForm: FC<ModalRequestFormProps> = ({
   isOpen,
   onClose,
   idRadicado,
+  isRequested
 }) => {
   // estados formulario
   const [success, setSuccess] = useState(false);
@@ -88,6 +90,11 @@ const ModalRequestForm: FC<ModalRequestFormProps> = ({
           </button>
         </div>
 
+        {isRequested ? (
+          <div className="p-2 text-sm text-center text-red-500">
+            Ya has solicitado la carta de radicado.
+          </div>
+        ) : (
         <form onSubmit={formik.handleSubmit} className="dark:bg-gray-800">
           <div className="px-5 max-h-[70vh] overflow-y-auto">
             <div>
@@ -139,6 +146,8 @@ const ModalRequestForm: FC<ModalRequestFormProps> = ({
             {error && <div className="text-red-500">{error}</div>}
           </div>
         </form>
+        )}
+
       </section>
     </div>
   );

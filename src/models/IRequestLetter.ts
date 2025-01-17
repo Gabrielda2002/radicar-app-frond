@@ -6,6 +6,7 @@ export interface IRequestLetter {
     patientName:    string;
     dniType:        string;
     agreement:      string;
+    isRequested:    boolean;
     cupsAuthorized: CupsAuthorized[];
 }
 

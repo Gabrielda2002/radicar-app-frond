@@ -17,6 +17,7 @@ const RecoverLetterPage = () => {
   const [document, setDocument] = useState<string>("");
 
   const [idRadicado, setIdRadicado] = useState<number>(0);
+  const [isRequested, setIsRequested] = useState<boolean>(false);
 
   const { requestLetter, error, getData } = UseFetchRequestLetter();
 
@@ -146,6 +147,7 @@ const RecoverLetterPage = () => {
                       onClick={() => {
                         setIsOpen(true);
                         setIdRadicado(r.id);
+                        setIsRequested(r.isRequested);
                       }}
                     >
                       <img
@@ -168,6 +170,7 @@ const RecoverLetterPage = () => {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           idRadicado={idRadicado}
+          isRequested={isRequested}
         />
       </Suspense>
     </>
