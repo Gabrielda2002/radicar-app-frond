@@ -2,13 +2,17 @@ import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { CupsAuthorizedLetter } from "@/models/IAuditLetter";
 import { useFormik } from "formik";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import * as Yup from "yup";
+import { CreateAuditLetter } from "../Services/CreateAuditLetter";
+import {format} from 'date-fns'
 
 interface ModalAuditFormProps {
   isOpen: boolean;
   onClose: () => void;
   cupsAuthorized: CupsAuthorizedLetter[];
+  idRadicado: number;
+  idRequest: number;
 }
 interface FormValues {
   observation: string;
@@ -18,6 +22,8 @@ interface FormValues {
     DescriptionCode: string;
     statusLetter: string;
   }[];
+  idUserAudit: number;
+  idRadicado  : number;
 }
 interface ErrorsForm {
   observation?: string;
@@ -28,13 +34,20 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
   isOpen,
   onClose,
   cupsAuthorized,
+  idRadicado,
+  idRequest
 }) => {
-  // const [success, setSuccess] = useState(false);
-  //   const [error, setError] = useState<string | null>("");
-  //   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>("");
+  const [loading, setLoading] = useState(false);
 
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   useBlockScroll(isOpen);
+
+  const user = localStorage.getItem("user");
+  const idUsuario = user ? JSON.parse(user).id : "";
+
+  const dateNow = format(new Date(), 'yyyy-MM-dd')
 
   const validationSchema = Yup.object({
     observation: Yup.string().required("Campo requerido"),
@@ -49,10 +62,31 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
     initialValues: {
       observation: "",
       cups: [],
+      idUserAudit: idUsuario,
+      idRadicado: idRadicado
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+
+      try {
+        setLoading(true);
+        
+        const response = await CreateAuditLetter(values, idRequest);
+
+        if (response?.status === 200 || response?.status === 201) {
+          setSuccess(true);
+          setLoading(false);
+          // onClose();
+        }else{
+          setError("Error al enviar la solicitud");
+          setLoading(false);
+        }
+
+      } catch (error) {
+        setError("Error inesperado al cargar la auditoria. " + error);   
+        setLoading(false);     
+      }
+
     },
   });
 
@@ -65,14 +99,16 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
           code: cup.code,
           DescriptionCode: cup.DescriptionCode,
           statusLetter: "",
+          dateAuditRecoveryLatter: dateNow,
         })),
+        idUserAudit: idUsuario,
+        idRadicado: idRadicado,
       });
     }
   }, [cupsAuthorized]);
 
   if (!showAnimation) return null;
-  console.log(formik.errors)
-
+  
   return (
     <div>
       <div className="fixed inset-0 z-50 flex justify-center w-full h-full pt-16 duration-300 bg-black w ransition-opacity bg-opacity-40 backdrop-blur-sm">
@@ -168,8 +204,8 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
                             className="w-full p-2 border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-600 dark:text-white"
                           >
                             <option value="">Seleccione</option>
-                            <option value="Enviada">Autorizado</option>
-                            <option value="No enviada">No Autorizado</option>
+                            <option value="Autorizado">Autorizado</option>
+                            <option value="No Autorizado">No Autorizado</option>
                           </select>
                         </div>
                         {formik.touched.cups?.[index]?.statusLetter &&
@@ -202,13 +238,13 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
               <button
                 type="submit"
                 className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 "
-                //   disabled={loading}
+                disabled={loading}
               >
-                {/* {loading ? "Enviando..." : "Enviar"} */} Enviar
+                 {loading ? "Enviando..." : "Enviar"}
               </button>
-              {/* {success && <div className="text-green-500">Solicitud enviada</div>}
+               {success && <div className="text-green-500">Solicitud enviada</div>}
 
-            {error && <div className="text-red-500">{error}</div>} */}
+            {error && <div className="text-red-500">{error}</div>}
             </div>
           </form>
         </section>

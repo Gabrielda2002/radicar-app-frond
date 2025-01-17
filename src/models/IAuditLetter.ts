@@ -5,6 +5,7 @@ export interface IAuditLetter {
     dniNumber:      number;
     dniType:        string;
     agreement:      string;
+    idRadicado:     number;
     cupsAuthorized: CupsAuthorizedLetter[];
 }
 

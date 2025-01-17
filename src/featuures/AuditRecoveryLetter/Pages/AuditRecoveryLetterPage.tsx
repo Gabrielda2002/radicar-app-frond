@@ -14,6 +14,8 @@ const RecoverLastPage = () => {
 
   // estado para pasar cups al modal
   const [cupsAuthorized, setCupsAuthorized] = useState<CupsAuthorizedLetter[]>([]);
+  const [idRadicado, setIdRadicacion] = useState<number>(0);
+  const [idRequest, setIdRequest] = useState<number>(0);
 
   // estados manejo apertura modal
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +72,8 @@ const RecoverLastPage = () => {
                       onClick={() => {
                         setIsOpen(true);
                         setCupsAuthorized(a.cupsAuthorized);
+                        setIdRadicacion(a.idRadicado);
+                        setIdRequest(a.id);
                       }}
                     >
                       <img
@@ -86,7 +90,13 @@ const RecoverLastPage = () => {
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>
-        <ModalAuditForm isOpen={isOpen} onClose={() => setIsOpen(false)} cupsAuthorized={cupsAuthorized} />
+        <ModalAuditForm 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)} 
+        cupsAuthorized={cupsAuthorized}
+        idRadicado={idRadicado}
+        idRequest={idRequest}
+        />
       </Suspense>
     </>
   );
