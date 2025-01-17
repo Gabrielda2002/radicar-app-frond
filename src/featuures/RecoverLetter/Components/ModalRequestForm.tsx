@@ -53,8 +53,10 @@ const ModalRequestForm: FC<ModalRequestFormProps> = ({
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
+          formik.resetForm();
           setTimeout(() => {
             onClose();
+            window.location.reload();
           }, 2000);
         } else {
           setError("Error al enviar la solicitud");

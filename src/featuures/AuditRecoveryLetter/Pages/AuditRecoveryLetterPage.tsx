@@ -54,7 +54,7 @@ const RecoverLastPage = () => {
                   key={a.id}
                   className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                 >
-                  <td className="p-3 border-b dark:border-gray-700">{a.id}</td>
+                  <td className="p-3 border-b dark:border-gray-700">{a.idRadicado}</td>
                   <td className="p-3 border-b dark:border-gray-700">
                     {a.profetional}
                   </td>

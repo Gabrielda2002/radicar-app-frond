@@ -80,7 +80,7 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
           setTimeout(() => {
             onClose();
             window.location.reload();
-          })
+          }, 2000);
         }else{
           setError("Error al enviar la solicitud");
           setLoading(false);

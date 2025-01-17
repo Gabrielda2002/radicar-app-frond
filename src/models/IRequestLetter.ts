@@ -7,6 +7,8 @@ export interface IRequestLetter {
     dniType:        string;
     agreement:      string;
     isRequested:    boolean;
+    idRequest:      number;
+    datePrint:      Date;
     cupsAuthorized: CupsAuthorized[];
 }
 
