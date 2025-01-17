@@ -76,7 +76,11 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
           setLoading(false);
-          // onClose();
+          formik.resetForm();
+          setTimeout(() => {
+            onClose();
+            window.location.reload();
+          })
         }else{
           setError("Error al enviar la solicitud");
           setLoading(false);
