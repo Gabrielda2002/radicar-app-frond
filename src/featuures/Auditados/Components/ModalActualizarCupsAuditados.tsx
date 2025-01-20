@@ -44,7 +44,7 @@ const ModalActualizarCupsAuditoria: React.FC<
         estado: Yup.string().required("El estado es requerido."),
         observacion: Yup.string()
           .min(1, "La observación debe tener al menos 1 caracteres.")
-          .max(150, "La observación no debe exceder los 150 caracteres.")
+          .max(500, "La observación no debe exceder los 500 caracteres.")
           .required("La observación es requerida."),
       }),
     []
