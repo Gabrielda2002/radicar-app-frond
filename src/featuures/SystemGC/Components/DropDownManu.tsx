@@ -1,6 +1,6 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
-import { useUploadFile } from "../Hooks/UseUploadFile";
+import { useUploadFile } from "../Hooks/useUploadFile";
 //*Icons
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { FolderPlusIcon } from "@heroicons/react/24/outline";

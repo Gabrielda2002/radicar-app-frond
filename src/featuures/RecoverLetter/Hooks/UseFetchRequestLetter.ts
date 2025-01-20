@@ -1,5 +1,5 @@
 import { IRequestLetter } from "@/models/IRequestLetter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FetchRequestLetter } from "../Services/FetchRequestLetter";
 
 export const UseFetchRequestLetter = () => {
@@ -9,10 +9,9 @@ export const UseFetchRequestLetter = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
+    const getData = async (document: string) => {
       try {
-        const response = await FetchRequestLetter();
+        const response = await FetchRequestLetter(document);
 
         if (response.length > 0) {
           setRequestLetter(response);
@@ -27,8 +26,6 @@ export const UseFetchRequestLetter = () => {
         setLoading(false);
       }
     };
-    getData();
-  }, []);
 
-  return { requestLetter, loading, error };
+  return { requestLetter, loading, error, getData };
 };
