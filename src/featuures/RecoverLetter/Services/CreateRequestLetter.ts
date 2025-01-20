@@ -1,4 +1,4 @@
-import { EpCreateRequestLetter } from "../Utils/EpCreateRequestLetter";
+import { EpCreateRequestLetter } from "./EpCreateRequestLetter";
 
 export const CreateRequestLetter = async (data: FormData) => {
     try {

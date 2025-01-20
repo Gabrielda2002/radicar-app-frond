@@ -38,7 +38,7 @@ const ModalRadicacion = () => {
 
   const user = localStorage.getItem("user");
   const nombreUsuario = user
-    ? JSON.parse(user).nombre + " " + JSON.parse(user).apellido
+    ? JSON.parse(user).name + " " + JSON.parse(user).lastname
     : "";
 
   const idUsuario = user ? JSON.parse(user).id : "";

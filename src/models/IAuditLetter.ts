@@ -1,21 +1,17 @@
-export interface IRequestLetter {
+export interface IAuditLetter {
     id:             number;
     profetional:    string;
     creatAt:        Date;
     dniNumber:      number;
-    patientName:    string;
     dniType:        string;
     agreement:      string;
-    isRequested:    boolean;
-    idRequest:      number;
-    datePrint:      Date;
-    cupsAuthorized: CupsAuthorized[];
+    idRadicado:     number;
+    cupsAuthorized: CupsAuthorizedLetter[];
 }
 
-export interface CupsAuthorized {
+export interface CupsAuthorizedLetter {
     id:              number;
     code:            number;
     DescriptionCode: string;
     status:          string;
-    statusLetter:   string;
 }
