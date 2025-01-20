@@ -42,7 +42,7 @@ const FormularioAutorizacion = () => {
     justificacion: Yup.string()
       .required("La justificación es requerida.")
       .min(3, "La justificación debe tener al menos 3 caracteres.")
-      .max(500, "La justificación no debe exceder los 150 caracteres."),
+      .max(500, "La justificación no debe exceder los 500 caracteres."),
     cupsDetails: Yup.array().of(
       Yup.object().shape({
         idCupsRadicado: Yup.string().required("ID CUPS radicado es requerido."),
@@ -50,7 +50,7 @@ const FormularioAutorizacion = () => {
         observacionCups: Yup.string()
           .required("La observación CUPS es requerida.")
           .min(1, "La observación debe tener al menos 1 carácter.")
-          .max(150, "La observación no debe exceder los 150 caracteres."),
+          .max(500, "La observación no debe exceder los 500 caracteres."),
         unidadFuncional: Yup.string().required(
           "La unidad funcional es requerida."
         ),
@@ -300,7 +300,7 @@ const FormularioAutorizacion = () => {
                           index
                         ]?.observacionCups && (
                           <ErrorMessage>
-                            Requerido, máximo 150 caracteres.
+                            Requerido, máximo 500 caracteres.
                           </ErrorMessage>
                         )}
                     </AnimatePresence>
