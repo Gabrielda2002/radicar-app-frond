@@ -49,12 +49,13 @@ const ModalRadicacion = () => {
   // const [idDiagnostico, setIdDiagnostico] = useState<string>("");
   const [cantidad, setCantidad] = useState<string>("1");
   const [servicios, setServicios] = useState<string[]>([]);
-  const [cantidadInput, setCantidadInput] = useState<string[]>([]);//
+  const [cantidadInput, setCantidadInput] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
   const items = servicios.map((servicio, index) => ({
     code: servicio,
     description: descripciones[index],
+    quantity: cantidadInput[index],
   }))
 
   // * usar formik y yup para validar los campos
@@ -285,7 +286,7 @@ const ModalRadicacion = () => {
   };
   
   const handleCantidadInputChange = (index: number, value: string) => {
-    const newCantidadInput = [...cantidad];
+    const newCantidadInput = [...cantidadInput];
     newCantidadInput[index] = value;
     setCantidadInput(newCantidadInput);
   };

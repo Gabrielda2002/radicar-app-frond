@@ -21,7 +21,6 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
   onCantidadInputChange
 }) => {
   const { data, fetchCups, error, loading } = useFetchCups();
-
   useEffect(() => {
     if (data && data.name) {
       const index = servicios.indexOf(data.code); // Asumiendo que el objeto `data` tiene un `code`
@@ -59,23 +58,7 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
           />
         </label>
       </div>
-      <div>
-        <label htmlFor={`cantidadInput-${index}`}>
-          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
-            Cantidad
-          </span>
-          <input
-            type="text"
-            id={`cantidadInput-${index}`}
-            name={`cantidadInput-${index}`}
-            maxLength={2}
-            value={cantidadInput[index]}
-            onChange={(e) => onCantidadInputChange(index, e.target.value)}
-            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-            placeholder="Digite la cantidad . . . ."
-          ></input>
-        </label>
-      </div>
+      
       <div>
         <label htmlFor={`descripcion-${index}`}>
           <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
@@ -91,6 +74,23 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
             placeholder="Descripción del servicio"
             readOnly
           ></textarea>
+        </label>
+      </div>
+      <div>
+        <label htmlFor={`cantidadInput-${index}`}>
+          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+            Cantidad
+          </span>
+          <input
+            type="text"
+            id={`cantidadInput-${index}`}
+            name={`cantidadInput-${index}`}
+            maxLength={2}
+            value={cantidadInput[index]}
+            onChange={(e) => onCantidadInputChange(index, e.target.value)}
+            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+            placeholder="Digite la cantidad . . . ."
+          ></input>
         </label>
       </div>
     </React.Fragment>
