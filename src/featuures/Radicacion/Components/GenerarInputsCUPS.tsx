@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import useFetchCups from "@/hooks/useFetchCups";
 
 interface ServicioFormProps {
-  cantidad: string;
+  quantityInputs: string;
   servicios: string[];
-  cantidadInput: string[];
+  quantityServices: string[];
   descripciones: string[];
   onServicioChange: (index: number, value: string) => void;
   onDescripcionChange: (index: number, value: string) => void;
@@ -12,9 +12,9 @@ interface ServicioFormProps {
 }
 
 const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
-  cantidad,
+  quantityInputs,
   servicios,
-  cantidadInput,
+  quantityServices,
   descripciones,
   onServicioChange,
   onDescripcionChange,
@@ -39,7 +39,7 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
     }
   };
 
-  const bloques = Array.from({ length: Number(cantidad) }, (_, index) => (
+  const bloques = Array.from({ length: Number(quantityInputs) }, (_, index) => (
     <React.Fragment key={index}>
       <div>
         <label htmlFor={`servicio-${index}`}>
@@ -77,16 +77,16 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
         </label>
       </div>
       <div>
-        <label htmlFor={`cantidadInput-${index}`}>
+        <label htmlFor={`quantityServices-${index}`}>
           <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
             Cantidad
           </span>
           <input
             type="text"
-            id={`cantidadInput-${index}`}
-            name={`cantidadInput-${index}`}
+            id={`quantityServices-${index}`}
+            name={`quantityServices-${index}`}
             maxLength={2}
-            value={cantidadInput[index]}
+            value={quantityServices[index]}
             onChange={(e) => onCantidadInputChange(index, e.target.value)}
             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
             placeholder="Digite la cantidad . . . ."
