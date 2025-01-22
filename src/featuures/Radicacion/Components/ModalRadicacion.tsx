@@ -49,6 +49,7 @@ const ModalRadicacion = () => {
   // const [idDiagnostico, setIdDiagnostico] = useState<string>("");
   const [cantidad, setCantidad] = useState<string>("1");
   const [servicios, setServicios] = useState<string[]>([]);
+  const [cantidadInput, setCantidadInput] = useState<string[]>([]);//
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
   const items = servicios.map((servicio, index) => ({
@@ -268,6 +269,7 @@ const ModalRadicacion = () => {
     // reiniciar arrays de servicios y descripciones
     setServicios(Array(Number(value)).fill(""));
     setDescripciones(Array(Number(value)).fill(""));
+    setCantidadInput(Array(Number(value)).fill(""));
   };
 
   const handleServicioChange = (index: number, value: string) => {
@@ -280,6 +282,12 @@ const ModalRadicacion = () => {
     const newDescripciones = [...descripciones];
     newDescripciones[index] = value;
     setDescripciones(newDescripciones);
+  };
+  
+  const handleCantidadInputChange = (index: number, value: string) => {
+    const newCantidadInput = [...cantidad];
+    newCantidadInput[index] = value;
+    setCantidadInput(newCantidadInput);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -653,7 +661,7 @@ const ModalRadicacion = () => {
                         <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Cantidad de Servicios Solicitados
                         </span>
-                          <input
+                        <input
                           type="text"
                           id="cantidad"
                           name="cantidad"
@@ -666,13 +674,15 @@ const ModalRadicacion = () => {
                         />
                       </label>
                     </div>
-                    <div className="grid grid-cols-2 gap-10">
+                    <div className="grid grid-cols-3 gap-10">
                       <ServicioForm
                         cantidad={cantidad}
                         servicios={servicios}
+                        cantidadInput={cantidadInput}
                         descripciones={descripciones}
                         onServicioChange={handleServicioChange}
                         onDescripcionChange={handleDescripcionChange}
+                        onCantidadInputChange={handleCantidadInputChange}
                       />
                     </div>
                   </section>
@@ -927,9 +937,7 @@ const ModalRadicacion = () => {
                         />
                         <AnimatePresence>
                           {formik.touched.soporte && formik.errors.soporte ? (
-                            <ErrorMessage>
-                              {formik.errors.soporte}
-                            </ErrorMessage>
+                            <ErrorMessage>{formik.errors.soporte}</ErrorMessage>
                           ) : null}
                         </AnimatePresence>
                       </label>

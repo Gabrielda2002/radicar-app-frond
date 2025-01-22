@@ -106,10 +106,18 @@ const Inicio = () => {
                               <th className="px-2 py-3 text-center whitespace-nowrap">
                                 Código
                               </th>
-                              <th className="px-2 py-3 text-center">
+                              <th className="px-2 py-3 text-center whitespace-nowrap">
                                 Descripción Servicio
                               </th>
-                              <th className="px-2 py-3 text-center"></th>
+                              <th className="px-5 py-3 text-center whitespace-nowrap">
+                                Eps
+                              </th>
+                              <th className="px-6 py-3 text-center whitespace-nowrap">
+                                Sede
+                              </th>
+                              <th className="py-3 text-center whitespace-nowrap">
+                                Estado
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -124,23 +132,13 @@ const Inicio = () => {
                                 <td colSpan={3} className="px-2 py-3">
                                   <table className="w-full">
                                     <thead>
-                                      <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200">
-                                        <th className="py-3 text-center px-14 whitespace-nowrap">
-                                          Eps
-                                        </th>
-                                        <th className="px-3 py-3 text-center whitespace-nowrap">
-                                          Sede
-                                        </th>
-                                        <th className="px-6 py-3 text-center whitespace-nowrap">
-                                          Estado
-                                        </th>
-                                      </tr>
+                                      <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200"></tr>
                                     </thead>
                                     <tbody>
                                       {servicio.Relations.map((r, index) => (
                                         <tr
                                           key={`${r.nameConvenio}-${r.nameSede}-${index}`}
-                                          className="border-b border-gray-400 dark:border-gray-400"
+                                          className="border-gray-400 border-y "
                                         >
                                           <td className="px-2 py-2 text-center whitespace-nowrap">
                                             {r.nameConvenio || "N/A"}
@@ -148,9 +146,10 @@ const Inicio = () => {
                                           <td className="px-2 py-2 text-center whitespace-nowrap">
                                             {r.nameSede || "N/A"}
                                           </td>
+
                                           <td className="px-2 py-2 text-center">
                                             <span
-                                              className={`inline-flex rounded-full px-3
+                                              className={`inline-flex rounded-full px-2
                                                py-1 text-xs font-semibold ${
                                                  r.isContrated
                                                    ? "bg-teal-500 text-gray-800 dark:bg-teal-600 dark:text-white"

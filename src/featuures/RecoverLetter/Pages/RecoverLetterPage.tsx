@@ -33,7 +33,18 @@ const RecoverLetterPage = () => {
     return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
   };
 
-  if (error) return <div>{error}</div>;
+  if (error) 
+    return (
+      <>
+        <div className="mb-10">
+          <ModalSection
+            title="Solicitar Carta de Recobro"
+            breadcrumb={[{ label: "Inicio", path: "/home" }]}
+          />
+        </div>
+        <div className="text-red-500">{error}</div>
+      </>
+    );
 
   return (
     <>

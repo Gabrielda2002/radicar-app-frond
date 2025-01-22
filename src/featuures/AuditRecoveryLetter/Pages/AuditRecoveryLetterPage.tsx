@@ -48,7 +48,18 @@ const RecoverLastPage = () => {
   // const [idRadicado] = useState<number>(0);
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  if (error) return <div>{error}</div>;
+  
+  if (error) return (
+    <>
+      <div>
+        <ModalSection
+          title="Auditoria"
+          breadcrumb={[{ label: "Inicio", path: "/home" }]}
+        />
+      </div>
+      <div className="text-red-500">{error}</div>
+    </>
+  );
 
   return (
     <>
