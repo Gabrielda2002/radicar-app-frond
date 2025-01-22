@@ -148,17 +148,16 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                 <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
                   <thead className="text-center">
                     <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
-                      <th className="ps-2">CUPS</th>
                       <th className="p-2">Observación</th>
                       <th className="p-2">Estado</th>
                       <th className="p-2">Fecha</th>
+                      <th className="p-2">Responsable</th>
                     </tr>
                   </thead>
                   <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
                     {radicacion.seguimientoAuxiliarRelation.map(
                       (seguimiento) => (
                         <tr key={seguimiento.id}>
-                          <td className="">{seguimiento.codeCups}</td>
                           <td className="max-w-[400px]">
                             {seguimiento.observation}
                           </td>
@@ -169,6 +168,16 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                             {seguimiento.createdAt
                               ? new Date(seguimiento.createdAt).toLocaleString()
                               : "N/A"}
+                          </td>
+                          <td className="">
+                            {seguimiento.usuarioRelation != null ? (
+                              <div>
+                                {seguimiento.usuarioRelation.name}{" "}
+                                {seguimiento.usuarioRelation.lastName}
+                              </div>
+                            ) : (
+                              <span className="text-red-500">N/A</span>
+                            )}
                           </td>
                         </tr>
                       )
