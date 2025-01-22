@@ -182,8 +182,7 @@ const RecoverLetterPage = () => {
                       </button>
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
-                      {r.datePrint == null &&
-                        r.cupsAuthorized.some(
+                      {r.cupsAuthorized.some(
                           (c) => c.statusLetter === "Autorizado"
                         ) && (
                           <button
