@@ -46,6 +46,7 @@ const ModalActualizarCupsAuditoria: React.FC<
           .min(1, "La observación debe tener al menos 1 caracteres.")
           .max(500, "La observación no debe exceder los 500 caracteres.")
           .required("La observación es requerida."),
+        quantity: Yup.number().required("La cantidad de servicios es requerida."),
       }),
     []
   );
@@ -53,8 +54,9 @@ const ModalActualizarCupsAuditoria: React.FC<
   // hook de formik
   const formik = useFormik({
     initialValues: {
-      estado: "",
+      estado: cup.status,
       observacion: cup.observation,
+      quantity: cup.quantity,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -63,7 +65,8 @@ const ModalActualizarCupsAuditoria: React.FC<
 
       const formData = new FormData();
       formData.append("observation", values.observacion);
-      formData.append("status", values.estado);
+      formData.append("status", values.estado.toString());
+      formData.append("quantity", values.quantity.toString());
 
       try {
         const response = await UpdateCupsAuditados(cup.id, formData);
@@ -83,8 +86,6 @@ const ModalActualizarCupsAuditoria: React.FC<
       setIsSubmiting(false);
     },
   });
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
   const openModal = () => {
     document.body.style.overflow = "hidden";
   };
@@ -185,6 +186,30 @@ const ModalActualizarCupsAuditoria: React.FC<
                                   )}
                               </AnimatePresence>
                             </label>
+                          </div>
+                          <div>
+                            <label 
+                              htmlFor=""
+                              className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200"
+                            >
+                              Cantidad servicios:
+                            </label>
+                            <input
+                             type="text"
+                             value={formik.values.quantity}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              name="quantity"
+                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            />
+                            <AnimatePresence>
+                              {formik.touched.quantity &&
+                                formik.errors.quantity && (
+                                  <ErrorMessage>
+                                    {formik.errors.quantity}
+                                  </ErrorMessage>
+                                )}
+                            </AnimatePresence>
                           </div>
                         </div>
                         <div>
