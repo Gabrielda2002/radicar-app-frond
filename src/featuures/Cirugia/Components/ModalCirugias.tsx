@@ -12,7 +12,7 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
-import { UpdateGroupServices } from "../Services/UpdateGroupServices";
+import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
 
 interface ModalCirugiasProps {
   data: ICirugias;
@@ -27,23 +27,20 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
     300
   );
 
-  const [groupService, setGroupService] = useState<number>(0);
-  const [errorUpdate, setErrorUpdate] = useState<string | null>(null);
+  // * hook para actualizar el grupo de servicios
+  const {
+    setGroupService,
+    errorUpdate,
+    SendGroupService,
+  } = useUpdateGroupService(idRadicado);
 
-  const SendGroupService = async () => {
-    try {
-      const response = await UpdateGroupServices(groupService, idRadicado);
-
-      console.log(groupService, idRadicado);
-      if (response?.status === 200 || response?.status === 201) {
-        console.log("Actualizado");
-        setStadopen(false);
-        window.location.reload();
-      }
-    } catch (error) {
-      setErrorUpdate("Error al actualizar el grupo de servicios." + error);
+  const handleUpdate = async () => {
+    const success = await SendGroupService();
+    if (success) {
+      setStadopen(false);
+      window.location.reload();
     }
-  };
+  }
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
@@ -199,7 +196,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                       />
                         <button
                           type="button"
-                          onClick={SendGroupService}
+                          onClick={handleUpdate}
                           className="w-24 h-12 text-white duration-200 border-2 rounded-md bg-color hover:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-700"
                         >
                           Actualizar
