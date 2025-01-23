@@ -12,22 +12,38 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
+import { UpdateGroupServices } from "../Services/UpdateGroupServices";
 
 interface ModalCirugiasProps {
   data: ICirugias;
+  idRadicado: number;
 }
 
-const ModalCirugias: React.FC<ModalCirugiasProps> = ({
-  data
-}) => {
+const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
     stadopen,
     () => setStadopen(false),
     300
   );
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+
+  const [groupService, setGroupService] = useState<number>(0);
+  const [errorUpdate, setErrorUpdate] = useState<string | null>(null);
+
+  const SendGroupService = async () => {
+    try {
+      const response = await UpdateGroupServices(groupService, idRadicado);
+
+      console.log(groupService, idRadicado);
+      if (response?.status === 200 || response?.status === 201) {
+        console.log("Actualizado");
+        setStadopen(false);
+        window.location.reload();
+      }
+    } catch (error) {
+      setErrorUpdate("Error al actualizar el grupo de servicios." + error);
+    }
+  };
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
@@ -171,7 +187,34 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               </div>
               {/* validacion si el radicado ya tiene una cirugia programada se muestra el contenido del modal con normalidad de lo contrario se mostrara un error */}
               <div className="p-6 overflow-y-auto max-h-[80vh]">
-                { data.programacionCirugia.length == 0 ? (
+                {data.programacionCirugia.length == 0 && (
+                    <div className="w-[250px] mb-8">
+                      <h5 className="mb-4 text-xl text-left text-blue-500 dark:text-white">
+                        Grupo de servicios:
+                      </h5>
+                      <InputAutocompletado
+                        label="Grupo Servicios"
+                        onInputChanged={(id) => setGroupService(Number(id))}
+                        apiRoute="grupo-servicios-name"
+                      />
+                        <button
+                          type="button"
+                          onClick={SendGroupService}
+                          className="w-24 h-12 text-white duration-200 border-2 rounded-md bg-color hover:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-700"
+                        >
+                          Actualizar
+                        </button>
+                        {errorUpdate && (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {errorUpdate}
+                          </div>
+                        )}
+                    </div>
+
+                    
+                )}
+
+                {data.programacionCirugia.length == 0 ? (
                   // validacion de datos del paciente para programacion
                   <div className="">
                     <div>
