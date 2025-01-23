@@ -91,8 +91,18 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       .required("Campo requerido")
       .min(5, "La observacion debe tener al menos 5 caracteres")
       .max(150, "La observacion debe tener maximo 150 caracteres"),
-    fechaAnesteciologia: Yup.date().required("Campo requerido"),
-    fechaParaclinicos: Yup.date().required("Campo requerido"),
+    fechaAnesteciologia: Yup.date().when([], {
+      is:  data.idGrupoServicios === 9,
+      then: (schema) =>
+        schema.required("Campo requerido"),
+      otherwise: (schema) => schema.optional(),
+    }),
+    fechaParaclinicos: Yup.date().when([], {
+      is: data.idGrupoServicios === 9,
+      then: (schema) =>
+        schema.required("Campo requerido"),
+      otherwise: (schema) => schema.optional(),
+    }),
     especialista: Yup.string()
       .required("Campo requerido")
       .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
@@ -396,6 +406,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                                     onChange={formik.handleChange}
                                     value={formik.values.fechaParaclinicos}
                                     onBlur={formik.handleBlur}
+                                    disabled={data.idGrupoServicios === 6}
                                     className={` w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
                                       formik.touched.fechaParaclinicos &&
                                       formik.errors.fechaParaclinicos
@@ -435,6 +446,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                                     onChange={formik.handleChange}
                                     value={formik.values.fechaAnesteciologia}
                                     onBlur={formik.handleBlur}
+                                    disabled={data.idGrupoServicios === 6}
                                     className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
                                       formik.touched.fechaAnesteciologia &&
                                       formik.errors.fechaAnesteciologia
