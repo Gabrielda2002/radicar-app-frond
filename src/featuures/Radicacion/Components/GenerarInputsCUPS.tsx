@@ -79,7 +79,7 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
       <div>
         <label htmlFor={`quantityServices-${index}`}>
           <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
-            Cantidad
+            Cantidad Servicio N° ({index + 1})
           </span>
           <input
             type="text"

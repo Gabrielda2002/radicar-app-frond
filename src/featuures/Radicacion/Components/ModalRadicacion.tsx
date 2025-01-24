@@ -137,6 +137,10 @@ const ModalRadicacion = () => {
             errorCups = `Falta la descripción del CUPS N° ${i + 1}.`;
             break;
           }
+          if (!quantityServices[i]) {
+            errorCups = `Falta la cantidad del CUPS N° ${i + 1}.`;
+            break;
+          }
         }
       }
 
