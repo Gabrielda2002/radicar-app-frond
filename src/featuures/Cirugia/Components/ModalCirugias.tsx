@@ -12,22 +12,35 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 
 //*Icons
 import programar from "/assets/programar.svg";
+import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
 
 interface ModalCirugiasProps {
   data: ICirugias;
+  idRadicado: number;
 }
 
-const ModalCirugias: React.FC<ModalCirugiasProps> = ({
-  data
-}) => {
+const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
     stadopen,
     () => setStadopen(false),
     300
   );
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+
+  // * hook para actualizar el grupo de servicios
+  const {
+    setGroupService,
+    errorUpdate,
+    SendGroupService,
+  } = useUpdateGroupService(idRadicado);
+
+  const handleUpdate = async () => {
+    const success = await SendGroupService();
+    if (success) {
+      setStadopen(false);
+      window.location.reload();
+    }
+  }
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
@@ -78,8 +91,18 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
       .required("Campo requerido")
       .min(5, "La observacion debe tener al menos 5 caracteres")
       .max(150, "La observacion debe tener maximo 150 caracteres"),
-    fechaAnesteciologia: Yup.date().required("Campo requerido"),
-    fechaParaclinicos: Yup.date().required("Campo requerido"),
+    fechaAnesteciologia: Yup.date().when([], {
+      is:  data.idGrupoServicios === 9,
+      then: (schema) =>
+        schema.required("Campo requerido"),
+      otherwise: (schema) => schema.optional(),
+    }),
+    fechaParaclinicos: Yup.date().when([], {
+      is: data.idGrupoServicios === 9,
+      then: (schema) =>
+        schema.required("Campo requerido"),
+      otherwise: (schema) => schema.optional(),
+    }),
     especialista: Yup.string()
       .required("Campo requerido")
       .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
@@ -171,7 +194,34 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
               </div>
               {/* validacion si el radicado ya tiene una cirugia programada se muestra el contenido del modal con normalidad de lo contrario se mostrara un error */}
               <div className="p-6 overflow-y-auto max-h-[80vh]">
-                { data.programacionCirugia.length == 0 ? (
+                {data.programacionCirugia.length == 0 && (
+                    <div className="w-[250px] mb-8">
+                      <h5 className="mb-4 text-xl text-left text-blue-500 dark:text-white">
+                        Grupo de servicios:
+                      </h5>
+                      <InputAutocompletado
+                        label="Grupo Servicios"
+                        onInputChanged={(id) => setGroupService(Number(id))}
+                        apiRoute="grupo-servicios-name"
+                      />
+                        <button
+                          type="button"
+                          onClick={handleUpdate}
+                          className="w-24 h-12 text-white duration-200 border-2 rounded-md bg-color hover:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-700"
+                        >
+                          Actualizar
+                        </button>
+                        {errorUpdate && (
+                          <div className="mt-2 text-red-500 dark:text-red-300">
+                            {errorUpdate}
+                          </div>
+                        )}
+                    </div>
+
+                    
+                )}
+
+                {data.programacionCirugia.length == 0 ? (
                   // validacion de datos del paciente para programacion
                   <div className="">
                     <div>
@@ -356,6 +406,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     onChange={formik.handleChange}
                                     value={formik.values.fechaParaclinicos}
                                     onBlur={formik.handleBlur}
+                                    disabled={data.idGrupoServicios === 6}
                                     className={` w-full px-3 py-2 mt-1 text-gray-700 border border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
                                       formik.touched.fechaParaclinicos &&
                                       formik.errors.fechaParaclinicos
@@ -395,6 +446,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({
                                     onChange={formik.handleChange}
                                     value={formik.values.fechaAnesteciologia}
                                     onBlur={formik.handleBlur}
+                                    disabled={data.idGrupoServicios === 6}
                                     className={` w-full px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
                                       formik.touched.fechaAnesteciologia &&
                                       formik.errors.fechaAnesteciologia

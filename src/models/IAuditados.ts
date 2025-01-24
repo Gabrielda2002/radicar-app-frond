@@ -10,7 +10,8 @@ export interface Cup {
     id:          number;
     code:        number;
     description: string;
-    status:      string;
+    status:      number;
     observation: string;
     modifyDate:  Date;
+    quantity:    number;
 }

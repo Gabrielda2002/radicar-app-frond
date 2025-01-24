@@ -55,6 +55,7 @@ const FormularioAutorizacion = () => {
           "La unidad funcional es requerida."
         ),
         estadoCups: Yup.string().required("El estado CUPS es requerido."),
+        cantidad: Yup.number().required("La cantidad es requerida."),
       })
     ),
   });
@@ -73,6 +74,7 @@ const FormularioAutorizacion = () => {
         observacionCups: "",
         unidadFuncional: "",
         estadoCups: "",
+        cantidad: 0,
       })),
     },
     validationSchema,
@@ -98,7 +100,7 @@ const FormularioAutorizacion = () => {
       setIsSubmitting(false);
     },
   });
-  //   console.log("Errors:", formik.errors);
+     console.log("Errors:", formik.errors);
   // console.log("Touched:", formik.touched);
 
   if (error) return <h2>{error}</h2>;
@@ -322,7 +324,7 @@ const FormularioAutorizacion = () => {
                       value={formik.values.cupsDetails[index].unidadFuncional}
                       className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     >
-                      <option value="">Seleccione Unidad Funcional</option>
+                      <option value="">Seleccione</option>
                       {data.map((unidad) => (
                         <option key={unidad.id} value={unidad.id}>
                           {unidad.name}
@@ -357,7 +359,7 @@ const FormularioAutorizacion = () => {
                       value={formik.values.cupsDetails[index].estadoCups}
                       className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     >
-                      <option value="">Seleccione Estado CUPS</option>
+                      <option value="">Seleccione</option>
                       {dataEstados.map((estado) => (
                         <option key={estado.id} value={estado.id}>
                           {estado.name}
@@ -371,6 +373,34 @@ const FormularioAutorizacion = () => {
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
                         ]?.estadoCups && (
+                          <ErrorMessage>Requerido.</ErrorMessage>
+                        )}
+                    </AnimatePresence>
+                  </div>
+                  
+                  <div className="flex flex-col mb-4">
+                    <label
+                      htmlFor={`cupsDetails[${index}].quantity`}
+                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
+                    >
+                      Cantidad:
+                    </label>
+                    <input
+                      type="number"
+                      id={`cupsDetails[${index}].cantidad`}
+                      name={`cupsDetails[${index}].cantidad`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.cupsDetails[index].cantidad}
+                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    />
+                    <AnimatePresence>
+                      {formik.touched.cupsDetails?.[index]?.cantidad &&
+                        formik.errors.cupsDetails &&
+                        typeof formik.errors.cupsDetails !== "string" &&
+                        (formik.errors.cupsDetails as Array<FormikErrors>)[
+                          index
+                        ]?.cantidad && (
                           <ErrorMessage>Requerido.</ErrorMessage>
                         )}
                     </AnimatePresence>

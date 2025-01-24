@@ -47,14 +47,15 @@ const ModalRadicacion = () => {
   const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   // const [idDiagnostico, setIdDiagnostico] = useState<string>("");
-  const [cantidad, setCantidad] = useState<string>("1");
+  const [quantityInputs, setCantidadInputs] = useState<string>("1");
   const [servicios, setServicios] = useState<string[]>([]);
-  const [cantidadInput, setCantidadInput] = useState<string[]>([]);//
+  const [quantityServices, setQuantityServices] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
 
   const items = servicios.map((servicio, index) => ({
     code: servicio,
     description: descripciones[index],
+    quantity: quantityServices[index],
   }))
 
   // * usar formik y yup para validar los campos
@@ -112,7 +113,7 @@ const ModalRadicacion = () => {
 
 
       // ? validar que cantidad no este vacia y sea mayor a 0 
-      if (!cantidad || parseInt(cantidad) <= 0) {
+      if (!quantityInputs || parseInt(quantityInputs) <= 0) {
         setErrorMessage("La cantidad de servicios solicitados no puede estar vacía.");
         return;
       }
@@ -120,20 +121,24 @@ const ModalRadicacion = () => {
       // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
       // ! tambien se valida que no haya campos vacios
       let errorCups = "";
-      if (servicios.length !== parseInt(cantidad)) {
+      if (servicios.length !== parseInt(quantityInputs)) {
         errorCups =
           "La cantidad de códigos de CUPS no coincide con la cantidad especificada.";
-      } else if (descripciones.length !== parseInt(cantidad)) {
+      } else if (descripciones.length !== parseInt(quantityInputs)) {
         errorCups =
           "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
       } else {
-        for (let i = 0; i < parseInt(cantidad); i++) {
+        for (let i = 0; i < parseInt(quantityInputs); i++) {
           if (!servicios[i]) {
             errorCups = `Falta el código del CUPS N° ${i + 1}.`;
             break;
           }
           if (!descripciones[i]) {
             errorCups = `Falta la descripción del CUPS N° ${i + 1}.`;
+            break;
+          }
+          if (!quantityServices[i]) {
+            errorCups = `Falta la cantidad del CUPS N° ${i + 1}.`;
             break;
           }
         }
@@ -261,15 +266,15 @@ const ModalRadicacion = () => {
   };
 
   // ? validar que la cantidad de servicios sea un número entero mayor a 0
-  const CantidadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const HandleQuantityInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^[1-9]\d*$/.test(value) || value === "") {
-      setCantidad(value);
+      setCantidadInputs(value);
     }
     // reiniciar arrays de servicios y descripciones
     setServicios(Array(Number(value)).fill(""));
     setDescripciones(Array(Number(value)).fill(""));
-    setCantidadInput(Array(Number(value)).fill(""));
+    setQuantityServices(Array(Number(value)).fill(""));
   };
 
   const handleServicioChange = (index: number, value: string) => {
@@ -285,9 +290,9 @@ const ModalRadicacion = () => {
   };
   
   const handleCantidadInputChange = (index: number, value: string) => {
-    const newCantidadInput = [...cantidad];
+    const newCantidadInput = [...quantityServices];
     newCantidadInput[index] = value;
-    setCantidadInput(newCantidadInput);
+    setQuantityServices(newCantidadInput);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -666,8 +671,8 @@ const ModalRadicacion = () => {
                           id="cantidad"
                           name="cantidad"
                           maxLength={1}
-                          value={cantidad}
-                          onChange={CantidadInput}
+                          value={quantityInputs}
+                          onChange={HandleQuantityInputs}
                           onKeyDown={EventEnter}
                           className="w-auto px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           placeholder="Digite número . . . ."
@@ -676,9 +681,9 @@ const ModalRadicacion = () => {
                     </div>
                     <div className="grid grid-cols-3 gap-10">
                       <ServicioForm
-                        cantidad={cantidad}
+                        quantityInputs={quantityInputs}
                         servicios={servicios}
-                        cantidadInput={cantidadInput}
+                        quantityServices={quantityServices}
                         descripciones={descripciones}
                         onServicioChange={handleServicioChange}
                         onDescripcionChange={handleDescripcionChange}

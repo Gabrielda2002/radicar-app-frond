@@ -217,6 +217,7 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalCirugias
+                            idRadicado={cirugia.id}
                             data={cirugia}
                           />
                         </Suspense>
