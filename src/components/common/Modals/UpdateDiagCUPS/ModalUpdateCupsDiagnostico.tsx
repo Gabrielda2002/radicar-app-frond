@@ -8,6 +8,7 @@ import useAnimation from "@/hooks/useAnimations";
 import { updateCupsData } from "./Services/UpdateData";
 //*Icons
 import onOff from "/assets/on-off.svg";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalUpdateCupsDiagnosticoProps {
   id: number;
@@ -26,6 +27,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
     () => setStadopen(false),
     300
   );
+  useBlockScroll(stadopen);
 
   const getValidationSchema = (Modulo: string) => {
     const validationSchema = {
@@ -84,18 +86,6 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
       }
     },
   });
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
-  }
 
   return (
     <>
@@ -124,7 +114,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                   Modificar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setStadopen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
                 >
                   &times;
@@ -231,7 +221,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-300 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-500 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={closeModal}
+                    onClick={() => setStadopen(false)}
                   >
                     Cerrar
                   </button>

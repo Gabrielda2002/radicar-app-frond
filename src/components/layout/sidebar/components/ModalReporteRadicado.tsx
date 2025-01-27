@@ -3,6 +3,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import useAnimation from "@/hooks/useAnimations";
 import { useDownloadReport } from "../hooks/UseDownloadReport";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 //*Icons
 // import back from "../../../assets/icons/back.svg";
 interface ModalReporteRadicadoProps {
@@ -23,6 +24,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
   const [dateEndRadicado, setDateEndRadicado] = useState("");
   const [cupsCode, setCupsCode] = useState("");
   const [estadoCups, setEstadoCups] = useState("");
+  useBlockScroll(isOpen);
 
   // Estado para manejar el tipo de reporte
   const [reportType, setReportType] = useState("");
@@ -71,19 +73,6 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
 
   if (!isOpen && !showAnimation) return null;
 
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    onClose();
-  };
-  if (isOpen) {
-    openModal();
-  }
-
   return (
     <div
       className={`fixed z-30 flex pt-14 justify-center bg-black -inset-5 bg-opacity-40 transition-opacity duration-300 backdrop-blur-sm ${
@@ -108,7 +97,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
               className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 dark:text-gray-200 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
               onClick={() => {
                 // setShowSecondModal(false);
-                setTimeout(closeModal, 300);
+                setTimeout(onClose, 300);
               }}
             >
               &times;
@@ -213,7 +202,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                 type="button"
                 onClick={() => {
                   // setShowSecondModal(false);
-                  setTimeout(closeModal, 300);
+                  setTimeout(onClose, 300);
                 }}
                 className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600"
               >

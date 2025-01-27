@@ -3,6 +3,7 @@ import useAnimation from "@/hooks/useAnimations";
 import { format } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import { useAuth } from "@/context/authContext";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -17,7 +18,9 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   const { rol } = useAuth();
+  useBlockScroll(isOpen);
   if (!isOpen || !radicacion) return null;
+
 
   const formatDate = (date: Date | null) => {
     if (!date) return "N/A";
