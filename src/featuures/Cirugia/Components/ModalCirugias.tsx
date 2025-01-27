@@ -1,9 +1,8 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import { format } from "date-fns";
 import { useFormik } from "formik";
 import { ICirugias } from "@/models/ICirugias";
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import useAnimation from "@/hooks/useAnimations";
 import { AnimatePresence } from "framer-motion";
@@ -13,6 +12,7 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 //*Icons
 import programar from "/assets/programar.svg";
 import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalCirugiasProps {
   data: ICirugias;
@@ -150,14 +150,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       setSubmiting(false);
     },
   });
-
-  // * funcion para formatear la fecha
-  const formatDate = useMemo(
-    () => (date: Date | null) => {
-      return date ? format(date, "dd/MM/yyyy") : "N/A";
-    },
-    []
-  );
 
   return (
     <>
@@ -381,7 +373,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                                       *
                                     </span>
                                   </div>
-                                  <div>{formatDate(data.fechaOrden)}</div>
+                                  <div>{FormatDate(data.fechaOrden, false)}</div>
                                 </label>
                               </div>
 

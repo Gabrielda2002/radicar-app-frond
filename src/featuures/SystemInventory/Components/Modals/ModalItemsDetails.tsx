@@ -1,6 +1,4 @@
-import { format } from "date-fns";
 import React, { useState } from "react";
-import { toZonedTime } from "date-fns-tz";
 import { IItems } from "@/models/IItems";
 import { motion } from "framer-motion";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
@@ -12,6 +10,7 @@ import {
   ServerIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import { FormatDate } from "@/utils/FormatDate";
 interface ModalItemsDetailsProps {
   item: IItems | IItemsNetworking | null;
   onClose: () => void;
@@ -22,11 +21,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
-  const formatDate = (date: Date | null) => {
-    if (!date) return "N/A";
-    const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
-    return format(utcDate, "dd/MM/yyyy");
-  };
   // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
   // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
   const openModal = () => {
@@ -161,7 +155,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td>{soft.versions}</td>
                     <td>{soft.license}</td>
                     <td>{soft.otherData}</td>
-                    <td>{formatDate(soft.installDate)}</td>
+                    <td>{FormatDate(soft.installDate, false)}</td>
                     <td>{soft.status}</td>
                   </tr>
                 ))}
@@ -269,7 +263,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     {item && "purchaseDate" in item && (
                       <li>
                         <strong>Fecha Compra: </strong>
-                        {formatDate(item.purchaseDate)}
+                        {FormatDate(item.purchaseDate, false)}
                       </li>
                     )}
                     {item && "warrantyTime" in item && (
@@ -281,7 +275,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     {item && "deliveryDate" in item && (
                       <li>
                         <strong>Fecha Entrega: </strong>
-                        {formatDate(item.deliveryDate)}
+                        {FormatDate(item.deliveryDate, false)}
                       </li>
                     )}
                     <li>
