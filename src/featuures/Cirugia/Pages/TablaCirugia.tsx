@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
-import { format } from "date-fns";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
@@ -14,6 +13,7 @@ import gestion from "/assets/gestion.svg";
 import soporte from "/assets/soporte.svg";
 
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { FormatDate } from "@/utils/FormatDate";
 
 const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(() => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos"));
@@ -67,11 +67,6 @@ const TablaCirugias = () => {
     return (
       <div className="flex justify-center dark:text-white">{errorCirugias}</div>
     );
-
-  // * funcion para formatear la fecha
-  const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
-  };
 
   const handleOpenSoporte = (nombreSoporte: string | null) => {
     if (!nombreSoporte) {
@@ -157,7 +152,7 @@ const TablaCirugias = () => {
                       key={cirugia.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
-                        {formatDate(cirugia.fechaRadicado) || "N/A"}
+                        {FormatDate(cirugia.fechaRadicado) || "N/A"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {cirugia.id}

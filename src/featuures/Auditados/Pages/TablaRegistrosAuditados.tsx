@@ -1,5 +1,4 @@
 //*Fuctions and Hooks
-import { format } from "date-fns";
 import React, { useState, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
@@ -13,16 +12,12 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import { FormatDate } from "@/utils/FormatDate";
 const ModalActualizarCupsAuditoria = lazy(
   () => import("../Components/ModalActualizarCupsAuditados")
 );
 
 const ITEMS_PER_PAGE = 10;
-
-// * funcion para formatear la fecha
-const formatDate = (date: Date | null) => {
-  return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
-};
 
 const TablaRegistrosAuditados: React.FC = () => {
   const { data, loading, error } = useFetchAuditados();
@@ -215,7 +210,7 @@ const TableContent: React.FC<TableContentProps> = ({
                     {auditado.id}
                   </td>
                   <td className="p-3 border-b dark:border-gray-700">
-                    {formatDate(auditado.radicadoDate)}
+                    {FormatDate(auditado.radicadoDate)}
                   </td>
                   <td className="p-3 border-b dark:border-gray-700">
                     {auditado.document}
@@ -308,7 +303,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
               {cup.observation}
             </td>
             <td className="p-3 border-b dark:border-gray-700">
-              {formatDate(cup.modifyDate)}
+              {FormatDate(cup.modifyDate)}
             </td>
             <td className="p-3 border-b dark:border-gray-700">
               <Suspense fallback={<LoadingSpinner />}>

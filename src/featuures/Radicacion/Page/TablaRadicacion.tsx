@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
-import { format } from "date-fns";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals.tsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,6 +22,7 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
+import { FormatDate } from "@/utils/FormatDate.ts";
 
 // const ITEMS_PER_PAGE = 8;
 
@@ -84,11 +84,6 @@ const TablaRadicacion = () => {
   };
 
   if (loading) return <LoadingSpinner duration={100000} />;
-
-  // * funcion para formatear la fecha
-  const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
-  };
 
   return (
     <>
@@ -163,7 +158,7 @@ const TablaRadicacion = () => {
                       key={radicacion.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
-                        {formatDate(radicacion.createdAt)}
+                        {FormatDate(radicacion.createdAt)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.id}
@@ -181,7 +176,7 @@ const TablaRadicacion = () => {
                         {radicacion.patientRelation.name}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {formatDate(radicacion.auditDate)}
+                        {FormatDate(radicacion.auditDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.cupsRadicadosRelation.length > 0 && (

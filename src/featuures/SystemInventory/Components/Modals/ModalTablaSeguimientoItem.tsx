@@ -1,8 +1,7 @@
 //*Fuctions and Hooks
-import { format } from "date-fns";
 import React, { useState } from "react";
-import { IItems } from "../../../../models/IItems";
-import useAnimation from "../../../../hooks/useAnimations";
+import { IItems } from "@/models/IItems";
+import useAnimation from "@/hooks/useAnimations";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 //*Icons
@@ -13,6 +12,8 @@ import {
   XMarkIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalTablaseguimientoItemProps {
   Items: IItems | IItemsNetworking | null;
@@ -29,23 +30,8 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     () => setStadopen(false),
     300
   );
-
-  const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
-  };
-
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
-  }
+  useBlockScroll(stadopen);
+  
 
   const renderTrackingTable = (trackingData: any[]) => {
     if (trackingData.length === 0) {
@@ -81,7 +67,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 className="truncate transition-colors border-b last:border-b-0 hover:bg-gray-50 dark:text-white dark:bg-gray-800"
               >
                 <td className="p-3 text-gray-600 dark:text-white">
-                  {formatDate(s.dateEvent)}
+                  {FormatDate(s.dateEvent)}
                 </td>
                 <td className="p-3 font-medium dark:text-white">
                   {s.eventType}
@@ -137,7 +123,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                   Seguimiento de Módulos
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setStadopen(false)}
                   className="text-gray-500 transition-colors hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
                 >
                   <XMarkIcon className="w-6 h-6" />

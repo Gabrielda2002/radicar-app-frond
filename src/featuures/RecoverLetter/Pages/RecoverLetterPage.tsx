@@ -1,7 +1,6 @@
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { UseFetchRequestLetter } from "../Hooks/UseFetchRequestLetter";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { format } from "date-fns";
 
 // icons
 import carta from "/assets/carta.svg";
@@ -10,6 +9,7 @@ import { Suspense, useState } from "react";
 import ModalRequestForm from "../Components/ModalRequestForm";
 import { handleDownload } from "../Utils/HandleDownload";
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { FormatDate } from "@/utils/FormatDate";
 
 
 const RecoverLetterPage = () => {
@@ -28,10 +28,6 @@ const RecoverLetterPage = () => {
   const toggleExpand = () => setIsExpanded(!isExpanded);
   
   const { requestLetter, error, getData } = UseFetchRequestLetter();
-
-  const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy HH:mm") : "N/A";
-  };
 
   if (error) 
     return (
@@ -104,7 +100,7 @@ const RecoverLetterPage = () => {
                       {r.id}
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
-                      {formatDate(r.creatAt)}
+                      {FormatDate(r.creatAt)}
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
                       {r.dniType}

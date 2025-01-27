@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "@/models/IItems";
@@ -14,16 +13,12 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 //*Icons
 import {
   TagIcon,
-  // MapIcon,
   ComputerDesktopIcon,
   TvIcon,
-  // InformationCircleIcon,
-  // FingerPrintIcon,
   GlobeAltIcon,
   MapPinIcon,
   CalendarIcon,
   CheckCircleIcon,
-  // KeyIcon,
   CalendarDaysIcon,
   LockClosedIcon,
   PencilSquareIcon,
@@ -32,6 +27,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -279,10 +275,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   // console.log(formik.values.manager);
   // console.log(formik.errors);
 
-  const formatDate = (date: Date | string | null) => {
-    return date ? format(new Date(date), "yyyy-MM-dd") : ""; // Nos aseguramos de que sea una fecha válida
-  };
-
   useEffect(() => {
     if (items && idItem) {
       formik.setValues({
@@ -296,11 +288,11 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           "operationalSystem" in items ? items.operationalSystem : "",
         mac: items.mac,
         purchaseDate:
-          "purchaseDate" in items ? formatDate(items.purchaseDate) : "", // falta formatear la fecha
+          "purchaseDate" in items ? FormatDate(items.purchaseDate, false) : "", // falta formatear la fecha
         warrantyTime: "warrantyTime" in items ? String(items.warrantyTime) : "",
         warranty: "warranty" in items ? items.warranty : false,
         deliveryDate:
-          "deliveryDate" in items ? formatDate(items.deliveryDate) : "", // falta formatear la fecha
+          "deliveryDate" in items ? FormatDate(items.deliveryDate, false) : "", // falta formatear la fecha
         // inventoryNumber: items.inventoryNumber,
         addressIp: items.addressIp,
         otherData: "otherData" in items ? items.otherData : "",

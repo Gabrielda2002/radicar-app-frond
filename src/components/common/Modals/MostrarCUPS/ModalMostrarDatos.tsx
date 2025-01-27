@@ -1,8 +1,8 @@
 import { IStatusCup } from "@/models/IAuditar";
 import useAnimation from "@/hooks/useAnimations";
 import { programacion } from "@/models/ICirugias";
-import { format } from "date-fns";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { FormatDate } from "@/utils/FormatDate";
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,12 +23,6 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
   useBlockScroll(isOpen);
 
   if (!isOpen || (!data && !cirugias)) return null;
-
-  // * funcion para formatear la fecha
-  const formatDate = (date: Date | null) => {
-    return date ? format(date, "dd/MM/yyyy") : "N/A";
-  };
-  
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -70,12 +64,12 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                 </thead>
                 <tbody className="text-center dark:text-gray-200">
                   <tr key={cirugias.id}>
-                    <td>{formatDate(dateOrder)}</td>
-                    <td>{formatDate(cirugias.fechaCirugia)}</td>
+                    <td>{FormatDate(dateOrder, false)}</td>
+                    <td>{FormatDate(cirugias.fechaCirugia, false)}</td>
                     <td>{cirugias.hora}</td>
                     <td>{cirugias.ipsRemite}</td>
-                    <td>{formatDate(cirugias.fechaParaclinoco)}</td>
-                    <td>{formatDate(cirugias.fechaAnesteciologia)}</td>
+                    <td>{FormatDate(cirugias.fechaParaclinoco, false)}</td>
+                    <td>{FormatDate(cirugias.fechaAnesteciologia, false)}</td>
                     <td>{cirugias.especialista}</td>
                     <td>{cirugias.observacion}</td>
                   </tr>
