@@ -21,6 +21,7 @@ import {
   BuildingOfficeIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalPacienteProps {
   id: number | null;
@@ -38,6 +39,8 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
+
+  useBlockScroll(isOpen);
 
   const [load, setLoad] = useState(false);
 

@@ -18,6 +18,7 @@ import adress from "/assets/adress.svg";
 import telephone from "/assets/telephone.svg";
 import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
 import { submitRadicado } from "../Services/SubmitRadicado";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -31,6 +32,8 @@ const ModalRadicacion = () => {
 
   const { diagnostico, loading, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
+
+    useBlockScroll(stadopen);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);

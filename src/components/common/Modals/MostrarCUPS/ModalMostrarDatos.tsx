@@ -2,6 +2,7 @@ import { IStatusCup } from "@/models/IAuditar";
 import useAnimation from "@/hooks/useAnimations";
 import { programacion } from "@/models/ICirugias";
 import { format } from "date-fns";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,24 +19,16 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
   dateOrder,
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
+  
+  useBlockScroll(isOpen);
+
   if (!isOpen || (!data && !cirugias)) return null;
 
   // * funcion para formatear la fecha
   const formatDate = (date: Date | null) => {
     return date ? format(date, "dd/MM/yyyy") : "N/A";
   };
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  }
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    onClose();
-  }
-  if(isOpen) {
-    openModal();
-  }
+  
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -53,7 +46,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
               {data ? "Tabla CUPS" : "Programación Cirugía"}
             </h2>
             <button
-              onClick={closeModal}
+              onClick={onClose}
               className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:text-gray-900 hover:bg-gray-300 dark:hover:text-gray-900"
             >
               &times;
@@ -133,7 +126,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           {/* Botones */}
           <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-medium bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
             <button
-              onClick={closeModal}
+              onClick={onClose}
               className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md dark:hover:border-red-500 hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               Cerrar

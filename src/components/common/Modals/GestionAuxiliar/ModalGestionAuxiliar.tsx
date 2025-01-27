@@ -10,6 +10,7 @@ import {
   programacion,
 } from "@/models/ICirugias";
 import { format } from "date-fns";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
@@ -27,6 +28,8 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
 
+  useBlockScroll(isOpen);
+  
   // se hace una sobre carga para que la funcion reciba un array de seguimientos de radicacion o de cirugias
   function getUltimoEstado(
     seguimientos: SeguimientoAuxiliarRelation[]
