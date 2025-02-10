@@ -49,15 +49,10 @@ const ConsultarSvContratados = () => {
                       <th className="px-2 py-3 text-center whitespace-nowrap">
                         Descripción Servicio
                       </th>
-                      <th className="px-5 py-3 text-center whitespace-nowrap">
-                        Eps
+                      <th className="px-2 py-3 text-center whitespace-nowrap">
+                        
                       </th>
-                      <th className="px-6 py-3 text-center whitespace-nowrap">
-                        Sede
-                      </th>
-                      <th className="py-3 text-center whitespace-nowrap">
-                        Estado
-                      </th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -72,7 +67,23 @@ const ConsultarSvContratados = () => {
                         <td colSpan={3} className="px-2 py-3">
                           <table className="w-full">
                             <thead>
-                              <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200"></tr>
+                              <tr className="text-gray-700 bg-gray-400 dark:bg-gray-800 dark:text-gray-200">
+                              <th className="px-5 py-3 text-center whitespace-nowrap">
+                        Eps
+                      </th>
+                      <th className="px-6 py-3 text-center whitespace-nowrap">
+                        Sede
+                      </th>
+                      <th className="px-6 py-3 text-center whitespace-nowrap">
+                        Tipo de Servicio
+                      </th>
+                      <th className="px-6 py-3 text-center whitespace-nowrap">
+                        Contrato
+                      </th>
+                      <th className="py-3 text-center whitespace-nowrap">
+                        Estado
+                      </th>
+                                </tr> 
                             </thead>
                             <tbody>
                               {servicio.Relations.map((r, index) => (
@@ -85,6 +96,12 @@ const ConsultarSvContratados = () => {
                                   </td>
                                   <td className="px-2 py-2 text-center whitespace-nowrap">
                                     {r.nameSede || "N/A"}
+                                  </td>
+                                  <td className="px-2 py-2 text-center whitespace-nowrap">
+                                    {r.typeService || "N/A"}
+                                  </td>
+                                  <td className="px-2 py-2 text-center whitespace-nowrap">
+                                    {r.nameContract || "N/A"}
                                   </td>
 
                                   <td className="px-2 py-2 text-center">
