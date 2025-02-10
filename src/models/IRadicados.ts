@@ -100,10 +100,16 @@ export interface SeguimientoAuxiliarRelation {
     createdAt:                 Date;
     observation:               string;
     status:                    number;
-    codeCups:                  string;
     idRadicacion:              number;
+    usuarioRelation:           userRelation;
     updatedAt:                 Date;
     estadoSeguimientoRelation: Relation;
+}
+
+interface userRelation {
+    id:       number;
+    name:     string;
+    lastName: string;
 }
 
 export interface SoportesRelation {

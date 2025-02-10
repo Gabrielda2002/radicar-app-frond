@@ -10,6 +10,7 @@ import { UpdateCupsAuditados } from "../Services/UpdateCupsAuditados";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
 //*Icons
 import editar from "/assets/editar.svg";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
@@ -25,6 +26,7 @@ const ModalActualizarCupsAuditoria: React.FC<
   const { showAnimation, closing } = useAnimation(stadopen, () =>
     setStadopen(false)
   );
+  useBlockScroll(stadopen);
 
   // * se agreaga estado para el control de la carga de los estados
   const [loadEstados, setLoadEstados] = useState(false);
@@ -46,6 +48,7 @@ const ModalActualizarCupsAuditoria: React.FC<
           .min(1, "La observación debe tener al menos 1 caracteres.")
           .max(500, "La observación no debe exceder los 500 caracteres.")
           .required("La observación es requerida."),
+        quantity: Yup.number().required("La cantidad de servicios es requerida."),
       }),
     []
   );
@@ -53,8 +56,9 @@ const ModalActualizarCupsAuditoria: React.FC<
   // hook de formik
   const formik = useFormik({
     initialValues: {
-      estado: "",
+      estado: cup.status,
       observacion: cup.observation,
+      quantity: cup.quantity,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -63,7 +67,8 @@ const ModalActualizarCupsAuditoria: React.FC<
 
       const formData = new FormData();
       formData.append("observation", values.observacion);
-      formData.append("status", values.estado);
+      formData.append("status", values.estado.toString());
+      formData.append("quantity", values.quantity.toString());
 
       try {
         const response = await UpdateCupsAuditados(cup.id, formData);
@@ -83,18 +88,6 @@ const ModalActualizarCupsAuditoria: React.FC<
       setIsSubmiting(false);
     },
   });
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
-  }
 
   if (errorEstados) return <h2>Error Al cargar Estados {errorEstados}</h2>;
 
@@ -119,7 +112,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                   Actualizar CUPS Auditados
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setStadopen(false)}
                   className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:bg-gray-300 hover:text-gray-900"
                 >
                   &times;
@@ -186,6 +179,30 @@ const ModalActualizarCupsAuditoria: React.FC<
                               </AnimatePresence>
                             </label>
                           </div>
+                          <div>
+                            <label 
+                              htmlFor=""
+                              className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200"
+                            >
+                              Cantidad servicios:
+                            </label>
+                            <input
+                             type="text"
+                             value={formik.values.quantity}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              name="quantity"
+                             className="w-full p-2 px-3 border border-gray-200 rounded dark-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            />
+                            <AnimatePresence>
+                              {formik.touched.quantity &&
+                                formik.errors.quantity && (
+                                  <ErrorMessage>
+                                    {formik.errors.quantity}
+                                  </ErrorMessage>
+                                )}
+                            </AnimatePresence>
+                          </div>
                         </div>
                         <div>
                           <label htmlFor="">
@@ -233,7 +250,7 @@ const ModalActualizarCupsAuditoria: React.FC<
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-white h-14 dark:bg-gray-800">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700"
-                    onClick={closeModal}
+                    onClick={() => setStadopen(false)}
                   >
                     Cerrar
                   </button>

@@ -1,8 +1,8 @@
 import { IRadicados } from "@/models/IRadicados";
 import useAnimation from "@/hooks/useAnimations";
-import { format } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
 import { useAuth } from "@/context/authContext";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalMostrarDatosProps {
   isOpen: boolean;
@@ -17,13 +17,8 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
   const { rol } = useAuth();
+  useBlockScroll(isOpen);
   if (!isOpen || !radicacion) return null;
-
-  const formatDate = (date: Date | null) => {
-    if (!date) return "N/A";
-    const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
-    return format(utcDate, "dd/MM/yyyy");
-  };
 
   return (
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -72,7 +67,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">Fecha Orden</td>
-                  <td className="">{formatDate(radicacion.orderDate)}</td>
+                  <td className="">{FormatDate(radicacion.orderDate, false)}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
@@ -114,7 +109,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha Auditoría
                   </td>
-                  <td className="">{formatDate(radicacion.auditDate)}</td>
+                  <td className="">{FormatDate(radicacion.auditDate, false)}</td>
                 </tr>
                 {[1, 3].includes(Number(rol)) && (
                   <tr>
@@ -136,7 +131,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha - Hora del Radicado
                   </td>
-                  <td className="">{formatDate(radicacion.createdAt)}</td>
+                  <td className="">{FormatDate(radicacion.createdAt, false)}</td>
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">N.º Radicado</td>
@@ -245,7 +240,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Fecha Cirugía
                       </td>
-                      <td>{formatDate(cirugia.surgeryDate)}</td>
+                      <td>{FormatDate(cirugia.surgeryDate, false)}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">Hora</td>
@@ -261,13 +256,13 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Fecha paraclinico
                       </td>
-                      <td>{formatDate(cirugia.paraclinicalDate)}</td>
+                      <td>{FormatDate(cirugia.paraclinicalDate, false)}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Fecha anestesiologia
                       </td>
-                      <td>{formatDate(cirugia.anesthesiologyDate)}</td>
+                      <td>{FormatDate(cirugia.anesthesiologyDate, false)}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">

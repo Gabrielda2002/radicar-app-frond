@@ -1,7 +1,6 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
 
-import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Pagination from "@/components/common/PaginationTable/PaginationTable.tsx";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
@@ -9,7 +8,6 @@ import useSearch from "@/hooks/useSearch.ts";
 import { IAuditar, IStatusCup } from "@/models/IAuditar.ts";
 import usePagination from "@/hooks/usePagination.ts";
 import { useFetchAuditoria } from "../Hooks/UseFetchAuditar";
-import { toZonedTime } from "date-fns-tz";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
@@ -18,6 +16,7 @@ import autorizar from "/assets/autorizar.svg";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
+import { FormatDate } from "@/utils/FormatDate";
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
@@ -76,12 +75,6 @@ const TablaAuditoria = () => {
       "_blank"
     );
     return;
-  };
-  // * funcion para formatear la fecha
-  const formatDate = (date: Date | null) => {
-    if (!date) return "N/A";
-    const utcDate = toZonedTime(date, "America/Bogota"); // Reemplaza con la zona horaria deseada
-    return format(utcDate, "dd/MM/yyyy");
   };
 
   return (
@@ -167,7 +160,7 @@ const TablaAuditoria = () => {
                       key={auditoria.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
-                        {formatDate(auditoria.radicadoDate)}
+                        {FormatDate(auditoria.radicadoDate)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.documentType}
@@ -188,7 +181,7 @@ const TablaAuditoria = () => {
                         {auditoria.ipsPrimary}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {formatDate(auditoria.orderDate)}
+                        {FormatDate(auditoria.orderDate, false)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {auditoria.place}

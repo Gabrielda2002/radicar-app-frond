@@ -7,6 +7,7 @@ export interface CupsDetail {
     estadoCups: string;
     code: string;
     description: string;
+    cantidad:     number;
   }
   
   export interface FormikValues {
@@ -38,6 +39,7 @@ export interface CupsDetail {
     observacionCups?: string;
     unidadFuncional?: string;
     estadoCups?: string;
+    cantidad?: number;
     cupsDetails?: Array<{
       observacionCups?: string;
       unidadFuncional?: string;
