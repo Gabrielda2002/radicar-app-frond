@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 //*Icons 
 import cookieX from "/assets/cookie-X.svg";
 import { useFetchServicioContratado } from "../hooks/UseFetchServiciosContratados";
+import FormPacientesCS from "../components/FormPacientesCS";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("../components/Calendario"));
@@ -184,24 +185,10 @@ const Inicio = () => {
                 </div>
               </div>
 
-              {/*
-              <div className="mb-5">
-                <h2 className="pb-6 pl-10 mt-4 text-5xl font-bold dark:text-white">
-                  Estadísticas:
-                </h2>
-                <div className="grid grid-cols-2 gap-2">
-                  <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={chartData}>
-                      <XAxis dataKey="estado" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="cantidad" fill="#00776f" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+              {/* consultar pacientes coosalud */}
+              <div className="mt-5">
+              <FormPacientesCS/>
               </div>
-            */}
 
               <div className="px-12">
                 <hr className="border-gray-600 dark:border-color" />

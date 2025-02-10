@@ -1,0 +1,36 @@
+export interface IPacientesCoosalud {
+    id:                         number;
+    tpsIdnId:                   string;
+    hstIdnNumeroIdentificacion: string;
+    aflPrimerApellido:          string;
+    aflSegundoApellido:         string;
+    aflPrimerNombre:            string;
+    aflSegundoNombre:           string;
+    aflFechaNacimiento:         string;
+    tpsGnrId:                   string;
+    tpsRgmId:                   string;
+    entId:                      string;
+    tpsAflId:                   string;
+    znsId:                      string;
+    tpsEstAflId:                string;
+    tpsCndBnfId:                string;
+    dprId:                      number;
+    mncId:                      number;
+    divipola:                   string;
+    tpsMdlSbsId:                string;
+    tpsNvlSsbId:                string;
+    tpsGrpPblId:                string;
+    ipsPrimaria:                string;
+    entRegimen:                 string;
+    direccion:                  string;
+    telefono:                   string;
+    entIdAsignada:              string;
+    direccionsisben:            string;
+    telefonosisben:             string;
+    correo:                     string;
+    regimen:                    string;
+    divipola2:                  string;
+    sucursal:                   string;
+    departamento:               string;
+    municipio:                  string;
+}
