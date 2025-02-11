@@ -9,4 +9,6 @@ export interface Relation {
     nameConvenio: string;
     nameSede:     string;
     isContrated:  boolean;
+    typeService: string;
+    nameContract: string;
 }
