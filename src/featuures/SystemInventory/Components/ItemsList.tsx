@@ -25,12 +25,14 @@ interface ItemsListProps {
   invetario: IItems[] | IItemsNetworking[] | null;
   tipoItem: "equipos" | "dispositivos-red" | null;
   idSede: number | null;
+  onItemsUpdate: () => void;
 }
 
 const ItemsList: React.FC<ItemsListProps> = ({
   invetario,
   tipoItem,
-  idSede
+  idSede,
+  onItemsUpdate
 }) => {
   // * Estados para almacenar datos
   const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
@@ -122,6 +124,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                 tipoItem={tipoItem}
                 items={null}
                 idItem={null}
+                onSuccess={onItemsUpdate}
               />
             </div>
           </div>
@@ -200,6 +203,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                           tipoItem={tipoItem}
                           items={item}
                           idItem={item.id}
+                          onSuccess={onItemsUpdate}
                         />
                         <ModalTablaseguimientoItem
                           Items={item}
@@ -247,6 +251,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         tipoItem={tipoItem}
                         items={item}
                         idItem={item.id}
+                        onSuccess={onItemsUpdate}
                       />
                       <ModalTablaseguimientoItem
                         Items={item}
