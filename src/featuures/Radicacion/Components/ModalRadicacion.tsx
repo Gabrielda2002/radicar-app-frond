@@ -682,7 +682,7 @@ const ModalRadicacion = () => {
                         />
                       </label>
                     </div>
-                    <div className="grid grid-cols-3 gap-10">
+                    <div className="grid grid-cols-[24%_24%_46%] gap-5">
                       <ServicioForm
                         quantityInputs={quantityInputs}
                         servicios={servicios}
