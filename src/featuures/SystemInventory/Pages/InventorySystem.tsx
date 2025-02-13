@@ -47,8 +47,6 @@ const SistemaInventario: React.FC = () => {
     "departamentos" | "sedes" | "tipoItem" | "items"
   >("departamentos");
 
-  const [shouldRefetch, setShouldRefetch] = useState(false);
-
   const handleItemsUpdate = useCallback(() => {
     refetch();
   }, [refetch]);
