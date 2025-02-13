@@ -34,6 +34,7 @@ interface ModalItemsFormProps {
   tipoItem: "equipos" | "dispositivos-red" | null;
   items: IItems | IItemsNetworking | null;
   idItem: number | null;
+  onSuccess: () => void;
 }
 
 const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
@@ -53,6 +54,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   tipoItem,
   items,
   idItem,
+  onSuccess,
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
@@ -238,9 +240,14 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             progress: undefined,
             theme: "colored",
           });
+          formik.resetForm();
+
+          if (onSuccess) {
+            onSuccess();
+          }
+
           setTimeout(() => {
             setSuccess(false);
-            setStadopen(false);
           }, 3000);
         } else {
           setError("Error al enviar los datos");
