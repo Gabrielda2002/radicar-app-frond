@@ -60,23 +60,6 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
       </div>
       
       <div>
-        <label htmlFor={`descripcion-${index}`}>
-          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
-            Descripción Servicio N° ({index + 1})
-          </span>
-          <textarea
-            id={`descripcion-${index}`}
-            name={`descripcion-${index}`}
-            value={
-              descripciones[index] || (loading ? "Esperando..." : error || "")
-            }
-            className="w-full px-3 py-2 text-gray-400 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-800"
-            placeholder="Descripción del servicio"
-            readOnly
-          ></textarea>
-        </label>
-      </div>
-      <div>
         <label htmlFor={`quantityServices-${index}`}>
           <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
             Cantidad Servicio N° ({index + 1})
@@ -91,6 +74,23 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
             className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
             placeholder="Digite la cantidad . . . ."
           ></input>
+        </label>
+      </div>
+      <div>
+        <label htmlFor={`descripcion-${index}`}>
+          <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
+            Descripción Servicio N° ({index + 1})
+          </span>
+          <textarea
+            id={`descripcion-${index}`}
+            name={`descripcion-${index}`}
+            value={
+              descripciones[index] || (loading ? "Esperando..." : error || "")
+            }
+            className="w-full px-3 py-2 text-gray-400 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-800"
+            placeholder="Descripción del servicio"
+            readOnly
+          ></textarea>
         </label>
       </div>
     </React.Fragment>
