@@ -1,7 +1,7 @@
 //*Fuctions and Hooks
 import ItemsList from "../Components/ItemsList";
 import SedesList from "../Components/sedesList";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
@@ -20,27 +20,36 @@ import {
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
 const SistemaInventario: React.FC = () => {
+  
   const {
     department: departments,
     loading: loadingDepartment,
     errordepartment,
   } = useFetchDepartment();
+  
   // estados para manejar los departamentos y sedes
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
+  
   // traer las sedes
   const { sedes } = useFetchSedes(departmentSelect);
+  
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
     "equipos" | "dispositivos-red" | null
   >(null);
+  
   // traer los items
-  const { items } = useFetchItems(sedeSelect, tipoItem);
+  const { items, refetch } = useFetchItems(sedeSelect, tipoItem);
 
   // estado para manejar la pantalla actual
   const [screen, setScreen] = useState<
     "departamentos" | "sedes" | "tipoItem" | "items"
   >("departamentos");
+
+  const handleItemsUpdate = useCallback(() => {
+    refetch();
+  }, [refetch]);
 
   // funcion ir al componente anterior
   const handleBack = () => {
@@ -164,6 +173,7 @@ const SistemaInventario: React.FC = () => {
                     invetario={items}
                     tipoItem={tipoItem}
                     idSede={sedeSelect}
+                    onItemsUpdate={handleItemsUpdate}
                   />
                 )}
               </div>
