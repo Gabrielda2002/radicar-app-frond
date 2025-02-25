@@ -17,6 +17,7 @@ import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 import logo from "@/assets/Layout/logo-navbar.png";
+import HelpDesk from "@/featuures/HelpDesk/Pages/HelpDesk";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
@@ -173,14 +174,9 @@ const Navbar: React.FC = React.memo(() => {
             )}
           </button>
           {/* Mesa de ayuda */}
-          <button
-            title="mesa de ayuda"
-            className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
-          >
-            <NavLink to={'/MesaAyuda'}>
-              Mesa de Ayuda
-            </NavLink>
-          </button>
+          <div>
+            <HelpDesk/>
+          </div>
           <div>
             <ModalPausasActivas />
           </div>
