@@ -3,6 +3,10 @@ import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
+import { CreateTicket } from "../Services/CreateTickets";
+import { useFetchCategory } from "../Hooks/useFetchCategory";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { useFetchPriority } from "../Hooks/useFetchPriority";
 
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +14,15 @@ const HelpDesk = () => {
   const { showAnimation, closing } = useAnimation(isModalOpen, () =>
     setIsModalOpen(false)
   );
+
+  const [ loading, setLoading ] = useState(false);
+
+  const { dataCategory } = useFetchCategory(true);
+  const { dataPriority } = useFetchPriority(true);
+
+  const user = localStorage.getItem("user");
+
+  const idUsuario = user ? JSON.parse(user).id : "";
 
   useBlockScroll(isModalOpen);
 
@@ -19,18 +32,44 @@ const HelpDesk = () => {
       .required("La descripcion es requerida")
       .min(10, "La descripcion debe tener al menos 10 caracteres")
       .max(500, "La descripcion debe tener maximo 100 caracteres"),
+    category: Yup.number().required("La categoria es requerida"),
+    priority: Yup.number().required("La prioridad es requerida"), 
   });
 
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
+      category: "",
+      priority: "",
     },
     validationSchema: schemaValidation,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+
+        try {
+            
+            setLoading(true);
+            
+            const formData = new FormData();
+
+            formData.append('title', values.title);
+            formData.append('description', values.description);
+            formData.append('userId', idUsuario);
+
+            const response = await CreateTicket(formData);
+
+            if (response?.status === 201 || response?.status === 200) {
+                
+            }
+
+        } catch (error) {
+            
+        }
+
     },
   });
+
+  if(loading) return <LoadingSpinner />
 
   return (
     <>
@@ -138,6 +177,56 @@ const HelpDesk = () => {
                           {formik.errors.description}
                         </div>
                       ) : null}
+                    </div>
+                    <div>
+                        <label 
+                            htmlFor="categoria"
+                            className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                        >
+                            Categoria
+                        </label>
+                        <select
+                            name="category"
+                            id="categoria"
+                            value={formik.values.category}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                                formik.touched.category && formik.errors.category
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                        >
+                            <option value="">Seleccione</option>
+                            {dataCategory.map(cat => (
+                                <option value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label 
+                            htmlFor="prioridad"
+                            className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                        >
+                            Prioridad
+                        </label>
+                        <select
+                            name="priority"
+                            id="prioridad"
+                            value={formik.values.priority}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                                formik.touched.priority && formik.errors.priority
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                        >
+                            <option value="">Seleccione</option>
+                            {dataPriority.map(pri => (
+                                <option value={pri.id}>{pri.name}</option>
+                            ))}
+                        </select>
                     </div>
                   </div>
 
