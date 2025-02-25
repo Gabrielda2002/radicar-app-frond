@@ -41,6 +41,9 @@ const FileManager = lazy(
 const SistemaInventario = lazy(
   () => import("./featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
+const GestionTickets = lazy(
+  () => import("./featuures/HelpDesk/Pages/GestionTickets.tsx")
+);
 
 //*Contextos
 import "react-toastify/dist/ReactToastify.css"; 
@@ -108,7 +111,7 @@ function AppRoutes() {
                           />
                           <Route
                             path="/carta-recobro"
-                            element={<RecoverLetterPage/>}
+                            element={<RecoverLetterPage />}
                           />
                           <Route
                             path="/auditoria"
@@ -121,6 +124,10 @@ function AppRoutes() {
                             element={<SistemaInventario />}
                           />
                           <Route path="*" element={<Navigate to="/home" />} />
+                          <Route
+                            path="/GestionTickets"
+                            element={<GestionTickets />}
+                          />
                         </Routes>
                       </Suspense>
                     </Layout>
