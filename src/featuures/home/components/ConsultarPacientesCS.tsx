@@ -22,7 +22,7 @@ const FormPacientesCS = () => {
             className="w-5/6 dark:text-gray-200 text-[24px]"
             htmlFor="identificacion"
           >
-            Ingrese Numero documento del paciente:
+            Ingrese Número documento del paciente:
           </label>
           <div>
             <input
