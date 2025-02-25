@@ -28,6 +28,8 @@ import taskList from "/assets/task-list.svg";
 import recobro from "/assets/recobro.svg";
 import carta from "/assets/carta.svg";
 import auditoria from "/assets/auditoria.svg";
+import ticket from "/assets/ticket.svg";
+
 
 const SideBar: FC = () => {
   const { isCollapsed, toggleSideBar } = useSidebar();
@@ -198,31 +200,31 @@ const SideBar: FC = () => {
               )}
             </Category>
 
-              {/* carta recobro */}
+            {/* carta recobro */}
 
-              {[1].includes(Number(rol)) && (
-                <Category
-                  title="Gestión Carta Recobro"
-                  icon={recobro}
-                  isOpen={openAccordions.reccoverLetter}
-                  toggle={() => toggleAccordion("reccoverLetter")}
-                >
-                  <SubCategory
-                    to="/carta-recobro"
-                    icon={carta}
-                    title="Solicitar"
-                    isCollapsed={isCollapsed}
-                  />
-                   {[1].includes(Number(rol)) && (
+            {[1].includes(Number(rol)) && (
+              <Category
+                title="Gestión Carta Recobro"
+                icon={recobro}
+                isOpen={openAccordions.reccoverLetter}
+                toggle={() => toggleAccordion("reccoverLetter")}
+              >
+                <SubCategory
+                  to="/carta-recobro"
+                  icon={carta}
+                  title="Solicitar"
+                  isCollapsed={isCollapsed}
+                />
+                {[1].includes(Number(rol)) && (
                   <SubCategory
                     to="/auditoria"
                     icon={auditoria}
                     title="Auditoria"
                     isCollapsed={isCollapsed}
                   />
-                   )}
-                  </Category>
-              )}
+                )}
+              </Category>
+            )}
 
             {/* Categoria de servicios */}
             {[10, 3, 1, 15, 6].includes(Number(rol)) && (
@@ -396,6 +398,36 @@ const SideBar: FC = () => {
                 />
               </Category>
             )}
+
+            {/* Categoria de gestión de tickets */}
+            <NavLink to="/GestionTickets">
+              {({ isActive }) => (
+                <div
+                  className={`flex items-center px-1 py-2 mt-4 rounded-lg transition-colors duration-300 transform group ${
+                    openAccordions.quality
+                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                  } w-full`}
+                >
+                  <img
+                    src={ticket}
+                    alt=""
+                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
+                  />
+                  {!isCollapsed && (
+                    <span
+                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                        isActive
+                          ? "text-white dark:text-gray-200"
+                          : "group-hover:text-white dark:group-hover:text-gray-200"
+                      }`}
+                    >
+                      Gestión de Tickets
+                    </span>
+                  )}
+                </div>
+              )}
+            </NavLink>
 
             {/* Categoria de administrador */}
             {[1].includes(Number(rol)) && (
