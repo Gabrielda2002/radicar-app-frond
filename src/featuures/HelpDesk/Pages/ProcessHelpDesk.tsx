@@ -1,27 +1,30 @@
 //*Funciones y Hooks
 import { useState, useCallback } from "react";
-
-
 import Pagination from "@/components/common/PaginationTable/PaginationTable.tsx";
-
 import useSearch from "@/hooks/useSearch.ts";
-import { IAuditar } from "@/models/IAuditar.ts";
 import usePagination from "@/hooks/usePagination.ts";
-import { useFetchAuditoria } from "@/featuures/Auditoria/Hooks/UseFetchAuditar.ts";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
+import { useFetchTickets } from "../Hooks/useFetchTickets";
+import { ITickets } from "@/models/ITickets";
+import { FormatDate } from "@/utils/FormatDate";
 
 const ITEMS_PER_PAGE = 8;
 
-const TablaAuditoria = () => {
-  const { data } = useFetchAuditoria();
+const ProcessHelpDesk = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  
+  const { tickets } = useFetchTickets();
 
-  const { query, setQuery, filteredData } = useSearch<IAuditar>(data, [
+  const { query, setQuery, filteredData } = useSearch<ITickets>(tickets, [
     "id",
-    
+    "title",
+    "description",
+    "nameRequester",
+    "lastNameRequester",
+    "category",
+    "priority",
+    "status",
   ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -77,23 +80,33 @@ const TablaAuditoria = () => {
           <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
             <thead>
               <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                <th>..</th>
-                <th>..</th>
-                <th>..</th>
-                <th>..</th>
-                <th>..</th>
-                <th>..</th>
+                <th># Ticket</th>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Categoria</th>
+                <th>Creacion</th>
+                <th>Ultima modificacion</th>
               </tr>
             </thead>
             <tbody className="text-xs text-center dark:text-gray-200">
-              <tr>  
-                <th>hh</th>
-                <th>hh</th>
-                <th>hh</th>
-                <th>hh</th>
-                <th>hh</th>
-                <th>hh</th>
-              </tr>
+              {currentData().map(ticket => (
+                <tr key={ticket.id}>
+                  <td>{ticket.id}</td>
+                  <td>{ticket.title}</td>
+                  <td>{ticket.description}</td>
+                  <td>{ticket.nameRequester}</td>
+                  <td>{ticket.lastNameRequester}</td>
+                  <td>{ticket.status}</td>
+                  <td>{ticket.priority}</td>
+                  <td>{ticket.category}</td>
+                  <td>{FormatDate(ticket.createdAt)}</td>
+                  <td>{FormatDate(ticket.updatedAt)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -108,4 +121,4 @@ const TablaAuditoria = () => {
   );
 };
 
-export default TablaAuditoria;
+export default ProcessHelpDesk;

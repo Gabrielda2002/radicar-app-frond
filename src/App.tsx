@@ -42,7 +42,7 @@ const SistemaInventario = lazy(
   () => import("./featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
 const GestionTickets = lazy(
-  () => import("./featuures/HelpDesk/Pages/GestionTickets.tsx")
+  () => import("./featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")
 );
 
 //*Contextos
