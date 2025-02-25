@@ -25,7 +25,7 @@ export const useFetchTickets = () => {
             }
         };
         getData();
-    })
+    }, [])
     
     return { tickets, loadingTickets, errorTickets };
 
