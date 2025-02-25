@@ -52,6 +52,7 @@ import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import RecoverLetterPage from "./featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
 import RecoverLastPage from "./featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
+import HelpDesk from "./featuures/HelpDesk/Pages/HelpDesk.tsx";
 
 function AppRoutes() {
   return (
@@ -120,6 +121,7 @@ function AppRoutes() {
                             path="/SistemaInventario"
                             element={<SistemaInventario />}
                           />
+                          <Route path="/MesaAyuda" element={<HelpDesk />}/>
                           <Route path="*" element={<Navigate to="/home" />} />
                         </Routes>
                       </Suspense>
