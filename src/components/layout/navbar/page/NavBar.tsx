@@ -17,6 +17,7 @@ import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 import logo from "@/assets/Layout/logo-navbar.png";
+import HelpDesk from "@/featuures/HelpDesk/Pages/HelpDesk";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
@@ -172,6 +173,10 @@ const Navbar: React.FC = React.memo(() => {
               <img src={sun} alt="Sun Icon" className="w-6 h-6 invert" />
             )}
           </button>
+          {/* Mesa de ayuda */}
+          <div>
+            <HelpDesk/>
+          </div>
           <div>
             <ModalPausasActivas />
           </div>
