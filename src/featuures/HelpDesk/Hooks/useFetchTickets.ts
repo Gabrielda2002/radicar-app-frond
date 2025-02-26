@@ -27,6 +27,32 @@ export const useFetchTickets = () => {
         getData();
     }, [])
     
-    return { tickets, loadingTickets, errorTickets };
+//actualiza el estado del ticket
+      const updateTicketStatus = async (
+        ticketId: string | number,
+        status: string
+      ) => {
+        try {
+          console.log(
+            `Intentando actualizar ticket ${ticketId} a estado: ${status}`
+          );
+
+          // Actualiza el estado localmente primero para una UI responsiva
+          setTickets((prevTickets) =>
+            prevTickets.map((ticket) =>
+              ticket.id === ticketId ? { ...ticket, status } : ticket
+            )
+          );
+
+          console.log(`Ticket ${ticketId} actualizado a estado: ${status}`);
+
+        } catch (error) {
+          console.error("Error al actualizar el ticket:", error);
+          setErrorTickets("Error al actualizar el estado del ticket");
+        }
+      };
+
+
+    return { tickets, loadingTickets, errorTickets, updateTicketStatus };
 
 }
