@@ -1,5 +1,5 @@
 // src/featuures/HelpDesk/Hooks/useValidateTicketUser.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from "@/utils/api-config";
 
 export const useValidateTicketUser = (userId: number) => {
@@ -7,8 +7,7 @@ export const useValidateTicketUser = (userId: number) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const validateTicket = async () => {
+        const validateTicket = useCallback(async () => {
             try {
                 const response = await api.get(`/user-ticket/${userId}`);
                 setHasTicket(response.data.have);
@@ -18,10 +17,11 @@ export const useValidateTicketUser = (userId: number) => {
             } finally {
                 setLoading(false);
             }
-        };
+        }, [userId]);
 
-        validateTicket();
-    }, [userId]);
+        useEffect(() => {
+            validateTicket();
+        }, [validateTicket]);
 
-    return { hasTicket, loading, error };
+    return { hasTicket, loading, error, revalidate: validateTicket };
 };

@@ -1,7 +1,7 @@
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { CreateTicket } from "../Services/CreateTickets";
 import { useFetchCategory } from "../Hooks/useFetchCategory";
@@ -29,7 +29,7 @@ const HelpDesk = () => {
   const idUsuario = user ? JSON.parse(user).id : "";
   
   // validar si el usuario ya tiene un ticket
-  const { hasTicket } = useValidateTicketUser(idUsuario);
+  const { hasTicket, loading: validatingTicket, revalidate } = useValidateTicketUser(idUsuario);
     
   useBlockScroll(isModalOpen);
 
@@ -43,6 +43,50 @@ const HelpDesk = () => {
     priority: Yup.number().required("La prioridad es requerida"),
   });
 
+  const handleSubmit = useCallback(async (values: any) => {
+    
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("userId", idUsuario);
+      formData.append("categoryId", values.category);
+      formData.append("priorityId", values.priority);
+
+      const response = await CreateTicket(formData);
+
+      if (response?.status === 201 || response?.status === 200) {
+        toast.success("Ticket creado exitosamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+
+          await revalidate()
+          formik.resetForm();
+          setIsModalOpen(false);
+      } else {
+        setError("Error al crear el ticket, por favor intentelo de nuevo.");
+      }
+    } catch (error) {
+      setError(
+        "Error al crear el ticket, por favor intentelo de nuevo. " + error
+      );
+    }finally{
+      setLoading(false);
+    }
+
+  }, [idUsuario, revalidate]);
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -51,51 +95,10 @@ const HelpDesk = () => {
       priority: "",
     },
     validationSchema: schemaValidation,
-    onSubmit: async (values) => {
-      try {
-        setLoading(true);
-
-        const formData = new FormData();
-
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("userId", idUsuario);
-        formData.append("categoryId", values.category);
-        formData.append("priorityId", values.priority);
-
-        const response = await CreateTicket(formData);
-
-        if (response?.status === 201 || response?.status === 200) {
-          toast.success("Ticket creado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-
-          setTimeout(() => {
-            formik.resetForm();
-            setIsModalOpen(false);
-            setLoading(false);
-          }, 5000);
-        } else {
-          setLoading(false);
-          setError("Error al crear el ticket, por favor intentelo de nuevo.");
-        }
-      } catch (error) {
-        setError(
-          "Error al crear el ticket, por favor intentelo de nuevo. " + error
-        );
-      }
-    },
+    onSubmit: handleSubmit,
   });
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || validatingTicket) return <LoadingSpinner />;
 
   return (
     <>
