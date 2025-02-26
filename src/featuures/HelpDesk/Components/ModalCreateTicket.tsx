@@ -8,6 +8,7 @@ import { useFetchCategory } from "../Hooks/useFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchPriority } from "../Hooks/useFetchPriority";
 import { Bounce, toast } from "react-toastify";
+import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
 
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +16,7 @@ const HelpDesk = () => {
   const { showAnimation, closing } = useAnimation(isModalOpen, () =>
     setIsModalOpen(false)
   );
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,10 @@ const HelpDesk = () => {
   const user = localStorage.getItem("user");
 
   const idUsuario = user ? JSON.parse(user).id : "";
-
+  
+  // validar si el usuario ya tiene un ticket
+  const { hasTicket } = useValidateTicketUser(idUsuario);
+    
   useBlockScroll(isModalOpen);
 
   const schemaValidation = Yup.object({
@@ -143,6 +148,13 @@ const HelpDesk = () => {
               </p>
               <div>
                 <form onSubmit={formik.handleSubmit}>
+                 {hasTicket ? (
+                    <div className="text-red-400">
+                      Ya tienes un ticket en proceso, por favor espera a que sea
+                      resuelto.
+                    </div>
+                  
+                 ): (
                   <div>
                     <div>
                       <label
@@ -254,6 +266,7 @@ const HelpDesk = () => {
                       </select>
                     </div>
                   </div>
+                 )}
 
                   {error && <div className="text-red-400">{error}</div>}
 
@@ -265,6 +278,7 @@ const HelpDesk = () => {
                     >
                       Cerrar
                     </button>
+                    {!hasTicket && (
                     <button
                       type="submit"
                       className="w-20 h-10 text-white duration-300 border-2 border-gray-400 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:border-gray-900"
@@ -272,6 +286,7 @@ const HelpDesk = () => {
                     >
                       Enviar
                     </button>
+                    )}
                   </div>
                 </form>
               </div>
