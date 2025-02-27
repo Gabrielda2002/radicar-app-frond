@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 8;
 
 const ProcessHelpDesk = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { tickets } = useFetchTickets();
+  const { tickets, refetchTickets } = useFetchTickets();
 
   const { query, setQuery, filteredData } = useSearch<ITickets>(tickets, [
     "id",
@@ -152,7 +152,10 @@ const ProcessHelpDesk = () => {
                   <td className="p-2">{FormatDate(ticket.updatedAt)}</td>
                   <td className="p-2">
                     {ticket.status != "Cerrado" ? (
-                      <CerrarModal IdTicket={ticket.id} />
+                      <CerrarModal
+                       IdTicket={ticket.id} 
+                       onTicketClosed={refetchTickets}
+                       />
                     ) : (
                       <button
                         className="text-lg text-gray-400"
