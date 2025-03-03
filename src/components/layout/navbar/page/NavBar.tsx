@@ -9,6 +9,7 @@ import { useTheme } from "@/context/blackWhiteContext";
 import { useUserProfile } from "@/context/userProfileContext";
 import ModalPausasActivas from "../components/ModalPausasActivas";
 import { useState, useEffect, useCallback, useMemo } from "react";
+import NotificacionBell from "@/components/NotificationBell";
 //*Icons
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
@@ -176,6 +177,9 @@ const Navbar: React.FC = React.memo(() => {
           {/* Mesa de ayuda */}
           <div>
             <HelpDesk/>
+          </div>
+          <div>
+            <NotificacionBell />
           </div>
           <div>
             <ModalPausasActivas />
