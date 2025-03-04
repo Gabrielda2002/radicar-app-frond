@@ -9,9 +9,19 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchPriority } from "../Hooks/useFetchPriority";
 import { Bounce, toast } from "react-toastify";
 import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
+import {useTickets} from "@/context/ticketContext.tsx";
+
+interface TicketFormValues {
+  title: string;
+  description: string;
+  category: string;
+  priority: string;
+}
 
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {refetchTickets} = useTickets();
 
   const { showAnimation, closing } = useAnimation(isModalOpen, () =>
     setIsModalOpen(false)
@@ -43,7 +53,7 @@ const HelpDesk = () => {
     priority: Yup.number().required("La prioridad es requerida"),
   });
 
-  const handleSubmit = useCallback(async (values: any) => {
+  const handleSubmit = useCallback(async (values: TicketFormValues) => {
     
     try {
       setLoading(true);
@@ -70,7 +80,7 @@ const HelpDesk = () => {
           theme: "light",
           transition: Bounce,
         });
-
+          await refetchTickets();
           await revalidate()
           formik.resetForm();
           setIsModalOpen(false);

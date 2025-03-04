@@ -6,16 +6,16 @@ import usePagination from "@/hooks/usePagination.ts";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
-import { useFetchTickets } from "../Hooks/useFetchTickets";
 import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import CerrarModal from "../Components/ModalCerrarTicket";
+import {useTickets} from "@/context/ticketContext.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
 const ProcessHelpDesk = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { tickets, refetchTickets } = useFetchTickets();
+  const { tickets, refetchTickets } = useTickets();
 
   const { query, setQuery, filteredData } = useSearch<ITickets>(tickets, [
     "id",
