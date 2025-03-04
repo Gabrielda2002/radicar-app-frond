@@ -1,10 +1,9 @@
 // src/featuures/HelpDesk/Hooks/useValidateTicketUser.ts
 import { useState, useEffect, useCallback } from 'react';
-import { api } from "@/utils/api-config";
 import { useTickets } from "@/context/ticketContext";
 
 export const useValidateTicketUser = (userId: number) => {
-    const {refetchTickets, validateUserTicketStatus, userTicketStatus} = useTickets();
+    const { validateUserTicketStatus, userTicketStatus} = useTickets();
 
     const [validatingTicket, setValidatingTicket] = useState<boolean>(true);
 

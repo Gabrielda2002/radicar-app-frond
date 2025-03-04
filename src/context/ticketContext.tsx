@@ -9,6 +9,7 @@ interface TicketContextProps {
     error: string | null;
     refetchTickets: () => Promise<void>;
     validateUserTicketStatus: (userId: number) => Promise<boolean>;
+    userTicketStatus: Record<number, boolean>;
 }
 
 const TicketContext = createContext<TicketContextProps | undefined>(undefined);
@@ -18,7 +19,7 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [userTicketStatus, setUserTicketStatus] = useState<Record<boolean, number>>({});
+    const [userTicketStatus, setUserTicketStatus] = useState<Record<number, boolean>>({});
 
     const validateUserTicketStatus = useCallback(async (userId: number): Promise<boolean> => {
         try {
@@ -34,7 +35,7 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
             return HasTicket;
 
-        } catch (error) {
+        } catch (error){
             console.log(`Error validating user ticket status ${error}`);
             return false;
         }
@@ -42,6 +43,8 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const refetchTickets = useCallback(async () => {
         try {
+
+            if(!localStorage.getItem('token')) return;
             setLoading(true);
             const response = await FetchTicketsEp();
 
