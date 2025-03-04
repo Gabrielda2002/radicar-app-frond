@@ -1,27 +1,31 @@
 // src/featuures/HelpDesk/Hooks/useValidateTicketUser.ts
 import { useState, useEffect, useCallback } from 'react';
 import { api } from "@/utils/api-config";
+import { useTickets } from "@/context/ticketContext";
 
 export const useValidateTicketUser = (userId: number) => {
-    const [hasTicket, setHasTicket] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const {refetchTickets, validateUserTicketStatus, userTicketStatus} = useTickets();
 
-        const validateTicket = useCallback(async () => {
-            try {
-                const response = await api.get(`/user-ticket/${userId}`);
-                setHasTicket(response.data.have);
-            } catch (error) {
-                setError("Error al validar el ticket");
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }, [userId]);
+    const [validatingTicket, setValidatingTicket] = useState<boolean>(true);
 
-        useEffect(() => {
-            validateTicket();
-        }, [validateTicket]);
+    const revalidate = useCallback(async () => {
+        if(!userId) return;
 
-    return { hasTicket, loading, error, revalidate: validateTicket };
+        setValidatingTicket(true);
+        try {
+            await validateUserTicketStatus(userId);
+        } catch (error) {
+            console.log(`Error validating user ticket status ${error}`);
+        } finally {
+            setValidatingTicket(false);
+        }
+    }, [userId, validateUserTicketStatus]);
+
+    useEffect(() => {
+        revalidate();
+    }, [revalidate]);
+
+    const hasTicket = userId ? userTicketStatus[userId] || false : false;
+
+    return {hasTicket, validatingTicket, revalidate};
 };

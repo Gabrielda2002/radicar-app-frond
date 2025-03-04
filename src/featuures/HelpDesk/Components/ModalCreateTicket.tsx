@@ -39,7 +39,7 @@ const HelpDesk = () => {
   const idUsuario = user ? JSON.parse(user).id : "";
   
   // validar si el usuario ya tiene un ticket
-  const { hasTicket, loading: validatingTicket, revalidate } = useValidateTicketUser(idUsuario);
+  const {hasTicket, validatingTicket, revalidate} = useValidateTicketUser(idUsuario);
     
   useBlockScroll(isModalOpen);
 

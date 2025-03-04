@@ -6,6 +6,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
+import { useTickets } from "@/context/ticketContext";
 
 interface CerrarModalProps {
   IdTicket: number;
@@ -16,6 +17,9 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { validateUserTicketStatus } = useTickets();
+
   const { showAnimation, closing } = useAnimation(showModal, () =>
     setShowModal(false)
   );
@@ -46,7 +50,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
 
         if (reponse.status === 200 || reponse.status === 201) {
 
-          toast.success("Ticket creado exitosamente.", {
+          toast.success("Ticket cerrado exitosamente.", {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -58,6 +62,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
             transition: Bounce,
           });
 
+          await validateUserTicketStatus(idUsuario);
           onTicketClosed();
           setShowModal(false);
           formik.resetForm();
