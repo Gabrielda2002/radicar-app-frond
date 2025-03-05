@@ -1,104 +1,33 @@
 // * Functions and hooks
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import useAnimation from "@/hooks/useAnimations";
 import { useFormik } from "formik";
 import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
-
-declare global {
-  interface Window {
-    YT: typeof YT;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
+import { useYoutubePlayer } from "../Hooks/useYoutubePlayer";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 const ModalPausasActivas = () => {
-  // * Constants
-  const [isModalPausasOpen, setIsModalPausasOpen] = useState(false);
 
-  // * estado para controlar si el video fue completado
-  const [videoCompleted, setVideoCompleted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [player, setPlayer] = useState<YT.Player | null>(null);
-  const [playerReady, setPlayerReady] = useState(false);
-  const youtubeContainerRef= useRef<HTMLDivElement>(null);
+  const {
+    videoCompleted,
+    isModalOpen,
+    setIsModalOpen,
+    isPaused,
+    playerReady,
+    youtubeContainerRef,
+    handlePlayPause,
+    player,
+  } = useYoutubePlayer();
 
-  const videoId = "EE80XTkyPYc";
-
-  useEffect(() => {
-    if(!isModalPausasOpen) return;
-    
-    if(!window.YT){
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-      window.onYouTubeIframeAPIReady = initializePlayer;
-    }else if(!playerReady){
-      initializePlayer();
-    }
-    
-  }, [isModalPausasOpen]);
-
-  const initializePlayer = () => {
-    if(!youtubeContainerRef.current) return;
-
-    const newPlayer = new window.YT.Player(youtubeContainerRef.current, {
-      videoId,
-      playerVars: {
-        controls: 0,        // Oculta los controles nativos
-        showinfo: 0,        // Oculta la información del video (obsoleto pero algunos navegadores lo usan)
-        rel: 0,             // No muestra videos relacionados
-        autoplay: 1,        // Reproduce automáticamente
-        modestbranding: 1,  // Oculta el logo de YouTube
-        iv_load_policy: 3,  // Oculta las anotaciones del video
-        disablekb: 1,       // Deshabilita los controles de teclado
-        fs: 0,              // Deshabilita el botón de pantalla completa
-        title: 0,           // Oculta el título del video
-        showsearch: 0,      // Oculta la búsqueda
-        annotations: 0,      // Oculta las anotaciones
-        playinline: 1,      // Reproduce el video en línea
-      },
-      events: {
-        onReady: () => setPlayerReady(true),
-        onStateChange: handlePlayerStateChange,
-      }
-    });
-
-    setPlayer(newPlayer);
-  }
-
-  const handlePlayerStateChange = (event: YT.OnStateChangeEvent) => {
-    // YT.PlayerState.ENDED = 0
-    if (event.data === 0) {
-      setVideoCompleted(true);
-    } 
-    // YT.PlayerState.PAUSED = 2
-    if (event.data === 2) {
-      setIsPaused(true);
-    }
-    // YT.PlayerState.PLAYING = 1
-    if (event.data === 1) {
-      setIsPaused(false);
-    }
-  };
-
-  const handlePlayPause = () => {
-    if(!player) return;
-    if(isPaused){
-      player.playVideo();
-    }else {
-      player.pauseVideo();
-    }
-  };
-
-  const { showAnimation, closing } = useAnimation(isModalPausasOpen, () => {
+  const { showAnimation, closing } = useAnimation(isModalOpen, () => {
     // Solo permitir cerrar si el video está completo y el formulario enviado
     if (videoCompleted && success) {
-      setIsModalPausasOpen(false);
+      setIsModalOpen(false);
     }
   });
+
+  useBlockScroll(isModalOpen);
 
 
   const [success, setSuccess] = useState<boolean>(false);
@@ -136,7 +65,7 @@ const ModalPausasActivas = () => {
           setSuccess(true);
           setError("");
           setTimeout(() => {
-            setIsModalPausasOpen(false);
+            setIsModalOpen(false);
             window.location.reload();
           }, 2000);
         } else {
@@ -152,32 +81,19 @@ const ModalPausasActivas = () => {
     },
   });
 
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setIsModalPausasOpen(false);
-  };
-  if (isModalPausasOpen) {
-    openModal();
-  }
-
   return (
     <>
       {/* Botón para abrir el modal */}
       <button
         type="button"
-        onClick={() => setIsModalPausasOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
       >
         Pausas Activas
       </button>
 
       {/* Modal */}
-      {isModalPausasOpen && (
+      {isModalOpen && (
         <section
           className={`fixed inset-0 z-50 flex items-center justify-center pt-10 pb-10 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
@@ -185,7 +101,7 @@ const ModalPausasActivas = () => {
         >
           <section
             className={`w-full max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-600 ${
-              isModalPausasOpen && !closing
+              isModalOpen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
             }`}
@@ -196,7 +112,7 @@ const ModalPausasActivas = () => {
                 Pausas Activas
               </h1>
               <button
-                onClick={closeModal}
+                onClick={() => setIsModalOpen(false)}
                 disabled={!videoCompleted || loading || !success}
                 className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
               >
