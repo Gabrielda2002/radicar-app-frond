@@ -7,6 +7,7 @@ interface NotificationContextProps {
     notifications: INotification[];
     unreadCount: number;
     markAsRead: (id: number) => Promise<void>;
+    subscribeToPushNotifications: () => Promise<void>;
 }
 
 export const NotificationContext = createContext<NotificationContextProps | undefined>(undefined)
@@ -14,10 +15,62 @@ export const NotificationContext = createContext<NotificationContextProps | unde
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [notifications, setNotifications] = useState<INotification[]>([]);
     const [isConnected, setIsConnected] = useState(false);
+    const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>(null);
     const socketRef = useRef<Socket | null>(null);
     const user = localStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : null;
 
+    useEffect(() => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service worker registrado:', registration);
+            })
+            .catch(error => {
+                console.error('Error al registrar service worker:', error);
+            })
+        }
+    }, [])
+    
+        // suscribirse notirficaciones push
+        const subscribeToPushNotifications = async () => {
+            try{
+                if(!('serviceWorker' in navigator) || !('PushManager' in window)){
+                    console.warn('Notificaciones push no soportadas');
+                    return;
+                }
+    
+                const registration = await navigator.serviceWorker.ready;
+    
+                let subscription = await registration.pushManager.getSubscription();
+    
+                if(!subscription) {
+                    const response = await api.get('/push/vapid-public-key');
+                    const vapidPublicKey = response.data.publicKey;
+    
+                    const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+    
+                    subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: convertedVapidKey
+                    });
+    
+                    setPushSubscription(subscription);
+    
+                    if(userId){
+                        await api.post('/push/subscribe', {
+                            userId: userId,
+                            subscription: subscription.toJSON()
+                        });
+    
+                        console.log('Suscrito a notificaciones push');
+                    }
+                }
+            }catch(error){
+                console.error('Error al suscribirse a notificaciones push:', error);
+            }
+        }
+    
     // Cargar notificaciones existentes al inicio
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -33,6 +86,8 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         
         fetchNotifications();
     }, [userId]);
+
+
 
     // Inicializar y conectar Socket.io una sola vez
     useEffect(() => {
@@ -143,11 +198,26 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const unreadCount = notifications.filter(n => !n.isRead).length;
 
     return (
-        <NotificationContext.Provider value={{notifications, unreadCount, markAsRead}}>
+        <NotificationContext.Provider value={{notifications, unreadCount, markAsRead, subscribeToPushNotifications}}>
             {children}
         </NotificationContext.Provider>
     );
 };
+
+const  urlBase64ToUint8Array = (base64String: string)  =>{
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; i++) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
 
 export const useNotification = () => {
     const context = useContext(NotificationContext);

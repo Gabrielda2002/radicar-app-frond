@@ -1,13 +1,31 @@
+// src/components/NotificationBell.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { useNotification } from "@/context/notificationContext.tsx";
 
 const NotificationBell: React.FC = () => {
-    const { notifications, unreadCount, markAsRead } = useNotification();
+    const { notifications, unreadCount, markAsRead, subscribeToPushNotifications } = useNotification();
     const [isOpen, setIsOpen] = useState(false);
+    const [pushEnabled, setPushEnabled] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
     
-    // Este efecto cierra el menú de notificaciones cuando se hace clic fuera del componente
+    // Verificar si ya está suscrito a notificaciones push
+    useEffect(() => {
+        const checkPushSubscription = async () => {
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                try {
+                    const registration = await navigator.serviceWorker.ready;
+                    const subscription = await registration.pushManager.getSubscription();
+                    setPushEnabled(!!subscription);
+                } catch (error) {
+                    console.error('Error al verificar la suscripción push:', error);
+                }
+            }
+        };
+        checkPushSubscription();
+    }, []);
+
+    // Resto de tu código existente...
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -25,6 +43,25 @@ const NotificationBell: React.FC = () => {
         await markAsRead(notificationId);
     };
 
+    // Función para manejar la suscripción a notificaciones push
+    const handleSubscribeToPush = async () => {
+        // Primero, solicitar permiso de notificación
+        if ('Notification' in window && Notification.permission !== 'granted') {
+            const permission = await Notification.requestPermission();
+            if (permission !== 'granted') {
+                console.log('Permiso para notificaciones denegado');
+                return;
+            }
+        }
+        
+        try {
+            await subscribeToPushNotifications();
+            setPushEnabled(true);
+        } catch (error) {
+            console.error('Error al suscribirse a las notificaciones:', error);
+        }
+    };
+
     return (
         <div className="relative" ref={notificationRef}>
             <button
@@ -34,7 +71,7 @@ const NotificationBell: React.FC = () => {
                 <BellIcon className="w-6 h-6" />
                 {unreadCount > 0 && (
                     <span className="absolute top-0 right-0 px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">
-                        {unreadCount}
+                        {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
             </button>
@@ -52,6 +89,22 @@ const NotificationBell: React.FC = () => {
                             ×
                         </button>
                     </div>
+
+                    {/* Botón para activar notificaciones push */}
+                    <div className="p-2 text-right border-b dark:border-gray-700">
+                        <button
+                            onClick={handleSubscribeToPush}
+                            disabled={pushEnabled}
+                            className={`text-sm px-3 py-1 rounded ${
+                                pushEnabled 
+                                ? 'bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-400 cursor-default' 
+                                : 'bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800'
+                            }`}
+                        >
+                            {pushEnabled ? 'Notificaciones activadas' : 'Activar notificaciones push'}
+                        </button>
+                    </div>
+
                     <div className="overflow-y-auto max-h-96">
                         {notifications.length === 0 ? (
                             <p className="p-4 text-center text-gray-500 dark:text-gray-400">
