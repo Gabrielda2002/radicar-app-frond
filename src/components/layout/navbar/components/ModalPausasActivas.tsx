@@ -1,10 +1,16 @@
 // * Functions and hooks
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as Yup from "yup";
 import useAnimation from "@/hooks/useAnimations";
-import VideoFile from "@/../public/videos/Pausas-activas-prueba.mp4";
 import { useFormik } from "formik";
 import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
+
+declare global {
+  interface Window {
+    YT: typeof YT;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 const ModalPausasActivas = () => {
   // * Constants
@@ -12,16 +18,78 @@ const ModalPausasActivas = () => {
 
   // * estado para controlar si el video fue completado
   const [videoCompleted, setVideoCompleted] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [player, setPlayer] = useState<YT.Player | null>(null);
+  const [playerReady, setPlayerReady] = useState(false);
+  const youtubeContainerRef= useRef<HTMLDivElement>(null);
+
+  const videoId = "EE80XTkyPYc";
+
+  useEffect(() => {
+    if(!isModalPausasOpen) return;
+    
+    if(!window.YT){
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+      window.onYouTubeIframeAPIReady = initializePlayer;
+    }else if(!playerReady){
+      initializePlayer();
+    }
+    
+  }, [isModalPausasOpen]);
+
+  const initializePlayer = () => {
+    if(!youtubeContainerRef.current) return;
+
+    const newPlayer = new window.YT.Player(youtubeContainerRef.current, {
+      videoId,
+      playerVars: {
+        controls: 0,        // Oculta los controles nativos
+        showinfo: 0,        // Oculta la información del video (obsoleto pero algunos navegadores lo usan)
+        rel: 0,             // No muestra videos relacionados
+        autoplay: 1,        // Reproduce automáticamente
+        modestbranding: 1,  // Oculta el logo de YouTube
+        iv_load_policy: 3,  // Oculta las anotaciones del video
+        disablekb: 1,       // Deshabilita los controles de teclado
+        fs: 0,              // Deshabilita el botón de pantalla completa
+        title: 0,           // Oculta el título del video
+        showsearch: 0,      // Oculta la búsqueda
+        annotations: 0,      // Oculta las anotaciones
+        playinline: 1,      // Reproduce el video en línea
+      },
+      events: {
+        onReady: () => setPlayerReady(true),
+        onStateChange: handlePlayerStateChange,
+      }
+    });
+
+    setPlayer(newPlayer);
+  }
+
+  const handlePlayerStateChange = (event: YT.OnStateChangeEvent) => {
+    // YT.PlayerState.ENDED = 0
+    if (event.data === 0) {
+      setVideoCompleted(true);
+    } 
+    // YT.PlayerState.PAUSED = 2
+    if (event.data === 2) {
+      setIsPaused(true);
+    }
+    // YT.PlayerState.PLAYING = 1
+    if (event.data === 1) {
+      setIsPaused(false);
+    }
+  };
 
   const handlePlayPause = () => {
-    if (videoRef.current?.paused) {
-      videoRef.current?.play();
-      setIsPaused(false);
-    } else {
-      videoRef.current?.pause();
-      setIsPaused(true);
+    if(!player) return;
+    if(isPaused){
+      player.playVideo();
+    }else {
+      player.pauseVideo();
     }
   };
 
@@ -32,9 +100,6 @@ const ModalPausasActivas = () => {
     }
   });
 
-  const handleVideoEnd = () => {
-    setVideoCompleted(true);
-  };
 
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -143,48 +208,41 @@ const ModalPausasActivas = () => {
             <div className="p-4 space-y-3">
               {/* Video */}
               <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[38/16]">
-                <video
-                  src={VideoFile}
-                  ref={videoRef}
-                  onEnded={handleVideoEnd}
-                  controls={false}
-                  // autoPlay
-                  className="w-full h-full"
-                />
-                <button
-                  onClick={handlePlayPause}
-                  className="absolute p-3 transition-all duration-200 transform -translate-x-1/2 rounded-full bottom-4 left-1/2 bg-white/80 hover:bg-white dark:bg-gray-100/90 dark:hover:bg-gray-300/90"
-                >
-                  {isPaused ? (
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                    </svg>
-                  )}
-                </button>
+                {/* Contenedor para el iframe de YouTube */}
+                <div ref={youtubeContainerRef} className="w-full h-full pointer-events-none" />
+                
+                {/* Botón personalizado para reproducir/pausar */}
+                {playerReady && (
+                  <button
+                    onClick={handlePlayPause}
+                    className="absolute p-3 transition-all duration-200 transform -translate-x-1/2 rounded-full bottom-4 left-1/2 bg-white/80 hover:bg-white dark:bg-gray-100/90 dark:hover:bg-gray-300/90"
+                  >
+                    {isPaused ? (
+                      <svg
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                      </svg>
+                    )}
+                  </button>
+                )}
 
-                {/* Indicador de progreso (opcional) */}
-                <div
-                  className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500"
-                  style={{
-                    width: `${
-                      ((videoRef.current?.currentTime || 0) /
-                        (videoRef.current?.duration || 1)) *
-                      100
-                    }%`,
-                  }}
-                />
+                {/* Indicador de progreso */}
+                {playerReady && player && (
+                  <div className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500">
+                    {/* La barra de progreso se actualizará mediante un intervalo */}
+                  </div>
+                )}
               </div>
 
               {/* Caja de comentarios */}
