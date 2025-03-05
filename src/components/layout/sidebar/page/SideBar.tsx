@@ -400,6 +400,8 @@ const SideBar: FC = () => {
             )}
 
             {/* Categoria de gestión de tickets */}
+            {[1].includes(Number(rol)) && (
+
             <NavLink to="/GestionTickets">
               {({ isActive }) => (
                 <div
@@ -428,6 +430,7 @@ const SideBar: FC = () => {
                 </div>
               )}
             </NavLink>
+            )}
 
             {/* Categoria de administrador */}
             {[1].includes(Number(rol)) && (

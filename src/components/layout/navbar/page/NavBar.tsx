@@ -21,7 +21,7 @@ import logo from "@/assets/Layout/logo-navbar.png";
 import HelpDesk from "@/featuures/HelpDesk/Components/ModalCreateTicket";
 
 const Navbar: React.FC = React.memo(() => {
-  const { logout } = useAuth();
+  const { logout, rol } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();
@@ -175,12 +175,17 @@ const Navbar: React.FC = React.memo(() => {
             )}
           </button>
           {/* Mesa de ayuda */}
+          {rol && parseInt(rol) == 1 && (
           <div>
             <HelpDesk/>
           </div>
+          )}
+            {/* Botón de Notificaciones */}
+          {rol && parseInt(rol) == 1 && (
           <div>
             <NotificacionBell />
           </div>
+          )}
           <div>
             <ModalPausasActivas />
           </div>
