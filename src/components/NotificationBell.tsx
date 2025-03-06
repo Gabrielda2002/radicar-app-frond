@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { useNotification } from "@/context/notificationContext.tsx";
+import ModalServey from '@/featuures/HelpDesk/Components/ModalServey';
 
 const NotificationBell: React.FC = () => {
     const { notifications, unreadCount, markAsRead, subscribeToPushNotifications } = useNotification();
@@ -25,7 +26,6 @@ const NotificationBell: React.FC = () => {
         checkPushSubscription();
     }, []);
 
-    // Resto de tu código existente...
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -38,10 +38,6 @@ const NotificationBell: React.FC = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    const handleMarkAsRead = async (notificationId: number) => {
-        await markAsRead(notificationId);
-    };
 
     // Función para manejar la suscripción a notificaciones push
     const handleSubscribeToPush = async () => {
@@ -124,10 +120,16 @@ const NotificationBell: React.FC = () => {
                                     <p className="text-sm text-gray-600 dark:text-gray-300">
                                         {notification.message}
                                     </p>
+                                    {/* boton encuesta */}
+                                    <div className='text-left'>
+                                        <ModalServey
+                                            idTicket={notification.referenceId ? notification.referenceId : 0}
+                                        />
+                                    </div>
                                     <div className="mt-2 text-right">
                                         {!notification.isRead && (
                                             <button
-                                                onClick={() => handleMarkAsRead(notification.id)}
+                                                onClick={async  () => await markAsRead(notification.id)}
                                                 className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                                             >
                                                 Marcar como leída
