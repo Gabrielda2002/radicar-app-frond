@@ -16,6 +16,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const [notifications, setNotifications] = useState<INotification[]>([]);
     const [isConnected, setIsConnected] = useState(false);
     const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>(null);
+    console.log('estado actual notificaciones', pushSubscription);
     const socketRef = useRef<Socket | null>(null);
     const user = localStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : null;
@@ -39,30 +40,31 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
                     console.warn('Notificaciones push no soportadas');
                     return;
                 }
-    
+
                 const registration = await navigator.serviceWorker.ready;
-    
+                console.log('Service worker listo para notificaciones push:', registration);
+
                 let subscription = await registration.pushManager.getSubscription();
-    
+
                 if(!subscription) {
                     const response = await api.get('/push/vapid-public-key');
                     const vapidPublicKey = response.data.publicKey;
-    
+
                     const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-    
+
                     subscription = await registration.pushManager.subscribe({
                         userVisibleOnly: true,
                         applicationServerKey: convertedVapidKey
                     });
-    
+
                     setPushSubscription(subscription);
-    
+
                     if(userId){
                         await api.post('/push/subscribe', {
                             userId: userId,
                             subscription: subscription.toJSON()
                         });
-    
+
                         console.log('Suscrito a notificaciones push');
                     }
                 }
