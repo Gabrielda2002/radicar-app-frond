@@ -1,9 +1,10 @@
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import  * as Yup from 'yup'
 import StarRating from "./StarRating";
+import { useServey } from "../Hooks/useServey";
 
 interface ModalServeyProps {
   idTicket: number;
@@ -12,6 +13,12 @@ interface ModalServeyProps {
 const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
+  const  { error, success, loading, createServey, validate, isValidate } = useServey();
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const userId = user.id;
+  
   const { showAnimation, closing } = useAnimation(showModal, () =>
     setShowModal(false)
   );
@@ -40,7 +47,30 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
     },
     validationSchema: schemaValidation,
     onSubmit: async (values) => {
-      console.log(values);
+
+      try {
+        
+        const formData = new FormData();
+        formData.append("ticketId", idTicket.toString());
+        formData.append("usuarioId", userId.toString());
+        formData.append("calificacionGeneral", values.scoring.toString());
+        formData.append("tiempoRespuesta", values.timeAnswer.toString());
+        formData.append("conocimientoTecnico", values.consciousness.toString());
+        formData.append("amabilidadSoporte", values.kindness.toString());
+        formData.append("solucionEfectiva", values.solution.toString());
+        formData.append("comentario", values.comment);
+        formData.append("recomendariaServicio", values.recommendation.toString());
+
+        const result = await createServey(formData);
+        if (result) {
+          await validate(formData);
+          setShowModal(false);
+        }
+
+      } catch (error) {
+        console.log("Error al enviar la encuesta ", error);
+      }
+
     },
   });
 
@@ -48,6 +78,19 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
     formik.setFieldValue(name, value);
     formik.setFieldTouched(name, false);
   };
+
+  useEffect(() => {
+    if (showModal) {
+      const chekValidation = async () => {
+        const formData = new FormData();
+        formData.append("ticketId", idTicket.toString());
+        formData.append("usuarioId", userId.toString());
+        await validate(formData);
+      };
+
+      chekValidation();
+    }
+  }, [showModal, userId, validate ]);
 
   return (
     <>
@@ -154,7 +197,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                         className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500" 
                     />
                     {formik.touched.recommendation && formik.errors.recommendation && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.solution}</p>
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.recommendation}</p>
                     )}
                 </div>
                 
@@ -176,7 +219,12 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.comment}</p>
                   )}
                 </div>
+              </div>
+              )}
 
+                {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+                {success && <p className="text-sm text-green-600 dark:text-green-400">Encuesta enviada correctamente</p>}
+                
                 <div className="flex justify-end space-x-2">
                   <button
                     type="button"
@@ -185,13 +233,15 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                   >
                     Cancelar
                   </button>
+                  {!isValidate && (
                   <button
                     type="submit"
                     className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                    disabled={!formik.isValid}
+                    disabled={!formik.isValid || loading}
                   >
-                    Enviar
+                    {loading ? "Enviando..." : "Enviar"}
                   </button>
+                  )}
                 </div>
               </form>
             </div>
