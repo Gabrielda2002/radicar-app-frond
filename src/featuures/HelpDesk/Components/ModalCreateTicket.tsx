@@ -155,7 +155,7 @@ const HelpDesk = () => {
               </h3>
               <p className="text-xs text-black dark:text-gray-200">
                 {" "}
-                por favor rellene los siguientes campos con su respectiva
+                Por favor rellene los siguientes campos con su respectiva
                 informacion para solicitar ayuda relacionada con el area de
                 sistemas.
               </p>
@@ -169,6 +169,33 @@ const HelpDesk = () => {
                   
                  ): (
                   <div>
+                    <div>
+                      <label
+                        htmlFor="categoria"
+                        className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                      >
+                        Categoria
+                      </label>
+                      <select
+                        name="category"
+                        id="categoria"
+                        value={formik.values.category}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                          formik.touched.category && formik.errors.category
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">Seleccione</option>
+                        {dataCategory.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     <div>
                       <label
                         htmlFor="title"
@@ -223,33 +250,6 @@ const HelpDesk = () => {
                           {formik.errors.description}
                         </div>
                       ) : null}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="categoria"
-                        className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
-                      >
-                        Categoria
-                      </label>
-                      <select
-                        name="category"
-                        id="categoria"
-                        value={formik.values.category}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                          formik.touched.category && formik.errors.category
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">Seleccione</option>
-                        {dataCategory.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
                     </div>
                     <div>
                       <label

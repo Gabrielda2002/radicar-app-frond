@@ -2,7 +2,7 @@ import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import  * as Yup from 'yup'
+import * as Yup from "yup";
 import StarRating from "./StarRating";
 import { useServey } from "../Hooks/useServey";
 
@@ -13,12 +13,13 @@ interface ModalServeyProps {
 const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const  { error, success, loading, createServey, validate, isValidate } = useServey();
+  const { error, success, loading, createServey, validate, isValidate } =
+    useServey();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const userId = user.id;
-  
+
   const { showAnimation, closing } = useAnimation(showModal, () =>
     setShowModal(false)
   );
@@ -47,9 +48,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
     },
     validationSchema: schemaValidation,
     onSubmit: async (values) => {
-
       try {
-        
         const formData = new FormData();
         formData.append("ticketId", idTicket.toString());
         formData.append("usuarioId", userId.toString());
@@ -59,18 +58,19 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
         formData.append("amabilidadSoporte", values.kindness.toString());
         formData.append("solucionEfectiva", values.solution.toString());
         formData.append("comentario", values.comment);
-        formData.append("recomendariaServicio", values.recommendation.toString());
+        formData.append(
+          "recomendariaServicio",
+          values.recommendation.toString()
+        );
 
         const result = await createServey(formData);
         if (result) {
           await validate(formData);
           setShowModal(false);
         }
-
       } catch (error) {
         console.log("Error al enviar la encuesta ", error);
       }
-
     },
   });
 
@@ -90,7 +90,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
       chekValidation();
     }
-  }, [showModal, userId, validate ]);
+  }, [showModal, userId, validate]);
 
   return (
     <>
@@ -99,7 +99,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
         onClick={() => setShowModal(true)}
         className="text-blue-500 hover:text-blue-700"
       >
-        Encuesta satisfaccion;
+        Encuesta de satisfaccion
       </button>
       {showModal && (
         <div
@@ -127,104 +127,131 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
             </div>
 
             <div>
-            <form onSubmit={formik.handleSubmit}>
-                <StarRating 
-                  name="scoring"
-                  rating={formik.values.scoring}
-                  onChange={handleStarChange}
-                  error={formik.errors.scoring}
-                  touched={formik.touched.scoring}
-                  label="Puntuación general"
-                />
-                
-                <StarRating 
-                  name="timeAnswer"
-                  rating={formik.values.timeAnswer}
-                  onChange={handleStarChange}
-                  error={formik.errors.timeAnswer}
-                  touched={formik.touched.timeAnswer}
-                  label="Tiempo de respuesta"
-                />
-                
-                <StarRating 
-                  name="consciousness"
-                  rating={formik.values.consciousness}
-                  onChange={handleStarChange}
-                  error={formik.errors.consciousness}
-                  touched={formik.touched.consciousness}
-                  label="Conocimiento del personal"
-                />
-                
-                <StarRating 
-                  name="kindness"
-                  rating={formik.values.kindness}
-                  onChange={handleStarChange}
-                  error={formik.errors.kindness}
-                  touched={formik.touched.kindness}
-                  label="Amabilidad"
-                />
-                
-                <div>
-                    <label 
-                        className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
+              <form onSubmit={formik.handleSubmit}>
+                {isValidate ? (
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    Ya se ha enviado una encuesta para este ticket
+                  </p>
+                ) : (
+                  <div>
+                    <p className="my-4 text-sm text-gray-700 dark:text-gray-300">
+                      Agradecemos diligenciar esta encuesta para calificar él
+                      soporte prestado por sistemas. Califique marcando él
+                      número de estrellas de acuerdo a su experiencia
+                      entendiendo que 0 estrellas es “Malo” y 5 “Excelente”.
+                    </p>
+
+                    <StarRating
+                      name="scoring"
+                      rating={formik.values.scoring}
+                      onChange={handleStarChange}
+                      error={formik.errors.scoring}
+                      touched={formik.touched.scoring}
+                      label="Puntuación general"
+                    />
+
+                    <StarRating
+                      name="timeAnswer"
+                      rating={formik.values.timeAnswer}
+                      onChange={handleStarChange}
+                      error={formik.errors.timeAnswer}
+                      touched={formik.touched.timeAnswer}
+                      label="Tiempo de respuesta"
+                    />
+
+                    <StarRating
+                      name="consciousness"
+                      rating={formik.values.consciousness}
+                      onChange={handleStarChange}
+                      error={formik.errors.consciousness}
+                      touched={formik.touched.consciousness}
+                      label="Conocimiento del personal"
+                    />
+
+                    <StarRating
+                      name="kindness"
+                      rating={formik.values.kindness}
+                      onChange={handleStarChange}
+                      error={formik.errors.kindness}
+                      touched={formik.touched.kindness}
+                      label="Amabilidad"
+                    />
+
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                         Solucion Efectiva
-                    </label>
-                    <input 
+                      </label>
+                      <input
                         type="checkbox"
                         name="solution"
                         checked={formik.values.solution}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500" 
-                    />
-                    {formik.touched.solution && formik.errors.solution && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.solution}</p>
-                    )}
-                </div>
-                <div>
-                    <label 
-                        className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
+                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
+                      />
+                      {formik.touched.solution && formik.errors.solution && (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                          {formik.errors.solution}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                         Recomendaria el servicio
-                    </label>
-                    <input 
+                      </label>
+                      <input
                         type="checkbox"
                         name="recommendation"
                         checked={formik.values.recommendation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500" 
-                    />
-                    {formik.touched.recommendation && formik.errors.recommendation && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.recommendation}</p>
-                    )}
-                </div>
-                
-                <div className="mb-4">
-                  <label htmlFor="comment" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Comentarios adicionales
-                  </label>
-                  <textarea
-                    id="comment"
-                    name="comment"
-                    rows={4}
-                    className="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                    placeholder="Escriba sus comentarios aquí..."
-                    value={formik.values.comment}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  ></textarea>
-                  {formik.touched.comment && formik.errors.comment && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">{formik.errors.comment}</p>
-                  )}
-                </div>
-              </div>
-              )}
+                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
+                      />
+                      {formik.touched.recommendation &&
+                        formik.errors.recommendation && (
+                          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {formik.errors.recommendation}
+                          </p>
+                        )}
+                    </div>
 
-                {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-                {success && <p className="text-sm text-green-600 dark:text-green-400">Encuesta enviada correctamente</p>}
-                
+                    <div className="mb-4">
+                      <label
+                        htmlFor="comment"
+                        className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
+                        Comentarios adicionales
+                      </label>
+                      <textarea
+                        id="comment"
+                        name="comment"
+                        rows={4}
+                        className="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        placeholder="Escriba sus comentarios aquí..."
+                        value={formik.values.comment}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      ></textarea>
+                      {formik.touched.comment && formik.errors.comment && (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                          {formik.errors.comment}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {error && (
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {error}
+                  </p>
+                )}
+                {success && (
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    Encuesta enviada correctamente
+                  </p>
+                )}
+
                 <div className="flex justify-end space-x-2">
                   <button
                     type="button"
@@ -234,13 +261,13 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                     Cancelar
                   </button>
                   {!isValidate && (
-                  <button
-                    type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                    disabled={!formik.isValid || loading}
-                  >
-                    {loading ? "Enviando..." : "Enviar"}
-                  </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                      disabled={!formik.isValid || loading}
+                    >
+                      {loading ? "Enviando..." : "Enviar"}
+                    </button>
                   )}
                 </div>
               </form>
