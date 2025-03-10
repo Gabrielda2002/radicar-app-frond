@@ -118,7 +118,7 @@ const ProcessHelpDesk = () => {
                 <th className="p-2">Categoria</th>
                 <th className="p-2">Creacion</th>
                 <th className="p-2">Ultima modificacion</th>
-                <th className="p-2">Cerrar</th>
+                <th className="p-2">Accion</th>
               </tr>
             </thead>
             <tbody className="text-xs text-center dark:text-gray-200">

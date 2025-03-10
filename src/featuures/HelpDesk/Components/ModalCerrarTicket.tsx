@@ -13,7 +13,10 @@ interface CerrarModalProps {
   onTicketClosed: () => void;
 }
 
-const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) => {
+const CerrarModal: React.FC<CerrarModalProps> = ({
+  IdTicket,
+  onTicketClosed,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +32,13 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
 
   const validationSchema = Yup.object({
     observation: Yup.string().required("Este campo es obligatorio"),
+    status: Yup.string().required("Este campo es obligatorio"),
   });
 
   const formik = useFormik({
     initialValues: {
       observation: "",
+      status: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -43,13 +48,13 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
         const formData = new FormData();
 
         formData.append("ticketId", IdTicket.toString());
-        formData.append("usuarioId", idUsuario )
+        formData.append("usuarioId", idUsuario);
         formData.append("coment", values.observation);
+        formData.append("status", values.status);
 
         const reponse = await UpdateStatusTicketEp(formData);
 
         if (reponse.status === 200 || reponse.status === 201) {
-
           toast.success("Ticket cerrado exitosamente.", {
             position: "bottom-right",
             autoClose: 5000,
@@ -67,10 +72,9 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
           setShowModal(false);
           formik.resetForm();
         }
-
       } catch (errors) {
         setError(`Error al cerrar el ticket ${errors}`);
-      }finally{
+      } finally {
         setLoading(false);
       }
     },
@@ -83,9 +87,9 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
         type="button"
         className="text-xl font-extrabold text-gray-500 transition-colors duration-200 hover:text-red-600 focus:outline-none"
         onClick={() => setShowModal(true)}
-        title="Cerrar Ticket"
+        title="Cambiar estado"
       >
-        X
+        O
       </button>
       {showModal && (
         <div
@@ -115,7 +119,38 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
               <div className="mb-4">
                 <label
                   htmlFor="observation"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                >
+                  Estado
+                </label>
+
+                <select
+                  name="status"
+                  id="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                    formik.touched.status && formik.errors.status
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-200 dark:border-gray-600"
+                  }`}
+                >
+                  <option value="">Seleccione</option>
+                  <option value="2">Cerrado</option>
+                  <option value="3">Pendiente</option>
+                </select>
+                {formik.touched.status && formik.errors.status ? (
+                  <div className="mt-1 text-sm text-red-600">
+                    {formik.errors.status}
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="observation"
+                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
                 >
                   Observación (Motivo de cierre)
                 </label>
@@ -126,7 +161,11 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   rows={4}
-                  className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className={` w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                    formik.touched.observation && formik.errors.observation
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-200 dark:border-gray-600"
+                  }`}
                   placeholder="Escriba el motivo por el cual está cerrando este ticket..."
                 ></textarea>
                 {formik.touched.observation && formik.errors.observation ? (
@@ -152,7 +191,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({ IdTicket, onTicketClosed  }) 
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                  className={`px-4 py-2 text-sm font-medium text-white ${ formik.values.status == '2' ? 'bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' : "bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700" }  rounded-lg`}
                   disabled={!formik.isValid || loading}
                 >
                   Cerrar Ticket
