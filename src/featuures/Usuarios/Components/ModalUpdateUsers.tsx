@@ -19,6 +19,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -32,6 +33,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
+
+  useBlockScroll(isOpen);
 
   // estados para inputs autocompletado de areas
   const [searchArea, setSearchArea] = useState<string>("");
@@ -229,9 +232,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     () => setIsOpen(false),
     300
   );
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
 
 
   if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
@@ -245,7 +245,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         className={`border-2 w-[150px] h-10 rounded-md focus:outline-none bg-color text-white  hover:bg-teal-800  active:bg-teal-900  ${
           showAnimation && !closing ? "opacity-100" : "opacity-100"
         }`}
-        onClick={toggleModal}
+        onClick={() => setIsOpen(true)}
       >
         Actualizar
       </button>
@@ -253,7 +253,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         <div className="fixed z-50 flex justify-center pt-6 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
           <div
             className="fixed inset-0 transition-opacity duration-300 bg-black opacity-40 backdrop-blur-sm"
-            onClick={toggleModal}
+            onClick={() => setIsOpen(false)}
           ></div>
 
           {/* Contenido del Formulario */}
@@ -271,7 +271,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 </h1>
                 <button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={() => setIsOpen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
                 >
                   &times;
@@ -689,7 +689,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 {/* Botones */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-t-gray-900 dark:border-t-white h-14 dark:bg-gray-600">
                   <button
-                    onClick={toggleModal}
+                    onClick={() => setIsOpen(false)}
                     type="button"
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                   >
