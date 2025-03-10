@@ -1,9 +1,9 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import { createUser } from "@/featuures/RegisterUser/Services/createUser";
+import { useCreateUser } from "@/featuures/RegisterUser/Hooks/useCreateUser";
 import areas from '@/data-dynamic/areas.json'; 
 import {
   useFetchRoles,
@@ -29,15 +29,7 @@ const RegistrarUsuarios: React.FC = () => {
   // hook pora traer las sedes
   const { data } = useFetchSede();
 
-
-  // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [errorPage, setErrorPage] = useState<string | null>("");
-  const [success, setSuccess] = useState<boolean>(false);
-
-  // const toggleAccordion = () => {
-  //   setIsAccordionOpen(!isAccordionOpen);
-  // };
+  const { createUser, success, error, loading } = useCreateUser();
 
   const validationSchema = useMemo(
     () =>
@@ -117,23 +109,16 @@ const RegistrarUsuarios: React.FC = () => {
       formData.append("phoneNumber", values.celular);
 
       try {
-        setSubmitting(true);
-        setSuccess(false);
 
         const response = await createUser(formData);
 
         if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
-          setErrorPage(null);
           formik.resetForm();
-        }else{
-          setErrorPage(`Ocurrio un error al registrar el usuario: ${response?.data.message}`);
         }
       } catch (error) {
-        setErrorPage(`Ocurrio un error al registrar el usuario: ${error}`);
+        console.log('Error inesperado al registrar usuario', error);
       }
 
-      setSubmitting(false);
     },
   });
 
@@ -192,11 +177,12 @@ const RegistrarUsuarios: React.FC = () => {
             {/* Número Documento */}
             <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Número Documento
+                Número Documento 
               </label>
               <input
                 type="text"
                 name="numeroDocumento"
+                placeholder="Número de Documento"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.numeroDocumento &&
                   formik.errors.numeroDocumento
@@ -214,31 +200,6 @@ const RegistrarUsuarios: React.FC = () => {
                 ) : null}
               </AnimatePresence>
             </div>
-
-            {/* Fecha de Nacimiento */}
-            {/* <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Fecha nacimiento
-              </label>
-              <input
-                type="date"
-                name="date"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.date && formik.errors.date
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.date}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.date && formik.errors.date ? (
-                  <ErrorMessage>{formik.errors.date}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div> */}
-
             {/* Area */}
             <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">
@@ -343,6 +304,7 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="celular"
+                placeholder="Número de Celular"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.celular && formik.errors.celular
                     ? "border-red-500 dark:border-red-500"
@@ -397,6 +359,7 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="nombresCompletos"
+                placeholder="Nombres Completos"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.nombresCompletos &&
                   formik.errors.nombresCompletos
@@ -423,6 +386,7 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="text"
                 name="apellidosCompletos"
+                placeholder="Apellidos Completos"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.apellidosCompletos &&
                   formik.errors.apellidosCompletos
@@ -481,6 +445,7 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="email"
                 name="correo"
+                placeholder="Correo"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.correo && formik.errors.correo
                     ? "border-red-500 dark:border-red-500"
@@ -505,6 +470,7 @@ const RegistrarUsuarios: React.FC = () => {
               <input
                 type="password"
                 name="contraseña"
+                placeholder="Contraseña"
                 className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                   formik.touched.contraseña && formik.errors.contraseña
                     ? "border-red-500 dark:border-red-500"
@@ -517,58 +483,18 @@ const RegistrarUsuarios: React.FC = () => {
                 <div className="text-red-500">{formik.errors.contraseña}</div>
               ) : null}
             </div>
-
-            {/* Permisos con Acordeón */}
-            {/* <div className="col-span-2">
-              <button
-                type="button"
-                className="flex items-center justify-between w-full text-gray-700 cursor-pointer dark:text-gray-300 focus:outline-none"
-                onClick={toggleAccordion}
-              >
-                <span className="text-lg font-medium">Permisos</span>
-                <img
-                  src={arrowUp}
-                  alt="Toggle"
-                  className={`w-5 h-5 transform ${
-                    isAccordionOpen ? "rotate-180" : "rotate-0"
-                  } transition-transform duration-300`}
-                />
-              </button>
-              {isAccordionOpen && (
-                <div className="pl-4 mt-2">
-                  {opcionesPermisos.map((permiso) => (
-                    <div key={permiso} className="flex items-center mb-2">
-                      <input
-                        type="checkbox"
-                        value={permiso}
-                        checked={formValues.permisos.includes(permiso)}
-                        onChange={handleCheckboxChange}
-                        className="w-4 h-4 text-blue-600 form-checkbox dark:bg-gray-700"
-                        id={`permiso-${permiso}`}
-                      />
-                      <label
-                        htmlFor={`permiso-${permiso}`}
-                        className="ml-2 text-gray-700 dark:text-gray-300"
-                      >
-                        {permiso}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div> */}
           </div>
 
           {/* Botón de Envío */}
           <div className="mt-6">
             <button
               type="submit"
-              disabled={submitting}
+              disabled={ !formik.isValid || loading}
               className="w-full py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
-              {submitting ? "Enviando..." : "Registrar Usuario"}
+              {loading ? "Enviando..." : "Registrar Usuario"}
             </button>
-            {errorPage && <div className="text-red-500">{errorPage}</div>}
+            {error && <div className="text-red-500">{error}</div>}
             {success && (
               <div className="text-green-500">Usuario registrado con éxito</div>
             )}
