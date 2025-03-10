@@ -7,6 +7,8 @@ export interface ITickets {
     category:          string;
     priority:          string;
     status:            string;
+    headquarter:       string;
+    municipio:         string;
     createdAt:         Date;
     updatedAt:         Date;
 }

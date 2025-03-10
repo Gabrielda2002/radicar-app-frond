@@ -116,6 +116,8 @@ const ProcessHelpDesk = () => {
                 <th className="p-2">Estado</th>
                 <th className="p-2">Prioridad</th>
                 <th className="p-2">Categoria</th>
+                <th className="p-2">Sede</th>
+                <th className="p-2">Municipio</th>
                 <th className="p-2">Creacion</th>
                 <th className="p-2">Ultima modificacion</th>
                 <th className="p-2">Accion</th>
@@ -148,6 +150,8 @@ const ProcessHelpDesk = () => {
                     </span>
                   </td>
                   <td className="p-2">{ticket.category}</td>
+                  <td className="p-2">{ticket.headquarter}</td>
+                  <td className="p-2">{ticket.municipio}</td>
                   <td className="p-2">{FormatDate(ticket.createdAt)}</td>
                   <td className="p-2">{FormatDate(ticket.updatedAt)}</td>
                   <td className="p-2">
