@@ -55,6 +55,8 @@ import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import RecoverLetterPage from "./featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
 import RecoverLastPage from "./featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
+import {NotificationProvider} from "@/context/notificationContext.tsx";
+import {TicketProvider} from "@/context/ticketContext.tsx";
 
 function AppRoutes() {
   return (
@@ -152,6 +154,8 @@ export function App() {
     <div className={`font-semibold ${theme === "dark" ? "dark" : ""}`}>
       <AuthProvider>
         <UserProfileProvider>
+          <TicketProvider>
+          <NotificationProvider>
           <SidebarProvider>
             <CookieConsent />
             <AppRoutes />
@@ -169,6 +173,8 @@ export function App() {
               transition={Bounce}
             />
           </SidebarProvider>
+          </NotificationProvider>
+          </TicketProvider>
         </UserProfileProvider>
       </AuthProvider>
     </div>

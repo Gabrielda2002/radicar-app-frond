@@ -4,7 +4,7 @@ import { logoutHelper } from '../utils/Logout-helper'
 const token = localStorage.getItem('token')
 
 export const api = axios.create({
-    baseURL: 'http://localhost:3600/api/v1',
+    baseURL: `${import.meta.env.VITE_URL_BACKEND}/api/v1`,
 
     headers: {
         'Content-Type': 'application/json',

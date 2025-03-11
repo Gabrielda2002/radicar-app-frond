@@ -1,20 +1,32 @@
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { CreateTicket } from "../Services/CreateTickets";
 import { useFetchCategory } from "../Hooks/useFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchPriority } from "../Hooks/useFetchPriority";
 import { Bounce, toast } from "react-toastify";
+import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
+import {useTickets} from "@/context/ticketContext.tsx";
+
+interface TicketFormValues {
+  title: string;
+  description: string;
+  category: string;
+  priority: string;
+}
 
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const {refetchTickets} = useTickets();
+
   const { showAnimation, closing } = useAnimation(isModalOpen, () =>
     setIsModalOpen(false)
   );
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +37,10 @@ const HelpDesk = () => {
   const user = localStorage.getItem("user");
 
   const idUsuario = user ? JSON.parse(user).id : "";
-
+  
+  // validar si el usuario ya tiene un ticket
+  const {hasTicket, validatingTicket, revalidate} = useValidateTicketUser(idUsuario);
+    
   useBlockScroll(isModalOpen);
 
   const schemaValidation = Yup.object({
@@ -38,6 +53,50 @@ const HelpDesk = () => {
     priority: Yup.number().required("La prioridad es requerida"),
   });
 
+  const handleSubmit = useCallback(async (values: TicketFormValues) => {
+    
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("userId", idUsuario);
+      formData.append("categoryId", values.category);
+      formData.append("priorityId", values.priority);
+
+      const response = await CreateTicket(formData);
+
+      if (response?.status === 201 || response?.status === 200) {
+        toast.success("Ticket creado exitosamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+          await refetchTickets();
+          await revalidate()
+          formik.resetForm();
+          setIsModalOpen(false);
+      } else {
+        setError("Error al crear el ticket, por favor intentelo de nuevo.");
+      }
+    } catch (error) {
+      setError(
+        "Error al crear el ticket, por favor intentelo de nuevo. " + error
+      );
+    }finally{
+      setLoading(false);
+    }
+
+  }, [idUsuario, revalidate]);
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -46,51 +105,10 @@ const HelpDesk = () => {
       priority: "",
     },
     validationSchema: schemaValidation,
-    onSubmit: async (values) => {
-      try {
-        setLoading(true);
-
-        const formData = new FormData();
-
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("userId", idUsuario);
-        formData.append("categoryId", values.category);
-        formData.append("priorityId", values.priority);
-
-        const response = await CreateTicket(formData);
-
-        if (response?.status === 201 || response?.status === 200) {
-          toast.success("Ticket creado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-
-          setTimeout(() => {
-            formik.resetForm();
-            setIsModalOpen(false);
-            setLoading(false);
-          }, 5000);
-        } else {
-          setLoading(false);
-          setError("Error al crear el ticket, por favor intentelo de nuevo.");
-        }
-      } catch (error) {
-        setError(
-          "Error al crear el ticket, por favor intentelo de nuevo. " + error
-        );
-      }
-    },
+    onSubmit: handleSubmit,
   });
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || validatingTicket) return <LoadingSpinner />;
 
   return (
     <>
@@ -137,13 +155,47 @@ const HelpDesk = () => {
               </h3>
               <p className="text-xs text-black dark:text-gray-200">
                 {" "}
-                por favor rellene los siguientes campos con su respectiva
+                Por favor rellene los siguientes campos con su respectiva
                 informacion para solicitar ayuda relacionada con el area de
                 sistemas.
               </p>
               <div>
                 <form onSubmit={formik.handleSubmit}>
+                 {hasTicket ? (
+                    <div className="text-red-400">
+                      Ya tienes un ticket en proceso, por favor espera a que sea
+                      resuelto.
+                    </div>
+                  
+                 ): (
                   <div>
+                    <div>
+                      <label
+                        htmlFor="categoria"
+                        className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                      >
+                        Categoria
+                      </label>
+                      <select
+                        name="category"
+                        id="categoria"
+                        value={formik.values.category}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                          formik.touched.category && formik.errors.category
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">Seleccione</option>
+                        {dataCategory.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     <div>
                       <label
                         htmlFor="title"
@@ -201,33 +253,6 @@ const HelpDesk = () => {
                     </div>
                     <div>
                       <label
-                        htmlFor="categoria"
-                        className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
-                      >
-                        Categoria
-                      </label>
-                      <select
-                        name="category"
-                        id="categoria"
-                        value={formik.values.category}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                          formik.touched.category && formik.errors.category
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">Seleccione</option>
-                        {dataCategory.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label
                         htmlFor="prioridad"
                         className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
                       >
@@ -254,6 +279,7 @@ const HelpDesk = () => {
                       </select>
                     </div>
                   </div>
+                 )}
 
                   {error && <div className="text-red-400">{error}</div>}
 
@@ -265,6 +291,7 @@ const HelpDesk = () => {
                     >
                       Cerrar
                     </button>
+                    {!hasTicket && (
                     <button
                       type="submit"
                       className="w-20 h-10 text-white duration-300 border-2 border-gray-400 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 dark:hover:border-gray-900"
@@ -272,6 +299,7 @@ const HelpDesk = () => {
                     >
                       Enviar
                     </button>
+                    )}
                   </div>
                 </form>
               </div>
