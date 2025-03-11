@@ -25,7 +25,7 @@ export const usePerfil = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const baseUrl = "http://localhost:3600/api/v1";
+    const baseUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1`;
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (userData) {
