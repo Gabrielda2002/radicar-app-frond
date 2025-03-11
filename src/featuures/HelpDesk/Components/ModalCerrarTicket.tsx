@@ -49,13 +49,13 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
 
         formData.append("ticketId", IdTicket.toString());
         formData.append("usuarioId", idUsuario);
-        formData.append("coment", values.observation);
+      formData.append("coment", values.observation);
         formData.append("status", values.status);
 
         const reponse = await UpdateStatusTicketEp(formData);
 
         if (reponse.status === 200 || reponse.status === 201) {
-          toast.success("Ticket cerrado exitosamente.", {
+          toast.success("Estado actualizado exitosamente.", {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
