@@ -45,7 +45,7 @@ const FileList: React.FC<FileListProps> = ({
 
   const handleFileOpen = (file: File) => {
     if (file.mimeType === "application/pdf") {
-      window.open(`http://localhost:3600/api/v1/v1${file.path}`, "_blank");
+    window.open(`${import.meta.env.VITE_URL_BACKEND}/api/v1/v1${file.path}`, "_blank");
     } else {
       onDownload(file.id, file.name);
     }

@@ -71,7 +71,7 @@ const TablaAuditoria = () => {
     }
 
     window.open(
-      `http://localhost:3600/api/v1/uploads/Soportes/${soporte}`,
+      `${import.meta.env.VITE_URL_BACKEND}/api/v1/uploads/Soportes/${soporte}`,
       "_blank"
     );
     return;

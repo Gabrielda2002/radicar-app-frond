@@ -6,16 +6,16 @@ import usePagination from "@/hooks/usePagination.ts";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
-import { useFetchTickets } from "../Hooks/useFetchTickets";
 import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import CerrarModal from "../Components/ModalCerrarTicket";
+import {useTickets} from "@/context/ticketContext.tsx";
 
 const ITEMS_PER_PAGE = 8;
 
 const ProcessHelpDesk = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { tickets } = useFetchTickets();
+  const { tickets, refetchTickets } = useTickets();
 
   const { query, setQuery, filteredData } = useSearch<ITickets>(tickets, [
     "id",
@@ -116,9 +116,11 @@ const ProcessHelpDesk = () => {
                 <th className="p-2">Estado</th>
                 <th className="p-2">Prioridad</th>
                 <th className="p-2">Categoria</th>
+                <th className="p-2">Sede</th>
+                <th className="p-2">Municipio</th>
                 <th className="p-2">Creacion</th>
                 <th className="p-2">Ultima modificacion</th>
-                <th className="p-2">Cerrar</th>
+                <th className="p-2">Accion</th>
               </tr>
             </thead>
             <tbody className="text-xs text-center dark:text-gray-200">
@@ -148,11 +150,16 @@ const ProcessHelpDesk = () => {
                     </span>
                   </td>
                   <td className="p-2">{ticket.category}</td>
+                  <td className="p-2">{ticket.headquarter}</td>
+                  <td className="p-2">{ticket.municipio}</td>
                   <td className="p-2">{FormatDate(ticket.createdAt)}</td>
                   <td className="p-2">{FormatDate(ticket.updatedAt)}</td>
                   <td className="p-2">
                     {ticket.status != "Cerrado" ? (
-                      <CerrarModal IdTicket={ticket.id} />
+                      <CerrarModal
+                       IdTicket={ticket.id} 
+                       onTicketClosed={refetchTickets}
+                       />
                     ) : (
                       <button
                         className="text-lg text-gray-400"

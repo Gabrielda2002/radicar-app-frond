@@ -1,40 +1,34 @@
 // * Functions and hooks
-import { useRef, useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import useAnimation from "@/hooks/useAnimations";
-import VideoFile from "@/../public/videos/Pausas-activas-prueba.mp4";
 import { useFormik } from "formik";
 import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
+import { useYoutubePlayer } from "../Hooks/useYoutubePlayer";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 const ModalPausasActivas = () => {
-  // * Constants
-  const [isModalPausasOpen, setIsModalPausasOpen] = useState(false);
 
-  // * estado para controlar si el video fue completado
-  const [videoCompleted, setVideoCompleted] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const {
+    videoCompleted,
+    isModalOpen,
+    setIsModalOpen,
+    isPaused,
+    playerReady,
+    youtubeContainerRef,
+    handlePlayPause,
+    player,
+  } = useYoutubePlayer();
 
-  const handlePlayPause = () => {
-    if (videoRef.current?.paused) {
-      videoRef.current?.play();
-      setIsPaused(false);
-    } else {
-      videoRef.current?.pause();
-      setIsPaused(true);
-    }
-  };
-
-  const { showAnimation, closing } = useAnimation(isModalPausasOpen, () => {
+  const { showAnimation, closing } = useAnimation(isModalOpen, () => {
     // Solo permitir cerrar si el video está completo y el formulario enviado
     if (videoCompleted && success) {
-      setIsModalPausasOpen(false);
+      setIsModalOpen(false);
     }
   });
 
-  const handleVideoEnd = () => {
-    setVideoCompleted(true);
-  };
+  useBlockScroll(isModalOpen);
+
 
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -71,7 +65,7 @@ const ModalPausasActivas = () => {
           setSuccess(true);
           setError("");
           setTimeout(() => {
-            setIsModalPausasOpen(false);
+            setIsModalOpen(false);
             window.location.reload();
           }, 2000);
         } else {
@@ -87,32 +81,19 @@ const ModalPausasActivas = () => {
     },
   });
 
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setIsModalPausasOpen(false);
-  };
-  if (isModalPausasOpen) {
-    openModal();
-  }
-
   return (
     <>
       {/* Botón para abrir el modal */}
       <button
         type="button"
-        onClick={() => setIsModalPausasOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
       >
         Pausas Activas
       </button>
 
       {/* Modal */}
-      {isModalPausasOpen && (
+      {isModalOpen && (
         <section
           className={`fixed inset-0 z-50 flex items-center justify-center pt-10 pb-10 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
@@ -120,7 +101,7 @@ const ModalPausasActivas = () => {
         >
           <section
             className={`w-full max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-600 ${
-              isModalPausasOpen && !closing
+              isModalOpen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
             }`}
@@ -131,7 +112,7 @@ const ModalPausasActivas = () => {
                 Pausas Activas
               </h1>
               <button
-                onClick={closeModal}
+                onClick={() => setIsModalOpen(false)}
                 disabled={!videoCompleted || loading || !success}
                 className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
               >
@@ -143,48 +124,41 @@ const ModalPausasActivas = () => {
             <div className="p-4 space-y-3">
               {/* Video */}
               <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[38/16]">
-                <video
-                  src={VideoFile}
-                  ref={videoRef}
-                  onEnded={handleVideoEnd}
-                  controls={false}
-                  // autoPlay
-                  className="w-full h-full"
-                />
-                <button
-                  onClick={handlePlayPause}
-                  className="absolute p-3 transition-all duration-200 transform -translate-x-1/2 rounded-full bottom-4 left-1/2 bg-white/80 hover:bg-white dark:bg-gray-100/90 dark:hover:bg-gray-300/90"
-                >
-                  {isPaused ? (
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                    </svg>
-                  )}
-                </button>
+                {/* Contenedor para el iframe de YouTube */}
+                <div ref={youtubeContainerRef} className="w-full h-full pointer-events-none" />
+                
+                {/* Botón personalizado para reproducir/pausar */}
+                {playerReady && (
+                  <button
+                    onClick={handlePlayPause}
+                    className="absolute p-3 transition-all duration-200 transform -translate-x-1/2 rounded-full bottom-4 left-1/2 bg-white/80 hover:bg-white dark:bg-gray-100/90 dark:hover:bg-gray-300/90"
+                  >
+                    {isPaused ? (
+                      <svg
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                      </svg>
+                    )}
+                  </button>
+                )}
 
-                {/* Indicador de progreso (opcional) */}
-                <div
-                  className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500"
-                  style={{
-                    width: `${
-                      ((videoRef.current?.currentTime || 0) /
-                        (videoRef.current?.duration || 1)) *
-                      100
-                    }%`,
-                  }}
-                />
+                {/* Indicador de progreso */}
+                {playerReady && player && (
+                  <div className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500">
+                    {/* La barra de progreso se actualizará mediante un intervalo */}
+                  </div>
+                )}
               </div>
 
               {/* Caja de comentarios */}
