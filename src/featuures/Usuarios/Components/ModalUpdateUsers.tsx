@@ -4,9 +4,7 @@ import useAnimation from "@/hooks/useAnimations";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import areas from "@/data-dynamic/areas.json";
-import {
-  useFetchRoles,
-} from "@/hooks/UseFetchRoles";
+import { useFetchRoles } from "@/hooks/UseFetchRoles";
 import { IUsuarios } from "@/models/IUsuarios";
 import { AnimatePresence } from "framer-motion";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
@@ -68,7 +66,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         tipoDocumento: Yup.string().required(
           "El tipo de documento es obligatorio"
         ),
-        correo: Yup.string().required("El correo es obligatorio"),
+        correo: Yup.string()
+          .email("Correo invalido")
+          .required("El correo es obligatorio")
+          .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Correo invalido debe terminar con un dominio valido'),
         identificacion: Yup.string()
           .required("La identificación es obligatoria")
           .min(5, "La identificación debe tener al menos 5 caracteres")
@@ -147,18 +148,18 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
+          
           setError("");
-          setTimeout(() => {
-            setIsOpen(false);
-            window.location.reload();
-          }, 2000);
-        } else {
-          setSuccess(false);
-          setError("Ocurrió un error al intentar actualizar el usuario");
+          // setTimeout(() => {
+          //   setIsOpen(false);
+          //   window.location.reload();
+          // }, 2000);
+        }else{
+          setError("Error revise los campos e intente nuevamente.");
         }
       } catch (error) {
         setSuccess(false);
-        setError(`Ocurrió un error al intentar guardar el cups ${error}`);
+        setError(`Error inesperado ${error}`);
       }
     },
   });
@@ -193,9 +194,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
     if (query) {
       const filteredSuggestions = areas.areas
-    .filter((option) => option.name.toLowerCase().includes(query.toLowerCase()))
-    .map((option) => option.name);
-  setSuggestionsArea(filteredSuggestions);
+        .filter((option) =>
+          option.name.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((option) => option.name);
+      setSuggestionsArea(filteredSuggestions);
     } else {
       setSuggestionsArea([]);
     }
@@ -213,9 +216,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
     if (query) {
       const filteredSuggestions = areas.cargos
-      .filter((option) => option.name.toLowerCase().includes(query.toLowerCase()))
-      .map((option) => option.name);
-    setSuggestionsCargo(filteredSuggestions);
+        .filter((option) =>
+          option.name.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((option) => option.name);
+      setSuggestionsCargo(filteredSuggestions);
     } else {
       setSuggestionsCargo([]);
     }
@@ -232,7 +237,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     () => setIsOpen(false),
     300
   );
-
 
   if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
   if (errorMunicipios) return <p>Error al cargar los convenios</p>;
@@ -442,7 +446,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
                             {suggestionsArea.map((suggestion) => (
                               <li
-                                key={areas.areas.find((a) => a.name === suggestion)?.id} 
+                                key={
+                                  areas.areas.find((a) => a.name === suggestion)
+                                    ?.id
+                                }
                                 onClick={() =>
                                   handleSuggestionClickArea(suggestion)
                                 }
@@ -479,7 +486,11 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
                             {suggestionsCargo.map((suggestion) => (
                               <li
-                                key={areas.cargos.find((cargo) => cargo.name === suggestion)?.id}
+                                key={
+                                  areas.cargos.find(
+                                    (cargo) => cargo.name === suggestion
+                                  )?.id
+                                }
                                 onClick={() =>
                                   handleSuggestionClickCargo(suggestion)
                                 }
@@ -686,6 +697,13 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   </div>
                 </div>
 
+                {success && (
+                  <span className="text-xl text-right text-green-500 ">
+                    Usuario actualizado con éxito!
+                  </span>
+                )}
+                {error && <span className="text-sm text-red-500">{error}</span>}
+
                 {/* Botones */}
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-t-gray-900 dark:border-t-white h-14 dark:bg-gray-600">
                   <button
@@ -698,15 +716,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   <button
                     className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
+                    disabled={!formik.isValid}
                   >
                     Actualizar
                   </button>
-                  {success && (
-                    <span className="text-green-500">
-                      Usuario actualizado con éxito!
-                    </span>
-                  )}
-                  {error && <span className="text-red-500">{error}</span>}
                 </div>
               </form>
             </div>
