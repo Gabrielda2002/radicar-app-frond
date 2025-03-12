@@ -1,5 +1,5 @@
 //*Fuctions and hooks
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import FileList from "@/featuures/SystemGC/Components/FileList";
 import BreadCrumb from "@/featuures/SystemGC/Components/BreadCrumb";
 import FolderList from "@/featuures/SystemGC/Components/FolderList";
@@ -15,7 +15,18 @@ import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
+const SECTIONS = [
+  { id: "suh", name: "Sistema Único de Habilitación" },
+  { id: "ci", name: "Centro de Investigación" },
+  { id: "sst", name: "Seguridad y Salud en el Trabajo" },
+  { id: "sgc", name: "Sistema Gestión de Calidad" },
+
+];
+
 const FileManager: React.FC = () => {
+
+  const [activeSection , setActiveSection] = useState<string>("sgc");
+
   const {
     contents,
     loading,
@@ -28,7 +39,7 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
-  } = useFileManager();
+  } = useFileManager(activeSection);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
   const isInFolder = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
@@ -45,86 +56,100 @@ const FileManager: React.FC = () => {
 
   const { rol } = useAuth();
 
-  return (
-    <>
-      <ModalSection
-        title="Sistema Gestión De Calidad"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Sistema Gestión Calidad", path: "" },
-        ]}
-      />
-      <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
-        <section className="flex items-center justify-between pb-6 header-tabla">
-          <div className="container-filter">
-            {/* <label className="text-xl font-bold text-stone-600 dark:text-stone-300">
-              Buscar Carpeta:
-            </label>
-            <input
-              placeholder="Buscar Elemento..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            /> */}
+    const activeSectionName = SECTIONS.find(s => s.id === activeSection)?.name || "Sistema Gestión de Calidad";
+
+    return (
+      <>
+        <ModalSection
+          title={activeSectionName}
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: `/ ${activeSectionName}`, path: "" },
+          ]}
+        />
+        
+        {/* Pestañas de navegación entre secciones */}
+        <div className="flex mb-4 overflow-x-auto bg-white shadow-md dark:bg-gray-800 rounded-t-md">
+          {SECTIONS.map(section => (
+            <button
+              key={section.id}
+              className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${
+                activeSection === section.id
+                  ? "text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
+              }`}
+              onClick={() => setActiveSection(section.id)}
+            >
+              {section.name}
+            </button>
+          ))}
+        </div>
+        
+        <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
+          <section className="flex items-center justify-between pb-6 header-tabla">
+            <div className="container-filter">
+              {/* Aquí puedes agregar filtros específicos por sección si lo necesitas */}
+            </div>
+            {[4, 1].includes(Number(rol)) && (
+              <DropDownManu
+                uploadNewFile={uploadNewFile}
+                currentFolderId={currentFolderId}
+                createNewFolder={createNewFolder}
+                isInFolder={isInFolder}
+              />
+            )}
+          </section>
+          <div className="mb-2">
+            <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
           </div>
-          {[4, 1].includes(Number(rol)) && (
-            <DropDownManu
-              uploadNewFile={uploadNewFile}
-              currentFolderId={currentFolderId}
-              createNewFolder={createNewFolder}
-              isInFolder={isInFolder} // Pasar el estado de si estás en una carpeta
-            />
-          )}
+          <div>
+            {isEmpty ? (
+              <div>
+                <p className="text-xl text-center text-gray-500 dark:text-gray-100">
+                  Esta carpeta está vacía.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1">
+                {hasFolder && (
+                  <div>
+                    <div className="flex items-center pb-3">
+                      <FolderOpenIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+                      <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
+                        Carpetas:
+                      </h2>
+                    </div>
+                    <FolderList
+                      folders={contents?.folders || []}
+                      onFolderClick={setCurrentFolderId}
+                      onDelete={deleteItemById}
+                      renameItem={renameItem}
+                    />
+                  </div>
+                )}
+                <hr className="m-8" />
+                {hasFiles && (
+                  <div>
+                    <div className="flex items-center pb-3">
+                      <DocumentDuplicateIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+                      <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
+                        Archivos:
+                      </h2>
+                    </div>
+                    <FileList
+                      files={contents?.files || []}
+                      onDelete={deleteItemById}
+                      onDownload={downloadFileById}
+                      renameItem={renameItem}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </section>
-        <div className="mb-2">
-          <BreadCrumb path={path} onNavigate={navigateBackToFolder} />
-        </div>
-        <div>
-          {isEmpty ? (
-            <div>
-              <p className="text-xl text-center text-gray-500 dark:text-gray-100">
-                Esta carpeta está vacía.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1">
-              {hasFolder && (
-                <div>
-                  <div className="flex items-center pb-3">
-                    <FolderOpenIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
-                    <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
-                      Carpetas:
-                    </h2>
-                  </div>
-                  <FolderList
-                    folders={contents?.folders || []}
-                    onFolderClick={setCurrentFolderId}
-                    onDelete={deleteItemById}
-                    renameItem={renameItem}
-                  />
-                </div>
-              )}
-              <hr className="m-8" />
-              {hasFiles && (
-                <div>
-                  <div className="flex items-center pb-3">
-                    <DocumentDuplicateIcon className="w-6 h-6 text-gray-900 dark:text-gray-100" />
-                    <h2 className="ml-2 text-2xl font-semibold text-gray-700 dark:text-gray-300">
-                      Archivos:
-                    </h2>
-                  </div>
-                  <FileList
-                    files={contents?.files || []}
-                    onDelete={deleteItemById}
-                    onDownload={downloadFileById}
-                    renameItem={renameItem}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
-    </>
-  );
+      </>
+    );
 };
 
 export default FileManager;

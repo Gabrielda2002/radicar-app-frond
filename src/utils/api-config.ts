@@ -49,18 +49,19 @@ api.interceptors.response.use(
     }
 )
 
-export const getFolderContent = async (folderId?: string) => {
+export const getFolderContent = async (section: string, folderId?: string) => {
     const idMunicipio = localStorage.getItem('Municipio')
     const path = folderId ? `/sistema-calidad/${folderId}` : '/sistema-calidad';
     return api.get(path, {
         params: {
-            Municipio: idMunicipio
+            Municipio: idMunicipio,
+            section: section
         },
     });
 };
 
 
-export const createFolder = async (parentFolderId: string | null, name: string) => {
+export const createFolder = async (parentFolderId: string | null, name: string, section: string  = "sgc") => {
     console.log(name)
     const idMunicipio = localStorage.getItem('Municipio')
 
@@ -69,13 +70,17 @@ export const createFolder = async (parentFolderId: string | null, name: string) 
 
     const folderName = name;
 
-    return api.post('/carpetas', {parentFolderId, folderName, municipio: idMunicipio, user_id: idUsuario});
+    return api.post('/carpetas', {parentFolderId, folderName, municipio: idMunicipio, user_id: idUsuario, section });
 }
 
-export const uploadFile = async (formData: FormData, id: number | string) => {
+export const uploadFile = async (formData: FormData, id: number | string, section: string = 'sgc') => {
+
+    formData.append('section', section);
+
     return api.post(`/archivo`, formData, {
         params: {
             parentFolderId: id, // Pasar el ID de la carpeta en los parámetros de la URL
+            section: section
         },
         headers: {
             'Content-Type': 'multipart/form-data',
