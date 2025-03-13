@@ -36,6 +36,9 @@ const Inicio = () => {
     setShowContent(true);
   };
 
+  const user = localStorage.getItem("user");
+  const headquarterUser = user ? JSON.parse(user).municipality : "";
+
   return (
     <>
       {isLoading ? (
@@ -52,7 +55,7 @@ const Inicio = () => {
               <div>
                 <div>
                   <h1 className="p-2 text-5xl font-bold border-black rounded-lg dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
-                    Bienvenidos a Nordvital IPS
+                    Bienvenidos a Nordvital IPS | Sede {headquarterUser}
                   </h1>
                 </div>
                 <p className="p-2 text-lg font-light text-gray-700 dark:text-gray-300">

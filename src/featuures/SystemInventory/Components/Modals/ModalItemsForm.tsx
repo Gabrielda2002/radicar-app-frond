@@ -28,6 +28,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { FormatDate } from "@/utils/FormatDate";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -57,6 +58,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   onSuccess,
 }) => {
   const [stadopen, setStadopen] = useState(false);
+
+  useBlockScroll(stadopen);
 
   // estados para la reaccion del formulario
   const [success, setSuccess] = useState(false);
@@ -162,7 +165,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   const formik = useFormik({
     initialValues: {
       name: "",
-      // area: "",
       typeEquipment: "",
       brand: "",
       model: "",
@@ -173,7 +175,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       warrantyTime: "",
       warranty: false,
       deliveryDate: "",
-      // inventoryNumber: "",
       addressIp: "",
       otherData: "",
       status: "",
@@ -191,14 +192,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         formData.append("brand", values.brand);
         formData.append("model", values.model);
         formData.append("serial", values.serial);
-        // formData.append("inventoryNumber", values.inventoryNumber);
         formData.append("addressIp", values.addressIp);
         formData.append("mac", values.mac);
         formData.append("sedeId", idSede?.toString() || "");
         formData.append("dhcp", values.dhcp.toString());
 
         if (tipoItem === "equipos") {
-          // formData.append("area", values.area);
           formData.append("typeEquipment", values.typeEquipment);
           formData.append("operationalSystem", values.operationalSystem);
           formData.append("purchaseDate", values.purchaseDate);
@@ -312,19 +311,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     }
   }, [items, idItem, tipoItem]);
 
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
-  }
-
   return (
     <>
       <div className="relative group">
@@ -373,7 +359,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   {idItem ? "Actualizar Item" : "Crear Item"}
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setStadopen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
@@ -712,40 +698,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
-
-                    {/* <div>
-                      <div className="flex items-center mt-2">
-                        <KeyIcon className="w-8 h-8 mr-2 dark:text-white" />
-                        <label
-                          htmlFor="inventoryNumber"
-                          className="block text-lg font-semibold"
-                        >
-                          Número de Inventario
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="inventoryNumber"
-                        name="inventoryNumber"
-                        value={formik.values.inventoryNumber}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.inventoryNumber &&
-                          formik.errors.inventoryNumber
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.inventoryNumber &&
-                        formik.errors.inventoryNumber ? (
-                          <ErrorMessage>
-                            {formik.errors.inventoryNumber}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div> */}
                   </div>
                   <hr className="border-gray-400 dark:border-gray-600" />
                   {tipoItem === "dispositivos-red" && (
@@ -1052,14 +1004,15 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={closeModal}
+                    onClick={() => setStadopen(false)}
+                    type="button"
                   >
                     Cerrar
                   </button>
                   <button
                     className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
-                    disabled={submiting}
+                    disabled={submiting || !formik.isValid}
                   >
                     {submiting ? "Enviando..." : "Enviar"}
                   </button>
