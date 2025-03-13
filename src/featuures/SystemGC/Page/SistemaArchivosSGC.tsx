@@ -39,10 +39,11 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
+    section
   } = useFileManager(activeSection);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
-  const isInFolder = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
+  const isInFolder: boolean = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
 
   if (loading) return <LoadingSpinner duration={3000} />;
   if (error)
@@ -124,6 +125,8 @@ const FileManager: React.FC = () => {
                       onFolderClick={setCurrentFolderId}
                       onDelete={deleteItemById}
                       renameItem={renameItem}
+                      isInFolder={isInFolder}
+                      section={section}
                     />
                   </div>
                 )}
