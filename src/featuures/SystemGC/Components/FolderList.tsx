@@ -8,7 +8,7 @@ import { FolderIcon } from "@heroicons/react/24/outline";
 import suhIcon from "@/assets/sgc/suh/suh-icon.svg"
 import sstIcon from "@/assets/sgc/suh/sst-icon.svg"
 import infIcon from "@/assets/sgc/suh/cdi-icon.svg"
-import dtacionIcon from "@/assets/sgc/suh/face-mask.svg"
+import dtacionIcon from "@/assets/sgc/sgc/dot-icos.svg"
 import medicIcon from "@/assets/sgc/suh/capsule-icon.svg"
 import pcpIcon from "@/assets/sgc/suh/hospital-icon.svg"
 import docIcon from "@/assets/sgc/suh/doc-icon.svg"
@@ -16,6 +16,9 @@ import docIcon from "@/assets/sgc/suh/doc-icon.svg"
 import prcsIcon from "@/assets/sgc/cdi/loader.svg"
 import stdIcon from "@/assets/sgc/cdi/book.svg"
 import staffIcon from "@/assets/sgc/cdi/staff-icon.svg"
+
+import procssIcon from '@/assets/sgc/sgc/process.svg'
+import pamecIcon from '@/assets/sgc/suh/face-mask.svg'
 
 interface Folder {
   id: string;
@@ -121,6 +124,19 @@ const FolderList: React.FC<FolderListProps> = ({
         default:
           return prcsIcon;
       }
+    }else if (section === "sgc") {
+      switch (folderName) {
+        case "MODELO DE ATENCION":
+          return staffIcon;
+        case "POLITICAS":
+          return docIcon;
+        case "PROCESOS":
+          return procssIcon;
+        case "PAMEC":
+          return pamecIcon;
+        default:
+          return procssIcon;
+      }
     } else {
       return suhIcon;
     }
@@ -139,7 +155,7 @@ const FolderList: React.FC<FolderListProps> = ({
             onClick={() => onFolderClick(folder.id, folder.name)} // Se abre la carpeta
             className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
           > 
-            {!isInFolder && customIcon && section !== "sgc"  ? (
+            {!isInFolder && customIcon  ? (
               <div>
                 <img
                   src={customIcon}
