@@ -114,6 +114,7 @@ const ProcessHelpDesk = () => {
                 <th className="p-2">Nombre</th>
                 <th className="p-2">Apellido</th>
                 <th className="p-2">Estado</th>
+                <th className="p-2">Celular</th>
                 <th className="p-2">Prioridad</th>
                 <th className="p-2">Categoria</th>
                 <th className="p-2">Sede</th>
@@ -131,6 +132,7 @@ const ProcessHelpDesk = () => {
                   <td className="p-2">{ticket.description}</td>
                   <td className="p-2">{ticket.nameRequester}</td>
                   <td className="p-2">{ticket.lastNameRequester}</td>
+                  <td className="p-2">{ticket.phone}</td>
                   <td className="p-2">
                     <span
                       className={`inline-block px-2 py-1 rounded-full ${getStatusColor(
