@@ -19,8 +19,13 @@ api.interceptors.request.use(
 
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`
-        }else if(rol){
+        } else if (rol) {
             config.headers['Authorization'] = `Bearer ${rol}`
+        }
+
+        // Si el cuerpo es FormData, eliminar el Content-Type para que axios lo establezca automáticamente
+        if (config.data instanceof FormData) {
+            delete config.headers['Content-Type'];
         }
 
         return config;
@@ -207,7 +212,11 @@ export const updateUsuariosTableEp = async (data: FormData, id: number) => {
 
 // crear item sistema inventario
 export const createItemEp = async (data: FormData, ep: string) => {
-    return api.post(`/${ep}`, data);
+    return api.post(`/${ep}`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 
 // actualizar item sistema inventario

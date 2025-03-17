@@ -142,6 +142,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         }),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
         manager: Yup.string().required(),
+        docDelivery: Yup.mixed().optional(),
       };
     }
 
@@ -182,6 +183,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       manager: "",
       candado: false,
       codigo: "",
+      docDelivery: null
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -207,6 +209,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           formData.append("managerId", values.manager);
           formData.append("lock", values.candado.toString());
           formData.append("codeLock", values.codigo);
+          if(values.docDelivery) formData.append("file", values.docDelivery);
         } else {
           formData.append("otherData", values.otherData);
           formData.append("status", values.status);
@@ -279,8 +282,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   });
 
   // console.log(formik.values.manager);
-  // console.log(formik.errors);
-
   useEffect(() => {
     if (items && idItem) {
       formik.setValues({
@@ -307,6 +308,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         manager: "idUsuario" in items ? String(items.idUsuario) : "",
         candado: "lock" in items ? items.lock : false,
         codigo: "lockKey" in items ? String(items.lockKey) : "",
+        docDelivery: null
       });
     }
   }, [items, idItem, tipoItem]);
@@ -936,6 +938,43 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       )}
                     </div>
                     <div>
+
+                    {tipoItem === "equipos" && (
+                      <div>
+                        <div className="flex items-center">
+                          <label
+                            htmlFor="docDelivery"
+                            className="block text-lg font-semibold"
+                          >
+                            Documento de Entrega
+                          </label>
+                        </div>
+                        <input
+                          type="file"
+                          id="docDelivery"
+                          name="docDelivery"
+                          accept=".pdf"
+                          onChange={(event) => {
+                            const file = event.target.files ? event.target.files[0] : null;
+                            formik.setFieldValue("docDelivery", file);
+                          }}
+                          onBlur={formik.handleBlur}
+                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                            formik.touched.docDelivery && formik.errors.docDelivery
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                          }`}
+                        />
+                        <AnimatePresence>
+                          {formik.touched.docDelivery && formik.errors.docDelivery ? (
+                            <ErrorMessage>
+                              {formik.errors.docDelivery}
+                            </ErrorMessage>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                      
                       {tipoItem === "equipos" && (
                         <div>
                           <div className="flex items-center">
