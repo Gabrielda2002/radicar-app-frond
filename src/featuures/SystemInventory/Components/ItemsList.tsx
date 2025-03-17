@@ -18,7 +18,9 @@ import {
   Squares2X2Icon,
   ComputerDesktopIcon,
   CpuChipIcon,
+  ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
+import { useOpenSupport } from "@/hooks/useOpenSupport";
 
 // * Interface
 interface ItemsListProps {
@@ -32,19 +34,20 @@ const ItemsList: React.FC<ItemsListProps> = ({
   invetario,
   tipoItem,
   idSede,
-  onItemsUpdate
+  onItemsUpdate,
 }) => {
   // * Estados para almacenar datos
   const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
     null
   );
 
+  const { handleOpen } = useOpenSupport();
+
   const [isLoading, setIsLoading] = useState(true);
-  const [isGridView, setIsGridView] = useState(true); // * Estado para alternar vistas (Lista o de cuadrícula)
-  const ITEMS_PER_PAGE = 9; // * Asignación de numero fijo para mejor compresion de datos y equipos
+  const [isGridView, setIsGridView] = useState(true);
+  const ITEMS_PER_PAGE = 9;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  // * Ajuste de lógica para la búsqueda
   const { query, setQuery, filteredData } = useSearch<
     IItems | IItemsNetworking
   >(
@@ -54,19 +57,16 @@ const ItemsList: React.FC<ItemsListProps> = ({
       : ["name", "brand", "model"]
   );
 
-  // * Lógica de paginación para gestionar la navegación entre páginas
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, itemsPerPage);
 
-  // * Función para cambiar el número de elementos por página
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setItemsPerPage(Number(e.target.value));
   };
 
-  // * Implementación de cookie para almacenar el estado de la vista (grid/lista)
-  // * Efecto para leer y aplicar la vista guardada de la cookie
+  // * almanecar la vista seleccionada en una cookie
   useEffect(() => {
     const savedView = Cookies.get("itemsViewMode");
     if (savedView === "list") {
@@ -74,14 +74,12 @@ const ItemsList: React.FC<ItemsListProps> = ({
     }
   }, []);
 
-  // * Subcomponente para alternar entre vista en "grid" o "lista", y guardar la preferencia en cookie
   const toggleViewMode = () => {
     const newViewMode = !isGridView ? "grid" : "list";
     Cookies.set("itemsViewMode", newViewMode, { expires: 7 });
     setIsGridView(!isGridView);
   };
 
-  // * Efecto para manejar el cierre o apertura del modal después de un retraso
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
@@ -89,12 +87,10 @@ const ItemsList: React.FC<ItemsListProps> = ({
     return () => clearTimeout(timeout);
   }, [tipoItem]);
 
-  // * Función para establecer el ítem seleccionado al hacer clic
   const handleViewDetails = (item: IItems | IItemsNetworking) => {
     setSelected(item);
   };
 
-  // * Función para cerrar el modal y resetear el ítem seleccionado
   const closeModal = () => {
     setSelected(null);
   };
@@ -102,11 +98,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
   // * Función para determinar el ícono a mostrar basado en el tipo de ítem
   // * Muestra el ícono correspondiente según el tipo de inventario (equipos o dispositivos)
 
-  const getIcon = () => {      
-      return tipoItem === "equipos"  ? <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" /> :
-             <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
+  const getIcon = () => {
+    return tipoItem === "equipos" ? (
+      <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
+    ) : (
+      <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
+    );
   };
-
   return (
     <>
       {isLoading ? (
@@ -175,9 +173,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                   >
                     <div className="flex items-center justify-between mb-14">
-                      <div className="flex items-center gap-2">
-                        {getIcon()}
-                      </div>
+                      <div className="flex items-center gap-2">{getIcon()}</div>
                       <h3 className="mb-2 text-2xl font-semibold dark:text-white">
                         {tipoItem === "equipos"
                           ? (item as IItems).name
@@ -211,6 +207,29 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         />
                         {tipoItem === "equipos" && (
                           <ModalAccesorioItem id={(item as IItems).id} />
+                        )}
+                        {tipoItem === "equipos" && (
+                          <div className="relative group">
+                            <button
+                              type="button"
+                              className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+                              onClick={() =>
+                                handleOpen(
+                                  (item as IItems).soportRelacion?.nameSaved ||
+                                    "",
+                                  "ActasEntrega"
+                                )
+                              }
+                              aria-label="Acta de entrega"
+                            >
+                              <ClipboardDocumentCheckIcon className="w-7 h-7" />
+                            </button>
+                            <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full mb-2 group-hover:opacity-100 dark:bg-gray-900 text-center">
+                              Acta Entrega
+                              {/* Flechita detrás del texto */}
+                              <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+                            </div>
+                          </div>
                         )}
                       </div>
                     </div>

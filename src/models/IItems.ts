@@ -26,7 +26,13 @@ export interface IItems {
     componentRelation:   ComponentRelation[];
     softwareRelation:    SoftwareRelation[];
     userRelation:        UserRelation;
+    soportRelacion:      SoportRelacion;
     
+}
+
+export interface SoportRelacion {
+    id:          number;
+    nameSaved?:   string;
 }
 
 export interface AccessoriesRelation {
