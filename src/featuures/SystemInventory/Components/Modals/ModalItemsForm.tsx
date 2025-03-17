@@ -142,7 +142,19 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         }),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
         manager: Yup.string().required(),
-        docDelivery: Yup.mixed().optional(),
+        docDelivery: Yup.mixed().nullable().optional()
+                    .test("fileSize", "El archivo no debe ser menor a 1mb", (value: any) => {
+                        if (value) {
+                            return value.size <= 1000000;
+                        }
+                        return true;
+                    })
+                    .test('fileType', 'Solo se permiten archivos PDF', (value: any) => {
+                        if (value) {
+                            return value.type === 'application/pdf';
+                        }
+                        return true;
+                    }),
       };
     }
 
@@ -801,12 +813,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   )}
                 </div>
                 <div className="px-4 py-4">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="">
+                  <div className="grid grid-cols-4 gap-4">
+                    {/* ? garantia */}
+                    <div>
+
                       {tipoItem === "equipos" && (
-                        <div>
                           <div className="flex items-center">
-                            <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
                             <input
                               type="checkbox"
                               id="warranty"
@@ -816,13 +828,13 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                               onBlur={formik.handleBlur}
                               className="w-5 h-5 mr-2"
                             />
+                            <CheckCircleIcon className="w-8 h-8 mr-2 dark:text-white" />
                             <label
                               htmlFor="warranty"
                               className="block text-lg font-semibold"
                             >
                               Garantía
                             </label>
-                          </div>
                           <AnimatePresence>
                             {formik.touched.warranty &&
                             formik.errors.warranty ? (
@@ -831,19 +843,17 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                               </ErrorMessage>
                             ) : null}
                           </AnimatePresence>
-                        </div>
+                          </div>
                       )}
 
                       {tipoItem === "equipos" && formik.values.warranty && (
                         <div>
-                          <div className="flex items-center">
                             <label
                               htmlFor="warrantyTime"
                               className="block text-lg font-semibold"
                             >
-                              Tiempo de Garantia
+                              Tiempo de Garantía
                             </label>
-                          </div>
                           <input
                             type="text"
                             id="warrantyTime"
@@ -870,9 +880,9 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       )}
                     </div>
 
-                    <div className="grid">
+                      {/* ? IP */}
+                      <div>
                       {tipoItem === "equipos" && (
-                        <>
                           <div className="flex items-center">
                             <input
                               type="checkbox"
@@ -890,26 +900,21 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                             >
                               Dirección DCHP
                             </label>
-                          </div>
                           <AnimatePresence>
                             {formik.touched.dhcp && formik.errors.dhcp ? (
                               <ErrorMessage>{formik.errors.dhcp}</ErrorMessage>
                             ) : null}
                           </AnimatePresence>
-                        </>
+                          </div>
                       )}
-                      {tipoItem === "equipos" && (
-                        <>
-                          {!formik.values.dhcp && (
+                      {tipoItem === "equipos" && !formik.values.dhcp && (
                             <div>
-                              <div className="flex items-center">
                                 <label
                                   htmlFor="addressIp"
                                   className="block text-lg font-semibold"
                                 >
                                   Direccion Ip (estática)
                                 </label>
-                              </div>
                               <input
                                 type="text"
                                 id="addressIp"
@@ -933,22 +938,17 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                                 ) : null}
                               </AnimatePresence>
                             </div>
-                          )}
-                        </>
                       )}
-                    </div>
-                    <div>
+                    </div>  
 
                     {tipoItem === "equipos" && (
                       <div>
-                        <div className="flex items-center">
                           <label
                             htmlFor="docDelivery"
                             className="block text-lg font-semibold"
                           >
                             Documento de Entrega
                           </label>
-                        </div>
                         <input
                           type="file"
                           id="docDelivery"
@@ -974,10 +974,10 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         </AnimatePresence>
                       </div>
                     )}
-                      
+
+                    <div>
                       {tipoItem === "equipos" && (
-                        <div>
-                          <div className="flex items-center">
+                        <div className="flex items-center">
                             <input
                               type="checkbox"
                               id="candado"
@@ -994,7 +994,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                             >
                               Candado
                             </label>
-                          </div>
                           <AnimatePresence>
                             {formik.touched.candado && formik.errors.candado ? (
                               <ErrorMessage>
@@ -1006,14 +1005,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                       )}
                       {formik.values.candado && (
                         <div>
-                          <div className="flex items-center">
                             <label
                               htmlFor="codigo"
                               className="block text-lg font-semibold"
                             >
                               Combinación Código
                             </label>
-                          </div>
                           <input
                             type="text"
                             id="codigo"
