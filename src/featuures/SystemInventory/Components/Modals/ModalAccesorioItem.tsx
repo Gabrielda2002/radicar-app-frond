@@ -15,7 +15,7 @@ import {
   PuzzlePieceIcon,
   ShieldCheckIcon,
   SwatchIcon,
-  MapPinIcon,
+  // MapPinIcon,
   CheckCircleIcon,
   CircleStackIcon,
   WifiIcon,
@@ -26,6 +26,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { createAccesoryEquipment } from "@/featuures/SystemInventory/Services/CreateAccesoryEquipment";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalAccesorioItemProps {
   id: number;
@@ -33,6 +34,7 @@ interface ModalAccesorioItemProps {
 
 const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   const [stadopen, setStadopen] = useState(false);
+  useBlockScroll(stadopen);
   const { showAnimation, closing } = useAnimation(
     stadopen,
     () => setStadopen(false),
@@ -49,19 +51,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
   // estados para controlar la busqueda de accesorios y mostrar sugerencias
   const [search, setSearch] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  }
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  }
-  if (stadopen) {
-    openModal();
-  }
 
   const getValidationSchema = (typeAdd: string) => {
     const baseValidationSchema = {
@@ -126,13 +115,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
     if (typeAdd === "Periferico") {
       return Yup.object({
         ...baseValidationSchema,
-        inventoryNumber: Yup.string()
-          .required("El número de inventario es requerido")
-          .min(3, "El número de inventario debe tener al menos 3 caracteres")
-          .max(
-            200,
-            "El número de inventario debe tener como máximo 200 caracteres"
-          ),
         status: Yup.string().required("El estado es requerido"),
       });
     }
@@ -150,7 +132,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
       license: "",
       dateInstallation: "",
       status: "",
-      inventoryNumber: "",
       capacity: "",
       speed: "",
       othersData: "",
@@ -186,7 +167,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
         }
         if (typeAdd === "Periferico") {
           ep = "accesorios-equipos";
-          formData.append("inventoryNumber", values.inventoryNumber);
+          // formData.append("inventoryNumber", values.inventoryNumber);
           formData.append("status", values.status);
         }
 
@@ -194,6 +175,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
 
         if (response?.status === 200 || response?.status === 201) {
           setSubmitting(false);
+          formik.resetForm();
           setSuccess(true);
           toast.success("Datos enviados con éxito", {
             position: "bottom-right",
@@ -320,7 +302,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                   Agregar Accesorio
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setStadopen(false)}
                   className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
                 >
                   &times;
@@ -724,42 +706,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                         </label>
                       </div>
                     )}
-
-                    {/* Si typeAdd es igual a periferico que muestre los campos correspondientes para el registro de esos datos */}
-                    {typeAdd === "Periferico" && (
-                      <div className="flex">
-                        <label className="w-full mb-2">
-                          <div className="flex items-center mb-2">
-                            <MapPinIcon className="w-8 h-8 mr-2 dark:text-white" />
-                            <span className="flex text-lg font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                              Número de Inventario
-                            </span>
-                          </div>
-                          <input
-                            type="text"
-                            name="inventoryNumber"
-                            value={formik.values.inventoryNumber}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                              formik.touched.inventoryNumber &&
-                              formik.errors.inventoryNumber
-                                ? "border-red-500 dark:border-red-500"
-                                : "border-gray-200 dark:border-gray-600"
-                            }`}
-                          />
-                          <AnimatePresence>
-                            {formik.touched.inventoryNumber &&
-                            formik.errors.inventoryNumber ? (
-                              <ErrorMessage>
-                                {formik.errors.inventoryNumber}
-                              </ErrorMessage>
-                            ) : null}
-                          </AnimatePresence>
-                        </label>
-                      </div>
-                    )}
-
                     {typeAdd === "Periferico" && (
                       <div className="flex">
                         <label className="">
@@ -803,14 +749,15 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({ id }) => {
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={closeModal}
+                    onClick={() => setStadopen(false)}
+                    type="button"
                   >
                     Cerrar
                   </button>
                   <button
                     className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !formik.isValid}
                   >
                     {submitting ? "Actualizando..." : "Actualizando"}
                   </button>

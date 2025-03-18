@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
 import { useTickets } from "@/context/ticketContext";
+import { useFetchComments } from "../Hooks/useFetchComments";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface CerrarModalProps {
   IdTicket: number;
@@ -20,6 +22,10 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // hook trae comentarios tickets
+  const { dataComments, errorComments, fetchComments } = useFetchComments();
+  useBlockScroll(showModal);
 
   const { validateUserTicketStatus } = useTickets();
 
@@ -49,7 +55,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
 
         formData.append("ticketId", IdTicket.toString());
         formData.append("usuarioId", idUsuario);
-      formData.append("coment", values.observation);
+        formData.append("coment", values.observation);
         formData.append("status", values.status);
 
         const reponse = await UpdateStatusTicketEp(formData);
@@ -80,7 +86,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     },
   });
 
-  useBlockScroll(showModal);
   return (
     <>
       <button
@@ -175,6 +180,45 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                 ) : null}
               </div>
 
+              {/* comentarios */}
+
+              <div>
+                <button
+                  type="button"
+                  onClick={() => fetchComments(IdTicket)}
+                  className="px-3 py-2 text-sm font-medium text-white transition-colors bg-gray-400 rounded-lg hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700"
+                >
+                  Ver Historico
+                </button>
+
+                {dataComments.length > 0 && dataComments && (
+                  <div className="overflow-x-auto my-4">
+                    <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
+                      <thead>
+                        <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
+                          <th>Comenario</th>
+                          <th>Fecha Creacion</th>
+                        </tr>
+                      </thead>
+                      {dataComments.map((comment) => (
+                        <tbody className="text-xs text-center dark:text-gray-200">
+                          <tr className="border-b dark:border-gray-700">
+                            <td>{comment.comment}</td>
+                            <td>{FormatDate(comment.createdAt)}</td>
+                          </tr>
+                        </tbody>
+                      ))}
+                    </table>
+                  </div>
+                )}
+
+                {errorComments && (
+                  <div>
+                    <p className="text-sm text-red-500">{errorComments}</p>
+                  </div>
+                )}
+              </div>
+
               {error && (
                 <div className="p-2 mb-4 text-sm text-red-600 bg-red-200 rounded-lg">
                   {error}
@@ -191,7 +235,11 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className={`px-4 py-2 text-sm font-medium text-white ${ formik.values.status == '2' ? 'bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700' : "bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700" }  rounded-lg`}
+                  className={`px-4 py-2 text-sm font-medium text-white ${
+                    formik.values.status == "2"
+                      ? "bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                      : "bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700"
+                  }  rounded-lg`}
                   disabled={!formik.isValid || loading}
                 >
                   Cerrar Ticket

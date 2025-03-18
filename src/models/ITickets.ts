@@ -9,6 +9,7 @@ export interface ITickets {
     status:            string;
     headquarter:       string;
     municipio:         string;
+    phone:             number;
     createdAt:         Date;
     updatedAt:         Date;
 }
