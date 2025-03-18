@@ -216,7 +216,11 @@ export const createItemEp = async (data: FormData, ep: string) => {
 
 // actualizar item sistema inventario
 export const updateItemEp = async (data: FormData, id: number, ep: string) => {
-    return api.put(`/${ep}/${id}`, data);
+    return api.put(`/${ep}/${id}`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 
 // crear seguimiento item

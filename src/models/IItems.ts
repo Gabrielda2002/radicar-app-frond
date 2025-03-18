@@ -20,6 +20,7 @@ export interface IItems {
     lockKey:                  number;
     createAt:                 Date;
     updateAt:                 Date;
+    idUser:                   number;
     nameUser:                 string;
     lastNameUser:             string;
     nameDocument:             string;
