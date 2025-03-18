@@ -29,14 +29,14 @@ const ModalSection: React.FC<ModuleSectionProps> = ({
             </button>
           </div>
 
-          <h1 className="pl-3 text-4xl font-bold text-color dark:text-gray-200">
+          <h1 className="pl-2 text-2xl font-bold md:text-4xl text-color dark:text-gray-200">
             {title}
           </h1>
         </div>
-        <ol className="flex items-center space-x-2">
+        <ol className="flex items-center w-[234px] pl-6">
           {breadcrumb.map((item, index) => (
             <Link key={index} to={item.path}>
-              <li className="text-slate-400 hover:underline">{item.label}</li>
+              <li className="text-sm text-slate-400 md:text-md hover:underline">{item.label}</li>
             </Link>
           ))}
         </ol>

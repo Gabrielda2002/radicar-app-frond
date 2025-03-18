@@ -29,7 +29,7 @@ const SedesList: React.FC<sedesListProps> = ({ sedes, onSelect }) => {
         return Sede05;
       case "Cúcuta/Calle 14":
         return Sede06;
-      case "Cúcuta/Torre Compensar":
+      case "Cúcuta/Torre Nordvital":
         return Sede07;
       default:
         return Sede01;
