@@ -90,7 +90,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     <>
       <button
         type="button"
-        className="text-xl font-extrabold text-gray-500 transition-colors duration-200 hover:text-red-600 focus:outline-none"
+        className="text-2xl font-extrabold text-gray-500 transition-colors duration-200 md:text-xl hover:text-red-600 focus:outline-none"
         onClick={() => setShowModal(true)}
         title="Cambiar estado"
       >
@@ -192,7 +192,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                 </button>
 
                 {dataComments.length > 0 && dataComments && (
-                  <div className="overflow-x-auto my-4">
+                  <div className="my-4 overflow-x-auto">
                     <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
                       <thead>
                         <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">

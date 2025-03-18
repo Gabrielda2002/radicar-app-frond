@@ -55,7 +55,7 @@ const Inicio = () => {
               <div>
                 <div>
                   <h1 className="p-2 text-2xl font-bold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
-                    Bienvenidos a Nordvital IPS
+                    Bienvenidos a Nordvital IPS {headquarterUser}
                   </h1>
                 </div>
                 <p className="p-2 font-light text-gray-700 text-md md:text-lg dark:text-gray-300">
