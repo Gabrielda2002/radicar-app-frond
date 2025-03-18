@@ -67,7 +67,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 className="truncate transition-colors border-b last:border-b-0 hover:bg-gray-50 dark:text-white dark:bg-gray-800"
               >
                 <td className="p-3 text-gray-600 dark:text-white">
-                  {FormatDate(s.dateEvent)}
+                  {FormatDate(s.dateEvent, false)}
                 </td>
                 <td className="p-3 font-medium dark:text-white">
                   {s.eventType}
@@ -80,7 +80,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 </td>
 
                 <td className="p-3 text-gray-500 dark:text-white">
-                  {s.userRelation.name}
+                  {s.responsibleName} {s.responsibleLastName}
                 </td>
               </tr>
             ))}
@@ -138,8 +138,8 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
               </div>
 
               <div>
-                {Items && "seguimientoEquipos" in Items
-                  ? renderTrackingTable(Items.seguimientoEquipos)
+                {Items && "processEquipment" in Items
+                  ? renderTrackingTable((Items as IItems).processEquipment)
                   : null}
 
                 {Items && "seguimientoDispositivosRedRelation" in Items

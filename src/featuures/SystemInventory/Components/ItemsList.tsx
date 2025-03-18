@@ -48,17 +48,18 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const ITEMS_PER_PAGE = 9;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = useSearch<
-    IItems | IItemsNetworking
-  >(
-    invetario || [],
-    tipoItem === "equipos"
-      ? ["name", "brand", "model"]
-      : ["name", "brand", "model"]
-  );
+  const { query, setQuery, filteredData } = tipoItem === "equipos"
+  ? useSearch<IItems>(
+      invetario as IItems[] || [],
+      ["nameEquipment", "brandEquipment", "modelEquipment"]
+    )
+  : useSearch<IItemsNetworking>(
+      invetario as IItemsNetworking[] || [],
+      ["name", "brand", "model"]
+    );
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination(filteredData, itemsPerPage);
+    usePagination<IItems | IItemsNetworking>(filteredData, itemsPerPage);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -176,7 +177,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       <div className="flex items-center gap-2">{getIcon()}</div>
                       <h3 className="mb-2 text-2xl font-semibold dark:text-white">
                         {tipoItem === "equipos"
-                          ? (item as IItems).name
+                          ? (item as IItems).nameEquipment
                           : (item as IItemsNetworking).name}
                       </h3>
                       <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
@@ -215,7 +216,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                               className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
                               onClick={() =>
                                 handleOpen(
-                                  (item as IItems).soportRelacion?.nameSaved ||
+                                  (item as IItems).nameDocument ||
                                     "",
                                   "ActasEntrega"
                                 )
@@ -248,7 +249,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         {getIcon()}
                         <h3 className="text-xl font-semibold dark:text-white">
                           {tipoItem === "equipos"
-                            ? (item as IItems).name
+                            ? (item as IItems).nameEquipment
                             : (item as IItemsNetworking).name}
                         </h3>
                       </div>

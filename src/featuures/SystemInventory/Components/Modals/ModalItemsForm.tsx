@@ -297,12 +297,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   useEffect(() => {
     if (items && idItem) {
       formik.setValues({
-        name: items.name,
+        name: (items as IItems).nameEquipment || (items as IItemsNetworking).name,
         // area: "area" in items ? items.area : "",
         typeEquipment: "typeEquipment" in items ? items.typeEquipment : "",
-        brand: items.brand,
-        model: items.model,
-        serial: items.serial,
+        brand: (items as  IItems).brandEquipment || (items as IItemsNetworking).brand,
+        model: (items as IItems).modelEquipment || (items as IItemsNetworking).model,
+        serial: (items as IItems).serialEquipment || (items as IItemsNetworking).serial,
         operationalSystem:
           "operationalSystem" in items ? items.operationalSystem : "",
         mac: items.mac,
