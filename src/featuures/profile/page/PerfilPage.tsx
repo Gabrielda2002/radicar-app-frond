@@ -227,7 +227,7 @@ const Perfil: React.FC = () => {
 
             {/* Formulario Section */}
             <div className="flex gap-4 p-4 ">
-              <div className="flex-1 p-8 rounded-2xl shadow-md bg-gray-300 dark:bg-gray-800 min-w-[500px] max-h-[500px]">
+              <div className="flex-1 p-8 bg-gray-300 shadow-md rounded-2xl dark:bg-gray-800 w-fit h-fit">
                 <motion.div
                   initial="hidden"
                   animate="visible"

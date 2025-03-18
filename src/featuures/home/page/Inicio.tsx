@@ -36,6 +36,9 @@ const Inicio = () => {
     setShowContent(true);
   };
 
+  const user = localStorage.getItem("user");
+  const headquarterUser = user ? JSON.parse(user).municipality : "";
+
   return (
     <>
       {isLoading ? (

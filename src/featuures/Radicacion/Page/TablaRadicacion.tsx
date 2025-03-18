@@ -23,6 +23,7 @@ import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
 import { FormatDate } from "@/utils/FormatDate.ts";
+import { useOpenSupport } from "@/hooks/useOpenSupport.ts";
 
 // const ITEMS_PER_PAGE = 8;
 
@@ -33,6 +34,8 @@ const TablaRadicacion = () => {
   // hook para buscar radicado por numero documento paciente
   const { radicados, loading, errorRadicados, getData } =
     useFetchDocumentoRadicado();
+  
+  const { handleOpen } = useOpenSupport();
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
@@ -53,19 +56,6 @@ const TablaRadicacion = () => {
     },
     []
   );
-
-  const handleOpenSoporte = useCallback((nombreSoporte: string | null) => {
-    if (!nombreSoporte) {
-      alert("No hay soporte para mostrar.");
-      return;
-    }
-
-    window.open(
-      `https://api.nordvitalips.com/api/v1/uploads/Soportes/${nombreSoporte}`,
-      "_blank"
-    );
-    return;
-  }, []);
 
   //PRUEBA
   // Estado para mostrar el alerta de cookies
@@ -274,8 +264,8 @@ const TablaRadicacion = () => {
                         <button
                           onClick={() =>
                             radicacion.soportesRelation &&
-                            handleOpenSoporte(
-                              radicacion.soportesRelation.nameSaved
+                            handleOpen(
+                              radicacion.soportesRelation.nameSaved,
                             )
                           }
                         >

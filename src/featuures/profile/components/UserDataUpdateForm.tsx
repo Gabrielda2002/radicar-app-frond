@@ -12,6 +12,7 @@ interface UserDataUpdateFormProps {
     lastname: string;
     email: string;
     id: string;
+    phone: string;
   };
 }
 
@@ -37,6 +38,9 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
       .required("El correo electrónico es requerido")
       .min(10, "El correo electrónico debe tener al menos 10 caracteres")
       .max(150, "El correo electrónico debe tener como máximo 150 caracteres"),
+    phone: Yup.string()
+      .required("El teléfono es requerido")
+      .max(10, "El teléfono debe tener 10 caracteres"),
   });
 
   const formik = useFormik({
@@ -44,6 +48,7 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
       nombre: initialUserData.name,
       apellido: initialUserData.lastname,
       email: initialUserData.email,
+      phone: initialUserData.phone,
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -56,6 +61,7 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
       formDataUpdate.append("name", values.nombre);
       formDataUpdate.append("lastName", values.apellido);
       formDataUpdate.append("email", values.email);
+      formDataUpdate.append("phone", values.phone);
 
       try {
         const response = await updateUserData(
@@ -165,6 +171,27 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
                 />{" "}
                 {formik.touched.email && formik.errors.email ? (
                   <div className="text-red-500">{formik.errors.email}</div>
+                ) : null}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block mb-2 text-sm text-gray-800 dark:text-gray-300"
+                >
+                  Teléfono
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.phone}
+                  className="w-full px-3 py-2 text-gray-800 bg-white border rounded-md dark:border-gray-600 focus:outline-none focus:border-teal-500 dark:text-gray-300 dark:bg-gray-700"
+                />{" "}
+                {formik.touched.phone && formik.errors.phone ? (
+                  <div className="text-red-500">{formik.errors.phone}</div>
                 ) : null}
               </div>
 

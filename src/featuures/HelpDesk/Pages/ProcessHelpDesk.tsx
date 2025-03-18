@@ -131,6 +131,7 @@ const ProcessHelpDesk = () => {
                   <th className="p-2">Nombre</th>
                   <th className="p-2">Apellido</th>
                   <th className="p-2">Estado</th>
+                  <th className="p-2">Celular</th>
                   <th className="p-2">Prioridad</th>
                   <th className="p-2">Categoria</th>
                   <th className="p-2">Sede</th>
@@ -157,6 +158,7 @@ const ProcessHelpDesk = () => {
                         {ticket.status}
                       </span>
                     </td>
+                    <td className="p-2">{ticket.phone}</td>
                     <td className="p-2">
                       <span
                         className={`inline-block px-2 py-1 rounded-full ${getPriorityColor(
@@ -247,6 +249,12 @@ const ProcessHelpDesk = () => {
                       >
                         {ticket.status}
                       </span>
+                    </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Celular
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {ticket.phone}
                     </div>
 
                     <div className="font-semibold text-gray-600 dark:text-gray-400/90">

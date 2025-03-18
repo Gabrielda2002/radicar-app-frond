@@ -57,16 +57,16 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </thead>
           <tbody className="text-center dark:bg-gray-800">
             {item &&
-            "accessoriesRelation" in item &&
-            item.accessoriesRelation.length > 0 ? (
+            "accessories" in item &&
+            item.accessories.length > 0 ? (
               <>
-                {item.accessoriesRelation.map((acc) => (
+                {item.accessories.map((acc) => (
                   <tr key={acc.id} className="dark:text-white">
                     <td>{acc.name}</td>
                     <td>{acc.brand}</td>
                     <td>{acc.model}</td>
                     <td>{acc.serial}</td>
-                    <td>{acc.otherData}</td>
+                    <td>{acc.description}</td>
                     <td>{acc.status}</td>
                     <td>{acc.inventoryNumber}</td>
                   </tr>
@@ -102,10 +102,10 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </thead>
           <tbody className="text-center dark:bg-gray-800">
             {item &&
-            "componentRelation" in item &&
-            item.componentRelation.length > 0 ? (
+            "components" in item &&
+            item.components.length > 0 ? (
               <>
-                {item.componentRelation.map((comp) => (
+                {item.components.map((comp) => (
                   <tr key={comp.id} className="dark:text-white">
                     <td>{comp.name}</td>
                     <td>{comp.brand}</td>
@@ -146,10 +146,10 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </thead>
           <tbody className="text-center dark:bg-gray-800">
             {item &&
-            "softwareRelation" in item &&
-            item.softwareRelation.length > 0 ? (
+            "software" in item &&
+            item.software.length > 0 ? (
               <>
-                {item.softwareRelation.map((soft) => (
+                {item.software.map((soft) => (
                   <tr key={soft.id} className="dark:text-white">
                     <td>{soft.name}</td>
                     <td>{soft.versions}</td>
@@ -193,16 +193,16 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul>
-                    {item && "userRelation" in item && (
+                    {item && "nameUser" in item && (
                       <li>
                         <strong>Responsable: </strong>
-                        {item.userRelation?.name || "N/A"}{" "}
-                        {item.userRelation?.lastName || "N/A"}
+                        {item.nameUser || "N/A"}{" "}
+                        {item.nameUser || "N/A"}
                       </li>
                     )}
                     <li>
                       <strong>Nombre: </strong>
-                      {item?.name}
+                      {(item as IItems).nameEquipment}
                     </li>
                     {item && "area" in item && (
                       <li>
@@ -218,11 +218,11 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     )}
                     <li>
                       <strong>Marca: </strong>
-                      {item?.brand}
+                      {(item as IItems).brandEquipment}
                     </li>
                     <li>
                       <strong>Modelo: </strong>
-                      {item?.model}
+                      {(item as IItems).modelEquipment}
                     </li>
                   </ul>
                 </div>
@@ -235,7 +235,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                   <ul>
                     <li>
                       <strong>Serial: </strong>
-                      {item?.serial}
+                      {(item as IItems).serialEquipment}
                     </li>
                     {item && "operationalSystem" in item && (
                       <li>
@@ -280,7 +280,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     )}
                     <li>
                       <strong>Número Inventario: </strong>
-                      {item?.inventoryNumber}
+                      {(item as IItems).inventoryNumberEquipment}
                     </li>
                     {item && "otherData" in item && (
                       <li>

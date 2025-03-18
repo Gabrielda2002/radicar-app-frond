@@ -124,7 +124,6 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
       setSubmitting(false);
     },
   });
-  console.log(formik.errors);
 
   return (
     <>

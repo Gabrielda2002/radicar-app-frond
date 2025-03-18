@@ -25,7 +25,7 @@ interface FolderContents {
     folders: Folder[];
 }
 
-export const useFileManager = (initialFolderId?: string) => {
+export const useFileManager = (section: string,initialFolderId?: string) => {
     const [currentFolderId, setCurrentFolderId] = useState<string | null>(initialFolderId || null);
     const [ path, setPath] = useState<{id: string; name: string}[]>([
         {id: "", name: "Inicio"}
@@ -34,12 +34,18 @@ export const useFileManager = (initialFolderId?: string) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    useEffect(() => {
+        setPath([{id: "", name: "Inicio"}])
+        setCurrentFolderId(null)
+        setContents(null)
+    } , [section])
+
     // funcion para traer el contenido de la carpeta
     const fetchContents = async () => {
         setLoading(true);
         try {
 
-            const response = await getFolderContent(currentFolderId || undefined);
+            const response = await getFolderContent(section ,currentFolderId || undefined );
             setContents(response.data);
             setError(null);
         } catch (err) {
@@ -51,13 +57,13 @@ export const useFileManager = (initialFolderId?: string) => {
 
     useEffect(() => {
         fetchContents();
-    }, [currentFolderId]);
+    }, [currentFolderId, section]);
 
     // Function to create a new folder
     const createNewFolder = async (name: string) => {
         // if (!currentFolderId) return;
         try {
-            await createFolder(currentFolderId || null, name);
+            await createFolder(currentFolderId || null, name, section);
             await fetchContents(); // Reload contents after creating a folder
         } catch (err) {
             setError(`Error al crear la carpeta, intente nuevamente. ${err}`);
@@ -141,6 +147,7 @@ export const useFileManager = (initialFolderId?: string) => {
         setCurrentFolderId: navigateToFolder,
         navigateBackToFolder,
         path,
-        renameItem
+        renameItem,
+        section
     };
 };
