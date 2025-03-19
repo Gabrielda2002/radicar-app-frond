@@ -20,7 +20,7 @@ const AccordionMenu: React.FC<AccordionMenuProps> = ({
       {/* Botón siempre visible en la esquina */}
       <button
         onClick={toggleAccordion}
-        className={`relative lg:top-2 right-4 z-10 p-2 rounded-full shadow-lg transition-all ${
+        className={`relative lg:top-2 right-5 sm:right-2 z-10 p-2 rounded-full shadow-lg transition-all ${
           theme === "dark"
             ? "bg-gray-600 text-white w-7 hover:bg-gray-500"
             : "bg-gray-200 text-gray-800 w-7 hover:bg-gray-300"

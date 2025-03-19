@@ -148,22 +148,152 @@ const Navbar: React.FC = React.memo(() => {
          </div>
 
          {/* Mobile center section - Username and quick actions */}
-         <div className="flex items-center w-[330px] md:hidden">
+         <div className="flex ml-3 items-center mx-auto w-[370px] md:hidden">
+          <div>
+
            <h2
-             className="text-sm font-medium text-black truncate w-44 dark:text-white"
+             className="w-24 text-sm font-medium text-black dark:text-white"
              style={{ maxWidth: "180px" }}
            >
              Hola, {nombreUsuario}
            </h2>
-
-           <div>
+            
+          </div>
+                 
+           <div className="">
              <NotificacionBell />
            </div>
 
            <div className="flex text-xs">
              <ModalPausasActivas />
+             <div className="mr-4">
              {rol && Number.parseInt(rol) === 1 && <HelpDesk />}
+              
+             </div>
            </div>
+
+           {/* Acordion menu responsive */}
+             <AccordionMenu theme={theme}>
+               <div className="p-2">
+                 {/* Mobile theme toggle */}
+                 <div className="flex items-center justify-between py-2 border-b dark:border-gray-600">
+                   <button
+                     onClick={handleToggleTheme}
+                     className={`p-2 rounded-full ${
+                       theme === "dark"
+                         ? "bg-gray-600 hover:bg-gray-300 text-white"
+                         : "bg-gray-200 hover:bg-gray-500 text-gray-800"
+                     }`}
+                   >
+                     {theme === "light" ? (
+                       <img
+                         src={moon || "/placeholder.svg"}
+                         alt="Moon Icon"
+                         className="w-5 h-5"
+                       />
+                     ) : (
+                       <img
+                         src={sun || "/placeholder.svg"}
+                         alt="Sun Icon"
+                         className="w-5 h-5 invert"
+                       />
+                     )}
+                   </button>
+                 </div>
+                 <hr />
+
+                 {/* soportes */}
+                 <Menu as="div" className="mt-2" title="Soportes">
+                   <MenuButton className="p-2 mb-2 text-base duration-300 bg-gray-200 rounded-full hover:scale-105 hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
+                     Soportes
+                   </MenuButton>
+
+                   <Menu.Items
+                     className={` ${
+                       theme === "dark" ? "bg-gray-800" : "bg-white"
+                     }`}
+                   >
+                     <div className="flex-grow w-full mt-1">
+                       {supportLinks.map((link) => (
+                         <Menu.Item key={link.name}>
+                           {({ active }) => (
+                             <a
+                               href={link.href}
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               className={`${
+                                 active
+                                   ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600 hover:scale-100 shadow-none "
+                                   : "text-gray-700 dark:text-gray-200"
+                               } group flex items-center w-full px-2 py-2 text-sm`}
+                             >
+                               {link.name}
+                             </a>
+                           )}
+                         </Menu.Item>
+                       ))}
+                     </div>
+                   </Menu.Items>
+                 </Menu>
+                 <hr />
+                 {/* perfil  */}
+                 <Menu
+                   as="div"
+                   className="relative mt-3 duration-300 rounded-lg dark:border-gray-800 hover:scale-105"
+                   title="Perfil"
+                 >
+                   <MenuButton className="flex items-center px-4 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
+                     <img
+                       alt="Profile"
+                       src={imageUrl || defaultUserPicture}
+                       className="object-cover w-8 h-8 rounded-full dark:border-white"
+                     />
+                     <img
+                       src={userLogo || "/placeholder.svg"}
+                       alt="User Logo"
+                       className="w-8 h-8 text-white group-hover:invert dark:invert"
+                     />
+                   </MenuButton>
+                   <Menu.Items
+                     transition
+                     className={`absolute right-0 z-50 w-56 py-2 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${
+                       theme === "dark" ? "bg-gray-800" : "bg-white"
+                     }`}
+                   >
+                     {userNavigation.map((item) => (
+                       <Menu.Item key={item.name}>
+                         {item.action ? (
+                           <button
+                             onClick={() => {
+                               item.action();
+                             }}
+                             className={`block py-2 ps-2 text-sm w-full text-left ${
+                               theme === "dark"
+                                 ? "text-gray-200 hover:bg-gray-600 hover:text-white"
+                                 : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"
+                             } transition-colors duration-300`}
+                           >
+                             {item.name}
+                           </button>
+                         ) : (
+                           <NavLink
+                             to={item.href}
+                             className={`block py-2 text-sm ps-2 ${
+                               theme === "dark"
+                                 ? "text-gray-200 hover:bg-gray-600 hover:text-white"
+                                 : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"
+                             } transition-colors duration-300`}
+                           >
+                             {item.name}
+                           </NavLink>
+                         )}
+                       </Menu.Item>
+                     ))}
+                   </Menu.Items>
+                 </Menu>
+               </div>
+             </AccordionMenu>
+
          </div>
 
          {/* Desktop menu */}
@@ -304,130 +434,6 @@ const Navbar: React.FC = React.memo(() => {
                ))}
              </Menu.Items>
            </Menu>
-         </div>
-
-         {/* Acordion menu responsive */}
-         <div className="block md:hidden">
-           <AccordionMenu theme={theme}>
-             <div className="p-2">
-               {/* Mobile theme toggle */}
-               <div className="flex items-center justify-between py-2 border-b dark:border-gray-600">
-                 <button
-                   onClick={handleToggleTheme}
-                   className={`p-2 rounded-full ${
-                     theme === "dark"
-                       ? "bg-gray-600 hover:bg-gray-300 text-white"
-                       : "bg-gray-200 hover:bg-gray-500 text-gray-800"
-                   }`}
-                 >
-                   {theme === "light" ? (
-                     <img
-                       src={moon || "/placeholder.svg"}
-                       alt="Moon Icon"
-                       className="w-5 h-5"
-                     />
-                   ) : (
-                     <img
-                       src={sun || "/placeholder.svg"}
-                       alt="Sun Icon"
-                       className="w-5 h-5 invert"
-                     />
-                   )}
-                 </button>
-               </div>
-               <hr />
-
-               {/* soportes */}
-               <Menu as="div" className="mt-2" title="Soportes">
-                 <MenuButton className="p-2 mb-2 text-base duration-300 bg-gray-200 rounded-full hover:scale-105 hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color">
-                   Soportes
-                 </MenuButton>
-
-                 <Menu.Items
-                   className={` ${
-                     theme === "dark" ? "bg-gray-800" : "bg-white"
-                   }`}
-                 >
-                   <div className="flex-grow w-full mt-1">
-                     {supportLinks.map((link) => (
-                       <Menu.Item key={link.name}>
-                         {({ active }) => (
-                           <a
-                             href={link.href}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             className={`${
-                               active
-                                 ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600 hover:scale-100 shadow-none "
-                                 : "text-gray-700 dark:text-gray-200"
-                             } group flex items-center w-full px-2 py-2 text-sm`}
-                           >
-                             {link.name}
-                           </a>
-                         )}
-                       </Menu.Item>
-                     ))}
-                   </div>
-                 </Menu.Items>
-               </Menu>
-               <hr />
-               {/* perfil  */}
-               <Menu
-                 as="div"
-                 className="relative mt-3 duration-300 rounded-lg dark:border-gray-800 hover:scale-105"
-                 title="Perfil"
-               >
-                 <MenuButton className="flex items-center px-4 py-1 text-base duration-300 bg-gray-200 border-0 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white group">
-                   <img
-                     alt="Profile"
-                     src={imageUrl || defaultUserPicture}
-                     className="object-cover w-8 h-8 rounded-full dark:border-white"
-                   />
-                   <img
-                     src={userLogo || "/placeholder.svg"}
-                     alt="User Logo"
-                     className="w-8 h-8 text-white group-hover:invert dark:invert"
-                   />
-                 </MenuButton>
-                 <Menu.Items
-                   transition
-                   className={`absolute right-0 z-50 w-56 py-2 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${
-                     theme === "dark" ? "bg-gray-800" : "bg-white"
-                   }`}
-                 >
-                   {userNavigation.map((item) => (
-                     <Menu.Item key={item.name}>
-                       {item.action ? (
-                         <button
-                           onClick={() => {
-                             item.action();
-                           }}
-                           className={`block py-2 ps-2 text-sm w-full text-left ${
-                             theme === "dark"
-                               ? "text-gray-200 hover:bg-gray-600 hover:text-white"
-                               : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"
-                           } transition-colors duration-300`}
-                         >
-                           {item.name}
-                         </button>
-                       ) : (
-                         <NavLink
-                           to={item.href}
-                           className={`block py-2 text-sm ps-2 ${
-                             theme === "dark"
-                               ? "text-gray-200 hover:bg-gray-600 hover:text-white"
-                               : "text-gray-700 hover:bg-blue-100 hover:text-gray-900"
-                           } transition-colors duration-300`}
-                         >
-                           {item.name}
-                         </NavLink>
-                       )}
-                     </Menu.Item>
-                   ))}
-                 </Menu.Items>
-               </Menu>
-             </div>
-           </AccordionMenu>
          </div>
        </div>
      </header>
