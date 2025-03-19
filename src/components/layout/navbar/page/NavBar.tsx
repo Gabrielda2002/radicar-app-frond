@@ -176,7 +176,7 @@ const Navbar: React.FC = React.memo(() => {
              <AccordionMenu theme={theme}>
                <div className="p-2">
                  {/* Mobile theme toggle */}
-                 <div className="flex items-center justify-between py-2 border-b dark:border-gray-600">
+                 <div className="flex items-center py-2 border-b dark:border-gray-600">
                    <button
                      onClick={handleToggleTheme}
                      className={`p-2 rounded-full ${
