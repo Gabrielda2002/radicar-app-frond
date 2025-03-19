@@ -1,12 +1,16 @@
 import { useFormik } from "formik";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { createEvent } from "../services/createEvent";
 import { IEventos } from "@/models/IEventos";
 import { format } from "date-fns";
 import { useAuth } from "@/context/authContext";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { useCreateEvent } from "../hooks/useCreateEvent";
+import { Bounce, toast } from "react-toastify";
+import { FormatDate } from "@/utils/FormatDate";
+import { FaCalendarAlt, FaClock, FaInfoCircle, FaTag } from "react-icons/fa";
 
 interface ModalCrearEventoProps {
   isOpen: boolean;
@@ -23,10 +27,10 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
   isEditing = false,
   onEdit,
 }) => {
-  // * estados para controloar las respuestas del formulario
-  const [error, setError] = useState<string | null>("");
-  const [success, setSuccess] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  
+  const { createEvent, success, error, loading } = useCreateEvent();
+
+  useBlockScroll(isOpen);
 
   const validationSchema = Yup.object({
     titulo: Yup.string()
@@ -59,7 +63,6 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        setLoading(true);
 
         const formData = new FormData();
         formData.append("title", values.titulo);
@@ -70,21 +73,26 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
 
         const response = await createEvent(formData);
 
-        if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
+        if (response?.status === 200 || response?.status === 201 && success) {
           formik.resetForm();
-          setError(null);
+          toast.success("Evento creado exitosamente.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
           setTimeout(() => {
             onClose();
             window.location.reload();
           }, 2000);
-        } else {
-          setError("Ocurrió un error al crear el evento.");
         }
       } catch (error) {
-        setError(`Ocurrió un error inesperado: ${error}`);
-      } finally {
-        setLoading(false);
+        console.log(`Ocurrió un error inesperado: ${error}`);
       }
     },
   });
@@ -97,19 +105,22 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     <>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
-          <section>
             <div
               className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white"
             >
+             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+              <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
+                {isEditing ? "Editar Evento" : "Evento"}
+              </h1>
               <button
-                onClick={onClose} // Cerrar modal al hacer clic en "X"
-                className="absolute top-2 right-2"
+                onClick={onClose}
+                // disabled={!videoCompleted || loading || !success}
+                className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
               >
-                <div className="pr-2 text-xl text-gray-500 hover-gray-700">
-                  &times;
-                </div>
+                &times;
               </button>
-
+            </div>
+              {[1].includes(Number(rol)) ? (
               <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-2 gap-10 p-4 mb-4">
                   <div>
@@ -122,7 +133,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                       value={formik.values.titulo}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      placeholder="Ingrese código..."
+                      placeholder="Ingrese Título..."
                       className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${formik.touched.titulo} && formik.errors.titulo}
                           ? "border-red-500 dark:border-red-500"
                           : "border-gray-200 dark:border-gray-600"
@@ -230,8 +241,13 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   </div>
                 </div>
 
-                {/* Botones */}
+                {error && (
+                    <div className="text-red-500 dark:text-red-300">
+                      {error}
+                    </div>
+                  )}
 
+                {/* Botones */}
                 {!isEditing && initialData && [1, 2].includes(Number(rol)) && (
                   <button
                     type="button"
@@ -258,20 +274,58 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     Subir
                   </button>
                   )}
-                  {success && (
-                    <div className="text-green-500 dark:text-green-300">
-                      Evento creado correctamente.
-                    </div>
-                  )}
-                  {error && (
-                    <div className="text-red-500 dark:text-red-300">
-                      {error}
-                    </div>
-                  )}
                 </div>
               </form>
+              ): (
+                <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                  <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
+                    Detalles del Evento
+                  </h2>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="flex items-center">
+                      <FaTag className="mr-2 text-blue-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-200">
+                        Evento:
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">
+                        {initialData?.title || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <FaInfoCircle className="mr-2 text-green-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-200">
+                        Descripción:
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">
+                        {initialData?.description || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <FaCalendarAlt className="mr-2 text-purple-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-200">
+                        Fecha Inicio:
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">
+                        {initialData?.dateStart
+                          ? FormatDate(initialData.dateStart)
+                          : "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <FaClock className="mr-2 text-red-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-200">
+                        Fecha Fin:
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">
+                        {initialData?.dateEnd
+                          ? FormatDate(initialData.dateEnd)
+                          : "N/A"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          </section>
         </div>
       )}
     </>
