@@ -9,15 +9,15 @@ import logoFooter from "@/assets/Layout/logo-footer.png";
 
 const Footer = () => {
   return (
-    <footer className="font-sans text-gray-600 border-t-2 border-black dark:border-white body-font bg-color dark:bg-gray-800 border-top">
-      <div className="container flex flex-col flex-wrap px-10 py-20 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">
-        <div className="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-left">
+    <footer className="font-sans text-sm text-gray-600 border-t-2 border-black md:text-[16px] dark:border-white body-font bg-color dark:bg-gray-800 border-top">
+      <div className="container flex flex-col flex-wrap px-10 py-8 mx-auto md:items-center lg:items-start md:flex-row md:flex-nowrap">
+        <div className="flex-shrink-0 w-64 text-center ml-14 md:ml-0 md:mx-0 md:text-left">
           <a className="flex items-center justify-center text-gray-900 title-font font-lg md:justify-start">
-            <img src={logoFooter} alt="" className="text-white w-30 h-28" />
+            <img src={logoFooter} alt="" className="w-32 h-24 text-white md:w-44 md:h-28"/>
           </a>
         </div>
         <div className="flex flex-grow mt-10 -mb-10 text-center border-l-4 border-white md:pl-0 md:mt-0 md:text-center">
-          <div className="w-full px-2 md:w-1/7">
+          <div className="w-full px-2 pb-10 md:w-1/7">
             <h2 className="mb-3 text-base font-semibold tracking-widest text-gray-100 underline uppercase underline-offset-4 pr-36">
               contáctenos:
             </h2>
@@ -71,10 +71,13 @@ const Footer = () => {
               {" "}
               {/* max-w-md limita el ancho máximo */}
               <p className="text-justify text-gray-900 dark:text-gray-100">
-                Nordvital IPS SAS proporciona atención integral de salud con un
-                enfoque social, humano y de seguridad a sus usuarios. Estamos
-                dedicados a la actualización constante de nuestro personal, la
-                renovación tecnológica y la innovación en la atención médica.
+                En NORDVITAL IPS S.A.S,. somos una institución prestadora de
+                servicios de salud ambulatorios de baja y mediana complejidad
+                con presencia a nivel nacional, con capital humano integral y
+                comprometido, espacios confortables y tecnología de punta que
+                ofrece atención con altos estándares de calidad y el propósito
+                de garantizar la satisfacción a nuestros usuarios y sus
+                familias.
               </p>
             </li>
           </nav>
@@ -88,19 +91,19 @@ const Footer = () => {
               {" "}
               {/* max-w-md limita el ancho máximo */}
               <p className="text-justify text-gray-900 dark:text-gray-100">
-                En 2025, buscamos ser líderes regionales y reconocidos
-                nacionalmente como una IPS que cumple con altos estándares de
-                calidad. Nos comprometemos a proporcionar atención amable,
-                segura y confiable, con el objetivo de alcanzar la plena
-                satisfacción de nuestros usuarios.
+                Posicionar NORDVITAL IPS en el 2029 como una organización líder
+                en innovación, servicios de alta calidad y excelencia en la
+                atención, fortaleciendo nuestra capacidad operativa a nivel
+                nacional, siendo reconocidos por nuestros usuarios, clientes,
+                profesionales y entorno social.
               </p>
             </li>
           </nav>
         </div>
       </div>
       <div className="bg-gray-100">
-        <div className="container flex flex-col flex-wrap px-5 py-4 mx-auto sm:flex-row">
-          <p className="flex items-center text-xl text-gray-500">
+        <div className="container flex flex-col flex-wrap px-5 py-4 mx-auto text-lg md:text-xl sm:flex-row">
+          <p className="flex items-center text-gray-500">
             <a
               href="https://nordvitalips.com/Pagina-nordvitalips/index.php"
               rel="noopener noreferrer"
@@ -110,7 +113,7 @@ const Footer = () => {
               Nordvital IPS © 2025
             </a>
           </p>
-          <span className="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
+          <span className="inline-flex justify-end mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
             <div className="flex items-center cursor-pointer">
               <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-color bg-gradient-to-r from-color to-color2">
                 <a href="/politicas-cookies.html" target="_blank">

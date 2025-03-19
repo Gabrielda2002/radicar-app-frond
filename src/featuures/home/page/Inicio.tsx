@@ -54,11 +54,11 @@ const Inicio = () => {
             <div className="p-4 mb-8 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
               <div>
                 <div>
-                  <h1 className="p-2 text-5xl font-bold border-black rounded-lg dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
-                    Bienvenidos a Nordvital IPS | Sede {headquarterUser}
+                  <h1 className="p-2 text-2xl font-bold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
+                    Bienvenidos a Nordvital IPS {headquarterUser}
                   </h1>
                 </div>
-                <p className="p-2 text-lg font-light text-gray-700 dark:text-gray-300">
+                <p className="p-2 font-light text-gray-700 text-md md:text-lg dark:text-gray-300">
                   Nuestra misión es brindar servicios de salud de alta calidad,
                   asegurando el bienestar de nuestros pacientes con tecnología
                   avanzada y un equipo humano altamente capacitado.
@@ -82,7 +82,7 @@ const Inicio = () => {
 
               <div className="mt-5">
                 {/* Calendario de actividades */}
-                <h1 className="pl-10 text-5xl font-bold dark:text-white">
+                <h1 className="pl-6 md:pl-10 mx-auto text-[28px] font-bold md:text-5xl dark:text-white">
                   Calendario de Actividades:
                 </h1>
                 <Suspense fallback={<LoadingSpinner />}>

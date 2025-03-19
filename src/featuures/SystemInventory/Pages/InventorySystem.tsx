@@ -106,7 +106,7 @@ const SistemaInventario: React.FC = () => {
               <div>
                 <div>
                   {screen === "departamentos" && (
-                    <div className="grid grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                       {loadingDepartment ? (  
                         <LoadingSpinner />
                       ) : errordepartment ? (
@@ -137,11 +137,11 @@ const SistemaInventario: React.FC = () => {
                 {screen === "tipoItem" && sedeSelect && (
                   <>
                     <div>
-                      <h2 className="mb-4 text-3xl dark:text-white">
+                      <h2 className="mb-4 text-2xl md:text-3xl dark:text-white">
                         Categorías
                       </h2>
                     </div>
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                       <DeviceCard
                         title="Computadores"
                         description="Contenido de la Sección"

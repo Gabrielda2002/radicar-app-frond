@@ -34,7 +34,7 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
       {departamentos?.map((d) => (
         <div
           key={d.id}
-          className="relative w-full h-full p-10 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg shadow-sm cursor-pointer hover:shadow-lg dark:hover:shadow-indigo-600 dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
+          className="relative w-full h-auto p-10 mx-auto overflow-hidden text-gray-900 duration-300 ease-in-out bg-gray-200 rounded-lg shadow-sm cursor-pointer hover:shadow-lg dark:hover:shadow-indigo-600 dark:bg-gray-900 dark:text-gray-100 hover:-translate-y-1"
         >
           <button key={d.id} onClick={() => onSelected(d)}>
             {/* Imagen de fondo */}
@@ -53,7 +53,7 @@ const DepartamentosList: React.FC<DepartamentosListProps> = ({
                     <MapPinIcon className="text-gray-100 dark:text-gray-100 w-9 h-9" />
                   </div>
                   <div>
-                    <h1 className="pl-3 text-3xl font-semibold">{d.name}</h1>
+                    <h1 className="pl-3 text-2xl font-semibold md:text-3xl">{d.name}</h1>
                   </div>
                 </div>
               </div>

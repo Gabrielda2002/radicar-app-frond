@@ -128,7 +128,7 @@ const HelpDesk = () => {
           }`}
         >
           <section
-            className={`w-full max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
+            className={`w-[90%] max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
               isModalOpen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
