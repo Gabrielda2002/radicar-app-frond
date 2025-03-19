@@ -114,7 +114,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
         <div>
           {/* Header */}
           <div className="flex justify-between w-full">
-            <h2 className="flex text-3xl dark:text-white">
+            <h2 className="flex text-2xl md:text-3xl dark:text-white">
               Inventario de {tipoItem}
             </h2>
             <div>
@@ -175,7 +175,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                   >
                     <div className="flex items-center justify-between mb-14">
                       <div className="flex items-center gap-2">{getIcon()}</div>
-                      <h3 className="mb-2 text-2xl font-semibold dark:text-white">
+                      <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
                         {tipoItem === "equipos"
                           ? (item as IItems).nameEquipment
                           : (item as IItemsNetworking).name}
@@ -225,7 +225,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                             >
                               <ClipboardDocumentCheckIcon className="w-7 h-7" />
                             </button>
-                            <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full mb-2 group-hover:opacity-100 dark:bg-gray-900 text-center">
+                            <div className="absolute z-10 px-2 py-1 mb-2 text-sm text-center text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full group-hover:opacity-100 dark:bg-gray-900">
                               Acta Entrega
                               {/* Flechita detrás del texto */}
                               <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
@@ -253,7 +253,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                             : (item as IItemsNetworking).name}
                         </h3>
                       </div>
-                      <p className="mt-1 text-xs text-black dark:text-gray-200">
+                      <p className="mt-1 text-sm text-black dark:text-gray-200">
                         {tipoItem === "equipos"
                           ? (item as IItems).typeEquipment
                           : ""}
