@@ -68,7 +68,7 @@ const Inicio = () => {
             <div className="p-4 mb-8 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
               <div>
                 <div>
-                  <h1 className="p-2 text-[26px] mr-2 text-center md:text-left font-extrabold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
+                  <h1 className="p-2 text-[27px] mr-2 text-center md:text-left font-extrabold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
                     Bienvenidos a Nordvital IPS | Sede {headquarterUser}
                   </h1>
                 </div>
