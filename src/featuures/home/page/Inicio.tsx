@@ -36,6 +36,20 @@ const Inicio = () => {
     setShowContent(true);
   };
 
+  //Acordeon para las consultas
+  const [isOpen, setIsOpen] = useState(false);
+ 
+  const [selectedOption, setSelectedOption] = useState('servicios');
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Función para cambiar la opción seleccionada
+  const handleOptionChange = (option: string) => {
+    setSelectedOption(option);
+  };
+   
   const user = localStorage.getItem("user");
   const headquarterUser = user ? JSON.parse(user).municipality : "";
 
@@ -54,11 +68,11 @@ const Inicio = () => {
             <div className="p-4 mb-8 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
               <div>
                 <div>
-                  <h1 className="p-2 text-5xl font-bold border-black rounded-lg dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
+                  <h1 className="p-2 text-[26px] mr-2 text-center md:text-left font-extrabold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
                     Bienvenidos a Nordvital IPS | Sede {headquarterUser}
                   </h1>
                 </div>
-                <p className="p-2 text-lg font-light text-gray-700 dark:text-gray-300">
+                <p className="p-2 font-light text-gray-700 text-md md:text-lg dark:text-gray-300">
                   Nuestra misión es brindar servicios de salud de alta calidad,
                   asegurando el bienestar de nuestros pacientes con tecnología
                   avanzada y un equipo humano altamente capacitado.
@@ -66,23 +80,58 @@ const Inicio = () => {
               </div>
             </div>
             {/* Sección de bienvenida */}
-            <div className="flex flex-col w-full pb-10 mb-10 border-2 rounded-lg shadow-md dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
-              <div>
-                <ConsultarSvContratados/>
-              </div>
+            <div className="flex flex-col w-full pb-5 mb-5 border-2 shadow-smrounded-xl dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
+              <div className="w-full mx-auto">
+              
+                <button
+                  onClick={toggleAccordion}
+                  className="flex items-center justify-between w-full px-5 py-3 text-white bg-gray-500 dark:bg-teal-600"
+                >
+                  <span className="text-lg">Panel De Consultas</span>
+                  <span>{isOpen ? "▲" : "▼"}</span>
+                </button>
 
-              {/* consultar pacientes coosalud */}
-              <div className="mt-5">
-                <FormPacientesCS />
-              </div>
-
-              <div className="px-12">
-                <hr className="border-gray-600 dark:border-color" />
+                {/* Contenido del acordeón */}
+                {isOpen && (
+                  <div className="w-full mt-1 bg-gray-100 rounded-lg shadow-xl dark:bg-gray-700">
+                   
+                    <div className="flex border-b border-gray-300 dark:border-gray-600">
+                      <button
+                        onClick={() => handleOptionChange("servicios")}
+                        className={`px-10 py-0 md:py-2 ${
+                          selectedOption === "servicios"
+                            ? "bg-gray-500 text-white"
+                            : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
+                        }`}
+                      >
+                        Servicios Contratados
+                      </button>
+                      <button
+                        onClick={() => handleOptionChange("pacientes")}
+                        className={`px-10 py-0 md:py-2 ${
+                          selectedOption === "pacientes"
+                            ? "bg-gray-500 text-white"
+                            : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
+                        }`}
+                      >
+                        Pacientes Coosalud
+                      </button>
+                    </div>
+                    
+                    <div className="p-4">
+                      {selectedOption === "servicios" ? (
+                        <ConsultarSvContratados />
+                      ) : (
+                        <FormPacientesCS />
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="mt-5">
                 {/* Calendario de actividades */}
-                <h1 className="pl-10 text-5xl font-bold dark:text-white">
+                <h1 className="pl-6 md:pl-10 mx-auto text-[28px] font-bold md:text-5xl dark:text-white">
                   Calendario de Actividades:
                 </h1>
                 <Suspense fallback={<LoadingSpinner />}>

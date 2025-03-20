@@ -11,15 +11,11 @@ const FormPacientesCS = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full p-6 pb-10 mb-10 border-2 rounded-lg shadow-md dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
-        <div className="flex justify-start">
-          <h2 className="mb-5 text-3xl font-bold dark:text-white">
-            Consultar Pacientes Coosalud
-          </h2>
-        </div>
-        <div className="flex flex-col ">
+      <div className="flex flex-col w-full p-2 pb-3 mb-3 ml-4">
+       
+        <div className="flex flex-col">
           <label
-            className="w-5/6 dark:text-gray-200 text-[24px]"
+            className="w-5/6 dark:text-gray-200 text-[19px] md:text-[24px]"
             htmlFor="identificacion"
           >
             Ingrese Número documento del paciente:
@@ -32,7 +28,7 @@ const FormPacientesCS = () => {
               onChange={(e) => setIdentification(e.target.value)}
               name="identificacion"
               placeholder="Numero documento del paciente"
-              className="p-2 mt-3 mr-4 border-2 border-gray-400 rounded-lg b-2 w-60 dark:text-gray-700 text-[17px]"
+              className="p-2 mt-3 mr-4 border-2 border-gray-400 rounded-lg b-2 w-44 md:w-[272px] dark:text-gray-700 text-[17px]"
             />
             <button 
             type="button" 

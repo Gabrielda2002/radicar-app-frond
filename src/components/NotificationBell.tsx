@@ -61,7 +61,7 @@ const NotificationBell: React.FC = () => {
     return (
         <div className="relative" ref={notificationRef}>
             <button
-                className="relative p-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+                className="relative p-2 text-gray-600 animate-pulse md:animate-none hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <BellIcon className="w-6 h-6" />
@@ -73,7 +73,7 @@ const NotificationBell: React.FC = () => {
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 z-50 mt-2 overflow-hidden bg-white rounded-lg shadow-xl w-80 dark:bg-gray-800">
+                <div className="absolute right-0 z-50 mx-auto mt-4 -mr-32 overflow-hidden bg-white rounded-lg shadow-xl md:-mr-0 w-80 dark:bg-gray-800">
                     <div className="flex items-center justify-between p-2 border-b dark:border-gray-700">
                         <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                             Notificaciones

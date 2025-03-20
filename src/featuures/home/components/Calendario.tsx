@@ -19,9 +19,7 @@ const Calendario: React.FC = () => {
     const {
       selectedEvent,
       isModalOpen,
-      isEditing,
       handleEventSelect,
-      handleEditMode,
       handleCloseModal
     } = useEventModal();
 
@@ -87,7 +85,7 @@ const Calendario: React.FC = () => {
           className="bg-gray-200 border-2 rounded-lg dark:bg-gray-800"
         />
       </div>
-      {[1, 2].includes(Number(rol)) && (
+      {[1].includes(Number(rol)) && (
         <button 
         onClick={() => handleEventSelect(null)}
         className="mt-4 btn-primary"
@@ -97,10 +95,8 @@ const Calendario: React.FC = () => {
       )}
       <ModalCrearEvento
         isOpen={isModalOpen}
-        isEditing={isEditing}
         initialData={selectedEvent || undefined}
         onClose={handleCloseModal}
-        onEdit={handleEditMode}
       />
     </div>
   );

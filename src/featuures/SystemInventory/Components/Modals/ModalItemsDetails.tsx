@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IItems } from "@/models/IItems";
 import { motion } from "framer-motion";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
@@ -9,6 +9,7 @@ import {
   CpuChipIcon,
   ServerIcon,
   Cog6ToothIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
 interface ModalItemsDetailsProps {
@@ -21,60 +22,73 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const openModal = () => {
     document.body.style.overflow = "hidden";
   }
   const closeModal = () => {
     document.body.style.overflow = "";
     onClose();
-  }
-  if (item){
+  };
+
+  if (item) {
     openModal();
   }
 
   const TableWrapper = ({ children }: { children: React.ReactNode }) => (
-    <div className="max-h-[calc(100vh-400px)] overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800">
-      <div className="inline-block min-w-full align-middle">{children}</div>
+    <div className="overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800 max-h-[60vh]">
+      <div className="inline-block min-w-full overflow-x-auto align-middle">
+        {children}
+      </div>
     </div>
   );
 
   const renderPerifericosTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full bg-white border-collapse rounded-lg shadow-md">
-          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md min-w-[600px]">
+          <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <th>Nombre:</th>
-              <th>Marca:</th>
-              <th>Modelo:</th>
-              <th>Serial:</th>
-              <th>Otros Datos:</th>
-              <th>Estado:</th>
-              <th>Numero Inventario:</th>
+              <th className="p-2">Nombre:</th>
+              <th className="p-2">Marca:</th>
+              <th className="p-2">Modelo:</th>
+              <th className="p-2">Serial:</th>
+              <th className="p-2">Otros Datos:</th>
+              <th className="p-2">Estado:</th>
+              <th className="p-2">Numero Inventario:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
-            {item &&
-            "accessories" in item &&
-            item.accessories.length > 0 ? (
+            {item && "accessories" in item && item.accessories.length > 0 ? (
               <>
                 {item.accessories.map((acc) => (
                   <tr key={acc.id} className="dark:text-white">
-                    <td>{acc.name}</td>
-                    <td>{acc.brand}</td>
-                    <td>{acc.model}</td>
-                    <td>{acc.serial}</td>
-                    <td>{acc.description}</td>
-                    <td>{acc.status}</td>
-                    <td>{acc.inventoryNumber}</td>
+                    <td className="p-2">{acc.name}</td>
+                    <td className="p-2">{acc.brand}</td>
+                    <td className="p-2">{acc.model}</td>
+                    <td className="p-2">{acc.serial}</td>
+                    <td className="p-2">{acc.description}</td>
+                    <td className="p-2">{acc.status}</td>
+                    <td className="p-2">{acc.inventoryNumber}</td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="text-center dark:text-white">
+                <td colSpan={7} className="p-4 text-center dark:text-white">
                   No hay Periféricos agregados
                 </td>
               </tr>
@@ -88,38 +102,36 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const renderComponentesTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full overflow-auto bg-white border-collapse rounded-lg shadow-md ">
-          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
+        <table className="w-full overflow-auto bg-white border-collapse rounded-lg shadow-md min-w-[600px]">
+          <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <th>Nombre:</th>
-              <th>Marca:</th>
-              <th>Capacidad:</th>
-              <th>Velocidad:</th>
-              <th>Otros Datos:</th>
-              <th>Modelo:</th>
-              <th>Serial:</th>
+              <th className="p-2">Nombre:</th>
+              <th className="p-2">Marca:</th>
+              <th className="p-2">Capacidad:</th>
+              <th className="p-2">Velocidad:</th>
+              <th className="p-2">Otros Datos:</th>
+              <th className="p-2">Modelo:</th>
+              <th className="p-2">Serial:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
-            {item &&
-            "components" in item &&
-            item.components.length > 0 ? (
+            {item && "components" in item && item.components.length > 0 ? (
               <>
                 {item.components.map((comp) => (
                   <tr key={comp.id} className="dark:text-white">
-                    <td>{comp.name}</td>
-                    <td>{comp.brand}</td>
-                    <td>{comp.capacity}</td>
-                    <td>{comp.speed}</td>
-                    <td>{comp.otherData}</td>
-                    <td>{comp.model}</td>
-                    <td>{comp.serial}</td>
+                    <td className="p-2">{comp.name}</td>
+                    <td className="p-2">{comp.brand}</td>
+                    <td className="p-2">{comp.capacity}</td>
+                    <td className="p-2">{comp.speed}</td>
+                    <td className="p-2">{comp.otherData}</td>
+                    <td className="p-2">{comp.model}</td>
+                    <td className="p-2">{comp.serial}</td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="text-center dark:text-white">
+                <td colSpan={7} className="p-4 text-center dark:text-white">
                   No hay Componentes agregados
                 </td>
               </tr>
@@ -133,36 +145,36 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const renderSoftwareTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto">
-          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto min-w-[600px]">
+          <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
-              <th>Nombre:</th>
-              <th>Version:</th>
-              <th>Licencia:</th>
-              <th>Otros datos:</th>
-              <th>Fecha Instalacion:</th>
-              <th>Estado:</th>
+              <th className="p-2">Nombre:</th>
+              <th className="p-2">Version:</th>
+              <th className="p-2">Licencia:</th>
+              <th className="p-2">Otros datos:</th>
+              <th className="p-2">Fecha Instalacion:</th>
+              <th className="p-2">Estado:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
-            {item &&
-            "software" in item &&
-            item.software.length > 0 ? (
+            {item && "software" in item && item.software.length > 0 ? (
               <>
                 {item.software.map((soft) => (
                   <tr key={soft.id} className="dark:text-white">
-                    <td>{soft.name}</td>
-                    <td>{soft.versions}</td>
-                    <td>{soft.license}</td>
-                    <td>{soft.otherData}</td>
-                    <td>{FormatDate(soft.installDate, false)}</td>
-                    <td>{soft.status}</td>
+                    <td className="p-2">{soft.name}</td>
+                    <td className="p-2">{soft.versions}</td>
+                    <td className="p-2">{soft.license}</td>
+                    <td className="p-2">{soft.otherData}</td>
+                    <td className="p-2">
+                      {FormatDate(soft.installDate, false)}
+                    </td>
+                    <td className="p-2">{soft.status}</td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={6} className="text-center dark:text-white">
+                <td colSpan={6} className="p-4 text-center dark:text-white">
                   No hay Software agregado
                 </td>
               </tr>
@@ -170,6 +182,74 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </tbody>
         </table>
       </TableWrapper>
+    );
+  };
+
+  const renderTabNavigation = () => {
+    if (isMobile) {
+      return (
+        <div className="flex flex-wrap gap-2 mb-4 text-sm">
+          <select
+            className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-700"
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value)}
+          >
+            <option value="general">Información General</option>
+            <option value="perifericos">Periféricos</option>
+            <option value="componentes">Hardware</option>
+            <option value="software">Software</option>
+          </select>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap gap-2 p-2 mb-4 rounded">
+        <button
+          className={`flex items-center p-2 ${
+            activeTab === "general"
+              ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
+              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+          } rounded`}
+          onClick={() => setActiveTab("general")}
+        >
+          <ComputerDesktopIcon className="w-6 h-6 mr-2 dark:text-white" />
+          <span>Información General</span>
+        </button>
+        <button
+          className={`flex items-center p-2 ${
+            activeTab === "perifericos"
+              ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
+              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+          } rounded`}
+          onClick={() => setActiveTab("perifericos")}
+        >
+          <CpuChipIcon className="w-6 h-6 mr-2 dark:text-white" />
+          <span>Periféricos</span>
+        </button>
+        <button
+          className={`flex items-center p-2 ${
+            activeTab === "componentes"
+              ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
+              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+          } rounded`}
+          onClick={() => setActiveTab("componentes")}
+        >
+          <ServerIcon className="w-6 h-6 mr-2 dark:text-white" />
+          <span>Hardware</span>
+        </button>
+        <button
+          className={` flex items-center p-2 ${
+            activeTab === "software"
+              ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
+              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+          } rounded `}
+          onClick={() => setActiveTab("software")}
+        >
+          <Cog6ToothIcon className="w-6 h-6 mr-2 dark:text-white" />
+          <span>Software</span>
+        </button>
+      </div>
     );
   };
 
@@ -183,21 +263,20 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+            className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 overflow-y-auto max-h-[60vh] pb-4"
           >
             {item ? (
               <>
                 {/* Información Básica */}
-                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800">
-                  <h3 className="mb-2 text-2xl font-bold">
+                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800 h-fit">
+                  <h3 className="mb-2 text-xl font-bold md:text-2xl">
                     Información Básica:
                   </h3>
-                  <ul>
+                  <ul className="space-y-1">
                     {item && "nameUser" in item && (
                       <li>
                         <strong>Responsable: </strong>
-                        {item.nameUser || "N/A"}{" "}
-                        {item.nameUser || "N/A"}
+                        {item.nameUser || "N/A"} {item.nameUser || "N/A"}
                       </li>
                     )}
                     <li>
@@ -228,11 +307,11 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                 </div>
 
                 {/* Detalles Técnicos */}
-                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800">
-                  <h3 className="mb-2 text-2xl font-bold">
+                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800 h-fit">
+                  <h3 className="mb-2 text-xl font-bold md:text-2xl">
                     Detalles Técnicos:
                   </h3>
-                  <ul>
+                  <ul className="space-y-1">
                     <li>
                       <strong>Serial: </strong>
                       {(item as IItems).serialEquipment}
@@ -255,11 +334,11 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                 </div>
 
                 {/* Información Adicional */}
-                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800">
-                  <h3 className="mb-2 text-2xl font-bold">
+                <div className="p-4 rounded shadow-md dark:text-white dark:shadow-md dark:shadow-indigo-800 h-fit">
+                  <h3 className="mb-2 text-xl font-bold md:text-2xl">
                     Información Adicional:
                   </h3>
-                  <ul>
+                  <ul className="space-y-1">
                     {item && "purchaseDate" in item && (
                       <li>
                         <strong>Fecha Compra: </strong>
@@ -345,64 +424,24 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   };
 
   return (
-    <section className="fixed inset-0 flex items-center justify-center p-40 bg-gray-800 bg-opacity-50">
-      <div className="w-full p-6 bg-white rounded-md shadow-lg dark:bg-gray-900">
-        <h3 className="mb-4 text-3xl font-semibold dark:text-white">
-          Detalles del dispositivo
-        </h3>
-        <div className="flex mb-4">
-          <div className="flex gap-2 p-2 rounded">
-            {/* Bton Info General */}
-            <button
-              className={`flex items-center p-2 ${
-                activeTab === "general"
-                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
-                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-              } rounded`}
-              onClick={() => setActiveTab("general")}
-            >
-              <ComputerDesktopIcon className="w-6 h-6 mr-2 dark:text-white" />
-              <span>Información General</span>
-            </button>
-            {/* Bton Perifericos */}
-            <button
-              className={`flex items-center p-2 ${
-                activeTab === "perifericos"
-                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
-                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-              } rounded`}
-              onClick={() => setActiveTab("perifericos")}
-            >
-              <CpuChipIcon className="w-6 h-6 mr-2 dark:text-white" />
-              <span>Periféricos</span>
-            </button>
-            {/* Bton Hardware / Componentes */}
-            <button
-              className={`flex items-center p-2 ${
-                activeTab === "componentes"
-                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
-                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-              } rounded`}
-              onClick={() => setActiveTab("componentes")}
-            >
-              <ServerIcon className="w-6 h-6 mr-2 dark:text-white" />
-              <span>Hardware</span>
-            </button>
-
-            <button
-              className={` flex items-center p-2 ${
-                activeTab === "software"
-                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
-                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-              } rounded `}
-              onClick={() => setActiveTab("software")}
-            >
-              <Cog6ToothIcon className="w-6 h-6 mr-2 dark:text-white" />
-              <span>Software</span>
-            </button>
-          </div>
+    <section className="fixed inset-0 z-50 flex items-center justify-center py-4 overflow-y-auto bg-gray-800 bg-opacity-50">
+      <div className="w-full max-w-6xl p-3 mx-4 my-4 bg-white rounded-md shadow-lg md:mx-auto md:p-6 dark:bg-gray-900">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold md:text-3xl dark:text-white">
+            Detalles del dispositivo
+          </h3>
+          <button
+            onClick={closeModal}
+            className="p-1 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+            aria-label="Cerrar"
+          >
+            <XMarkIcon className="w-6 h-6 dark:text-white" />
+          </button>
         </div>
-        <div className="p-4 rounded dark:bg-gray-900">
+
+        {renderTabNavigation()}
+
+        <div className="p-2 rounded md:p-4 dark:bg-gray-900">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -412,12 +451,15 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
             {renderContent()}
           </motion.div>
         </div>
-        <button
-          onClick={closeModal}
-          className="p-2 px-12 mt-4 duration-200 border rounded btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-        >
-          Cerrar
-        </button>
+
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={closeModal}
+            className="p-2 px-8 duration-200 border rounded md:px-12 btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     </section>
   );

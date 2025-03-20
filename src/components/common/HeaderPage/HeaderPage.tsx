@@ -15,7 +15,7 @@ const ModalSection: React.FC<ModuleSectionProps> = ({
   duration = 500,
 }) => {
   return (
-    <section className="p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
+    <section className="w-full p-4 mb-6 bg-white rounded-md shadow-lg dark:bg-gray-800 shadow-indigo-500/40">
       <LoadingSpinner duration={duration} />
       <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -29,14 +29,14 @@ const ModalSection: React.FC<ModuleSectionProps> = ({
             </button>
           </div>
 
-          <h1 className="pl-3 text-4xl font-bold text-color dark:text-gray-200">
+          <h1 className="pl-2 text-xl font-bold md:text-4xl text-color dark:text-gray-200">
             {title}
           </h1>
         </div>
-        <ol className="flex items-center space-x-2">
+        <ol className="flex items-center w-[233px] pl-3">
           {breadcrumb.map((item, index) => (
             <Link key={index} to={item.path}>
-              <li className="text-slate-400 hover:underline">{item.label}</li>
+              <li className="text-sm text-slate-400 md:text-md hover:underline">{item.label}</li>
             </Link>
           ))}
         </ol>

@@ -36,7 +36,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
               {icon}
             </div>
             <div>
-              <h1 className="pl-3 text-2xl font-semibold">{title}</h1>
+              <h1 className="pl-3 text-xl font-semibold md:text-2xl">{title}</h1>
               <span className="ml-3 text-sm">{description}</span>
             </div>
           </div>

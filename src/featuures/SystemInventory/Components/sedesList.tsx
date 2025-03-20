@@ -29,7 +29,7 @@ const SedesList: React.FC<sedesListProps> = ({ sedes, onSelect }) => {
         return Sede05;
       case "Cúcuta/Calle 14":
         return Sede06;
-      case "Cúcuta/Torre Compensar":
+      case "Cúcuta/Torre Nordvital":
         return Sede07;
       default:
         return Sede01;
@@ -40,7 +40,7 @@ const SedesList: React.FC<sedesListProps> = ({ sedes, onSelect }) => {
     <div className="w-full">
       <h2 className="mb-4 text-3xl font-bold dark:text-white">Sedes</h2>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {sedes?.map((s) => (
           <div
             key={s.id}
@@ -64,7 +64,7 @@ const SedesList: React.FC<sedesListProps> = ({ sedes, onSelect }) => {
                       <MapPinIcon className="text-gray-100 dark:text-gray-100 w-9 h-9" />
                     </div>
                     <div>
-                      <h1 className="pl-3 text-3xl font-semibold">{s.name}</h1>
+                      <h1 className="pl-3 text-xl font-semibold md:text-3xl">{s.name}</h1>
                       {/* <span className="ml-3">Leticia</span> */}
                     </div>
                   </div>

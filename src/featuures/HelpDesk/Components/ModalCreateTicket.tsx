@@ -4,12 +4,24 @@ import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { CreateTicket } from "../Services/CreateTickets";
-import { useFetchCategory } from "../Hooks/useFetchCategory";
+// import { useFetchCategory } from "../Hooks/useFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchPriority } from "../Hooks/useFetchPriority";
 import { Bounce, toast } from "react-toastify";
 import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
 import {useTickets} from "@/context/ticketContext.tsx";
+import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
+
+interface TitlesHDOptions{
+  Software: string[];
+  Hardware: string[];
+  Redes: string[];
+  Administrativo: string[];
+  "Otros Soportes": string[];
+  [key: string]: string[];
+}
+
+const typedTitlesHDOptions =  titlesHDOptions as TitlesHDOptions;
 
 interface TicketFormValues {
   title: string;
@@ -31,7 +43,7 @@ const HelpDesk = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { dataCategory } = useFetchCategory(true);
+  // const { dataCategory } = useFetchCategory(true);
   const { dataPriority } = useFetchPriority(true);
 
   const user = localStorage.getItem("user");
@@ -108,6 +120,14 @@ const HelpDesk = () => {
     onSubmit: handleSubmit,
   });
 
+  const [opcionesTitulo, setOpcionesTitulo] = useState<string[]>([]);
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = e.target.value;
+    formik.setFieldValue("category", selectedCategory);
+    setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
+  };
+
   if (loading || validatingTicket) return <LoadingSpinner />;
 
   return (
@@ -128,7 +148,7 @@ const HelpDesk = () => {
           }`}
         >
           <section
-            className={`w-full max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
+            className={`w-[90%] max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
               isModalOpen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
@@ -180,7 +200,7 @@ const HelpDesk = () => {
                         name="category"
                         id="categoria"
                         value={formik.values.category}
-                        onChange={formik.handleChange}
+                        onChange={handleCategoryChange}
                         onBlur={formik.handleBlur}
                         className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
                           formik.touched.category && formik.errors.category
@@ -189,9 +209,9 @@ const HelpDesk = () => {
                         }`}
                       >
                         <option value="">Seleccione</option>
-                        {dataCategory.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
+                        {Object.keys(titlesHDOptions).map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
                           </option>
                         ))}
                       </select>
@@ -203,20 +223,25 @@ const HelpDesk = () => {
                       >
                         Titulo:
                       </label>
-                      <input
-                        type="text"
+                      <select
                         id="title"
                         name="title"
-                        onChange={formik.handleChange}
                         value={formik.values.title}
+                        onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={` w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                        className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
                           formik.touched.title && formik.errors.title
                             ? "border-red-500 dark:border-red-500"
                             : "border-gray-200 dark:border-gray-600"
                         }`}
-                        placeholder="Titulo de la solicitud"
-                      />
+                      >
+                        <option value="">Seleccione un título...</option>
+                        {opcionesTitulo.map((opcion) => (
+                          <option key={opcion} value={opcion}>
+                            {opcion}
+                          </option>
+                        ))}
+                      </select>
                       {formik.touched.title && formik.errors.title ? (
                         <div className="text-red-400">
                           {formik.errors.title}

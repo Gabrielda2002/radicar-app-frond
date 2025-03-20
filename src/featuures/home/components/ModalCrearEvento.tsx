@@ -16,19 +16,14 @@ interface ModalCrearEventoProps {
   isOpen: boolean;
   onClose: () => void;
   initialData?: IEventos;
-  isEditing?: boolean;
-  onEdit?: () => void;
 }
 
 const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
   isOpen,
   onClose,
   initialData,
-  isEditing = false,
-  onEdit,
 }) => {
-  
-  const { createEvent, success, error, loading } = useCreateEvent();
+  const { actionEvent, success, error, loading } = useCreateEvent();
 
   useBlockScroll(isOpen);
 
@@ -63,7 +58,6 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-
         const formData = new FormData();
         formData.append("title", values.titulo);
         formData.append("description", values.descripcion);
@@ -71,9 +65,9 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
         formData.append("dateStart", values.fechaInicio);
         formData.append("dateEnd", values.fechaFin);
 
-        const response = await createEvent(formData);
+        const response = await actionEvent(formData, initialData?.id);
 
-        if (response?.status === 200 || response?.status === 201 && success) {
+        if (response?.status === 200 || (response?.status === 201 && success)) {
           formik.resetForm();
           toast.success("Evento creado exitosamente.", {
             position: "bottom-right",
@@ -97,20 +91,16 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     },
   });
 
-
   const { rol } = useAuth();
-  
 
   return (
     <>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
-            <div
-              className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white"
-            >
-             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+          <div className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white">
+            <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                {isEditing ? "Editar Evento" : "Evento"}
+                {initialData ? "Editar Evento" : "Evento"}
               </h1>
               <button
                 onClick={onClose}
@@ -120,7 +110,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                 &times;
               </button>
             </div>
-              {[1].includes(Number(rol)) ? (
+            {[1].includes(Number(rol)) ? (
               <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-2 gap-10 p-4 mb-4">
                   <div>
@@ -242,21 +232,9 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                 </div>
 
                 {error && (
-                    <div className="text-red-500 dark:text-red-300">
-                      {error}
-                    </div>
-                  )}
-
-                {/* Botones */}
-                {!isEditing && initialData && [1, 2].includes(Number(rol)) && (
-                  <button
-                    type="button"
-                    onClick={onEdit}
-                    className="btn-secondary"
-                  >
-                    Editar
-                  </button>
+                  <div className="text-red-500 dark:text-red-300">{error}</div>
                 )}
+
                 <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-300 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
                     onClick={onClose}
@@ -265,67 +243,69 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   >
                     Cerrar
                   </button>
-                  {[1, 2].includes(Number(rol)) && (
-                  <button
-                    className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    Subir
-                  </button>
-                  )}
+                    <button
+                      className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
+                        loading || (initialData && !formik.dirty)
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                      type="submit"
+                      disabled={loading || (initialData && !formik.dirty)}
+                    >
+                      {initialData ? "Actualizar" : "Subir"}
+                    </button>
                 </div>
               </form>
-              ): (
-                <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                  <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
-                    Detalles del Evento
-                  </h2>
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="flex items-center">
-                      <FaTag className="mr-2 text-blue-500" />
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        Evento:
-                      </span>
-                      <span className="ml-2 text-gray-600 dark:text-gray-400">
-                        {initialData?.title || "N/A"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <FaInfoCircle className="mr-2 text-green-500" />
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        Descripción:
-                      </span>
-                      <span className="ml-2 text-gray-600 dark:text-gray-400">
-                        {initialData?.description || "N/A"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <FaCalendarAlt className="mr-2 text-purple-500" />
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        Fecha Inicio:
-                      </span>
-                      <span className="ml-2 text-gray-600 dark:text-gray-400">
-                        {initialData?.dateStart
-                          ? FormatDate(initialData.dateStart)
-                          : "N/A"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <FaClock className="mr-2 text-red-500" />
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        Fecha Fin:
-                      </span>
-                      <span className="ml-2 text-gray-600 dark:text-gray-400">
-                        {initialData?.dateEnd
-                          ? FormatDate(initialData.dateEnd)
-                          : "N/A"}
-                      </span>
-                    </div>
+            ) : (
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
+                  Detalles del Evento
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="flex items-center">
+                    <FaTag className="mr-2 text-blue-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-200">
+                      Evento:
+                    </span>
+                    <span className="ml-2 text-gray-600 dark:text-gray-400">
+                      {initialData?.title || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaInfoCircle className="mr-2 text-green-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-200">
+                      Descripción:
+                    </span>
+                    <span className="ml-2 text-gray-600 dark:text-gray-400">
+                      {initialData?.description || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaCalendarAlt className="mr-2 text-purple-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-200">
+                      Fecha Inicio:
+                    </span>
+                    <span className="ml-2 text-gray-600 dark:text-gray-400">
+                      {initialData?.dateStart
+                        ? FormatDate(initialData.dateStart)
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaClock className="mr-2 text-red-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-200">
+                      Fecha Fin:
+                    </span>
+                    <span className="ml-2 text-gray-600 dark:text-gray-400">
+                      {initialData?.dateEnd
+                        ? FormatDate(initialData.dateEnd)
+                        : "N/A"}
+                    </span>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </>
