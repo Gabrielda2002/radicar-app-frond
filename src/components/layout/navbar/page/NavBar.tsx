@@ -145,10 +145,7 @@ const Navbar: React.FC = React.memo(() => {
                title="Inicio"
              />
            </NavLink>
-         </div>
-
-         {/* Mobile center section - Username and quick actions */}
-         <div className="flex ml-3 items-center mx-auto w-[370px] md:hidden">
+         <div className="flex items-center ml-1 md:hidden">
           <div>
 
            <h2
@@ -166,7 +163,7 @@ const Navbar: React.FC = React.memo(() => {
 
            <div className="flex text-xs">
              <ModalPausasActivas />
-             <div className="mr-4">
+             <div className="mr-3">
              {rol && Number.parseInt(rol) === 1 && <HelpDesk />}
               
              </div>
@@ -295,6 +292,9 @@ const Navbar: React.FC = React.memo(() => {
              </AccordionMenu>
 
          </div>
+         </div>
+
+         {/* Mobile center section - Username and quick actions */}
 
          {/* Desktop menu */}
          <div className="items-center justify-end hidden w-auto space-x-2 md:flex">
