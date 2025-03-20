@@ -100,7 +100,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
           <div className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white">
             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                {initialData ? "Editar Evento" : "Evento"}
+                {initialData ? "Datos Evento" : "Evento"}
               </h1>
               <button
                 onClick={onClose}
