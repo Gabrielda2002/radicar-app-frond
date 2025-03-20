@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { CreateTicket } from "../Services/CreateTickets";
-// import { useFetchCategory } from "../Hooks/useFetchCategory";
+import { useFetchCategory } from "../Hooks/useFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchPriority } from "../Hooks/useFetchPriority";
 import { Bounce, toast } from "react-toastify";
@@ -43,7 +43,7 @@ const HelpDesk = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // const { dataCategory } = useFetchCategory(true);
+   const { dataCategory } = useFetchCategory(true);
   const { dataPriority } = useFetchPriority(true);
 
   const user = localStorage.getItem("user");
@@ -124,12 +124,15 @@ const HelpDesk = () => {
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value;
-    formik.setFieldValue("category", selectedCategory);
+
+    // validar si selectedCategory es igual a algun valor de dataCategory.name y si es igual a ese valor entonces setear el valor de selectedCategory a dataCategory.id
+    const category = dataCategory.find((cat) => cat.name === selectedCategory);
+    const formatCategory = category ? category.id : "";
+    formik.setFieldValue("category", formatCategory);
     setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
   };
 
   if (loading || validatingTicket) return <LoadingSpinner />;
-
   return (
     <>
       <button
@@ -157,7 +160,7 @@ const HelpDesk = () => {
             {/* Header del modal */}
             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                Solcitar Soporte
+                Solicitar Soporte
               </h1>
               <button
                 onClick={() => setIsModalOpen(false)}
