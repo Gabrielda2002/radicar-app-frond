@@ -1,17 +1,18 @@
 import { createEventEp } from "@/utils/api-config";
 import { useState } from "react";
+import { updateEvenetEp } from "../services/updateEvenetEp";
 
 export const useCreateEvent = () => {
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const createEvent = async (data: FormData) => {
+    const actionEvent = async (data: FormData, idEvent?: number) => {
         try {
             
             setLoading(true);
 
-            const response = await createEventEp(data);
+            const response = await (idEvent ? updateEvenetEp(data, idEvent) : createEventEp(data));
     
             if (response?.status === 200 || response?.status === 201) {
                 setSuccess(true);
@@ -28,5 +29,5 @@ export const useCreateEvent = () => {
             setLoading(false);
         }
     }
-    return { createEvent, success, error, loading };
+    return {  actionEvent, success, error, loading };
 }
