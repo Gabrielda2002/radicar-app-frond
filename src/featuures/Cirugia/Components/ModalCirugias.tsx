@@ -108,6 +108,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
       .max(255, "El nombre del especialista debe tener maximo 50 caracteres"),
   });
+  console.log(data.idGrupoServicios)
 
   const formik = useFormik({
     initialValues: {
