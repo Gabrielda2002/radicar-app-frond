@@ -1,0 +1,47 @@
+{
+        "Software" : [
+            "Plenus",
+            "PLENUS",
+            "PANA",
+            "THARSIS",
+            "PORTAL SAP",
+            "PORTAL SICU",
+            "PORTAL SSAS",
+            "TRANSACCIONES EN LINEA",
+            "SHAREPOINT COMPENSAR",
+            "SHAREPOINT NORDVITAL",
+            "SIGIRES"
+        ],
+        "Hardware": [
+            "COMPUTADOR",
+            "IMPRESORA",
+            "TECLADO",
+            "MOUSE",
+            "ESCANER",
+            "TELEVISOR",
+            "CELULAR"
+        ],
+        "Redes": [
+            "INTERNET",
+            "CABLEADO",
+            "WIFI",
+            "INTRANET",
+            "CORREO ELECTRONICO"
+        ],
+        "Administrativo": [
+            "PARAMETRIZACION DE SERVICIOS",
+            "CREACION DE USUARIOS",
+            "DESBLOQUEAR USUARIOS",
+            "GENERACION DE REPORTES",
+            "SOLICITUD DE COMPRAS",
+            "SOLICITUD DESARROLLO",
+            "CAPACITACION"
+        ],
+        "Otros Soportes" : [
+            "DIGITURNO",
+            "PORTAL WEB NUEVA EPS",
+            "PORTAL WEB COOSALUD",
+            "RIPS SIVIGILA",
+            "RIPS BAI"
+        ]
+}

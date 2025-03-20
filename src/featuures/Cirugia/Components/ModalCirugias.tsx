@@ -91,14 +91,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       .required("Campo requerido")
       .min(5, "La observacion debe tener al menos 5 caracteres")
       .max(150, "La observacion debe tener maximo 150 caracteres"),
-    fechaAnesteciologia: Yup.date().when([], {
-      is:  data.idGrupoServicios === 9,
-      then: (schema) =>
-        schema.required("Campo requerido"),
-      otherwise: (schema) => schema.optional(),
-    }),
-    fechaParaclinicos: Yup.date().when([], {
-      is: data.idGrupoServicios === 9,
+      fechaAnesteciologia: Yup.date()
+      .when('$idGrupoServicios', {
+        is: 9,
+        then: (schema) => schema.required("Campo requerido"),
+        otherwise: (schema) => schema.optional(),
+      }),
+    fechaParaclinicos: Yup.date().when("$idGrupoServicios", {
+      is: 9,
       then: (schema) =>
         schema.required("Campo requerido"),
       otherwise: (schema) => schema.optional(),
@@ -108,6 +108,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
       .max(255, "El nombre del especialista debe tener maximo 50 caracteres"),
   });
+  console.log(data.idGrupoServicios)
 
   const formik = useFormik({
     initialValues: {
