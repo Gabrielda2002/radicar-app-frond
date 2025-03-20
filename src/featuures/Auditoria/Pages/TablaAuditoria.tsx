@@ -17,6 +17,7 @@ import autorizar from "/assets/autorizar.svg";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { FormatDate } from "@/utils/FormatDate";
+import { useOpenSupport } from "@/hooks/useOpenSupport";
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
@@ -28,6 +29,8 @@ const TablaAuditoria = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { handleOpen } = useOpenSupport();
 
   const { query, setQuery, filteredData } = useSearch<IAuditar>(data, [
     "documentNumber",
@@ -60,21 +63,6 @@ const TablaAuditoria = () => {
   const handleShowServicios = (statusCups: IStatusCup[]) => {
     setSelectedCups(statusCups);
     setIsOpen(true);
-  };
-
-  // * Funcion para abrir el modal de soporte
-  const handleOpenSoporte = (soporte: string | null) => {
-    if (!soporte) {
-      console.log(soporte);
-      alert("No hay soporte para mostrar.");
-      return;
-    }
-
-    window.open(
-      `${import.meta.env.VITE_URL_BACKEND}/api/v1/uploads/Soportes/${soporte}`,
-      "_blank"
-    );
-    return;
   };
 
   return (
@@ -209,7 +197,7 @@ const TablaAuditoria = () => {
                           {/* Botón Ver Soporte */}
                           <button
                             onClick={() =>
-                              handleOpenSoporte(auditoria.soportes)
+                              handleOpen(auditoria.soportes, "Soportes")
                             }
                             className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                             title="Ver Soporte"

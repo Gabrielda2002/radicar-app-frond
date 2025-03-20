@@ -1,3 +1,5 @@
+import useAnimation from "@/hooks/useAnimations";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 
@@ -15,11 +17,17 @@ const ModalCrearCarpeta = ({
   const [Error, setError] = useState("");
   const [folderName, setFolderName] = useState("");
 
+  useBlockScroll(standOpen);
+
+  const { showAnimation, closing} = useAnimation(standOpen, () => {
+    toggleModal();
+  });
+
   const handleCreateFolder = () => {
     if (folderName.trim()) {
       createNewFolder(folderName);
       toast.success("Carpeta creada correctamente");
-      closeModal();
+      toggleModal();
     } else {
       alert("El nombre de la carpeta es requerido");
     }
@@ -42,45 +50,35 @@ const ModalCrearCarpeta = ({
     },
     []
   );
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    toggleModal();
-  };
-
-  if (standOpen) {
-    openModal();
-  }
 
   return (
     <>
       {standOpen && (
-        <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
-          <section>
-            <div
-              className="fixed inset-0 transition-opacity duration-300 bg-black opacity-50 backdrop-blur-sm"
+        <div
+        className={`fixed inset-0 z-50 flex items-center justify-center pt-10 pb-10 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+          showAnimation && !closing ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div
+          className={`w-[90%] max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
+            standOpen && !closing
+              ? "translate-y-0 opacity-100"
+              : "translate-y-10 opacity-0"
+          }`}
+        >
+          {/* Header del modal */}
+          <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
+            <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
+              Crear Carpeta
+            </h1>
+            <button
               onClick={toggleModal}
-            ></div>
-
-            {/* Contenido del formulario */}
-
-            <div className="z-10 w-[800px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800">
-              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-black dark:border-b-white">
-                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Crear Carpeta
-                </h1>
-                <button
-                  onClick={openModal}
-                  className="text-xl text-gray-500 duration-200 rounded-md w-7 h-7 hover:bg-gray-300 hover:text-gray-800"
-                >
-                  &times;
-                </button>
-              </div>
+              // disabled={!videoCompleted || loading || !success}
+              className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
+            >
+              &times;
+            </button>
+          </div>
 
               {/* Formulario con dos columnas */}
 
@@ -107,7 +105,7 @@ const ModalCrearCarpeta = ({
 
               <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                 <button
-                  onClick={closeModal}
+                  onClick={toggleModal}
                   className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
                 >
                   Cerrar
@@ -121,7 +119,6 @@ const ModalCrearCarpeta = ({
                 </button>
               </div>
             </div>
-          </section>
         </div>
       )}
     </>
