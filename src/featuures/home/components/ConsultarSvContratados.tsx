@@ -11,11 +11,9 @@ const ConsultarSvContratados = () => {
 
   return (
     <>
-      <div className="p-4">
-        <h2 className="pb-2 pl-2 mt-2 text-[22px] font-bold md:text-[33px] dark:text-white">
-          Consultar Servicios Contratados:
-        </h2>
-        <div className="p-2 rounded-lg ">
+      <div className="p-1">
+       
+        <div className="p-1 ml-4 rounded-lg ">
           <label
             htmlFor=""
             className="w-5/6 dark:text-gray-200 text-[19px] md:text-[24px]"
