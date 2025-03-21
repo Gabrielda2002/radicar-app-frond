@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import StarRating from "./StarRating";
 import { useServey } from "../Hooks/useServey";
+import { Star } from 'lucide-react'
 
 interface ModalServeyProps {
   idTicket: number;
@@ -97,9 +98,10 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
       <button
         type="button"
         onClick={() => setShowModal(true)}
-        className="text-blue-500 hover:text-blue-700"
+        className="flex items-center justify-center hover:opacity-80 transition-opacity"
+        title="Encuesta de satisfacción"
       >
-        Encuesta de satisfaccion
+        <Star className="w-4 h4" />
       </button>
       {showModal && (
         <div
