@@ -121,14 +121,17 @@ const HelpDesk = () => {
   });
 
   const [opcionesTitulo, setOpcionesTitulo] = useState<string[]>([]);
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value;
+    setSelectedCategoryName(selectedCategory);
 
     // validar si selectedCategory es igual a algun valor de dataCategory.name y si es igual a ese valor entonces setear el valor de selectedCategory a dataCategory.id
     const category = dataCategory.find((cat) => cat.name === selectedCategory);
     const formatCategory = category ? category.id : "";
     formik.setFieldValue("category", formatCategory);
+    console.log(typedTitlesHDOptions[selectedCategory] || []);
     setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
   };
 
@@ -202,7 +205,7 @@ const HelpDesk = () => {
                       <select
                         name="category"
                         id="categoria"
-                        value={formik.values.category}
+                        value={selectedCategoryName}
                         onChange={handleCategoryChange}
                         onBlur={formik.handleBlur}
                         className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
