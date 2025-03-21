@@ -216,7 +216,7 @@ const ProcessHelpDesk = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
                     <div className="font-semibold text-gray-600 dark:text-gray-400/90">
                       Título:
                     </div>
