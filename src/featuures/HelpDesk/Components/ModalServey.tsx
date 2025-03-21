@@ -1,11 +1,12 @@
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import StarRating from "./StarRating";
 import { useServey } from "../Hooks/useServey";
 import { Star } from 'lucide-react'
+import { Bounce, toast } from "react-toastify";
 
 interface ModalServeyProps {
   idTicket: number;
@@ -14,7 +15,7 @@ interface ModalServeyProps {
 const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const { error, success, loading, createServey, validate, isValidate } =
+  const { error, success, loading, createServey } =
     useServey();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -65,9 +66,24 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
         );
 
         const result = await createServey(formData);
-        if (result) {
-          await validate(formData);
-          setShowModal(false);
+        if (result && success) {
+
+          toast.success("Encuesta enviada exitosamente.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+
+          setTimeout(() => {
+            setShowModal(false);
+          }, 3000)
+
         }
       } catch (error) {
         console.log("Error al enviar la encuesta ", error);
@@ -79,19 +95,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
     formik.setFieldValue(name, value);
     formik.setFieldTouched(name, false);
   };
-
-  useEffect(() => {
-    if (showModal) {
-      const chekValidation = async () => {
-        const formData = new FormData();
-        formData.append("ticketId", idTicket.toString());
-        formData.append("usuarioId", userId.toString());
-        await validate(formData);
-      };
-
-      chekValidation();
-    }
-  }, [showModal, userId, validate]);
 
   return (
     <>
@@ -130,11 +133,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
             <div>
               <form onSubmit={formik.handleSubmit}>
-                {isValidate ? (
-                  <p className="text-sm text-red-600 dark:text-red-400">
-                    Ya se ha enviado una encuesta para este ticket
-                  </p>
-                ) : (
                   <div>
                     <p className="my-4 text-sm text-gray-700 dark:text-gray-300">
                       Agradecemos diligenciar esta encuesta para calificar él
@@ -241,16 +239,10 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                       )}
                     </div>
                   </div>
-                )}
 
                 {error && (
                   <p className="text-sm text-red-600 dark:text-red-400">
                     {error}
-                  </p>
-                )}
-                {success && (
-                  <p className="text-sm text-green-600 dark:text-green-400">
-                    Encuesta enviada correctamente
                   </p>
                 )}
 
@@ -262,7 +254,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                   >
                     Cancelar
                   </button>
-                  {!isValidate && (
                     <button
                       type="submit"
                       className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
@@ -270,7 +261,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                     >
                       {loading ? "Enviando..." : "Enviar"}
                     </button>
-                  )}
                 </div>
               </form>
             </div>
