@@ -6,7 +6,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import cookieX from "/assets/cookie-X.svg";
 import FormPacientesCS from "../components/ConsultarPacientesCS";
 import ConsultarSvContratados from "../components/ConsultarSvContratados";
-import icon from "@/featuures/home/images/flecha_blanca.gif";
+import icon from "@/featuures/home/images/ico.png";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("../components/Calendario"));
@@ -89,12 +89,11 @@ const Inicio = () => {
                 >
                   <span className="text-xl">Panel De Consultas</span>
                   <span
-                    className={`transform transition-transform duration-500 ease-in-out ${
-                      isOpen ? "rotate-180" : ""
+                    className={`transform transition-transform duration-700 ease-in-out ${
+                      isOpen ? "rotate-180 animate-pulse" : ""
                     }`}
                   >
-                    <img src={icon} alt=""
-                    className="w-12 h-12 md:h-16 md:w-16" />
+                    <img src={icon} alt="" className="w-5 h-5 md:h-7 md:w-7"/>
                   </span>
                 </button>
 
