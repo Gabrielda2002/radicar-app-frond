@@ -2,7 +2,7 @@ import { IComment } from "@/models/IComment";
 import { useState } from "react";
 import { getCommentsTicket } from "../Services/getCommentsTicket";
 
-export const useFetchComments = () => {
+export const useFetchCommentsByTicket = () => {
   const [dataComments, setDataComments] = useState<IComment[]>([]);
   const [loadingComments, setLoadingComments] = useState<boolean>(true);
   const [errorComments, setErrorComments] = useState<string | null>(null);

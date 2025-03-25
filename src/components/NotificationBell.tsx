@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { useNotification } from "@/context/notificationContext.tsx";
 import ModalServey from "@/featuures/HelpDesk/Components/ModalServey";
+import ModalCommetsTicket from "@/featuures/HelpDesk/Components/ModalCommetsTicket";
 // import { Check } from "lucide-react";
 
 const NotificationBell: React.FC = () => {
@@ -66,7 +67,6 @@ const NotificationBell: React.FC = () => {
       console.error("Error al suscribirse a las notificaciones:", error);
     }
   };
-
 
   return (
     <div className="relative" ref={notificationRef}>
@@ -133,7 +133,16 @@ const NotificationBell: React.FC = () => {
                     {notification.message}
                   </p>
                   {/* boton encuesta */}
-                  <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-3">
+                    <div className="flex items-center">
+                      <ModalCommetsTicket
+                        idTicket={
+                          notification.referenceId
+                            ? notification.referenceId
+                            : 0
+                        }
+                      />
+                    </div>
                     <div className="flex items-center">
                       <ModalServey
                         idTicket={
@@ -143,20 +152,6 @@ const NotificationBell: React.FC = () => {
                         }
                       />
                     </div>
-                    {/* <div className="flex items-center">
-                      {!notification.isRead && (
-                        <button
-                          onClick={async () =>
-                            await markAsRead(notification.id)
-                          }
-                          className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                          type="button"
-                          title="Marcar como leído"
-                        >
-                          <Check className="w-5 h-5" />
-                        </button>
-                      )}
-                    </div> */}
                   </div>
                 </div>
               ))

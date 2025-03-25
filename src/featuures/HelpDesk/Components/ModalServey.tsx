@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import StarRating from "./StarRating";
 import { useServey } from "../Hooks/useServey";
-import { Star } from 'lucide-react'
+import { Star } from "lucide-react";
 import { Bounce, toast } from "react-toastify";
 
 interface ModalServeyProps {
@@ -15,8 +15,7 @@ interface ModalServeyProps {
 const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const { error, success, loading, createServey } =
-    useServey();
+  const { error, success, loading, createServey } = useServey();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -67,7 +66,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
         const result = await createServey(formData);
         if (result && success) {
-
           toast.success("Encuesta enviada exitosamente.", {
             position: "bottom-right",
             autoClose: 5000,
@@ -82,8 +80,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
           setTimeout(() => {
             setShowModal(false);
-          }, 3000)
-
+          }, 3000);
         }
       } catch (error) {
         console.log("Error al enviar la encuesta ", error);
@@ -101,10 +98,10 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
       <button
         type="button"
         onClick={() => setShowModal(true)}
-        className="flex items-center justify-center hover:opacity-80 transition-opacity"
-        title="Encuesta de satisfacción"
+        className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
+        title="Encuesta Satisfacción"
       >
-        <Star className="w-4 h4" />
+        <Star className="w-4 h-4" />
       </button>
       {showModal && (
         <div
@@ -133,112 +130,112 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
             <div>
               <form onSubmit={formik.handleSubmit}>
+                <div>
+                  <p className="my-4 text-sm text-gray-700 dark:text-gray-300">
+                    Agradecemos diligenciar esta encuesta para calificar él
+                    soporte prestado por sistemas. Califique marcando él número
+                    de estrellas de acuerdo a su experiencia entendiendo que 0
+                    estrellas es “Malo” y 5 “Excelente”.
+                  </p>
+
+                  <StarRating
+                    name="scoring"
+                    rating={formik.values.scoring}
+                    onChange={handleStarChange}
+                    error={formik.errors.scoring}
+                    touched={formik.touched.scoring}
+                    label="Puntuación general"
+                  />
+
+                  <StarRating
+                    name="timeAnswer"
+                    rating={formik.values.timeAnswer}
+                    onChange={handleStarChange}
+                    error={formik.errors.timeAnswer}
+                    touched={formik.touched.timeAnswer}
+                    label="Tiempo de respuesta"
+                  />
+
+                  <StarRating
+                    name="consciousness"
+                    rating={formik.values.consciousness}
+                    onChange={handleStarChange}
+                    error={formik.errors.consciousness}
+                    touched={formik.touched.consciousness}
+                    label="Conocimiento del personal"
+                  />
+
+                  <StarRating
+                    name="kindness"
+                    rating={formik.values.kindness}
+                    onChange={handleStarChange}
+                    error={formik.errors.kindness}
+                    touched={formik.touched.kindness}
+                    label="Amabilidad"
+                  />
+
                   <div>
-                    <p className="my-4 text-sm text-gray-700 dark:text-gray-300">
-                      Agradecemos diligenciar esta encuesta para calificar él
-                      soporte prestado por sistemas. Califique marcando él
-                      número de estrellas de acuerdo a su experiencia
-                      entendiendo que 0 estrellas es “Malo” y 5 “Excelente”.
-                    </p>
-
-                    <StarRating
-                      name="scoring"
-                      rating={formik.values.scoring}
-                      onChange={handleStarChange}
-                      error={formik.errors.scoring}
-                      touched={formik.touched.scoring}
-                      label="Puntuación general"
+                    <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Solucion Efectiva
+                    </label>
+                    <input
+                      type="checkbox"
+                      name="solution"
+                      checked={formik.values.solution}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
                     />
-
-                    <StarRating
-                      name="timeAnswer"
-                      rating={formik.values.timeAnswer}
-                      onChange={handleStarChange}
-                      error={formik.errors.timeAnswer}
-                      touched={formik.touched.timeAnswer}
-                      label="Tiempo de respuesta"
-                    />
-
-                    <StarRating
-                      name="consciousness"
-                      rating={formik.values.consciousness}
-                      onChange={handleStarChange}
-                      error={formik.errors.consciousness}
-                      touched={formik.touched.consciousness}
-                      label="Conocimiento del personal"
-                    />
-
-                    <StarRating
-                      name="kindness"
-                      rating={formik.values.kindness}
-                      onChange={handleStarChange}
-                      error={formik.errors.kindness}
-                      touched={formik.touched.kindness}
-                      label="Amabilidad"
-                    />
-
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Solucion Efectiva
-                      </label>
-                      <input
-                        type="checkbox"
-                        name="solution"
-                        checked={formik.values.solution}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
-                      />
-                      {formik.touched.solution && formik.errors.solution && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {formik.errors.solution}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Recomendaria el servicio
-                      </label>
-                      <input
-                        type="checkbox"
-                        name="recommendation"
-                        checked={formik.values.recommendation}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
-                      />
-                      {formik.touched.recommendation &&
-                        formik.errors.recommendation && (
-                          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                            {formik.errors.recommendation}
-                          </p>
-                        )}
-                    </div>
-
-                    <div className="mb-4">
-                      <label
-                        htmlFor="comment"
-                        className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-                      >
-                        Comentarios adicionales
-                      </label>
-                      <textarea
-                        id="comment"
-                        name="comment"
-                        rows={4}
-                        className="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                        placeholder="Escriba sus comentarios aquí..."
-                        value={formik.values.comment}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      ></textarea>
-                      {formik.touched.comment && formik.errors.comment && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {formik.errors.comment}
-                        </p>
-                      )}
-                    </div>
+                    {formik.touched.solution && formik.errors.solution && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                        {formik.errors.solution}
+                      </p>
+                    )}
                   </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Recomendaria el servicio
+                    </label>
+                    <input
+                      type="checkbox"
+                      name="recommendation"
+                      checked={formik.values.recommendation}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="w-5 h-5 text-blue-500 border border-gray-300 rounded-md focus:ring-blue-500"
+                    />
+                    {formik.touched.recommendation &&
+                      formik.errors.recommendation && (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                          {formik.errors.recommendation}
+                        </p>
+                      )}
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="comment"
+                      className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      Comentarios adicionales
+                    </label>
+                    <textarea
+                      id="comment"
+                      name="comment"
+                      rows={4}
+                      className="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                      placeholder="Escriba sus comentarios aquí..."
+                      value={formik.values.comment}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    ></textarea>
+                    {formik.touched.comment && formik.errors.comment && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                        {formik.errors.comment}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 {error && (
                   <p className="text-sm text-red-600 dark:text-red-400">
@@ -254,13 +251,13 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
                   >
                     Cancelar
                   </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                      disabled={!formik.isValid || loading}
-                    >
-                      {loading ? "Enviando..." : "Enviar"}
-                    </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                    disabled={!formik.isValid || loading}
+                  >
+                    {loading ? "Enviando..." : "Enviar"}
+                  </button>
                 </div>
               </form>
             </div>

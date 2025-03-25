@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
 import { useTickets } from "@/context/ticketContext";
-import { useFetchComments } from "../Hooks/useFetchComments";
+import { useFetchCommentsByTicket } from "../Hooks/useFetchCommentsByTicket";
 import { FormatDate } from "@/utils/FormatDate";
 
 interface CerrarModalProps {
@@ -24,7 +24,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // hook trae comentarios tickets
-  const { dataComments, errorComments, fetchComments } = useFetchComments();
+  const { dataComments, errorComments, fetchComments } = useFetchCommentsByTicket();
   useBlockScroll(showModal);
 
   const { validateUserTicketStatus } = useTickets();
