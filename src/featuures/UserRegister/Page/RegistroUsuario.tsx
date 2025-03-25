@@ -1,35 +1,13 @@
 import { useState } from "react";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
-
-// Simular resultados 
-const mockUsers = [
-  {
-    documento: "1234567",
-    nombre: "Juan Pérez",
-    email: "juan.perez@gmail.com",
-    telefono: "3001234567",
-    fechaRegistro: "2024-03-25",
-  },
-  {
-    documento: "7654321",
-    nombre: "María González",
-    email: "maria.gonzalez@gmail.com",
-    telefono: "3109876543",
-    fechaRegistro: "2024-03-20",
-  },
-];
+import { useFetchRegisterEntries } from "../Hooks/useFetchRegisterEntries";
+import { FormatDate } from "@/utils/FormatDate";
 
 const RegistroUsuario = () => {
-  const [documento, setDocumento] = useState<string>("");
-  const [usuarios, setUsuarios] = useState<any[]>([]);
 
-  const getData = (documento: string) => {
-    // Simular API
-    const resultados = mockUsers.filter((user) =>
-      user.documento.includes(documento)
-    );
-    setUsuarios(resultados);
-  };
+  const [documento, setDocumento] = useState<string>("");
+
+  const  { dataRegister, loadingRegister, errorRegister, getData } = useFetchRegisterEntries();
   
   return (
     <>
@@ -64,50 +42,54 @@ const RegistroUsuario = () => {
         </section>
 
         {/* Tabla de resultados */}
-        {usuarios.length > 0 && (
+        {dataRegister.length > 0 && (
           <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase shadow-xl bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="px-6 py-3">
-                  Documento
+                  N* Documento
                 </th>
                 <th className="px-6 py-3">
                   Nombre
                 </th>
                 <th className="px-6 py-3">
-                  Email
+                  Apellido
                 </th>
                 <th className="px-6 py-3">
-                  Teléfono
+                  Sede
                 </th>
                 <th className="px-6 py-3">
                   Fecha Registro
                 </th>
+                <th className="px-6 py-3">
+                  Hora Registro
+                </th>
               </tr>
             </thead>
             <tbody>
-              {usuarios.map((usuario, index) => (
+              {dataRegister.map((u) => (
                 <tr
-                  key={index}
+                  key={u.id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
-                  <td className="px-6 py-4">{usuario.documento}</td>
-                  <td className="px-6 py-4">{usuario.nombre}</td>
-                  <td className="px-6 py-4">{usuario.email}</td>
-                  <td className="px-6 py-4">{usuario.telefono}</td>
-                  <td className="px-6 py-4">{usuario.fechaRegistro}</td>
+                  <td className="px-6 py-4">{u.documentNumber}</td>
+                  <td className="px-6 py-4">{u.userName}</td>
+                  <td className="px-6 py-4">{u.userLastName}</td>
+                  <td className="px-6 py-4">{u.headquarters}</td>
+                  <td className="px-6 py-4">{FormatDate(u.registerDate, false)}</td>
+                  <td className="px-6 py-4">{u.hourRegister}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
 
-        {/* Mensaje cuando no hay resultados */}
-        {usuarios.length === 0 && documento && (
-          <div className="mt-4 text-center text-red-500">
-            No se encontró usuario con el documento {documento}
+        {errorRegister && (
+          <div className="text-red-500">
+            <p>{errorRegister}</p>
           </div>
         )}
+        
       </section>
     </>
   );
