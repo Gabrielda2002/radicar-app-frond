@@ -131,7 +131,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
             <div>
               <form onSubmit={formik.handleSubmit}>
                 <div>
-                  <p className="my-4 text-sm text-gray-700 dark:text-gray-300">
+                  <p className="my-4 text-sm text-gray-500 dark:text-gray-500">
                     Agradecemos diligenciar esta encuesta para calificar él
                     soporte prestado por sistemas. Califique marcando él número
                     de estrellas de acuerdo a su experiencia entendiendo que 0

@@ -35,7 +35,7 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
           setIsModalOpen(true)
           fetchComments(idTicket)
         }}
-        className="flex items-center justify-center hover:opacity-80 transition-opacity text-white"
+        className="flex items-center justify-center hover:opacity-80 transition-opacity text-black dark:text-white"
         title="Comentarios"
       >
         <MessageSquare className="w-4 h-4" />
@@ -57,7 +57,7 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
             {/* Header del modal */}
             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                Solicitar Soporte
+                Comentarios
               </h1>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -70,7 +70,7 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
 
             {/* Contenido del modal */}
 
-            <div className="max-h-[78vh] overflow-auto px-2">
+            <div className="max-h-[78vh] overflow-auto px-2 flex justify-center">
               <table className="min-w-[50%] text-sm mb-4">
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
