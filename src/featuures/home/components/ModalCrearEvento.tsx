@@ -96,8 +96,8 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="relative w-fit h-fit max-w-3xl bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center pt-10 bg-black bg-opacity-5 0 backdrop-blur-sm">
+          <div className="relative max-w-3xl bg-white rounded-lg shadow-lg w-fit h-fit dark:bg-gray-800 dark:text-white">
             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
                 {initialData ? "Datos Evento" : "Evento"}
@@ -257,7 +257,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                 </div>
               </form>
             ) : (
-              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+              <div className="p-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
                   Detalles del Evento
                 </h2>
