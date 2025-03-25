@@ -41,6 +41,9 @@ const FileManager = lazy(
 const SistemaInventario = lazy(
   () => import("./featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
+const RegistroUsuarios = lazy(
+  () => import("./featuures/UserRegister/Page/RegistroUsuario.tsx")
+);
 const GestionTickets = lazy(
   () => import("./featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")
 );
@@ -126,6 +129,10 @@ function AppRoutes() {
                             element={<SistemaInventario />}
                           />
                           <Route path="*" element={<Navigate to="/home" />} />
+                          <Route
+                            path="/RegistroUsuarios"
+                            element={<RegistroUsuarios />}
+                          />
                           <Route
                             path="/GestionTickets"
                             element={<GestionTickets />}

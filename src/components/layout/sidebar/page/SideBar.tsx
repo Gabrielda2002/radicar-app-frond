@@ -398,38 +398,68 @@ const SideBar: FC = () => {
                 />
               </Category>
             )}
+            {/* Categoria de registro usuarios */}
+            {[1].includes(Number(rol)) && (
+              <NavLink to="/RegistroUsuarios">
+                {({ isActive }) => (
+                  <div
+                    className={`flex items-center px-1 py-[12px] mt-4 rounded-lg transition-colors duration-300 transform group ${
+                      openAccordions.quality
+                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                    } w-full`}
+                  >
+                    <img
+                      src={user}
+                      alt=""
+                      className="w-4 h-4 ml-2.5 mx-0 group-hover:invert dark:invert"
+                    />
+                    {!isCollapsed && (
+                      <span
+                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                          isActive
+                            ? "text-white dark:text-gray-200"
+                            : "group-hover:text-white dark:group-hover:text-gray-200"
+                        }`}
+                      >
+                        Registro de Usuarios
+                      </span>
+                    )}
+                  </div>
+                )}
+              </NavLink>
+            )}
 
             {/* Categoria de gestión de tickets */}
             {[1].includes(Number(rol)) && (
-
-            <NavLink to="/GestionTickets">
-              {({ isActive }) => (
-                <div
-                  className={`flex items-center px-1 py-2 mt-4 rounded-lg transition-colors duration-300 transform group ${
-                    openAccordions.quality
-                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                  } w-full`}
-                >
-                  <img
-                    src={ticket}
-                    alt=""
-                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                  />
-                  {!isCollapsed && (
-                    <span
-                      className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                        isActive
-                          ? "text-white dark:text-gray-200"
-                          : "group-hover:text-white dark:group-hover:text-gray-200"
-                      }`}
-                    >
-                      Gestión de Tickets
-                    </span>
-                  )}
-                </div>
-              )}
-            </NavLink>
+              <NavLink to="/GestionTickets">
+                {({ isActive }) => (
+                  <div
+                    className={`flex items-center px-1 py-[10px] mt-4 rounded-lg transition-colors duration-300 transform group ${
+                      openAccordions.quality
+                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                    } w-full`}
+                  >
+                    <img
+                      src={ticket}
+                      alt=""
+                      className="w-5 h-5 mx-2 group-hover:invert dark:invert"
+                    />
+                    {!isCollapsed && (
+                      <span
+                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                          isActive
+                            ? "text-white dark:text-gray-200"
+                            : "group-hover:text-white dark:group-hover:text-gray-200"
+                        }`}
+                      >
+                        Gestión de Tickets
+                      </span>
+                    )}
+                  </div>
+                )}
+              </NavLink>
             )}
 
             {/* Categoria de administrador */}
