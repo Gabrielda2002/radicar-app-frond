@@ -5,7 +5,8 @@ import arrowUp from "/assets/arrow-up.svg";
 
 interface CategoryProps {
   title: string;
-  icon: string;
+  // Modificamos el tipo para aceptar tanto un componente como una cadena
+  icon: React.ComponentType<{ className?: string }> | string;
   isOpen: boolean;
   toggle: () => void;
   children: React.ReactNode;
@@ -18,6 +19,9 @@ const Category: React.FC<CategoryProps> = ({
   toggle,
   children,
 }) => {
+  // Verificamos si el icono es un componente o una cadena
+  const IconComponent = typeof icon !== 'string' ? icon : null;
+  
   return (  
     <div className="space-y-3">
       <button
@@ -28,13 +32,21 @@ const Category: React.FC<CategoryProps> = ({
             : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
         } w-full`}
       >
-        <img
-          src={icon}
-          alt=""
-          className={`w-5 h-5 ${
-            isOpen ? "invert" : "group-hover:invert dark:invert"
-          }`}
-        />
+        {IconComponent ? (
+          // Renderizamos el componente si icon es un componente
+          <IconComponent className={`w-5 h-5 ${
+            isOpen ? "text-white" : "group-hover:text-white dark:text-white"
+          }`} />
+        ) : (
+          // Renderizamos la imagen si icon es una cadena
+          <img
+            src={icon as string}
+            alt=""
+            className={`w-5 h-5 ${
+              isOpen ? "invert" : "group-hover:invert dark:invert"
+            }`}
+          />
+        )}
         <span
           className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
             isOpen ? "text-white dark:text-gray-200" : ""

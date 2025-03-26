@@ -10,17 +10,16 @@ import Category from "../components/CategoriaSideBar";
 import SubCategory from "../components/SubCategoriaSideBar";
 
 //*Icons
-import Box from "/assets/box.svg";
-import home from "/assets/home.svg";
-import flag from "/assets/flag.svg";
+import { FaFolderOpen, FaRegFolder } from "react-icons/fa";
+import { MdOutlineInventory } from "react-icons/md";
+import { HiOutlineDocumentReport } from "react-icons/hi";
+import { IoMdHome} from "react-icons/io";
 import user from "/assets/user.svg";
 import user2 from "/assets/user2.svg";
 import user1 from "/assets/user1.svg";
 import audit from "/assets/audit.svg";
 import table from "/assets/table.svg";
-import folder from "/assets/folder.svg";
 import report from "/assets/report.svg";
-import filling from "/assets/filling.svg";
 import surgery from "/assets/surgery.svg";
 import userMain from "/assets/userMain.svg";
 import services from "/assets/services.svg";
@@ -29,7 +28,7 @@ import recobro from "/assets/recobro.svg";
 import carta from "/assets/carta.svg";
 import auditoria from "/assets/auditoria.svg";
 import ticket from "/assets/ticket.svg";
-
+import { Cpu } from "lucide-react";
 
 const SideBar: FC = () => {
   const { isCollapsed, toggleSideBar } = useSidebar();
@@ -51,8 +50,6 @@ const SideBar: FC = () => {
   // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  // * hook para obtener el rol del usuario autenticado
-  // * y controlar los permisos de acceso a las rutas
   const { rol } = useAuth();
 
   const openModal = useCallback(() => setIsModalOpen(true), []);
@@ -126,16 +123,11 @@ const SideBar: FC = () => {
       ref={sidebarRef}
       className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
         isCollapsed ? "-translate-x-full w-16 absolute" : "w-60 absolute"
-      } px-4 py-8 h-full`}
+      } px-4 py-3 h-full`}
     >
       <div className="flex flex-col justify-between flex-1">
         <nav className="-mx-3 space-y-6">
           <div className="space-y-4 ">
-            {!isCollapsed && (
-              <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
-                Servicios
-              </label>
-            )}
             {/* Categoria de inicio */}
             <NavLink to="/home">
               {({ isActive }) => (
@@ -148,10 +140,8 @@ const SideBar: FC = () => {
                       : ""
                   }`}
                 >
-                  <img
-                    src={home}
-                    alt=""
-                    className="w-5 h-5 group-hover:invert dark:invert"
+                  <IoMdHome
+                    className={`w-6 h-6 text-gray-600 dark:text-gray-200 ${isActive ? '' : 'group-hover:text-gray-200 dark:group-hover:invert'} `}
                   />
                   {!isCollapsed && (
                     <span
@@ -169,15 +159,20 @@ const SideBar: FC = () => {
             </NavLink>
 
             {/* Categoria Gestiones */}
+            {!isCollapsed && (
+              <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
+                Servicios
+              </label>
+            )}
             <Category
               title="Gestión de Calidad"
-              icon={folder}
+              icon={FaFolderOpen}
               isOpen={openAccordions.quality}
               toggle={() => toggleAccordion("quality")}
             >
               <SubCategory
                 to="/SistemGestionCalidad"
-                icon={flag}
+                icon={FaRegFolder}
                 title="Norte de Santander"
                 isCollapsed={isCollapsed}
               />
@@ -186,14 +181,14 @@ const SideBar: FC = () => {
             {/* Categoria de Inventario */}
             <Category
               title="Gestión de Inventarios"
-              icon={Box}
+              icon={MdOutlineInventory}
               isOpen={openAccordions.inventary}
               toggle={() => toggleAccordion("inventary")}
             >
               {[1].includes(Number(rol)) && (
                 <SubCategory
                   to="/SistemaInventario"
-                  icon={flag}
+                  icon={Cpu}
                   title="Inventario Tecnologico"
                   isCollapsed={isCollapsed}
                 />
@@ -266,200 +261,133 @@ const SideBar: FC = () => {
 
             {/* Categoria de reportes */}
             {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
-              <Category
-                title="Gestión de Reportes"
-                icon={filling}
-                isOpen={openAccordions.reports}
-                toggle={() => toggleAccordion("reports")}
-              >
-                {/* boton que abre el modal de reportes excel */}
-                <button
-                  onClick={openModal}
-                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                    openAccordions.quality
-                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                  } w-full`}
+              <div>
+                <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
+                  Reportes
+                </label>
+                <Category
+                  title="Gestión de Reportes"
+                  icon={HiOutlineDocumentReport}
+                  isOpen={openAccordions.reports}
+                  toggle={() => toggleAccordion("reports")}
                 >
-                  <img
-                    src={report}
-                    alt=""
-                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                  />
-                  {!isCollapsed && (
-                    <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                      Reporte de Radicación
-                    </span>
-                  )}
-                </button>
-
-                {/* boton que abre el modal de reportes de cirugias */}
-                <button
-                  onClick={openModalCirugia}
-                  className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                    openAccordions.quality
-                      ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                      : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                  } w-full`}
-                >
-                  <img
-                    src={report}
-                    alt=""
-                    className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                  />
-                  {!isCollapsed && (
-                    <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                      Reporte de Cirugía
-                    </span>
-                  )}
-                </button>
-              </Category>
-            )}
-
-            {/* Categoria de tablas de radicado */}
-            {[1].includes(Number(rol)) && (
-              <Category
-                title="Tablas Radicación"
-                icon={table}
-                isOpen={openAccordions.tablets}
-                toggle={() => toggleAccordion("tablets")}
-              >
-                <SubCategory
-                  to="/tabla-cups"
-                  icon={report}
-                  title="Cups"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-pacientes"
-                  icon={report}
-                  title="Pacientes"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-diagnostico"
-                  icon={report}
-                  title="Diagnostico"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-radicadores"
-                  icon={report}
-                  title="Radicadores"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-municipios"
-                  icon={report}
-                  title="Municipios"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-convenios"
-                  icon={report}
-                  title="Convenios"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-tipo-documento"
-                  icon={report}
-                  title="Tipo Documento"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-ips-primaria"
-                  icon={report}
-                  title="IPS Primaria"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-lugar-radicacion"
-                  icon={report}
-                  title="Lugar Radicación"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-ips-remite"
-                  icon={report}
-                  title="IPS Remitente"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-especialidad"
-                  icon={report}
-                  title="Especialidad"
-                  isCollapsed={isCollapsed}
-                />
-                <SubCategory
-                  to="/tabla-tipo-servicio"
-                  icon={report}
-                  title="Tipo Servicio"
-                  isCollapsed={isCollapsed}
-                />
-              </Category>
-            )}
-            {/* Categoria de registro usuarios */}
-            {[1].includes(Number(rol)) && (
-              <NavLink to="/RegistroUsuarios">
-                {({ isActive }) => (
-                  <div
-                    className={`flex items-center px-1 py-[12px] mt-4 rounded-lg transition-colors duration-300 transform group ${
+                  {/* boton que abre el modal de reportes excel */}
+                  <button
+                    onClick={openModal}
+                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
                       openAccordions.quality
                         ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
                     } w-full`}
                   >
                     <img
-                      src={user}
-                      alt=""
-                      className="w-4 h-4 ml-2.5 mx-0 group-hover:invert dark:invert"
-                    />
-                    {!isCollapsed && (
-                      <span
-                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          isActive
-                            ? "text-white dark:text-gray-200"
-                            : "group-hover:text-white dark:group-hover:text-gray-200"
-                        }`}
-                      >
-                        Registro de Usuarios
-                      </span>
-                    )}
-                  </div>
-                )}
-              </NavLink>
-            )}
-
-            {/* Categoria de gestión de tickets */}
-            {[1].includes(Number(rol)) && (
-              <NavLink to="/GestionTickets">
-                {({ isActive }) => (
-                  <div
-                    className={`flex items-center px-1 py-[10px] mt-4 rounded-lg transition-colors duration-300 transform group ${
-                      openAccordions.quality
-                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                    } w-full`}
-                  >
-                    <img
-                      src={ticket}
+                      src={report}
                       alt=""
                       className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                     />
                     {!isCollapsed && (
-                      <span
-                        className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                          isActive
-                            ? "text-white dark:text-gray-200"
-                            : "group-hover:text-white dark:group-hover:text-gray-200"
-                        }`}
-                      >
-                        Gestión de Tickets
+                      <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
+                        Reporte de Radicación y Otros
                       </span>
                     )}
-                  </div>
-                )}
-              </NavLink>
+                  </button>
+
+                  {/* boton que abre el modal de reportes de cirugias */}
+                  <button
+                    onClick={openModalCirugia}
+                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
+                      openAccordions.quality
+                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
+                    } w-full`}
+                  >
+                    <img
+                      src={report}
+                      alt=""
+                      className="w-5 h-5 mx-2 group-hover:invert dark:invert"
+                    />
+                    {!isCollapsed && (
+                      <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
+                        Reporte de Cirugía
+                      </span>
+                    )}
+                  </button>
+                </Category>
+              </div>
+            )}
+
+            {/* Categoria de registro usuarios */}
+            {[1].includes(Number(rol)) && (
+              <div>
+                <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
+                  Usuarios
+                </label>
+                <NavLink to="/RegistroUsuarios">
+                  {({ isActive }) => (
+                    <div
+                      className={`flex items-center px-1 py-[12px] mt-4 rounded-lg transition-colors duration-300 transform group ${
+                        openAccordions.quality
+                          ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                          : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                      } w-full`}
+                    >
+                      <img
+                        src={user}
+                        alt=""
+                        className="w-4 h-4 ml-2.5 mx-0 group-hover:invert dark:invert"
+                      />
+                      {!isCollapsed && (
+                        <span
+                          className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                            isActive
+                              ? "text-white dark:text-gray-200"
+                              : "group-hover:text-white dark:group-hover:text-gray-200"
+                          }`}
+                        >
+                          Registro de Usuarios
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </NavLink>
+              </div>
+            )}
+
+            {/* Categoria de gestión de tickets */}
+            {[1].includes(Number(rol)) && (
+              <div>
+                <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
+                  Mesa de Ayuda
+                </label>
+                <NavLink to="/GestionTickets">
+                  {({ isActive }) => (
+                    <div
+                      className={`flex items-center px-1 py-[10px] mt-4 rounded-lg transition-colors duration-300 transform group ${
+                        openAccordions.quality
+                          ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
+                          : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
+                      } w-full`}
+                    >
+                      <img
+                        src={ticket}
+                        alt=""
+                        className="w-5 h-5 mx-2 group-hover:invert dark:invert"
+                      />
+                      {!isCollapsed && (
+                        <span
+                          className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
+                            isActive
+                              ? "text-white dark:text-gray-200"
+                              : "group-hover:text-white dark:group-hover:text-gray-200"
+                          }`}
+                        >
+                          Gestión de Tickets
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </NavLink>
+              </div>
             )}
 
             {/* Categoria de administrador */}
@@ -470,6 +398,86 @@ const SideBar: FC = () => {
                     Administrador
                   </label>
                 )}
+                {/* Categoria de tablas de radicado */}
+                <Category
+                  title="Tablas Radicación"
+                  icon={table}
+                  isOpen={openAccordions.tablets}
+                  toggle={() => toggleAccordion("tablets")}
+                >
+                  <SubCategory
+                    to="/tabla-cups"
+                    icon={report}
+                    title="Cups"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-pacientes"
+                    icon={report}
+                    title="Pacientes"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-diagnostico"
+                    icon={report}
+                    title="Diagnostico"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-radicadores"
+                    icon={report}
+                    title="Radicadores"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-municipios"
+                    icon={report}
+                    title="Municipios"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-convenios"
+                    icon={report}
+                    title="Convenios"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-tipo-documento"
+                    icon={report}
+                    title="Tipo Documento"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-ips-primaria"
+                    icon={report}
+                    title="IPS Primaria"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-lugar-radicacion"
+                    icon={report}
+                    title="Lugar Radicación"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-ips-remite"
+                    icon={report}
+                    title="IPS Remitente"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-especialidad"
+                    icon={report}
+                    title="Especialidad"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/tabla-tipo-servicio"
+                    icon={report}
+                    title="Tipo Servicio"
+                    isCollapsed={isCollapsed}
+                  />
+                </Category>
                 <Category
                   title="Gestión Usuarios"
                   icon={userMain}
