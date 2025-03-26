@@ -12,7 +12,7 @@ const RegistroUsuario = () => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [query, setQuery] = useState<string>("");
 
-  const { dataRegister, getData } = useFetchRegisterEntries();
+  const { dataRegister, getData, errorRegister } = useFetchRegisterEntries();
 
   // funcion de filtro y busqueda
   const filteredAndSearchedData = useMemo(() => {
@@ -76,7 +76,6 @@ const RegistroUsuario = () => {
         ]}
       />
       <section className="p-5 bg-white rounded-lg shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-
         <section className="flex items-end justify-between w-full mb-7">
           <div className="flex flex-col">
             <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
@@ -120,64 +119,81 @@ const RegistroUsuario = () => {
           </div>
         </section>
 
-        {/* Paginatcion y busqueda */}
-        <div className="flex flex-col items-center justify-between mb-4 md:flex-row">
-          <div className="flex items-center w-full space-x-2">
-            <input
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Buscar..."
-              className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            />
-            <select
-              value={itemsPerPage}
-              onChange={(e) => {
-                setItemsPerPage(Number(e.target.value));
-                setCurrentPage(1); 
-              }}
-              className="w-full h-10 border border-gray-300 rounded-md md:w-24 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="10">10 Páginas</option>
-              <option value="20">20 Páginas</option>
-              <option value="30">30 Páginas</option>
-            </select>
-          </div>
-        </div>
-
         {/* vista escritorio */}
         {currentItems.length > 0 && (
-          <table className="hidden w-full text-sm text-left text-gray-500 md:table rtl:text-right dark:text-gray-200">
-            <thead className="text-xs text-gray-800 uppercase bg-gray-300 shadow-xl huver: dark:bg-gray-600 dark:text-gray-200">
-              <tr>
-                <th className="px-6 py-3">N* Documento</th>
-                <th className="px-6 py-3">Nombre</th>
-                <th className="px-6 py-3">Apellido</th>
-                <th className="px-6 py-3">Sede</th>
-                <th className="px-6 py-3">Fecha Registro</th>
-                <th className="px-6 py-3">Hora Registro</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((u) => (
-                <tr
-                  key={u.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+          <>
+            {/* Paginatcion y busqueda */}
+            <div className="flex flex-col items-center justify-between mb-4 md:flex-row">
+              <div className="flex items-center w-full space-x-2">
+                <input
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Buscar..."
+                  className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                />
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="w-full h-10 border border-gray-300 rounded-md md:w-24 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 >
-                  <td className="px-6 py-4">{u.documentNumber}</td>
-                  <td className="px-6 py-4">{u.userName}</td>
-                  <td className="px-6 py-4">{u.userLastName}</td>
-                  <td className="px-6 py-4">{u.headquarters}</td>
-                  <td className="px-6 py-4">
-                    {FormatDate(u.registerDate, false)}
-                  </td>
-                  <td className="px-6 py-4">{u.hourRegister}</td>
+                  <option value="10">10 Páginas</option>
+                  <option value="20">20 Páginas</option>
+                  <option value="30">30 Páginas</option>
+                </select>
+              </div>
+            </div>
+
+            <table className="hidden w-full text-sm text-left text-gray-500 md:table rtl:text-right dark:text-gray-200">
+              <thead className="text-xs text-gray-800 uppercase bg-gray-300 shadow-xl huver: dark:bg-gray-600 dark:text-gray-200">
+                <tr>
+                  <th className="px-6 py-3">N* Documento</th>
+                  <th className="px-6 py-3">Nombre</th>
+                  <th className="px-6 py-3">Apellido</th>
+                  <th className="px-6 py-3">Sede</th>
+                  <th className="px-6 py-3">Fecha Registro</th>
+                  <th className="px-6 py-3">Hora Registro</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentItems.map((u) => (
+                  <tr
+                    key={u.id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  >
+                    <td className="px-6 py-4">{u.documentNumber}</td>
+                    <td className="px-6 py-4">{u.userName}</td>
+                    <td className="px-6 py-4">{u.userLastName}</td>
+                    <td className="px-6 py-4">{u.headquarters}</td>
+                    <td className="px-6 py-4">
+                      {FormatDate(u.registerDate, false)}
+                    </td>
+                    <td className="px-6 py-4">{u.hourRegister}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* componente de paginacion */}
+            <div className="justify-center hidden mt-4 md:flex">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(
+                  filteredAndSearchedData.length / itemsPerPage
+                )}
+                onPageChange={paginate}
+              />
+            </div>
+          </>
+        )}
+        {errorRegister && (
+          <div className="text-red-500">
+            <p>{errorRegister}</p>
+          </div>
         )}
 
         {/* responsive*/}
@@ -232,24 +248,18 @@ const RegistroUsuario = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* no se encuentran resultados*/}
-        {currentItems.length === 0 && (
-          <div className="py-4 text-center text-gray-500 dark:text-gray-400">
-            No se encontraron registros
+          {/* componente de paginacion */}
+          <div className="justify-center block mb-4 place-self-center w-80">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(
+                filteredAndSearchedData.length / itemsPerPage
+              )}
+              onPageChange={paginate}
+            />
           </div>
-        )}
+        </div>
       </section>
-
-      {/* componente de paginacion */}
-      <div className="flex justify-center mb-4">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredAndSearchedData.length / itemsPerPage)}
-          onPageChange={paginate}
-        />
-      </div>
     </>
   );
 };
