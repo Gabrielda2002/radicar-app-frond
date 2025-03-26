@@ -141,7 +141,11 @@ const SideBar: FC = () => {
                   }`}
                 >
                   <IoMdHome
-                    className={`w-6 h-6 text-gray-600 dark:text-gray-200 ${isActive ? '' : 'group-hover:text-gray-200 dark:group-hover:invert'} `}
+                    className={`w-6 h-6 text-gray-600 dark:text-gray-200 ${
+                      isActive
+                        ? ""
+                        : "group-hover:text-gray-200 dark:group-hover:invert"
+                    } `}
                   />
                   {!isCollapsed && (
                     <span
@@ -340,7 +344,7 @@ const SideBar: FC = () => {
                         <span
                           className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                             isActive
-                              ? "text-white dark:text-gray-200"
+                              ? "text-gray-600 group-hover:text-white dark:text-gray-200"
                               : "group-hover:text-white dark:group-hover:text-gray-200"
                           }`}
                         >
@@ -377,7 +381,7 @@ const SideBar: FC = () => {
                         <span
                           className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                             isActive
-                              ? "text-white dark:text-gray-200"
+                              ? "text-gray-600 group-hover:text-white dark:text-gray-200"
                               : "group-hover:text-white dark:group-hover:text-gray-200"
                           }`}
                         >
