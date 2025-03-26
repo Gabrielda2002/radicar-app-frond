@@ -7,12 +7,12 @@ export const useFetchRegisterEntries = () => {
     const [loadingRegister, setLoadingRegister] = useState<boolean>(false);
     const [errorRegister, setErrorRegister] = useState<string | null>(null);
 
-    const getData = async (documentNumber: string) => {
+    const getData = async (documentNumber: string, dateStart: string, dateEnd: string) => {
         try {
             
             setLoadingRegister(true);
             
-            const response = await getRegisterUser(documentNumber);
+            const response = await getRegisterUser(documentNumber, dateStart, dateEnd);
             setDataRegister(response);
 
         } catch (error: any) {
