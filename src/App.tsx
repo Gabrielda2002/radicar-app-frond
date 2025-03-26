@@ -60,6 +60,7 @@ import RecoverLetterPage from "./featuures/RecoverLetter/Pages/RecoverLetterPage
 import RecoverLastPage from "./featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
 import {NotificationProvider} from "@/context/notificationContext.tsx";
 import {TicketProvider} from "@/context/ticketContext.tsx";
+import {UsersProvider} from "@/featuures/Usuarios/Context/UsersContext.tsx";
 
 function AppRoutes() {
   return (
@@ -165,7 +166,9 @@ export function App() {
           <NotificationProvider>
           <SidebarProvider>
             <CookieConsent />
+            <UsersProvider>
             <AppRoutes />
+            </UsersProvider>
             <ToastContainer
               position="bottom-right"
               autoClose={5000}
