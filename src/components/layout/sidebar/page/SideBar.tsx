@@ -13,7 +13,7 @@ import SubCategory from "../components/SubCategoriaSideBar";
 import { FaFolderOpen, FaRegFolder } from "react-icons/fa";
 import { MdOutlineInventory } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
-import { IoMdHome} from "react-icons/io";
+import { IoMdHome } from "react-icons/io";
 import user from "/assets/user.svg";
 import user2 from "/assets/user2.svg";
 import user1 from "/assets/user1.svg";
@@ -183,21 +183,21 @@ const SideBar: FC = () => {
             </Category>
 
             {/* Categoria de Inventario */}
-            <Category
-              title="Gestión de Inventarios"
-              icon={MdOutlineInventory}
-              isOpen={openAccordions.inventary}
-              toggle={() => toggleAccordion("inventary")}
-            >
-              {[1].includes(Number(rol)) && (
+            {[1].includes(Number(rol)) && (
+              <Category
+                title="Gestión de Inventarios"
+                icon={MdOutlineInventory}
+                isOpen={openAccordions.inventary}
+                toggle={() => toggleAccordion("inventary")}
+              >
                 <SubCategory
                   to="/SistemaInventario"
                   icon={Cpu}
                   title="Inventario Tecnologico"
                   isCollapsed={isCollapsed}
                 />
-              )}
-            </Category>
+              </Category>
+            )}
 
             {/* carta recobro */}
 
@@ -264,7 +264,7 @@ const SideBar: FC = () => {
             )}
 
             {/* Categoria de reportes */}
-            {[6, 2, 14, 3, 15, 1].includes(Number(rol)) && (
+            {[6, 2, 14, 3, 15, 1, 18].includes(Number(rol)) && (
               <div>
                 <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                   Reportes
@@ -321,7 +321,7 @@ const SideBar: FC = () => {
             )}
 
             {/* Categoria de registro usuarios */}
-            {[1].includes(Number(rol)) && (
+            {[1, 18].includes(Number(rol)) && (
               <div>
                 <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                   Usuarios

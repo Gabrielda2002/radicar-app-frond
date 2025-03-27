@@ -122,7 +122,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   <option value="1">Radicados</option>
                   <option value="2">Gestion Servicios Radicados</option>
                   <option value="3">Pausas Activas</option>
-                  <option value="4">Rgistros Biometricos</option>
+                  <option value="4">Registros Biométricos</option>
                 </select>
               </div>
               {/* rango fecchas radicado */}

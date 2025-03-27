@@ -4,6 +4,7 @@ import docIcon from "@/../public/assets/docx-file.svg";
 import xlsxIcon from "@/../public/assets/excel-file.svg";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
+import { useAuth } from "@/context/authContext";
 
 interface File {
   id: string;
@@ -30,6 +31,9 @@ const FileList: React.FC<FileListProps> = ({
   onDelete,
   renameItem,
 }) => {
+
+  const { rol } = useAuth();
+
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
       case "application/pdf":
@@ -80,6 +84,7 @@ const FileList: React.FC<FileListProps> = ({
           title={`${file.name} - ${file.size / 1024} KB`}
         >
           {/* Menú de opciones */}
+          {[ 1, 4 ].includes(Number(rol)) && (
           <div
             className="absolute top-2 right-2"
             onClick={(e) => e.stopPropagation()}
@@ -89,6 +94,7 @@ const FileList: React.FC<FileListProps> = ({
               renameItem={(newName: string) => handleRename(file.id, newName)}
             />
           </div>
+          )}
 
           {/* Icono del archivo */}
           <div

@@ -44,7 +44,12 @@ export const useDownloadReport = () => {
             setError(null);
             window.URL.revokeObjectURL(url);
       
-          } catch (error) {
+          } catch (error: any) {
+            if (error.response.status === 403) {
+              setError("No tienes permisos para descargar el archivo");
+            }else if(error.response.status === 404){
+              setError("No se encontraron registros para el rango de fechas seleccionado");
+            }
             setError("Error al descargar el archivo. " + error);
           }
     };

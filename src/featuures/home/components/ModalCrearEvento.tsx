@@ -110,7 +110,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                 &times;
               </button>
             </div>
-            {[1].includes(Number(rol)) ? (
+            {[1, 18].includes(Number(rol)) ? (
               <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-2 gap-10 p-4 mb-4">
                   <div>
