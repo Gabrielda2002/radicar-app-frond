@@ -44,7 +44,9 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
           ? "report-excel-filtro"
           : reportType == "2"
           ? "report-excel-gestion-auxiliar"
-          : "report-breakes-active";
+          : reportType == "3" ?
+          "report-breakes-active"
+          : "report/excel/biometric";
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -120,6 +122,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   <option value="1">Radicados</option>
                   <option value="2">Gestion Servicios Radicados</option>
                   <option value="3">Pausas Activas</option>
+                  <option value="4">Rgistros Biometricos</option>
                 </select>
               </div>
               {/* rango fecchas radicado */}

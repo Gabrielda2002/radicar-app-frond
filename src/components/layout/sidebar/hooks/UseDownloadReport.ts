@@ -17,12 +17,24 @@ export const useDownloadReport = () => {
             });
             // * crear un objeto URL temporal para el archivo
             const url = window.URL.createObjectURL(new Blob([response.data]));
+            const contentDisposition = response.headers['content-disposition'];
+            let fileName = 'reporte.xlsx';
+
+            if (contentDisposition) {
+              console.log('entra priemra condicion');
+              const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+              const matches = fileNameRegex.exec(contentDisposition);
+              if (matches != null && matches[1]) {
+                console.log('entra segunda condicion');
+                fileName = matches[1].replace(/['"]/g, '');
+              }
+            }
       
             // * crear un enlace para la descarga del archivo
             const link = document.createElement('a');
             link.href = url;
       
-            link.setAttribute('download', 'reporte.xlsx');
+            link.setAttribute('download', `${fileName}`);
       
             // * añadir el enlace al body del documento
             document.body.appendChild(link);
