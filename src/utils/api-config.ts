@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { logoutHelper } from '../utils/Logout-helper'
+import { toast } from 'react-toastify'
 
 const token = localStorage.getItem('token')
 
@@ -30,6 +31,9 @@ api.interceptors.request.use(
     }
 )
 
+// ? Variable para evitar redirecciones infinitas
+let isRedirecting = false;
+
 api.interceptors.response.use(
     (response) => {
         return response;
@@ -39,9 +43,21 @@ api.interceptors.response.use(
 
         if (error.response && error.response.status === 401){
 
-            if (error.response.headers['token-status'] === 'expired' ) {
-                alert('Tu sesión ha expirado. Inicia nuevamente.')
-                logoutHelper()
+            if (error.response.headers['token-status'] === 'expired' && !isRedirecting) {
+                isRedirecting = true;
+
+                const currentPath = window.location.pathname;
+                sessionStorage.setItem('redirectPath', currentPath);
+
+                toast.error('Tu sesión ha expirado. Serás redirigido para iniciar sesión nuevamente.', {
+                    position: 'top-center',
+                    autoClose: 3000,
+                    onClick: () => {
+                        logoutHelper();
+                        isRedirecting = false;
+                    }
+                });
+
             }
 
         }
