@@ -22,7 +22,7 @@ import HelpDesk from "@/featuures/HelpDesk/Components/ModalCreateTicket";
 import AccordionMenu from "../components/AccordionMenu";
 
 const Navbar: React.FC = React.memo(() => {
-  const { logout, rol } = useAuth();
+  const { logout } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();

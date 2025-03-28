@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
 import { FC, useRef, useState, useEffect, useCallback } from "react";
 import { useSidebar } from "@/context/sidebarContext";
-import ModalReporteCirugia from "../components/ModalReporteCirugia";
 import ModalReporteRadicado from "../components/ModalReporteRadicado";
 import Category from "../components/CategoriaSideBar";
 import SubCategory from "../components/SubCategoriaSideBar";
@@ -35,7 +34,6 @@ const SideBar: FC = () => {
 
   // * stado para abrir y cerrar el modal de reportes
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalCirugiaOpen, setIsModalCirugiaOpen] = useState(false);
 
   // * estado para abrir y cerrar los acordeones
   const [openAccordions, setOpenAccordions] = useState({
@@ -54,9 +52,6 @@ const SideBar: FC = () => {
 
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
-  const openModalCirugia = useCallback(() => setIsModalCirugiaOpen(true), []);
-  const closeModalCirugia = useCallback(() => setIsModalCirugiaOpen(false), []);
-
   // * funcion para obtener los estilos  de los links activos
   const getLinkClass = useCallback(
     (path: string) =>
@@ -295,27 +290,6 @@ const SideBar: FC = () => {
                       </span>
                     )}
                   </button>
-
-                  {/* boton que abre el modal de reportes de cirugias */}
-                  <button
-                    onClick={openModalCirugia}
-                    className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-300 transform group ${
-                      openAccordions.quality
-                        ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                        : "text-gray-600 dark:text-gray-200 hover:bg-color2 hover:text-white"
-                    } w-full`}
-                  >
-                    <img
-                      src={report}
-                      alt=""
-                      className="w-5 h-5 mx-2 group-hover:invert dark:invert"
-                    />
-                    {!isCollapsed && (
-                      <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                        Reporte de Cirugía
-                      </span>
-                    )}
-                  </button>
                 </Category>
               </div>
             )}
@@ -512,14 +486,6 @@ const SideBar: FC = () => {
             {/* Modal de reportes radicador */}
             {isModalOpen && (
               <ModalReporteRadicado isOpen={isModalOpen} onClose={closeModal} />
-            )}
-
-            {/* Modal de reportes cirugias */}
-            {isModalCirugiaOpen && (
-              <ModalReporteCirugia
-                isOpen={isModalCirugiaOpen}
-                onCLose={closeModalCirugia}
-              />
             )}
           </div>
         </nav>
