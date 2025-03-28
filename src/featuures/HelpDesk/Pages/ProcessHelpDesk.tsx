@@ -198,7 +198,7 @@ const ProcessHelpDesk = () => {
               {currentData().map((ticket) => (
                 <div
                   key={ticket.id}
-                  className="p-4 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-bold text-gray-700 dark:text-white">
