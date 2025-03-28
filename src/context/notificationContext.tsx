@@ -8,6 +8,7 @@ interface NotificationContextProps {
     unreadCount: number;
     markAsRead: (id: number) => Promise<void>;
     subscribeToPushNotifications: () => Promise<void>;
+    refreshNotifications: () => Promise<void>;
 }
 
 export const NotificationContext = createContext<NotificationContextProps | undefined>(undefined)
@@ -32,6 +33,17 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             })
         }
     }, [])
+
+    const refreshNotifications = async () => {
+        if (!userId) return;
+        
+        try {
+            const response = await api.get(`/notifications/user/${userId}`);
+            setNotifications(response.data);
+        } catch (error) {
+            console.error("Error al cargar notificaciones:", error);
+        }
+    }
     
         // suscribirse notirficaciones push
         const subscribeToPushNotifications = async () => {
@@ -200,7 +212,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const unreadCount = notifications.filter(n => !n.isRead).length;
 
     return (
-        <NotificationContext.Provider value={{notifications, unreadCount, markAsRead, subscribeToPushNotifications}}>
+        <NotificationContext.Provider value={{notifications, unreadCount, markAsRead, subscribeToPushNotifications, refreshNotifications}}>
             {children}
         </NotificationContext.Provider>
     );
