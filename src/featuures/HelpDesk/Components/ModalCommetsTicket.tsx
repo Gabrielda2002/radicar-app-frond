@@ -25,7 +25,7 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
   });
 
   // if(loadingComments) return <LoadingSpinner/>
-  if(errorComments) return <p>{errorComments}</p>
+  if(errorComments) return <p className="text-red-600">{errorComments}</p>
 
   return (
     <>

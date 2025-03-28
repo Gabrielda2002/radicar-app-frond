@@ -77,10 +77,6 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
             theme: "light",
             transition: Bounce,
           });
-
-          setTimeout(() => {
-            setShowModal(false);
-          }, 3000);
         }
       } catch (error) {
         console.log("Error al enviar la encuesta ", error);
