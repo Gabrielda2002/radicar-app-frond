@@ -85,7 +85,7 @@ const Calendario: React.FC = () => {
           className="bg-gray-200 border-2 rounded-lg dark:bg-gray-800"
         />
       </div>
-      {[1].includes(Number(rol)) && (
+      {[1, 18].includes(Number(rol)) && (
         <button 
         onClick={() => handleEventSelect(null)}
         className="mt-4 btn-primary"

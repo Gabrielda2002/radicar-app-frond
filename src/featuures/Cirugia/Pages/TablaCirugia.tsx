@@ -14,6 +14,7 @@ import soporte from "/assets/soporte.svg";
 
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
+import { useOpenSupport } from "@/hooks/useOpenSupport";
 
 const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(() => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos"));
@@ -30,6 +31,7 @@ const TablaCirugias = () => {
   const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(
     null
   );
+  const { handleOpen } = useOpenSupport();
   const [dateOrden, setDateOrden] = useState<Date | null>(null);
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
@@ -67,19 +69,6 @@ const TablaCirugias = () => {
     return (
       <div className="flex justify-center dark:text-white">{errorCirugias}</div>
     );
-
-  const handleOpenSoporte = (nombreSoporte: string | null) => {
-    if (!nombreSoporte) {
-      alert("No hay soporte para mostrar.");
-      return;
-    }
-
-    window.open(
-      `https://api.nordvitalips.com/api/v1/uploads/Soportes/${nombreSoporte}`,
-      "_blank"
-    );
-    return;
-  };
 
   return (
     <>
@@ -181,7 +170,7 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
-                            handleOpenSoporte(cirugia.nombreSoporte)
+                            handleOpen(cirugia.nombreSoporte)
                           }
                         >
                           <img src={soporte} alt="soporte icon" />

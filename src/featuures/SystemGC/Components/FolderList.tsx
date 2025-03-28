@@ -19,6 +19,7 @@ import staffIcon from "@/assets/sgc/cdi/staff-icon.svg"
 
 import procssIcon from '@/assets/sgc/sgc/process.svg'
 import pamecIcon from '@/assets/sgc/suh/face-mask.svg'
+import { useAuth } from "@/context/authContext";
 
 interface Folder {
   id: string;
@@ -63,6 +64,8 @@ const FolderList: React.FC<FolderListProps> = ({
       transition: Bounce,
     });
   };
+
+  const { rol } = useAuth();
 
   const handleRename = (folderId: string, newName: string) => {
     //Llama la funcion de renombrado
@@ -167,6 +170,7 @@ const FolderList: React.FC<FolderListProps> = ({
               <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
             )}
             {/* Menú en la esquina superior derecha */}
+            {[ 1, 4 ].includes(Number(rol)) && (
             <div
               className="absolute top-2 right-2"
               onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
@@ -176,6 +180,7 @@ const FolderList: React.FC<FolderListProps> = ({
                 renameItem={(newName: string) => handleRename(folder.id, newName)}
               />
             </div>
+            )}
 
             {/* Nombre de la carpeta */}
             <p className="flex flex-wrap text-sm font-bold text-center text-gray-700 dark:text-stone-200">

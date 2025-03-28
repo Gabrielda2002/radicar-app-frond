@@ -18,6 +18,8 @@ import { IdentificationIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { Bounce, toast } from "react-toastify";
+import {useUsers} from "@/featuures/Usuarios/Context/UsersContext.tsx";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -31,6 +33,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string>("");
+
+    const { refreshUsers } = useUsers()
 
   useBlockScroll(isOpen);
 
@@ -69,7 +73,10 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         correo: Yup.string()
           .email("Correo invalido")
           .required("El correo es obligatorio")
-          .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Correo invalido debe terminar con un dominio valido'),
+          .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Correo invalido debe terminar con un dominio valido"
+          ),
         identificacion: Yup.string()
           .required("La identificación es obligatoria")
           .min(5, "La identificación debe tener al menos 5 caracteres")
@@ -148,13 +155,26 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
         if (response?.status === 200 || response?.status === 201) {
           setSuccess(true);
-          
+
+          toast.success("Usuario Actualizado exitosamente.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+
+          await refreshUsers();
+
           setError("");
-          // setTimeout(() => {
-          //   setIsOpen(false);
-          //   window.location.reload();
-          // }, 2000);
-        }else{
+          setTimeout(() => {
+            setIsOpen(false);
+          }, 30000);
+        } else {
           setError("Error revise los campos e intente nuevamente.");
         }
       } catch (error) {

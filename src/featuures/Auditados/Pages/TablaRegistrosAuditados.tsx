@@ -135,7 +135,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
     >
       Buscar registros Auditados:
     </label>
-    <section className="flex justify-between pb-6">
+    <section className="flex justify-between w-full pb-6">
       <div className="flex items-center w-full">
         <input
           type="text"
@@ -147,7 +147,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
       </div>
       <div className="flex items-center ml-4">
         <select
-          className="border-2 h-10 w-[100px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="border-2 h-10 w-[108px] rounded-md dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           onChange={handleItemsPerPageChange}
           value={itemsPerPage}
         >
@@ -193,8 +193,8 @@ const TableContent: React.FC<TableContentProps> = ({
       <div className="overflow-x-auto">
         <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg dark:text-gray-100">
           <thead className="bg-gray-200 dark:bg-gray-700">
-            <tr className="text-base text-center shadow-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
-              <th className="px-2">ID Radicación</th>
+            <tr className="text-sm text-center shadow-md md:text-base bg-gray-50 dark:bg-gray-700 dark:text-gray-300 rounded-t-md">
+              <th className="px-0 md:px-2">ID Radicación</th>
               <th>Fecha Radicado</th>
               <th>Número Documento</th>
               <th>Nombre Paciente</th>
@@ -222,7 +222,7 @@ const TableContent: React.FC<TableContentProps> = ({
                     <button
                       title="Ver Cups Auditados"
                       onClick={() => toggleRow(auditado.id)}
-                      className="px-4 py-2 text-white bg-gray-100 rounded hover:bg-gray-100 dark:bg-color dark:hover:bg-teal-600"
+                      className="px-2 py-1 text-white bg-gray-100 rounded md:py-2 md:px-4 hover:bg-gray-100 dark:bg-color dark:hover:bg-teal-600"
                     >
                       {expandedRow === auditado.id ? (
                         <>
@@ -245,7 +245,7 @@ const TableContent: React.FC<TableContentProps> = ({
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden bg-gray-100 dark:bg-gray-900"
                     >
-                      <td colSpan={4} className="p-3">
+                      <td colSpan={5} className="w-full p-1.5 md:p-3">
                         <CupsTable cups={auditado.CUPS} />
                       </td>
                     </motion.tr>
@@ -272,7 +272,7 @@ interface CupsTableProps {
 
 const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
   <div className="overflow-x-auto">
-    <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
+    <table className="min-w-full overflow-hidden text-xs md:text-sm rounded-lg shadow-lg border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
       <thead>
         <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
           <th>Código</th>
@@ -289,23 +289,23 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
             className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
             key={cup.id}
           >
-            <td className="p-3 border-b dark:border-gray-700">{cup.code}</td>
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">{cup.code}</td>
             <td className="border-b dark:border-gray-700">
               <span
-                className="block cursor-pointer w-30%"
+                className="block cursor-pointer"
                 title={cup.description}
               >
                 {cup.description}
               </span>
             </td>
-            <td className="p-3 border-b dark:border-gray-700">{cup.status}</td>
-            <td className="p-3 border-b dark:border-gray-700">
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">{cup.status}</td>
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
               {cup.observation}
             </td>
-            <td className="p-3 border-b dark:border-gray-700">
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
               {FormatDate(cup.modifyDate)}
             </td>
-            <td className="p-3 border-b dark:border-gray-700">
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
               <Suspense fallback={<LoadingSpinner />}>
                 <ModalActualizarCupsAuditoria cup={cup} />
               </Suspense>

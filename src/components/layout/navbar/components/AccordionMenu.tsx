@@ -16,7 +16,7 @@ const AccordionMenu: React.FC<AccordionMenuProps> = ({
   };
 
   return (
-    <div className="relative z-10">
+    <div className="relative z-10"> 
       {/* Botón siempre visible en la esquina */}
       <button
         onClick={toggleAccordion}

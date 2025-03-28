@@ -6,15 +6,15 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { IUsuarios } from "@/models/IUsuarios";
 import usePagination from "@/hooks/usePagination";
-import { useFetchUsuarios } from "../Hooks/UseFetchUsers";
 
 //*Properties
 import ModalActionUsuario from "../Components/ModalUpdateUsers";
+import {useUsers} from "@/featuures/Usuarios/Context/UsersContext.tsx";
 
 const ITEMS_PER_PAGE = 10;
 
 const Usuarios = () => {
-  const { data, loading, error } = useFetchUsuarios();
+  const { users:data, loading, error } = useUsers();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IUsuarios>(data, [

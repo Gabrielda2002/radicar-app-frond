@@ -77,6 +77,7 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
                   <button
                     className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-200 dark:data-[focus]:bg-gray-600"
                     onClick={handleModalOpenFolder}
+                    type="button"
                   >
                     Crear Carpeta.
                     <FolderPlusIcon className="w-6 h-6 dark:text-white" />
@@ -100,18 +101,25 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
           </MenuItems>
 
           <Suspense fallback={<LoadingSpinner />}>
-            <ModalCrearCarpeta
-              standOpen={stadOpenFolder}
-              toggleModal={toggleModalFolder}
-              createNewFolder={createNewFolder}
-            />
-            <ModalSubirArchivo
-              onFileChange={handleFileChange}
-              onUpload={handleUpload}
-              uploading={uploading}
-              stadopen={stadOpenFile}
-              toggleModal={toggleModalFile}
-            />
+            {/* Modelo de Crear Carpeta */}
+            {stadOpenFolder && (
+              <ModalCrearCarpeta
+                standOpen={stadOpenFolder}
+                toggleModal={toggleModalFolder}
+                createNewFolder={createNewFolder}
+              />
+            )}
+
+            {/* Modelo de Subir Archivo */}
+            {stadOpenFile && (
+              <ModalSubirArchivo
+                onFileChange={handleFileChange}
+                onUpload={handleUpload}
+                uploading={uploading}
+                stadopen={stadOpenFile}
+                toggleModal={toggleModalFile}
+              />
+            )}
           </Suspense>
         </>
       )}

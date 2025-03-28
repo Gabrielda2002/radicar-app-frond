@@ -6,6 +6,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import cookieX from "/assets/cookie-X.svg";
 import FormPacientesCS from "../components/ConsultarPacientesCS";
 import ConsultarSvContratados from "../components/ConsultarSvContratados";
+import icon from "@/featuures/home/images/ico.png";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("../components/Calendario"));
@@ -81,20 +82,24 @@ const Inicio = () => {
             </div>
             {/* Sección de bienvenida */}
             <div className="flex flex-col w-full pb-5 mb-5 border-2 shadow-smrounded-xl dark:border-color bg-gray-50 dark:bg-gray-700 dark:shadow-indigo-800">
-              <div className="w-full mx-auto">
-              
+              <div className="w-full mx-auto mb-5">
                 <button
                   onClick={toggleAccordion}
                   className="flex items-center justify-between w-full px-5 py-3 text-white bg-gray-500 dark:bg-teal-600"
                 >
-                  <span className="text-lg">Panel De Consultas</span>
-                  <span>{isOpen ? "▲" : "▼"}</span>
+                  <span className="text-xl">Panel De Consultas</span>
+                  <span
+                    className={`transform transition-transform duration-700 ease-in-out ${
+                      isOpen ? "rotate-180 animate-pulse" : ""
+                    }`}
+                  >
+                    <img src={icon} alt="" className="w-5 h-5 md:h-7 md:w-7"/>
+                  </span>
                 </button>
 
                 {/* Contenido del acordeón */}
                 {isOpen && (
                   <div className="w-full mt-1 bg-gray-100 rounded-lg shadow-xl dark:bg-gray-700">
-                   
                     <div className="flex border-b border-gray-300 dark:border-gray-600">
                       <button
                         onClick={() => handleOptionChange("servicios")}
@@ -117,7 +122,7 @@ const Inicio = () => {
                         Pacientes Coosalud
                       </button>
                     </div>
-                    
+
                     <div className="p-4">
                       {selectedOption === "servicios" ? (
                         <ConsultarSvContratados />
