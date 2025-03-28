@@ -7,6 +7,7 @@ import StarRating from "./StarRating";
 import { useServey } from "../Hooks/useServey";
 import { Star } from "lucide-react";
 import { Bounce, toast } from "react-toastify";
+import { useNotification } from "@/context/notificationContext";
 
 interface ModalServeyProps {
   idTicket: number;
@@ -16,6 +17,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
   const { error, success, loading, createServey } = useServey();
+  const { refreshNotifications } = useNotification();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -77,6 +79,8 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
             theme: "light",
             transition: Bounce,
           });
+          await refreshNotifications();
+          setShowModal(false);
         }
       } catch (error) {
         console.log("Error al enviar la encuesta ", error);

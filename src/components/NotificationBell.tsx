@@ -119,7 +119,7 @@ const NotificationBell: React.FC = () => {
                 No hay notificaciones
               </p>
             ) : (
-              notifications.map((notification) => (
+              notifications.filter(n => !n.isRead).map((notification) => (
                 <div
                   key={notification.id}
                   className={`p-4 border-b dark:border-gray-700 ${
