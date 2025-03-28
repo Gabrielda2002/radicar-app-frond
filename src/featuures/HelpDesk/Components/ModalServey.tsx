@@ -16,7 +16,7 @@ interface ModalServeyProps {
 const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const { error, success, loading, createServey } = useServey();
+  const { error, loading, createServey } = useServey();
   const { refreshNotifications } = useNotification();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -67,7 +67,7 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
         );
 
         const result = await createServey(formData);
-        if (result && success) {
+        if (result) {
           toast.success("Encuesta enviada exitosamente.", {
             position: "bottom-right",
             autoClose: 5000,
