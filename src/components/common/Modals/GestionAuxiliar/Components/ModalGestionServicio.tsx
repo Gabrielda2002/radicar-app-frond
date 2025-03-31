@@ -57,7 +57,8 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
         let endPoint: string = "";
 
         if (idCirugias !== null) {
-          formData.append("surgeryId", idCirugias.toString());  
+          formData.append("surgeryId", idCirugias.toString());
+          formData.append("userId", idUsuario);
           endPoint = "seguimiento-auxiliar-cirugia";
         } else if (idRadicado !== null) {
           formData.append("idRadicacion", idRadicado.toString());

@@ -119,6 +119,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                     <th className="">Observación</th>
                     <th className="">Estado</th>
                     <th className="">Fecha</th>
+                    <th>Responsable</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm text-center break-words dark:text-gray-200">
@@ -127,6 +128,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                       <td>{c.observacion}</td>
                       <td>{c.estado}</td>
                       <td>{FormatDate(c.fechaCreacion)}</td>
+                      <td>{c.Nombre} {c.Apellido}</td>
                     </tr>
                   ))}
                 </tbody>
