@@ -319,9 +319,9 @@ const ModalRadicacion = () => {
             showAnimation && !closing ? "opacity-100" : "opacity-0"
           }`}
         >
-          <section>
+          <section className="ml-5 md:ml-0">
             <div
-              className={`w-[900px] bg-white overflow-hidden rounded shadow-lg  transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`w-[95%] md:w-[900px] bg-white overflow-hidden rounded shadow-lg  transform transition-transform duration-300 dark:bg-gray-800 ${
                 stadopen && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -343,7 +343,7 @@ const ModalRadicacion = () => {
 
               {/* init form */}
               <form onSubmit={formik.handleSubmit} className="dark:bg-gray-800">
-                <div className="px-5 max-h-[70Vh] overflow-y-auto">
+                <div className="px-2 md:px-5 max-h-[70Vh] overflow-y-auto">
                   <div>
                     <h5 className="p-2 mt-2 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
                       Datos Paciente:
@@ -467,12 +467,12 @@ const ModalRadicacion = () => {
                   </section>
 
                   <div>
-                    <h5 className="p-2 mt-12 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                    <h5 className="p-2 mt-2 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
                       Datos Contacto Paciente:
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 mb-6 text-sm gap-x-10 gap-y-2 ms-2">
+                  <section className="grid grid-cols-1 mb-6 text-sm md:grid-cols-2 gap-x-10 gap-y-2 ms-2">
                     <div className="mb-4">
                       <label htmlFor="">
                         <div className="flex mb-2">
@@ -658,7 +658,7 @@ const ModalRadicacion = () => {
                   </section>
 
                   <div>
-                    <h5 className="p-2 mt-12 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                    <h5 className="p-2 mt-2 mb-2 text-xl font-semibold text-blue-500 dark:text-gray-200">
                       CUPS:
                     </h5>
                   </div>
@@ -677,12 +677,12 @@ const ModalRadicacion = () => {
                           value={quantityInputs}
                           onChange={HandleQuantityInputs}
                           onKeyDown={EventEnter}
-                          className="w-auto px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className="w-24 px-3 py-2 border border-gray-200 rounded md:w-auto dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           placeholder="Digite número . . . ."
                         />
                       </label>
                     </div>
-                    <div className="grid grid-cols-[24%_24%_46%] gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-[24%_24%_46%] gap-5">
                       <ServicioForm
                         quantityInputs={quantityInputs}
                         servicios={servicios}
@@ -696,12 +696,12 @@ const ModalRadicacion = () => {
                   </section>
 
                   <div>
-                    <h5 className="p-2 mt-12 mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
+                    <h5 className="p-2 mt-2 mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
                       Información del Servicio a Radicar:
                     </h5>
                   </div>
 
-                  <section className="grid grid-cols-2 mb-4 text-sm gap-x-10 gap-y-8 ps-2">
+                  <section className="grid grid-cols-2 mb-4 text-sm gap-x-2 md:gap-x-10 gap-y-4 ps-2">
                     <div className="mb-1">
                       <InputAutocompletado
                         label="IPS Remite"
@@ -864,10 +864,12 @@ const ModalRadicacion = () => {
                       </AnimatePresence>
                     </div>
                     <br />
-                    <div className="grid grid-cols-1">
-                      <div>
+                  </section>
+                  <section className="w-[95%] md:w-[98%] grid gap-o md:gap-x-9 gap-y-2 grid-cols-1 md:grid-cols-2 place-self-center">
+                    <div className="">
+                      <div className="mt-4 md:mt-0">
                         <label htmlFor="">
-                          <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
+                          <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">re
                             Diagnóstico
                           </span>
                           <input
@@ -884,7 +886,7 @@ const ModalRadicacion = () => {
                         </label>
                       </div>
                     </div>
-                    <div>
+                    <div className="mt-4 md:mt-0">
                       <label
                         htmlFor=""
                         className="disabled:bg-gray-200 disabled:cursor-not-allowed"
@@ -915,11 +917,11 @@ const ModalRadicacion = () => {
                           name=""
                           value={nombreUsuario}
                           disabled
-                          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded md:text-md dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                         />
                       </label>
                     </div>
-                    <div>
+                    <div className="mt-4 mb-4 md:mt-0">
                       <label htmlFor="">
                         <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                           Soporte
@@ -950,14 +952,14 @@ const ModalRadicacion = () => {
                         </AnimatePresence>
                       </label>
                     </div>
-                    <div>
-                      <input
-                        type="text"
-                        value={formik.values.idDiagnostico}
-                        className="hidden"
-                      />
-                    </div>
                   </section>
+                  <div>
+                    <input
+                      type="text"
+                      value={formik.values.idDiagnostico}
+                      className="hidden"
+                    />
+                  </div>
                 </div>
 
                 {errorMessage && (
