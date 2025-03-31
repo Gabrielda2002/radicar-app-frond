@@ -869,7 +869,7 @@ const ModalRadicacion = () => {
                     <div className="">
                       <div className="mt-4 md:mt-0">
                         <label htmlFor="">
-                          <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">re
+                          <span className="block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
                             Diagnóstico
                           </span>
                           <input
