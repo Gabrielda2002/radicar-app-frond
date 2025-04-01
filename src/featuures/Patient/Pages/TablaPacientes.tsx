@@ -28,7 +28,6 @@ const TablaPacientes = () => {
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
-
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
@@ -52,7 +51,7 @@ const TablaPacientes = () => {
               </button>
             </div>
           </div>
-          <div className="flex items-center pt-1 space-x-2">
+          <div className="flex items-center space-x-2 -mt-7 md:-mt-0">
             <Suspense fallback={<LoadingSpinner />}>
               <ModalPaciente
                 id={null}
@@ -63,13 +62,11 @@ const TablaPacientes = () => {
             </Suspense>
           </div>
         </section>
-
         {/* Tabla de Pacientes */}
-
         <div>
           {data ? (
             <>
-              <table className="w-full text-sm ">
+              <table className="hidden w-full text-sm md:table">
                 <thead>
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                     <th className=" w-[70px]">ID</th>
@@ -111,6 +108,96 @@ const TablaPacientes = () => {
               </table>
             </>
           ) : (
+            <h2 className="text-lg text-center dark:text-white">{error}</h2>
+          )}
+        </div>
+        {/* // responsive */}
+        <div className="grid grid-cols-1 gap-4 md:hidden">
+          {data ? [data].map((data) => (
+            <div
+              key={data.id}
+              className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+            >
+             
+
+              <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  ID:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.id}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Identificación:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.documentNumber}
+                </div>     
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Tipo de Documento:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.documentRelation.name}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Nombre Completo:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.name}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Número Celular:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.phoneNumber}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Teléfono Fijo:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.landline}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Correo:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.email}
+                </div>
+                
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Convenio:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {data.convenioRelation.name}
+                </div>
+                
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Estado:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                   {data.status ? "Activo" : "Inactivo"}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Acciones:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  <ModalPaciente
+                    id={data.id}
+                    update={true}
+                    tittle="Editar"
+                    paciente={data}
+                  />
+                 </div>             
+            </div>
+            </div>
+          )) : (
             <h2 className="text-lg text-center dark:text-white">{error}</h2>
           )}
         </div>
