@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
 import useAnimation from "@/hooks/useAnimations";
 import {
-  CupsRadicadosRelation,
-  SeguimientoAuxiliarRelation,
+  Cup,
+  Seguimiento,
 } from "@/models/IRadicados";
 import ModalGestionServicio from "./Components/ModalGestionServicio";
 import {
@@ -15,7 +15,7 @@ import { FormatDate } from "@/utils/FormatDate";
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
   onClose: () => void;
-  radicacion: CupsRadicadosRelation | null;
+  radicacion: Cup | null;
   cirugias: programacion | null;
 }
 
@@ -32,20 +32,20 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   
   // se hace una sobre carga para que la funcion reciba un array de seguimientos de radicacion o de cirugias
   function getUltimoEstado(
-    seguimientos: SeguimientoAuxiliarRelation[]
+    seguimientos: Seguimiento[]
   ): string | null;
   function getUltimoEstado(
     seguimientos: GestionAuxiliarCirugia[]
   ): string | null;
   function getUltimoEstado(
-    seguimientos: SeguimientoAuxiliarRelation[] | GestionAuxiliarCirugia[]
+    seguimientos: Seguimiento[] | GestionAuxiliarCirugia[]
   ): string | null {
     if (seguimientos.length > 0) {
       const ultimoSeguimiento = seguimientos[seguimientos.length - 1];
 
       if ("estadoSeguimientoRelation" in ultimoSeguimiento) {
         return ultimoSeguimiento.estadoSeguimientoRelation
-          ? ultimoSeguimiento.estadoSeguimientoRelation.name
+          ? ultimoSeguimiento.estado
           : null;
       }
       return ultimoSeguimiento.estado;
@@ -58,9 +58,9 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   const ultimoEstadoCirugia = useMemo(
     () =>
       radicacion &&
-      radicacion.seguimientoAuxiliarRelation
+      radicacion.seguimiento
         ? getUltimoEstado(
-            radicacion.seguimientoAuxiliarRelation
+            radicacion.seguimiento
           )
         : null,
     []
@@ -142,7 +142,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
             {/* Segunda tabla: Radicaciones */}
             {radicacion &&
-            radicacion.seguimientoAuxiliarRelation
+            radicacion.seguimiento
               .length > 0 ? (
               <div className="flex justify-center w-full p-2">
                 <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
@@ -155,25 +155,23 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                     </tr>
                   </thead>
                   <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
-                    {radicacion.seguimientoAuxiliarRelation.map(
+                    {radicacion.seguimiento.map(
                       (seguimiento) => (
                         <tr key={seguimiento.id}>
                           <td className="max-w-[400px]">
                             {seguimiento.observation}
                           </td>
                           <td className="">
-                            {seguimiento.estadoSeguimientoRelation.name}
+                            {seguimiento.estado}
                           </td>
                           <td className="">
-                            {seguimiento.createdAt
-                              ? new Date(seguimiento.createdAt).toLocaleString()
-                              : "N/A"}
+                            {FormatDate(seguimiento.fechaCreacion)}
                           </td>
                           <td className="">
-                            {seguimiento.usuarioRelation != null ? (
+                            {seguimiento.Nombre != null ? (
                               <div>
-                                {seguimiento.usuarioRelation.name}{" "}
-                                {seguimiento.usuarioRelation.lastName}
+                                {seguimiento.Nombre}{" "}
+                                {seguimiento.Apellido}
                               </div>
                             ) : (
                               <span className="text-red-500">N/A</span>
