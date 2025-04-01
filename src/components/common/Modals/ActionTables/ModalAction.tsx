@@ -120,8 +120,8 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                   onSubmit={formik.handleSubmit}
                   className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
                 >
-                  <div className="p-6">
-                    <section className="grid grid-cols-3">
+                  <div className="p-6 w-[430px] md:w-[900px]">
+                    <section className="grid grid-cols-1 md:grid-cols-3">
                       <div className="flex">
                         <label htmlFor="">
                           <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
@@ -181,7 +181,7 @@ const ModalAction: React.FC<ModalActionProps> = ({ id, name, endPoint }) => {
                             value={formik.values.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className="w-[250px] p-2 px-3 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+                            className="w-[250px] p-2 px-3 mr-36 md:mr-10 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
                           />
                           <AnimatePresence>
                             {formik.touched.name && formik.errors.name ? (
