@@ -100,7 +100,7 @@ const ModalPausasActivas = () => {
           }`}
         >
           <section
-            className={`w-full max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-600 ${
+            className={`w-[446px] md:w-[900px] overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-600 ${
               isModalOpen && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
@@ -123,10 +123,12 @@ const ModalPausasActivas = () => {
             {/* Contenido del modal */}
             <div className="p-4 space-y-3">
               {/* Video */}
-              <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[38/16]">
-                {/* Contenedor para el iframe de YouTube */}
-                <div ref={youtubeContainerRef} className="w-full h-full pointer-events-none" />
-                
+              <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[26/14.7] md:aspect-[38/16] max-h-[45vh] md:max-h-[70vh]">
+                {/* Contenedor para el iframe de YouTube */}[]
+                <div
+                  ref={youtubeContainerRef}
+                  className="w-full h-full -mt-4 pointer-events-none md:-mt-6"
+                />
                 {/* Botón personalizado para reproducir/pausar */}
                 {playerReady && (
                   <button
@@ -152,7 +154,6 @@ const ModalPausasActivas = () => {
                     )}
                   </button>
                 )}
-
                 {/* Indicador de progreso */}
                 {playerReady && player && (
                   <div className="absolute bottom-0 left-0 h-1 transition-all bg-blue-500">
