@@ -83,7 +83,7 @@ const ModalAgregarDato: React.FC<ModalTipoServicioProps> = ({
             {/* Contenido del Formulario */}
 
             <div
-              className={`z-10 w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`z-10 w-[440px] md:w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
