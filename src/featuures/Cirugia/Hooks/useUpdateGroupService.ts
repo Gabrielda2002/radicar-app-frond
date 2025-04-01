@@ -9,12 +9,13 @@ export const useUpdateGroupService = (idRadicado: number) => {
         try {
           const response = await UpdateGroupServices(groupService, idRadicado);
     
-          console.log(groupService, idRadicado);
           if (response?.status === 200 || response?.status === 201) {
-            console.log("Actualizado");
-            window.location.reload();
+            return response.data;
           }
-        } catch (error) {
+        } catch (error: any) {
+          if (error.response.status === 403) {
+            setErrorUpdate("No tiene permisos para realizar esta acción.");
+          }
           setErrorUpdate("Error al actualizar el grupo de servicios." + error);
         }
         return false;

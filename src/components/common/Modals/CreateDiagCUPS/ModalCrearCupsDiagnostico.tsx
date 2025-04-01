@@ -124,7 +124,7 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
             {/* Contenido del formulario */}
 
             <div
-              className={`z-10 w-[800px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`z-10 w-[450px] md:w-[800px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
                 showAnimation && !closing ? "translate-y-0" : "translate-y-10"
               }`}
             >
@@ -142,7 +142,7 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
 
               {/* formulario con dos columnas */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-2 gap-10 p-4 mb-4">
+                <div className="grid grid-cols-2 gap-4 p-3 mb-4 md:gap-10">
                   <div>
                     <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                       Código:

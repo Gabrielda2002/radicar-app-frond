@@ -13,6 +13,8 @@ import { CreateCirugia } from "../Services/CreateCirugia";
 import programar from "/assets/programar.svg";
 import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
 import { FormatDate } from "@/utils/FormatDate";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { Bounce, toast } from "react-toastify";
 
 interface ModalCirugiasProps {
   data: ICirugias;
@@ -20,10 +22,11 @@ interface ModalCirugiasProps {
 }
 
 const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
-  const [stadopen, setStadopen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false),
+    isOpen,
+    () => setIsOpen(false),
     300
   );
 
@@ -35,34 +38,25 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
   } = useUpdateGroupService(idRadicado);
 
   const handleUpdate = async () => {
-    const success = await SendGroupService();
-    if (success) {
-      setStadopen(false);
-      window.location.reload();
+    const response = await SendGroupService();
+    if (response) {
+      setTimeout(() => {
+        setIsOpen(false);
+        window.location.reload();
+      }, 3000)
     }
-  }
-
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
   }
 
   // hook para traer las ips remite
 
   const [submiting, setSubmiting] = useState(false);
   const [errorSubmit, setErrorSubmit] = useState<string>("");
-  const [success, setSuccess] = useState(false);
   const [isValidate, setIsValidate] = useState(false);
   const [soporte, setSoporte] = useState(false);
   const [paraclinicos, setParaclinicos] = useState(false);
   const [valoracion, setValoracion] = useState(false);
   const [error, setError] = useState<string>("");
+  useBlockScroll(isOpen);
 
   const handleValidation = () => {
     if (data.idGrupoServicios === 6) {
@@ -108,7 +102,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
       .max(255, "El nombre del especialista debe tener maximo 50 caracteres"),
   });
-  console.log(data.idGrupoServicios)
 
   const formik = useFormik({
     initialValues: {
@@ -138,9 +131,21 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
         const response = await CreateCirugia(formData);
 
         if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
+
+          toast.success("Cirugia Programada exitosamente.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+
           setTimeout(() => {
-            setStadopen(false);
+            setIsOpen(false);
             window.location.reload();
           }, 1000);
         }
@@ -154,12 +159,12 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
 
   return (
     <>
-      <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        <img className="dark:invert" src={programar} alt="" />
+      <button className="focus:outline-none" onClick={() => setIsOpen(true)}>
+        <img className="h-10 dark:invert w-7" src={programar} alt="" />
       </button>
 
       {/* init-modal */}
-      {stadopen && (
+      {isOpen && (
         <section
           className={` fixed z-50 flex justify-center pt-12 transition-opacity duration-300 bg-black bg-opacity-50 -inset-2 backdrop-blur-sm ${
             showAnimation && !closing ? "opacity-100" : "opacity-0"
@@ -179,7 +184,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                   Programación Cirugía
                 </h1>
                 <button
-                  onClick={closeModal}
+                  onClick={() => setIsOpen(false)}
                   className="text-lg text-gray-400 duration-200 rounded-lg hover:text-gray-900 hover:bg-gray-400 dark:text-gray-300 dark:hover:text-gray-800 w-7 h-7"
                 >
                   &times;
@@ -653,11 +658,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                               {errorSubmit}
                             </div>
                           )}
-                          {success && (
-                            <div className="mt-2 text-red-500 dark:text-green-300">
-                              Programacion exitosa!
-                            </div>
-                          )}
                         </div>
                       </form>
                     ) : null}
@@ -673,7 +673,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
               <div className="flex items-center justify-end w-full px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 border-black shadow-md dark:border-white gap-x-2 h-14 dark:bg-gray-800">
                 <button
                   className="w-24 h-8 text-blue-600 transition-colors duration-200 ease-in-out border-2 border-gray-400 rounded-md hover:text-red-500 hover:border-red-500 hover:bg-gray-100 active:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-600 dark:active:bg-gray-500"
-                  onClick={closeModal}
+                  onClick={() => setIsOpen(false)}
                 >
                   Cerrar
                 </button>

@@ -86,7 +86,7 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
     >
       <section>
         <div
-          className={`w-[600px]  bg-white rounded-md  overflow-hidden shadow-lg dark:bg-gray-800 transform transition-transform duration-300 ${
+          className={`w-[450px] md:w-[600px] bg-white rounded-md  overflow-hidden shadow-lg dark:bg-gray-800 transform transition-transform duration-300 ${
             showAnimation && !closing
               ? "translate-y-0 opacity-100"
               : "translate-y-10 opacity-0"

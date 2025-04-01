@@ -102,7 +102,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
         >
           <section className="">
             <div
-              className={` w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
+              className={` w-[440px] md:w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -127,7 +127,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                 className=" max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
               >
                 <div className="p-4">
-                  <section className="grid grid-cols-3 p-6">
+                  <section className="grid grid-cols-1 p-6 md:grid-cols-3">
                     <div className="flex">
                       <label htmlFor="" className="p-x-2">
                         <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
@@ -184,7 +184,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                         </label>
                       </div>
                     )}
-                    <div className="">
+                    <div className="flex">
                       <label htmlFor="">
                         <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
                           Descripción{" "}
@@ -197,7 +197,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
                           value={formik.values.nombreCups}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className={` w-[250px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                          className={`w-[350px] md:w-[250px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
                             formik.touched.nombreCups &&
                             formik.errors.nombreCups
                               ? "border-red-500 dark:border-red-500"

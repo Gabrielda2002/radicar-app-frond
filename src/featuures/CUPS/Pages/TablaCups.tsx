@@ -55,7 +55,7 @@ const TablaCups = () => {
       <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">
         {/* header-tale */}
 
-        <section className="flex items-center justify-between pb-6 header-tabla">
+        <section className="grid items-center justify-between grid-cols-1 pb-6 md:flex header-tabla">
           <div className="container-filter">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
               Buscar Cups:
@@ -67,7 +67,7 @@ const TablaCups = () => {
               className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
-          <div className="flex items-center pt-1 space-x-2">
+          <div className="flex items-center pt-3 space-x-2">
             <select
               name=""
               id=""

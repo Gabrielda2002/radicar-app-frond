@@ -13,6 +13,18 @@ const Usuarios = lazy(
 import RecoverLetterPage from "@/featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
 import RecoverLastPage from "@/featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
 import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TablaRegistrosAuditados";
+import TablaCups from "@/featuures/CUPS/Pages/TablaCups";
+import TablaPacientes from "@/featuures/Patient/Pages/TablaPacientes";
+import TablaDiagnostico from "@/featuures/Diagnostico/Pages/TablaDiagnostico";
+import TablaRadicadores from "@/featuures/Radicador/Pages/TablaRadicadores";
+import TablaMunicipios from "@/featuures/Municipality/Pages/TablaMunicipios";
+import TablaConvenios from "@/featuures/Convenio/Pages/TablaConvenio";
+import TablaTipoDocumento from "@/featuures/DocumentType/Pages/TablaTipoDocumento";
+import TablaIpsPrimaria from "@/featuures/IpsPrimaria/Pages/TablaIpsPrimaria";
+import TablaLugarRadicacion from "@/featuures/Sede/Pages/TablaLugarRadicacion";
+import TablaIpsRemite from "@/featuures/IpsRemite/Pages/TablaIpsRemite";
+import TablaEspecialidad from "@/featuures/Especialidad/Pages/TablaEspecialidad";
+import TablaTipoServicio from "@/featuures/TypeService/Pages/TablaTipoServicio";
 const RegistrarUsuarios = lazy(
   () => import("@/featuures/RegisterUser/Page/RegisterUser.tsx")
 );
@@ -73,6 +85,18 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
         <Route path="/tabla-auditoria" element={<TablaAuditoria />} />
         <Route path="/tabla-cirugias" element={<TablaCirugias />} />
+        <Route path="/tabla-cups" element={<TablaCups />} />
+        <Route path="/tabla-pacientes" element={<TablaPacientes />}></Route>
+        <Route path="/tabla-diagnostico" element={<TablaDiagnostico />} />
+        <Route path="/tabla-radicadores" element={<TablaRadicadores />} />
+        <Route path="/tabla-municipios" element={<TablaMunicipios />} />
+        <Route path="/tabla-convenios" element={<TablaConvenios />} />
+        <Route path="/tabla-tipo-documento" element={<TablaTipoDocumento />} />
+        <Route path="/tabla-ips-primaria" element={<TablaIpsPrimaria />} />
+        <Route path="/tabla-lugar-radicacion" element={<TablaLugarRadicacion />} />
+        <Route path="/tabla-ips-remite" element={<TablaIpsRemite />} />
+        <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />
+        <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/registrar-usuarios" element={<RegistrarUsuarios />} />
         <Route

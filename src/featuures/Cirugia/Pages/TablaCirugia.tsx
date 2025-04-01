@@ -17,9 +17,12 @@ import { FormatDate } from "@/utils/FormatDate";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
 
 const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
-const ModalMostrarDatosCUPS = lazy(() => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos"));
+const ModalMostrarDatosCUPS = lazy(
+  () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos")
+);
 const ModalGestionAuxiliar = lazy(
-  () => import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
+  () =>
+    import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
 );
 
 const ITEMS_PER_PAGE = 8;
@@ -107,7 +110,6 @@ const TablaCirugias = () => {
             </select>
           </div>
         </section>
-
         {filteredData.length === 0 ? (
           <div>
             <p className="text-center text-red-500 dark:text-red-300">
@@ -116,7 +118,7 @@ const TablaCirugias = () => {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto md:flex">
               <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
                 <thead>
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
@@ -169,9 +171,7 @@ const TablaCirugias = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
-                          onClick={() =>
-                            handleOpen(cirugia.nombreSoporte)
-                          }
+                          onClick={() => handleOpen(cirugia.nombreSoporte)}
                         >
                           <img src={soporte} alt="soporte icon" />
                         </button>
@@ -213,7 +213,142 @@ const TablaCirugias = () => {
             </div>
           </>
         )}
+        {/* // responsive */}
+        <div className="grid grid-cols-1 gap-4 mt-4 md:hidden">
+          {currentData().map((cirugia) => (
+            <div
+              key={cirugia.id}
+              className="p-3 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Fecha - Hora:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {FormatDate(cirugia.fechaRadicado)}
+                </div>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  N.º Radicado:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.id}
+                </div>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Convenio:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.convenio}
+                </div>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Documento:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.numeroDocumento}
+                </div>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Paciente:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.nombrePaciente}
+                </div>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Especialidad:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.especialidad}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Ultimo Estado Gestion:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  {cirugia.programacionCirugia.length > 0 &&
+                  cirugia.programacionCirugia[0].gestionAuxiliarCirugia.length >
+                    0
+                    ? cirugia.programacionCirugia[0].gestionAuxiliarCirugia.slice(
+                        -1
+                      )[0].estado
+                    : "N/A"}
+                </div>
+              </div>
 
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Soporte:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  <button onClick={() => handleOpen(cirugia.nombreSoporte)}>
+                    <img
+                      src={soporte}
+                      alt="soporte icon"
+                      className="h-10 w-7"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Gestión Auxiliar:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  <button
+                    onClick={() =>
+                      handleShowGestion(cirugia.programacionCirugia[0])
+                    }
+                  >
+                    <img
+                      src={gestion}
+                      alt="Gestion-icon"
+                      className="h-10 w-7"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Mostrar:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  <button
+                    onClick={() =>
+                      handleShowVer(
+                        cirugia.programacionCirugia[0],
+                        cirugia.fechaOrden
+                      )
+                    }
+                  >
+                    <img
+                      src={mostrar}
+                      alt="Gestion-icon"
+                      className="h-10 w-7"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-600 text-[15px] dark:text-gray-400/90">
+                  Programar:
+                </div>
+                <div className="text-xs text-gray-800 dark:text-gray-100">
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ModalCirugias idRadicado={cirugia.id} data={cirugia} />
+                  </Suspense>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
         {/* pagination */}
         <div>‎ </div>
         <Pagination
