@@ -44,6 +44,7 @@ const SideBar: FC = () => {
     reports: false,
     tablets: false,
     admin: false,
+    RRHH: false
   });
   // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
@@ -75,6 +76,7 @@ const SideBar: FC = () => {
         reports: false,
         tablets: false,
         admin: false,
+        RRHH: false
       };
       newState[key] = !prev[key];
       return newState;
@@ -297,37 +299,19 @@ const SideBar: FC = () => {
             {/* Categoria de registro usuarios */}
             {[1, 18].includes(Number(rol)) && (
               <div>
-                <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
-                  Usuarios
-                </label>
-                <NavLink to="/RegistroUsuarios">
-                  {({ isActive }) => (
-                    <div
-                      className={`flex items-center px-1 py-[12px] mt-4 rounded-lg transition-colors duration-300 transform group ${
-                        openAccordions.quality
-                          ? "bg-color text-white dark:bg-gray-700 dark:text-gray-200"
-                          : "text-gray-600 dark:text-gray-200 hover:bg-color hover:text-white"
-                      } w-full`}
-                    >
-                      <img
-                        src={user}
-                        alt=""
-                        className="w-4 h-4 ml-2.5 mx-0 group-hover:invert dark:invert"
-                      />
-                      {!isCollapsed && (
-                        <span
-                          className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
-                            isActive
-                              ? "text-gray-600 group-hover:text-white dark:text-gray-200"
-                              : "group-hover:text-white dark:group-hover:text-gray-200"
-                          }`}
-                        >
-                          Registro de Usuarios
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </NavLink>
+                <Category
+                  title="Gestión Humana"
+                  icon={userMain}
+                  isOpen={openAccordions.RRHH}
+                  toggle={() => toggleAccordion("RRHH")}
+                >
+                  <SubCategory
+                    to="/RegistroUsuarios"
+                    icon={user}
+                    title="Registro Usuarios"
+                    isCollapsed={isCollapsed}
+                  />
+                </Category>
               </div>
             )}
 

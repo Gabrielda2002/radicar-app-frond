@@ -53,4 +53,5 @@ export interface Surgery {
     dateAnestesiology: Date;
     specialist:        string;
     observation:       string;
+    seguimiento:       Seguimiento[];
 }
