@@ -41,9 +41,9 @@ const Perfil: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center mb-8 bg-gray-700 rounded-lg h-1/6 dark:bg-gray-500">
-      <section className="p-10 text-gray-900 dark:text-gray-100 body-font">
+      <section className="p-0 text-gray-900 md:p-9 dark:text-gray-100 body-font">
         <div className="container mx-auto">
-          <div className="flex flex-row">
+          <div className="grid grid-cols-1 md:gap-4 md:flex sm:table">
             {/* Perfil Section */}
             <div className="flex w-full max-w-xl gap-4 p-4">
               <div className="overflow-hidden bg-gray-300 shadow-xl rounded-2xl dark:bg-gray-800">
@@ -54,13 +54,13 @@ const Perfil: React.FC = () => {
                     <img
                       src={profile.photo}
                       alt="User profile"
-                      className="object-cover transition-transform transform border-4 border-teal-500 rounded-full shadow-lg w-28 h-28 hover:scale-110"
+                      className="object-cover w-[90px] h-[80px] transition-transform transform border-4 border-teal-500 rounded-full shadow-lg md:w-28 md:h-28 hover:scale-110"
                     />
 
                     <div className="flex flex-col justify-center text-lg">
                       <div>
                         {/* Nombre del usuario */}
-                        <h2 className="px-4 mt-3 font-semibold text-gray-800 text-start dark:text-white">
+                        <h2 className="px-4 mt-3 font-semibold text-gray-800 text-start dark:text-white text-[15px] md:text-lg">
                           {profile.name} {profile.lastname}
                         </h2>
                       </div>
@@ -86,8 +86,8 @@ const Perfil: React.FC = () => {
 
                   <div className="flex bg-gray-200 flex-col-2 rounded-3xl dark:bg-gray-700">
                     <div className="mt-4 ml-5 mr-4 space-x-4 space-y-2">
-                      <div className="grid grid-cols-2 gap-20">
-                        <div className="flex flex-col items-start -space-x-2 space-y-2 text-gray-800 dark:text-gray-200">
+                      <div className="grid grid-cols-1 gap-4 md:gap-20 md:grid-cols-2">
+                        <div className="flex flex-col items-start space-y-2 text-gray-800 md:-space-x-2 dark:text-gray-200">
                           <h2>Información Personal</h2>
                           {/* Email */}
                           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
@@ -224,10 +224,12 @@ const Perfil: React.FC = () => {
                 />
               </div>
             </div>
-
+                   
+            <div>
+            </div>
             {/* Formulario Section */}
-            <div className="flex gap-4 p-4 ">
-              <div className="flex-1 p-8 bg-gray-300 shadow-md rounded-2xl dark:bg-gray-800 w-fit h-fit">
+            <div className="flex gap-4 p-4 mb-2">
+              <div className="flex-1 p-6 bg-gray-300 shadow-md md:p-8 rounded-2xl dark:bg-gray-800 w-fit h-fit">
                 <motion.div
                   initial="hidden"
                   animate="visible"
@@ -239,6 +241,7 @@ const Perfil: React.FC = () => {
                 </motion.div>
               </div>
             </div>
+              
           </div>
         </div>
       </section>
