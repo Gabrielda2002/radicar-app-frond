@@ -281,7 +281,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
               </table>
             ) : null}
 
-            {radicacion.surgery[0].seguimiento.length > 0 && (
+            {radicacion.surgery[0] && radicacion.surgery[0].seguimiento.length > 0 && (
               <table className="min-w-[50%] border-2 text-sm mb-4 text-gray-200">
                 <thead className="">
                 <tr className=" bg-gray-400 dark:bg-gray-600">
