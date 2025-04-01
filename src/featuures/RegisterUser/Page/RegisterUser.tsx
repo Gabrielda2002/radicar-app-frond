@@ -143,7 +143,7 @@ const RegistrarUsuarios: React.FC = () => {
           />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Tipo de Documento */}
             <div>
               <label className="block mb-1 text-gray-700 dark:text-gray-300">

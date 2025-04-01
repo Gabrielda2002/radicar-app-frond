@@ -198,7 +198,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
           {/* Contenido del Formulario */}
           <section>
             <div
-              className={`z-10 w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`z-10 w-[440px] md:w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -220,8 +220,8 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
               {/* Contenido del formulario */}
               <form onSubmit={formik.handleSubmit}>
                 <div className="px-5 overflow-y-auto max-h-[70vh]">
-                  <div className="grid grid-cols-2 gap-6 p-2 mt-2 mb-2">
-                    <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-6 p-2 mt-2 mb-2 md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
                         <div className="flex items-center mb-2">
                           <IdentificationIcon className="flex items-center w-8 h-8 dark:text-gray-100" />
@@ -319,7 +319,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-10 p-2">
+                  <div className="grid grid-cols-1 gap-10 p-2 md:grid-cols-2">
                     <div>
                       <div className="flex items-center mb-2">
                         <PhoneIcon className="w-8 h-8 dark:text-gray-100" />
@@ -351,7 +351,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                       </AnimatePresence>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
                         <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
                           Número de Celular
@@ -411,7 +411,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
                   </div>
 
                   {/* Segunda parte del formulario */}
-                  <div className="grid grid-cols-2 p-2 mb-4 gap-x-10">
+                  <div className="grid grid-cols-1 p-2 mb-4 md:grid-cols-2 gap-x-10">
                     <div>
                       <div className="flex items-center mb-2">
                         <MapPinIcon className="w-8 h-8 dark:text-gray-100" />
