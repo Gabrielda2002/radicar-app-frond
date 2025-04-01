@@ -90,7 +90,7 @@ const Usuarios = () => {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto md:flex">
               <table className="min-w-full mx-auto overflow-hidden text-sm text-center rounded-lg shadow-lg">
                 <thead>
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
@@ -152,6 +152,93 @@ const Usuarios = () => {
                 </tbody>
               </table>
             </div>
+        {/* responsive */}
+
+        <div className="grid grid-cols-1 gap-4 md:hidden">
+          {currentData().map((usuario) => (
+            <div
+              key={usuario.id}
+              className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-gray-700 dark:text-white">
+                  usuario #{usuario.id}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Id:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.id}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  N° Documento:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.dniNumber}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Nombres:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.name}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Apellidos:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.lastName}
+                </div>
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Tipo de Documento:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.documento}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Mail:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.email}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Estado:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.status ? "Activo" : "Inactivo"}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Rol:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.roles}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Municipio:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {usuario.municipio}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Editar:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  <ModalActionUsuario id={usuario.id} ususario={usuario} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
             <div>‎</div>
             {/* Controles de de Paginacion */}
             <Pagination
@@ -161,6 +248,7 @@ const Usuarios = () => {
             />
           </>
         )}
+
       </section>
     </>
   );
