@@ -36,6 +36,8 @@ export interface GestionAuxiliarCirugia {
     estado:        string;
     observacion:   string;
     fechaCreacion: Date;
+    Nombre:        string;
+    Apellido:      string;
 }
 
 export interface Cup {

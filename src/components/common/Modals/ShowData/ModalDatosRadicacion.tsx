@@ -63,7 +63,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Lugar Radicacion
                   </td>
-                  <td className="">{radicacion.placeRelation.name}</td>
+                  <td className="">{radicacion.radicacionPlace}</td>
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">Fecha Orden</td>
@@ -73,7 +73,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Remisión de IPS
                   </td>
-                  <td className="">{radicacion.ipsRemiteRelation.name}</td>
+                  <td className="">{radicacion.ipsPrimaria}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Profesional</td>
@@ -81,25 +81,25 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Especialidad</td>
-                  <td className="">{radicacion.specialtyRelation.name}</td>
+                  <td className="">{radicacion.specialty}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Grupo Servicios
                   </td>
-                  <td className="">{radicacion.servicesGroupRelation.name}</td>
+                  <td className="">{radicacion.groupServices}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Tipo Servicios
                   </td>
-                  <td className="">{radicacion.servicesRelation.name}</td>
+                  <td className="">{radicacion.typeServices}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Auxiliar Radicador
                   </td>
-                  <td className="">{radicacion.usuarioRelation.name}</td>
+                  <td className="">{radicacion.radicador}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Auditora</td>
@@ -131,7 +131,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha - Hora del Radicado
                   </td>
-                  <td className="">{FormatDate(radicacion.createdAt, false)}</td>
+                  <td className="">{FormatDate(radicacion.createdAt)}</td>
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">N.º Radicado</td>
@@ -141,40 +141,40 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Nombre paciente
                   </td>
-                  <td className="">{radicacion.patientRelation.name}</td>
+                  <td className="">{radicacion.namePatient}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     N.º Documento
                   </td>
                   <td className="">
-                    {radicacion.patientRelation.documentNumber}
+                    {radicacion.documentNumber}
                   </td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Celular</td>
-                  <td className="">{radicacion.patientRelation.phoneNumber}</td>
+                  <td className="">{radicacion.phoneNumber}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Correo Electrónico
                   </td>
-                  <td className="">{radicacion.patientRelation.email}</td>
+                  <td className="">{radicacion.email}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Dirección</td>
-                  <td className="">{radicacion.patientRelation.address}</td>
+                  <td className="">{radicacion.address}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Convenio</td>
                   <td className="">
-                    {radicacion.patientRelation.convenioRelation.name}
+                    {radicacion.convenioName}
                   </td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">IPS Primaria</td>
                   <td className="">
-                    {radicacion.patientRelation.ipsPrimariaRelation.name}
+                    {radicacion.ipsPrimaria}
                   </td>
                 </tr>
               </tbody>
@@ -186,8 +186,8 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 <tr className="bg-gray-100 dark:bg-gray-700 dark:text-gray-300"></tr>
               </thead>
 
-              {radicacion.cupsRadicadosRelation.length > 0 ? (
-                radicacion.cupsRadicadosRelation.map((cups) => (
+              {radicacion.cups.length > 0 ? (
+                radicacion.cups.map((cups) => (
                   <tbody key={cups.code} className="dark:text-gray-200">
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
@@ -199,13 +199,13 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Descripción CUPS
                       </td>
-                      <td className="">{cups.DescriptionCode}</td>
+                      <td className="">{cups.description}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Estado CUPS
                       </td>
-                      <td>{cups.statusRelation.name}</td>
+                      <td>{cups.status}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
@@ -217,7 +217,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Unidad Funcional
                       </td>
-                      <td className="">{cups.functionalUnitRelation.name}</td>
+                      <td className="">{cups.functionalUnit}</td>
                     </tr>
                   </tbody>
                 ))
@@ -232,9 +232,9 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
 
             {/* Segunda tabla */}
 
-            {radicacion.cirugiasRelation.length > 0 ? (
+            {radicacion.surgery.length > 0 ? (
               <table className="mt-2 mb-8 text-sm border-2">
-                {radicacion.cirugiasRelation.map((cirugia) => (
+                {radicacion.surgery.map((cirugia) => (
                   <tbody key={cirugia.id} className="dark:text-gray-200">
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
@@ -244,25 +244,25 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">Hora</td>
-                      <td>{cirugia.scheduledTime}</td>
+                      <td>{cirugia.surgeryTime}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
                         IPS Cirugia
                       </td>
-                      <td>{cirugia.ipsRemite}</td>
+                      <td>{cirugia.ipsSurgery}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Fecha paraclinico
                       </td>
-                      <td>{FormatDate(cirugia.paraclinicalDate, false)}</td>
+                      <td>{FormatDate(cirugia.dateParaclinico, false)}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
                         Fecha anestesiologia
                       </td>
-                      <td>{FormatDate(cirugia.anesthesiologyDate, false)}</td>
+                      <td>{FormatDate(cirugia.dateAnestesiology, false)}</td>
                     </tr>
                     <tr>
                       <td className="bg-gray-400 dark:bg-gray-600">
