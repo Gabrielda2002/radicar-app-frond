@@ -51,7 +51,7 @@ const TablaLugarRadicacion = () => {
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
-        <section className="flex items-center justify-between mb-4">
+        <section className="items-center justify-between mb-4 md:flex">
           <div className="flex flex-col">
             <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
               Buscar Lugar Radicación :
@@ -63,7 +63,7 @@ const TablaLugarRadicacion = () => {
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center mt-3 space-x-4 md:mt-4">
             <select
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}

@@ -50,7 +50,7 @@ const TablaRadicadores = () => {
 
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-tale */}
-        <section className="flex items-center justify-between mb-4">
+        <section className="items-center justify-between mb-4 md:flex">
           <div className="flex flex-col">
             <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
               Buscar Radicador :
@@ -62,7 +62,7 @@ const TablaRadicadores = () => {
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             ></input>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center mt-3 space-x-4 md:mt-4">
             <select
               value={itemPerPage}
               onChange={handleItemsPerPageChange}
@@ -102,13 +102,13 @@ const TablaRadicadores = () => {
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                       key={radicador.id}
                     >
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="p-2 border-b md:p-3 dark:border-gray-700">
                         {radicador.id}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="p-2 border-b md:p-3 dark:border-gray-700">
                         {radicador.name}
                       </td>
-                      <td className="p-3 border-b dark:border-gray-700">
+                      <td className="p-2 border-b md:p-3 dark:border-gray-700">
                         {radicador.status ? "Activo" : "Inactivo"}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
