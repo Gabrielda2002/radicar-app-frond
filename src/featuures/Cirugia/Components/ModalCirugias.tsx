@@ -155,7 +155,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
   return (
     <>
       <button className="focus:outline-none" onClick={() => setStadopen(true)}>
-        <img className="dark:invert" src={programar} alt="" />
+        <img className="h-10 dark:invert w-7" src={programar} alt="" />
       </button>
 
       {/* init-modal */}
