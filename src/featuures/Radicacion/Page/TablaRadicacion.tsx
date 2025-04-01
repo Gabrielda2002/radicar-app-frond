@@ -3,7 +3,7 @@ import { useState, lazy, Suspense, useCallback } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals.tsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { CupsRadicadosRelation, IRadicados } from "@/models/IRadicados.ts";
+import { Cup, IRadicados } from "@/models/IRadicados.ts";
 import { useFetchDocumentoRadicado } from "../Hooks/UseFetchDocumentRadicado.ts";
 
 //? Using lazy load functions for modals
@@ -34,14 +34,14 @@ const TablaRadicacion = () => {
   // hook para buscar radicado por numero documento paciente
   const { radicados, loading, errorRadicados, getData } =
     useFetchDocumentoRadicado();
-  
+  // console.log(radicados)
   const { handleOpen } = useOpenSupport();
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGestionAuxiliar, setIsOpenGestionAuxiliar] = useState(false);
   const [selectedRadicacion, setSelectedRadicacion] = useState<
-    CupsRadicadosRelation | IRadicados | null
+    Cup | IRadicados | null
   >(null);
 
   const handleShowData = useCallback((radicacion: IRadicados) => {
@@ -50,7 +50,7 @@ const TablaRadicacion = () => {
   }, []);
 
   const handleShowGestionAuxiliar = useCallback(
-    (radicacion: CupsRadicadosRelation) => {
+    (radicacion: Cup) => {
       setSelectedRadicacion(radicacion);
       setIsOpenGestionAuxiliar(true);
     },
@@ -154,22 +154,22 @@ const TablaRadicacion = () => {
                         {radicacion.id}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.patientRelation.documentNumber}
+                        {radicacion.documentNumber}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.patientRelation.convenioRelation.name}
+                        {radicacion.convenioName}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.patientRelation.documentRelation.name}
+                        {radicacion.documentType}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.patientRelation.name}
+                        {radicacion.namePatient}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {FormatDate(radicacion.auditDate)}
+                        { FormatDate(radicacion.auditDate, false)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.cupsRadicadosRelation.length > 0 && (
+                        {radicacion.cups.length > 0 && (
                           <div className="overflow-x-auto">
                             <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
                               <thead>
@@ -182,7 +182,7 @@ const TablaRadicacion = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {radicacion.cupsRadicadosRelation.map((cup) => (
+                                {radicacion.cups.map((cup) => (
                                   <tr
                                     key={cup.id}
                                     className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -196,11 +196,11 @@ const TablaRadicacion = () => {
                                         title="Click para ver descripción completa"
                                         onClick={() =>
                                           handleShowCookieAlert(
-                                            cup.DescriptionCode
+                                            cup.description
                                           )
                                         }
                                       >
-                                        {cup.DescriptionCode}
+                                        {cup.description}
                                       </span>
                                     </td>
 
@@ -208,14 +208,14 @@ const TablaRadicacion = () => {
                                       className="p-3 border-b dark:border-gray-700"
                                       style={{
                                         backgroundColor:
-                                          cup.statusRelation.name &&
-                                          cup.statusRelation.name ===
+                                          cup.status &&
+                                          cup.status ===
                                             "AUTORIZADO"
                                             ? "green"
                                             : "transparent",
                                       }}
                                     >
-                                      {cup.statusRelation.name}
+                                      {cup.status}
                                     </td>
                                     {/*  Se agrega el estado del seguimiento auxiliar  */}
                                     {/*  y dependiendo del estado se cambia el color */}
@@ -223,21 +223,21 @@ const TablaRadicacion = () => {
                                       className="p-3 border-b dark:border-gray-700"
                                       style={{
                                         backgroundColor:
-                                          cup.seguimientoAuxiliarRelation
+                                          cup.seguimiento
                                             .length > 0 &&
-                                          cup.seguimientoAuxiliarRelation[0]
-                                            .estadoSeguimientoRelation.name ===
+                                          cup.seguimiento[0]
+                                            .estado ===
                                             "Asignado"
                                             ? "green"
                                             : "transparent",
                                       }}
                                     >
-                                      {cup.seguimientoAuxiliarRelation.length >
+                                      {cup.seguimiento.length >
                                         0 &&
-                                      cup.seguimientoAuxiliarRelation[0]
-                                        .estadoSeguimientoRelation.name
-                                        ? cup.seguimientoAuxiliarRelation[0]
-                                            .estadoSeguimientoRelation.name
+                                      cup.seguimiento[0]
+                                        .estado
+                                        ? cup.seguimiento[0]
+                                            .estado
                                         : "N/A"}
                                     </td>
                                     <td className="p-3 border-b dark:border-gray-700">
@@ -263,9 +263,9 @@ const TablaRadicacion = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
-                            radicacion.soportesRelation &&
+                            radicacion.suportName &&
                             handleOpen(
-                              radicacion.soportesRelation.nameSaved,
+                              radicacion.suportName,
                             )
                           }
                         >
@@ -334,7 +334,7 @@ const TablaRadicacion = () => {
               <ModalGestionAuxiliar
                 isOpen={isOpenGestionAuxiliar}
                 onClose={() => setIsOpenGestionAuxiliar(false)}
-                radicacion={selectedRadicacion as CupsRadicadosRelation | null} // Se asegura que sea CupsRadicadosRelation
+                radicacion={selectedRadicacion as Cup | null} // Se asegura que sea Cup
                 cirugias={null}
               />
             </Suspense>

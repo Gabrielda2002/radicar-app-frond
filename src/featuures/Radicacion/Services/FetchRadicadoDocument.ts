@@ -8,7 +8,7 @@ export const fetchRadicadoDocumentoEp = async (documento: string): Promise<IRadi
     const radicados = response.data.map((radicado: IRadicados) => ({
         ...radicado,
         createdAt: new Date(radicado.createdAt),
-        auditDate: radicado.auditDate ? new Date(radicado.auditDate) : null
+        // auditDate: radicado.auditDate ? new Date(radicado.auditDate) : null
     }));
     return radicados;
 }
