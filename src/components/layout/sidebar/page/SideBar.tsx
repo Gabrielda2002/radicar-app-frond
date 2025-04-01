@@ -308,7 +308,7 @@ const SideBar: FC = () => {
                   <SubCategory
                     to="/RegistroUsuarios"
                     icon={user}
-                    title="Registro Usuarios"
+                    title="Biométricos Usuarios"
                     isCollapsed={isCollapsed}
                   />
                 </Category>
