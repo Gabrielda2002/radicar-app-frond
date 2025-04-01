@@ -280,6 +280,30 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 ))}
               </table>
             ) : null}
+
+            {radicacion.surgery[0].seguimiento.length > 0 && (
+              <table className="min-w-[50%] border-2 text-sm mb-4 text-gray-200">
+                <thead className="">
+                <tr className=" bg-gray-400 dark:bg-gray-600">
+                  <th>Fecha Registro</th>
+                  <th>Observacion</th>
+                  <th>Estado</th>
+                  <th>Responsable</th>
+                  </tr>
+                </thead>
+
+                <tbody className="text-center dark:text-gray-200">
+                  {radicacion.surgery[0].seguimiento.map((seguimiento) => (
+                    <tr key={seguimiento.id}>
+                      <td>{FormatDate(seguimiento.fechaCreacion)}</td>
+                      <td>{seguimiento.observation}</td>
+                      <td>{seguimiento.estado}</td>
+                      <td>{seguimiento.Nombre} {seguimiento.Apellido}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           {/* container-footer */}
