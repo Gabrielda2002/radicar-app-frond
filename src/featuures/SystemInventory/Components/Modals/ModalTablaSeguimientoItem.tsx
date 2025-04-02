@@ -17,7 +17,7 @@ import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalTablaseguimientoItemProps {
   Items: IItems | IItemsNetworking | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
 }
 
 const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({

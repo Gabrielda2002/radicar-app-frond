@@ -25,7 +25,7 @@ import { useOpenSupport } from "@/hooks/useOpenSupport";
 // * Interface
 interface ItemsListProps {
   invetario: IItems[] | IItemsNetworking[] | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
   idSede: number | null;
   onItemsUpdate: () => void;
 }

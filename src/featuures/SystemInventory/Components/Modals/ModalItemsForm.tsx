@@ -32,7 +32,7 @@ import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ModalItemsFormProps {
   idSede: number | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
   items: IItems | IItemsNetworking | null;
   idItem: number | null;
   onSuccess: () => void;
