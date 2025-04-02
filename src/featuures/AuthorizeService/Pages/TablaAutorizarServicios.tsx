@@ -128,8 +128,11 @@ const FormularioAutorizacion = () => {
             Crear autorización
           </h2>
           {/* FORM   CONTENT */}
-          <form onSubmit={formik.handleSubmit} className="flex gap-10">
-            <div className="flex flex-col w-[500px]">
+          <form
+            onSubmit={formik.handleSubmit}
+            className="grid grid-cols-1 gap-10 md:flex "
+          >
+            <div className="flex flex-col md:w-[500px]">
               {/* Auditora */}
               <div className="flex flex-col">
                 <label
@@ -219,18 +222,19 @@ const FormularioAutorizacion = () => {
                     )}
                 </AnimatePresence>
               </div>
-              <div className="flex translate-y-48">
+              <div className="flex translate-x-0 translate-y-4 md:translate-y-48 md:translate-x-4">
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="w-full h-20 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  className="w-full h-12 text-white rounded-md md:h-20 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                 >
                   {isSubmitting ? "Enviando..." : "Autorizar"}
                 </button>
               </div>
             </div>
 
-            <div className="flex w-full grid-cols-1 gap-3">
+            <div className="grid w-full grid-cols-1 gap-3">
+              0
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}
@@ -269,7 +273,8 @@ const FormularioAutorizacion = () => {
                       className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       rows={3}
                       placeholder="Descripción CUPS"
-                    />
+               
+                />
                   </div>
 
                   {/* Observación CUPS */}
@@ -377,7 +382,7 @@ const FormularioAutorizacion = () => {
                         )}
                     </AnimatePresence>
                   </div>
-                  
+
                   <div className="flex flex-col mb-4">
                     <label
                       htmlFor={`cupsDetails[${index}].quantity`}
@@ -400,9 +405,7 @@ const FormularioAutorizacion = () => {
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.cantidad && (
-                          <ErrorMessage>Requerido.</ErrorMessage>
-                        )}
+                        ]?.cantidad && <ErrorMessage>Requerido.</ErrorMessage>}
                     </AnimatePresence>
                   </div>
                 </div>
