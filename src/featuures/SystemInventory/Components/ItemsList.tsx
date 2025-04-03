@@ -21,6 +21,7 @@ import {
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
+import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
 
 // * Interface
 interface ItemsListProps {
@@ -118,13 +119,22 @@ const ItemsList: React.FC<ItemsListProps> = ({
               Inventario de {tipoItem}
             </h2>
             <div>
-              <ModalItemsForm
-                idSede={idSede}
-                tipoItem={tipoItem}
-                items={null}
-                idItem={null}
-                onSuccess={onItemsUpdate}
-              />
+              {tipoItem === "inventario/general" ? (
+                <ModalFormGeneralItems
+                  idSede={idSede}
+                  tipoItem={tipoItem}
+                  isUpdate={false}
+                  refreshItems={onItemsUpdate}
+                />
+              ): (
+                <ModalItemsForm
+                  idSede={idSede}
+                  tipoItem={tipoItem}
+                  items={null}
+                  idItem={null}
+                  onSuccess={onItemsUpdate}
+                />
+              )}
             </div>
           </div>
           {/* Search Form */}
@@ -195,13 +205,23 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         Ver detalles
                       </button>
                       <div className="flex flex-wrap gap-2">
-                        <ModalItemsForm
-                          idSede={null}
-                          tipoItem={tipoItem}
-                          items={item}
-                          idItem={item.id}
-                          onSuccess={onItemsUpdate}
-                        />
+
+                        {tipoItem === "inventario/general" ? (
+                          <ModalFormGeneralItems
+                            idSede={idSede}
+                            tipoItem={tipoItem}
+                            isUpdate={true}
+                            refreshItems={onItemsUpdate}
+                          />
+                        ) : (
+                          <ModalItemsForm
+                            idSede={null}
+                            tipoItem={tipoItem}
+                            items={item}
+                            idItem={item.id}
+                            onSuccess={onItemsUpdate}
+                          />
+                        )}
                         <ModalTablaseguimientoItem
                           Items={item}
                           tipoItem={tipoItem}
