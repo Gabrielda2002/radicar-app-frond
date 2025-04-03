@@ -262,11 +262,11 @@ const RecoverLetterPage = () => {
                       className="p-2 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-400"
                     >
                       <div className="grid grid-cols-[35%_65%] gap-2 text-sm p-1">
-                        <div className="text-gray-400">CUPS</div>
+                        <div className="text-gray-500 dark:text-gray-400">CUPS</div>
                         <div className="border-b dark:border-gray-700">
                           {c.code}
                         </div>
-                        <div className="mt-2 text-gray-400">Descripción</div>
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">Descripción</div>
                         <div
                           className={`block border-b dark:border-gray-700 max-w-[200px] mt-2 ${
                             isExpanded ? "whitespace-normal" : "truncate"
@@ -276,11 +276,11 @@ const RecoverLetterPage = () => {
                         >
                           {c.DescriptionCode}
                         </div>
-                        <div className="mt-2 text-gray-400">Estado CUPS</div>
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">Estado CUPS</div>
                         <div className="mt-2 border-b dark:border-gray-700">
                           {c.status}
                         </div>
-                        <div className="mt-2 text-gray-400">
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">
                           Estado Carta Recobro
                         </div>
                         <div className="mt-2 border-b dark:border-gray-700">
