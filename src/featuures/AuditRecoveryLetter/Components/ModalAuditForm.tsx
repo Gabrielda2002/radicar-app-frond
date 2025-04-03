@@ -167,7 +167,7 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
                   </label>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
                   {cupsAuthorized &&
                     formik.values.cups.map((cup, index) => (
                       <div
