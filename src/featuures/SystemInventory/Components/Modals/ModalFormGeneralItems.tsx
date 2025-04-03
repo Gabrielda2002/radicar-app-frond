@@ -478,6 +478,48 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                       </AnimatePresence>
                     </div>
 
+                    {/* areaDependency */}
+                    <div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="areaDependency"
+                          className="block font-semibold text-md md:text-lg"
+                        >
+                          Dependencia
+                        </label>
+                      </div>
+                      <select
+                        name=""
+                        id="areaDependency"
+                        value={formik.values.areaDependency}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.areaDependency &&
+                          formik.errors.areaDependency
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      >
+                        <option value="">SELECT</option>
+                        {areaDependency &&
+                          areaDependency.length > 0 &&
+                          areaDependency.map((op) => (
+                            <option key={op.id} value={op.id}>
+                              {op.name}
+                            </option>
+                          ))}
+                      </select>
+                      <AnimatePresence>
+                        {formik.touched.areaDependency &&
+                        formik.errors.areaDependency ? (
+                          <ErrorMessage>
+                            {formik.errors.areaDependency}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+
                     {/* location */}
                     <div>
                       <div className="flex items-center">
