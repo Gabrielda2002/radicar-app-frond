@@ -1,6 +1,6 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "@/models/IItems";
 import React, { useEffect, useState } from "react";
@@ -29,6 +29,7 @@ import {
 import { toast } from "react-toastify";
 import { FormatDate } from "@/utils/FormatDate";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -37,18 +38,6 @@ interface ModalItemsFormProps {
   idItem: number | null;
   onSuccess: () => void;
 }
-
-const ErrorMessage = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.8 }}
-    transition={{ duration: 0.3 }}
-    className="text-red-500"
-  >
-    {children}
-  </motion.div>
-);
 
 const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   idSede,
