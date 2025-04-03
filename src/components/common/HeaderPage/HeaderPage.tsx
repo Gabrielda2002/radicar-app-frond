@@ -33,7 +33,7 @@ const ModalSection: React.FC<ModuleSectionProps> = ({
             {title}
           </h1>
         </div>
-        <ol className="flex items-center w-[233px] pl-3">
+        <ol className="flex items-center pl-4 w-fit md:pl-8 h-fit">
           {breadcrumb.map((item, index) => (
             <Link key={index} to={item.path}>
               <li className="text-sm text-slate-400 md:text-md hover:underline">{item.label}</li>
