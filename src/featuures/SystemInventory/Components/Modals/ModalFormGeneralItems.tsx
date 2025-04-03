@@ -71,8 +71,19 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
     ),
     acquisitionDate: Yup.date().optional(),
     purchaseValue: Yup.number().optional(),
-    warranty: Yup.string().optional(),
-    warrantyPeriod: Yup.string().optional(),
+    warranty: Yup.boolean().optional(),
+    warrantyPeriod: Yup.string().when("warranty", {
+      is: (value: boolean) => value,
+      then: (schema) =>
+        schema
+          .required("El tiempo de garantia es requerido")
+          .min(3, "El tiempo de garantia debe tener al menos 3 caracteres")
+          .max(
+            200,
+            "El tiempo de garantia debe tener como máximo 200 caracteres"
+          ),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   const formik = useFormik({
@@ -94,7 +105,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
       othersDetails: "",
       acquisitionDate: "",
       purchaseValue: "",
-      warranty: "",
+      warranty: false,
       warrantyPeriod: "",
     },
     validationSchema: schemaValidation,
@@ -144,7 +155,10 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
 
               {/* container-body */}
               <div>
-                <form onSubmit={formik.handleSubmit} className="grid grid-cols-5">
+                <form
+                  onSubmit={formik.handleSubmit}
+                  className="grid grid-cols-5"
+                >
                   <div>
                     <div className="flex items-center">
                       <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
@@ -378,7 +392,8 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                        formik.touched.serialNumber && formik.errors.serialNumber
+                        formik.touched.serialNumber &&
+                        formik.errors.serialNumber
                           ? "border-red-500 dark:border-red-500"
                           : "border-gray-200 dark:border-gray-600"
                       }`}
@@ -386,7 +401,9 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <AnimatePresence>
                       {formik.touched.serialNumber &&
                       formik.errors.serialNumber ? (
-                        <ErrorMessage>{formik.errors.serialNumber}</ErrorMessage>
+                        <ErrorMessage>
+                          {formik.errors.serialNumber}
+                        </ErrorMessage>
                       ) : null}
                     </AnimatePresence>
                   </div>
@@ -429,7 +446,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                       ) : null}
                     </AnimatePresence>
                   </div>
-                    
+
                   {/* areaType */}
                   <div>
                     <div className="flex items-center mt-4">
@@ -572,20 +589,20 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
 
                   {/* responsable */}
                   <div>
-                  <InputAutocompletado
-                        label="Responsable"
-                        onInputChanged={(value) =>
-                          formik.setFieldValue("responsable", value)
-                        }
-                        apiRoute="search-user-by-name"
-                        error={
-                          formik.touched.responsable && !!formik.errors.responsable
-                        }
-                      />
+                    <InputAutocompletado
+                      label="Responsable"
+                      onInputChanged={(value) =>
+                        formik.setFieldValue("responsable", value)
+                      }
+                      apiRoute="search-user-by-name"
+                      error={
+                        formik.touched.responsable &&
+                        !!formik.errors.responsable
+                      }
+                    />
                   </div>
 
-                    
-                    {/* othersDetails */}
+                  {/* othersDetails */}
                   <div>
                     <div className="flex items-center mt-4">
                       <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
@@ -613,7 +630,9 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <AnimatePresence>
                       {formik.touched.othersDetails &&
                       formik.errors.othersDetails ? (
-                        <ErrorMessage>{formik.errors.othersDetails}</ErrorMessage>
+                        <ErrorMessage>
+                          {formik.errors.othersDetails}
+                        </ErrorMessage>
                       ) : null}
                     </AnimatePresence>
                   </div>
@@ -646,7 +665,9 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <AnimatePresence>
                       {formik.touched.acquisitionDate &&
                       formik.errors.acquisitionDate ? (
-                        <ErrorMessage>{formik.errors.acquisitionDate}</ErrorMessage>
+                        <ErrorMessage>
+                          {formik.errors.acquisitionDate}
+                        </ErrorMessage>
                       ) : null}
                     </AnimatePresence>
                   </div>
@@ -679,13 +700,28 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <AnimatePresence>
                       {formik.touched.purchaseValue &&
                       formik.errors.purchaseValue ? (
-                        <ErrorMessage>{formik.errors.purchaseValue}</ErrorMessage>
+                        <ErrorMessage>
+                          {formik.errors.purchaseValue}
+                        </ErrorMessage>
                       ) : null}
                     </AnimatePresence>
                   </div>
 
                   {/* warranty */}
                   <div>
+                    <input
+                      type="checkbox"
+                      id="warranty"
+                      name="warranty"
+                      checked={formik.values.warranty}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                        formik.touched.warranty && formik.errors.warranty
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
+                    />
                     <div className="flex items-center mt-4">
                       <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
                       <label
@@ -695,19 +731,6 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                         Garantía
                       </label>
                     </div>
-                    <input
-                      type="text"
-                      id="warranty"
-                      name="warranty"
-                      value={formik.values.warranty}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                        formik.touched.warranty && formik.errors.warranty
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
                     <AnimatePresence>
                       {formik.touched.warranty && formik.errors.warranty ? (
                         <ErrorMessage>{formik.errors.warranty}</ErrorMessage>
@@ -715,40 +738,42 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     </AnimatePresence>
                   </div>
 
-                    
-                    {/* warrantyPeriod */}
-                  <div>
-                    <div className="flex items-center mt-4">
-                      <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
-                      <label
-                        htmlFor="warrantyPeriod"
-                        className="block font-semibold text-md md:text-lg"
-                      >
-                        Periodo de garantía
-                      </label>
+                  {/* warrantyPeriod */}
+                  {formik.values.warranty && (
+                    <div>
+                      <div className="flex items-center mt-4">
+                        <TagIcon className="flex w-8 h-8 mr-2 dark:text-white" />
+                        <label
+                          htmlFor="warrantyPeriod"
+                          className="block font-semibold text-md md:text-lg"
+                        >
+                          Periodo de garantía
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        id="warrantyPeriod"
+                        name="warrantyPeriod"
+                        value={formik.values.warrantyPeriod}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.warrantyPeriod &&
+                          formik.errors.warrantyPeriod
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      <AnimatePresence>
+                        {formik.touched.warrantyPeriod &&
+                        formik.errors.warrantyPeriod ? (
+                          <ErrorMessage>
+                            {formik.errors.warrantyPeriod}
+                          </ErrorMessage>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
-                    <input
-                      type="text"
-                      id="warrantyPeriod"
-                      name="warrantyPeriod"
-                      value={formik.values.warrantyPeriod}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                        formik.touched.warrantyPeriod &&
-                        formik.errors.warrantyPeriod
-                          ? "border-red-500 dark:border-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    <AnimatePresence>
-                      {formik.touched.warrantyPeriod &&
-                      formik.errors.warrantyPeriod ? (
-                        <ErrorMessage>{formik.errors.warrantyPeriod}</ErrorMessage>
-                      ) : null}
-                    </AnimatePresence>
-                  </div>
-
+                  )}
                 </form>
               </div>
             </div>
