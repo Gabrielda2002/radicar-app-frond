@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, useState, useEffect } from "react";
 //*Componentes
 import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout/layout.tsx";
@@ -21,8 +21,11 @@ import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
+import ImagePopup from "./components/common/ImagenPopUp/page/ImagenPopUp.tsx";
 
 function AppRoutes() {
+  const [showPopup] = useState(true);
+
   return (
     <div>
       <Routes>
@@ -45,6 +48,14 @@ function AppRoutes() {
                   </main>
                 </div>
                 <Footer />
+                {/* Imagen PopUp */}
+                {showPopup && (
+                  <ImagePopup
+                    imageUrl="/src/components/common/ImagenPopUp/Images/IMG_2171.JPG"
+                    autoShowDelay={1000} // Mostrar después de 1 segundo
+                    showOncePerSession={true} // Mostrar solo una vez por sesión
+                  />
+                )}
               </div>
             }
           />
@@ -89,3 +100,4 @@ export function App() {
     </div>
   );
 }
+
