@@ -1,4 +1,4 @@
-import { lazy, useState, useEffect } from "react";
+import { lazy, useState} from "react";
 //*Componentes
 import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout/layout.tsx";
