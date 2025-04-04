@@ -13,6 +13,9 @@ import { useFetchStatusIvGeneral } from "../../Hooks/useFetchStatusIvGeneral";
 import { useTypeArea } from "../../Hooks/useTypeArea";
 import { useFetchAssetType } from "../../Hooks/useFetchAssetType";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import { useCreateItemIvGeneral } from "../../Hooks/useCreateItemIvGeneral";
+import { toast } from "react-toastify";
+import { useFetchAreaDependency } from "../../Hooks/useFetchAreaDependency";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
@@ -49,6 +52,11 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   const { typeArea } = useTypeArea();
 
   const { assetType } = useFetchAssetType();
+
+  const  { areaDependency } = useFetchAreaDependency();
+
+  const { createItem, error, loading } = useCreateItemIvGeneral();
+  console.log(error)
 
   const schemaValidation = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
@@ -108,10 +116,61 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
       warrantyPeriod: "",
     },
     validationSchema: schemaValidation,
-    onSubmit(values) {
-      console.log("values", values);
+    onSubmit: async (values) => {
+      try {
+        const formData = new FormData();
+
+        formData.append("name", values.name);
+        formData.append("brand", values.brand);
+        formData.append("model", values.model);
+        formData.append("serialNumber", values.serialNumber);
+        formData.append("location", values.location);
+        formData.append("quantity", values.quantity.toString());
+        formData.append("otherDetails", values.othersDetails);
+        formData.append("acquisitionDate", values.acquisitionDate);
+        formData.append("purchaseValue", values.purchaseValue.toString());
+        formData.append("warranty", values.warranty.toString());
+        formData.append("warrantyPeriod", values.warrantyPeriod);
+        formData.append("classificationId", values.classification);
+        formData.append("headquartersId", idSede?.toString() || "");
+        formData.append("statusId", values.status);
+        formData.append("assetId", values.asset);
+        formData.append("materialId", values.material);
+        formData.append("areaTypeId", values.areaType);
+        formData.append("assetTypeId", values.assetType);
+        formData.append("responsableId", values.responsable);
+        formData.append("dependencyAreaId", values.areaDependency);
+
+        const response = await createItem(formData);
+
+        if (response) {
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          setTimeout(() => {
+            setIsOpen(false);
+            formik.resetForm();
+          }, 3000);
+
+          if (refreshItems) {
+            refreshItems();
+          }
+
+        }
+      } catch (error) {
+        console.log("Error inesperado", error);
+      }
     },
   });
+
+  console.log(formik.errors)
   return (
     <>
       <button
@@ -156,7 +215,6 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               <div className="max-h-[74Vh] md:max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
                 <form onSubmit={formik.handleSubmit}>
                   <div className="grid grid-cols-3 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
-
                     <div className="flex flex-col justify-center w-full">
                       <div className="flex items-center">
                         <label
