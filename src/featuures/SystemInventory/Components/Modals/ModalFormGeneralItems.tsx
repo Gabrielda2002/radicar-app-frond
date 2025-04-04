@@ -4,7 +4,7 @@ import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFetchClassification } from "../../Hooks/useFetchClassification";
 import { useFetchAsset } from "../../Hooks/useFetchAsset";
@@ -16,17 +16,21 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 import { useCreateItemIvGeneral } from "../../Hooks/useCreateItemIvGeneral";
 import { toast } from "react-toastify";
 import { useFetchAreaDependency } from "../../Hooks/useFetchAreaDependency";
+import { IItemsGeneral } from "../../Models/IItemsGeneral";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
   tipoItem?: "inventario/general";
   isUpdate?: boolean;
   refreshItems: () => void;
+  items: IItemsGeneral | null;
 }
 
 const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   idSede,
   tipoItem,
+  items,
   isUpdate,
   refreshItems,
 }) => {
@@ -169,7 +173,32 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
     },
   });
 
-  console.log(formik.errors)
+  useEffect(() => {
+    if (items && isUpdate) {
+      formik.setValues({
+        name: items.name,
+        classification: items.classificationId.toString(),
+        asset: items.assetId.toString(),
+        brand: items.brand,
+        model: items.model,
+        material: items.materialId.toString(),
+        serialNumber: items.serialNumber,
+        status: items.statusId.toString(),
+        areaType: items.areaTypeId.toString(),
+        areaDependency: items.dependencyAreaId.toString(),
+        location: items.location,
+        assetType: items.assetTypeId.toString(),
+        quantity: items.quantity,
+        responsable: items.assetTypeId.toString(),
+        othersDetails: items.otherDetails,
+        acquisitionDate: FormatDate(items.acquisitionDate, false),
+        purchaseValue: items.purchaseValue,
+        warranty: !!items.warranty,
+        warrantyPeriod: items.warrantyPeriod || "",
+      })
+    }
+  }, [items, isUpdate])
+
   return (
     <>
       <button

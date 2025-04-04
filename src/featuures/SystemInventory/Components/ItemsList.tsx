@@ -134,6 +134,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                   idSede={idSede}
                   tipoItem={tipoItem}
                   isUpdate={false}
+                  items={null}
                   refreshItems={onItemsUpdate}
                 />
               ): (
@@ -224,6 +225,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                             idSede={idSede}
                             tipoItem={tipoItem}
                             isUpdate={true}
+                            items={item ? item as IItemsGeneral : null}
                             refreshItems={onItemsUpdate}
                           />
                         ) : (
