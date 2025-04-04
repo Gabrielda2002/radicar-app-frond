@@ -271,6 +271,7 @@ const RecoverLetterPage = () => {
                           className={`block border-b dark:border-gray-700 max-w-[200px] mt-2 ${
                             isExpanded ? "whitespace-normal" : "truncate"
                           }`}
+                          title="Ver descripción completa"
                           onClick={toggleExpand}
                           style={{ cursor: "pointer" }}
                         >
