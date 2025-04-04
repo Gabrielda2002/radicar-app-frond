@@ -12,8 +12,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
+import { IItemsGeneral } from "../../Models/IItemsGeneral";
 interface ModalItemsDetailsProps {
-  item: IItems | IItemsNetworking | null;
+  item: IItems | IItemsNetworking | IItemsGeneral |  null;
   onClose: () => void;
 }
 
@@ -324,11 +325,11 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     )}
                     <li>
                       <strong>Dirección IP: </strong>
-                      {item?.addressIp}
+                      {(item as IItemsNetworking | IItems).addressIp}
                     </li>
                     <li>
                       <strong>Mac: </strong>
-                      {item?.mac}
+                      {(item as IItemsNetworking | IItems).mac}
                     </li>
                   </ul>
                 </div>

@@ -56,7 +56,6 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   const  { areaDependency } = useFetchAreaDependency();
 
   const { createItem, error, loading } = useCreateItemIvGeneral();
-  console.log(error)
 
   const schemaValidation = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
@@ -860,6 +859,12 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     )}
                   </div>
 
+                  {error && (
+                    <AnimatePresence>
+                      <ErrorMessage>{error}</ErrorMessage>
+                    </AnimatePresence>
+                  )}
+
                   <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                     <button
                       className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
@@ -871,7 +876,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <button
                       className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                       type="submit"
-                      disabled={!formik.isValid}
+                      disabled={ loading || !formik.isValid}
                     >
                       {isUpdate ? "Actualizar" : "Crear"}
                     </button>

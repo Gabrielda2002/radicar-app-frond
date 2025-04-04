@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "@/utils/api-config";
 import { IItems } from "@/models/IItems";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
+import { IItemsGeneral } from "../Models/IItemsGeneral";
 
 const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null) => {
-  const [items, setItems] = useState<IItems[] | IItemsNetworking[] | null>(null);
+  const [items, setItems] = useState<IItems[] | IItemsNetworking[] | IItemsGeneral[] | null>(null);
   const [loadingItems, setLoading] = useState<boolean>(true);
   const [errorItems, setError] = useState<string | null>(null);
 
