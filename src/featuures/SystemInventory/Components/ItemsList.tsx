@@ -330,7 +330,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
             onPageChange={paginate}
           />
           {selected && (
-            <ModalItemsDetails item={selected} onClose={closeModal} />
+            <ModalItemsDetails item={selected} tipoItem={tipoItem} onClose={closeModal} />
           )}
         </div>
       )}

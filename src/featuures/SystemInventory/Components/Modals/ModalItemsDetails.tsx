@@ -14,13 +14,15 @@ import {
 import { FormatDate } from "@/utils/FormatDate";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
 interface ModalItemsDetailsProps {
-  item: IItems | IItemsNetworking | IItemsGeneral |  null;
+  item: IItems | IItemsNetworking | IItemsGeneral | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
   onClose: () => void;
 }
 
 const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   item,
   onClose,
+  tipoItem,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
   const [isMobile, setIsMobile] = useState(false);
@@ -39,7 +41,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
 
   const openModal = () => {
     document.body.style.overflow = "hidden";
-  }
+  };
   const closeModal = () => {
     document.body.style.overflow = "";
     onClose();
@@ -217,39 +219,43 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           <ComputerDesktopIcon className="w-6 h-6 mr-2 dark:text-white" />
           <span>Información General</span>
         </button>
-        <button
-          className={`flex items-center p-2 ${
-            activeTab === "perifericos"
-              ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
-              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-          } rounded`}
-          onClick={() => setActiveTab("perifericos")}
-        >
-          <CpuChipIcon className="w-6 h-6 mr-2 dark:text-white" />
-          <span>Periféricos</span>
-        </button>
-        <button
-          className={`flex items-center p-2 ${
-            activeTab === "componentes"
-              ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
-              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-          } rounded`}
-          onClick={() => setActiveTab("componentes")}
-        >
-          <ServerIcon className="w-6 h-6 mr-2 dark:text-white" />
-          <span>Hardware</span>
-        </button>
-        <button
-          className={` flex items-center p-2 ${
-            activeTab === "software"
-              ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
-              : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
-          } rounded `}
-          onClick={() => setActiveTab("software")}
-        >
-          <Cog6ToothIcon className="w-6 h-6 mr-2 dark:text-white" />
-          <span>Software</span>
-        </button>
+        {tipoItem === "equipos" && (
+          <>
+            <button
+              className={`flex items-center p-2 ${
+                activeTab === "perifericos"
+                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white dark:shadow-md dark:shadow-indigo-800 shadow-md text-black"
+                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+              } rounded`}
+              onClick={() => setActiveTab("perifericos")}
+            >
+              <CpuChipIcon className="w-6 h-6 mr-2 dark:text-white" />
+              <span>Periféricos</span>
+            </button>
+            <button
+              className={`flex items-center p-2 ${
+                activeTab === "componentes"
+                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
+                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+              } rounded`}
+              onClick={() => setActiveTab("componentes")}
+            >
+              <ServerIcon className="w-6 h-6 mr-2 dark:text-white" />
+              <span>Hardware</span>
+            </button>
+            <button
+              className={` flex items-center p-2 ${
+                activeTab === "software"
+                  ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
+                  : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
+              } rounded `}
+              onClick={() => setActiveTab("software")}
+            >
+              <Cog6ToothIcon className="w-6 h-6 mr-2 dark:text-white" />
+              <span>Software</span>
+            </button>
+          </>
+        )}
       </div>
     );
   };
@@ -274,15 +280,24 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul className="space-y-1">
-                    {item && "nameUser" in item && (
-                      <li>
-                        <strong>Responsable: </strong>
-                        {item.nameUser || "N/A"} {item.nameUser || "N/A"}
-                      </li>
-                    )}
+                    {tipoItem === "equipos" ||
+                      (tipoItem === "inventario/general" && (
+                        <li>
+                          <strong>Responsable: </strong>
+                          {tipoItem === "inventario/general"
+                            ? (item as IItems).nameUser +
+                              " " +
+                              (item as IItems).lastNameUser
+                            : (item as IItemsGeneral).responsable}
+                        </li>
+                      ))}
                     <li>
                       <strong>Nombre: </strong>
-                      {(item as IItems).nameEquipment}
+                      {tipoItem === "equipos"
+                        ? (item as IItems).nameEquipment
+                        : tipoItem === "dispositivos-red"
+                        ? (item as IItemsNetworking).name
+                        : (item as IItemsGeneral).name}
                     </li>
                     {item && "area" in item && (
                       <li>
@@ -298,12 +313,43 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     )}
                     <li>
                       <strong>Marca: </strong>
-                      {(item as IItems).brandEquipment}
+                      {tipoItem === "equipos"
+                        ? (item as IItems).brandEquipment
+                        : tipoItem === "dispositivos-red"
+                        ? (item as IItemsNetworking).brand
+                        : (item as IItemsGeneral).brand}
                     </li>
                     <li>
                       <strong>Modelo: </strong>
-                      {(item as IItems).modelEquipment}
+                      {tipoItem === "equipos"
+                        ? (item as IItems).modelEquipment
+                        : tipoItem === "dispositivos-red"
+                        ? (item as IItemsNetworking).model
+                        : (item as IItemsGeneral).model}
                     </li>
+                    {tipoItem === "inventario/general" && (
+                      <>
+                        <li>
+                          <strong>Clasificación: </strong>
+                          {(item as IItemsGeneral).classification}
+                        </li>
+
+                        <li>
+                          <strong>Tipo Activo: </strong>
+                          {(item as IItemsGeneral).assetType}
+                        </li>
+
+                        <li>
+                          <strong>Tipo Área: </strong>
+                          {(item as IItemsGeneral).areaType}
+                        </li>
+
+                        <li>
+                          <strong>Dependencia Área: </strong>
+                          {(item as IItemsGeneral).dependencyArea}
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
 
@@ -315,22 +361,45 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                   <ul className="space-y-1">
                     <li>
                       <strong>Serial: </strong>
-                      {(item as IItems).serialEquipment}
+                      {tipoItem === "equipos"
+                        ? (item as IItems).serialEquipment
+                        : tipoItem === "dispositivos-red"
+                        ? (item as IItemsNetworking).serial
+                        : (item as IItemsGeneral).serialNumber}
                     </li>
-                    {item && "operationalSystem" in item && (
+                    {tipoItem === "equipos" && (
                       <li>
                         <strong>Sistema Operativo: </strong>
-                        {item.operationalSystem}
+                        {(item as IItems).operationalSystem}
                       </li>
                     )}
-                    <li>
-                      <strong>Dirección IP: </strong>
-                      {(item as IItemsNetworking | IItems).addressIp}
-                    </li>
-                    <li>
-                      <strong>Mac: </strong>
-                      {(item as IItemsNetworking | IItems).mac}
-                    </li>
+                    {tipoItem === "equipos" ||
+                      (tipoItem === "dispositivos-red" && (
+                        <li>
+                          <strong>Dirección IP: </strong>
+                          {(item as IItemsNetworking | IItems).addressIp}
+                        </li>
+                      ))}
+                    {tipoItem === "equipos" ||
+                      (tipoItem === "dispositivos-red" && (
+                        <li>
+                          <strong>Mac: </strong>
+                          {(item as IItemsNetworking | IItems).mac}
+                        </li>
+                      ))}
+                    {tipoItem === "inventario/general" && (
+                      <>
+                        <li>
+                          <strong>Ubicación: </strong>
+                          {(item as IItemsGeneral).location}
+                        </li>
+
+                        <li>
+                          <strong>Material: </strong>
+                          {(item as IItemsGeneral).material}
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
 
@@ -340,27 +409,39 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Adicional:
                   </h3>
                   <ul className="space-y-1">
-                    {item && "purchaseDate" in item && (
+                    {tipoItem !== "dispositivos-red" && (
                       <li>
                         <strong>Fecha Compra: </strong>
-                        {FormatDate(item.purchaseDate, false)}
+                        {tipoItem === "inventario/general"
+                          ? FormatDate(
+                              (item as IItemsGeneral).acquisitionDate,
+                              false
+                            )
+                          : FormatDate((item as IItems).purchaseDate, false)}
                       </li>
                     )}
-                    {item && "warrantyTime" in item && (
+                    {tipoItem !== "dispositivos-red" && (
                       <li>
                         <strong>Tiempo Garantía: </strong>
-                        {item.warrantyTime}
+                        {(tipoItem === "inventario/general"
+                          ? (item as IItemsGeneral).warrantyPeriod
+                          : (item as IItems).warrantyTime) || "Sin Garantía"}
                       </li>
                     )}
-                    {item && "deliveryDate" in item && (
+                    {tipoItem === "equipos" && (
                       <li>
                         <strong>Fecha Entrega: </strong>
-                        {FormatDate(item.deliveryDate, false)}
+                        {FormatDate((item as IItems).deliveryDate, false)}
                       </li>
                     )}
                     <li>
                       <strong>Número Inventario: </strong>
-                      {(item as IItems).inventoryNumberEquipment}
+                      {(tipoItem === "equipos"
+                        ? (item as IItems).inventoryNumberEquipment
+                        : tipoItem === "dispositivos-red"
+                        ? (item as IItemsNetworking).inventoryNumber
+                        : (item as IItemsGeneral).inventoryNumber) ||
+                        "Sin N# Inventario"}
                     </li>
                     {item && "otherData" in item && (
                       <li>
@@ -372,6 +453,13 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                       <li>
                         <strong>Estado: </strong>
                         {item.status}
+                      </li>
+                    )}
+
+                    {tipoItem === "inventario/general" && (
+                      <li>
+                        <strong>Cantidad: </strong>
+                        {(item as IItemsGeneral).quantity}
                       </li>
                     )}
                   </ul>

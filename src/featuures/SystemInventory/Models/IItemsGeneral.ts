@@ -16,4 +16,12 @@ export interface IItemsGeneral {
     updatedAt:        Date;
     classificationId: number;
     headquarters:     string;
+    responsable:      string;
+    classification:   string;
+    asset:            string;
+    material:         string;
+    status:           string;
+    areaType:         string;
+    assetType:        string;
+    dependencyArea:   string;
 }
