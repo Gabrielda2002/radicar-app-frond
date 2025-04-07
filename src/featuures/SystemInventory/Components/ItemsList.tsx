@@ -309,7 +309,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         onSuccess={onItemsUpdate}
                       />
                       <ModalTablaseguimientoItem
-                        Items={item as IItemsNetworking | IItems}
+                        Items={item as IItemsNetworking | IItems | IItemsGeneral}
                         tipoItem={tipoItem}
                       />
                       {tipoItem === "equipos" && (

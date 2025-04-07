@@ -65,17 +65,19 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
         setSubmitting(true);
 
         const formData = new FormData();
-        formData.append("equipmentId", id.toString());
+        formData.append("itemId", id.toString());
         formData.append("eventDate", values.dateEvent);
-        formData.append("eventType", values.typeEvent);
+        formData.append("typeEvent", values.typeEvent);
         formData.append("description", values.description);
-        formData.append("responsible", idUsuario);
+        formData.append("responsable", idUsuario);
 
         const response = await createMonitoringItem(
           formData,
           tipoItem == "equipos"
             ? "seguimiento-equipos"
-            : "seguimiento-dispositivos-red"
+            : tipoItem === "dispositivos-red" ? 
+            "seguimiento-dispositivos-red"
+            : "seguimiento/inventario-general"
         );
 
         if (response?.status === 201 || response?.status === 200) {

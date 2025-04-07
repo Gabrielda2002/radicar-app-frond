@@ -56,8 +56,8 @@ export interface ProcessEquipment {
     dateEvent:           Date;
     eventType:           string;
     description:         string;
-    responsibleName:     string;
-    responsibleLastName: string;
+    responsableName:     string;
+    responsableLastName: string;
 }
 
 export interface Software {

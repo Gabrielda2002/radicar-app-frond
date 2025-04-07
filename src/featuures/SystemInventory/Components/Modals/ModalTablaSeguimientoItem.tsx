@@ -14,9 +14,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
+import { IItemsGeneral } from "../../Models/IItemsGeneral";
 
 interface ModalTablaseguimientoItemProps {
-  Items: IItems | IItemsNetworking | null;
+  Items: IItems | IItemsNetworking | IItemsGeneral |  null;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
 }
 
@@ -80,7 +81,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 </td>
 
                 <td className="p-3 text-gray-500 dark:text-white">
-                  {s.responsibleName} {s.responsibleLastName}
+                  {s.responsableName} {s.responsableLastName}
                 </td>
               </tr>
             ))}
@@ -147,6 +148,12 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                       Items.seguimientoDispositivosRedRelation
                     )
                   : null}
+
+                {Items && "seguimiento" in Items ? (
+                  <div className="overflow-hidden bg-white border-b border-gray-200 dark:bg-gray-600 dark:border-gray-500">
+                    {renderTrackingTable(Items.seguimiento)}
+                  </div>
+                ) : null}
               </div>
             </div>
           </section>
