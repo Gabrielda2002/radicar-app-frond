@@ -17,7 +17,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
 
 interface ModalTablaseguimientoItemProps {
-  Items: IItems | IItemsNetworking | IItemsGeneral |  null;
+  Items: IItems | IItemsNetworking | IItemsGeneral | null;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
 }
 
@@ -32,7 +32,6 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     300
   );
   useBlockScroll(stadopen);
-  
 
   const renderTrackingTable = (trackingData: any[]) => {
     if (trackingData.length === 0) {
@@ -139,21 +138,23 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
               </div>
 
               <div>
-                {Items && "processEquipment" in Items
-                  ? renderTrackingTable((Items as IItems).processEquipment)
-                  : null}
-
-                {Items && "seguimientoDispositivosRedRelation" in Items
-                  ? renderTrackingTable(
-                      Items.seguimientoDispositivosRedRelation
-                    )
-                  : null}
-
-                {Items && "seguimiento" in Items ? (
-                  <div className="overflow-hidden bg-white border-b border-gray-200 dark:bg-gray-600 dark:border-gray-500">
-                    {renderTrackingTable(Items.seguimiento)}
+                {Items &&
+                tipoItem === "equipos" &&
+                "processEquipment" in Items ? (
+                  renderTrackingTable((Items as IItems).processEquipment)
+                ) : Items &&
+                  tipoItem === "dispositivos-red" &&
+                  "seguimiento" in Items ? (
+                  renderTrackingTable((Items as IItemsNetworking).seguimiento)
+                ) : Items &&
+                  tipoItem === "inventario/general" &&
+                  "seguimiento" in Items ? (
+                  renderTrackingTable((Items as IItemsGeneral).seguimiento)
+                ) : (
+                  <div className="flex items-center justify-center p-4 text-xl text-gray-900 dark:text-gray-300">
+                    No hay seguimientos disponibles.
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </section>
