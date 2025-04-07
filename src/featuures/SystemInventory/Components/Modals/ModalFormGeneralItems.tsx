@@ -59,7 +59,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
 
   const  { areaDependency } = useFetchAreaDependency();
 
-  const { createItem, error, loading } = useCreateItemIvGeneral();
+  const { createItem,updateItem , error, loading } = useCreateItemIvGeneral();
 
   const schemaValidation = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
@@ -144,9 +144,11 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         formData.append("responsableId", values.responsable);
         formData.append("dependencyAreaId", values.areaDependency);
 
-        const response = await createItem(formData);
+        const response = items === null 
+          ? await createItem(formData) 
+          : await updateItem(formData, items?.id || 0);
 
-        if (response) {
+        if (response && response.data) {
           toast.success("Datos enviados con éxito", {
             position: "bottom-right",
             autoClose: 3000,
@@ -159,13 +161,12 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           });
           setTimeout(() => {
             setIsOpen(false);
-            formik.resetForm();
+            if(items === null) formik.resetForm();
           }, 3000);
 
           if (refreshItems) {
             refreshItems();
           }
-
         }
       } catch (error) {
         console.log("Error inesperado", error);
