@@ -240,6 +240,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         <ModalTablaseguimientoItem
                           Items={item as IItemsNetworking | IItems}
                           tipoItem={tipoItem}
+                          refreshItems={onItemsUpdate}
                         />
                         {tipoItem === "equipos" && (
                           <ModalAccesorioItem id={(item as IItems).id} />
@@ -311,6 +312,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       <ModalTablaseguimientoItem
                         Items={item as IItemsNetworking | IItems | IItemsGeneral}
                         tipoItem={tipoItem}
+                        refreshItems={onItemsUpdate}
                       />
                       {tipoItem === "equipos" && (
                         <ModalAccesorioItem id={(item as IItems).id} />

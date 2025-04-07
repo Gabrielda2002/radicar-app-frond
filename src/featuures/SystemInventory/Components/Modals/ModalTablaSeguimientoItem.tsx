@@ -19,11 +19,13 @@ import { IItemsGeneral } from "../../Models/IItemsGeneral";
 interface ModalTablaseguimientoItemProps {
   Items: IItems | IItemsNetworking | IItemsGeneral | null;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
+  refreshItems: () => void;
 }
 
 const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   Items,
   tipoItem,
+  refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
@@ -134,6 +136,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 <ModalSeguimientoItem
                   id={(Items as IItemsNetworking).id || (Items as IItems).id}
                   tipoItem={tipoItem}
+                  refreshItems={refreshItems}
                 />
               </div>
 

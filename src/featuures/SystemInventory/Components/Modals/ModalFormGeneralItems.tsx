@@ -29,7 +29,6 @@ interface IModalFormGeneralItemsProps {
 
 const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   idSede,
-  tipoItem,
   items,
   isUpdate,
   refreshItems,
