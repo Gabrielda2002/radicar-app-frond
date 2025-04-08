@@ -19,6 +19,7 @@ import {
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ExpiringSoonStatics from "../Components/ExpiringSoonStatics";
 
 const SistemaInventario: React.FC = () => {
   
@@ -177,8 +178,10 @@ const SistemaInventario: React.FC = () => {
                       />
 
                     </div>
+                    <ExpiringSoonStatics/>
                   </>
                 )}
+
 
                 {screen === "items" && sedeSelect && tipoItem && (
                   <ItemsList
