@@ -234,11 +234,11 @@ const FormularioAutorizacion = () => {
                     )}
                 </AnimatePresence>
               </div>
-              <div className="flex translate-x-0 translate-y-4 md:translate-y-12 md:translate-x-1">
+              <div className="hidden translate-x-0 translate-y-4 md:flex md:translate-y-10 md:translate-x-1">
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="w-full h-12 text-white rounded-md md:h-20 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                 >
                   {isSubmitting ? "Enviando..." : "Autorizar"}
                 </button>
@@ -250,7 +250,7 @@ const FormularioAutorizacion = () => {
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}
-                  className="w-full p-4 mx-1 mb-4 border rounded-md shadow-md"
+                  className="w-full p-3 mx-1 mb-4 bg-gray-200 border rounded-md shadow-md dark:bg-gray-900"
                 >
                   {/* Código CUPS 1*/}
                   <div className="mb-4">
@@ -282,7 +282,7 @@ const FormularioAutorizacion = () => {
                       id={`cupsDetails[${index}].descripcionCups`}
                       value={detalle.description} // Muestra la descripción CUPS correspondiente
                       readOnly
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="w-full p-1 text-sm border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       rows={3}
                       placeholder="Descripción CUPS"
                     />
@@ -422,7 +422,15 @@ const FormularioAutorizacion = () => {
                 </div>
               ))}
             </div>
-            
+            <div className="flex translate-x-0 translate-y-1 md:hidden md:translate-y-8 md:translate-x-1">
+              <button
+                type="submit"
+                disabled={isSubmitting || !formik.isValid}
+                className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+              >
+                {isSubmitting ? "Enviando..." : "Autorizar"}
+              </button>
+            </div>
           </form>
         </div>
       </div>
