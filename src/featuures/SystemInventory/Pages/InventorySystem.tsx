@@ -178,7 +178,12 @@ const SistemaInventario: React.FC = () => {
                       />
 
                     </div>
-                    <ExpiringSoonStatics/>
+                    <ExpiringSoonStatics
+                      typeItem="equipos"
+                    />
+                    <ExpiringSoonStatics
+                      typeItem="inventario/general"
+                    />
                   </>
                 )}
 
