@@ -56,9 +56,9 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
 
   const { assetType } = useFetchAssetType();
 
-  const  { areaDependency } = useFetchAreaDependency();
+  const { areaDependency } = useFetchAreaDependency();
 
-  const { createItem,updateItem , error, loading } = useCreateItemIvGeneral();
+  const { createItem, updateItem, error, loading } = useCreateItemIvGeneral();
 
   const schemaValidation = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
@@ -143,9 +143,10 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         formData.append("responsableId", values.responsable);
         formData.append("dependencyAreaId", values.areaDependency);
 
-        const response = items === null 
-          ? await createItem(formData) 
-          : await updateItem(formData, items?.id || 0);
+        const response =
+          items === null
+            ? await createItem(formData)
+            : await updateItem(formData, items?.id || 0);
 
         if (response && response.data) {
           toast.success("Datos enviados con éxito", {
@@ -160,7 +161,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           });
           setTimeout(() => {
             setIsOpen(false);
-            if(items === null) formik.resetForm();
+            if (items === null) formik.resetForm();
           }, 3000);
 
           if (refreshItems) {
@@ -195,25 +196,34 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         purchaseValue: items.purchaseValue,
         warranty: !!items.warranty,
         warrantyPeriod: items.warrantyPeriod || "",
-      })
+      });
     }
-  }, [items, isUpdate])
+  }, [items, isUpdate]);
 
   return (
     <>
-      <button
-        className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-        onClick={() => setIsOpen(true)}
-      >
-        {isUpdate ? (
-          <PencilSquareIcon className="w-7 h-7" aria-label="Actualizar Item" />
-        ) : (
-          <div className="flex items-center">
-            <span>Crear Item</span>
-            <PlusCircleIcon className="w-5 h-5 ml-2" />
-          </div>
-        )}
-      </button>
+      <div className="relative group">
+        <button
+          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+          onClick={() => setIsOpen(true)}
+        >
+          {isUpdate ? (
+            <PencilSquareIcon
+              className="w-7 h-7"
+              aria-label="Actualizar Item"
+            />
+          ) : (
+            <div className="flex items-center">
+              <span>Crear Item</span>
+              <PlusCircleIcon className="w-5 h-5 ml-2" />
+            </div>
+          )}
+        </button>
+        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
+          {isUpdate ? "Actualizar Item" : "Crear Item"}
+          <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+        </div>
+      </div>
       {isOpen && (
         <section
           className={`fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
@@ -905,7 +915,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                     <button
                       className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                       type="submit"
-                      disabled={ loading || !formik.isValid}
+                      disabled={loading || !formik.isValid}
                     >
                       {isUpdate ? "Actualizar" : "Crear"}
                     </button>
