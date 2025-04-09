@@ -8,7 +8,7 @@ import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
 import useFetchItems from "../Hooks/UseFetchItems";
 import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
-import { Hammer } from 'lucide-react';
+import { Hammer } from "lucide-react";
 
 //*Icons and Images
 import COMPUTO from "@/assets/InvetorySystem/Images/COMPUTOS.jpg";
@@ -19,31 +19,27 @@ import {
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import ExpiringSoonStatics from "../Components/ExpiringSoonStatics";
-import AgeStatics from "../Components/AgeStatics";
-import QuantityItemsStatics from "../Components/QuantityItemsStatics";
-import ItemsWithLockStatics from "../Components/ItemsWithLockStatics";
+import StatiticsScreemItems from "../Components/StatiticsScreemItems";
 
 const SistemaInventario: React.FC = () => {
-  
   const {
     department: departments,
     loading: loadingDepartment,
     errordepartment,
   } = useFetchDepartment();
-  
+
   // estados para manejar los departamentos y sedes
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
-  
+
   // traer las sedes
   const { sedes } = useFetchSedes(departmentSelect);
-  
+
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
     "equipos" | "dispositivos-red" | "inventario/general" | null
   >(null);
-  
+
   // traer los items
   const { items, refetch } = useFetchItems(sedeSelect, tipoItem);
 
@@ -112,7 +108,7 @@ const SistemaInventario: React.FC = () => {
                 <div>
                   {screen === "departamentos" && (
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                      {loadingDepartment ? (  
+                      {loadingDepartment ? (
                         <LoadingSpinner />
                       ) : errordepartment ? (
                         <p>{errordepartment}</p>
@@ -179,35 +175,13 @@ const SistemaInventario: React.FC = () => {
                           setScreen("items");
                         }}
                       />
-
                     </div>
-                    <ExpiringSoonStatics
-                      typeItem="equipos"
-                    />
-                    <AgeStatics
-                      typeItem="equipos"
-                    />
-                    <QuantityItemsStatics
-                      typeItem="equipos"
-                    />
-                    <ItemsWithLockStatics
-                      typeItem="equipos"
-                    />
-                    <ExpiringSoonStatics
-                      typeItem="inventario/general"
-                    />
-                    <AgeStatics
-                      typeItem="inventario/general"
-                    />
-                    <QuantityItemsStatics
-                      typeItem="inventario/general"
-                    />
-                    <QuantityItemsStatics
-                      typeItem="dispositivos-red"
-                    />
+                    <h1 className="text-2xl font-bold mt-5  text-gray-800 dark:text-gray-200">
+                      Datos Estadisticos generales
+                    </h1>
+                    <StatiticsScreemItems />
                   </>
                 )}
-
 
                 {screen === "items" && sedeSelect && tipoItem && (
                   <ItemsList
