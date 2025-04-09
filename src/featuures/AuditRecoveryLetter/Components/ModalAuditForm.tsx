@@ -117,7 +117,7 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
     <div>
       <div className="fixed inset-0 z-50 flex justify-center w-full h-full pt-16 duration-300 bg-black w ransition-opacity bg-opacity-40 backdrop-blur-sm">
         <section
-          className={`z-10 w-[1000px] h-fit bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+          className={`z-10 w-[440px] md:w-[900px] h-fit bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
             showAnimation && !closing
               ? "translate-y-0 opacity-100"
               : "translate-y-10 opacity-0"
@@ -167,7 +167,7 @@ const ModalAuditForm: FC<ModalAuditFormProps> = ({
                   </label>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
                   {cupsAuthorized &&
                     formik.values.cups.map((cup, index) => (
                       <div

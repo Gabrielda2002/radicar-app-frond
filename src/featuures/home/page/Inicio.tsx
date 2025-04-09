@@ -123,7 +123,7 @@ const Inicio = () => {
                       </button>
                     </div>
 
-                    <div className="p-4">
+                    <div className="p-2 md:p-5">
                       {selectedOption === "servicios" ? (
                         <ConsultarSvContratados />
                       ) : (

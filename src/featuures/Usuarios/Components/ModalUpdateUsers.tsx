@@ -283,7 +283,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
           {/* Contenido del Formulario */}
           <section>
             <div
-              className={`z-10 w-[900px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+              className={`z-10 w-[434px] md:w-[700px] sm:w-[550px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
                 showAnimation && !closing
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -304,7 +304,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
               {/* Contenido del formulario */}
               <form onSubmit={formik.handleSubmit}>
-                <div className="overflow-y-auto max-h-[80vh]">
+                <div className="overflow-y-auto max-h-[70vh]">
                   <div className="grid grid-cols-1 gap-6 p-4">
                     <div className="flex items-center">
                       <InformationCircleIcon className="text-gray-900 dark:text-gray-100 w-7 h-7" />
@@ -313,7 +313,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                       </h2>
                     </div>
                     {/* USER NAMES */}
-                    <div className="grid grid-cols-2 gap-2 px-3">
+                    <div className="grid grid-cols-1 gap-2 px-3 md:grid-cols-2">
                       <div>
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Nombres
@@ -363,129 +363,141 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                           ) : null}
                         </AnimatePresence>
                       </div>
-                      <div>
-                        <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
-                          Tipo Documento
-                        </label>
-                        <select
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                            formik.touched.tipoDocumento &&
-                            formik.errors.tipoDocumento
-                              ? "border-red-500 dark:border-red-500"
-                              : "dark:border-gray-600 border-gray-200"
-                          }`}
-                          name="tipoDocumento"
-                          value={formik.values.tipoDocumento}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                        >
-                          <option value="">SELECCIONE</option>
-                          {dataDocumento.map((item) => (
-                            <option key={item.id} value={item.id}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-                        <AnimatePresence>
-                          {formik.touched.tipoDocumento &&
-                          formik.errors.tipoDocumento ? (
-                            <ErrorMessage>
-                              {formik.errors.tipoDocumento}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
 
-                      <div>
-                        <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
-                          Numero Cedula
-                        </label>
-                        <input
-                          name="identificacion"
-                          value={formik.values.identificacion}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          type="number"
-                          placeholder="Ingrese Identificación..."
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                            formik.touched.identificacion &&
-                            formik.errors.identificacion
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.identificacion &&
-                          formik.errors.identificacion ? (
-                            <ErrorMessage>
-                              {formik.errors.identificacion}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                      <div>
-                        <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
-                          Celular
-                        </label>
-                        <input
-                          name="celular"
-                          value={formik.values.celular}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          type="text"
-                          placeholder="Ingrese Celular..."
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                            formik.touched.celular && formik.errors.celular
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.celular && formik.errors.celular ? (
-                            <ErrorMessage>{formik.errors.celular}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                      <div className="relative">
-                        <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
-                          Area
-                        </label>
-                        <input
-                          name="area"
-                          value={searchArea}
-                          onChange={handleSearchChangeArea}
-                          onBlur={formik.handleBlur}
-                          autoComplete="off"
-                          className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.area && formik.errors.area
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        {suggestionsArea.length > 0 && (
-                          <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
-                            {suggestionsArea.map((suggestion) => (
-                              <li
-                                key={
-                                  areas.areas.find((a) => a.name === suggestion)
-                                    ?.id
-                                }
-                                onClick={() =>
-                                  handleSuggestionClickArea(suggestion)
-                                }
-                                className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
-                              >
-                                {suggestion}
-                              </li>
+                      <div className="grid grid-cols-2 gap-2 md:grid-cols-1">
+                        <div>
+                          <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                            Tipo Documento
+                          </label>
+                          <select
+                            className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                              formik.touched.tipoDocumento &&
+                              formik.errors.tipoDocumento
+                                ? "border-red-500 dark:border-red-500"
+                                : "dark:border-gray-600 border-gray-200"
+                            }`}
+                            name="tipoDocumento"
+                            value={formik.values.tipoDocumento}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                          >
+                            <option value="">SELECCIONE</option>
+                            {dataDocumento.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
                             ))}
-                          </ul>
-                        )}
-                        <AnimatePresence>
-                          {formik.touched.area && formik.errors.area ? (
-                            <ErrorMessage>{formik.errors.area}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
+                          </select>
+                          <AnimatePresence>
+                            {formik.touched.tipoDocumento &&
+                            formik.errors.tipoDocumento ? (
+                              <ErrorMessage>
+                                {formik.errors.tipoDocumento}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+
+                        <div className="mt-0 md:mt-2">
+                          <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                            Numero Cedula
+                          </label>
+                          <input
+                            name="identificacion"
+                            value={formik.values.identificacion}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="number"
+                            placeholder="Ingrese Identificación..."
+                            className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                              formik.touched.identificacion &&
+                              formik.errors.identificacion
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                            }`}
+                            />
+                          <AnimatePresence>
+                            {formik.touched.identificacion &&
+                            formik.errors.identificacion ? (
+                              <ErrorMessage>
+                                {formik.errors.identificacion}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
                       </div>
+                      
+                      <div className="grid grid-cols-[35%_65%] gap-2 md:grid-cols-1">
+                        
+                        <div>
+                          <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                            Celular
+                          </label>
+                          <input
+                            name="celular"
+                            value={formik.values.celular}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="text"
+                            placeholder="Ingrese Celular..."
+                            className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                              formik.touched.celular && formik.errors.celular
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-600"
+                            }`}
+                          />
+                          <AnimatePresence>
+                            {formik.touched.celular && formik.errors.celular ? (
+                              <ErrorMessage>
+                                {formik.errors.celular}
+                              </ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+
+                        <div className="relative">
+                          <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
+                            Area
+                          </label>
+                          <input
+                            name="area"
+                            value={searchArea}
+                            onChange={handleSearchChangeArea}
+                            onBlur={formik.handleBlur}
+                            autoComplete="off"
+                            className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
+                              formik.touched.area && formik.errors.area
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-200 dark:border-gray-600"
+                            }`}
+                            />
+                          {suggestionsArea.length > 0 && (
+                            <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
+                              {suggestionsArea.map((suggestion) => (
+                                <li
+                                key={
+                                  areas.areas.find(
+                                      (a) => a.name === suggestion
+                                    )?.id
+                                  }
+                                  onClick={() =>
+                                    handleSuggestionClickArea(suggestion)
+                                  }
+                                  className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
+                                >
+                                  {suggestion}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          <AnimatePresence>
+                            {formik.touched.area && formik.errors.area ? (
+                              <ErrorMessage>{formik.errors.area}</ErrorMessage>
+                            ) : null}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                      
                       <div className="relative">
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Cargo
@@ -565,7 +577,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         Contacto:
                       </h2>
                     </div>
-                    <div className="grid grid-cols-2 gap-3 px-3">
+                    <div className="grid grid-cols-1 gap-3 px-3 md:grid-cols-2">
                       <div>
                         <label className="block mb-2 text-base font-bold text-left text-gray-700 dark:text-gray-200">
                           Correo Electrónico

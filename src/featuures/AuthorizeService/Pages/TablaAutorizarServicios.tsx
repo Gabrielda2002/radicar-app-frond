@@ -17,6 +17,7 @@ import { useFetchFuntionalUnit } from "../Hooks/UseFetchFuntionalUnit";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
+import { Bounce, toast } from "react-toastify";
 
 const FormularioAutorizacion = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -87,6 +88,17 @@ const FormularioAutorizacion = () => {
 
         if (response?.status === 200) {
           setSuccess(true);
+            toast.success("Autorizado exitosamente.", {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
           setTimeout(() => {
             window.location.href = "/tabla-auditoria";
           }, 3000);
@@ -128,8 +140,11 @@ const FormularioAutorizacion = () => {
             Crear autorización
           </h2>
           {/* FORM   CONTENT */}
-          <form onSubmit={formik.handleSubmit} className="flex gap-10">
-            <div className="flex flex-col w-[500px]">
+          <form
+            onSubmit={formik.handleSubmit}
+            className="grid grid-cols-1 gap-4 md:grid-cols-[25%_73%] sm:grid-cols-[40%_60%] md:gap-6"
+          >
+            <div className="flex flex-col w-full md:w-full">
               {/* Auditora */}
               <div className="flex flex-col">
                 <label
@@ -219,22 +234,23 @@ const FormularioAutorizacion = () => {
                     )}
                 </AnimatePresence>
               </div>
-              <div className="flex translate-y-48">
+              <div className="hidden translate-x-0 translate-y-4 md:flex md:translate-y-10 md:translate-x-1">
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="w-full h-20 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                 >
                   {isSubmitting ? "Enviando..." : "Autorizar"}
                 </button>
               </div>
             </div>
 
-            <div className="flex w-full grid-cols-1 gap-3">
+            <div className="grid w-full grid-cols-1 gap-3 mt-5 md:mt-0 md:flex sm:grid-cols-1">
+              {/* CUPS Details */}
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}
-                  className="w-full p-4 mx-1 mb-4 border rounded-md shadow-md"
+                  className="w-full p-3 mx-1 mb-4 bg-gray-200 border rounded-md shadow-md dark:bg-gray-900"
                 >
                   {/* Código CUPS 1*/}
                   <div className="mb-4">
@@ -266,7 +282,7 @@ const FormularioAutorizacion = () => {
                       id={`cupsDetails[${index}].descripcionCups`}
                       value={detalle.description} // Muestra la descripción CUPS correspondiente
                       readOnly
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="w-full p-1 text-sm border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       rows={3}
                       placeholder="Descripción CUPS"
                     />
@@ -377,7 +393,7 @@ const FormularioAutorizacion = () => {
                         )}
                     </AnimatePresence>
                   </div>
-                  
+
                   <div className="flex flex-col mb-4">
                     <label
                       htmlFor={`cupsDetails[${index}].quantity`}
@@ -400,16 +416,21 @@ const FormularioAutorizacion = () => {
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.cantidad && (
-                          <ErrorMessage>Requerido.</ErrorMessage>
-                        )}
+                        ]?.cantidad && <ErrorMessage>Requerido.</ErrorMessage>}
                     </AnimatePresence>
                   </div>
                 </div>
               ))}
             </div>
-
-            {success && <p className="text-green-500">Autorización exitosa.</p>}
+            <div className="flex translate-x-0 translate-y-1 md:hidden md:translate-y-8 md:translate-x-1">
+              <button
+                type="submit"
+                disabled={isSubmitting || !formik.isValid}
+                className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+              >
+                {isSubmitting ? "Enviando..." : "Autorizar"}
+              </button>
+            </div>
           </form>
         </div>
       </div>

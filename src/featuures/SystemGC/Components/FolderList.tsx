@@ -157,29 +157,31 @@ const FolderList: React.FC<FolderListProps> = ({
             key={folder.id}
             onClick={() => onFolderClick(folder.id, folder.name)} // Se abre la carpeta
             className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
-          > 
-            {!isInFolder && customIcon  ? (
+          >
+            {!isInFolder && customIcon ? (
               <div>
                 <img
                   src={customIcon}
                   alt="Icono de la carpeta"
-                  className="w-16 h-16"
+                  className="w-8 h-8 md:w-16 md:h-16"
                 />
               </div>
             ) : (
               <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
             )}
             {/* Menú en la esquina superior derecha */}
-            {[ 1, 4 ].includes(Number(rol)) && (
-            <div
-              className="absolute top-2 right-2"
-              onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
-            >
-              <ItemManu
-                onDelete={() => handleDelete(folder.id)}
-                renameItem={(newName: string) => handleRename(folder.id, newName)}
-              />
-            </div>
+            {[1, 4].includes(Number(rol)) && (
+              <div
+                className="absolute top-2 right-2"
+                onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
+              >
+                <ItemManu
+                  onDelete={() => handleDelete(folder.id)}
+                  renameItem={(newName: string) =>
+                    handleRename(folder.id, newName)
+                  }
+                />
+              </div>
             )}
 
             {/* Nombre de la carpeta */}
