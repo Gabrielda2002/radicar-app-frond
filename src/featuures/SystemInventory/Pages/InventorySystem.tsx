@@ -20,7 +20,8 @@ import {
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ExpiringSoonStatics from "../Components/ExpiringSoonStatics";
-import AgeStatics from "../Components/ageStatics";
+import AgeStatics from "../Components/AgeStatics";
+import QuantityItemsStatics from "../Components/QuantityItemsStatics";
 
 const SistemaInventario: React.FC = () => {
   
@@ -185,11 +186,20 @@ const SistemaInventario: React.FC = () => {
                     <AgeStatics
                       typeItem="equipos"
                     />
+                    <QuantityItemsStatics
+                      typeItem="equipos"
+                    />
                     <ExpiringSoonStatics
                       typeItem="inventario/general"
                     />
                     <AgeStatics
                       typeItem="inventario/general"
+                    />
+                    <QuantityItemsStatics
+                      typeItem="inventario/general"
+                    />
+                    <QuantityItemsStatics
+                      typeItem="dispositivos-red"
                     />
                   </>
                 )}
