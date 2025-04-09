@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="w-full bg-slate-400 dark:bg-gray-800">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-600 dark:border-gray-400">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div className="">
@@ -50,14 +50,14 @@ const Login: React.FC = () => {
                 <BuildingOffice2Icon className="w-12 h-12 p-2 text-white rounded-full bg-color" />
               </div>
               <a
-                href="https://nordvitalips.com/Pagina-nordvitalips/index.php"
+                href="https://nordvitalips.com"
                 className="flex items-center justify-center text-3xl font-semibold text-black dark:text-white"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <h1>Nordvital IPS</h1>
               </a>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-gray-500 dark:text-gray-300">
                 Accede a tu cuenta para continuar
               </p>
             </div>
