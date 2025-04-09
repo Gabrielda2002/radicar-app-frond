@@ -76,9 +76,6 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
     return (
         <>
             <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    Estadísticas de Items con Bloqueo
-                </h1>
                 
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
@@ -93,7 +90,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                         {/* Gráfico circular */}
                         <div className="h-64 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm">
                             <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">
-                                Distribución de Bloqueo
+                                Distribución de Candado
                             </h2>
                             <ResponsiveContainer width="100%" height="90%">
                                 <PieChart>
@@ -136,7 +133,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                                 </p>
                             </div>
                             <div className="col-span-2 bg-green-50 dark:bg-green-900/30 p-4 rounded-lg shadow-sm">
-                                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Disponibles</h3>
+                                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Sin Candado</h3>
                                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                                     {(withLock.total || 0) - (withLock.withLock || 0)}
                                 </p>
