@@ -22,6 +22,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ExpiringSoonStatics from "../Components/ExpiringSoonStatics";
 import AgeStatics from "../Components/AgeStatics";
 import QuantityItemsStatics from "../Components/QuantityItemsStatics";
+import ItemsWithLockStatics from "../Components/ItemsWithLockStatics";
 
 const SistemaInventario: React.FC = () => {
   
@@ -187,6 +188,9 @@ const SistemaInventario: React.FC = () => {
                       typeItem="equipos"
                     />
                     <QuantityItemsStatics
+                      typeItem="equipos"
+                    />
+                    <ItemsWithLockStatics
                       typeItem="equipos"
                     />
                     <ExpiringSoonStatics
