@@ -7,13 +7,9 @@ export const FormatDate = (date: Date | string | null, withTime: boolean = true)
     const timeZone = 'America/Bogota';
     const dateformat = withTime ? "yyyy/MM/dd HH:mm" : "yyyy-MM-dd";
 
-    console.log("date", date)
-
     try {
         // Si es string (formato ISO), usar directamente parseISO
         if (typeof date === "string") {
-            console.log("string", date)
-            console.log('lo que retorna', new Date(date));
             return formatInTimeZone(parseISO(date), timeZone, dateformat);
         }
         
