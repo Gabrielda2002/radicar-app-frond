@@ -7,9 +7,11 @@ export const getRegisterUser = async (documentNumber: string, dateStart: string,
             "dateEnd" : dateEnd,
             "documentNumber" : documentNumber
     })
+    console.log(response.data);
     const registerUser = response.data.map((r: IRegisterUser) => ({
         ...r,
     }));
 
+    console.log("despues del formateo", registerUser)
     return registerUser;
 }
