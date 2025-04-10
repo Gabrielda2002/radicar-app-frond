@@ -20,7 +20,6 @@ import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import { Bounce, toast } from "react-toastify";
 
 const FormularioAutorizacion = () => {
-  const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const loadEstados = true;
 
@@ -81,13 +80,11 @@ const FormularioAutorizacion = () => {
     validationSchema,
     onSubmit: async (values) => {
       setIsSubmitting(true);
-      setSuccess(false);
 
       try {
         const response = await UpdateService(values, memoizedId);
 
         if (response?.status === 200) {
-          setSuccess(true);
             toast.success("Autorizado exitosamente.", {
               position: "bottom-right",
               autoClose: 5000,

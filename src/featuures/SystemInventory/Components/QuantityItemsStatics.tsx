@@ -64,14 +64,14 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
                     fill="#8884d8"
                     dataKey={"value"}
                   >
-                    {quantity.map((entry, index) => (
+                    {quantity.map((_, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
                       />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value, name, props) => [`${value} ${typeItem === "equipos" ? "equipos" : "ítems"}`, props.payload.name]} />
+                  <Tooltip formatter={(value, _, props) => [`${value} ${typeItem === "equipos" ? "equipos" : "ítems"}`, props.payload.name]} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
