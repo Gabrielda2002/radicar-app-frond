@@ -21,11 +21,14 @@ import {
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
+import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
+import { IItemsGeneral } from "../Models/IItemsGeneral";
+import { Building } from 'lucide-react';
 
 // * Interface
 interface ItemsListProps {
-  invetario: IItems[] | IItemsNetworking[] | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
+  invetario: IItems[] | IItemsNetworking[] | IItemsGeneral[] | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
   idSede: number | null;
   onItemsUpdate: () => void;
 }
@@ -37,7 +40,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
   onItemsUpdate,
 }) => {
   // * Estados para almacenar datos
-  const [selected, setSelected] = useState<IItems | IItemsNetworking | null>(
+  const [selected, setSelected] = useState<IItems | IItemsNetworking | IItemsGeneral | null>(
     null
   );
 
@@ -48,18 +51,24 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const ITEMS_PER_PAGE = 9;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } = tipoItem === "equipos"
+  const { query, setQuery, filteredData } = 
+  tipoItem === "equipos"
   ? useSearch<IItems>(
       invetario as IItems[] || [],
       ["nameEquipment", "brandEquipment", "modelEquipment"]
     )
-  : useSearch<IItemsNetworking>(
+  : tipoItem === "dispositivos-red" 
+  ?  useSearch<IItemsNetworking>(
       invetario as IItemsNetworking[] || [],
+      ["name", "brand", "model"]
+    ) 
+    : useSearch<IItemsGeneral>(
+      invetario as IItemsGeneral[] || [],
       ["name", "brand", "model"]
     );
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination<IItems | IItemsNetworking>(filteredData, itemsPerPage);
+    usePagination<IItems | IItemsNetworking | IItemsGeneral>(filteredData, itemsPerPage);
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -88,7 +97,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
     return () => clearTimeout(timeout);
   }, [tipoItem]);
 
-  const handleViewDetails = (item: IItems | IItemsNetworking) => {
+  const handleViewDetails = (item: IItems | IItemsNetworking | IItemsGeneral) => {
     setSelected(item);
   };
 
@@ -102,9 +111,11 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const getIcon = () => {
     return tipoItem === "equipos" ? (
       <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
-    ) : (
+    ) : tipoItem === "dispositivos-red" ? (
       <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
-    );
+    ) : (
+      <Building className="w-8 h-8 mr-2 dark:text-white" />
+    )
   };
   return (
     <>
@@ -118,13 +129,23 @@ const ItemsList: React.FC<ItemsListProps> = ({
               Inventario de {tipoItem}
             </h2>
             <div>
-              <ModalItemsForm
-                idSede={idSede}
-                tipoItem={tipoItem}
-                items={null}
-                idItem={null}
-                onSuccess={onItemsUpdate}
-              />
+              {tipoItem === "inventario/general" ? (
+                <ModalFormGeneralItems
+                  idSede={idSede}
+                  tipoItem={tipoItem}
+                  isUpdate={false}
+                  items={null}
+                  refreshItems={onItemsUpdate}
+                />
+              ): (
+                <ModalItemsForm
+                  idSede={idSede}
+                  tipoItem={tipoItem}
+                  items={null}
+                  idItem={null}
+                  onSuccess={onItemsUpdate}
+                />
+              )}
             </div>
           </div>
           {/* Search Form */}
@@ -178,7 +199,10 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
                         {tipoItem === "equipos"
                           ? (item as IItems).nameEquipment
-                          : (item as IItemsNetworking).name}
+                          : tipoItem === "dispositivos-red"  
+                          ? (item as IItemsNetworking).name :
+                            (item as IItemsGeneral).name
+                          }
                       </h3>
                       <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
                         {tipoItem === "equipos"
@@ -195,16 +219,28 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         Ver detalles
                       </button>
                       <div className="flex flex-wrap gap-2">
-                        <ModalItemsForm
-                          idSede={null}
-                          tipoItem={tipoItem}
-                          items={item}
-                          idItem={item.id}
-                          onSuccess={onItemsUpdate}
-                        />
+
+                        {tipoItem === "inventario/general" ? (
+                          <ModalFormGeneralItems
+                            idSede={idSede}
+                            tipoItem={tipoItem}
+                            isUpdate={true}
+                            items={item ? item as IItemsGeneral : null}
+                            refreshItems={onItemsUpdate}
+                          />
+                        ) : (
+                          <ModalItemsForm
+                            idSede={null}
+                            tipoItem={tipoItem}
+                            items={item as IItemsNetworking | IItems}
+                            idItem={item.id}
+                            onSuccess={onItemsUpdate}
+                          />
+                        )}
                         <ModalTablaseguimientoItem
-                          Items={item}
+                          Items={item as IItemsNetworking | IItems}
                           tipoItem={tipoItem}
+                          refreshItems={onItemsUpdate}
                         />
                         {tipoItem === "equipos" && (
                           <ModalAccesorioItem id={(item as IItems).id} />
@@ -269,13 +305,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       <ModalItemsForm
                         idSede={null}
                         tipoItem={tipoItem}
-                        items={item}
+                        items={item as IItemsNetworking | IItems}
                         idItem={item.id}
                         onSuccess={onItemsUpdate}
                       />
                       <ModalTablaseguimientoItem
-                        Items={item}
+                        Items={item as IItemsNetworking | IItems | IItemsGeneral}
                         tipoItem={tipoItem}
+                        refreshItems={onItemsUpdate}
                       />
                       {tipoItem === "equipos" && (
                         <ModalAccesorioItem id={(item as IItems).id} />
@@ -297,7 +334,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
             onPageChange={paginate}
           />
           {selected && (
-            <ModalItemsDetails item={selected} onClose={closeModal} />
+            <ModalItemsDetails item={selected} tipoItem={tipoItem} onClose={closeModal} />
           )}
         </div>
       )}

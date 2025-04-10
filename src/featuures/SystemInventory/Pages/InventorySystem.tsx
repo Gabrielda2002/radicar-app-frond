@@ -8,6 +8,7 @@ import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
 import useFetchItems from "../Hooks/UseFetchItems";
 import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
+import { Hammer } from "lucide-react";
 
 //*Icons and Images
 import COMPUTO from "@/assets/InvetorySystem/Images/COMPUTOS.jpg";
@@ -18,27 +19,27 @@ import {
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import StatiticsScreemItems from "../Components/StatiticsScreemItems";
 
 const SistemaInventario: React.FC = () => {
-  
   const {
     department: departments,
     loading: loadingDepartment,
     errordepartment,
   } = useFetchDepartment();
-  
+
   // estados para manejar los departamentos y sedes
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
-  
+
   // traer las sedes
   const { sedes } = useFetchSedes(departmentSelect);
-  
+
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
-    "equipos" | "dispositivos-red" | null
+    "equipos" | "dispositivos-red" | "inventario/general" | null
   >(null);
-  
+
   // traer los items
   const { items, refetch } = useFetchItems(sedeSelect, tipoItem);
 
@@ -107,7 +108,7 @@ const SistemaInventario: React.FC = () => {
                 <div>
                   {screen === "departamentos" && (
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                      {loadingDepartment ? (  
+                      {loadingDepartment ? (
                         <LoadingSpinner />
                       ) : errordepartment ? (
                         <p>{errordepartment}</p>
@@ -136,6 +137,10 @@ const SistemaInventario: React.FC = () => {
 
                 {screen === "tipoItem" && sedeSelect && (
                   <>
+                    <h1 className="text-2xl font-bold mt-5  text-gray-800 dark:text-gray-200">
+                      Información general
+                    </h1>
+                    <StatiticsScreemItems />
                     <div>
                       <h2 className="mb-4 text-2xl md:text-3xl dark:text-white">
                         Categorías
@@ -164,7 +169,18 @@ const SistemaInventario: React.FC = () => {
                           setScreen("items");
                         }}
                       />
+                      <DeviceCard
+                        title="Inventario General"
+                        description="Contenido de la Sección"
+                        image={TELECO}
+                        icon={<Hammer className="w-8 h-8 text-gray-200" />}
+                        onClick={() => {
+                          setTipoItem("inventario/general");
+                          setScreen("items");
+                        }}
+                      />
                     </div>
+                    
                   </>
                 )}
 

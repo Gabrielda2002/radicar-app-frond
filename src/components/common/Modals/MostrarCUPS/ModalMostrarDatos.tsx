@@ -19,7 +19,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
   dateOrder,
 }) => {
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
-  
+
   useBlockScroll(isOpen);
 
   if (!isOpen || (!data && !cirugias)) return null;
@@ -85,7 +85,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           {/* Contenedor para las dos tablas en columnas */}
           {data && data.length > 0 ? (
             <div className="max-h-[78vh] overflow-auto p-2 mt-3">
-              <table className="min-w-[50%] text-sm mb-4">
+              <table className="w-[800px] text-sm mb-4 hidden md:table">
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
                     <th className="">Código</th>
@@ -110,7 +110,42 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                     </tbody>
                   ))}
               </table>
+
+              {/* responsive */}
+              {data &&
+                data.map((cups) => (
+                  <div
+                    className="grid grid-cols-[38%_59%] w-[400px] text-sm justify-between md:hidden dark:text-gray-200"
+                    key={cups.idRadicado}
+                  >
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Codigo:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {cups.code}
+                    </div>
+                    <div className="mt-4 font-semibold text-gray-600 dark:text-gray-400/90">
+                      Descricion
+                    </div>
+                    <div className="mt-4 text-gray-800 dark:text-gray-100">
+                      {cups.description}
+                    </div>
+                    <div className="mt-4 font-semibold text-gray-600 dark:text-gray-400/90">
+                      Estado
+                    </div>
+                    <div className="mt-4 text-gray-800 dark:text-gray-100">
+                      {cups.status}
+                    </div>
+                    <div className="mt-4 font-semibold text-gray-600 dark:text-gray-400/90">
+                      Unidad Funcional CUPS
+                    </div>
+                    <div className="mt-4 text-gray-800 dark:text-gray-100">
+                      {cups.unidadFuncional}
+                    </div>
+                  </div>
+                ))}
             </div>
+            
           ) : !cirugias ? (
             <div className="p-2 text-center text-stone-400 dark:text-stone-500">
               No se han generado seguimientos...

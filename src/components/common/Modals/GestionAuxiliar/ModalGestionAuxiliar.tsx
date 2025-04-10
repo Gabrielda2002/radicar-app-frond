@@ -93,7 +93,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
       <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
         <section>
           <div
-            className={`z-10 w-[1000px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+            className={`z-10 w-[440px] md:w-[900px] sm:w-[600px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
               showAnimation && !closing
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"

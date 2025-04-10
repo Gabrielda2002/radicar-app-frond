@@ -70,7 +70,7 @@ const FileManager: React.FC = () => {
         />
         
         {/* Pestañas de navegación entre secciones */}
-        <div className="flex mb-4 overflow-x-auto bg-white shadow-md dark:bg-gray-800 rounded-t-md">
+        <div className="grid grid-cols-1 overflow-x-auto shadow-md bg-zinc-100 md:bg-white b-4 md:flex dark:bg-gray-700 md:dark:bg-gray-800 rounded-t-md">
           {SECTIONS.map(section => (
             <button
               key={section.id}
@@ -87,7 +87,7 @@ const FileManager: React.FC = () => {
         </div>
         
         <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
-          <section className="flex items-center justify-between pb-6 header-tabla">
+          <section className="flex items-center justify-between pb-0 md:pb-6 header-tabla">
             <div className="container-filter">
               {/* Aquí puedes agregar filtros específicos por sección si lo necesitas */}
             </div>

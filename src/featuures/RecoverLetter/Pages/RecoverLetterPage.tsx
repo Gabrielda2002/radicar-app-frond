@@ -72,7 +72,7 @@ const RecoverLetterPage = () => {
           </div>
         </section>
 
-        <div className="overflow-x-auto">
+        <div className="hidden overflow-x-auto md:flex">
           {requestLetter && requestLetter?.length > 0 && (
             <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
               <thead className="bg-gray-200 dark:bg-gray-700">
@@ -179,23 +179,158 @@ const RecoverLetterPage = () => {
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
                       {r.cupsAuthorized.some(
-                          (c) => c.statusLetter === "Autorizado"
-                        ) && (
-                          <button
-                            onClick={() =>
-                              handleDownload(r.id.toString(), r.idRequest)
-                            }
-                            title="Descargar PDF"
-                          >
-                            <DocumentArrowDownIcon className="w-8 h-8" />
-                          </button>
-                        )}
+                        (c) => c.statusLetter === "Autorizado"
+                      ) && (
+                        <button
+                          onClick={() =>
+                            handleDownload(r.id.toString(), r.idRequest)
+                          }
+                          title="Descargar PDF"
+                        >
+                          <DocumentArrowDownIcon className="w-8 h-8" />
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+        </div>
+        {/* // responsive */}
+        <div className="grid grid-cols-1 gap-4 md:hidden">
+          {requestLetter?.map((r) => (
+            <div
+              key={r.id}
+              className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+            >
+              <div className="grid grid-cols-[32%_68%] gap-2 text-sm">
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  N* Radicado:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">{r.id}</div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Fecha-Hora Radicado:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {FormatDate(r.creatAt)}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Tipo Documento Paciente:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.dniType}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  N. Documento Paciente:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.dniNumber}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Nombre Paciente:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.patientName}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Convenio:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.agreement}
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Profesional:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.profetional}
+                </div>
+   
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  CUPS:
+                </div>
+                <div className="grid grid-cols-1 text-gray-800 dark:text-gray-100">
+                  {r.cupsAuthorized.map((c) => (
+                    <div
+                      key={c.id}
+                      className="p-2 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-400"
+                    >
+                      <div className="grid grid-cols-[35%_65%] gap-2 text-sm p-1">
+                        <div className="text-gray-500 dark:text-gray-400">CUPS</div>
+                        <div className="border-b dark:border-gray-700">
+                          {c.code}
+                        </div>
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">Descripción</div>
+                        <div
+                          className={`block border-b dark:border-gray-700 max-w-[200px] mt-2 ${
+                            isExpanded ? "whitespace-normal" : "truncate"
+                          }`}
+                          title="Ver descripción completa"
+                          onClick={toggleExpand}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {c.DescriptionCode}
+                        </div>
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">Estado CUPS</div>
+                        <div className="mt-2 border-b dark:border-gray-700">
+                          {c.status}
+                        </div>
+                        <div className="mt-2 text-gray-500 dark:text-gray-400">
+                          Estado Carta Recobro
+                        </div>
+                        <div className="mt-2 border-b dark:border-gray-700">
+                          {c.statusLetter}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-2 font-semibold text-gray-600 dark:text-gray-400/90">
+                  Solicitar:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  <button
+                    onClick={() => {
+                      setIsOpen(true);
+                      setIdRadicado(r.id);
+                      setIsRequested(r.isRequested);
+                    }}
+                  >
+                    <img
+                      src={carta}
+                      alt="request-icon"
+                      className="w-10 h-10 dark:filter dark:invert "
+                    />
+                  </button>
+                </div>
+
+                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                  Descargar Carta:
+                </div>
+                <div className="text-gray-800 dark:text-gray-100">
+                  {r.cupsAuthorized.some(
+                    (c) => c.statusLetter === "Autorizado"
+                  ) && (
+                    <button
+                      onClick={() =>
+                        handleDownload(r.id.toString(), r.idRequest)
+                      }
+                      title="Descargar PDF"
+                    >
+                      <DocumentArrowDownIcon className="w-8 h-8" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <Suspense fallback={<LoadingSpinner />}>

@@ -24,7 +24,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
     <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
       <section>
         <div
-          className={`z-10 w-[1200px]  bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
+          className={`z-10 w-[430px] md:w-[1000px] bg-white rounded overflow-hidden shadow-lg transform transition-transform duration-300 dark:bg-gray-800 ${
             showAnimation && !closing
               ? "translate-y-0 opacity-100"
               : "translate-y-10 opacity-0"
@@ -44,7 +44,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
           </div>
 
           {/* Contenedor para las dos tablas en columnas */}
-          <div className="grid grid-cols-3 gap-6 max-h-[70vh] overflow-auto p-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-h-[70vh] overflow-auto p-2">
             {/* Primera tabla */}
             <table className="mt-2 mb-8 text-sm border-2 rounded-lg">
               <thead>
