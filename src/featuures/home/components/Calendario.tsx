@@ -9,7 +9,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { IEventos } from "@/models/IEventos";
 import { useFetchEvents } from "../hooks/UseFetchEvents";
 import { useEventModal } from "../hooks/UseEventModal";
-import { useState } from "react";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");
