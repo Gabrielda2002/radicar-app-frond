@@ -22,6 +22,7 @@ import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
+import { FormatDate } from "@/utils/FormatDate";
 
 export const fetchUsers = async (): Promise<IRadicados[]> => {
     const response = await api.get('/radicacion');
@@ -266,8 +267,8 @@ export const fetchEventosEp = async (): Promise<IEventos[]> => {
     const response = await api.get('/eventos');
     const eventos = response.data.map((evento: IEventos) => ({
         ...evento,
-        dateStart: new Date(evento.dateStart),
-        dateEnd: new Date(evento.dateEnd)
+        dateStart: FormatDate(evento.dateStart),
+        dateEnd: FormatDate(evento.dateEnd)
     }));
     return eventos;
 }
