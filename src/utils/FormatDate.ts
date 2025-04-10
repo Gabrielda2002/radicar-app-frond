@@ -13,7 +13,7 @@ export const FormatDate = (date: Date | string | null, withTime: boolean = true)
         // Si es string (formato ISO), usar directamente parseISO
         if (typeof date === "string") {
             console.log("string", date)
-            console.log('lo que retorna', formatInTimeZone(parseISO(date), timeZone, dateformat))
+            console.log('lo que retorna', new Date(date));
             return formatInTimeZone(parseISO(date), timeZone, dateformat);
         }
         
