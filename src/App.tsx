@@ -21,7 +21,8 @@ import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
-import ImagePopup from "./components/common/ImagenPopUp/page/ImagenPopUp.tsx";
+import ImagePopup from "./components/common/ImagenPopUp/page/ImagenPopUp";
+import Img from "./components/common/ImagenPopUp/Images/IMG_2171.JPG?url"
 
 function AppRoutes() {
   const [showPopup] = useState(true);
@@ -51,9 +52,9 @@ function AppRoutes() {
                 {/* Imagen PopUp */}
                 {showPopup && (
                   <ImagePopup
-                    imageUrl="/src/components/common/ImagenPopUp/Images/IMG_2171.JPG"
+                    imageUrl={Img}
                     autoShowDelay={1000} // Mostrar después de 1 segundo
-                    showOncePerSession={true} // Mostrar solo una vez por sesión
+                    showOncePerSession={true} 
                   />
                 )}
               </div>
