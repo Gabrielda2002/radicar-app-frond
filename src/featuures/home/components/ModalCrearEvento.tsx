@@ -97,7 +97,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     <>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center pt-10 bg-black bg-opacity-5 0 backdrop-blur-sm">
-          <div className="relative max-w-3xl bg-white rounded-lg shadow-lg w-fit h-fit dark:bg-gray-800 dark:text-white">
+          <div className="relative max-w-3xl bg-white rounded-lg shadow-lg w-[430px] sm:w-[600px] md:w-[650px] h-fit dark:bg-gray-800 dark:text-white">
             <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
               <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
                 {initialData ? "Datos Evento" : "Evento"}
@@ -112,9 +112,9 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
             </div>
             {[1, 18].includes(Number(rol)) ? (
               <form onSubmit={formik.handleSubmit}>
-                <div className="grid grid-cols-2 gap-10 p-4 mb-4">
+                <div className="grid grid-cols-2 gap-6 p-4 mb-4 md:gap-10">
                   <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Titulo:
                     </label>
                     <input
@@ -136,7 +136,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     </AnimatePresence>
                   </div>
                   <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Descripción:
                     </label>
                     <input
@@ -160,7 +160,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     </AnimatePresence>
                   </div>
                   <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Color:
                     </label>
                     <input
@@ -183,7 +183,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     </AnimatePresence>
                   </div>
                   <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Fecha de Inicio:
                     </label>
                     <input
@@ -193,7 +193,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese Descripción..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                      className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                         formik.touched.fechaInicio && formik.errors.fechaInicio
                           ? "border-red-500 dark:border-red-500"
                           : "border-gray-200 dark:border-gray-600"
@@ -207,7 +207,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     </AnimatePresence>
                   </div>
                   <div>
-                    <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Fecha de Fin:
                     </label>
                     <input
@@ -217,7 +217,7 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Ingrese Descripción..."
-                      className={` w-full px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                      className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                         formik.touched.fechaFin && formik.errors.fechaFin
                           ? "border-red-500 dark:border-red-500"
                           : "border-gray-200 dark:border-gray-600"
@@ -243,21 +243,21 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   >
                     Cerrar
                   </button>
-                    <button
-                      className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
-                        loading || (initialData && !formik.dirty)
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                      type="submit"
-                      disabled={loading || (initialData && !formik.dirty)}
-                    >
-                      {initialData ? "Actualizar" : "Subir"}
-                    </button>
+                  <button
+                    className={`w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600 ${
+                      loading || (initialData && !formik.dirty)
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    type="submit"
+                    disabled={loading || (initialData && !formik.dirty)}
+                  >
+                    {initialData ? "Actualizar" : "Subir"}
+                  </button>
                 </div>
               </form>
             ) : (
-              <div className="p-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+              <div className="p-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800 w-[430px] sm:w-[600px] md:w-[750px] h-fit">
                 <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
                   Detalles del Evento
                 </h2>

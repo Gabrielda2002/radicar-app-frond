@@ -75,6 +75,8 @@ const TablaRadicacion = () => {
 
   if (loading) return <LoadingSpinner duration={100000} />;
 
+   const [isExpanded, setIsExpanded] = useState(false);
+   const toggleExpand = () => setIsExpanded(!isExpanded);
   return (
     <>
       <ModalSection
@@ -124,7 +126,7 @@ const TablaRadicacion = () => {
         {radicados && radicados?.length > 0 && (
           <>
             {/* Contenedor para la tabla con overflow-x-auto */}
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto md:flex">
               <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
                 <thead className="bg-gray-200 dark:bg-gray-700">
                   <tr className="shadow-md dark:text-gray-300 rounded-t-md">
@@ -166,7 +168,7 @@ const TablaRadicacion = () => {
                         {radicacion.namePatient}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        { FormatDate(radicacion.auditDate, false)}
+                        {FormatDate(radicacion.auditDate, false)}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.cups.length > 0 && (
@@ -195,9 +197,7 @@ const TablaRadicacion = () => {
                                         className="block max-w-[200px] truncate cursor-pointer"
                                         title="Click para ver descripción completa"
                                         onClick={() =>
-                                          handleShowCookieAlert(
-                                            cup.description
-                                          )
+                                          handleShowCookieAlert(cup.description)
                                         }
                                       >
                                         {cup.description}
@@ -209,8 +209,7 @@ const TablaRadicacion = () => {
                                       style={{
                                         backgroundColor:
                                           cup.status &&
-                                          cup.status ===
-                                            "AUTORIZADO"
+                                          cup.status === "AUTORIZADO"
                                             ? "green"
                                             : "transparent",
                                       }}
@@ -223,21 +222,16 @@ const TablaRadicacion = () => {
                                       className="p-3 border-b dark:border-gray-700"
                                       style={{
                                         backgroundColor:
-                                          cup.seguimiento
-                                            .length > 0 &&
-                                          cup.seguimiento[0]
-                                            .estado ===
+                                          cup.seguimiento.length > 0 &&
+                                          cup.seguimiento[0].estado ===
                                             "Asignado"
                                             ? "green"
                                             : "transparent",
                                       }}
                                     >
-                                      {cup.seguimiento.length >
-                                        0 &&
-                                      cup.seguimiento[0]
-                                        .estado
-                                        ? cup.seguimiento[0]
-                                            .estado
+                                      {cup.seguimiento.length > 0 &&
+                                      cup.seguimiento[0].estado
+                                        ? cup.seguimiento[0].estado
                                         : "N/A"}
                                     </td>
                                     <td className="p-3 border-b dark:border-gray-700">
@@ -264,9 +258,7 @@ const TablaRadicacion = () => {
                         <button
                           onClick={() =>
                             radicacion.suportName &&
-                            handleOpen(
-                              radicacion.suportName,
-                            )
+                            handleOpen(radicacion.suportName)
                           }
                         >
                           <img className="dark:invert" src={soporte} alt="" />
@@ -320,6 +312,167 @@ const TablaRadicacion = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* // responsive */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+              {radicados?.map((radicacion) => (
+                <div
+                  key={radicacion.id}
+                  className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                >
+                  <div className="grid grid-cols-[32%_68%] gap-2 text-sm">
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Fecha - Hora:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {FormatDate(radicacion.createdAt)}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      N° Radicado:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {radicacion.id}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Documento:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {radicacion.documentType}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Convenio:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {radicacion.convenioName}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      N° Documento Paciente:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {radicacion.documentNumber}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Paciente:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {radicacion.namePatient}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Fecha Auditoría:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {FormatDate(radicacion.auditDate, false)}
+                    </div>
+
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Gestion del Servicio:
+                    </div>
+                    <div className="grid grid-cols-1 text-gray-800 dark:text-gray-100">
+                      {radicacion.cups.map((cup) => (
+                        <div
+                          key={cup.id}
+                          className="p-2 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-400"
+                        >
+                          <div className="grid grid-cols-[35%_65%] gap-2 text-sm p-1">
+                            <div className="text-gray-500 dark:text-gray-400">CUPS</div>
+                            <div className="border-b dark:border-gray-700">
+                              {cup.code}
+                            </div>
+
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">
+                              Descripción
+                            </div>
+                            <div
+                              className={`block border-b dark:border-gray-700 max-w-[200px] mt-2 ${
+                                isExpanded ? "whitespace-normal" : "truncate"
+                              }`}
+                              title="Click para ver completa"
+                              onClick={toggleExpand}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {cup.description}
+                            </div>
+
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">Auditoria</div>
+                            <div
+                              className="mt-2 border-b dark:border-gray-700"
+                              style={{
+                                backgroundColor:
+                                  cup.status && cup.status === "AUTORIZADO"
+                                    ? "green"
+                                    : "transparent",
+                              }}
+                            >
+                              {cup.status}
+                            </div>
+
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">Gestión </div>
+
+                            <div
+                              className="mt-2 text-gray-500 dark:text-gray-400"
+                              style={{
+                                backgroundColor:
+                                  cup.seguimiento.length > 0 &&
+                                  cup.seguimiento[0].estado === "Asignado"
+                                    ? "green"
+                                    : "transparent",
+                              }}
+                            >
+                              {cup.seguimiento.length > 0 &&
+                              cup.seguimiento[0].estado
+                                ? cup.seguimiento[0].estado
+                                : "N/A"}
+                            </div>
+
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">Auxiliar</div>
+                            <button
+                              onClick={() => handleShowGestionAuxiliar(cup)}
+                            >
+                              <img
+                                className="w-8 h-8 dark:invert"
+                                src={gestion}
+                                alt=""
+                              />
+                            </button>
+
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                          <div className="mt-2 text-gray-500 dark:text-gray-400">Soporte</div>
+                          <button
+                            onClick={() =>
+                              radicacion.suportName &&
+                              handleOpen(radicacion.suportName)
+                            }
+                          >
+                            <img
+                              className="w-8 h-8 dark:invert"
+                              src={soporte}
+                              alt=""
+                            />
+                          </button>
+                          
+                          <div className="mt-2 text-gray-500 dark:text-gray-400">Mostrar</div>
+                          <button
+                            onClick={() => handleShowData(radicacion)}
+                          >
+                            <img
+                              className="w-8 h-8 dark:invert"
+                              src={mostrar}
+                              alt=""
+                            />
+                          </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* modal mostrar datos */}

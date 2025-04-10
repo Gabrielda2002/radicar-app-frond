@@ -102,8 +102,8 @@ const Calendario: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
-      <div className="w-full dark:text-gray-200">
+    <div className="flex flex-col items-center w-[428px] sm:w-[600px] md:w-full mx-auto p-4 md:p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
+      <div className="w-full text-sm md:text-lg dark:text-gray-200">
         <Calendar
           localizer={localizer}
           events={calendarEvents}

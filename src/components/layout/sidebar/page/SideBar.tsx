@@ -259,6 +259,24 @@ const SideBar: FC = () => {
                 )}
               </Category>
             )}
+             {/* Categoria de registro usuarios */}
+             {[1, 18].includes(Number(rol)) && (
+              <div>
+                <Category
+                  title="Gestión Humana"
+                  icon={userMain}
+                  isOpen={openAccordions.RRHH}
+                  toggle={() => toggleAccordion("RRHH")}
+                >
+                  <SubCategory
+                    to="/RegistroUsuarios"
+                    icon={user}
+                    title="Biométricos Usuarios"
+                    isCollapsed={isCollapsed}
+                  />
+                </Category>
+              </div>
+            )}
 
             {/* Categoria de reportes */}
             {[6, 2, 14, 3, 15, 1, 18].includes(Number(rol)) && (
@@ -292,25 +310,6 @@ const SideBar: FC = () => {
                       </span>
                     )}
                   </button>
-                </Category>
-              </div>
-            )}
-
-            {/* Categoria de registro usuarios */}
-            {[1, 18].includes(Number(rol)) && (
-              <div>
-                <Category
-                  title="Gestión Humana"
-                  icon={userMain}
-                  isOpen={openAccordions.RRHH}
-                  toggle={() => toggleAccordion("RRHH")}
-                >
-                  <SubCategory
-                    to="/RegistroUsuarios"
-                    icon={user}
-                    title="Biométricos Usuarios"
-                    isCollapsed={isCollapsed}
-                  />
                 </Category>
               </div>
             )}

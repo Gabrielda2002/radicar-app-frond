@@ -14,15 +14,18 @@ import {
 } from "@heroicons/react/24/outline";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
+import { IItemsGeneral } from "../../Models/IItemsGeneral";
 
 interface ModalTablaseguimientoItemProps {
-  Items: IItems | IItemsNetworking | null;
-  tipoItem: "equipos" | "dispositivos-red" | null;
+  Items: IItems | IItemsNetworking | IItemsGeneral | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
+  refreshItems: () => void;
 }
 
 const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   Items,
   tipoItem,
+  refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
   const { showAnimation, closing } = useAnimation(
@@ -31,7 +34,6 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     300
   );
   useBlockScroll(stadopen);
-  
 
   const renderTrackingTable = (trackingData: any[]) => {
     if (trackingData.length === 0) {
@@ -80,7 +82,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 </td>
 
                 <td className="p-3 text-gray-500 dark:text-white">
-                  {s.responsibleName} {s.responsibleLastName}
+                  {s.responsableName} {s.responsableLastName}
                 </td>
               </tr>
             ))}
@@ -134,19 +136,28 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 <ModalSeguimientoItem
                   id={(Items as IItemsNetworking).id || (Items as IItems).id}
                   tipoItem={tipoItem}
+                  refreshItems={refreshItems}
                 />
               </div>
 
               <div>
-                {Items && "processEquipment" in Items
-                  ? renderTrackingTable((Items as IItems).processEquipment)
-                  : null}
-
-                {Items && "seguimientoDispositivosRedRelation" in Items
-                  ? renderTrackingTable(
-                      Items.seguimientoDispositivosRedRelation
-                    )
-                  : null}
+                {Items &&
+                tipoItem === "equipos" &&
+                "processEquipment" in Items ? (
+                  renderTrackingTable((Items as IItems).processEquipment)
+                ) : Items &&
+                  tipoItem === "dispositivos-red" &&
+                  "seguimiento" in Items ? (
+                  renderTrackingTable((Items as IItemsNetworking).seguimiento)
+                ) : Items &&
+                  tipoItem === "inventario/general" &&
+                  "seguimiento" in Items ? (
+                  renderTrackingTable((Items as IItemsGeneral).seguimiento)
+                ) : (
+                  <div className="flex items-center justify-center p-4 text-xl text-gray-900 dark:text-gray-300">
+                    No hay seguimientos disponibles.
+                  </div>
+                )}
               </div>
             </div>
           </section>
