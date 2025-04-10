@@ -266,8 +266,6 @@ export const fetchEventosEp = async (): Promise<IEventos[]> => {
     const response = await api.get('/eventos');
     const eventos = response.data.map((evento: IEventos) => ({
         ...evento,
-        dateStart: new Date(evento.dateStart),
-        dateEnd: new Date(evento.dateEnd)
     }));
     return eventos;
 }
