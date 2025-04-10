@@ -67,7 +67,9 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </tr>
                 <tr className="">
                   <td className="bg-gray-400 dark:bg-gray-600">Fecha Orden</td>
-                  <td className="">{FormatDate(radicacion.orderDate, false)}</td>
+                  <td className="">
+                    {FormatDate(radicacion.orderDate, false)}
+                  </td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">
@@ -109,7 +111,9 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Fecha Auditoría
                   </td>
-                  <td className="">{FormatDate(radicacion.auditDate, false)}</td>
+                  <td className="">
+                    {FormatDate(radicacion.auditDate, false)}
+                  </td>
                 </tr>
                 {[1, 3].includes(Number(rol)) && (
                   <tr>
@@ -147,9 +151,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     N.º Documento
                   </td>
-                  <td className="">
-                    {radicacion.documentNumber}
-                  </td>
+                  <td className="">{radicacion.documentNumber}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Celular</td>
@@ -167,15 +169,11 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Convenio</td>
-                  <td className="">
-                    {radicacion.convenioName}
-                  </td>
+                  <td className="">{radicacion.convenioName}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">IPS Primaria</td>
-                  <td className="">
-                    {radicacion.ipsPrimaria}
-                  </td>
+                  <td className="">{radicacion.ipsPrimaria}</td>
                 </tr>
               </tbody>
             </table>
@@ -231,9 +229,8 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
             </table>
 
             {/* Segunda tabla */}
-
             {radicacion.surgery.length > 0 ? (
-              <table className="mt-2 mb-8 text-sm border-2">
+              <table className=" mt-2 mb-8 text-sm border-2">
                 {radicacion.surgery.map((cirugia) => (
                   <tbody key={cirugia.id} className="dark:text-gray-200">
                     <tr>
@@ -281,29 +278,32 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
               </table>
             ) : null}
 
-            {radicacion.surgery[0] && radicacion.surgery[0].seguimiento.length > 0 && (
-              <table className="min-w-[50%] border-2 text-sm mb-4 text-gray-200">
-                <thead className="">
-                <tr className=" bg-gray-400 dark:bg-gray-600">
-                  <th>Fecha Registro</th>
-                  <th>Observacion</th>
-                  <th>Estado</th>
-                  <th>Responsable</th>
+            {radicacion.surgery[0] &&
+              radicacion.surgery[0].seguimiento.length > 0 && (
+                <table className="col-span-2 min-w-[50%] border-2 text-sm mb-4 dark:text-gray-200">
+                  <thead className="">
+                  <tr className="bg-gray-400 dark:bg-gray-600 dark:textgray-300">
+                    <th>Fecha Registro</th>
+                    <th>Observacion</th>
+                    <th>Estado</th>
+                    <th>Responsable</th>
                   </tr>
-                </thead>
+                  </thead>
 
-                <tbody className="text-center dark:text-gray-200">
+                  <tbody className="text-center dark:text-gray-200">
                   {radicacion.surgery[0].seguimiento.map((seguimiento) => (
                     <tr key={seguimiento.id}>
-                      <td>{FormatDate(seguimiento.fechaCreacion)}</td>
-                      <td>{seguimiento.observation}</td>
-                      <td>{seguimiento.estado}</td>
-                      <td>{seguimiento.Nombre} {seguimiento.Apellido}</td>
+                    <td>{FormatDate(seguimiento.fechaCreacion)}</td>
+                    <td>{seguimiento.observation}</td>
+                    <td>{seguimiento.estado}</td>
+                    <td>
+                      {seguimiento.Nombre} {seguimiento.Apellido}
+                    </td>
                     </tr>
                   ))}
-                </tbody>
-              </table>
-            )}
+                  </tbody>
+                </table>
+              )}
           </div>
 
           {/* container-footer */}
