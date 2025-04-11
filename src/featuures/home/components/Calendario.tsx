@@ -128,7 +128,7 @@ const Calendario: React.FC = () => {
         <Calendar
           localizer={localizer}
           events={calendarEvents}
-          views={["month", "week", "day", "agenda", "work_week"]}
+          views={["month", "week", "day", "agenda"]}
           defaultView="month"
           startAccessor="start"
           endAccessor="end"
