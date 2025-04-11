@@ -14,10 +14,10 @@ const StatiticsScreemItems = () => {
   const [activeSection, setActiveSection] = useState(1);
 
   return (
-    <div className="flex flex-col w-full bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
+    <div className="flex flex-col w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-900">
       {/* Tabs Header */}
-      <div className="flex w-full overflow-x-auto bg-white shadow-md dark:bg-gray-800 rounded-t-lg sticky top-0 z-10">
-        <div className="w-full flex">
+      <div className="sticky top-0 flex w-full overflow-x-auto bg-white rounded-t-lg shadow-md z-100 dark:bg-gray-800"> 
+        <div className="grid w-full grid-cols-1 md:flex place-self-center">
           {SECTIONS.map((s) => (
             <button
               key={s.id}
@@ -38,27 +38,27 @@ const StatiticsScreemItems = () => {
       </div>
 
       {/* Tabs Content */}
-      <div className="p-4 bg-white dark:bg-gray-800 shadow-md rounded-b-lg">
-        <div 
-          role="tabpanel" 
+      <div className="p-1 bg-white rounded-b-lg shadow-md md:p-4 dark:bg-gray-800">
+        <div
+          role="tabpanel"
           id={`panel-${activeSection}`}
           className="transition-opacity duration-300"
         >
           {activeSection === 1 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <ExpiringSoonStatics typeItem="equipos" />
               <AgeStatics typeItem="equipos" />
               <QuantityItemsStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <ExpiringSoonStatics typeItem="inventario/general" />
               <AgeStatics typeItem="inventario/general" />
               <QuantityItemsStatics typeItem="inventario/general" />
             </div>
           ) : activeSection === 2 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="dispositivos-red" />
             </div>
           ) : null}

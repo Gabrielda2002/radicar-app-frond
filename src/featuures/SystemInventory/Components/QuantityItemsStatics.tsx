@@ -23,7 +23,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
   const { quantity, loading, error } = useFetchQuantity(typeItem);
 
   const prepareChartData = () => {
-    if(!quantity || quantity.length === 0) return [];
+    if (!quantity || quantity.length === 0) return [];
 
     return quantity.map((item) => {
       return {
@@ -31,7 +31,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
         value: parseInt(item.count, 10),
       };
     });
-  }
+  };
 
   const chartData = prepareChartData();
 
@@ -39,20 +39,25 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
     <>
       <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
         {loading ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex items-center justify-center h-64">
             <LoadingSpinner />
           </div>
         ) : error ? (
-          <div className="p-4 text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-md">
+          <div className="p-4 text-red-500 bg-red-100 rounded-md dark:text-red-400 dark:bg-red-900/30">
             {error}
           </div>
         ) : quantity ? (
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="h-64 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-              <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
+          <div className="p-4 rounded-lg shadow-sm h-[295px] md:h-64 bg-gray-50 dark:bg-gray-700">
+              <h2 className="mb-3 text-lg font-medium text-gray-700 dark:text-gray-300">
                 Distribución de Cantidad de {typeItem}
               </h2>
-              <ResponsiveContainer width={"100%"} height={"90%"}>
+              <ResponsiveContainer
+                width={"100%"}
+                height={"85%"}
+                maxHeight={215}
+                minHeight={200}
+              >
                 <PieChart>
                   <Pie
                     data={chartData}
@@ -60,7 +65,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
                     cy={"50%"}
                     labelLine={false}
                     label={false}
-                    outerRadius={80}
+                    outerRadius={67}
                     fill="#8884d8"
                     dataKey={"value"}
                   >
@@ -71,14 +76,21 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
                       />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value, name, props) => [`${value} ${typeItem === "equipos" ? "equipos" : "ítems"}`, props.payload.name]} />
+                  <Tooltip
+                    formatter={(value, name, props) => [
+                      `${value} ${
+                        typeItem === "equipos" ? "equipos" : "ítems"
+                      }`,
+                      props.payload.name,
+                    ]}
+                  />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
         ) : (
-          <div className="p-4 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700/30 rounded-md text-center">
+          <div className="p-4 text-center text-gray-500 bg-gray-100 rounded-md dark:text-gray-400 dark:bg-gray-700/30">
             No hay datos disponibles para mostrar.
           </div>
         )}
