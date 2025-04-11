@@ -5,4 +5,6 @@ export interface IEventos{
     dateEnd:        Date;
     description:    string;
     color:          string;
+    timeStart:      string;
+    timeEnd:        string;
 }
