@@ -23,10 +23,16 @@ const Calendario: React.FC = () => {
   const calendarEvents = evetns?.map((event) => ({
     ...event,
     title: event.title,
-    start: new Date(event.dateStart),
-    end: new Date(event.dateEnd),
+    start: event.dateStart && event.timeStart 
+      ? new Date(`${event.dateStart.toString().split("T")[0]}T${event.timeStart}`) 
+      : null,
+    end: event.dateEnd && event.timeEnd 
+      ? new Date(`${event.dateEnd.toString().split("T")[0]}T${event.timeEnd}`) 
+      : null,
     description: event.description,
     color: event.color,
+    timeStart: event.timeStart,
+    timeEnd: event.timeEnd,
   }));
 
   const { rol } = useAuth();
@@ -60,43 +66,58 @@ const Calendario: React.FC = () => {
       },
     };
   };
-  const components = {
+
+    const components = {
     agenda: {
       event: ({ event }: { event: IEventos }) => {
-
         const backgroundColor = event.color || "#3174ad";
-
-    // Calculate luminance to determine if the background is dark or light
-    const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-      backgroundColor
-    );
-    const r = parseInt(rgb?.[1] || "00", 16);
-    const g = parseInt(rgb?.[2] || "00", 16);
-    const b = parseInt(rgb?.[3] || "00", 16);
-
-    // Perceived luminance formula
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return (
-        <div className="flex flex-col">
-          <span
-            className={`text-base font-medium ${
-              luminance > 0.5 ? "text-black" : "text-white"
-            }`}
-          >
-            {event.title}
-          </span>
-          <span
-            className={`text-sm ${
-              luminance > 0.5 ? "text-gray-300" : "text-gray-300"
-            } truncate`}
-            title={event.description}
-          >
-            {event.description}
-          </span>
-        </div>
-
-    )
-
+  
+        // Calcular luminancia para determinar el color del texto
+        const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+          backgroundColor
+        );
+        const r = parseInt(rgb?.[1] || "00", 16);
+        const g = parseInt(rgb?.[2] || "00", 16);
+        const b = parseInt(rgb?.[3] || "00", 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  
+        // Formatear la hora para mostrarla en un formato más amigable
+        const formatTime = (timeString: string) => {
+          if (!timeString) return "";
+          return moment(timeString, "HH:mm").format("hh:mm A");
+        };
+  
+        return (
+          <div className="flex flex-col">
+            <span
+              className={`text-base font-medium ${
+                luminance > 0.5 ? "text-black" : "text-white"
+              }`}
+            >
+              {event.title}
+            </span>
+            <span
+              className={`text-sm ${
+                luminance > 0.5 ? "text-gray-600" : "text-gray-200"
+              } truncate`}
+              title={event.description}
+            >
+              {event.description}
+            </span>
+            {(event.timeStart || event.timeEnd) && (
+              <div
+                className={`text-xs mt-1 ${
+                  luminance > 0.5 ? "text-gray-600" : "text-gray-200"
+                }`}
+              >
+                <span>Horario: </span>
+                {event.timeStart && <span>{formatTime(event.timeStart)}</span>}
+                {event.timeStart && event.timeEnd && <span> - </span>}
+                {event.timeEnd && <span>{formatTime(event.timeEnd)}</span>}
+              </div>
+            )}
+          </div>
+        );
       },
     },
   };
@@ -107,7 +128,8 @@ const Calendario: React.FC = () => {
         <Calendar
           localizer={localizer}
           events={calendarEvents}
-          views={["month", "agenda"]}
+          views={["month", "week", "day", "agenda"]}
+          defaultView="month"
           startAccessor="start"
           endAccessor="end"
           style={{
@@ -128,6 +150,8 @@ const Calendario: React.FC = () => {
               dateEnd: event.dateEnd,
               description: event.description,
               color: event.color,
+              timeStart: event.timeStart,
+              timeEnd: event.timeEnd,
             };
             handleEventSelect(selectedEvent);
           }}

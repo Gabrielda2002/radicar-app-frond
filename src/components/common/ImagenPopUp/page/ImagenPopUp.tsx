@@ -56,6 +56,7 @@ const ImagePopup = ({
             <div className="flex justify-center">
               <img
                 src={imageUrl}
+                alt="Popup"
                 className="max-w-full rounded-md"
               />
             </div>

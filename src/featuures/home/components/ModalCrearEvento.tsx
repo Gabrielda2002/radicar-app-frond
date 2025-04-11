@@ -39,7 +39,20 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
     color: Yup.string().required("El color es requerido"),
     fechaInicio: Yup.date().required("La fecha de inicio es requerida"),
     fechaFin: Yup.date().required("La fecha de fin es requerida"),
+    horaInicio: Yup.string().required("La hora de inicio es requerida"),
+    horaFin: Yup.string().required("La hora de fin es requerida"),
   });
+
+  // Función para extraer fecha y hora separadas
+  const extractFechaHora = (fechaCompleta: Date) => {
+    if (!fechaCompleta) return { fecha: "", hora: "" };
+    
+    const date = new Date(fechaCompleta);
+    const fecha = format(date, "yyyy-MM-dd");
+    const hora = format(date, "HH:mm");
+    
+    return { fecha, hora };
+  };
 
   // configuración de formik
   const formik = useFormik({
@@ -47,11 +60,17 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
       titulo: initialData?.title || "",
       descripcion: initialData?.description || "",
       color: initialData?.color || "#000000",
-      fechaInicio: initialData?.dateStart
-        ? format(new Date(initialData.dateStart), "yyyy-MM-dd'T'HH:mm")
+      fechaInicio: initialData?.dateStart 
+        ? extractFechaHora(initialData.dateStart).fecha 
         : "",
-      fechaFin: initialData?.dateEnd
-        ? format(new Date(initialData.dateEnd), "yyyy-MM-dd'T'HH:mm")
+      fechaFin: initialData?.dateEnd 
+        ? extractFechaHora(initialData.dateEnd).fecha 
+        : "",
+      horaInicio: initialData?.dateStart 
+        ? extractFechaHora(initialData.dateStart).hora 
+        : "",
+      horaFin: initialData?.dateEnd 
+        ? extractFechaHora(initialData.dateEnd).hora 
         : "",
     },
     validationSchema: validationSchema,
@@ -62,8 +81,10 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
         formData.append("title", values.titulo);
         formData.append("description", values.descripcion);
         formData.append("color", values.color);
-        formData.append("dateStart", values.fechaInicio);
-        formData.append("dateEnd", values.fechaFin);
+        formData.append("dateStart", `${values.fechaInicio}T${values.horaInicio}`);
+        formData.append("dateEnd", `${values.fechaFin}T${values.horaFin}`);
+        formData.append("timeStart", values.horaInicio);
+        formData.append("timeEnd", values.horaFin);
 
         const response = await actionEvent(formData, initialData?.id);
 
@@ -187,12 +208,11 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                       Fecha de Inicio:
                     </label>
                     <input
-                      type="datetime-local"
+                      type="date"
                       name="fechaInicio"
                       value={formik.values.fechaInicio}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      placeholder="Ingrese Descripción..."
                       className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                         formik.touched.fechaInicio && formik.errors.fechaInicio
                           ? "border-red-500 dark:border-red-500"
@@ -208,15 +228,37 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                   </div>
                   <div>
                     <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
+                      Hora de Inicio:
+                    </label>
+                    <input
+                      type="time"
+                      name="horaInicio"
+                      value={formik.values.horaInicio}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.horaInicio && formik.errors.horaInicio
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
+                    />
+                    <AnimatePresence>
+                      {formik.touched.horaInicio &&
+                      formik.errors.horaInicio ? (
+                        <ErrorMessage>{formik.errors.horaInicio}</ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
                       Fecha de Fin:
                     </label>
                     <input
-                      type="datetime-local"
+                      type="date"
                       name="fechaFin"
                       value={formik.values.fechaFin}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      placeholder="Ingrese Descripción..."
                       className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
                         formik.touched.fechaFin && formik.errors.fechaFin
                           ? "border-red-500 dark:border-red-500"
@@ -226,6 +268,28 @@ const ModalCrearEvento: React.FC<ModalCrearEventoProps> = ({
                     <AnimatePresence>
                       {formik.touched.fechaFin && formik.errors.fechaFin ? (
                         <ErrorMessage>{formik.errors.fechaFin}</ErrorMessage>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-bold text-gray-700 text-md md:text-lg dark:text-gray-200">
+                      Hora de Fin:
+                    </label>
+                    <input
+                      type="time"
+                      name="horaFin"
+                      value={formik.values.horaFin}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={`text-[13px] md:text-[16px] w-full px-1 md:px-3 py-2 mb-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
+                        formik.touched.horaFin && formik.errors.horaFin
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-600"
+                      }`}
+                    />
+                    <AnimatePresence>
+                      {formik.touched.horaFin && formik.errors.horaFin ? (
+                        <ErrorMessage>{formik.errors.horaFin}</ErrorMessage>
                       ) : null}
                     </AnimatePresence>
                   </div>
