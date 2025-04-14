@@ -233,7 +233,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <span>Periféricos</span>
             </button>
             <button
-              className={`flex items-center p-2 ${
+            className={`flex items-center p-2 ${
                 activeTab === "componentes"
                   ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
                   : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"

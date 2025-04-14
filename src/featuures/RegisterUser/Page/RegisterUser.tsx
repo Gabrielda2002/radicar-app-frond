@@ -8,7 +8,6 @@ import areas from '@/data-dynamic/areas.json';
 import {
   useFetchRoles,
 } from "@/hooks/UseFetchRoles";
-import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 
 //*Icons
 import logo from "@/assets/Layout/logo.png";
@@ -23,9 +22,6 @@ const RegistrarUsuarios: React.FC = () => {
 
   // traer los datos de los roles
   const { dataRol, errorRol } = useFetchRoles(load);
-  // traer los datos de los municipios
-  const { municipios, errorMunicipios } = useFetchMunicipio(load);
-
   // hook pora traer las sedes
   const { data } = useFetchSede();
 
@@ -34,8 +30,6 @@ const RegistrarUsuarios: React.FC = () => {
   const validationSchema = useMemo(
     () =>
       Yup.object({
-        municipio: Yup.string().required("El municipio es obligatorio"),
-        rol: Yup.string().required("El rol es obligatorio"),
         tipoDocumento: Yup.string().required(
           "El tipo de documento es obligatorio"
         ),
@@ -76,7 +70,6 @@ const RegistrarUsuarios: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
-      municipio: "",
       rol: "",
       tipoDocumento: "",
       numeroDocumento: "",
@@ -94,7 +87,6 @@ const RegistrarUsuarios: React.FC = () => {
     onSubmit: async (values) => {
 
       const formData = new FormData();
-      formData.append("municipio", values.municipio);
       formData.append("rol", values.rol);
       formData.append("dniType", values.tipoDocumento);
       formData.append("dniNumber", values.numeroDocumento);
@@ -121,13 +113,7 @@ const RegistrarUsuarios: React.FC = () => {
 
     },
   });
-
-  if (errorMunicipios)
-    return (
-      <div className="flex justify-center text-lg dark:text-white">
-        Error: {errorMunicipios}
-      </div>
-    );
+  
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
 
@@ -317,36 +303,6 @@ const RegistrarUsuarios: React.FC = () => {
               <AnimatePresence>
                 {formik.touched.celular && formik.errors.celular ? (
                   <ErrorMessage>{formik.errors.celular}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
-
-            {/* Municipio */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Municipio
-              </label>
-              <select
-                name="municipio"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.municipio && formik.errors.municipio
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.municipio}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {municipios.map((municipio) => (
-                  <option key={municipio.id} value={municipio.id}>
-                    {municipio.name}
-                  </option>
-                ))}
-              </select>
-              <AnimatePresence>
-                {formik.touched.municipio && formik.errors.municipio ? (
-                  <ErrorMessage>{formik.errors.municipio}</ErrorMessage>
                 ) : null}
               </AnimatePresence>
             </div>

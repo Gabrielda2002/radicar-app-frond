@@ -9,7 +9,6 @@ import { IUsuarios } from "@/models/IUsuarios";
 import { AnimatePresence } from "framer-motion";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { updateUsuarios } from "../Services/UpdarteUsuarios";
-import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 import { useFetchSede } from "@/hooks/UseFetchSede";
 
 //*Icons
@@ -52,9 +51,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   // hook para traer los roles
   const { dataRol, errorRol } = useFetchRoles(load);
 
-  // hook para traer  las municipios
-  const { municipios, errorMunicipios } = useFetchMunicipio(load);
-
   // hook para traer las sedes
   const { data } = useFetchSede();
 
@@ -90,7 +86,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
           .min(2, "El nombre completo debe tener al menos 2 caracteres")
           .max(150, "El nombre completo debe tener como máximo 150 caracteres"),
         rol: Yup.string().required("El rol es obligatorio"),
-        municipio: Yup.string().required("El municipio es obligatorio"),
         contrasena: Yup.string()
           .optional()
           .min(8, "Debe tener minimo 8 caracteres")
@@ -125,7 +120,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       nombres: "",
       apellidos: "",
       rol: "",
-      municipio: "",
       contrasena: "",
       status: "",
       area: "",
@@ -143,7 +137,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         formData.append("name", values.nombres);
         formData.append("lastName", values.apellidos);
         formData.append("rol", values.rol);
-        formData.append("municipio", values.municipio);
         formData.append("password", values.contrasena);
         formData.append("status", values.status);
         formData.append("area", values.area);
@@ -194,7 +187,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         nombres: ususario.name,
         apellidos: ususario.lastName,
         rol: ususario.idRol.toString(),
-        municipio: ususario.idMunicipio.toString(),
         contrasena: "",
         status: ususario.status ? "1" : "0",
         area: ususario.area,
@@ -259,7 +251,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   );
 
   if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
-  if (errorMunicipios) return <p>Error al cargar los convenios</p>;
   if (errorRol) return <p>Error al cargar las ips primarias</p>;
 
   return (
@@ -598,37 +589,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                         <AnimatePresence>
                           {formik.touched.correo && formik.errors.correo ? (
                             <ErrorMessage>{formik.errors.correo}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-
-                      <div>
-                        <label className="block mb-2 text-base font-bold text-left text-gray-700 text- dark:text-gray-200">
-                          Municipio
-                        </label>
-                        <select
-                          name="municipio"
-                          value={formik.values.municipio}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full text-sm px-3 py-2 mb-2 border-2 border-gray-200 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                            formik.touched.municipio && formik.errors.municipio
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          } `}
-                        >
-                          {municipios.map((m) => (
-                            <option key={m.id} value={m.id}>
-                              {m.name}
-                            </option>
-                          ))}
-                        </select>
-                        <AnimatePresence>
-                          {formik.touched.municipio &&
-                          formik.errors.municipio ? (
-                            <ErrorMessage>
-                              {formik.errors.municipio}
-                            </ErrorMessage>
                           ) : null}
                         </AnimatePresence>
                       </div>
