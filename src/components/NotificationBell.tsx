@@ -4,18 +4,21 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { useNotification } from "@/context/notificationContext.tsx";
 import ModalServey from "@/featuures/HelpDesk/Components/ModalServey";
 import ModalCommetsTicket from "@/featuures/HelpDesk/Components/ModalCommetsTicket";
-// import { Check } from "lucide-react";
+import { Check } from "lucide-react";
+import { useAuth } from "@/context/authContext";
 
 const NotificationBell: React.FC = () => {
   const {
     notifications,
     unreadCount,
-    // markAsRead,
+    markAsRead,
     subscribeToPushNotifications,
   } = useNotification();
   const [isOpen, setIsOpen] = useState(false);
   const [pushEnabled, setPushEnabled] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+
+  const { rol } = useAuth();
 
   // Verificar si ya está suscrito a notificaciones push
   useEffect(() => {
@@ -119,42 +122,57 @@ const NotificationBell: React.FC = () => {
                 No hay notificaciones
               </p>
             ) : (
-              notifications.filter(n => !n.isRead).map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`p-4 border-b dark:border-gray-700 ${
-                    !notification.isRead ? "bg-blue-50 dark:bg-gray-700" : ""
-                  }`}
-                >
-                  <h4 className="font-semibold text-gray-800 dark:text-white">
-                    {notification.title}
-                  </h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-300">
-                    {notification.message}
-                  </p>
-                  {/* boton encuesta */}
-                  <div className="flex justify-end gap-3">
-                    <div className="flex items-center">
-                      <ModalCommetsTicket
-                        idTicket={
-                          notification.referenceId
-                            ? notification.referenceId
-                            : 0
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <ModalServey
-                        idTicket={
-                          notification.referenceId
-                            ? notification.referenceId
-                            : 0
-                        }
-                      />
+              notifications
+                .filter((n) => !n.isRead)
+                .map((notification) => (
+                  <div
+                    key={notification.id}
+                    className={`p-4 border-b dark:border-gray-700 ${
+                      !notification.isRead ? "bg-blue-50 dark:bg-gray-700" : ""
+                    }`}
+                  >
+                    <h4 className="font-semibold text-gray-800 dark:text-white">
+                      {notification.title}
+                    </h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                      {notification.message}
+                    </p>
+                    {/* boton encuesta */}
+                    <div className="flex justify-end gap-3">
+                      <div className="flex items-center">
+                        <ModalCommetsTicket
+                          idTicket={
+                            notification.referenceId
+                              ? notification.referenceId
+                              : 0
+                          }
+                        />
+                      </div>
+                      <div className="flex items-center w-fit">
+                        <ModalServey
+                          idTicket={
+                            notification.referenceId
+                              ? notification.referenceId
+                              : 0
+                          }
+                        />
+                      </div>
+                      {/* marcar como leido solo a los roles 1*/}
+                      {[1].includes(Number(rol)) && (
+                        <div className="flex items-center">
+                          <button
+                            onClick={() => {
+                              markAsRead(notification.id);
+                            }}
+                            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         </div>
