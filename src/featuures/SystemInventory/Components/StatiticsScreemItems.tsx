@@ -51,6 +51,7 @@ const StatiticsScreemItems = () => {
               <ExpiringSoonStatics typeItem="equipos" />
               <AgeStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />
+              <QuantityItemsStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

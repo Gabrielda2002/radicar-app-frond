@@ -20,7 +20,6 @@ import {
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import StatiticsScreemItems from "../Components/StatiticsScreemItems";
-import QuantityItemsStatics from "../Components/QuantityItemsStatics";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -128,10 +127,6 @@ const SistemaInventario: React.FC = () => {
 
                 {screen === "sedes" && departmentSelect && (
                   <>
-                  <h1 className="text-2xl font-bold mt-5  text-gray-800 dark:text-gray-200">
-                      Información general
-                    </h1>
-                  <QuantityItemsStatics typeItem="equipos" />
                   <SedesList
                     sedes={sedes}
                     onSelect={(sede) => {
