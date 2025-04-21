@@ -50,7 +50,6 @@ const StatiticsScreemItems = () => {
               <QuantityTypeItens typeItem="equipos"/>
               <ExpiringSoonStatics typeItem="equipos" />
               <AgeStatics typeItem="equipos" />
-              <QuantityItemsStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 ? (
