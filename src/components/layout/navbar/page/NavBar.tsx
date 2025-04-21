@@ -113,57 +113,54 @@ const Navbar: React.FC = React.memo(() => {
     >
       <div className="flex flex-wrap items-center justify-between p-2 mx-auto border-b-2 border-black md:p-5 dark:border-white">
         {/* Left side - Logo and sidebar toggle */}
-        <div className="flex items-center text-base">
-          <button
-            title="Abrir/Cerrar Sidebar"
-            onClick={handleToggleSidebar}
-            className="p-1 mr-2 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
-          >
-            <div className="relative w-6 h-6 md:w-8 md:h-8">
-              <img
-                src={menu || "/placeholder.svg"}
-                alt="Menu Icon"
-                className={`top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                  isCollapsed ? "opacity-100" : "opacity-0"
-                }`}
-              />
-              <img
-                src={menu2 || "/placeholder.svg"}
-                alt="Menu2 Icon"
-                className={`absolute top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                  isCollapsed ? "opacity-0" : "opacity-100"
-                }`}
-              />
-            </div>
-          </button>
+        <div className="grid items-center grid-cols-[auto,1fr,auto] gap-3">
+          <div className="w-fit">
+            <button
+              title="Abrir/Cerrar Sidebar"
+              onClick={handleToggleSidebar}
+              className="p-1 mr-2 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
+            >
+              <div className="relative w-6 h-6 md:w-8 md:h-8">
+                <img
+                  src={menu || "/placeholder.svg"}
+                  alt="Menu Icon"
+                  className={`top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                    isCollapsed ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+                <img
+                  src={menu2 || "/placeholder.svg"}
+                  alt="Menu2 Icon"
+                  className={`absolute top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
 
-          <NavLink to="/home">
-            <img
-              src={logo || "/placeholder.svg"}
-              className="w-8 h-8 md:w-10 md:h-10"
-              alt="Logo"
-              title="Inicio"
-            />
-          </NavLink>
+          <div className="flex justify-center">
+            <NavLink to="/home">
+              <img
+                src={logo || "/placeholder.svg"}
+                className="w-8 h-8 md:w-10 md:h-10"
+                alt="Logo"
+                title="Inicio"
+              />
+            </NavLink>
+          </div>
+
+          {/* mobile menu */}
           <div className="flex items-center ml-1 md:hidden">
-            <div>
-              <h2
-                className="w-24 text-sm font-medium text-black dark:text-white"
-                style={{ maxWidth: "180px" }}
-              >
-                Hola, {nombreUsuario}
-              </h2>
-            </div>
-
-            <div className="">
-              <NotificacionBell />
-            </div>
-
             <div className="flex text-xs">
               <ModalPausasActivas />
               <div className="mr-3">
                 <HelpDesk />
               </div>
+            </div>
+
+            <div className="p-2">
+              <NotificacionBell />
             </div>
 
             {/* Acordion menu responsive */}
@@ -323,15 +320,10 @@ const Navbar: React.FC = React.memo(() => {
           </button>
 
           {/* Help desk button (admin only) */}
-          
-            <div className="flex items-center">
-              <HelpDesk />
-            </div>
 
-          {/* Notifications (admin only) */}
-            <div className="flex items-center">
-              <NotificacionBell />
-            </div>
+          <div className="flex items-center">
+            <HelpDesk />
+          </div>
 
           {/* Pausas activas modal */}
           <div className="flex items-center">
@@ -371,6 +363,11 @@ const Navbar: React.FC = React.memo(() => {
               </div>
             </Menu.Items>
           </Menu>
+
+          {/* Notifications (admin only) */}
+          <div className="flex items-center">
+            <NotificacionBell />
+          </div>
 
           {/* User profile dropdown */}
           <Menu
