@@ -126,6 +126,7 @@ const SistemaInventario: React.FC = () => {
                 </div>
 
                 {screen === "sedes" && departmentSelect && (
+                  <>
                   <SedesList
                     sedes={sedes}
                     onSelect={(sede) => {
@@ -133,6 +134,7 @@ const SistemaInventario: React.FC = () => {
                       setScreen("tipoItem"); // cambia la pantalla a items
                     }}
                   />
+                  </>
                 )}
 
                 {screen === "tipoItem" && sedeSelect && (

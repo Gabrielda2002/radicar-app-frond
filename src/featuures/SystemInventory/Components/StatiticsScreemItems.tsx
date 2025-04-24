@@ -3,6 +3,7 @@ import AgeStatics from "./AgeStatics";
 import ExpiringSoonStatics from "./ExpiringSoonStatics";
 import QuantityItemsStatics from "./QuantityItemsStatics";
 import ItemsWithLockStatics from "./ItemsWithLockStatics";
+import QuantityTypeItens from "./QuantityTypeItems";
 
 const StatiticsScreemItems = () => {
   const SECTIONS = [
@@ -46,10 +47,11 @@ const StatiticsScreemItems = () => {
         >
           {activeSection === 1 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <QuantityTypeItens typeItem="equipos"/>
               <ExpiringSoonStatics typeItem="equipos" />
               <AgeStatics typeItem="equipos" />
-              <QuantityItemsStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />
+              <QuantityItemsStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
