@@ -113,7 +113,7 @@ const Navbar: React.FC = React.memo(() => {
     >
       <div className="flex items-center justify-between p-2 mx-auto border-b-2 border-black md:p-5 dark:border-white">
         {/* mobile menu */}
-        <div className="grid items-center grid-cols-[auto,1fr,auto] gap-3">
+        <div className="grid items-center grid-cols-[auto,1fr,auto] max-md:w-full gap-3">
           {/* Left side - Logo and sidebar toggle */}
           <div className="w-fit">
             <button
@@ -140,7 +140,7 @@ const Navbar: React.FC = React.memo(() => {
             </button>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <NavLink to="/home">
               <img
                 src={logo || "/placeholder.svg"}
