@@ -77,7 +77,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(value, name, props) => [
+                    formatter={(value, _, props) => [
                       `${value} ${
                         typeItem === "equipos" ? "equipos" : "ítems"
                       }`,
