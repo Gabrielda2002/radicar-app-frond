@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
 import { useYoutubePlayer } from "../Hooks/useYoutubePlayer";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { MdOutlineInterests } from "react-icons/md";
 
 const ModalPausasActivas = () => {
 
@@ -88,8 +89,9 @@ const ModalPausasActivas = () => {
         type="button"
         onClick={() => setIsModalOpen(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
+        title="Pausas Activas"
       >
-        Pausas Activas
+        <MdOutlineInterests className="w-6 h-6" />
       </button>
 
       {/* Modal */}

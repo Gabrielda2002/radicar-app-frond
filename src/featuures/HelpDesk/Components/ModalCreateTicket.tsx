@@ -11,6 +11,7 @@ import { Bounce, toast } from "react-toastify";
 import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
 import {useTickets} from "@/context/ticketContext.tsx";
 import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
+import { MdSupportAgent } from "react-icons/md";
 
 interface TitlesHDOptions{
   Software: string[];
@@ -142,8 +143,9 @@ const HelpDesk = () => {
         type="button"
         onClick={() => setIsModalOpen(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
+        title="Solicitar Soporte"
       >
-        Mesa de Ayuda
+        <MdSupportAgent className="text-2xl text-gray-700 dark:text-gray-200" />
       </button>
 
       {/* Modal */}
