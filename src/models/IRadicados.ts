@@ -11,6 +11,7 @@ export interface IRadicados {
     landline:        string;
     email:           string;
     ipsPrimaria:     string;
+    ipsRemitente:    string;
     auditDate:       Date | null;
     suportName:      string;
     radicacionPlace: string;
