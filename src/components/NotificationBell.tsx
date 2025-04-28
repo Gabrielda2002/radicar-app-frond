@@ -6,6 +6,7 @@ import ModalServey from "@/featuures/HelpDesk/Components/ModalServey";
 import ModalCommetsTicket from "@/featuures/HelpDesk/Components/ModalCommetsTicket";
 import { Check } from "lucide-react";
 import { useAuth } from "@/context/authContext";
+import { FormatDate } from "@/utils/FormatDate";
 
 const NotificationBell: React.FC = () => {
   const {
@@ -136,6 +137,9 @@ const NotificationBell: React.FC = () => {
                     </h4>
                     <p className="text-sm text-gray-500 dark:text-gray-300">
                       {notification.message}
+                    </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                      {FormatDate(notification.createdAt, true)}
                     </p>
                     {/* boton encuesta */}
                     <div className="flex justify-end gap-3">
