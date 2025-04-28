@@ -75,7 +75,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Remisión de IPS
                   </td>
-                  <td className="">{radicacion.ipsPrimaria}</td>
+                  <td className="">{radicacion.ipsRemitente}</td>
                 </tr>
                 <tr>
                   <td className="bg-gray-400 dark:bg-gray-600">Profesional</td>
