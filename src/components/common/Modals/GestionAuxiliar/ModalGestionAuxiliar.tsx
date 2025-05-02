@@ -8,6 +8,7 @@ import ModalGestionServicio from "./Components/ModalGestionServicio";
 import {
   GestionAuxiliarCirugia,
   programacion,
+  Cup as CupCirugia,
 } from "@/models/ICirugias";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
@@ -17,6 +18,7 @@ interface ModalGestionAuxiliarProps {
   onClose: () => void;
   radicacion: Cup | null;
   cirugias: programacion | null;
+  cupsRadicado?: CupCirugia[] | null;
 }
 
 const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
@@ -24,6 +26,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   onClose,
   radicacion,
   cirugias,
+  cupsRadicado,
 }) => {
   const [openServicio, setOpenServicio] = useState(false); // Estados Servicios
   const { showAnimation, closing } = useAnimation(isOpen, onClose);
@@ -88,6 +91,8 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     setOpenServicio(true); // Abre el segundo modal
   };
 
+  const seguimientos = cupsRadicado?.flatMap(c => c.seguimiento) ?? [];
+
   return (
     <>
       <div className="fixed z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-40 -inset-5 backdrop-blur-sm">
@@ -113,7 +118,11 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
             {/* Primera tabla: Cirugías */}
             {cirugias && cirugias.gestionAuxiliarCirugia.length > 0 ? (
-              <table className="max-h-[70vh] w-auto overflow-y-auto mb-4 mx-4">
+              <div className="flex flex-col justify-center items-center w-full p-2">
+                <h3 className="text-lg font-semibold text-color dark:text-gray-200">
+                  Seguimiento de Cirugía
+                </h3>
+              <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
                 <thead className="text-center">
                   <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
                     <th className="">Observación</th>
@@ -133,10 +142,42 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                   ))}
                 </tbody>
               </table>
+              </div>
             ) : !radicacion ? (
               // Mostrar mensaje solo si no hay ni cirugías ni radicaciones
               <div className="p-2 text-center text-stone-400 dark:text-stone-500">
                 No se han generado seguimientos...
+              </div>
+            ) : null}
+
+            {/* mostrar seguimiento de cups radicados en cirugias */}
+            {cupsRadicado && cupsRadicado.length > 0 && seguimientos.length > 0 ? (
+              <div className="flex flex-col justify-center items-center w-full p-2">
+                <h3 className="text-lg font-semibold text-color dark:text-gray-200">
+                  Seguimiento de Auxiliar
+                </h3>
+                <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
+                  <thead className="text-center">
+                    <tr className="bg-gray-200 dark:text-gray-300 dark:bg-gray-700 ">
+                      <th className="p-2">Observación</th>
+                      <th className="p-2">Estado</th>
+                      <th className="p-2">Fecha</th>
+                      <th className="p-2">Responsable</th>
+                    </tr>
+                  </thead>
+                  <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
+                    {seguimientos.map((s) => (
+                      <tr key={s.id}>
+                        <td className="max-w-[400px]">
+                          {s.observacion}
+                        </td>
+                        <td>{s.estado}</td>
+                        <td>{FormatDate(s.fechaCreacion)}</td>
+                        <td>{s.Nombre} {s.Apellido}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             ) : null}
 
