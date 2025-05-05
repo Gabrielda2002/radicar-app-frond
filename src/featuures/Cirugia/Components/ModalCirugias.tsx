@@ -218,7 +218,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
 
                     
                 )}
-
+                {/* datos paciente a programar */}
                 {data.programacionCirugia.length == 0 ? (
                   // validacion de datos del paciente para programacion
                   <div className="">
@@ -272,7 +272,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                           ))}
                         </tbody>
                       </table>
-
+                      {/* validar soportes antes de programar para grupo de servicios 9 */}
                       {data.idGrupoServicios === 9 && (
                         <div className="mb-6">
                           <h4 className="mb-4 text-lg text-blue-500 dark:text-white">
@@ -350,6 +350,8 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                       )}
                     </div>
 
+
+                    {/* form cirugias grupo de servicios 6 y ya esten validados los soportes */}
                     {data.idGrupoServicios === 6 || isValidate ? (
                       // formulario de programacion de cirugias
                       <form

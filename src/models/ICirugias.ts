@@ -44,4 +44,5 @@ export interface Cup {
     id:          number;
     code:        number;
     description: string;
+    seguimiento: GestionAuxiliarCirugia[];
 }

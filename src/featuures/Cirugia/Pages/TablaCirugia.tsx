@@ -5,7 +5,7 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 import { useFetchCirugias } from "../Hooks/UseFetchCirugias";
-import { ICirugias, programacion } from "@/models/ICirugias";
+import { Cup, ICirugias, programacion } from "@/models/ICirugias";
 
 //*iconos
 import mostrar from "/assets/mostrar.svg";
@@ -34,6 +34,7 @@ const TablaCirugias = () => {
   const [selectedCirugia, setSelectedCirugia] = useState<programacion | null>(
     null
   );
+  const [cupsRadicado, setCupsRadicado] = useState<Cup[] | null>(null);
   const { handleOpen } = useOpenSupport();
   const [dateOrden, setDateOrden] = useState<Date | null>(null);
 
@@ -56,9 +57,10 @@ const TablaCirugias = () => {
     setItemsPerPage(Number(e.target.value)); // Cambia el número de ítems por página
   };
 
-  const handleShowGestion = (cirugias: programacion) => {
+  const handleShowGestion = (cirugias: programacion, cups: Cup[]) => {
     setIsOpenGestion(true);
     setSelectedCirugia(cirugias);
+    setCupsRadicado(cups);
   };
 
   const handleShowVer = (progCirugia: programacion, orderDate: Date) => {
@@ -139,7 +141,9 @@ const TablaCirugias = () => {
                 <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
                   {currentData().map((cirugia) => (
                     <tr
-                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      className={`transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700
+                        ${cirugia.programacionCirugia.length > 0 ? 'border-b bg-green-500/20 dark:bg-green-600/15 dark:border-gray-700' : ''}
+                        `}
                       key={cirugia.id}
                     >
                       <td className="p-3 border-b dark:border-gray-700">
@@ -179,7 +183,7 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
-                            handleShowGestion(cirugia.programacionCirugia[0])
+                            handleShowGestion(cirugia.programacionCirugia[0], cirugia.cups)
                           }
                         >
                           <img src={gestion} alt="Gestion-icon" />
@@ -304,7 +308,7 @@ const TablaCirugias = () => {
                 <div className="text-xs text-gray-800 dark:text-gray-100">
                   <button
                     onClick={() =>
-                      handleShowGestion(cirugia.programacionCirugia[0])
+                      handleShowGestion(cirugia.programacionCirugia[0], cirugia.cups)
                     }
                   >
                     <img
@@ -372,6 +376,7 @@ const TablaCirugias = () => {
           onClose={() => setIsOpenGestion(false)}
           radicacion={null}
           cirugias={selectedCirugia}
+          cupsRadicado={cupsRadicado}
         />
       </Suspense>
     </>
