@@ -24,6 +24,7 @@ import { useOpenSupport } from "@/hooks/useOpenSupport";
 import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { Building } from 'lucide-react';
+import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 
 // * Interface
 interface ItemsListProps {
@@ -43,6 +44,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const [selected, setSelected] = useState<IItems | IItemsNetworking | IItemsGeneral | null>(
     null
   );
+
+  const  { areaDependency } = useFetchAreaDependency();
+  const [ selectedAreaDependency, setSelectedAreaDependency ] = useState<string[]>([]);
 
   const { handleOpen } = useOpenSupport();
 
@@ -69,6 +73,21 @@ const ItemsList: React.FC<ItemsListProps> = ({
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination<IItems | IItemsNetworking | IItemsGeneral>(filteredData, itemsPerPage);
+
+    const filteredGeneralItems = tipoItem === "inventario/general" 
+    ? (invetario as IItemsGeneral[] || [])
+    .filter(item => 
+    (
+      item.name.toLowerCase().includes(query.toLowerCase()) ||
+      item.brand.toLowerCase().includes(query.toLowerCase()) ||
+      item.model.toLowerCase().includes(query.toLowerCase()) 
+    ) &&
+    (selectedAreaDependency.length === 0 || selectedAreaDependency.includes(item.dependencyArea))
+    )
+     : [];
+  
+
+   const dataToShow = tipoItem === "inventario/general" ? filteredGeneralItems : filteredData;
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -157,6 +176,26 @@ const ItemsList: React.FC<ItemsListProps> = ({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
+            {tipoItem === "inventario/general" && (
+              <div className="mb-4 flex flex-col md:flex-row gap-2">  
+                 <select 
+                 multiple
+                 value={selectedAreaDependency} 
+                 onChange={ e => {
+                    const opcions = Array.from(e.target.selectedOptions, (option) => option.value);
+                    setSelectedAreaDependency(opcions);
+                 }
+                 }
+                 className="min-w-52 ml-2 p-2 border-2 rounded-md dark:bg-gray-800 dark:text-white"
+                 >
+                  {areaDependency.map(op => (
+                    <option key={op.id} value={op.name}>
+                      {op.name}
+                    </option>
+                  ))}
+                 </select>
+              </div>
+            )}
             <select
               name="itemsPerPage"
               id=""
@@ -186,10 +225,10 @@ const ItemsList: React.FC<ItemsListProps> = ({
             </button>
           </div>
 
-          {filteredData.length > 0 && invetario && invetario.length > 0 ? (
+          {dataToShow.length > 0 && invetario && invetario.length > 0 ? (
             isGridView ? (
               <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
-                {currentData().map((item) => (
+                {( tipoItem === "inventario/general" ? dataToShow : currentData()).map((item) => (
                   <div
                     key={item.id}
                     className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
@@ -275,7 +314,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               </div>
             ) : (
               <div className="flex flex-col gap-4 transition-all duration-500 ease-in-out">
-                {currentData().map((item) => (
+                {(tipoItem === "inventario/general" ? dataToShow : currentData()).map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-sm dark:border-gray-700 dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-600"
