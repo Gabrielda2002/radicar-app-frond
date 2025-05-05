@@ -5,6 +5,7 @@ import xlsxIcon from "@/../public/assets/excel-file.svg";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
+import { getPublicFilePath } from "../Services/getPublicFilePath";
 
 interface File {
   id: string;
@@ -48,17 +49,9 @@ const FileList: React.FC<FileListProps> = ({
   };
 
   const handleFileOpen = (file: File) => {
-    let filePath = file.path;
-    // Si la ruta es absoluta y contiene 'uploads', la convertimos a relativa
-    if (/^[A-Za-z]:\\/.test(filePath) && filePath.includes('uploads')) {
-      // Extraer la parte desde 'uploads' y anteponer '../../'
-      const uploadsIndex = filePath.indexOf('uploads');
-      if (uploadsIndex !== -1) {
-        filePath = '../../' + filePath.substring(uploadsIndex).replace(/\\/g, '/');
-      }
-    }
+    let filePath = getPublicFilePath(file.path);
     if (file.mimeType === "application/pdf") {
-      window.open(`${import.meta.env.VITE_URL_BACKEND}/api/v1/v1${filePath}`, "_blank");
+      window.open(`${import.meta.env.VITE_URL_BACKEND}/api/v1${filePath}`, "_blank");
     } else {
       onDownload(file.id, file.name);
     }

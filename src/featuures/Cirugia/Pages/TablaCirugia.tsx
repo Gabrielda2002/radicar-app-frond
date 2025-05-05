@@ -142,7 +142,7 @@ const TablaCirugias = () => {
                   {currentData().map((cirugia) => (
                     <tr
                       className={`transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700
-                        ${cirugia.programacionCirugia.length > 0 ? 'border-b bg-green-500/20 dark:bg-green-600/15 dark:border-gray-700' : ''}
+                        ${cirugia.programacionCirugia.length > 0 ? 'border-b bg-green-500/15 dark:bg-green-600/15 dark:border-gray-700' : ''}
                         `}
                       key={cirugia.id}
                     >
