@@ -926,7 +926,6 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           </section>
         </section>
       )}
-      ;
     </>
   );
 };
