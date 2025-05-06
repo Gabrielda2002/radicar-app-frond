@@ -400,13 +400,23 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       >
                         Ver detalles
                       </button>
-                      <ModalItemsForm
-                        idSede={null}
-                        tipoItem={tipoItem}
-                        items={item as IItemsNetworking | IItems}
-                        idItem={item.id}
-                        onSuccess={onItemsUpdate}
-                      />
+                      {tipoItem === "inventario/general" ? (
+                          <ModalFormGeneralItems
+                            idSede={idSede}
+                            tipoItem={tipoItem}
+                            isUpdate={true}
+                            items={item ? (item as IItemsGeneral) : null}
+                            refreshItems={onItemsUpdate}
+                          />
+                        ) : (
+                          <ModalItemsForm
+                            idSede={null}
+                            tipoItem={tipoItem}
+                            items={item as IItemsNetworking | IItems}
+                            idItem={item.id}
+                            onSuccess={onItemsUpdate}
+                          />
+                        )}
                       <ModalTablaseguimientoItem
                         Items={
                           item as IItemsNetworking | IItems | IItemsGeneral
