@@ -25,6 +25,7 @@ import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { Building } from "lucide-react";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
+import ModalFormTv from "./Modals/ModalFormTv";
 
 // * Interface
 interface ItemsListProps {
@@ -166,6 +167,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
                   isUpdate={false}
                   items={null}
                   refreshItems={onItemsUpdate}
+                />
+              ) : tipoItem === "inventario/televisores" ? (
+                <ModalFormTv
+                  sedeId={idSede}
+                  tipoItem={tipoItem}
+                  refreshItems={onItemsUpdate}
+                  items={null}
                 />
               ) : (
                 <ModalItemsForm
