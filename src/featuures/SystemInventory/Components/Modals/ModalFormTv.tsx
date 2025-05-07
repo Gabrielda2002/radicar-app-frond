@@ -6,17 +6,17 @@ import useAnimation from "@/hooks/useAnimations";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import { useCreateTv } from "../../Hooks/useCreateTv";
+import { toast } from "react-toastify";
 
 interface ModalFormTvProps {
   sedeId: number | null;
-  tipoItem: "inventario/televisores" | null;
   refreshItems: () => void;
-  items: any[] | null;
+  items: any | null;
 }
 
 const ModalFormTv: React.FC<ModalFormTvProps> = ({
   sedeId,
-  tipoItem,
   refreshItems,
   items,
 }) => {
@@ -29,6 +29,8 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
     () => setIsOpen(false),
     300
   );
+
+  const { createTv, updateTv, loading, error } = useCreateTv();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("nombre es requerido"),
@@ -50,7 +52,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
     connectivity: Yup.string().required("conectividad es requerido"),
     purchaseDate: Yup.date().required("fecha de compra es requerido"),
     warranty: Yup.boolean().required("garantia es requerido"),
-    warrantyDate: Yup.date().when("warranty", {
+    warrantyDate: Yup.string().when("warranty", {
       is: (warranty: boolean) => warranty,
       then: (schema) => schema.required("fecha de garantia es requerido"),
       otherwise: (schema) => schema.optional(),
@@ -93,10 +95,39 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
       controlRemote: false,
       utility: "",
       responsable: "",
+      sedeId: sedeId,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response =
+          items === null
+            ? await createTv(values)
+            : await updateTv(values, items.id);
+
+        if (response && response.data) {
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+          setTimeout(() => {
+            setIsOpen(false);
+          }, 3000);
+
+          if (refreshItems) {
+            refreshItems();
+          }
+        }
+      } catch (error) {
+        console.error("Error al enviar los datos:", error);
+      }
     },
   });
 
@@ -179,16 +210,16 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                     </div>
 
                     <InputAutocompletado
-                        label="Responsable"
-                        onInputChanged={(value) =>
-                          formik.setFieldValue("responsable", value)
-                        }
-                        apiRoute="search-user-by-name"
-                        error={
-                          formik.touched.responsable &&
-                          !!formik.errors.responsable
-                        }
-                      />
+                      label="Responsable"
+                      onInputChanged={(value) =>
+                        formik.setFieldValue("responsable", value)
+                      }
+                      apiRoute="search-user-by-name"
+                      error={
+                        formik.touched.responsable &&
+                        !!formik.errors.responsable
+                      }
+                    />
 
                     <div className="flex flex-col justify-center w-full">
                       <div className="flex items-center">
@@ -891,6 +922,13 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                       )}
                     </div>
                   </div>
+
+                  {error && (
+                    <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
+                      {error}
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                     <button
                       className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
@@ -902,7 +940,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                     <button
                       className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                       type="submit"
-                      disabled={!formik.isValid}
+                      disabled={loading || !formik.isValid}
                     >
                       {items ? "Actualizar" : "Crear"}
                     </button>

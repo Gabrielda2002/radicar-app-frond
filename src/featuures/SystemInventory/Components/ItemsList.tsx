@@ -171,7 +171,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
               ) : tipoItem === "inventario/televisores" ? (
                 <ModalFormTv
                   sedeId={idSede}
-                  tipoItem={tipoItem}
                   refreshItems={onItemsUpdate}
                   items={null}
                 />
