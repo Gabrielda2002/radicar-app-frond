@@ -15,7 +15,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
 interface ModalItemsDetailsProps {
   item: IItems | IItemsNetworking | IItemsGeneral | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
   onClose: () => void;
 }
 

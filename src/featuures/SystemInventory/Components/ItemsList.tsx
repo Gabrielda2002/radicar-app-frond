@@ -29,7 +29,7 @@ import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 // * Interface
 interface ItemsListProps {
   invetario: IItems[] | IItemsNetworking[] | IItemsGeneral[] | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
   idSede: number | null;
   onItemsUpdate: () => void;
 }

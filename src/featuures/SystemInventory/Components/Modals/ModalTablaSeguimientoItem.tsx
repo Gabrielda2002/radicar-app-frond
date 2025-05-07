@@ -18,7 +18,7 @@ import { IItemsGeneral } from "../../Models/IItemsGeneral";
 
 interface ModalTablaseguimientoItemProps {
   Items: IItems | IItemsNetworking | IItemsGeneral | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
   refreshItems: () => void;
 }
 
