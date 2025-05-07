@@ -34,28 +34,48 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
   const { createTv, updateTv, loading, error } = useCreateTv();
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("nombre es requerido"),
-    location: Yup.string().required("ubicacion es requerido"),
-    brand: Yup.string().required("marca es requerido"),
-    model: Yup.string().required("modelo es requerido"),
-    serial: Yup.string().required("serial es requerido"),
+    name: Yup.string().required("nombre es requerido")
+          .min(3, "nombre debe tener al menos 3 caracteres")
+          .max(255, "nombre debe tener maximo 50 caracteres"),
+    location: Yup.string().required("ubicacion es requerido")
+              .min(3, "ubicacion debe tener al menos 3 caracteres")
+              .max(255, "ubicacion debe tener maximo 255 caracteres"),
+    brand: Yup.string().required("marca es requerido")
+           .min(1, "marca debe tener al menos 1 caracteres")
+            .max(50, "marca debe tener maximo 50 caracteres"),
+    model: Yup.string().required("modelo es requerido")
+          .min(1, "modelo debe tener al menos 1 caracteres")
+          .max(50, "modelo debe tener maximo 50 caracteres"),
+    serial: Yup.string().required("serial es requerido")
+            .min(1, "serial debe tener al menos 1 caracteres")
+            .max(50, "serial debe tener maximo 50 caracteres"),
     pulgadas: Yup.string().required("pulgadas es requerido"),
     screenType: Yup.string().required("tipo de pantalla es requerido"),
     smartTv: Yup.boolean().required("smart tv es requerido"),
     operativeSystem: Yup.string().required("sistema operativo es requerido"),
-    addressIp: Yup.string().required("direccion ip es requerido"),
-    mac: Yup.string().required("mac es requerido"),
-    resolution: Yup.string().required("resolucion es requerido"),
+    addressIp: Yup.string().required("direccion ip es requerido")
+               .min(7, "direccion ip debe tener al menos 7 caracteres")
+               .max(20, "direccion ip debe tener maximo 20 caracteres"),
+    mac: Yup.string().required("mac es requerido")
+        .min(12, "mac debe tener al menos 12 caracteres")
+        .max(17, "mac debe tener maximo 17 caracteres"),
+    resolution: Yup.string().required("resolucion es requerido")
+                .min(1, "resolucion debe tener al menos 1 caracteres")
+                .max(50, "resolucion debe tener maximo 50 caracteres"),
     numPuertosHdmi: Yup.number().required(
       "numero de puertos hdmi es requerido"
     ),
     numPuertosUsb: Yup.number().required("numero de puertos usb es requerido"),
-    connectivity: Yup.string().required("conectividad es requerido"),
+    connectivity: Yup.string().required("conectividad es requerido")
+                  .min(1, "conectividad debe tener al menos 1 caracteres")
+                  .max(100, "conectividad debe tener maximo 100 caracteres"),
     purchaseDate: Yup.date().required("fecha de compra es requerido"),
     warranty: Yup.boolean().required("garantia es requerido"),
-    warrantyDate: Yup.string().when("warranty", {
+    warrantyTime: Yup.string().when("warranty", {
       is: (warranty: boolean) => warranty,
-      then: (schema) => schema.required("fecha de garantia es requerido"),
+      then: (schema) => schema.required("fecha de garantia es requerido")
+                              .min(2, "fecha de garantia debe tener al menos 2 caracteres")
+                              .max(100, "fecha de garantia debe tener maximo 50 caracteres"),
       otherwise: (schema) => schema.optional(),
     }),
     deliveryDate: Yup.date().required("fecha de entrega es requerido"),
@@ -63,9 +83,13 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
     status: Yup.string().required("estado es requerido"),
     acquisitionValue: Yup.number().required(
       "valor de adquisicion es requerido"
-    ),
+    ).positive("valor de adquisicion debe ser un numero positivo")
+    .min(0, "valor de adquisicion debe ser mayor a 0")
+    .max(10000000, "valor de adquisicion debe ser menor a 10000000"),
     controlRemote: Yup.boolean().required("control remoto es requerido"),
-    utility: Yup.string().required("utilidad es requerido"),
+    utility: Yup.string().required("utilidad es requerido")
+            .min(1, "utilidad debe tener al menos 1 caracteres")
+            .max(50, "utilidad debe tener maximo 50 caracteres"),
     responsable: Yup.string().required("responsable es requerido"),
   });
 
@@ -87,7 +111,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
       numPuertosUsb: 0,
       connectivity: "",
       purchaseDate: "",
-      warrantyDate: "",
+      warrantyTime: "",
       warranty: false,
       deliveryDate: "",
       observation: "",
@@ -712,30 +736,30 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                       <div className="flex flex-col justify-center w-full">
                         <div className="flex items-center">
                           <label
-                            htmlFor="warrantyDate"
+                            htmlFor="warrantyTime"
                             className="text-sm font-semibold"
                           >
-                            Fecha de Garantia:
+                            Tiempo de Garantia:
                           </label>
                         </div>
                         <input
-                          type="date"
-                          id="warrantyDate"
-                          name="warrantyDate"
-                          value={formik.values.warrantyDate}
+                          type="text"
+                          id="warrantyTime"
+                          name="warrantyTime"
+                          value={formik.values.warrantyTime}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.warrantyDate &&
-                            formik.errors.warrantyDate
+                            formik.touched.warrantyTime &&
+                            formik.errors.warrantyTime
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        {formik.touched.warrantyDate &&
-                          formik.errors.warrantyDate && (
+                        {formik.touched.warrantyTime &&
+                          formik.errors.warrantyTime && (
                             <div className="text-red-500 text-sm">
-                              {formik.errors.warrantyDate}
+                              {formik.errors.warrantyTime}
                             </div>
                           )}
                       </div>
