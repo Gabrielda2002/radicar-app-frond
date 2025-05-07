@@ -34,62 +34,74 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
   const { createTv, updateTv, loading, error } = useCreateTv();
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("nombre es requerido")
-          .min(3, "nombre debe tener al menos 3 caracteres")
-          .max(255, "nombre debe tener maximo 50 caracteres"),
-    location: Yup.string().required("ubicacion es requerido")
-              .min(3, "ubicacion debe tener al menos 3 caracteres")
-              .max(255, "ubicacion debe tener maximo 255 caracteres"),
-    brand: Yup.string().required("marca es requerido")
-           .min(1, "marca debe tener al menos 1 caracteres")
-            .max(50, "marca debe tener maximo 50 caracteres"),
-    model: Yup.string().required("modelo es requerido")
-          .min(1, "modelo debe tener al menos 1 caracteres")
-          .max(50, "modelo debe tener maximo 50 caracteres"),
-    serial: Yup.string().required("serial es requerido")
-            .min(1, "serial debe tener al menos 1 caracteres")
-            .max(50, "serial debe tener maximo 50 caracteres"),
+    name: Yup.string()
+      .required("nombre es requerido")
+      .min(3, "nombre debe tener al menos 3 caracteres")
+      .max(255, "nombre debe tener maximo 50 caracteres"),
+    location: Yup.string()
+      .required("ubicacion es requerido")
+      .min(3, "ubicacion debe tener al menos 3 caracteres")
+      .max(255, "ubicacion debe tener maximo 255 caracteres"),
+    brand: Yup.string()
+      .required("marca es requerido")
+      .min(1, "marca debe tener al menos 1 caracteres")
+      .max(50, "marca debe tener maximo 50 caracteres"),
+    model: Yup.string()
+      .required("modelo es requerido")
+      .min(1, "modelo debe tener al menos 1 caracteres")
+      .max(50, "modelo debe tener maximo 50 caracteres"),
+    serial: Yup.string()
+      .required("serial es requerido")
+      .min(1, "serial debe tener al menos 1 caracteres")
+      .max(50, "serial debe tener maximo 50 caracteres"),
     pulgadas: Yup.string().required("pulgadas es requerido"),
     screenType: Yup.string().required("tipo de pantalla es requerido"),
     smartTv: Yup.boolean().required("smart tv es requerido"),
     operativeSystem: Yup.string().required("sistema operativo es requerido"),
-    addressIp: Yup.string().required("direccion ip es requerido")
-               .min(7, "direccion ip debe tener al menos 7 caracteres")
-               .max(20, "direccion ip debe tener maximo 20 caracteres"),
-    mac: Yup.string().required("mac es requerido")
-        .min(12, "mac debe tener al menos 12 caracteres")
-        .max(17, "mac debe tener maximo 17 caracteres"),
-    resolution: Yup.string().required("resolucion es requerido")
-                .min(1, "resolucion debe tener al menos 1 caracteres")
-                .max(50, "resolucion debe tener maximo 50 caracteres"),
+    addressIp: Yup.string()
+      .required("direccion ip es requerido")
+      .min(7, "direccion ip debe tener al menos 7 caracteres")
+      .max(20, "direccion ip debe tener maximo 20 caracteres"),
+    mac: Yup.string()
+      .required("mac es requerido")
+      .min(12, "mac debe tener al menos 12 caracteres")
+      .max(17, "mac debe tener maximo 17 caracteres"),
+    resolution: Yup.string()
+      .required("resolucion es requerido")
+      .min(1, "resolucion debe tener al menos 1 caracteres")
+      .max(50, "resolucion debe tener maximo 50 caracteres"),
     numPuertosHdmi: Yup.number().required(
       "numero de puertos hdmi es requerido"
     ),
     numPuertosUsb: Yup.number().required("numero de puertos usb es requerido"),
-    connectivity: Yup.string().required("conectividad es requerido")
-                  .min(1, "conectividad debe tener al menos 1 caracteres")
-                  .max(100, "conectividad debe tener maximo 100 caracteres"),
+    connectivity: Yup.string()
+      .required("conectividad es requerido")
+      .min(1, "conectividad debe tener al menos 1 caracteres")
+      .max(100, "conectividad debe tener maximo 100 caracteres"),
     purchaseDate: Yup.date().required("fecha de compra es requerido"),
     warranty: Yup.boolean().required("garantia es requerido"),
     warrantyTime: Yup.string().when("warranty", {
       is: (warranty: boolean) => warranty,
-      then: (schema) => schema.required("fecha de garantia es requerido")
-                              .min(2, "fecha de garantia debe tener al menos 2 caracteres")
-                              .max(100, "fecha de garantia debe tener maximo 50 caracteres"),
+      then: (schema) =>
+        schema
+          .required("fecha de garantia es requerido")
+          .min(2, "fecha de garantia debe tener al menos 2 caracteres")
+          .max(100, "fecha de garantia debe tener maximo 50 caracteres"),
       otherwise: (schema) => schema.optional(),
     }),
     deliveryDate: Yup.date().required("fecha de entrega es requerido"),
     observation: Yup.string().required("observacion es requerido"),
     status: Yup.string().required("estado es requerido"),
-    acquisitionValue: Yup.number().required(
-      "valor de adquisicion es requerido"
-    ).positive("valor de adquisicion debe ser un numero positivo")
-    .min(0, "valor de adquisicion debe ser mayor a 0")
-    .max(10000000, "valor de adquisicion debe ser menor a 10000000"),
+    acquisitionValue: Yup.number()
+      .required("valor de adquisicion es requerido")
+      .positive("valor de adquisicion debe ser un numero positivo")
+      .min(0, "valor de adquisicion debe ser mayor a 0")
+      .max(10000000, "valor de adquisicion debe ser menor a 10000000"),
     controlRemote: Yup.boolean().required("control remoto es requerido"),
-    utility: Yup.string().required("utilidad es requerido")
-            .min(1, "utilidad debe tener al menos 1 caracteres")
-            .max(50, "utilidad debe tener maximo 50 caracteres"),
+    utility: Yup.string()
+      .required("utilidad es requerido")
+      .min(1, "utilidad debe tener al menos 1 caracteres")
+      .max(50, "utilidad debe tener maximo 50 caracteres"),
     responsable: Yup.string().required("responsable es requerido"),
   });
 
@@ -141,6 +153,8 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
             progress: undefined,
             theme: "colored",
           });
+
+          formik.resetForm();
 
           setTimeout(() => {
             setIsOpen(false);
@@ -405,20 +419,29 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                           Tipo de Pantalla:
                         </label>
                       </div>
-
-                      <input
-                        type="text"
+                      <select
                         id="screenType"
                         name="screenType"
                         value={formik.values.screenType}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                        className={`w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
                           formik.touched.screenType && formik.errors.screenType
                             ? "border-red-500 dark:border-red-500"
                             : "border-gray-200 dark:border-gray-600"
                         }`}
-                      />
+                      >
+                        <option value="" disabled>
+                          Seleccione el tipo de pantalla
+                        </option>
+                        <option value="LCD">LCD</option>
+                        <option value="LED">LED</option>
+                        <option value="OLED">OLED</option>
+                        <option value="QLED">QLED</option>
+                        <option value="AMOLED">AMOLED</option>
+                        <option value="Plasma">Plasma</option>
+                        <option value="MicroLED">MicroLED</option>
+                      </select>
                       {formik.touched.screenType &&
                         formik.errors.screenType && (
                           <div className="text-red-500 text-sm">
@@ -466,21 +489,34 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                           Sistema Operativo:
                         </label>
                       </div>
-
-                      <input
-                        type="text"
+                      <select
                         id="operativeSystem"
                         name="operativeSystem"
                         value={formik.values.operativeSystem}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                        className={`w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
                           formik.touched.operativeSystem &&
                           formik.errors.operativeSystem
                             ? "border-red-500 dark:border-red-500"
                             : "border-gray-200 dark:border-gray-600"
                         }`}
-                      />
+                      >
+                        <option value="" disabled>
+                          Seleccione el sistema operativo
+                        </option>
+                        <option value="Windows">Windows</option>
+                        <option value="macOS">macOS</option>
+                        <option value="Linux">Linux</option>
+                        <option value="Android">Android</option>
+                        <option value="iOS">iOS</option>
+                        <option value="Chrome OS">Chrome OS</option>
+                        <option value="Unix">Unix</option>
+                        <option value="FreeBSD">FreeBSD</option>
+                        <option value="OpenBSD">OpenBSD</option>
+                        <option value="Solaris">Solaris</option>
+                        <option value="Other">Otro</option>
+                      </select>
                       {formik.touched.operativeSystem &&
                         formik.errors.operativeSystem && (
                           <div className="text-red-500 text-sm">
@@ -836,8 +872,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                           Estado:
                         </label>
                       </div>
-                      <input
-                        type="text"
+                      <select
                         id="status"
                         name="status"
                         value={formik.values.status}
@@ -848,7 +883,16 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                             ? "border-red-500 dark:border-red-500"
                             : "border-gray-200 dark:border-gray-600"
                         }`}
-                      />
+                      >
+                        <option value="" disabled>
+                          Seleccione el estado
+                        </option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                        <option value="En Mantenimiento">
+                          En Mantenimiento
+                        </option>
+                      </select>
                       {formik.touched.status && formik.errors.status && (
                         <div className="text-red-500 text-sm">
                           {formik.errors.status}
