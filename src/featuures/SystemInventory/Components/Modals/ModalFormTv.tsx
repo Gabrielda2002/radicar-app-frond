@@ -8,11 +8,12 @@ import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { useCreateTv } from "../../Hooks/useCreateTv";
 import { toast } from "react-toastify";
+import { IItemsTv } from "../../Models/IItemsTv";
 
 interface ModalFormTvProps {
   sedeId: number | null;
   refreshItems: () => void;
-  items: any | null;
+  items: IItemsTv | null;
 }
 
 const ModalFormTv: React.FC<ModalFormTvProps> = ({

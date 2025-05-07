@@ -26,10 +26,11 @@ import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { Building } from "lucide-react";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import ModalFormTv from "./Modals/ModalFormTv";
+import { IItemsTv } from "../Models/IItemsTv";
 
 // * Interface
 interface ItemsListProps {
-  invetario: IItems[] | IItemsNetworking[] | IItemsGeneral[] | null;
+  invetario: IItems[] | IItemsNetworking[] | IItemsGeneral[] | IItemsTv[] | null;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
   idSede: number | null;
   onItemsUpdate: () => void;
