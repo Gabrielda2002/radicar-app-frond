@@ -4,6 +4,7 @@ import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { IItemsTv } from "../Models/IItemsTv";
 import { EquiposStrategy } from "./EquiposStrategy";
+import { DispositivosRedStrategy } from "./DispositivosRedStrategy";
 
 // Interfaz genérica para la estrategia de elementos de inventario
 export interface ItemStrategy<T> {
@@ -11,7 +12,7 @@ export interface ItemStrategy<T> {
   getTypeLabel(item: T): string | null;
   getIcon(): ReactNode;
   renderDetailsButton(item: T, handleViewDetails: (item: T) => void): ReactNode;
-  renderActionButtons(item: T, refreshItems: () => void, handleOpen: (nombreSoporte: string | null, ruta: string) => void): ReactNode;
+  renderActionButtons(item: T, refreshItems: () => void, handleOpen?: (nombreSoporte: string | null, ruta: string) => void): ReactNode;
 }
 
 // Tipo unión que representa cualquier tipo de elemento de inventario
@@ -23,8 +24,8 @@ export const ItemStrategyFactory = {
     switch (tipoItem) {
       case "equipos":
         return new EquiposStrategy();
-      // case "dispositivos-red":
-      //   return new DispositivosRedStrategy();
+      case "dispositivos-red":
+        return new DispositivosRedStrategy();
       // case "inventario/general":
       //   return new InventarioGeneralStrategy();
       // case "inventario/televisores":
