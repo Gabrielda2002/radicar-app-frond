@@ -6,6 +6,7 @@ import { IItemsTv } from "../Models/IItemsTv";
 import { EquiposStrategy } from "./EquiposStrategy";
 import { DispositivosRedStrategy } from "./DispositivosRedStrategy";
 import { GeneralInventoryStrategy } from "./GeneralInventoryStrategy";
+import { TelevisoresStrategy } from "./TvStrategy";
 
 // Interfaz genérica para la estrategia de elementos de inventario
 export interface ItemStrategy<T> {
@@ -29,8 +30,8 @@ export const ItemStrategyFactory = {
         return new DispositivosRedStrategy();
       case "inventario/general":
         return new GeneralInventoryStrategy();
-      // case "inventario/televisores":
-      //   return new TelevisoresStrategy();
+      case "inventario/televisores":
+        return new TelevisoresStrategy();
       default:
         throw new Error(`No hay estrategia definida para ${tipoItem}`);
     }

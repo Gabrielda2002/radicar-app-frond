@@ -20,6 +20,9 @@ export interface IItemsTv {
     warranty:         boolean;
     deliveryDate:     Date;
     inventoryNumber:  string;
+    responsableId:    number;
+    responsableName:  string;
+    responsableLastName: string;
     observations:     string;
     status:           string;
     acquisitionValue: string;

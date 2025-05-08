@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import useAnimation from "@/hooks/useAnimations";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -9,6 +9,7 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 import { useCreateTv } from "../../Hooks/useCreateTv";
 import { toast } from "react-toastify";
 import { IItemsTv } from "../../Models/IItemsTv";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalFormTvProps {
   sedeId: number | null;
@@ -169,6 +170,40 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
       }
     },
   });
+
+  // completar datos si es actualizacion
+  useEffect(() => {
+    if (items) {
+      formik.setValues({
+        name: items.name,
+        location: items.location,
+        brand: items.brand,
+        model: items.model,
+        serial: items.serial,
+        pulgadas: items.pulgadas.toString(),
+        screenType: items.screenType,
+        smartTv: !!items.smartTv,
+        operativeSystem: items.operativeSystem,
+        addressIp: items.addressIp,
+        mac: items.mac,
+        resolution: items.resolution,
+        numPuertosHdmi: items.numPuertosHdmi,
+        numPuertosUsb: items.numPuertosUsb,
+        connectivity: items.connectivity,
+        purchaseDate: FormatDate(items.purchaseDate, false),
+        warrantyTime: items.warrantyTime,
+        warranty: !!items.warranty,
+        deliveryDate: FormatDate(items.deliveryDate, false),
+        observation: items.observations,
+        status: items.status,
+        acquisitionValue: Number(items.acquisitionValue),
+        controlRemote: !!items.controlRemote,
+        utility: items.utility,
+        responsable: items.responsableId.toString(),
+        sedeId: sedeId,
+      });
+    }
+  }, [items]);
 
   return (
     <>
