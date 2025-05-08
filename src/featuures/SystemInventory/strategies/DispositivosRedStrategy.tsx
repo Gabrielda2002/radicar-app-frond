@@ -1,7 +1,7 @@
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { ItemStrategy } from "./ItemStrategy";
 import { ReactNode } from "react";
-import { ListBulletIcon } from "@heroicons/react/24/outline";
+import { CpuChipIcon } from "@heroicons/react/24/outline";
 import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 
@@ -15,7 +15,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
   }
 
   getIcon(): ReactNode {
-    return <ListBulletIcon className="w-8 h-8 mr-2 dark:text-white" />;
+    return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
   }
 
   renderDetailsButton(

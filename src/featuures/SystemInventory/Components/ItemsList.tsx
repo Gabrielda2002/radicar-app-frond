@@ -8,22 +8,16 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import usePagination from "@/hooks/usePagination";
 import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
-import ModalAccesorioItem from "../Components/Modals/ModalAccesorioItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
-import ModalTablaseguimientoItem from "./Modals/ModalTablaSeguimientoItem";
 
 // * Icons
 import {
   ListBulletIcon,
   Squares2X2Icon,
-  ComputerDesktopIcon,
-  CpuChipIcon,
-  // ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
 import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
-import { Building } from "lucide-react";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import ModalFormTv from "./Modals/ModalFormTv";
 import { IItemsTv } from "../Models/IItemsTv";
@@ -31,8 +25,18 @@ import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 
 // * Interface
 interface ItemsListProps {
-  invetario: IItems[] | IItemsNetworking[] | IItemsGeneral[] | IItemsTv[] | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
+  invetario:
+    | IItems[]
+    | IItemsNetworking[]
+    | IItemsGeneral[]
+    | IItemsTv[]
+    | null;
+  tipoItem:
+    | "equipos"
+    | "dispositivos-red"
+    | "inventario/general"
+    | "inventario/televisores"
+    | null;
   idSede: number | null;
   onItemsUpdate: () => void;
 }
@@ -140,18 +144,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
     setSelected(null);
   };
 
-  // * Función para determinar el ícono a mostrar basado en el tipo de ítem
-  // * Muestra el ícono correspondiente según el tipo de inventario (equipos o dispositivos)
-
-  const getIcon = () => {
-    return tipoItem === "equipos" ? (
-      <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
-    ) : tipoItem === "dispositivos-red" ? (
-      <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
-    ) : (
-      <Building className="w-8 h-8 mr-2 dark:text-white" />
-    );
-  };
   return (
     <>
       {isLoading ? (
@@ -291,7 +283,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               )}
             </button>
           </div>
-            
+
           {dataToShow.length > 0 && invetario && invetario.length > 0 ? (
             isGridView ? (
               <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
@@ -304,7 +296,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                   >
                     <div className="flex items-center justify-between mb-14">
-                      <div className="flex items-center gap-2">{getIcon()}</div>
+                      <div className="flex items-center gap-2">
+                        {strategy?.getIcon()}
+                      </div>
                       <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
                         {strategy?.getName(item)}
                       </h3>
@@ -314,7 +308,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                           : tipoItem === "inventario/televisores"
                           ? (item as unknown as IItemsTv).screenType
                           : ""} */}
-                          {strategy?.getTypeLabel(item)}
+                        {strategy?.getTypeLabel(item)}
                       </p>
                     </div>
                     <hr className="border-gray-300 dark:border-gray-600" />
@@ -370,11 +364,15 @@ const ItemsList: React.FC<ItemsListProps> = ({
                             <div className="absolute z-10 px-2 py-1 mb-2 text-sm text-center text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full group-hover:opacity-100 dark:bg-gray-900">
                               Acta Entrega
                               {/* Flechita detrás del texto */}
-                              {/* <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+                        {/* <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
                             </div>
                           </div> 
                         )} */}
-                        {strategy?.renderActionButtons(item, onItemsUpdate, handleOpen)}
+                        {strategy?.renderActionButtons(
+                          item,
+                          onItemsUpdate,
+                          handleOpen
+                        )}
                       </div>
                     </div>
                   </div>
@@ -392,53 +390,24 @@ const ItemsList: React.FC<ItemsListProps> = ({
                   >
                     <div>
                       <div className="flex items-center">
-                        {getIcon()}
+                        {strategy?.getIcon()}
                         <h3 className="text-xl font-semibold dark:text-white">
-                          {tipoItem === "equipos"
-                            ? (item as IItems).nameEquipment
-                            : (item as IItemsNetworking).name}
+                          {strategy?.getName(item)}
                         </h3>
                       </div>
                       <p className="mt-1 text-sm text-black dark:text-gray-200">
-                        {tipoItem === "equipos"
-                          ? (item as IItems).typeEquipment
-                          : ""}
+                        {strategy?.getTypeLabel(item)}
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => handleViewDetails(item)}
-                        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-                      >
-                        Ver detalles
-                      </button>
-                      {tipoItem === "inventario/general" ? (
-                          <ModalFormGeneralItems
-                            idSede={idSede}
-                            tipoItem={tipoItem}
-                            isUpdate={true}
-                            items={item ? (item as IItemsGeneral) : null}
-                            refreshItems={onItemsUpdate}
-                          />
-                        ) : (
-                          <ModalItemsForm
-                            idSede={null}
-                            tipoItem={tipoItem}
-                            items={item as IItemsNetworking | IItems}
-                            idItem={item.id}
-                            onSuccess={onItemsUpdate}
-                          />
+                      {strategy?.renderDetailsButton(item, handleViewDetails)}
+                      <div className="flex flex-wrap gap-2">
+                        {strategy?.renderActionButtons(
+                          item,
+                          onItemsUpdate,
+                          handleOpen
                         )}
-                      <ModalTablaseguimientoItem
-                        Items={
-                          item as IItemsNetworking | IItems | IItemsGeneral
-                        }
-                        tipoItem={tipoItem}
-                        refreshItems={onItemsUpdate}
-                      />
-                      {tipoItem === "equipos" && (
-                        <ModalAccesorioItem id={(item as IItems).id} />
-                      )}
+                      </div>
                     </div>
                   </div>
                 ))}
