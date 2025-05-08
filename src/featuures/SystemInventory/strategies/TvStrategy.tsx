@@ -3,6 +3,7 @@ import { IItemsTv } from "../Models/IItemsTv";
 import { ItemStrategy } from "./ItemStrategy";
 import { Tv } from "lucide-react";
 import ModalFormTv from "../Components/Modals/ModalFormTv";
+import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 
 export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
   getName(item: IItemsTv): string {
@@ -31,13 +32,15 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
     );
   }
 
-  renderActionButtons(
-    item: IItemsTv,
-    refreshItems: () => void,
-  ): ReactNode {
+  renderActionButtons(item: IItemsTv, refreshItems: () => void): ReactNode {
     return (
       <>
         <ModalFormTv sedeId={null} refreshItems={refreshItems} items={item} />
+        <ModalTablaSeguimientoItem
+          Items={item}
+          tipoItem='inventario/televisores'
+          refreshItems={refreshItems}
+        />
       </>
     );
   }

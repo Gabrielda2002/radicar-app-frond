@@ -1,9 +1,10 @@
-//*Fuctions and Hooks
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { IItems } from "@/models/IItems";
 import useAnimation from "@/hooks/useAnimations";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
+import { IItemsGeneral } from "../../Models/IItemsGeneral";
+import { IItemsTv } from "../../Models/IItemsTv";
 //*Icons
 import {
   ClockIcon,
@@ -14,10 +15,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
-import { IItemsGeneral } from "../../Models/IItemsGeneral";
+import { AnyItem } from "../../strategies/ItemStrategy";
 
 interface ModalTablaseguimientoItemProps {
-  Items: IItems | IItemsNetworking | IItemsGeneral | null;
+  Items: AnyItem;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
   refreshItems: () => void;
 }
@@ -34,6 +35,30 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     300
   );
   useBlockScroll(stadopen);
+
+  // Método para obtener los datos de seguimiento según el tipo de item
+  const getSeguimientoData = useMemo(() => {
+    if (!Items) return [];
+    
+    switch (tipoItem) {
+      case "equipos":
+        return (Items as IItems).processEquipment || [];
+      case "dispositivos-red":
+        return (Items as IItemsNetworking).seguimiento || [];
+      case "inventario/general":
+        return (Items as IItemsGeneral).seguimiento || [];
+      case "inventario/televisores":
+        return (Items as IItemsTv).seguimiento || [];
+      default:
+        return [];
+    }
+  }, [Items, tipoItem]);
+
+  // ID del item
+  const itemId = useMemo(() => {
+    if (!Items) return 0;
+    return Items.id;
+  }, [Items]);
 
   const renderTrackingTable = (trackingData: any[]) => {
     if (trackingData.length === 0) {
@@ -69,10 +94,10 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 className="truncate transition-colors border-b last:border-b-0 hover:bg-gray-50 dark:text-white dark:bg-gray-800"
               >
                 <td className="p-3 text-gray-600 dark:text-white">
-                  {FormatDate(s.dateEvent, false)}
+                  {FormatDate(s.eventDate, false)}
                 </td>
                 <td className="p-3 font-medium dark:text-white">
-                  {s.eventType}
+                  {s.typeEvent}
                 </td>
                 <td
                   className="p-3 overflow-hidden text-gray-700 truncate whitespace-normal dark:text-white max-h-12 text-ellipsis"
@@ -134,30 +159,14 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
 
               <div className="px-2 py-3">
                 <ModalSeguimientoItem
-                  id={(Items as IItemsNetworking).id || (Items as IItems).id}
+                  id={itemId}
                   tipoItem={tipoItem}
                   refreshItems={refreshItems}
                 />
               </div>
 
               <div>
-                {Items &&
-                tipoItem === "equipos" &&
-                "processEquipment" in Items ? (
-                  renderTrackingTable((Items as IItems).processEquipment)
-                ) : Items &&
-                  tipoItem === "dispositivos-red" &&
-                  "seguimiento" in Items ? (
-                  renderTrackingTable((Items as IItemsNetworking).seguimiento)
-                ) : Items &&
-                  tipoItem === "inventario/general" &&
-                  "seguimiento" in Items ? (
-                  renderTrackingTable((Items as IItemsGeneral).seguimiento)
-                ) : (
-                  <div className="flex items-center justify-center p-4 text-xl text-gray-900 dark:text-gray-300">
-                    No hay seguimientos disponibles.
-                  </div>
-                )}
+                {renderTrackingTable(getSeguimientoData)}
               </div>
             </div>
           </section>
