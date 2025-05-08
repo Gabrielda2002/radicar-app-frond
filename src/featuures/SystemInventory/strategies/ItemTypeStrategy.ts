@@ -1,5 +1,6 @@
 import { EquiposStrategy } from '../strategies/EquiposStrategy';
 import { DispositivosRedStrategy } from './DispositivosRedStrategy';
+import { GeneralInventoryStrategy } from './GeneralInventoryStrategy';
 // import { InventarioGeneralStrategy } from '../strategies/InventarioGeneralStrategy';
 // import { TelevisoresStrategy } from '../strategies/TelevisoresStrategy';
 
@@ -13,10 +14,10 @@ export const INVENTORY_TYPES = {
     label: 'Dispositivos de Red',
     strategy: DispositivosRedStrategy
   },
-  // 'inventario/general': {
-  //   label: 'Inventario General',
-  //   strategy: InventarioGeneralStrategy
-  // },
+  'inventario/general': {
+    label: 'Inventario General',
+    strategy: GeneralInventoryStrategy
+  },
   // 'inventario/televisores': {
   //   label: 'Televisores',
   //   strategy: TelevisoresStrategy

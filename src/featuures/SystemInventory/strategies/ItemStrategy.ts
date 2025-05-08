@@ -5,6 +5,7 @@ import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { IItemsTv } from "../Models/IItemsTv";
 import { EquiposStrategy } from "./EquiposStrategy";
 import { DispositivosRedStrategy } from "./DispositivosRedStrategy";
+import { GeneralInventoryStrategy } from "./GeneralInventoryStrategy";
 
 // Interfaz genérica para la estrategia de elementos de inventario
 export interface ItemStrategy<T> {
@@ -26,8 +27,8 @@ export const ItemStrategyFactory = {
         return new EquiposStrategy();
       case "dispositivos-red":
         return new DispositivosRedStrategy();
-      // case "inventario/general":
-      //   return new InventarioGeneralStrategy();
+      case "inventario/general":
+        return new GeneralInventoryStrategy();
       // case "inventario/televisores":
       //   return new TelevisoresStrategy();
       default:
