@@ -18,7 +18,7 @@ import {
   Squares2X2Icon,
   ComputerDesktopIcon,
   CpuChipIcon,
-  ClipboardDocumentCheckIcon,
+  // ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
 import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
@@ -27,6 +27,7 @@ import { Building } from "lucide-react";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import ModalFormTv from "./Modals/ModalFormTv";
 import { IItemsTv } from "../Models/IItemsTv";
+import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 
 // * Interface
 interface ItemsListProps {
@@ -46,6 +47,8 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const [selected, setSelected] = useState<
     IItems | IItemsNetworking | IItemsGeneral | null
   >(null);
+
+  const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
 
   const { areaDependency } = useFetchAreaDependency();
   const [selectedAreaDependency, setSelectedAreaDependency] = useState<
@@ -288,14 +291,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
               )}
             </button>
           </div>
-
+            
           {dataToShow.length > 0 && invetario && invetario.length > 0 ? (
             isGridView ? (
               <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
                 {(tipoItem === "inventario/general"
                   ? dataToShow
                   : currentData()
-                ).map((item) => (
+                ).map((item: AnyItem) => (
                   <div
                     key={item.id}
                     className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
@@ -303,28 +306,28 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     <div className="flex items-center justify-between mb-14">
                       <div className="flex items-center gap-2">{getIcon()}</div>
                       <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
-                        {tipoItem === "equipos"
-                          ? (item as IItems).nameEquipment
-                          : tipoItem === "dispositivos-red"
-                          ? (item as IItemsNetworking).name
-                          : (item as IItemsGeneral).name}
+                        {strategy?.getName(item)}
                       </h3>
                       <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
-                        {tipoItem === "equipos"
+                        {/* {tipoItem === "equipos"
                           ? (item as IItems).typeEquipment
-                          : ""}
+                          : tipoItem === "inventario/televisores"
+                          ? (item as unknown as IItemsTv).screenType
+                          : ""} */}
+                          {strategy?.getTypeLabel(item)}
                       </p>
                     </div>
                     <hr className="border-gray-300 dark:border-gray-600" />
                     <div className="flex flex-wrap justify-between gap-2 mt-4">
-                      <button
+                      {/* <button
                         onClick={() => handleViewDetails(item)}
                         className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
                       >
                         Ver detalles
-                      </button>
+                      </button> */}
+                      {strategy?.renderDetailsButton(item, handleViewDetails)}
                       <div className="flex flex-wrap gap-2">
-                        {tipoItem === "inventario/general" ? (
+                        {/* {tipoItem === "inventario/general" ? (
                           <ModalFormGeneralItems
                             idSede={idSede}
                             tipoItem={tipoItem}
@@ -367,10 +370,11 @@ const ItemsList: React.FC<ItemsListProps> = ({
                             <div className="absolute z-10 px-2 py-1 mb-2 text-sm text-center text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full group-hover:opacity-100 dark:bg-gray-900">
                               Acta Entrega
                               {/* Flechita detrás del texto */}
-                              <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+                              {/* <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
                             </div>
-                          </div>
-                        )}
+                          </div> 
+                        )} */}
+                        {strategy?.renderActionButtons(item, onItemsUpdate, handleOpen)}
                       </div>
                     </div>
                   </div>
