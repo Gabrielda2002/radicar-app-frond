@@ -132,7 +132,6 @@ const HelpDesk = () => {
     const category = dataCategory.find((cat) => cat.name === selectedCategory);
     const formatCategory = category ? category.id : "";
     formik.setFieldValue("category", formatCategory);
-    console.log(typedTitlesHDOptions[selectedCategory] || []);
     setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
   };
 

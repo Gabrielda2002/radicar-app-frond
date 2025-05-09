@@ -77,9 +77,11 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
           formData,
           tipoItem == "equipos"
             ? "seguimiento-equipos"
-            : tipoItem === "dispositivos-red" ? 
-            "seguimiento-dispositivos-red"
-            : "seguimiento/inventario-general"
+            : tipoItem === "dispositivos-red" 
+            ? "seguimiento-dispositivos-red"
+            : tipoItem === "inventario/general" 
+            ? "seguimiento/inventario-general"
+            : 'seguimiento/televisor'
         );
 
         if (response?.status === 201 || response?.status === 200) {

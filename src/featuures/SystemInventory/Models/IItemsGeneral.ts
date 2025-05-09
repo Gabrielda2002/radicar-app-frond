@@ -35,8 +35,8 @@ export interface IItemsGeneral {
 
 interface Seguimiento {
   id: number;
-  dateEvent: Date;
-  eventType: string;
+  eventDate: Date;
+  typeEvent: string;
   description: string;
   responsableName: string;
   responsableLastName: string;

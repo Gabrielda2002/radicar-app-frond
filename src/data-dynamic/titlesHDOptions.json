@@ -29,13 +29,16 @@
             "CORREO ELECTRONICO"
         ],
         "Administrativo": [
-            "PARAMETRIZACION DE SERVICIOS",
-            "CREACION DE USUARIOS",
+            "PARAMETRIZACIÓN DE SERVICIOS",
+            "CREACIÓN DE USUARIOS",
             "DESBLOQUEAR USUARIOS",
-            "GENERACION DE REPORTES",
+            "GENERACIÓN DE REPORTES",
             "SOLICITUD DE COMPRAS",
             "SOLICITUD DESARROLLO",
-            "CAPACITACION"
+            "CAPACITACIÓN",
+            "CANCELACIÓN DE CITA PANA",
+            "ANULACIÓN DE ORDENAMIENTO",
+            "ACTIVACIÓN USUARIO PANA"
         ],
         "Otros Soportes" : [
             "DIGITURNO",

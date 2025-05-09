@@ -15,8 +15,8 @@ export interface IItemsNetworking {
 
 export interface seguimiento {
     id:                  number;
-    dateEvent:           Date | null;
-    eventType:           string;
+    eventDate:           Date | null;
+    typeEvent:           string;
     description:         string;
     responsableName:     string;
     responsableLastName: string;

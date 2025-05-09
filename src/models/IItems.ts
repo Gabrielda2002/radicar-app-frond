@@ -53,8 +53,8 @@ export interface Component {
 }
 export interface ProcessEquipment {
     id:                  number;
-    dateEvent:           Date;
-    eventType:           string;
+    eventDate:           Date;
+    TypeEvent:           string;
     description:         string;
     responsableName:     string;
     responsableLastName: string;

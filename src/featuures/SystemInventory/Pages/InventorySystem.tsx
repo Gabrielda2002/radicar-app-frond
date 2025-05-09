@@ -8,7 +8,7 @@ import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
 import useFetchItems from "../Hooks/UseFetchItems";
 import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
-import { Hammer } from "lucide-react";
+import { Hammer, Tv  } from "lucide-react";
 
 //*Icons and Images
 import COMPUTO from "@/assets/InvetorySystem/Images/COMPUTOS.jpg";
@@ -37,7 +37,7 @@ const SistemaInventario: React.FC = () => {
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
-    "equipos" | "dispositivos-red" | "inventario/general" | null
+    "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null
   >(null);
 
   // traer los items
@@ -178,6 +178,16 @@ const SistemaInventario: React.FC = () => {
                         icon={<Hammer className="w-8 h-8 text-gray-200" />}
                         onClick={() => {
                           setTipoItem("inventario/general");
+                          setScreen("items");
+                        }}
+                      />
+                      <DeviceCard
+                        title="Televisores"
+                        description="Inventario de televisores"
+                        image={TELECO}
+                        icon={<Tv className="w-8 h-8 text-gray-200" />}
+                        onClick={() => {
+                          setTipoItem("inventario/televisores");
                           setScreen("items");
                         }}
                       />

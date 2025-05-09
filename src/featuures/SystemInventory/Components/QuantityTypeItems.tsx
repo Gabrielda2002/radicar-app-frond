@@ -61,8 +61,6 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
 
     const chartData = prepareChartData();
 
-    console.log('chartData', chartData);
-
     return (
         <>
             <div className='flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800'>
