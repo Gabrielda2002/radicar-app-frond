@@ -15,7 +15,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
   }
 
   getIcon(): ReactNode {
-    return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />
+    return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
   renderDetailsButton(
@@ -34,7 +34,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
 
   renderActionButtons(
     item: IItemsNetworking,
-    refreshItems: () => void,
+    refreshItems: () => void
   ): ReactNode {
     return (
       <>
@@ -47,10 +47,67 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
         />
         <ModalTablaSeguimientoItem
           Items={item}
-          tipoItem='dispositivos-red'
+          tipoItem="dispositivos-red"
           refreshItems={refreshItems}
         />
       </>
     );
+  }
+
+  renderBasicInfo(item: IItemsNetworking): ReactNode {
+    return (
+      <>
+        <li>
+          <strong>Nombre: </strong>
+          {item.name}
+        </li>
+        <li>
+          <strong>Marca: </strong>
+          {item.brand}
+        </li>
+        <li>
+          <strong>Modelo: </strong>
+          {item.model}
+        </li>
+        <li>
+          <strong>Serial: </strong>
+          {item.serial}
+        </li>
+        <li>
+          <strong>Numero de inventario: </strong>
+          {item.inventoryNumber}
+        </li>
+      </>
+    );
+  }
+
+  renderTechnicalDetails(item: IItemsNetworking): ReactNode {
+    return (
+      <>
+        <li>
+            <strong>Direccion IP: </strong>     
+            {item.addressIp}
+        </li>
+        <li>
+          <strong>MAC: </strong>
+          {item.mac}
+        </li>
+      </>
+    )
+  }
+
+  renderAdditionalInfo(item: IItemsNetworking): ReactNode {
+    return (
+      <>
+        <li>
+            <strong>Estado: </strong>     
+            {item.status}
+        </li>
+        <li>
+          <strong>Otros datos: </strong>
+          {item.otherData}
+        </li>
+      </>
+    )
   }
 }
