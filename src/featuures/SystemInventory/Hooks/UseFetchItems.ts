@@ -5,7 +5,7 @@ import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { IItemsTv } from "../Models/IItemsTv";
 
-const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null) => {
+const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares' | null) => {
   const [items, setItems] = useState<IItems[] | IItemsNetworking[] | IItemsGeneral[]| IItemsTv[] | null>(null);
   const [loadingItems, setLoading] = useState<boolean>(true);
   const [errorItems, setError] = useState<string | null>(null);

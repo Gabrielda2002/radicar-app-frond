@@ -36,6 +36,7 @@ interface ItemsListProps {
     | "dispositivos-red"
     | "inventario/general"
     | "inventario/televisores"
+    | "inventario/celulares"
     | null;
   idSede: number | null;
   onItemsUpdate: () => void;

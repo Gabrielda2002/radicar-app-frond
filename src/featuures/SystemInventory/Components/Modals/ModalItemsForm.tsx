@@ -33,7 +33,7 @@ import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModa
 
 interface ModalItemsFormProps {
   idSede: number | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares' | null;
   items: IItems | IItemsNetworking | null;
   idItem: number | null;
   onSuccess: () => void;

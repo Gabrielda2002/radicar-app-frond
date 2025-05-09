@@ -16,7 +16,7 @@ import { IItemsGeneral } from "../../Models/IItemsGeneral";
 import { ItemStrategyFactory } from "../../strategies/ItemStrategy";
 interface ModalItemsDetailsProps {
   item: IItems | IItemsNetworking | IItemsGeneral | null;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares' | null;
   onClose: () => void;
 }
 
