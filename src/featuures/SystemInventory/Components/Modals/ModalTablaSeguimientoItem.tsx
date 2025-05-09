@@ -19,7 +19,7 @@ import { AnyItem } from "../../strategies/ItemStrategy";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
+  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares'  | null;
   refreshItems: () => void;
 }
 
