@@ -15,6 +15,9 @@ export interface ItemStrategy<T> {
   getIcon(): ReactNode;
   renderDetailsButton(item: T, handleViewDetails: (item: T) => void): ReactNode;
   renderActionButtons(item: T, refreshItems: () => void, handleOpen?: (nombreSoporte: string | null, ruta: string) => void): ReactNode;
+  renderBasicInfo(item: T): ReactNode;
+  renderTechnicalDetails(item: T): ReactNode;
+  renderAdditionalInfo(item: T): ReactNode;
 }
 
 // Tipo unión que representa cualquier tipo de elemento de inventario

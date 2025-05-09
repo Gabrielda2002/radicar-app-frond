@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
+import { ItemStrategyFactory } from "../../strategies/ItemStrategy";
 interface ModalItemsDetailsProps {
   item: IItems | IItemsNetworking | IItemsGeneral | null;
   tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | null;
@@ -26,6 +27,8 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState("general");
   const [isMobile, setIsMobile] = useState(false);
+
+  const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -58,7 +61,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </div>
     </div>
   );
-
+// renderizado de perifericos
   const renderPerifericosTable = () => {
     return (
       <TableWrapper>
@@ -101,7 +104,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </TableWrapper>
     );
   };
-
+  // renderizado de componentes
   const renderComponentesTable = () => {
     return (
       <TableWrapper>
@@ -144,7 +147,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </TableWrapper>
     );
   };
-
+// renderizado de software 
   const renderSoftwareTable = () => {
     return (
       <TableWrapper>
@@ -187,7 +190,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </TableWrapper>
     );
   };
-
+  // tab navigation for mobile
   const renderTabNavigation = () => {
     if (isMobile) {
       return (
@@ -259,7 +262,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </div>
     );
   };
-
+  // renderizado de contenido dependiendo del tab activo
   const renderContent = () => {
     switch (activeTab) {
       case "general":
@@ -280,7 +283,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul className="space-y-1">
-                    {tipoItem === "equipos" ||
+                    {/* {tipoItem === "equipos" ||
                       (tipoItem === "inventario/general" && (
                         <li>
                           <strong>Responsable: </strong>
@@ -349,7 +352,8 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                           {(item as IItemsGeneral).dependencyArea}
                         </li>
                       </>
-                    )}
+                    )} */}
+                    {strategy?.renderBasicInfo(item)}
                   </ul>
                 </div>
 
@@ -359,7 +363,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Detalles Técnicos:
                   </h3>
                   <ul className="space-y-1">
-                    <li>
+                    {/* <li>
                       <strong>Serial: </strong>
                       {tipoItem === "equipos"
                         ? (item as IItems).serialEquipment
@@ -399,7 +403,8 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                           {(item as IItemsGeneral).material}
                         </li>
                       </>
-                    )}
+                    )} */}
+                    {strategy?.renderTechnicalDetails(item)}
                   </ul>
                 </div>
 
@@ -409,7 +414,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Adicional:
                   </h3>
                   <ul className="space-y-1">
-                    {tipoItem !== "dispositivos-red" && (
+                    {/* {tipoItem !== "dispositivos-red" && (
                       <li>
                         <strong>Fecha Compra: </strong>
                         {tipoItem === "inventario/general"
@@ -461,7 +466,8 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         <strong>Cantidad: </strong>
                         {(item as IItemsGeneral).quantity}
                       </li>
-                    )}
+                    )} */}
+                    {strategy?.renderAdditionalInfo(item)}
                   </ul>
                 </div>
               </>
