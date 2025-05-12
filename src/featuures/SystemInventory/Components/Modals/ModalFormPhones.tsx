@@ -7,6 +7,8 @@ import { useBlockScroll } from "@/hooks/useBlockScroll";
 import useAnimation from "@/hooks/useAnimations";
 import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import { useCreateItemPh } from "../../Hooks/useCreateItemPh";
+import { toast } from "react-toastify";
 
 interface ModalFormPhoneProps {
   sedeId: number | null;
@@ -27,6 +29,8 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
     () => setIsOpen(false),
     300
   );
+
+  const { handleCreateItem, error, loading } = useCreateItemPh();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -156,12 +160,37 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
       status: "Activo",
       acquisitionValue: 0,
       file: null,
+      sedeId: sedeId,
     },
     validationSchema,
-    onSubmit: (values) => {
-      // Handle form submission
-      console.log(values);
-      refreshItems();
+    onSubmit: async (values) => {
+      try {
+        const response = await handleCreateItem(values);
+
+        if (response && response.data) {
+          toast.success("Datos enviados con éxito", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          formik.resetForm();
+          setTimeout(() => { 
+            setIsOpen(false);
+          }, 3000)
+
+          if (refreshItems) {         
+            refreshItems();
+          }
+
+        }
+      } catch (error) {
+        console.log('error inesperado', error);
+      }
     },
   });
 
@@ -983,10 +1012,7 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                     {/* file */}
                     <div className="flex flex-col justify-center w-full">
                       <div className="flex items-center">
-                        <label
-                          htmlFor="file"
-                          className="text-sm font-semibold"
-                        >
+                        <label htmlFor="file" className="text-sm font-semibold">
                           Archivo de entrega:
                         </label>
                       </div>
@@ -996,7 +1022,9 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                         id="file"
                         name="file"
                         onChange={(event) => {
-                          const file = event.target.files ? event.target.files[0] : null;
+                          const file = event.target.files
+                            ? event.target.files[0]
+                            : null;
                           formik.setFieldValue("file", file);
                         }}
                         onBlur={formik.handleBlur}
@@ -1012,9 +1040,14 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                           {formik.errors.file}
                         </div>
                       )}
-                      </div>
-
+                    </div>
                   </div>
+
+                  {error && (
+                    <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
+                      {error}
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                     <button
@@ -1027,7 +1060,7 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                     <button
                       className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
                       type="submit"
-                      disabled={!formik.isValid}
+                      disabled={loading || !formik.isValid}
                     >
                       {items ? "Actualizar" : "Crear"}
                     </button>

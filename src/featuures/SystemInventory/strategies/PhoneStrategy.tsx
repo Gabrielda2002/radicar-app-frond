@@ -149,7 +149,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
     return (
       <ModalFormPhones
         sedeId={idSede}
-        refreshItems={refreshItems}
+        refreshItems={refreshItems} 
         items={items}
       />
     );
