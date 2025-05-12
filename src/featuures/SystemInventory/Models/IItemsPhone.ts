@@ -14,15 +14,9 @@ export interface IItemsPhone {
     responsableId: number;
     responsableName: string;
     responsableLastName: string;
-    actaRelation: ActaRelation;
+    nameSaved: string;
     seguimientoRelation:  SeguimientoRelation[];
 }
-
-interface ActaRelation {
-    id: number;
-    name: string;
-}
-
 interface SeguimientoRelation {
     id: number;
     description: string;

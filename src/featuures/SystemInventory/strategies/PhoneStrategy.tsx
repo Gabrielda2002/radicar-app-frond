@@ -4,6 +4,7 @@ import { ItemStrategy } from "./ItemStrategy";
 import { Smartphone } from "lucide-react";
 import ModalFormPhones from "../Components/Modals/ModalFormPhones";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
+import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 
 export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
   getName(item: IItemsPhone): string {
@@ -34,8 +35,8 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
 
   renderActionButtons(
     item: IItemsPhone,
-    refreshItems: () => void
-    // handleOpen?: (nombreSoporte: string | null, ruta: string) => void
+    refreshItems: () => void,
+    handleOpen?: (nombreSoporte: string | null, ruta: string) => void
   ): ReactNode {
     return (
       <>
@@ -50,6 +51,17 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           refreshItems={refreshItems}
         />
         {/* falta boton para abrir actas */}
+        <div className="relative group">
+          <button
+            type="button"
+            className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+            onClick={() => handleOpen && handleOpen(item.nameSaved || "", "ActasEntrega")}
+            aria-label="Acta de entrega"
+          >
+            <ClipboardDocumentCheckIcon className="w-7 h-7" />
+          </button>
+          {/* Tooltip */}
+        </div>
       </>
     );
   }
@@ -107,10 +119,6 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
   renderAdditionalInfo(item: IItemsPhone): ReactNode {
     return (
       <>
-        <li>
-          <strong>Acta de Entrega: </strong>
-          {item.actaRelation?.name || "No asignada"}
-        </li>
         <li>
           <strong>Sede ID: </strong>
           {item.sedeId}
