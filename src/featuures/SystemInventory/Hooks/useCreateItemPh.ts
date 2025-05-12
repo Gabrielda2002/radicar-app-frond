@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPhone } from "../Services/createPhone";
+import { updatePhone } from "../Services/updatePhone";
 
 export const useCreateItemPh = () => {
     const  [ loading, setLoading ] = useState<boolean>(false);
@@ -20,15 +21,37 @@ export const useCreateItemPh = () => {
         } catch (error: any) {
             if (error.response.status === 400) {
                 setError("Revise los campos: " + error.mensage);
+            }else{
+                setError("Error al crear el item: " + error);
             }
-            setError("Error al crear el item: " + error);
-            console.log('entra al catch')
             console.log(error)
         }finally{
             setLoading(false);
         }
     }
 
-    return { handleCreateItem, error, loading };
+    const handleUpdatePhone = async (items: Object, id: number) => {
+        try {
+            
+            const response = await updatePhone(items, id);
+
+            if (response.status === 200 || response.status === 201) {
+                setError(null);
+                return response;
+            }
+            
+        } catch (error: any) {
+            if (error.response.status === 400) {
+                setError("Revise los campos: " + error.mensage);
+            }else if (error.response.status === 404) {
+                setError("No se encontró el item: " + error.mensage);
+            }else{
+                setError("Error al crear el item: " + error);
+            }
+            console.log(error)
+        }
+    }
+
+    return { handleCreateItem, handleUpdatePhone ,error, loading };
 
 }

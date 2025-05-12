@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IItemsPhone } from "../../Models/IItemsPhone";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -9,6 +9,7 @@ import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { useCreateItemPh } from "../../Hooks/useCreateItemPh";
 import { toast } from "react-toastify";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface ModalFormPhoneProps {
   sedeId: number | null;
@@ -30,7 +31,8 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
     300
   );
 
-  const { handleCreateItem, error, loading } = useCreateItemPh();
+  const { handleCreateItem, handleUpdatePhone, error, loading } =
+    useCreateItemPh();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -165,7 +167,10 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await handleCreateItem(values);
+        console.log(values);
+        const response = items
+          ? await handleUpdatePhone(values, items.id)
+          : await handleCreateItem(values);
 
         if (response && response.data) {
           toast.success("Datos enviados con éxito", {
@@ -179,20 +184,52 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
             theme: "colored",
           });
           formik.resetForm();
-          setTimeout(() => { 
+          setTimeout(() => {
             setIsOpen(false);
-          }, 3000)
+          }, 3000);
 
-          if (refreshItems) {         
+          if (refreshItems) {
             refreshItems();
           }
-
         }
       } catch (error) {
-        console.log('error inesperado', error);
+        console.log("error inesperado", error);
       }
     },
   });
+
+  useEffect(() => {
+    if (items) {
+      formik.setValues({
+        ...formik.values,
+        name: items.name,
+        brand: items.brand,
+        model: items.model,
+        serial: items.serial,
+        imei: items.imei,
+        operativeSystem: items.operativeSystem,
+        versionSO: items.versionSO,
+        storage: items.storage,
+        storageRam: items.storageRam,
+        phoneNumber: items.phoneNumber,
+        operador: items.operador,
+        typePlan: items.typePlan,
+        dueDatePlan: FormatDate(items.dueDatePlan, false),
+        macWifi: items.macWifi,
+        addressBluetooth: items.addressBluetooth,
+        purchaseDate: FormatDate(items.purchaseDate, false),
+        warrantyTime: items.warrantyTime,
+        warranty: !!items.warranty,
+        responsable: items.responsableId,
+        caseProtector: !!items.protectorCase,
+        tenperedGlass: !!items.temperedGlass,
+        observations: items.observation,
+        acquisitionValue: parseInt(items.acquisitionValue, 10),
+        deliveryDate: FormatDate(items.deliveryDate, false),
+        status: items.status,
+      });
+    }
+  }, [items]);
 
   return (
     <>
