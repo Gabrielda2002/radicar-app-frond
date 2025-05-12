@@ -85,29 +85,48 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     return (
       <>
         <li>
-            <strong>Direccion IP: </strong>     
-            {item.addressIp}
+          <strong>Direccion IP: </strong>
+          {item.addressIp}
         </li>
         <li>
           <strong>MAC: </strong>
           {item.mac}
         </li>
       </>
-    )
+    );
   }
 
   renderAdditionalInfo(item: IItemsNetworking): ReactNode {
     return (
       <>
         <li>
-            <strong>Estado: </strong>     
-            {item.status}
+          <strong>Estado: </strong>
+          {item.status}
         </li>
         <li>
           <strong>Otros datos: </strong>
           {item.otherData}
         </li>
       </>
-    )
+    );
+  }
+
+  renderCreateButton(
+    idSede: number,
+    items: IItemsNetworking,
+    refreshItems: () => void,
+    idItems: number,
+    tipoTtem?: string,
+    // isUpdate?: boolean
+  ): ReactNode {
+    return (
+      <ModalItemsForm
+        idSede={idSede}
+        tipoItem={tipoTtem || "dispositivos-red"}
+        items={items}
+        idItem={idItems}
+        onSuccess={refreshItems}
+      />
+    );
   }
 }

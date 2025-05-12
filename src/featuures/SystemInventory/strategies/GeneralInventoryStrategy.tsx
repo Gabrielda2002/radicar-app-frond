@@ -35,7 +35,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
 
   renderActionButtons(
     item: IItemsGeneral,
-    refreshItems: () => void,
+    refreshItems: () => void
   ): ReactNode {
     return (
       <>
@@ -125,7 +125,9 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
         <li>
           <strong>Información de Compra: </strong>
           <ul className="ml-4">
-            <li>Fecha de Adquisición: {FormatDate(item.acquisitionDate, false)}</li>
+            <li>
+              Fecha de Adquisición: {FormatDate(item.acquisitionDate, false)}
+            </li>
             <li>Valor de Compra: {item.purchaseValue}</li>
           </ul>
         </li>
@@ -148,6 +150,25 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
           </ul>
         </li>
       </div>
+    );
+  }
+
+  renderCreateButton(
+    idSede: number,
+    items: IItemsGeneral,
+    refreshItems: () => void,
+    // idItems: number,
+    // tipoTtem?: string,
+    // isUpdate?: boolean
+  ): ReactNode {
+    return (
+      <ModalFormGeneralItems
+        idSede={idSede}
+        tipoItem={"inventario/general"}
+        isUpdate={false}
+        items={items}
+        refreshItems={refreshItems}
+      />
     );
   }
 }

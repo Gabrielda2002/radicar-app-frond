@@ -34,7 +34,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
 
   renderActionButtons(
     item: IItemsPhone,
-    refreshItems: () => void,
+    refreshItems: () => void
     // handleOpen?: (nombreSoporte: string | null, ruta: string) => void
   ): ReactNode {
     return (
@@ -45,9 +45,9 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           items={item}
         />
         <ModalTablaSeguimientoItem
-            Items={item}
-            tipoItem="inventario/celulares"
-            refreshItems={refreshItems}
+          Items={item}
+          tipoItem="inventario/celulares"
+          refreshItems={refreshItems}
         />
         {/* falta boton para abrir actas */}
       </>
@@ -55,30 +55,30 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
   }
 
   renderBasicInfo(item: IItemsPhone): ReactNode {
-      return (
-        <>
-            <li>
-                <strong>Nombre: </strong>
-                {item.name}
-            </li>
-            <li>
-                <strong>Marca: </strong>
-                {item.brand}
-            </li>
-            <li>
-                <strong>Modelo: </strong>
-                {item.model}
-            </li>
-            <li>
-                <strong>Serial: </strong>
-                {item.serial}
-            </li>
-            <li>
-                <strong>Responsable: </strong>
-                {item.responsableName} {item.responsableLastName || "No asignado"}
-            </li>
-        </>
-      )
+    return (
+      <>
+        <li>
+          <strong>Nombre: </strong>
+          {item.name}
+        </li>
+        <li>
+          <strong>Marca: </strong>
+          {item.brand}
+        </li>
+        <li>
+          <strong>Modelo: </strong>
+          {item.model}
+        </li>
+        <li>
+          <strong>Serial: </strong>
+          {item.serial}
+        </li>
+        <li>
+          <strong>Responsable: </strong>
+          {item.responsableName} {item.responsableLastName || "No asignado"}
+        </li>
+      </>
+    );
   }
 
   renderTechnicalDetails(item: IItemsPhone): ReactNode {
@@ -117,11 +117,15 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
         </li>
         <li>
           <strong>Fecha de Registro: </strong>
-          {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "No registrada"}
+          {item.createdAt
+            ? new Date(item.createdAt).toLocaleDateString()
+            : "No registrada"}
         </li>
         <li>
           <strong>Última Actualización: </strong>
-          {item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : "No registrada"}
+          {item.updatedAt
+            ? new Date(item.updatedAt).toLocaleDateString()
+            : "No registrada"}
         </li>
         {/* {item.seguimientoRelation && item.seguimientoRelation.length > 0 && (
           <li>
@@ -134,4 +138,20 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
     );
   }
 
+  renderCreateButton(
+    idSede: number,
+    items: IItemsPhone,
+    refreshItems: () => void,
+    // idItems: number,
+    // tipoTtem?: string,
+    // isUpdate?: boolean
+  ): ReactNode {
+    return (
+      <ModalFormPhones
+        sedeId={idSede}
+        refreshItems={refreshItems}
+        items={items}
+      />
+    );
+  }
 }

@@ -20,6 +20,7 @@ export interface ItemStrategy<T> {
   renderBasicInfo(item: T): ReactNode;
   renderTechnicalDetails(item: T): ReactNode;
   renderAdditionalInfo(item: T): ReactNode;
+  renderCreateButton(idSede: number,items: T | null, refreshItems: () => void,idItems: number | null,tipoTtem?: string | null, isUpdate?: boolean ): ReactNode;
 }
 
 // Tipo unión que representa cualquier tipo de elemento de inventario

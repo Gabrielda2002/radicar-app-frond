@@ -170,4 +170,22 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
       </>      
     );
   }
+
+  renderCreateButton(
+    idSede: number,
+    items: IItemsTv,
+    refreshItems: () => void,
+    // idItems: number,
+    // tipoTtem?: string,
+    // isUpdate?: boolean
+  ): ReactNode {
+    return (
+      <ModalFormTv
+        sedeId={idSede}
+        refreshItems={refreshItems}
+        items={items}
+      />
+    );
+  }
+
 }
