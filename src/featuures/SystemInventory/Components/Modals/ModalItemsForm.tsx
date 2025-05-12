@@ -131,19 +131,25 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         }),
         deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
         manager: Yup.string().required(),
-        docDelivery: Yup.mixed().nullable().optional()
-                    .test("fileSize", "El archivo no debe ser menor a 1mb", (value: any) => {
-                        if (value) {
-                            return value.size <= 1000000;
-                        }
-                        return true;
-                    })
-                    .test('fileType', 'Solo se permiten archivos PDF', (value: any) => {
-                        if (value) {
-                            return value.type === 'application/pdf';
-                        }
-                        return true;
-                    }),
+        docDelivery: Yup.mixed()
+          .nullable()
+          .optional()
+          .test(
+            "fileSize",
+            "El archivo no debe ser menor a 1mb",
+            (value: any) => {
+              if (value) {
+                return value.size <= 1000000;
+              }
+              return true;
+            }
+          )
+          .test("fileType", "Solo se permiten archivos PDF", (value: any) => {
+            if (value) {
+              return value.type === "application/pdf";
+            }
+            return true;
+          }),
       };
     }
 
@@ -184,7 +190,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       manager: "",
       candado: false,
       codigo: "",
-      docDelivery: null
+      docDelivery: null,
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -210,7 +216,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           formData.append("managerId", values.manager);
           formData.append("lock", values.candado.toString());
           formData.append("codeLock", values.codigo);
-          if(values.docDelivery) formData.append("file", values.docDelivery);
+          if (values.docDelivery) formData.append("file", values.docDelivery);
         } else {
           formData.append("otherData", values.otherData);
           formData.append("status", values.status);
@@ -283,35 +289,53 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
   });
 
   useEffect(() => {
-      if (items && idItem) {
-        formik.setValues({
-          name: (items as IItems).nameEquipment || (items as IItemsNetworking).name,
-          typeEquipment: "typeEquipment" in items ? items.typeEquipment : "",
-          brand: (items as IItems).brandEquipment || (items as IItemsNetworking).brand,
-          model: (items as IItems).modelEquipment || (items as IItemsNetworking).model,
-          serial: (items as IItems).serialEquipment || (items as IItemsNetworking).serial,
-          operationalSystem:
-            "operationalSystem" in items ? items.operationalSystem : "",
-          mac: items.mac,
-          purchaseDate:
-            "purchaseDate" in items ? FormatDate(items.purchaseDate, false) : "",
-          warrantyTime: "warrantyTime" in items ? 
-            (items.warrantyTime ? String(items.warrantyTime) : "") : "",
-          warranty: "warranty" in items ? Boolean(items.warranty) : false,
-          deliveryDate:
-            "deliveryDate" in items ? FormatDate(items.deliveryDate, false) : "",
-          addressIp: items.addressIp,
-          otherData: "otherData" in items ? items.otherData : "",
-          status: "status" in items ? items.status : "",
-          dhcp: "dhcp" in items ? Boolean(items.dhcp) : false,
-          manager: "idUser" in items ? String(items.idUser) : "",
-          candado: "lock" in items ? Boolean((items as IItems).lock) === true ? true : false : false,
-          codigo: "lockKey" in items ? 
-            (String((items as IItems).lockKey) === "N/A" ? "" : String((items as IItems).lockKey)) : "",
-          docDelivery: null
-        });
-      }
-    }, [items, idItem, tipoItem]);
+    if (items && idItem) {
+      formik.setValues({
+        name:
+          (items as IItems).nameEquipment || (items as IItemsNetworking).name,
+        typeEquipment: "typeEquipment" in items ? items.typeEquipment : "",
+        brand:
+          (items as IItems).brandEquipment || (items as IItemsNetworking).brand,
+        model:
+          (items as IItems).modelEquipment || (items as IItemsNetworking).model,
+        serial:
+          (items as IItems).serialEquipment ||
+          (items as IItemsNetworking).serial,
+        operationalSystem:
+          "operationalSystem" in items ? items.operationalSystem : "",
+        mac: items.mac,
+        purchaseDate:
+          "purchaseDate" in items ? FormatDate(items.purchaseDate, false) : "",
+        warrantyTime:
+          "warrantyTime" in items
+            ? items.warrantyTime
+              ? String(items.warrantyTime)
+              : ""
+            : "",
+        warranty: "warranty" in items ? Boolean(items.warranty) : false,
+        deliveryDate:
+          "deliveryDate" in items ? FormatDate(items.deliveryDate, false) : "",
+        addressIp: items.addressIp,
+        otherData: "otherData" in items ? items.otherData : "",
+        status: "status" in items ? items.status : "",
+        dhcp: "dhcp" in items ? Boolean(items.dhcp) : false,
+        manager: "idUser" in items ? String(items.idUser) : "",
+        candado:
+          "lock" in items
+            ? Boolean((items as IItems).lock) === true
+              ? true
+              : false
+            : false,
+        codigo:
+          "lockKey" in items
+            ? String((items as IItems).lockKey) === "N/A"
+              ? ""
+              : String((items as IItems).lockKey)
+            : "",
+        docDelivery: null,
+      });
+    }
+  }, [items, idItem, tipoItem]);
 
   return (
     <>

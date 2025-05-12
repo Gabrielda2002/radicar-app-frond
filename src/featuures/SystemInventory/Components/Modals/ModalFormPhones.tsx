@@ -111,6 +111,21 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
     acquisitionValue: Yup.string().required(
       "El valor de adquisicion es requerido"
     ),
+    file: Yup.mixed()
+      .nullable()
+      .optional()
+      .test("fileSize", "El archivo debe ser menor a 1MB", (value: any) => {
+        if (value) {
+          return value.size <= 1024 * 1024; // 1MB
+        }
+        return true; // Si no hay archivo, no se aplica la validación
+      })
+      .test("fileType", "Solo se pertiten archivos PDF", (value: any) => {
+        if (value) {
+          return value.type === "application/pdf";
+        }
+        return true;
+      }),
   });
 
   const formik = useFormik({
@@ -140,6 +155,7 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
       observations: "",
       status: "Activo",
       acquisitionValue: 0,
+      file: null,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -963,6 +979,41 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                           </div>
                         )}
                     </div>
+
+                    {/* file */}
+                    <div className="flex flex-col justify-center w-full">
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="file"
+                          className="text-sm font-semibold"
+                        >
+                          Archivo de entrega:
+                        </label>
+                      </div>
+
+                      <input
+                        type="file"
+                        id="file"
+                        name="file"
+                        onChange={(event) => {
+                          const file = event.target.files ? event.target.files[0] : null;
+                          formik.setFieldValue("file", file);
+                        }}
+                        onBlur={formik.handleBlur}
+                        accept=".pdf"
+                        className={`w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
+                          formik.touched.file && formik.errors.file
+                            ? "border-red-500 dark:border-red-500"
+                            : "border-gray-200 dark:border-gray-600"
+                        }`}
+                      />
+                      {formik.touched.file && formik.errors.file && (
+                        <div className="text-red-500 text-sm">
+                          {formik.errors.file}
+                        </div>
+                      )}
+                      </div>
+
                   </div>
 
                   <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
