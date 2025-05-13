@@ -16,6 +16,7 @@ import {
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem } from "../../strategies/ItemStrategy";
+import { IItemsPhone } from "../../Models/IItemsPhone";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
@@ -49,6 +50,8 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
         return (Items as IItemsGeneral).seguimiento || [];
       case "inventario/televisores":
         return (Items as IItemsTv).seguimiento || [];
+      case "inventario/celulares":
+        return (Items as IItemsPhone).seguimientoRelation || [];
       default:
         return [];
     }
