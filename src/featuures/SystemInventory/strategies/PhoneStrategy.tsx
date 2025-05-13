@@ -89,6 +89,18 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           <strong>Responsable: </strong>
           {item.responsableName} {item.responsableLastName || "No asignado"}
         </li>
+        <li>
+          <strong>Número telefónico: </strong>
+          {item.phoneNumber || "No registrado"}
+        </li>
+        <li>
+          <strong>Operador: </strong>
+          {item.operador || "No registrado"}
+        </li>
+        <li>
+          <strong>Plan: </strong>
+          {item.typePlan || "No registrado"}
+        </li>
       </>
     );
   }
@@ -112,6 +124,26 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           <strong>Almacenamiento: </strong>
           {item.storage || "No especificado"}
         </li>
+        <li>
+          <strong>Memoria RAM: </strong>
+          {item.storageRam || "No especificado"}
+        </li>
+        <li>
+          <strong>MAC WiFi: </strong>
+          {item.macWifi || "No registrada"}
+        </li>
+        <li>
+          <strong>Dirección Bluetooth: </strong>
+          {item.addressBluetooth || "No registrada"}
+        </li>
+        <li>
+          <strong>Protector: </strong>
+          {item.protectorCase ? "Sí" : "No"}
+        </li>
+        <li>
+          <strong>Vidrio Templado: </strong>
+          {item.temperedGlass ? "Sí" : "No"}
+        </li>
       </>
     );
   }
@@ -120,28 +152,43 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
     return (
       <>
         <li>
-          <strong>Sede ID: </strong>
-          {item.sedeId}
+          <strong>Estado: </strong>
+          {item.status || "No especificado"}
         </li>
         <li>
-          <strong>Fecha de Registro: </strong>
-          {item.createdAt
-            ? new Date(item.createdAt).toLocaleDateString()
+          <strong>Fecha de compra: </strong>
+          {item.purchaseDate
+            ? new Date(item.purchaseDate).toLocaleDateString()
             : "No registrada"}
         </li>
         <li>
-          <strong>Última Actualización: </strong>
-          {item.updatedAt
-            ? new Date(item.updatedAt).toLocaleDateString()
+          <strong>Fecha de entrega: </strong>
+          {item.deliveryDate
+            ? new Date(item.deliveryDate).toLocaleDateString()
             : "No registrada"}
         </li>
-        {/* {item.seguimientoRelation && item.seguimientoRelation.length > 0 && (
-          <li>
-            <strong>Último Seguimiento: </strong>
-            {item.seguimientoRelation[0].description || "Sin descripción"} 
-            ({new Date(item.seguimientoRelation[0].eventDate).toLocaleDateString()})
-          </li>
-        )} */}
+        <li>
+          <strong>Fecha vencimiento plan: </strong>
+          {item.dueDatePlan
+            ? new Date(item.dueDatePlan).toLocaleDateString()
+            : "No registrada"}
+        </li>
+        <li>
+          <strong>Garantía: </strong>
+          {item.warranty ? "Sí" : "No"}
+        </li>
+        <li>
+          <strong>Tiempo de garantía: </strong>
+          {item.warrantyTime || "No especificado"}
+        </li>
+        <li>
+          <strong>Valor de adquisición: </strong>
+          {item.acquisitionValue || "No registrado"}
+        </li>
+        <li>
+          <strong>Observaciones: </strong>
+          {item.observation || "Sin observaciones"}
+        </li>
       </>
     );
   }
