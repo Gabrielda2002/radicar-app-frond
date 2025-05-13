@@ -60,7 +60,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           <button
             type="button"
             className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() => handleOpen(item.nameDocument || "", "ActasEntrega")}
+            onClick={() =>handleOpen && handleOpen(item.nameDocument || "", "ActasEntrega")}
             aria-label="Acta de entrega"
           >
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
