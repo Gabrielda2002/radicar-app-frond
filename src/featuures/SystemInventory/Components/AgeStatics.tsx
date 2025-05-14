@@ -24,9 +24,9 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
     const { years, months, days } = ageStatics.averageAge;
     const parts = [];
     
-    if (years > 0) parts.push(`${years} ${years === 1 ? "año" : "años"}`);
-    if (months > 0) parts.push(`${months} ${months === 1 ? "mes" : "meses"}`);
-    if (days > 0) parts.push(`${days} ${days === 1 ? "día" : "días"}`);
+    if (years > 0) parts.push(`${Number(years).toFixed(1)} ${years === 1 ? "año" : "años"}`);
+    if (months > 0) parts.push(`${Number(months).toFixed(1)} ${months === 1 ? "mes" : "meses"}`);
+    if (days > 0) parts.push(`${Number(days).toFixed(1)} ${days === 1 ? "día" : "días"}`);
     
     return parts.join(', ');
   };
@@ -43,9 +43,9 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
             {error}
           </div>
         ) : ageStatics ? (
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             {/* Gráfico de barras */}
-            <div className='col-span-2 h-80 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
+            <div className='col-span-1 h-80 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
               <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">Distribución por Edad</h2>
               <ResponsiveContainer width="100%" height="90%">
                 <BarChart
@@ -63,7 +63,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
             </div>
 
             {/* Tarjeta con edad promedio */}
-            <div className='h-80 flex flex-col'>
+            <div className='h-80 flex flex-wrap md:flex-col'>
               <div className='flex-1 bg-green-50 dark:bg-green-900/30 p-4 rounded-lg shadow-sm mb-4'>
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Edad Promedio</h3>
                 <div className='flex flex-col items-center justify-center h-full'>
