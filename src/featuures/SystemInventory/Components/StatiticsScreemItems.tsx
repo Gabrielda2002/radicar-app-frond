@@ -10,6 +10,8 @@ const StatiticsScreemItems = () => {
     { id: 1, name: "Computadoras" },
     { id: 2, name: "Dispositivos Red" },
     { id: 3, name: "Inventario General" },
+    { id: 4, name: "Televisores"},
+    { id: 5, name: "Celulares"}
   ];
 
   const [activeSection, setActiveSection] = useState(1);
@@ -62,6 +64,18 @@ const StatiticsScreemItems = () => {
           ) : activeSection === 2 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="dispositivos-red" />
+            </div>
+          ) :  activeSection === 4 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <QuantityItemsStatics typeItem="inventario/televisores" />
+              <AgeStatics typeItem="inventario/televisores" />
+              <ExpiringSoonStatics typeItem="inventario/televisores" />
+            </div>
+          ): activeSection === 5 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <QuantityItemsStatics typeItem="inventario/celulares"/>
+              <AgeStatics typeItem="inventario/celulares" />
+              <ExpiringSoonStatics typeItem="inventario/celular" />
             </div>
           ) : null}
         </div>

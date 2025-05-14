@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IExpiringEquipment } from "../Models/IExpiringEquipment";
 import { getExpiringSoonEquipment } from "../Services/getExpiringSoonEquipment";
 
-export const useFetchExpiringSoon = (typeItem: "equipos" | "inventario/general") => {
+export const useFetchExpiringSoon = (typeItem: string) => {
     const [expiringSoon, setExpiringSoon] = useState<IExpiringEquipment>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -13,7 +13,13 @@ export const useFetchExpiringSoon = (typeItem: "equipos" | "inventario/general")
                 setLoading(true);
 
                 // cambio endpoitn dependiendo del tipo de item
-                const endPoint = typeItem === "equipos" ? 'equipments/statics/warrantyExpiration' : 'inventario/general/statistics/warrantyExpiration';
+                const endPoint = typeItem === "equipos" 
+                ? 'equipments/statics/warrantyExpiration' 
+                : typeItem ==='inventario/general'
+                ? 'inventario/general/statistics/warrantyExpiration'
+                : typeItem === 'inventario/televisores' 
+                ? 'tv/statics/warrantyExpiration'
+                : 'celular/statics/warrantyExpiration';
                 
                 const response = await getExpiringSoonEquipment(endPoint);
     
@@ -29,6 +35,6 @@ export const useFetchExpiringSoon = (typeItem: "equipos" | "inventario/general")
             }
         }
         fetchExpiringSoon();
-    }, [])
+    }, [typeItem])
     return { expiringSoon, loading, error };
 }

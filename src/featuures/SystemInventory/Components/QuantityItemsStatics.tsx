@@ -4,7 +4,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 interface QuantityItemsStaticsProps {
-  typeItem: "equipos" | "dispositivos-red" | "inventario/general";
+  typeItem: string;
 }
 
 const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({

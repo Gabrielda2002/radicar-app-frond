@@ -14,7 +14,13 @@ export const useFetchAgeStatics = (typeItem: string) => {
                 
                 setLoading(true);
 
-                const endPoint = typeItem === "equipos" ? "equipments/statics/age" : "inventario/general/statistics/age"
+                const endPoint = typeItem === "equipos" 
+                ? "equipments/statics/age" 
+                : typeItem === 'inventario/general'
+                ? "inventario/general/statistics/age"
+                : typeItem === 'inventario/televisores' 
+                ? 'tv/statics/age'
+                : 'celular/statics/age'
 
                 const response = await getCustomAgeStatics(endPoint)
 
@@ -30,7 +36,7 @@ export const useFetchAgeStatics = (typeItem: string) => {
             }
         }
         fetchData();
-    }, [])
+    }, [typeItem])
 
     return {ageStatics, loading, error};
     
