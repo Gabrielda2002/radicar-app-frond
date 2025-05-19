@@ -77,6 +77,8 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
                     <th className="">Comentario</th>
+                    <th className="">Nombre</th>
+                    <th className="">Apellido</th>
                     <th className="">Fecha Creacion</th>
                   </tr>
                 </thead>
@@ -84,6 +86,8 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({
                   {dataComments.map((c) => (
                     <tr key={c.id}>
                       <td>{c.comment}</td>
+                      <td>{c.responsable}</td>
+                      <td>{c.lastName}</td>
                       <td>{FormatDate(c.createdAt)}</td>
                     </tr>
                   ))}

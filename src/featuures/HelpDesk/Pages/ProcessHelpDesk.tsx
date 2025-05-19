@@ -10,6 +10,7 @@ import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import { useTickets } from "@/context/ticketContext.tsx";
+import ModalCommetsTicket from "../Components/ModalCommetsTicket";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -138,6 +139,7 @@ const ProcessHelpDesk = () => {
                   <th className="p-2">Municipio</th>
                   <th className="p-2">Creacion</th>
                   <th className="p-2">Ultima modificacion</th>
+                  <th className="p-2">Comentario </th>
                   <th className="p-2">Accion</th>
                 </tr>
               </thead>
@@ -173,6 +175,9 @@ const ProcessHelpDesk = () => {
                     <td className="p-2">{ticket.municipio}</td>
                     <td className="p-2">{FormatDate(ticket.createdAt)}</td>
                     <td className="p-2">{FormatDate(ticket.updatedAt)}</td>
+                    <td className="p-2 flex justify-center">
+                      <ModalCommetsTicket idTicket={ticket.id}/>
+                    </td>
                     <td className="p-2">
                       {ticket.status != "Cerrado" ? (
                         <CerrarModal
