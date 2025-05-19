@@ -27,7 +27,7 @@ import recobro from "/assets/recobro.svg";
 import carta from "/assets/carta.svg";
 import auditoria from "/assets/auditoria.svg";
 import ticket from "/assets/ticket.svg";
-import { Cpu } from "lucide-react";
+import { Box } from "lucide-react";
 
 const SideBar: FC = () => {
   const { isCollapsed, toggleSideBar } = useSidebar();
@@ -189,8 +189,8 @@ const SideBar: FC = () => {
               >
                 <SubCategory
                   to="/SistemaInventario"
-                  icon={Cpu}
-                  title="Inventario Tecnologico"
+                  icon={Box}
+                  title="Inventario General"
                   isCollapsed={isCollapsed}
                 />
               </Category>
