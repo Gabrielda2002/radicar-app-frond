@@ -315,7 +315,7 @@ const SideBar: FC = () => {
             )}
 
             {/* Categoria de gestión de tickets */}
-            {[1].includes(Number(rol)) && (
+            {[1, 17].includes(Number(rol)) && (
               <div>
                 <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                   Mesa de Ayuda

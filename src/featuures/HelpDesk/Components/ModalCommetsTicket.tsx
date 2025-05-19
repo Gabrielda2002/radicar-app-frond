@@ -9,7 +9,9 @@ interface ModalCommentsTicketProps {
   idTicket: number;
 }
 
-const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
+const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({
+  idTicket,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useBlockScroll(isModalOpen);
@@ -25,15 +27,15 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
   });
 
   // if(loadingComments) return <LoadingSpinner/>
-  if(errorComments) return <p className="text-red-600">{errorComments}</p>
+  if (errorComments) return <p className="text-red-600">{errorComments}</p>;
 
   return (
     <>
       <button
         type="button"
         onClick={() => {
-          setIsModalOpen(true)
-          fetchComments(idTicket)
+          setIsModalOpen(true);
+          fetchComments(idTicket);
         }}
         className="flex items-center justify-center hover:opacity-80 transition-opacity text-black dark:text-white"
         title="Comentarios"

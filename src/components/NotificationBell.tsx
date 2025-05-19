@@ -162,7 +162,7 @@ const NotificationBell: React.FC = () => {
                         />
                       </div>
                       {/* marcar como leido solo a los roles 1*/}
-                      {[1].includes(Number(rol)) && (
+                      {[1, 17].includes(Number(rol)) && (
                         <div className="flex items-center">
                           <button
                             onClick={() => {

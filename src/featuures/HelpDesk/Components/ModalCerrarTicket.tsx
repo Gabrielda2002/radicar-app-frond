@@ -24,7 +24,8 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // hook trae comentarios tickets
-  const { dataComments, errorComments, fetchComments } = useFetchCommentsByTicket();
+  const { dataComments, errorComments, fetchComments } =
+    useFetchCommentsByTicket();
   useBlockScroll(showModal);
 
   const { validateUserTicketStatus } = useTickets();
@@ -200,14 +201,17 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                           <th>Fecha Creacion</th>
                         </tr>
                       </thead>
-                      {dataComments.map((comment) => (
-                        <tbody className="text-xs text-center dark:text-gray-200">
-                          <tr className="border-b dark:border-gray-700">
+                      <tbody className="text-xs text-center dark:text-gray-200">
+                        {dataComments.map((comment) => (
+                          <tr
+                            key={comment.id}
+                            className="border-b dark:border-gray-700"
+                          >
                             <td>{comment.comment}</td>
                             <td>{FormatDate(comment.createdAt)}</td>
                           </tr>
-                        </tbody>
-                      ))}
+                        ))}
+                      </tbody>
                     </table>
                   </div>
                 )}
