@@ -7,7 +7,6 @@ import {
   CpuChipIcon,
   ServerIcon,
   Cog6ToothIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
@@ -373,43 +372,52 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
         Ver detalles
       </button>
       {isOpen && (
-        <section className={`fixed inset-0 z-50 flex items-center justify-center py-4 transition-opacity duration-300 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm ${
-          showAnimation && !closing ? "opacity-100" : "opacity-0"
-        }`}>
-          <div className="w-full max-w-6xl p-3 mx-4 my-4 bg-white rounded-md shadow-lg md:mx-auto md:p-6 dark:bg-gray-900">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold md:text-3xl dark:text-white">
-                Detalles del dispositivo  
+        <section
+          className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div
+            className={`w-full max-w-6xl overflow-y-hidden transition-transform duration-300 transform bg-white rounded-md shadow-lg dark:bg-gray-600 ${
+              showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+            }`}
+          >
+            <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 border-b-gray-900 dark:bg-gray-600 dark:border-b-white">
+              <h3 className="text-2xl font-semibold text-color dark:text-gray-200">
+                Detalles del Item
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="text-xl text-gray-400 duration-300 rounded-md w-7 h-7 hover:bg-gray-400 hover:text-gray-900 dark:text-gray-100 dark:hover:text-gray-900"
                 aria-label="Cerrar"
               >
-                <XMarkIcon className="w-6 h-6 dark:text-white" />
+                &times;
               </button>
             </div>
 
-            {renderTabNavigation()}
+            <div className="max-h-[74vh] md:max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
+              {renderTabNavigation()}
 
-            <div className="p-2 rounded md:p-4 dark:bg-gray-900">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                {renderContent()}
-              </motion.div>
-            </div>
+              <div className="rounded md:p-4 dark:bg-gray-900">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {renderContent()}
+                </motion.div>
+              </div>
 
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 px-8 duration-200 border rounded md:px-12 btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-              >
-                Cerrar
-              </button>
+              <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
+                <button
+                  className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                  onClick={() => setIsOpen(false)}
+                  type="button"
+                >
+                  Cerrar
+                </button>
+              </div>
             </div>
           </div>
         </section>
