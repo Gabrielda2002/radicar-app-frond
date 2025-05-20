@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 export const useOpenSupport = () => {
 
   const handleOpen =  useCallback((nombreSoporte: string | null, ruta: string = 'Soportes') => {
-    if (!nombreSoporte) {
+    if (!nombreSoporte || nombreSoporte === "" || nombreSoporte === "N/A") {
       alert("No hay soporte para mostrar.");
       return;
     }

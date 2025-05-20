@@ -2,6 +2,7 @@ import { EquiposStrategy } from '../strategies/EquiposStrategy';
 import { DispositivosRedStrategy } from './DispositivosRedStrategy';
 import { GeneralInventoryStrategy } from './GeneralInventoryStrategy';
 import { TelevisoresStrategy } from './TvStrategy';
+import { PhoneStrategy } from './PhoneStrategy';
 // import { InventarioGeneralStrategy } from '../strategies/InventarioGeneralStrategy';
 // import { TelevisoresStrategy } from '../strategies/TelevisoresStrategy';
 
@@ -23,6 +24,10 @@ export const INVENTORY_TYPES = {
     label: 'Televisores',
     strategy: TelevisoresStrategy
   },
+  'inventario/celulares': {
+    label: 'Celulares',
+    strategy: PhoneStrategy
+  }
   // Añade nuevos tipos aquí
 };
 

@@ -12,7 +12,15 @@ export const useFetchQuantity = (typeItem: string) => {
             try {
                 setLoading(true);
 
-                const endPoint = typeItem === "equipos" ? "equipments/statics/headquarters" : typeItem === "dispositivos-red" ? "dispositivos-red/statistics/headquarters" : "inventario/general/statistics/headquarters";
+                const endPoint = typeItem === "equipos" 
+                ? "equipments/statics/headquarters" 
+                : typeItem === "dispositivos-red" 
+                ? "dispositivos-red/statistics/headquarters" 
+                : typeItem === 'inventario/general'
+                ? "inventario/general/statistics/headquarters"
+                : typeItem === 'inventario/televisores'
+                ? 'tv/statics/headquarters'
+                : 'celular/statics/headquarters';
 
                 const response = await getQuantityItems(endPoint);
                 if (response.status === 200 || response.status === 201) {
@@ -27,7 +35,7 @@ export const useFetchQuantity = (typeItem: string) => {
             }
         }
         fetchData();
-    }, [])
+    }, [typeItem])
 
     return { quantity, loading, error };
 }

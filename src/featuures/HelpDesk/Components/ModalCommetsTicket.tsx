@@ -9,7 +9,9 @@ interface ModalCommentsTicketProps {
   idTicket: number;
 }
 
-const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
+const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({
+  idTicket,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useBlockScroll(isModalOpen);
@@ -25,15 +27,15 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
   });
 
   // if(loadingComments) return <LoadingSpinner/>
-  if(errorComments) return <p className="text-red-600">{errorComments}</p>
+  if (errorComments) return <p className="text-red-600">{errorComments}</p>;
 
   return (
     <>
       <button
         type="button"
         onClick={() => {
-          setIsModalOpen(true)
-          fetchComments(idTicket)
+          setIsModalOpen(true);
+          fetchComments(idTicket);
         }}
         className="flex items-center justify-center hover:opacity-80 transition-opacity text-black dark:text-white"
         title="Comentarios"
@@ -75,6 +77,8 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
                     <th className="">Comentario</th>
+                    <th className="">Nombre</th>
+                    <th className="">Apellido</th>
                     <th className="">Fecha Creacion</th>
                   </tr>
                 </thead>
@@ -82,6 +86,8 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({idTicket}) => {
                   {dataComments.map((c) => (
                     <tr key={c.id}>
                       <td>{c.comment}</td>
+                      <td>{c.responsable}</td>
+                      <td>{c.lastName}</td>
                       <td>{FormatDate(c.createdAt)}</td>
                     </tr>
                   ))}

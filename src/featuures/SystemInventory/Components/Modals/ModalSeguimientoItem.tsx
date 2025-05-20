@@ -25,7 +25,6 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
     () => setStadopen(false),
     300
   );
-  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,11 +80,12 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
             ? "seguimiento-dispositivos-red"
             : tipoItem === "inventario/general" 
             ? "seguimiento/inventario-general"
-            : 'seguimiento/televisor'
+            : tipoItem === 'inventario/televisores'
+            ? 'seguimiento/televisor' 
+            : 'seguimiento/celulares'
         );
 
         if (response?.status === 201 || response?.status === 200) {
-          setSuccess(true);
           setSubmitting(false);
           setError(null);
           toast.success("Datos enviados con éxito", {
@@ -186,13 +186,12 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                           value={formik.values.dateEvent}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className={` w-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed ${
+                          className={` w-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
                             formik.touched.dateEvent && formik.errors.dateEvent
                               ? "border-red-500 dark:border-red-500"
                               : "border-gray-200 dark:border-gray-600"
                           }`}
                         />
-                        <div></div>
                         <AnimatePresence>
                           {formik.touched.dateEvent &&
                           formik.errors.dateEvent ? (
@@ -278,6 +277,12 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                   </div>
                 </div>
 
+                {error && (
+                    <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
+                      {error}
+                    </div>
+                  )}
+
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
                   <button
@@ -294,8 +299,6 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                     {/* {submitting ? "Actualizando..." : "Actualizando"} */}
                     Enviar
                   </button>
-                  {success && null}
-                  {error && <>{error}</>}
                 </div>
               </form>
             </div>

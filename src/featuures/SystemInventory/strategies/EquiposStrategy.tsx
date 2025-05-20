@@ -1,9 +1,12 @@
-import { ComputerDesktopIcon, ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
-import { ItemStrategy } from './ItemStrategy';
-import { IItems } from '@/models/IItems';
-import ModalItemsForm from '../Components/Modals/ModalItemsForm';
-import ModalTablaseguimientoItem from '../Components/Modals/ModalTablaSeguimientoItem';
-import ModalAccesorioItem from '../Components/Modals/ModalAccesorioItem';
+import {
+  ComputerDesktopIcon,
+  ClipboardDocumentCheckIcon,
+} from "@heroicons/react/24/outline";
+import { ItemStrategy } from "./ItemStrategy";
+import { IItems } from "@/models/IItems";
+import ModalItemsForm from "../Components/Modals/ModalItemsForm";
+import ModalTablaseguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
+import ModalAccesorioItem from "../Components/Modals/ModalAccesorioItem";
 import { ReactNode } from "react";
 import { FormatDate } from "@/utils/FormatDate";
 
@@ -11,15 +14,15 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
   getName(item: IItems): string {
     return item.nameEquipment;
   }
-  
+
   getTypeLabel(item: IItems): string {
     return item.typeEquipment;
   }
-  
+
   getIcon() {
     return <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
-  
+
   renderDetailsButton(item: IItems, handleViewDetails: (item: IItems) => void) {
     return (
       <button
@@ -30,10 +33,14 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
       </button>
     );
   }
-  
-  renderActionButtons(item: IItems, refreshItems: () => void, handleOpen: (nombreSoporte: string | null, ruta: string) => void) {
+
+  renderActionButtons(
+    item: IItems,
+    refreshItems: () => void,
+    handleOpen: (nombreSoporte: string | null, ruta: string) => void
+  ) {
     // Aquí puedes usar hooks customizados si lo necesitas
-    
+
     return (
       <>
         <ModalItemsForm
@@ -53,7 +60,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           <button
             type="button"
             className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() => handleOpen(item.nameDocument || "", "ActasEntrega")}
+            onClick={() =>handleOpen && handleOpen(item.nameDocument || "", "ActasEntrega")}
             aria-label="Acta de entrega"
           >
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
@@ -154,6 +161,25 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           {item.inventoryNumberEquipment}
         </li>
       </div>
+    );
+  }
+
+  renderCreateButton(
+    idSede: number,
+    items: IItems,
+    refreshItems: () => void,
+    idItems: number,
+    tipoTtem?: string,
+    // isUpdate?: boolean
+  ): ReactNode {
+    return (
+      <ModalItemsForm
+        idSede={idSede}
+        tipoItem={tipoTtem || "equipos"}
+        items={items}
+        idItem={idItems}
+        onSuccess={refreshItems}
+      />
     );
   }
 }

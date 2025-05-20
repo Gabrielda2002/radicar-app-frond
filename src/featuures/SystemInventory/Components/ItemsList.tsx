@@ -5,39 +5,22 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import { IItems } from "@/models/IItems";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import usePagination from "@/hooks/usePagination";
 import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 // * Icons
-import {
-  ListBulletIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/24/outline";
+import { ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
-import ModalFormGeneralItems from "./Modals/ModalFormGeneralItems";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
-import ModalFormTv from "./Modals/ModalFormTv";
-import { IItemsTv } from "../Models/IItemsTv";
 import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 
 // * Interface
 interface ItemsListProps {
-  invetario:
-    | IItems[]
-    | IItemsNetworking[]
-    | IItemsGeneral[]
-    | IItemsTv[]
-    | null;
-  tipoItem:
-    | "equipos"
-    | "dispositivos-red"
-    | "inventario/general"
-    | "inventario/televisores"
-    | null;
-  idSede: number | null;
+  invetario: AnyItem[] | null;
+  tipoItem: string | null;
+  idSede: number;
   onItemsUpdate: () => void;
 }
 
@@ -73,6 +56,8 @@ const ItemsList: React.FC<ItemsListProps> = ({
           "nameEquipment",
           "brandEquipment",
           "modelEquipment",
+          "nameUser",
+          "lastNameUser",
         ])
       : tipoItem === "dispositivos-red"
       ? useSearch<IItemsNetworking>((invetario as IItemsNetworking[]) || [], [
@@ -84,6 +69,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
           "name",
           "brand",
           "model",
+          "responsable",
         ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -156,28 +142,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
               Inventario de {tipoItem}
             </h2>
             <div>
-              {tipoItem === "inventario/general" ? (
-                <ModalFormGeneralItems
-                  idSede={idSede}
-                  tipoItem={tipoItem}
-                  isUpdate={false}
-                  items={null}
-                  refreshItems={onItemsUpdate}
-                />
-              ) : tipoItem === "inventario/televisores" ? (
-                <ModalFormTv
-                  sedeId={idSede}
-                  refreshItems={onItemsUpdate}
-                  items={null}
-                />
-              ) : (
-                <ModalItemsForm
-                  idSede={idSede}
-                  tipoItem={tipoItem}
-                  items={null}
-                  idItem={null}
-                  onSuccess={onItemsUpdate}
-                />
+              {strategy?.renderCreateButton(
+                idSede,
+                null,
+                onItemsUpdate,
+                null,
+                tipoItem,
+                false
               )}
             </div>
           </div>

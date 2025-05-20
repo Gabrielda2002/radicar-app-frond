@@ -4,7 +4,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import React from 'react';
 
 interface ExpiringSoonStaticsProps {
-  typeItem: 'equipos' | 'inventario/general';
+  typeItem: string;
 }
 
 const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({

@@ -7,6 +7,8 @@ import { EquiposStrategy } from "./EquiposStrategy";
 import { DispositivosRedStrategy } from "./DispositivosRedStrategy";
 import { GeneralInventoryStrategy } from "./GeneralInventoryStrategy";
 import { TelevisoresStrategy } from "./TvStrategy";
+import { IItemsPhone } from "../Models/IItemsPhone";
+import { PhoneStrategy } from "./PhoneStrategy";
 
 // Interfaz genérica para la estrategia de elementos de inventario
 export interface ItemStrategy<T> {
@@ -18,10 +20,11 @@ export interface ItemStrategy<T> {
   renderBasicInfo(item: T): ReactNode;
   renderTechnicalDetails(item: T): ReactNode;
   renderAdditionalInfo(item: T): ReactNode;
+  renderCreateButton(idSede: number,items: T | null, refreshItems: () => void,idItems: number | null,tipoTtem?: string | null, isUpdate?: boolean ): ReactNode;
 }
 
 // Tipo unión que representa cualquier tipo de elemento de inventario
-export type AnyItem = IItems | IItemsNetworking | IItemsGeneral | IItemsTv;
+export type AnyItem = IItems | IItemsNetworking | IItemsGeneral | IItemsPhone | IItemsTv;
 
 // Factory para obtener la estrategia correcta según el tipo de item
 export const ItemStrategyFactory = {
@@ -35,6 +38,8 @@ export const ItemStrategyFactory = {
         return new GeneralInventoryStrategy();
       case "inventario/televisores":
         return new TelevisoresStrategy();
+      case "inventario/celulares":
+        return new PhoneStrategy();
       default:
         throw new Error(`No hay estrategia definida para ${tipoItem}`);
     }
