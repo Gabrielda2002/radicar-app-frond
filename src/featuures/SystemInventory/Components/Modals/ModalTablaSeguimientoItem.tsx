@@ -10,7 +10,6 @@ import {
   ClockIcon,
   UserIcon,
   DocumentTextIcon,
-  XMarkIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
@@ -20,7 +19,13 @@ import { IItemsPhone } from "../../Models/IItemsPhone";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
-  tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares'  | null;
+  tipoItem:
+    | "equipos"
+    | "dispositivos-red"
+    | "inventario/general"
+    | "inventario/televisores"
+    | "inventario/celulares"
+    | null;
   refreshItems: () => void;
 }
 
@@ -40,7 +45,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   // Método para obtener los datos de seguimiento según el tipo de item
   const getSeguimientoData = useMemo(() => {
     if (!Items) return [];
-    
+
     switch (tipoItem) {
       case "equipos":
         return (Items as IItems).processEquipment || [];
@@ -138,38 +143,40 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
       </div>
 
       {stadopen && (
-        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm">
-          <section className="fixed inset-0 z-50 flex items-center justify-center">
+        <div
+          className={`fixed inset-0 z-40 flex justify-center p-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <section className="">
             <div
-              className={`w-[90vw] h-[60vh] overflow-auto bg-white rounded-xl shadow-2xl dark:bg-gray-700 transition-transform transform ${
-                showAnimation && !closing
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
+              className={`w-[90vw] h-[60vh] overflow-hidden bg-white rounded shadow-lg dark:bg-gray-600 transition-transform duration-300 transform ${
+                showAnimation && !closing ? "translate-y-0" : "translate-y-10"
               }`}
             >
               {/* container-header */}
-              <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-200 dark:bg-gray-600 dark:border-gray-500">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  Seguimiento de Módulos
+              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 border-b-gray-900 dark:bg-gray-600 dark:border-b-white">
+                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
+                  Seguimiento de Items
                 </h1>
                 <button
                   onClick={() => setStadopen(false)}
-                  className="text-gray-500 transition-colors hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+                  className="text-xl text-gray-400 duration-200 rounded-md h-7 w-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900 dark:text-gray-100 "
                 >
-                  <XMarkIcon className="w-6 h-6" />
+                  &times;
                 </button>
               </div>
 
-              <div className="px-2 py-3">
-                <ModalSeguimientoItem
-                  id={itemId}
-                  tipoItem={tipoItem}
-                  refreshItems={refreshItems}
-                />
-              </div>
+              <div className=" h-full overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
+                <div className="px-2 py-3">
+                  <ModalSeguimientoItem
+                    id={itemId}
+                    tipoItem={tipoItem}
+                    refreshItems={refreshItems}
+                  />
+                </div>
 
-              <div>
-                {renderTrackingTable(getSeguimientoData)}
+                <div>{renderTrackingTable(getSeguimientoData)}</div>
               </div>
             </div>
           </section>
