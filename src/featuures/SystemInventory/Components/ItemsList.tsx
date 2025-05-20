@@ -10,10 +10,7 @@ import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 // * Icons
-import {
-  ListBulletIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/24/outline";
+import { ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
@@ -21,12 +18,8 @@ import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 
 // * Interface
 interface ItemsListProps {
-  invetario:
-    AnyItem[]
-    | null;
-  tipoItem:
-    string
-    | null;
+  invetario: AnyItem[] | null;
+  tipoItem: string | null;
   idSede: number;
   onItemsUpdate: () => void;
 }
@@ -63,6 +56,8 @@ const ItemsList: React.FC<ItemsListProps> = ({
           "nameEquipment",
           "brandEquipment",
           "modelEquipment",
+          "nameUser",
+          "lastNameUser",
         ])
       : tipoItem === "dispositivos-red"
       ? useSearch<IItemsNetworking>((invetario as IItemsNetworking[]) || [], [
@@ -74,6 +69,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
           "name",
           "brand",
           "model",
+          "responsable",
         ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -146,16 +142,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
               Inventario de {tipoItem}
             </h2>
             <div>
-               {strategy?.renderCreateButton(
-                  idSede,
-                  null,
-                  onItemsUpdate,
-                  null,
-                  tipoItem,
-                  false
-                )
-              }
-
+              {strategy?.renderCreateButton(
+                idSede,
+                null,
+                onItemsUpdate,
+                null,
+                tipoItem,
+                false
+              )}
             </div>
           </div>
           {/* Search Form */}
