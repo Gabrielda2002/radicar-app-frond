@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import ModalFormGeneralItems from "../Components/Modals/ModalFormGeneralItems";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 import { FormatDate } from "@/utils/FormatDate";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
 export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
   getName(item: IItemsGeneral): string {
@@ -19,18 +20,8 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
     return <Building className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(
-    item: IItemsGeneral,
-    handleViewDetails: (item: IItemsGeneral) => void
-  ): ReactNode {
-    return (
-      <button
-        onClick={() => handleViewDetails(item)}
-        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-      >
-        Ver detalles
-      </button>
-    );
+  renderDetailsButton(item: IItemsGeneral, tipoItem: string): ReactNode {
+    return <ModalItemsDetails item={item} tipoItem={tipoItem} />;
   }
 
   renderActionButtons(
@@ -156,7 +147,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
   renderCreateButton(
     idSede: number,
     items: IItemsGeneral,
-    refreshItems: () => void,
+    refreshItems: () => void
     // idItems: number,
     // tipoTtem?: string,
     // isUpdate?: boolean

@@ -5,6 +5,7 @@ import { Tv } from "lucide-react";
 import ModalFormTv from "../Components/Modals/ModalFormTv";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 import { FormatDate } from "@/utils/FormatDate";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
 export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
   getName(item: IItemsTv): string {
@@ -21,15 +22,13 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
 
   renderDetailsButton(
     item: IItemsTv,
-    handleViewDetails: (item: IItemsTv) => void
+    tipoItem: string
   ): ReactNode {
     return (
-      <button
-        onClick={() => handleViewDetails(item)}
-        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-      >
-        Ver detalles
-      </button>
+      <ModalItemsDetails
+        item={item}
+        tipoItem={tipoItem}
+      />
     );
   }
 

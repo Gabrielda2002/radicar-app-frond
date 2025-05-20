@@ -6,7 +6,6 @@ import { IItems } from "@/models/IItems";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 // * Icons
@@ -31,9 +30,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
   onItemsUpdate,
 }) => {
   // * Estados para almacenar datos
-  const [selected, setSelected] = useState<
-    IItems | IItemsNetworking | IItemsGeneral | null
-  >(null);
 
   const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
 
@@ -120,16 +116,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
     return () => clearTimeout(timeout);
   }, [tipoItem]);
 
-  const handleViewDetails = (
-    item: IItems | IItemsNetworking | IItemsGeneral
-  ) => {
-    setSelected(item);
-  };
-
-  const closeModal = () => {
-    setSelected(null);
-  };
-
   return (
     <>
       {isLoading ? (
@@ -152,6 +138,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               )}
             </div>
           </div>
+
           {/* Search Form */}
           <div className="relative flex items-center mt-6 mb-6">
             <input
@@ -161,6 +148,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
+            {/* filtro pora inventario general */}
             {tipoItem === "inventario/general" && (
               <div className="relative ml-2">
                 <button
@@ -200,6 +188,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     ))}
                   </div>
                 )}
+
                 {/* chips filtros activos */}
                 <div className="flex flex-wrap gap-1 mt-2">
                   {selectedAreaDependency.map((a) => (
@@ -274,71 +263,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
                         {strategy?.getName(item)}
                       </h3>
                       <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
-                        {/* {tipoItem === "equipos"
-                          ? (item as IItems).typeEquipment
-                          : tipoItem === "inventario/televisores"
-                          ? (item as unknown as IItemsTv).screenType
-                          : ""} */}
                         {strategy?.getTypeLabel(item)}
                       </p>
                     </div>
                     <hr className="border-gray-300 dark:border-gray-600" />
                     <div className="flex flex-wrap justify-between gap-2 mt-4">
-                      {/* <button
-                        onClick={() => handleViewDetails(item)}
-                        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-                      >
-                        Ver detalles
-                      </button> */}
-                      {strategy?.renderDetailsButton(item, handleViewDetails)}
+                      {strategy?.renderDetailsButton(item, tipoItem ?? '')}
                       <div className="flex flex-wrap gap-2">
-                        {/* {tipoItem === "inventario/general" ? (
-                          <ModalFormGeneralItems
-                            idSede={idSede}
-                            tipoItem={tipoItem}
-                            isUpdate={true}
-                            items={item ? (item as IItemsGeneral) : null}
-                            refreshItems={onItemsUpdate}
-                          />
-                        ) : (
-                          <ModalItemsForm
-                            idSede={null}
-                            tipoItem={tipoItem}
-                            items={item as IItemsNetworking | IItems}
-                            idItem={item.id}
-                            onSuccess={onItemsUpdate}
-                          />
-                        )}
-                        <ModalTablaseguimientoItem
-                          Items={item as IItemsNetworking | IItems}
-                          tipoItem={tipoItem}
-                          refreshItems={onItemsUpdate}
-                        />
-                        {tipoItem === "equipos" && (
-                          <ModalAccesorioItem id={(item as IItems).id} />
-                        )}
-                        {tipoItem === "equipos" && (
-                          <div className="relative group">
-                            <button
-                              type="button"
-                              className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-                              onClick={() =>
-                                handleOpen(
-                                  (item as IItems).nameDocument || "",
-                                  "ActasEntrega"
-                                )
-                              }
-                              aria-label="Acta de entrega"
-                            >
-                              <ClipboardDocumentCheckIcon className="w-7 h-7" />
-                            </button>
-                            <div className="absolute z-10 px-2 py-1 mb-2 text-sm text-center text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 bottom-full group-hover:opacity-100 dark:bg-gray-900">
-                              Acta Entrega
-                              {/* Flechita detrás del texto */}
-                        {/* <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
-                            </div>
-                          </div> 
-                        )} */}
                         {strategy?.renderActionButtons(
                           item,
                           onItemsUpdate,
@@ -371,7 +302,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      {strategy?.renderDetailsButton(item, handleViewDetails)}
+                      {strategy?.renderDetailsButton(item, tipoItem ?? '')}
                       <div className="flex flex-wrap gap-2">
                         {strategy?.renderActionButtons(
                           item,
@@ -395,13 +326,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
             totalPages={totalPages}
             onPageChange={paginate}
           />
-          {selected && (
-            <ModalItemsDetails
-              item={selected}
-              tipoItem={tipoItem}
-              onClose={closeModal}
-            />
-          )}
         </div>
       )}
     </>

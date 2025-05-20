@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IItems } from "@/models/IItems";
 import { motion } from "framer-motion";
-import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 //*Icons
 import {
@@ -12,20 +10,32 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
-import { IItemsGeneral } from "../../Models/IItemsGeneral";
-import { ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import useAnimation from "@/hooks/useAnimations";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
 interface ModalItemsDetailsProps {
-  item: IItems | IItemsNetworking | IItemsGeneral | null;
-  tipoItem: string| null;
-  onClose: () => void;
+  item: AnyItem | null;
+  tipoItem: string | null;
+  // onClose: () => void;
 }
 
 const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   item,
-  onClose,
+  // onClose,
   tipoItem,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { showAnimation, closing } = useAnimation(
+    isOpen,
+    () => setIsOpen(false),
+    300
+  );
+
+  useBlockScroll(isOpen);
+
   const [isMobile, setIsMobile] = useState(false);
 
   const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
@@ -42,17 +52,17 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    onClose();
-  };
+  // const openModal = () => {
+  //   document.body.style.overflow = "hidden";
+  // };
+  // const closeModal = () => {
+  //   document.body.style.overflow = "";
+  //   onClose();
+  // };
 
-  if (item) {
-    openModal();
-  }
+  // if (item) {
+  //   openModal();
+  // }
 
   const TableWrapper = ({ children }: { children: React.ReactNode }) => (
     <div className="overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800 max-h-[60vh]">
@@ -61,7 +71,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </div>
     </div>
   );
-// renderizado de perifericos
+  // renderizado de perifericos
   const renderPerifericosTable = () => {
     return (
       <TableWrapper>
@@ -147,7 +157,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </TableWrapper>
     );
   };
-// renderizado de software 
+  // renderizado de software
   const renderSoftwareTable = () => {
     return (
       <TableWrapper>
@@ -236,7 +246,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <span>Periféricos</span>
             </button>
             <button
-            className={`flex items-center p-2 ${
+              className={`flex items-center p-2 ${
                 activeTab === "componentes"
                   ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
                   : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
@@ -283,76 +293,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul className="space-y-1">
-                    {/* {tipoItem === "equipos" ||
-                      (tipoItem === "inventario/general" && (
-                        <li>
-                          <strong>Responsable: </strong>
-                          {tipoItem === "inventario/general"
-                            ? (item as IItems).nameUser +
-                              " " +
-                              (item as IItems).lastNameUser
-                            : (item as IItemsGeneral).responsable}
-                        </li>
-                      ))}
-                    <li>
-                      <strong>Nombre: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).nameEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).name
-                        : (item as IItemsGeneral).name}
-                    </li>
-                    {item && "area" in item && (
-                      <li>
-                        <strong>Área: </strong>
-                        {item.area}
-                      </li>
-                    )}
-                    {item && "typeEquipment" in item && (
-                      <li>
-                        <strong>Tipo Equipo: </strong>
-                        {item.typeEquipment}
-                      </li>
-                    )}
-                    <li>
-                      <strong>Marca: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).brandEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).brand
-                        : (item as IItemsGeneral).brand}
-                    </li>
-                    <li>
-                      <strong>Modelo: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).modelEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).model
-                        : (item as IItemsGeneral).model}
-                    </li>
-                    {tipoItem === "inventario/general" && (
-                      <>
-                        <li>
-                          <strong>Clasificación: </strong>
-                          {(item as IItemsGeneral).classification}
-                        </li>
-
-                        <li>
-                          <strong>Tipo Activo: </strong>
-                          {(item as IItemsGeneral).assetType}
-                        </li>
-
-                        <li>
-                          <strong>Tipo Área: </strong>
-                          {(item as IItemsGeneral).areaType}
-                        </li>
-
-                        <li>
-                          <strong>Dependencia Área: </strong>
-                          {(item as IItemsGeneral).dependencyArea}
-                        </li>
-                      </>
-                    )} */}
                     {strategy?.renderBasicInfo(item)}
                   </ul>
                 </div>
@@ -363,47 +303,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Detalles Técnicos:
                   </h3>
                   <ul className="space-y-1">
-                    {/* <li>
-                      <strong>Serial: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).serialEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).serial
-                        : (item as IItemsGeneral).serialNumber}
-                    </li>
-                    {tipoItem === "equipos" && (
-                      <li>
-                        <strong>Sistema Operativo: </strong>
-                        {(item as IItems).operationalSystem}
-                      </li>
-                    )}
-                    {tipoItem === "equipos" ||
-                      (tipoItem === "dispositivos-red" && (
-                        <li>
-                          <strong>Dirección IP: </strong>
-                          {(item as IItemsNetworking | IItems).addressIp}
-                        </li>
-                      ))}
-                    {tipoItem === "equipos" ||
-                      (tipoItem === "dispositivos-red" && (
-                        <li>
-                          <strong>Mac: </strong>
-                          {(item as IItemsNetworking | IItems).mac}
-                        </li>
-                      ))}
-                    {tipoItem === "inventario/general" && (
-                      <>
-                        <li>
-                          <strong>Ubicación: </strong>
-                          {(item as IItemsGeneral).location}
-                        </li>
-
-                        <li>
-                          <strong>Material: </strong>
-                          {(item as IItemsGeneral).material}
-                        </li>
-                      </>
-                    )} */}
                     {strategy?.renderTechnicalDetails(item)}
                   </ul>
                 </div>
@@ -414,59 +313,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Adicional:
                   </h3>
                   <ul className="space-y-1">
-                    {/* {tipoItem !== "dispositivos-red" && (
-                      <li>
-                        <strong>Fecha Compra: </strong>
-                        {tipoItem === "inventario/general"
-                          ? FormatDate(
-                              (item as IItemsGeneral).acquisitionDate,
-                              false
-                            )
-                          : FormatDate((item as IItems).purchaseDate, false)}
-                      </li>
-                    )}
-                    {tipoItem !== "dispositivos-red" && (
-                      <li>
-                        <strong>Tiempo Garantía: </strong>
-                        {(tipoItem === "inventario/general"
-                          ? (item as IItemsGeneral).warrantyPeriod
-                          : (item as IItems).warrantyTime) || "Sin Garantía"}
-                      </li>
-                    )}
-                    {tipoItem === "equipos" && (
-                      <li>
-                        <strong>Fecha Entrega: </strong>
-                        {FormatDate((item as IItems).deliveryDate, false)}
-                      </li>
-                    )}
-                    <li>
-                      <strong>Número Inventario: </strong>
-                      {(tipoItem === "equipos"
-                        ? (item as IItems).inventoryNumberEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).inventoryNumber
-                        : (item as IItemsGeneral).inventoryNumber) ||
-                        "Sin N# Inventario"}
-                    </li>
-                    {item && "otherData" in item && (
-                      <li>
-                        <strong>Otros Datos: </strong>
-                        {item.otherData}
-                      </li>
-                    )}
-                    {item && "status" in item && (
-                      <li>
-                        <strong>Estado: </strong>
-                        {item.status}
-                      </li>
-                    )}
-
-                    {tipoItem === "inventario/general" && (
-                      <li>
-                        <strong>Cantidad: </strong>
-                        {(item as IItemsGeneral).quantity}
-                      </li>
-                    )} */}
                     {strategy?.renderAdditionalInfo(item)}
                   </ul>
                 </div>
@@ -519,44 +365,56 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   };
 
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center py-4 overflow-y-auto bg-gray-800 bg-opacity-50">
-      <div className="w-full max-w-6xl p-3 mx-4 my-4 bg-white rounded-md shadow-lg md:mx-auto md:p-6 dark:bg-gray-900">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold md:text-3xl dark:text-white">
-            Detalles del dispositivo
-          </h3>
-          <button
-            onClick={closeModal}
-            className="p-1 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            aria-label="Cerrar"
-          >
-            <XMarkIcon className="w-6 h-6 dark:text-white" />
-          </button>
-        </div>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+      >
+        Ver detalles
+      </button>
+      {isOpen && (
+        <section className={`fixed inset-0 z-50 flex items-center justify-center py-4 transition-opacity duration-300 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm ${
+          showAnimation && !closing ? "opacity-100" : "opacity-0"
+        }`}>
+          <div className="w-full max-w-6xl p-3 mx-4 my-4 bg-white rounded-md shadow-lg md:mx-auto md:p-6 dark:bg-gray-900">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold md:text-3xl dark:text-white">
+                Detalles del dispositivo  
+              </h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                aria-label="Cerrar"
+              >
+                <XMarkIcon className="w-6 h-6 dark:text-white" />
+              </button>
+            </div>
 
-        {renderTabNavigation()}
+            {renderTabNavigation()}
 
-        <div className="p-2 rounded md:p-4 dark:bg-gray-900">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            {renderContent()}
-          </motion.div>
-        </div>
+            <div className="p-2 rounded md:p-4 dark:bg-gray-900">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                {renderContent()}
+              </motion.div>
+            </div>
 
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={closeModal}
-            className="p-2 px-8 duration-200 border rounded md:px-12 btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-          >
-            Cerrar
-          </button>
-        </div>
-      </div>
-    </section>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 px-8 duration-200 border rounded md:px-12 btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 
