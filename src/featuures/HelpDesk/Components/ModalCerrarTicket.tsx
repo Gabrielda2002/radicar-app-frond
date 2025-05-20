@@ -7,8 +7,6 @@ import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
 import { useTickets } from "@/context/ticketContext";
-import { useFetchCommentsByTicket } from "../Hooks/useFetchCommentsByTicket";
-import { FormatDate } from "@/utils/FormatDate";
 
 interface CerrarModalProps {
   IdTicket: number;
@@ -23,9 +21,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // hook trae comentarios tickets
-  const { dataComments, errorComments, fetchComments } =
-    useFetchCommentsByTicket();
   useBlockScroll(showModal);
 
   const { validateUserTicketStatus } = useTickets();
@@ -216,48 +211,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                     {formik.errors.observation}
                   </div>
                 ) : null}
-              </div>
-
-              {/* comentarios */}
-
-              <div>
-                <button
-                  type="button"
-                  onClick={() => fetchComments(IdTicket)}
-                  className="px-3 py-2 text-sm font-medium text-white transition-colors bg-gray-400 rounded-lg hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700"
-                >
-                  Ver Historico
-                </button>
-
-                {dataComments.length > 0 && dataComments && (
-                  <div className="my-4 overflow-x-auto">
-                    <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
-                      <thead>
-                        <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                          <th>Comenario</th>
-                          <th>Fecha Creacion</th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-xs text-center dark:text-gray-200">
-                        {dataComments.map((comment) => (
-                          <tr
-                            key={comment.id}
-                            className="border-b dark:border-gray-700"
-                          >
-                            <td>{comment.comment}</td>
-                            <td>{FormatDate(comment.createdAt)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-
-                {errorComments && (
-                  <div>
-                    <p className="text-sm text-red-500">{errorComments}</p>
-                  </div>
-                )}
               </div>
 
               {error && (
