@@ -109,6 +109,11 @@
             "id": 22,
             "type": "area",
             "name": "ASISTENCIAL"
+        },
+        {
+            "id": 23,
+            "type": "area",
+            "name": "MÉDICO"
         }
     ],
     "cargos": [
@@ -416,6 +421,11 @@
             "id": 82,
             "type": "cargo",
             "name": "JEFE SIAU"
+        },
+        {
+            "id": 83,
+            "type": "cargo",
+            "name": "MÉDICO"
         }
     ]
 }
