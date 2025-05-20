@@ -40,12 +40,14 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const validationSchema = Yup.object({
     observation: Yup.string().required("Este campo es obligatorio"),
     status: Yup.string().required("Este campo es obligatorio"),
+    remote: Yup.boolean().required("Este campo es obligatorio"),
   });
 
   const formik = useFormik({
     initialValues: {
       observation: "",
       status: "",
+      remote: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -58,6 +60,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         formData.append("usuarioId", idUsuario);
         formData.append("coment", values.observation);
         formData.append("status", values.status);
+        formData.append("remote", values.remote.toString());
 
         const reponse = await UpdateStatusTicketEp(formData);
 
@@ -149,6 +152,40 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                 {formik.touched.status && formik.errors.status ? (
                   <div className="mt-1 text-sm text-red-600">
                     {formik.errors.status}
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="remote"
+                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
+                >
+                  Remoto
+                </label>
+                <input
+                  type="checkbox"
+                  id="remote"
+                  name="remote"
+                  checked={formik.values.remote}
+                  onChange={(e) =>
+                    formik.setFieldValue("remote", e.target.checked)
+                  }
+                  className={`w-5 h-5 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
+                    formik.touched.remote && formik.errors.remote
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-200 dark:border-gray-600"
+                  }`}
+                />
+                <label
+                  htmlFor="remote"
+                  className="ml-2 text-sm text-gray-700 dark:text-gray-200"
+                >
+                  ¿El ticket fue cerrado de forma remota?
+                </label>
+                {formik.touched.remote && formik.errors.remote ? (
+                  <div className="mt-1 text-sm text-red-600">
+                    {formik.errors.remote}
                   </div>
                 ) : null}
               </div>
