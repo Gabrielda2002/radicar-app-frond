@@ -22,8 +22,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   setActiveFieldId,
 }) => {
 
-  console.log(value)
-
   const inputRef = useRef<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   >(null);

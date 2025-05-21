@@ -14,49 +14,58 @@ import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import EditableCell from "../EditableCell";
 import { saveChanges } from "../../Services/updateAccesory";
+import { useEditableRow } from "../../Hooks/useEditableRow";
+import { toast } from "react-toastify";
+
+
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
   tipoItem: string | null;
+  refreshItems?: () => void;
 }
 
 const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   item,
   tipoItem,
+  refreshItems,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
-  const [editedData, setEditedData] = useState<Record<string, any>>({});
-  const [activeFieldId, setActiveFieldId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const startEditing = (id: string | number, originalData: any) => {
-    setEditingRows((prev) => ({ ...prev, [id]: true }));
-    setEditedData((prev) => ({ ...prev, [id]: { ...originalData } }));
-  };
-  
-  const cancelEditing = (id: string | number) => {
-    setEditingRows((prev) => ({ ...prev, [id]: false }));
-    setEditedData((prev) => {
-      const newData = { ...prev };
-      delete newData[id];
-      return newData;
-    });
-  };
+  const {
+    editingRows,
+    editedData,
+    activeFieldId,
+    setActiveFieldId,
+    startEditing,
+    cancelEditing,
+    handleInputChange,
+  } = useEditableRow();
 
-  const handleInputChange = (
-    id: string | number,
-    field: string,
-    value: any
-  ) => {
-    setEditedData((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
+  const handleUpdateAccesory = async (id: number, typeItem: string) => {
+    try {
+      setIsLoading(true);
+      const result = await saveChanges(id, typeItem, editedData);
+
+      if (result && (result.status === 200 || result.status === 201)) {
+        cancelEditing(id);
+        toast.success("Periférico actualizado correctamente");
+          refreshItems?.();
+      } else {
+        toast.error("Error al actualizar el periférico");
+      }
+    } catch (error: any) {
+
+      const errorMessage = error instanceof Error ? error.message : 'Error Inesperado'
+      toast.error(errorMessage);
+      console.log(error);
+
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const { showAnimation, closing } = useAnimation(
@@ -115,8 +124,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['name'] ?? acc['name'] : acc['name']}
-                        onChange={(value) => handleInputChange(acc.id, 'name', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["name"] ?? acc["name"]
+                            : acc["name"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "name", value)
+                        }
                         fieldId={`acc-${acc.id}-name`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -125,8 +140,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['brand'] ?? acc['brand'] : acc['brand']}
-                        onChange={(value) => handleInputChange(acc.id, 'brand', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["brand"] ?? acc["brand"]
+                            : acc["brand"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "brand", value)
+                        }
                         fieldId={`acc-${acc.id}-brand`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -135,8 +156,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['model'] ?? acc['model'] : acc['model']}
-                        onChange={(value) => handleInputChange(acc.id, 'model', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["model"] ?? acc["model"]
+                            : acc["model"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "model", value)
+                        }
                         fieldId={`acc-${acc.id}-model`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -145,8 +172,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['serial'] ?? acc['serial'] : acc['serial']}
-                        onChange={(value) => handleInputChange(acc.id, 'serial', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["serial"] ?? acc["serial"]
+                            : acc["serial"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "serial", value)
+                        }
                         fieldId={`acc-${acc.id}-serial`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -155,8 +188,15 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['description'] ?? acc['description'] : acc['description']}
-                        onChange={(value) => handleInputChange(acc.id, 'description', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["description"] ??
+                              acc["description"]
+                            : acc["description"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "description", value)
+                        }
                         fieldId={`acc-${acc.id}-description`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -165,8 +205,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['status'] ?? acc['status'] : acc['status']}
-                        onChange={(value) => handleInputChange(acc.id, 'status', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["status"] ?? acc["status"]
+                            : acc["status"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "status", value)
+                        }
                         type="select"
                         options={[
                           { value: "NUEVO", label: "Nuevo" },
@@ -181,8 +227,15 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       <EditableCell
                         isEditing={editingRows[acc.id]}
-                        value={editedData[acc.id] ? editedData[acc.id]['inventoryNumber'] ?? acc['inventoryNumber'] : acc['inventoryNumber']}
-                        onChange={(value) => handleInputChange(acc.id, 'inventoryNumber', value)}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["inventoryNumber"] ??
+                              acc["inventoryNumber"]
+                            : acc["inventoryNumber"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "inventoryNumber", value)
+                        }
                         fieldId={`acc-${acc.id}-inventoryNumber`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -192,13 +245,19 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                       {editingRows[acc.id] ? (
                         <div className="flex space-x-1">
                           <button
-                            onClick={() => saveChanges(acc.id, "perifericos", editedData)}
+                            onClick={() =>
+                              handleUpdateAccesory(acc.id, "perifericos")
+                            }
                             className="px-2 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600"
                             title="Guardar cambios"
+                            disabled={isLoading}
+                            type="button"
                           >
-                            Guardar
+                            {isLoading ? "Guardando..." : "Guardar"}
                           </button>
                           <button
+                            disabled={isLoading}
+                            type="button"
                             onClick={() => cancelEditing(acc.id)}
                             className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
                             title="Cancelar edición"

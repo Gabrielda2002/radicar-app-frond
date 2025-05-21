@@ -17,7 +17,7 @@ export const saveChanges = async (id: string | number, itemType: string, editedD
         const response = await api.put(`/${endPoint}${id}`, dataToSave);
 
         if (response.status === 200 || response.status === 201) {
-            return response.data;
+            return response;
         }
         
     } catch (error) {

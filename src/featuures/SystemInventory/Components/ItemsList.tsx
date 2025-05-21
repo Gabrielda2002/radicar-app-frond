@@ -268,7 +268,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     </div>
                     <hr className="border-gray-300 dark:border-gray-600" />
                     <div className="flex flex-wrap justify-between gap-2 mt-4">
-                      {strategy?.renderDetailsButton(item, tipoItem ?? '')}
+                      {strategy?.renderDetailsButton(item, tipoItem ?? '', onItemsUpdate)}
                       <div className="flex flex-wrap gap-2">
                         {strategy?.renderActionButtons(
                           item,
