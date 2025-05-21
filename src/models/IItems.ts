@@ -47,7 +47,7 @@ export interface Component {
     brand:     string;
     capacity:  string;
     speed:     string;
-    otherData: string;
+    description: string;
     model:     string;
     serial:    string;
 }

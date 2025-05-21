@@ -8,6 +8,7 @@ interface EditableCellProps {
   type?: "text" | "number" | "select" | "textarea" | "autocomplete-name";
   options?: Array<{ value: string; label: string }>;
   fieldId: string;
+  typeItem?: string;
   activeFieldId: string | null;
   setActiveFieldId: (id: string | null) => void;
 }
@@ -19,6 +20,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   type = "text",
   options = [],
   fieldId,
+  typeItem,
   activeFieldId,
   setActiveFieldId,
 }) => {
@@ -42,12 +44,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   switch (type) {
     case "autocomplete-name":
-      console.log("autocomplete-name");
       return (
         <EditableAutocomplete
           value={value.toString()}
           onChange={onChange}
-          typeItem="periferico"
+          typeItem={typeItem || ""}
           fieldId={fieldId}
           activeFieldId={activeFieldId}
           setActiveFieldId={setActiveFieldId}

@@ -6,7 +6,7 @@ export const updateAccesory = async (id: string | number, itemType: string, edit
           itemType === "perifericos"
             ? "accesorios/equipos/"
             : itemType === "hardware"
-            ? "componentes/equipos/"
+            ? "componentes/"
             : itemType === "software"
             ? "software/equipos/"
             : null;
