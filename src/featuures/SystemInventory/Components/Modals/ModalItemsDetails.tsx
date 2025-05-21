@@ -12,20 +12,52 @@ import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import EditableCell from "../EditableCell";
+import { saveChanges } from "../../Services/updateAccesory";
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
   tipoItem: string | null;
-  // onClose: () => void;
 }
 
 const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   item,
-  // onClose,
   tipoItem,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
+  const [editedData, setEditedData] = useState<Record<string, any>>({});
+  const [activeFieldId, setActiveFieldId] = useState<string | null>(null);
+
+  const startEditing = (id: string | number, originalData: any) => {
+    setEditingRows((prev) => ({ ...prev, [id]: true }));
+    setEditedData((prev) => ({ ...prev, [id]: { ...originalData } }));
+  };
+  
+  const cancelEditing = (id: string | number) => {
+    setEditingRows((prev) => ({ ...prev, [id]: false }));
+    setEditedData((prev) => {
+      const newData = { ...prev };
+      delete newData[id];
+      return newData;
+    });
+  };
+
+  const handleInputChange = (
+    id: string | number,
+    field: string,
+    value: any
+  ) => {
+    setEditedData((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
 
   const { showAnimation, closing } = useAnimation(
     isOpen,
@@ -51,18 +83,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // const openModal = () => {
-  //   document.body.style.overflow = "hidden";
-  // };
-  // const closeModal = () => {
-  //   document.body.style.overflow = "";
-  //   onClose();
-  // };
-
-  // if (item) {
-  //   openModal();
-  // }
-
   const TableWrapper = ({ children }: { children: React.ReactNode }) => (
     <div className="overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800 max-h-[60vh]">
       <div className="inline-block min-w-full overflow-x-auto align-middle">
@@ -84,6 +104,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Otros Datos:</th>
               <th className="p-2">Estado:</th>
               <th className="p-2">Numero Inventario:</th>
+              <th className="p-2">Acciones:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -91,19 +112,116 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <>
                 {item.accessories.map((acc) => (
                   <tr key={acc.id} className="dark:text-white">
-                    <td className="p-2">{acc.name}</td>
-                    <td className="p-2">{acc.brand}</td>
-                    <td className="p-2">{acc.model}</td>
-                    <td className="p-2">{acc.serial}</td>
-                    <td className="p-2">{acc.description}</td>
-                    <td className="p-2">{acc.status}</td>
-                    <td className="p-2">{acc.inventoryNumber}</td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['name'] ?? acc['name'] : acc['name']}
+                        onChange={(value) => handleInputChange(acc.id, 'name', value)}
+                        fieldId={`acc-${acc.id}-name`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['brand'] ?? acc['brand'] : acc['brand']}
+                        onChange={(value) => handleInputChange(acc.id, 'brand', value)}
+                        fieldId={`acc-${acc.id}-brand`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['model'] ?? acc['model'] : acc['model']}
+                        onChange={(value) => handleInputChange(acc.id, 'model', value)}
+                        fieldId={`acc-${acc.id}-model`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['serial'] ?? acc['serial'] : acc['serial']}
+                        onChange={(value) => handleInputChange(acc.id, 'serial', value)}
+                        fieldId={`acc-${acc.id}-serial`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['description'] ?? acc['description'] : acc['description']}
+                        onChange={(value) => handleInputChange(acc.id, 'description', value)}
+                        fieldId={`acc-${acc.id}-description`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['status'] ?? acc['status'] : acc['status']}
+                        onChange={(value) => handleInputChange(acc.id, 'status', value)}
+                        type="select"
+                        options={[
+                          { value: "NUEVO", label: "Nuevo" },
+                          { value: "REGULAR", label: "Regular" },
+                          { value: "MALO", label: "Malo" },
+                        ]}
+                        fieldId={`acc-${acc.id}-status`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={editedData[acc.id] ? editedData[acc.id]['inventoryNumber'] ?? acc['inventoryNumber'] : acc['inventoryNumber']}
+                        onChange={(value) => handleInputChange(acc.id, 'inventoryNumber', value)}
+                        fieldId={`acc-${acc.id}-inventoryNumber`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      {editingRows[acc.id] ? (
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() => saveChanges(acc.id, "perifericos", editedData)}
+                            className="px-2 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600"
+                            title="Guardar cambios"
+                          >
+                            Guardar
+                          </button>
+                          <button
+                            onClick={() => cancelEditing(acc.id)}
+                            className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                            title="Cancelar edición"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => startEditing(acc.id, acc)}
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+                          title="Editar este periférico"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="p-4 text-center dark:text-white">
+                <td colSpan={8} className="p-4 text-center dark:text-white">
                   No hay Periféricos agregados
                 </td>
               </tr>
