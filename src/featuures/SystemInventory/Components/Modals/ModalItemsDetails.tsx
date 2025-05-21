@@ -13,7 +13,7 @@ import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import EditableCell from "../EditableCell";
-import { saveChanges } from "../../Services/updateAccesory";
+import { updateAccesory } from "../../Services/updateAccesory";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
 
@@ -48,7 +48,13 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const handleUpdateAccesory = async (id: number, typeItem: string) => {
     try {
       setIsLoading(true);
-      const result = await saveChanges(id, typeItem, editedData);
+
+      // validar que los datos hayan cambiado 
+      if (!editedData[id]) {
+        throw new Error("No hay datos para actualizar");
+      }
+
+      const result = await updateAccesory(id, typeItem, editedData);
 
       if (result && (result.status === 200 || result.status === 201)) {
         cancelEditing(id);
@@ -67,6 +73,18 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       setIsLoading(false);
     }
   };
+
+  const hasChange = (id: number, originalData: any) => {
+    if (!editedData[id]) return false;
+
+    const fieldsToCompare = ['name', 'brand', 'model', 'serial', 'description', 'status', 'inventoryNumber'];
+
+    return fieldsToCompare.some((field) => {
+      const originalValue = originalData[field];
+      const editedValue = editedData[id][field];
+      return originalValue !== editedValue;
+    });
+  }
 
   const { showAnimation, closing } = useAnimation(
     isOpen,
@@ -244,22 +262,32 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       {editingRows[acc.id] ? (
                         <div className="flex space-x-1">
+
                           <button
                             onClick={() =>
                               handleUpdateAccesory(acc.id, "perifericos")
                             }
-                            className="px-2 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600"
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading || !hasChange(acc.id, acc)
+                              ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                              : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                            }`}
                             title="Guardar cambios"
-                            disabled={isLoading}
+                            disabled={isLoading || !hasChange(acc.id, acc)}
                             type="button"
                           >
                             {isLoading ? "Guardando..." : "Guardar"}
                           </button>
+
                           <button
                             disabled={isLoading}
                             type="button"
                             onClick={() => cancelEditing(acc.id)}
-                            className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-500 hover:bg-red-600 transition-colors duration-300"
+                            }`}
                             title="Cancelar edición"
                           >
                             Cancelar

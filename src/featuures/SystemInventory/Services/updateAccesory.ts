@@ -1,6 +1,6 @@
 import { api } from "@/utils/api-config";
 
-export const saveChanges = async (id: string | number, itemType: string, editedData: Record<string, any>) => {
+export const updateAccesory = async (id: string | number, itemType: string, editedData: Record<string, any>) => {
     try {
         const endPoint =
           itemType === "perifericos"
@@ -12,7 +12,6 @@ export const saveChanges = async (id: string | number, itemType: string, editedD
             : null;
       
         const dataToSave = editedData[id];
-        console.log(dataToSave);
 
         const response = await api.put(`/${endPoint}${id}`, dataToSave);
 
