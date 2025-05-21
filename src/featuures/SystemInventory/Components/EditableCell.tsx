@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
+import EditableAutocomplete from "./EditableAutocomplete";
 
 interface EditableCellProps {
   isEditing: boolean;
   value: string | number;
   onChange: (value: string) => void;
-  type?: "text" | "number" | "select" | "textarea";
+  type?: "text" | "number" | "select" | "textarea" | "autocomplete-name";
   options?: Array<{ value: string; label: string }>;
   fieldId: string;
   activeFieldId: string | null;
@@ -21,7 +22,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   activeFieldId,
   setActiveFieldId,
 }) => {
-
   const inputRef = useRef<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   >(null);
@@ -41,6 +41,19 @@ const EditableCell: React.FC<EditableCellProps> = ({
   }
 
   switch (type) {
+    case "autocomplete-name":
+      console.log("autocomplete-name");
+      return (
+        <EditableAutocomplete
+          value={value.toString()}
+          onChange={onChange}
+          typeItem="periferico"
+          fieldId={fieldId}
+          activeFieldId={activeFieldId}
+          setActiveFieldId={setActiveFieldId}
+        />
+      );
+
     case "select":
       return (
         <select

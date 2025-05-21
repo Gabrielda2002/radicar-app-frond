@@ -12,11 +12,10 @@ import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
-import EditableCell from "../EditableCell";
+import EditableCell from "../EditableCell"; 
 import { updateAccesory } from "../../Services/updateAccesory";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
-
 
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
@@ -150,6 +149,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         onChange={(value) =>
                           handleInputChange(acc.id, "name", value)
                         }
+                        type="autocomplete-name"
                         fieldId={`acc-${acc.id}-name`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
