@@ -8,7 +8,7 @@ export const updateAccesory = async (id: string | number, itemType: string, edit
             : itemType === "hardware"
             ? "componentes/"
             : itemType === "software"
-            ? "software/equipos/"
+            ? "software/"
             : null;
       
         const dataToSave = editedData[id];

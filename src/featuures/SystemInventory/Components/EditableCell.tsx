@@ -1,11 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import EditableAutocomplete from "./EditableAutocomplete";
+import { FormatDate } from "@/utils/FormatDate";
 
 interface EditableCellProps {
   isEditing: boolean;
   value: string | number;
   onChange: (value: string) => void;
-  type?: "text" | "number" | "select" | "textarea" | "autocomplete-name";
+  type?:
+    | "text"
+    | "number"
+    | "select"
+    | "textarea"
+    | "autocomplete-name"
+    | "date";
   options?: Array<{ value: string; label: string }>;
   fieldId: string;
   typeItem?: string;
@@ -39,10 +46,27 @@ const EditableCell: React.FC<EditableCellProps> = ({
   };
 
   if (!isEditing) {
+
+    if(type === 'date'){
+      return <span>{value ? FormatDate(value.toString(), false) : ''}</span> 
+    }
+
     return <span>{value}</span>;
   }
 
   switch (type) {
+
+    case "date":
+      return (
+        <input
+          ref={inputRef as React.RefObject<HTMLInputElement>}
+          type="date"
+          value={FormatDate(value.toString(), false)}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={handleFocus}
+          className="w-full p-1 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      );
     case "autocomplete-name":
       return (
         <EditableAutocomplete
@@ -54,7 +78,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
           setActiveFieldId={setActiveFieldId}
         />
       );
-
     case "select":
       return (
         <select

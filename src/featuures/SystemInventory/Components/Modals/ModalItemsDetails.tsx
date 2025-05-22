@@ -8,7 +8,6 @@ import {
   ServerIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
@@ -154,6 +153,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                           handleInputChange(acc.id, "name", value)
                         }
                         type="autocomplete-name"
+                        typeItem='periferico'
                         fieldId={`acc-${acc.id}-name`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -312,7 +312,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               </>
             ) : (
               <tr>
-                <td colSpan={8} className="p-4 text-center dark:text-white">
+                <td colSpan={9} className="p-4 text-center dark:text-white">
                   No hay Periféricos agregados
                 </td>
               </tr>
@@ -508,7 +508,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="p-4 text-center dark:text-white">
+                <td colSpan={8} className="p-4 text-center dark:text-white">
                   No hay Componentes agregados
                 </td>
               </tr>
@@ -531,6 +531,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Otros datos:</th>
               <th className="p-2">Fecha Instalacion:</th>
               <th className="p-2">Estado:</th>
+              <th className="p-2">Acciones:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -538,20 +539,163 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <>
                 {item.software.map((soft) => (
                   <tr key={soft.id} className="dark:text-white">
-                    <td className="p-2">{soft.name}</td>
-                    <td className="p-2">{soft.versions}</td>
-                    <td className="p-2">{soft.license}</td>
-                    <td className="p-2">{soft.otherData}</td>
                     <td className="p-2">
-                      {FormatDate(soft.installDate, false)}
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["name"] ?? soft["name"]
+                            : soft["name"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "name", value)
+                        }
+                        typeItem="software"
+                        type="autocomplete-name"
+                        fieldId={`soft-${soft.id}-name`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
                     </td>
-                    <td className="p-2">{soft.status}</td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["versions"] ??
+                              soft["versions"]
+                            : soft["versions"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "versions", value)
+                        }
+                        fieldId={`soft-${soft.id}-versions`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["license"] ?? soft["license"]
+                            : soft["license"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "license", value)
+                        }
+                        fieldId={`soft-${soft.id}-license`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["otherData"] ??
+                              soft["otherData"]
+                            : soft["otherData"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "otherData", value)
+                        }
+                        fieldId={`soft-${soft.id}-otherData`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["installDate"] ??
+                              soft["installDate"]
+                            : soft["installDate"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "installDate", value)
+                        }
+                        type="date"
+                        fieldId={`soft-${soft.id}-installDate`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["status"] ?? soft["status"]
+                            : soft["status"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "status", value)
+                        }
+                        type="select"
+                        options={[
+                          { value: "NUEVO", label: "Nuevo" },
+                          { value: "REGULAR", label: "Regular" },
+                          { value: "MALO", label: "Malo" },
+                        ]}
+                        fieldId={`soft-${soft.id}-status`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      {editingRows[soft.id] ? (
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() =>
+                              handleUpdateAccesory(soft.id, "software")
+                            }
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading || !hasChange(soft.id, soft, 'software')
+                                ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                                : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                            }`}
+                            title="Guardar cambios"
+                            disabled={isLoading || !hasChange(soft.id, soft, 'software')}
+                            type="button"
+                          >
+                            {isLoading ? "Guardando..." : "Guardar"}
+                          </button>
+
+                          <button
+                            disabled={isLoading}
+                            type="button"
+                            onClick={() => cancelEditing(soft.id)}
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-500 hover:bg-red-600 transition-colors duration-300"
+                            }`}
+                            title="Cancelar edición"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => startEditing(soft.id, soft)}
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+                          title="Editar este software"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={6} className="p-4 text-center dark:text-white">
+                <td colSpan={7} className="p-4 text-center dark:text-white">
                   No hay Software agregado
                 </td>
               </tr>
