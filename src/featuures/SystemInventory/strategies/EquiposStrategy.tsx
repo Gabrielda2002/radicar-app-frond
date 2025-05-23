@@ -9,6 +9,7 @@ import ModalTablaseguimientoItem from "../Components/Modals/ModalTablaSeguimient
 import ModalAccesorioItem from "../Components/Modals/ModalAccesorioItem";
 import { ReactNode } from "react";
 import { FormatDate } from "@/utils/FormatDate";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
 export class EquiposStrategy implements ItemStrategy<IItems> {
   getName(item: IItems): string {
@@ -23,14 +24,13 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
     return <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(item: IItems, handleViewDetails: (item: IItems) => void) {
+  renderDetailsButton(item: IItems, tipoItem: string, refreshItems?: () => void) {
     return (
-      <button
-        onClick={() => handleViewDetails(item)}
-        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-      >
-        Ver detalles
-      </button>
+      <ModalItemsDetails
+        item={item}
+        tipoItem={tipoItem}
+        refreshItems={refreshItems}
+      />
     );
   }
 

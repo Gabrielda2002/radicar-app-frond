@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
 import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
 export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
   getName(item: IItemsNetworking): string {
@@ -18,18 +19,8 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(
-    item: IItemsNetworking,
-    handleViewDetails: (item: IItemsNetworking) => void
-  ): ReactNode {
-    return (
-      <button
-        onClick={() => handleViewDetails(item)}
-        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-      >
-        Ver detalles
-      </button>
-    );
+  renderDetailsButton(item: IItemsNetworking, tipoItem: string): ReactNode {
+    return <ModalItemsDetails item={item} tipoItem={tipoItem} />;
   }
 
   renderActionButtons(
@@ -116,7 +107,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     items: IItemsNetworking,
     refreshItems: () => void,
     idItems: number,
-    tipoTtem?: string,
+    tipoTtem?: string
     // isUpdate?: boolean
   ): ReactNode {
     return (

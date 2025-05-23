@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IItems } from "@/models/IItems";
 import { motion } from "framer-motion";
-import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 //*Icons
 import {
@@ -9,23 +7,95 @@ import {
   CpuChipIcon,
   ServerIcon,
   Cog6ToothIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { FormatDate } from "@/utils/FormatDate";
-import { IItemsGeneral } from "../../Models/IItemsGeneral";
-import { ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import useAnimation from "@/hooks/useAnimations";
+import { useBlockScroll } from "@/hooks/useBlockScroll";
+import EditableCell from "../EditableCell"; 
+import { updateAccesory } from "../../Services/updateAccesory";
+import { useEditableRow } from "../../Hooks/useEditableRow";
+import { toast } from "react-toastify";
+
 interface ModalItemsDetailsProps {
-  item: IItems | IItemsNetworking | IItemsGeneral | null;
-  tipoItem: string| null;
-  onClose: () => void;
+  item: AnyItem | null;
+  tipoItem: string | null;
+  refreshItems?: () => void;
 }
 
 const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   item,
-  onClose,
   tipoItem,
+  refreshItems,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const {
+    editingRows,
+    editedData,
+    activeFieldId,
+    setActiveFieldId,
+    startEditing,
+    cancelEditing,
+    handleInputChange,
+  } = useEditableRow();
+
+  const handleUpdateAccesory = async (id: number, typeItem: string) => {
+    try {
+      setIsLoading(true);
+
+      // validar que los datos hayan cambiado 
+      if (!editedData[id]) {
+        throw new Error("No hay datos para actualizar");
+      }
+
+      const result = await updateAccesory(id, typeItem, editedData);
+
+      if (result && (result.status === 200 || result.status === 201)) {
+        cancelEditing(id);
+        toast.success("Periférico actualizado correctamente");
+          refreshItems?.();
+      } else {
+        toast.error("Error al actualizar el periférico");
+      }
+    } catch (error: any) {
+
+      const errorMessage = error instanceof Error ? error.message : 'Error Inesperado'
+      toast.error(errorMessage);
+      console.log(error);
+
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const hasChange = (id: number, originalData: any, typeAccesory: string) => {
+    if (!editedData[id]) return false;
+
+    const fieldsToCompare = typeAccesory === 'periferico'
+    ? ['name', 'brand', 'model', 'serial', `description`, 'status', 'inventoryNumber']
+    : typeAccesory === 'hardware'
+    ? ['name', 'brand', 'capacity', 'speed', `description`, 'model', 'serial']
+    : ['name', 'versions', 'license', 'otherData', 'installDate', 'status'];
+
+    return fieldsToCompare.some((field) => {
+      const originalValue = originalData[field];
+      const editedValue = editedData[id][field];
+      return originalValue !== editedValue;
+    });
+  }
+
+  const { showAnimation, closing } = useAnimation(
+    isOpen,
+    () => setIsOpen(false),
+    300
+  );
+
+  useBlockScroll(isOpen);
+
   const [isMobile, setIsMobile] = useState(false);
 
   const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
@@ -42,18 +112,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    onClose();
-  };
-
-  if (item) {
-    openModal();
-  }
-
   const TableWrapper = ({ children }: { children: React.ReactNode }) => (
     <div className="overflow-y-auto rounded-lg shadow-md dark:shadow-md dark:shadow-indigo-800 max-h-[60vh]">
       <div className="inline-block min-w-full overflow-x-auto align-middle">
@@ -61,7 +119,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </div>
     </div>
   );
-// renderizado de perifericos
+  // renderizado de perifericos
   const renderPerifericosTable = () => {
     return (
       <TableWrapper>
@@ -75,6 +133,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Otros Datos:</th>
               <th className="p-2">Estado:</th>
               <th className="p-2">Numero Inventario:</th>
+              <th className="p-2">Acciones:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -82,19 +141,178 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <>
                 {item.accessories.map((acc) => (
                   <tr key={acc.id} className="dark:text-white">
-                    <td className="p-2">{acc.name}</td>
-                    <td className="p-2">{acc.brand}</td>
-                    <td className="p-2">{acc.model}</td>
-                    <td className="p-2">{acc.serial}</td>
-                    <td className="p-2">{acc.description}</td>
-                    <td className="p-2">{acc.status}</td>
-                    <td className="p-2">{acc.inventoryNumber}</td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["name"] ?? acc["name"]
+                            : acc["name"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "name", value)
+                        }
+                        type="autocomplete-name"
+                        typeItem='periferico'
+                        fieldId={`acc-${acc.id}-name`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["brand"] ?? acc["brand"]
+                            : acc["brand"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "brand", value)
+                        }
+                        fieldId={`acc-${acc.id}-brand`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["model"] ?? acc["model"]
+                            : acc["model"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "model", value)
+                        }
+                        fieldId={`acc-${acc.id}-model`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["serial"] ?? acc["serial"]
+                            : acc["serial"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "serial", value)
+                        }
+                        fieldId={`acc-${acc.id}-serial`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["description"] ??
+                              acc["description"]
+                            : acc["description"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "description", value)
+                        }
+                        fieldId={`acc-${acc.id}-description`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["status"] ?? acc["status"]
+                            : acc["status"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "status", value)
+                        }
+                        type="select"
+                        options={[
+                          { value: "NUEVO", label: "Nuevo" },
+                          { value: "REGULAR", label: "Regular" },
+                          { value: "MALO", label: "Malo" },
+                        ]}
+                        fieldId={`acc-${acc.id}-status`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[acc.id]}
+                        value={
+                          editedData[acc.id]
+                            ? editedData[acc.id]["inventoryNumber"] ??
+                              acc["inventoryNumber"]
+                            : acc["inventoryNumber"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(acc.id, "inventoryNumber", value)
+                        }
+                        fieldId={`acc-${acc.id}-inventoryNumber`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      {editingRows[acc.id] ? (
+                        <div className="flex space-x-1">
+
+                          <button
+                            onClick={() =>
+                              handleUpdateAccesory(acc.id, "perifericos")
+                            }
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading || !hasChange(acc.id, acc, 'periferico')
+                              ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                              : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                            }`}
+                            title="Guardar cambios"
+                            disabled={isLoading || !hasChange(acc.id, acc, 'periferico')}
+                            type="button"
+                          >
+                            {isLoading ? "Guardando..." : "Guardar"}
+                          </button>
+
+                          <button
+                            disabled={isLoading}
+                            type="button"
+                            onClick={() => cancelEditing(acc.id)}
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-500 hover:bg-red-600 transition-colors duration-300"
+                            }`}
+                            title="Cancelar edición"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => startEditing(acc.id, acc)}
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+                          title="Editar este periférico"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="p-4 text-center dark:text-white">
+                <td colSpan={9} className="p-4 text-center dark:text-white">
                   No hay Periféricos agregados
                 </td>
               </tr>
@@ -118,6 +336,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Otros Datos:</th>
               <th className="p-2">Modelo:</th>
               <th className="p-2">Serial:</th>
+              <th className="p-2">Acciones:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -125,19 +344,171 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <>
                 {item.components.map((comp) => (
                   <tr key={comp.id} className="dark:text-white">
-                    <td className="p-2">{comp.name}</td>
-                    <td className="p-2">{comp.brand}</td>
-                    <td className="p-2">{comp.capacity}</td>
-                    <td className="p-2">{comp.speed}</td>
-                    <td className="p-2">{comp.otherData}</td>
-                    <td className="p-2">{comp.model}</td>
-                    <td className="p-2">{comp.serial}</td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["name"] ?? comp["name"]
+                            : comp["name"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "name", value)
+                        }
+                        type="autocomplete-name"
+                        typeItem={'hardware'}
+                        fieldId={`comp-${comp.id}-name`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["brand"] ?? comp["brand"]
+                            : comp["brand"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "brand", value)
+                        }
+                        fieldId={`comp-${comp.id}-brand`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["capacity"] ??
+                              comp["capacity"]
+                            : comp["capacity"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "capacity", value)
+                        }
+                        fieldId={`comp-${comp.id}-capacity`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["speed"] ?? comp["speed"]
+                            : comp["speed"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "speed", value)
+                        }
+                        fieldId={`comp-${comp.id}-speed`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["description"] ??
+                              comp["description"]
+                            : comp["description"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "description", value)
+                        }
+                        fieldId={`comp-${comp.id}-description`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["model"] ?? comp["model"]
+                            : comp["model"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "model", value)
+                        }
+                        fieldId={`comp-${comp.id}-model`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[comp.id]}
+                        value={
+                          editedData[comp.id]
+                            ? editedData[comp.id]["serial"] ?? comp["serial"]
+                            : comp["serial"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(comp.id, "serial", value)
+                        }
+                        fieldId={`comp-${comp.id}-serial`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      {editingRows[comp.id] ? (
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() =>
+                              handleUpdateAccesory(comp.id, "hardware")
+                            }
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading || !hasChange(comp.id, comp, 'hardware')
+                                ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                                : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                            }`}
+                            title="Guardar cambios"
+                            disabled={isLoading || !hasChange(comp.id, comp, 'hardware')}
+                            type="button"
+                          >
+                            {isLoading ? "Guardando..." : "Guardar"}
+                          </button>
+
+                          <button
+                            disabled={isLoading}
+                            type="button"
+                            onClick={() => cancelEditing(comp.id)}
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-500 hover:bg-red-600 transition-colors duration-300"
+                            }`}
+                            title="Cancelar edición"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => startEditing(comp.id, comp)}
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+                          title="Editar este componente"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="p-4 text-center dark:text-white">
+                <td colSpan={8} className="p-4 text-center dark:text-white">
                   No hay Componentes agregados
                 </td>
               </tr>
@@ -147,7 +518,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       </TableWrapper>
     );
   };
-// renderizado de software 
+  // renderizado de software
   const renderSoftwareTable = () => {
     return (
       <TableWrapper>
@@ -160,6 +531,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Otros datos:</th>
               <th className="p-2">Fecha Instalacion:</th>
               <th className="p-2">Estado:</th>
+              <th className="p-2">Acciones:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -167,20 +539,163 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <>
                 {item.software.map((soft) => (
                   <tr key={soft.id} className="dark:text-white">
-                    <td className="p-2">{soft.name}</td>
-                    <td className="p-2">{soft.versions}</td>
-                    <td className="p-2">{soft.license}</td>
-                    <td className="p-2">{soft.otherData}</td>
                     <td className="p-2">
-                      {FormatDate(soft.installDate, false)}
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["name"] ?? soft["name"]
+                            : soft["name"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "name", value)
+                        }
+                        typeItem="software"
+                        type="autocomplete-name"
+                        fieldId={`soft-${soft.id}-name`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
                     </td>
-                    <td className="p-2">{soft.status}</td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["versions"] ??
+                              soft["versions"]
+                            : soft["versions"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "versions", value)
+                        }
+                        fieldId={`soft-${soft.id}-versions`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["license"] ?? soft["license"]
+                            : soft["license"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "license", value)
+                        }
+                        fieldId={`soft-${soft.id}-license`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["otherData"] ??
+                              soft["otherData"]
+                            : soft["otherData"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "otherData", value)
+                        }
+                        fieldId={`soft-${soft.id}-otherData`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["installDate"] ??
+                              soft["installDate"]
+                            : soft["installDate"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "installDate", value)
+                        }
+                        type="date"
+                        fieldId={`soft-${soft.id}-installDate`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      <EditableCell
+                        isEditing={editingRows[soft.id]}
+                        value={
+                          editedData[soft.id]
+                            ? editedData[soft.id]["status"] ?? soft["status"]
+                            : soft["status"]
+                        }
+                        onChange={(value) =>
+                          handleInputChange(soft.id, "status", value)
+                        }
+                        type="select"
+                        options={[
+                          { value: "NUEVO", label: "Nuevo" },
+                          { value: "REGULAR", label: "Regular" },
+                          { value: "MALO", label: "Malo" },
+                        ]}
+                        fieldId={`soft-${soft.id}-status`}
+                        activeFieldId={activeFieldId}
+                        setActiveFieldId={setActiveFieldId}
+                      />
+                    </td>
+                    <td className="p-2">
+                      {editingRows[soft.id] ? (
+                        <div className="flex space-x-1">
+                          <button
+                            onClick={() =>
+                              handleUpdateAccesory(soft.id, "software")
+                            }
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading || !hasChange(soft.id, soft, 'software')
+                                ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                                : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                            }`}
+                            title="Guardar cambios"
+                            disabled={isLoading || !hasChange(soft.id, soft, 'software')}
+                            type="button"
+                          >
+                            {isLoading ? "Guardando..." : "Guardar"}
+                          </button>
+
+                          <button
+                            disabled={isLoading}
+                            type="button"
+                            onClick={() => cancelEditing(soft.id)}
+                            className={`px-2 py-1 text-xs text-white rounded ${
+                              isLoading
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-500 hover:bg-red-600 transition-colors duration-300"
+                            }`}
+                            title="Cancelar edición"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => startEditing(soft.id, soft)}
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+                          title="Editar este software"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={6} className="p-4 text-center dark:text-white">
+                <td colSpan={7} className="p-4 text-center dark:text-white">
                   No hay Software agregado
                 </td>
               </tr>
@@ -236,7 +751,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <span>Periféricos</span>
             </button>
             <button
-            className={`flex items-center p-2 ${
+              className={`flex items-center p-2 ${
                 activeTab === "componentes"
                   ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-black dark:shadow-md dark:shadow-indigo-800 shadow-md"
                   : "dark:bg-gray-900 dark:hover:bg-gray-800 duration-300 dark:text-white hover:bg-gray-300"
@@ -283,76 +798,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Básica:
                   </h3>
                   <ul className="space-y-1">
-                    {/* {tipoItem === "equipos" ||
-                      (tipoItem === "inventario/general" && (
-                        <li>
-                          <strong>Responsable: </strong>
-                          {tipoItem === "inventario/general"
-                            ? (item as IItems).nameUser +
-                              " " +
-                              (item as IItems).lastNameUser
-                            : (item as IItemsGeneral).responsable}
-                        </li>
-                      ))}
-                    <li>
-                      <strong>Nombre: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).nameEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).name
-                        : (item as IItemsGeneral).name}
-                    </li>
-                    {item && "area" in item && (
-                      <li>
-                        <strong>Área: </strong>
-                        {item.area}
-                      </li>
-                    )}
-                    {item && "typeEquipment" in item && (
-                      <li>
-                        <strong>Tipo Equipo: </strong>
-                        {item.typeEquipment}
-                      </li>
-                    )}
-                    <li>
-                      <strong>Marca: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).brandEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).brand
-                        : (item as IItemsGeneral).brand}
-                    </li>
-                    <li>
-                      <strong>Modelo: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).modelEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).model
-                        : (item as IItemsGeneral).model}
-                    </li>
-                    {tipoItem === "inventario/general" && (
-                      <>
-                        <li>
-                          <strong>Clasificación: </strong>
-                          {(item as IItemsGeneral).classification}
-                        </li>
-
-                        <li>
-                          <strong>Tipo Activo: </strong>
-                          {(item as IItemsGeneral).assetType}
-                        </li>
-
-                        <li>
-                          <strong>Tipo Área: </strong>
-                          {(item as IItemsGeneral).areaType}
-                        </li>
-
-                        <li>
-                          <strong>Dependencia Área: </strong>
-                          {(item as IItemsGeneral).dependencyArea}
-                        </li>
-                      </>
-                    )} */}
                     {strategy?.renderBasicInfo(item)}
                   </ul>
                 </div>
@@ -363,47 +808,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Detalles Técnicos:
                   </h3>
                   <ul className="space-y-1">
-                    {/* <li>
-                      <strong>Serial: </strong>
-                      {tipoItem === "equipos"
-                        ? (item as IItems).serialEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).serial
-                        : (item as IItemsGeneral).serialNumber}
-                    </li>
-                    {tipoItem === "equipos" && (
-                      <li>
-                        <strong>Sistema Operativo: </strong>
-                        {(item as IItems).operationalSystem}
-                      </li>
-                    )}
-                    {tipoItem === "equipos" ||
-                      (tipoItem === "dispositivos-red" && (
-                        <li>
-                          <strong>Dirección IP: </strong>
-                          {(item as IItemsNetworking | IItems).addressIp}
-                        </li>
-                      ))}
-                    {tipoItem === "equipos" ||
-                      (tipoItem === "dispositivos-red" && (
-                        <li>
-                          <strong>Mac: </strong>
-                          {(item as IItemsNetworking | IItems).mac}
-                        </li>
-                      ))}
-                    {tipoItem === "inventario/general" && (
-                      <>
-                        <li>
-                          <strong>Ubicación: </strong>
-                          {(item as IItemsGeneral).location}
-                        </li>
-
-                        <li>
-                          <strong>Material: </strong>
-                          {(item as IItemsGeneral).material}
-                        </li>
-                      </>
-                    )} */}
                     {strategy?.renderTechnicalDetails(item)}
                   </ul>
                 </div>
@@ -414,59 +818,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     Información Adicional:
                   </h3>
                   <ul className="space-y-1">
-                    {/* {tipoItem !== "dispositivos-red" && (
-                      <li>
-                        <strong>Fecha Compra: </strong>
-                        {tipoItem === "inventario/general"
-                          ? FormatDate(
-                              (item as IItemsGeneral).acquisitionDate,
-                              false
-                            )
-                          : FormatDate((item as IItems).purchaseDate, false)}
-                      </li>
-                    )}
-                    {tipoItem !== "dispositivos-red" && (
-                      <li>
-                        <strong>Tiempo Garantía: </strong>
-                        {(tipoItem === "inventario/general"
-                          ? (item as IItemsGeneral).warrantyPeriod
-                          : (item as IItems).warrantyTime) || "Sin Garantía"}
-                      </li>
-                    )}
-                    {tipoItem === "equipos" && (
-                      <li>
-                        <strong>Fecha Entrega: </strong>
-                        {FormatDate((item as IItems).deliveryDate, false)}
-                      </li>
-                    )}
-                    <li>
-                      <strong>Número Inventario: </strong>
-                      {(tipoItem === "equipos"
-                        ? (item as IItems).inventoryNumberEquipment
-                        : tipoItem === "dispositivos-red"
-                        ? (item as IItemsNetworking).inventoryNumber
-                        : (item as IItemsGeneral).inventoryNumber) ||
-                        "Sin N# Inventario"}
-                    </li>
-                    {item && "otherData" in item && (
-                      <li>
-                        <strong>Otros Datos: </strong>
-                        {item.otherData}
-                      </li>
-                    )}
-                    {item && "status" in item && (
-                      <li>
-                        <strong>Estado: </strong>
-                        {item.status}
-                      </li>
-                    )}
-
-                    {tipoItem === "inventario/general" && (
-                      <li>
-                        <strong>Cantidad: </strong>
-                        {(item as IItemsGeneral).quantity}
-                      </li>
-                    )} */}
                     {strategy?.renderAdditionalInfo(item)}
                   </ul>
                 </div>
@@ -519,44 +870,65 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   };
 
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center py-4 overflow-y-auto bg-gray-800 bg-opacity-50">
-      <div className="w-full max-w-6xl p-3 mx-4 my-4 bg-white rounded-md shadow-lg md:mx-auto md:p-6 dark:bg-gray-900">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold md:text-3xl dark:text-white">
-            Detalles del dispositivo
-          </h3>
-          <button
-            onClick={closeModal}
-            className="p-1 transition-colors rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            aria-label="Cerrar"
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+      >
+        Ver detalles
+      </button>
+      {isOpen && (
+        <section
+          className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
+            showAnimation && !closing ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div
+            className={`w-full max-w-6xl overflow-y-hidden transition-transform duration-300 transform bg-white rounded-md shadow-lg dark:bg-gray-600 ${
+              showAnimation && !closing ? "translate-y-0" : "translate-y-10"
+            }`}
           >
-            <XMarkIcon className="w-6 h-6 dark:text-white" />
-          </button>
-        </div>
+            <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 border-b-gray-900 dark:bg-gray-600 dark:border-b-white">
+              <h3 className="text-2xl font-semibold text-color dark:text-gray-200">
+                Detalles del Item
+              </h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-xl text-gray-400 duration-300 rounded-md w-7 h-7 hover:bg-gray-400 hover:text-gray-900 dark:text-gray-100 dark:hover:text-gray-900"
+                aria-label="Cerrar"
+              >
+                &times;
+              </button>
+            </div>
 
-        {renderTabNavigation()}
+            <div className="max-h-[74vh] md:max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
+              {renderTabNavigation()}
 
-        <div className="p-2 rounded md:p-4 dark:bg-gray-900">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            {renderContent()}
-          </motion.div>
-        </div>
+              <div className="rounded md:p-4 dark:bg-gray-900">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {renderContent()}
+                </motion.div>
+              </div>
 
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={closeModal}
-            className="p-2 px-8 duration-200 border rounded md:px-12 btn btn-secondary hover:bg-gray-300 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-          >
-            Cerrar
-          </button>
-        </div>
-      </div>
-    </section>
+              <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
+                <button
+                  className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                  onClick={() => setIsOpen(false)}
+                  type="button"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 

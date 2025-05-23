@@ -15,16 +15,32 @@ export interface ItemStrategy<T> {
   getName(item: T): string;
   getTypeLabel(item: T): string | null;
   getIcon(): ReactNode;
-  renderDetailsButton(item: T, handleViewDetails: (item: T) => void): ReactNode;
-  renderActionButtons(item: T, refreshItems: () => void, handleOpen?: (nombreSoporte: string | null, ruta: string) => void): ReactNode;
+  renderDetailsButton(item: T, tipoItem: string, refreshItems?: () => void): ReactNode;
+  renderActionButtons(
+    item: T,
+    refreshItems: () => void,
+    handleOpen?: (nombreSoporte: string | null, ruta: string) => void
+  ): ReactNode;
   renderBasicInfo(item: T): ReactNode;
   renderTechnicalDetails(item: T): ReactNode;
   renderAdditionalInfo(item: T): ReactNode;
-  renderCreateButton(idSede: number,items: T | null, refreshItems: () => void,idItems: number | null,tipoTtem?: string | null, isUpdate?: boolean ): ReactNode;
+  renderCreateButton(
+    idSede: number,
+    items: T | null,
+    refreshItems: () => void,
+    idItems: number | null,
+    tipoTtem?: string | null,
+    isUpdate?: boolean
+  ): ReactNode;
 }
 
 // Tipo unión que representa cualquier tipo de elemento de inventario
-export type AnyItem = IItems | IItemsNetworking | IItemsGeneral | IItemsPhone | IItemsTv;
+export type AnyItem =
+  | IItems
+  | IItemsNetworking
+  | IItemsGeneral
+  | IItemsPhone
+  | IItemsTv;
 
 // Factory para obtener la estrategia correcta según el tipo de item
 export const ItemStrategyFactory = {

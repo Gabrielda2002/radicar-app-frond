@@ -5,6 +5,7 @@ import { Smartphone } from "lucide-react";
 import ModalFormPhones from "../Components/Modals/ModalFormPhones";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
+import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
 export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
   getName(item: IItemsPhone): string {
@@ -21,15 +22,13 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
 
   renderDetailsButton(
     item: IItemsPhone,
-    handleViewDetails: (item: IItemsPhone) => void
+    tipoItem: string
   ): ReactNode {
     return (
-      <button
-        onClick={() => handleViewDetails(item)}
-        className="px-3 py-1 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-      >
-        Ver detalles
-      </button>
+      <ModalItemsDetails
+        item={item}
+        tipoItem={tipoItem}
+      />
     );
   }
 
