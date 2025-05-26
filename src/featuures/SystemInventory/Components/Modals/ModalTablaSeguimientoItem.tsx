@@ -78,8 +78,8 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     }
 
     return (
-      <div className="p-4">
-        <table className="w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md">
+      <div className="flex items-center justify-center p-4">
+        <table className="w-full max-w-lg overflow-hidden bg-white border-collapse rounded-lg shadow-md">
           <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
               <th className="flex items-center p-3 text-left">
@@ -95,7 +95,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
               </th>
             </tr>
           </thead>
-          <tbody className=" dark:bg-gray-800">
+          <tbody className="dark:bg-gray-800">
             {trackingData.map((s, key) => (
               <tr
                 key={key}
@@ -108,7 +108,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                   {s.typeEvent}
                 </td>
                 <td
-                  className="p-3 overflow-hidden text-gray-700 truncate whitespace-normal dark:text-white max-h-12 text-ellipsis"
+                  className="p-3 overflow-hidden text-gray-700 whitespace-normal dark:text-white max-h-12 text-ellipsis max-w-md"
                   title={s.description}
                 >
                   {s.description}
