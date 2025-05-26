@@ -500,6 +500,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                         <option value="ACER">Acer</option>
                         <option value="HP">HP</option>
                         <option value="DELL">Dell</option>
+                        <option value="EZVIZ">EZVIZ</option>
+                        <option value="TPLINK">TPLINK</option>
+                        <option value="TENDA">TENDA</option>
+                        <option value="UNIFI">UNIFI</option>
+                        <option value="GRANDSTREAM">GRANDSTREAM</option>
+
                       </select>
                       <AnimatePresence>
                         {formik.touched.brand && formik.errors.brand ? (

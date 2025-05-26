@@ -51,7 +51,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
     description: Yup.string()
       .required("La descripción es requerida")
       .min(10, "La descripción debe tener al menos 10 caracteres")
-      .max(255, "La descripción debe tener como máximo 100 caracteres"),
+      .max(600, "La descripción debe tener como máximo 600 caracteres"),
   });
 
   const formik = useFormik({
@@ -98,13 +98,10 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
             progress: undefined,
             theme: "colored",
           });
+          formik.resetForm();
           if (refreshItems) {
-            console.log("refrescar items");
             refreshItems();
           }
-          setTimeout(() => {
-            setStadopen(false);
-          }, 2000);
         } else {
           setError("Ocurrio un error al intentar crear el seguimiento");
           toast.error("Ocurrio un error al intentar crear el seguimiento", {
@@ -158,7 +155,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
               {/* container-header */}
               <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
                 <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Módulos
+                  Crear Seguimiento
                 </h1>
                 <button
                   onClick={closeModal}
