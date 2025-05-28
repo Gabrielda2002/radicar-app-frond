@@ -1,6 +1,5 @@
 // * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import { IItems } from "@/models/IItems";
 import useSearch from "@/hooks/useSearch";
@@ -9,7 +8,6 @@ import usePagination from "@/hooks/usePagination";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 // * Icons
-import { ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
@@ -43,7 +41,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const { handleOpen } = useOpenSupport();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isGridView, setIsGridView] = useState(true);
   const ITEMS_PER_PAGE = 9;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
@@ -94,20 +91,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setItemsPerPage(Number(e.target.value));
-  };
-
-  // * almanecar la vista seleccionada en una cookie
-  useEffect(() => {
-    const savedView = Cookies.get("itemsViewMode");
-    if (savedView === "list") {
-      setIsGridView(false);
-    }
-  }, []);
-
-  const toggleViewMode = () => {
-    const newViewMode = !isGridView ? "grid" : "list";
-    Cookies.set("itemsViewMode", newViewMode, { expires: 7 });
-    setIsGridView(!isGridView);
   };
 
   useEffect(() => {
@@ -212,99 +195,47 @@ const ItemsList: React.FC<ItemsListProps> = ({
               <option value="20">20 items</option>
               <option value="30">30 items</option>
             </select>
-            <button
-              className="flex items-center px-4 py-1 ml-2 transition-colors duration-300 bg-gray-200 rounded-md text-pretty hover:text-white hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
-              onClick={toggleViewMode} // * Alternar vista
-            >
-              {isGridView ? (
-                <>
-                  <ListBulletIcon className="w-8 h-8 mr-2 dark:text-white" />
-                  Lista
-                </>
-              ) : (
-                <>
-                  <Squares2X2Icon className="w-8 h-8 mr-2 dark:text-white" />
-                  Cuadrícula
-                </>
-              )}
-            </button>
           </div>
 
           {dataToShow.length > 0 && invetario && invetario.length > 0 ? (
-            isGridView ? (
-              <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
-                {(tipoItem === "inventario/general"
-                  ? dataToShow
-                  : currentData()
-                ).map((item: AnyItem) => (
-                  <div
-                    key={item.id}
-                    className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
-                  >
-                    <div className="flex items-center justify-between mb-14">
-                      <div className="flex items-center gap-2">
-                        {strategy?.getIcon()}
-                      </div>
-                      <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
-                        {strategy?.getName(item)}
-                      </h3>
-                      <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
-                        {strategy?.getTypeLabel(item)}
-                      </p>
+            <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
+              {(tipoItem === "inventario/general"
+                ? dataToShow
+                : currentData()
+              ).map((item: AnyItem) => (
+                <div
+                  key={item.id}
+                  className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
+                >
+                  <div className="flex items-center justify-between mb-14">
+                    <div className="flex items-center gap-2">
+                      {strategy?.getIcon()}
                     </div>
-                    <hr className="border-gray-300 dark:border-gray-600" />
-                    <div className="flex flex-wrap justify-between gap-2 mt-4">
-                      {strategy?.renderDetailsButton(
+                    <h3 className="mb-2 font-semibold text-md md:text-2xl dark:text-white">
+                      {strategy?.getName(item)}
+                    </h3>
+                    <p className="p-2 text-xs text-white bg-gray-600 rounded-full dark:bg-gray-900 dark:text-white">
+                      {strategy?.getTypeLabel(item)}
+                    </p>
+                  </div>
+                  <hr className="border-gray-300 dark:border-gray-600" />
+                  <div className="flex flex-wrap justify-between gap-2 mt-4">
+                    {strategy?.renderDetailsButton(
+                      item,
+                      tipoItem ?? "",
+                      onItemsUpdate
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {strategy?.renderActionButtons(
                         item,
-                        tipoItem ?? "",
-                        onItemsUpdate
+                        onItemsUpdate,
+                        handleOpen
                       )}
-                      <div className="flex flex-wrap gap-2">
-                        {strategy?.renderActionButtons(
-                          item,
-                          onItemsUpdate,
-                          handleOpen
-                        )}
-                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4 transition-all duration-500 ease-in-out">
-                {(tipoItem === "inventario/general"
-                  ? dataToShow
-                  : currentData()
-                ).map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between p-4 duration-500 border rounded-md shadow-sm dark:border-gray-700 dark:shadow-indigo-600 hover:shadow-xl dark:hover:shadow-indigo-600"
-                  >
-                    <div>
-                      <div className="flex items-center">
-                        {strategy?.getIcon()}
-                        <h3 className="text-xl font-semibold dark:text-white">
-                          {strategy?.getName(item)}
-                        </h3>
-                      </div>
-                      <p className="mt-1 text-sm text-black dark:text-gray-200">
-                        {strategy?.getTypeLabel(item)}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      {strategy?.renderDetailsButton(item, tipoItem ?? "")}
-                      <div className="flex flex-wrap gap-2">
-                        {strategy?.renderActionButtons(
-                          item,
-                          onItemsUpdate,
-                          handleOpen
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )
+                </div>
+              ))}
+            </div>
           ) : (
             <p className="mt-4 text-xl font-bold text-center text-gray-600 dark:text-white">
               No hay registros
