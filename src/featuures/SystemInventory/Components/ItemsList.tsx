@@ -1,18 +1,15 @@
 // * Fuctions and Hooks
 import React, { useEffect, useState } from "react";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
-import { IItems } from "@/models/IItems";
-import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import { IItemsNetworking } from "@/models/IItemsNetworking";
 
 // * Icons
 import { useOpenSupport } from "@/hooks/useOpenSupport";
-import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 import FilterChips from "./FilterChips";
+import { useItemsFilter } from "../Hooks/useItemsFilter";
 
 // * Interface
 interface ItemsListProps {
@@ -44,48 +41,17 @@ const ItemsList: React.FC<ItemsListProps> = ({
   const ITEMS_PER_PAGE = 9;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  const { query, setQuery, filteredData } =
-    tipoItem === "equipos"
-      ? useSearch<IItems>((invetario as IItems[]) || [], [
-          "nameEquipment",
-          "brandEquipment",
-          "modelEquipment",
-          "nameUser",
-          "lastNameUser",
-        ])
-      : tipoItem === "dispositivos-red"
-      ? useSearch<IItemsNetworking>((invetario as IItemsNetworking[]) || [], [
-          "name",
-          "brand",
-          "model",
-        ])
-      : useSearch<IItemsGeneral>((invetario as IItemsGeneral[]) || [], [
-          "name",
-          "brand",
-          "model",
-          "responsable",
-        ]);
+  const { query, setQuery, filteredData } = useItemsFilter({
+    data: invetario,
+    tipoItem,
+    selectedAreaDependency,
+  }) 
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination<IItems | IItemsNetworking | IItemsGeneral>(
+    usePagination<AnyItem>(
       filteredData,
       itemsPerPage
     );
-
-  const filteredGeneralItems =
-    tipoItem === "inventario/general"
-      ? ((invetario as IItemsGeneral[]) || []).filter(
-          (item) =>
-            (item.name.toLowerCase().includes(query.toLowerCase()) ||
-              item.brand.toLowerCase().includes(query.toLowerCase()) ||
-              item.model.toLowerCase().includes(query.toLowerCase())) &&
-            (selectedAreaDependency.length === 0 ||
-              selectedAreaDependency.includes(item.dependencyArea))
-        )
-      : [];
-
-  const dataToShow =
-    tipoItem === "inventario/general" ? filteredGeneralItems : filteredData;
 
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -197,12 +163,9 @@ const ItemsList: React.FC<ItemsListProps> = ({
             </select>
           </div>
 
-          {dataToShow.length > 0 && invetario && invetario.length > 0 ? (
+          {filteredData.length > 0 && invetario && invetario.length > 0 ? (
             <div className="grid gap-6 transition-all duration-500 ease-in-out md:grid-cols-2 lg:grid-cols-3">
-              {(tipoItem === "inventario/general"
-                ? dataToShow
-                : currentData()
-              ).map((item: AnyItem) => (
+              {currentData().map((item: AnyItem) => (
                 <div
                   key={item.id}
                   className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
