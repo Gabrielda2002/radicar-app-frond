@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 import useSearch from '@/hooks/useSearch';
-import { IItems } from '@/models/IItems';
-import { IItemsNetworking } from '@/models/IItemsNetworking';
 import { IItemsGeneral } from '../Models/IItemsGeneral';
 import { AnyItem } from '../strategies/ItemStrategy';
 
