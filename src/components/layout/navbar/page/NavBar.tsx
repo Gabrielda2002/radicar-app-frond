@@ -79,8 +79,8 @@ const Navbar: React.FC = React.memo(() => {
         href: "https://forms.office.com/pages/responsepage.aspx?id=h5gx0IxtRE6Nz0WYsPqRxS4uCKLheylNnxH7ATQR5cdUQkRMTFM5QkxNNlVZQTRDMUxZTlBWRkRKQiQlQCN0PWcu&route=shorturl",
       },
       {
-        name: "Soporte de Sistemas",
-        href: "https://docs.google.com/forms/d/e/1FAIpQLSfZunq4zGfBLBecr_WZPenSgqnpMwRJaTSri9n2T46zW5l_qw/viewform",
+        name: "Solicitud de Compras",
+        href: "https://forms.clickup.com/9013655272/f/8cm2xq8-413/P5FA8Q12YXI8M8ZI8M",
       },
       {
         name: "Salud y seguridad en el trabajo",
