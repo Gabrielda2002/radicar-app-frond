@@ -14,6 +14,7 @@ import { useOpenSupport } from "@/hooks/useOpenSupport";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
+import FilterChips from "./FilterChips";
 
 // * Interface
 interface ItemsListProps {
@@ -190,29 +191,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
                 )}
 
                 {/* chips filtros activos */}
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {selectedAreaDependency.map((a) => (
-                    <span
-                      key={a}
-                      className="flex items-center px-2 py-1 max-w-40 text-sm text-pretty bg-gray-200 rounded-full dark:bg-gray-900 dark:text-white hover:bg-gray-700 hover:text-white  dark:hover:bg-gray-500 transition-colors duration-300 overflow-hidden text-ellipsis whitespace-pre-line"
-                      title={a} // Tooltip to show full text on hover
-                    >
-                      {a}
-                      <button
-                        type="button"
-                        className="ml-1 text-black dark:text-white hover:text-red-300"
-                        onClick={() =>
-                          setSelectedAreaDependency((prev) =>
-                            prev.filter((name) => name !== a)
-                          )
-                        }
-                        title="Eliminar filtro"
-                      >
-                        <span className="flex items-center">&times;</span>
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                <FilterChips
+                  selectedFilters={selectedAreaDependency}
+                  onRemoveFilter={(filter) =>
+                    setSelectedAreaDependency((prev) =>
+                      prev.filter((name) => name !== filter)
+                    )
+                  }
+                />
               </div>
             )}
             <select
@@ -268,7 +254,11 @@ const ItemsList: React.FC<ItemsListProps> = ({
                     </div>
                     <hr className="border-gray-300 dark:border-gray-600" />
                     <div className="flex flex-wrap justify-between gap-2 mt-4">
-                      {strategy?.renderDetailsButton(item, tipoItem ?? '', onItemsUpdate)}
+                      {strategy?.renderDetailsButton(
+                        item,
+                        tipoItem ?? "",
+                        onItemsUpdate
+                      )}
                       <div className="flex flex-wrap gap-2">
                         {strategy?.renderActionButtons(
                           item,
@@ -302,7 +292,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      {strategy?.renderDetailsButton(item, tipoItem ?? '')}
+                      {strategy?.renderDetailsButton(item, tipoItem ?? "")}
                       <div className="flex flex-wrap gap-2">
                         {strategy?.renderActionButtons(
                           item,
