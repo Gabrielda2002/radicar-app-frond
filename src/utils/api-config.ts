@@ -223,20 +223,28 @@ export const updateUsuariosTableEp = async (data: FormData, id: number) => {
 
 // crear item sistema inventario
 export const createItemEp = async (data: FormData, ep: string) => {
-    return api.post(`/${ep}`, data, {
+
+    const configHeader = ep !== 'dispositivos-red'
+    ? {
         headers: {
             'Content-Type': 'multipart/form-data',
-        },
-    });
+        }
+    } : {};
+
+    return api.post(`/${ep}`, data, configHeader);
 }
 
 // actualizar item sistema inventario
 export const updateItemEp = async (data: FormData, id: number, ep: string) => {
-    return api.put(`/${ep}/${id}`, data, {
+
+    const configHeader = ep !== 'dispositivos-red'
+    ? {
         headers: {
             'Content-Type': 'multipart/form-data',
-        },
-    });
+        }
+    } : {};
+
+    return api.put(`/${ep}/${id}`, data, configHeader);
 }
 
 // crear seguimiento item
