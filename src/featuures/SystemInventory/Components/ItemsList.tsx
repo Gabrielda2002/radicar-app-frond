@@ -168,6 +168,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               {currentData().map((item: AnyItem) => (
                 <div
                   key={item.id}
+                  id={`item-${item.id}`}
                   className="relative p-4 duration-500 border rounded-md shadow-sm dark:shadow-indigo-600 hover:shadow-lg dark:hover:shadow-indigo-600 dark:border-gray-700"
                 >
                   <div className="flex items-center justify-between mb-14">
