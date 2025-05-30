@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import { FormatDate } from "@/utils/FormatDate";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
+import Button from "@/components/common/Ui/Button";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -1059,20 +1060,24 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                 </div>
                 {/* container-footer */}
                 <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
-                  <button
-                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+                  <Button
+                    className="w-30 h-10"
                     onClick={() => setStadopen(false)}
                     type="button"
+                    disabled={submiting}
+                    variant="closed"
                   >
                     Cerrar
-                  </button>
-                  <button
-                    className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  </Button>
+                  <Button
+                    isLoading={submiting}
+                    variant="primary"
+                    className="w-30 h-10"
                     type="submit"
                     disabled={submiting || !formik.isValid}
                   >
                     {idItem ? "Actualizar" : "Crear"}
-                  </button>
+                  </Button>
                   {success && null}
                   {error && null}
                 </div>
