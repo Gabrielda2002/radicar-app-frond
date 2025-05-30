@@ -36,26 +36,14 @@ const SistemaInventario: React.FC = () => {
 
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
 
+  const [ targetItemId, setTargetItemId ] = useState<string | number | null>(null);
+
   const handleNavigateToItem = useCallback((result: GlobalSearchResult) => {
     setSedeSelect(result.sedeId);
     setDepartmentSelect(result.departmentId);
+    setTargetItemId(result.item.id);
     setTipoItem(result.tipoItem as any);
     setScreen("items");
-
-    setTimeout(() => {
-      const element = document.getElementById(`item-${result.item.id}`);
-
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-        setTimeout(() => {
-          element.classList.remove(
-            "ring-2",
-            "ring-blue-500",
-            "ring-opacity-50"
-          );
-        }, 3000);
-      }
-    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -160,7 +148,7 @@ const SistemaInventario: React.FC = () => {
                 title="Buscar en todo el inventario"
               >
                 <MagnifyingGlassIcon className="w-6 h-6 mr-2" />
-                <span>Buscar en Inventario</span>
+                <span>Busqueda global</span>
                 <kbd className="ml-2 text-xs font-semibold text-gray-500 dark:text-gray-400">
                   Ctrl+K
                 </kbd>
@@ -273,6 +261,7 @@ const SistemaInventario: React.FC = () => {
                     tipoItem={tipoItem}
                     idSede={sedeSelect}
                     onItemsUpdate={handleItemsUpdate}
+                    targetItemId={targetItemId}
                   />
                 )}
                 <GlobalSearch

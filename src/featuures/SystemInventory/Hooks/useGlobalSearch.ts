@@ -73,10 +73,6 @@ export const useGlobalSearch = (): UseGlobalSearchReturn => {
             const flatResults = results.flat();
 
             const sortedResults = flatResults.sort((a, b) => {
-
-                console.log("resultado de la busqueda: ", flatResults);
-                console.log(`Comparing: ${a.strategy.getName(a.item)} vs ${b.strategy.getName(b.item)}`);
-
                 const aName = a.strategy.getName(a.item).toLowerCase();
                 const bName = b.strategy.getName(b.item).toLowerCase();
 

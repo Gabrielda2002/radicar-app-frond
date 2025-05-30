@@ -17,6 +17,7 @@ interface ItemsListProps {
   tipoItem: string | null;
   idSede: number;
   onItemsUpdate: () => void;
+  targetItemId?: string | number | null;
 }
 
 const ItemsList: React.FC<ItemsListProps> = ({
@@ -24,6 +25,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
   tipoItem,
   idSede,
   onItemsUpdate,
+  targetItemId,
 }) => {
   // * Estados para almacenar datos
 
@@ -65,6 +67,65 @@ const ItemsList: React.FC<ItemsListProps> = ({
     }, 1000); // Simular carga inicial
     return () => clearTimeout(timeout);
   }, [tipoItem]);
+
+  const navigateToItem = (targetId: string | number) =>  {
+    if(!filteredData || filteredData.length === 0) return 1;
+
+    const targetIndex = filteredData.findIndex(item => 
+      item.id.toString() === targetId.toString()
+    );
+
+    if(targetIndex === -1){
+      console.log(`Item with Id ${targetId} not found in filtered data`);
+      return 1;
+    }
+
+    const targetPage = Math.floor(targetIndex / itemsPerPage) + 1;
+
+    paginate(targetPage);
+
+    return targetPage;
+  }
+
+  useEffect(() => {
+    if (targetItemId && filteredData.length > 0) {
+      const timer = setTimeout(() => {
+        const targetPage = navigateToItem(targetItemId);
+        
+        // ✅ Función recursiva para buscar el elemento
+        const findAndScrollToElement = (attempts = 0, maxAttempts = 10) => {
+          const elementId = `item-${targetItemId}`;
+          const element = document.getElementById(elementId);
+  
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+  
+            element.style.transition = 'all 0.3s ease';
+            element.style.backgroundColor = '#3b82f6';
+            element.style.transform = 'scale(1.02)';
+  
+            setTimeout(() => {
+              element.style.backgroundColor = '';
+              element.style.transform = '';
+            }, 2000);
+            
+            console.log(`Successfully navigated to item ${targetItemId} on page ${targetPage}`);
+          } else if (attempts < maxAttempts) {
+            setTimeout(() => findAndScrollToElement(attempts + 1, maxAttempts), 100);
+          } else {
+            console.error(`Could not find element ${elementId} after ${maxAttempts} attempts on page ${targetPage}`);
+          }
+        };
+  
+        findAndScrollToElement();
+      }, 100);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [targetItemId, filteredData, itemsPerPage]);
 
   return (
     <>
