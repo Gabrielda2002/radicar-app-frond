@@ -15,6 +15,9 @@ import EditableCell from "../EditableCell";
 import { updateAccesory } from "../../Services/updateAccesory";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
+import { deleteAccesoryEquipment } from "../../Services/DeleteAccesoryEquipment";
+import { MdDeleteOutline } from "react-icons/md";
+import ConfirmDeletePopup from "@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp";
 
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
@@ -32,6 +35,55 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [openComfirmPop, setOpenComfirmPop] = useState<boolean>(false);
+
+  const [itemToDelete, setItemToDelete] = useState<{
+    id: number;
+    type: string;
+    name: string;
+  } | null>(null)
+
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const handleDeleteClick = (id: number, type: string, name: string) => {
+    setItemToDelete({ id, type, name });
+    setOpenComfirmPop(true);
+  } 
+
+  const handleConfirmDelete = async () => {
+    if(!itemToDelete) return;
+
+    setIsDeleting(true);
+
+    try{
+      const result = await deleteAccesoryEquipment(
+        itemToDelete.id,
+        itemToDelete.type,
+        refreshItems ? refreshItems : () => {}
+      );
+
+      if(result)
+      setOpenComfirmPop(false);
+    setItemToDelete(null);
+    toast.success(`Eliminación exitosa de ${itemToDelete.name}`);
+
+    refreshItems?.();
+
+    } catch (error: any) {
+      console.log(`Error al eliminar ${itemToDelete.name}:`, error);
+      toast.error(`Error al eliminar ${itemToDelete.name}: ${error.message}`);
+    }finally {
+      setIsDeleting(false);
+      setOpenComfirmPop(false);
+      setItemToDelete(null);
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setOpenComfirmPop(false);
+    setItemToDelete(null);
+  }
 
   const {
     editingRows,
@@ -91,7 +143,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const { showAnimation, closing } = useAnimation(
     isOpen,
     () => setIsOpen(false),
-    300
   );
 
   useBlockScroll(isOpen);
@@ -134,6 +185,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Estado:</th>
               <th className="p-2">Numero Inventario:</th>
               <th className="p-2">Acciones:</th>
+              <th className="p-2">Eliminar:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -307,12 +359,23 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         </button>
                       )}
                     </td>
+                    <td className="p-2">
+                      <button
+                        type="button"
+                        className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                        title="Eliminar"
+                        onClick={() =>  handleDeleteClick(acc.id,'periferico', acc.name)}
+                        disabled={isDeleting}
+                      > 
+                      <MdDeleteOutline className="w-5 h-5" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={9} className="p-4 text-center dark:text-white">
+                <td colSpan={10} className="p-4 text-center dark:text-white">
                   No hay Periféricos agregados
                 </td>
               </tr>
@@ -337,6 +400,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Modelo:</th>
               <th className="p-2">Serial:</th>
               <th className="p-2">Acciones:</th>
+              <th className="p-2">Eliminar:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -503,12 +567,23 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         </button>
                       )}
                     </td>
+                    <td className="p-2">
+                      <button
+                        type="button"
+                        className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                        title="Eliminar"
+                        onClick={() => handleDeleteClick(comp.id, 'hardware', comp.name)}
+                        disabled={isDeleting}
+                      >
+                        <MdDeleteOutline className="w-5 h-5" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={8} className="p-4 text-center dark:text-white">
+                <td colSpan={9} className="p-4 text-center dark:text-white">
                   No hay Componentes agregados
                 </td>
               </tr>
@@ -532,6 +607,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
               <th className="p-2">Fecha Instalacion:</th>
               <th className="p-2">Estado:</th>
               <th className="p-2">Acciones:</th>
+              <th className="p-2">Eliminar:</th>
             </tr>
           </thead>
           <tbody className="text-center dark:bg-gray-800">
@@ -690,12 +766,23 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         </button>
                       )}
                     </td>
+                    <td className="p-2">
+                      <button
+                        type="button"
+                        className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                        title="Eliminar"
+                        onClick={() => handleDeleteClick(soft.id, 'software', soft.name)}
+                        disabled={isDeleting}
+                      >
+                        <MdDeleteOutline className="w-5 h-5" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </>
             ) : (
               <tr>
-                <td colSpan={7} className="p-4 text-center dark:text-white">
+                <td colSpan={8} className="p-4 text-center dark:text-white">
                   No hay Software agregado
                 </td>
               </tr>
@@ -928,6 +1015,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           </div>
         </section>
       )}
+
+      <ConfirmDeletePopup
+        isOpen={openComfirmPop}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        iteamName={itemToDelete?.name || ""}
+      />
+
     </>
   );
 };
