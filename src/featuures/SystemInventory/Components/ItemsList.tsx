@@ -18,6 +18,7 @@ interface ItemsListProps {
   idSede: number;
   onItemsUpdate: () => void;
   targetItemId?: string | number | null;
+  onTargetItemProcessed?: () => void;
 }
 
 const ItemsList: React.FC<ItemsListProps> = ({
@@ -26,6 +27,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
   idSede,
   onItemsUpdate,
   targetItemId,
+  onTargetItemProcessed,
 }) => {
   // * Estados para almacenar datos
 
@@ -110,6 +112,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
             setTimeout(() => {
               element.style.backgroundColor = '';
               element.style.transform = '';
+              onTargetItemProcessed?.();
             }, 2000);
             
             console.log(`Successfully navigated to item ${targetItemId} on page ${targetPage}`);

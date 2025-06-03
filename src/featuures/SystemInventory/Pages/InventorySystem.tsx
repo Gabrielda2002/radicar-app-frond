@@ -46,6 +46,10 @@ const SistemaInventario: React.FC = () => {
     setScreen("items");
   }, []);
 
+  const clearTargetItemId = useCallback(() => {
+    setTargetItemId(null);
+  }, [])
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -262,6 +266,7 @@ const SistemaInventario: React.FC = () => {
                     idSede={sedeSelect}
                     onItemsUpdate={handleItemsUpdate}
                     targetItemId={targetItemId}
+                    onTargetItemProcessed={clearTargetItemId}
                   />
                 )}
                 <GlobalSearch
