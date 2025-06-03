@@ -1,14 +1,14 @@
 //*Fuctions and Hooks
 import ItemsList from "../Components/ItemsList";
 import SedesList from "../Components/sedesList";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
 import useFetchItems from "../Hooks/UseFetchItems";
 import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
-import { Hammer, Tv, Smartphone   } from "lucide-react";
+import { Hammer, Tv, Smartphone } from "lucide-react";
 
 //*Icons and Images
 import COMPUTO from "@/assets/InvetorySystem/Images/COMPUTOS.jpg";
@@ -17,9 +17,12 @@ import {
   ComputerDesktopIcon,
   SignalIcon,
   ArrowUturnLeftIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import StatiticsScreemItems from "../Components/StatiticsScreemItems";
+import { GlobalSearchResult } from "../Hooks/useGlobalSearch";
+import GlobalSearch from "../Components/GlobalSearch";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -31,13 +34,52 @@ const SistemaInventario: React.FC = () => {
   // estados para manejar los departamentos y sedes
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
 
+  const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
+
+  const [ targetItemId, setTargetItemId ] = useState<string | number | null>(null);
+
+  const handleNavigateToItem = useCallback((result: GlobalSearchResult) => {
+    setSedeSelect(result.sedeId);
+    setDepartmentSelect(result.departmentId);
+    setTargetItemId(result.item.id);
+    setTipoItem(result.tipoItem as any);
+    setScreen("items");
+  }, []);
+
+  const clearTargetItemId = useCallback(() => {
+    setTargetItemId(null);
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+        event.preventDefault();
+        setIsGlobalSearchOpen(true);
+      }
+
+      if (event.key === "Escape") {
+        setIsGlobalSearchOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   // traer las sedes
   const { sedes } = useFetchSedes(departmentSelect);
 
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
-    "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores'| 'inventario/celulares'  | null
+    | "equipos"
+    | "dispositivos-red"
+    | "inventario/general"
+    | "inventario/televisores"
+    | "inventario/celulares"
+    | null
   >(null);
 
   // traer los items
@@ -91,8 +133,8 @@ const SistemaInventario: React.FC = () => {
 
             <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
               {/* si scree en diferente a departamentos se muestra la flecha */}
-              {screen !== "departamentos" && (
-                <div className="">
+              <div>
+                {screen !== "departamentos" && (
                   <button
                     title="Atras"
                     onClick={handleBack}
@@ -101,8 +143,20 @@ const SistemaInventario: React.FC = () => {
                     <ArrowUturnLeftIcon className="w-6 h-6 mr-2" />
                     <span className="flex items-center pt-1">ATRAS</span>
                   </button>
-                </div>
-              )}
+                )}
+              </div>
+
+              <button
+                onClick={() => setIsGlobalSearchOpen(true)}
+                className="flex items-center p-2 mb-4 text-gray-600 duration-300 bg-gray-200 border-2 rounded-md btn btn-secondary hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+                title="Buscar en todo el inventario"
+              >
+                <MagnifyingGlassIcon className="w-6 h-6 mr-2" />
+                <span>Busqueda global</span>
+                <kbd className="ml-2 text-xs font-semibold text-gray-500 dark:text-gray-400">
+                  Ctrl+K
+                </kbd>
+              </button>
 
               <div>
                 <div>
@@ -127,13 +181,13 @@ const SistemaInventario: React.FC = () => {
 
                 {screen === "sedes" && departmentSelect && (
                   <>
-                  <SedesList
-                    sedes={sedes}
-                    onSelect={(sede) => {
-                      setSedeSelect(sede.id);
-                      setScreen("tipoItem"); // cambia la pantalla a items
-                    }}
-                  />
+                    <SedesList
+                      sedes={sedes}
+                      onSelect={(sede) => {
+                        setSedeSelect(sede.id);
+                        setScreen("tipoItem"); // cambia la pantalla a items
+                      }}
+                    />
                   </>
                 )}
 
@@ -202,7 +256,6 @@ const SistemaInventario: React.FC = () => {
                         }}
                       />
                     </div>
-                    
                   </>
                 )}
 
@@ -212,8 +265,15 @@ const SistemaInventario: React.FC = () => {
                     tipoItem={tipoItem}
                     idSede={sedeSelect}
                     onItemsUpdate={handleItemsUpdate}
+                    targetItemId={targetItemId}
+                    onTargetItemProcessed={clearTargetItemId}
                   />
                 )}
+                <GlobalSearch
+                  isOpen={isGlobalSearchOpen}
+                  onClose={() => setIsGlobalSearchOpen(false)}
+                  onNavigateToItem={handleNavigateToItem}
+                />
               </div>
             </div>
           </div>
