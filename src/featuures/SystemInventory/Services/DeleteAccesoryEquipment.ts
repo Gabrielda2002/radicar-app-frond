@@ -1,8 +1,7 @@
 import { api } from "@/utils/api-config"
 
-export const deleteAccesoryEquipment = async (id: number, itemType: string, refreshItems: () => void) => {
+export const deleteAccesoryEquipment = async (id: number, itemType: string) => {
     try {
-        
          const endPoint =
           itemType === "perifericos"
             ? "accesorios/equipos/"
@@ -12,26 +11,41 @@ export const deleteAccesoryEquipment = async (id: number, itemType: string, refr
             ? "software/"
             : null;
 
-        if (!endPoint) {
-            throw new Error("Tipo de accesorio o equipo no válido");
-            return false;
+        if (endPoint === null) {
+            return {
+                success: false,
+                error: "Tipo de accesorio no válido"
+            }
         }
 
         const response = await api.delete(`/${endPoint}${id}`);
 
         if (response.status === 200 || response.status === 201) {
-            refreshItems();
-            return true;
+            return {
+                success: true,
+                error: null
+            };
         }
 
+        return {
+            success: false,
+            error: "Error inesperado al eliminar el accesorio o equipo"
+        };
+
     } catch (error: any ) {
+
+        let  errorMessage: string = "";
+
         if (error.response.status === 404) {
-            console.log("No se encontró el accesorio o equipo para eliminar");
+            errorMessage = "No se encontró el accesorio o equipo para eliminar"
         }else if (error.response.status === 403){
-            console.log("No tienes permiso para eliminar este accesorio o equipo")
+            errorMessage = "No tienes permiso para eliminar este accesorio o equipo"
         }else{
-            console.log("Error al eliminar el accesorio o equipo:", error);
+            errorMessage = "Error al eliminar el accesorio o equipo:", error;
         }
-        return false;
+        return {
+            success: false,
+            error: errorMessage
+        };
     }
 }

@@ -11,7 +11,7 @@ import {
 import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
-import EditableCell from "../EditableCell"; 
+import EditableCell from "../EditableCell";
 import { updateAccesory } from "../../Services/updateAccesory";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
@@ -42,48 +42,49 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     id: number;
     type: string;
     name: string;
-  } | null>(null)
+  } | null>(null);
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const handleDeleteClick = (id: number, type: string, name: string) => {
     setItemToDelete({ id, type, name });
     setOpenComfirmPop(true);
-  } 
+  };
 
   const handleConfirmDelete = async () => {
-    if(!itemToDelete) return;
+    if (!itemToDelete) return;
+    console.log(`Eliminando ${itemToDelete.name} de tipo ${itemToDelete.type}`);
 
     setIsDeleting(true);
 
-    try{
+    try {
       const result = await deleteAccesoryEquipment(
         itemToDelete.id,
-        itemToDelete.type,
-        refreshItems ? refreshItems : () => {}
+        itemToDelete.type
       );
 
-      if(result)
-      setOpenComfirmPop(false);
-    setItemToDelete(null);
-    toast.success(`Eliminación exitosa de ${itemToDelete.name}`);
-
-    refreshItems?.();
-
+      if (result.success) {
+        setOpenComfirmPop(false);
+        setItemToDelete(null);
+        toast.success(`Eliminación exitosa de ${itemToDelete.name}`);
+        refreshItems?.();
+      } else {
+        toast.error(`Error al eliminar ${itemToDelete.name}: ${result.error}`);
+      }
     } catch (error: any) {
       console.log(`Error al eliminar ${itemToDelete.name}:`, error);
       toast.error(`Error al eliminar ${itemToDelete.name}: ${error.message}`);
-    }finally {
+    } finally {
       setIsDeleting(false);
       setOpenComfirmPop(false);
       setItemToDelete(null);
     }
-  }
+  };
 
   const handleCancelDelete = () => {
     setOpenComfirmPop(false);
     setItemToDelete(null);
-  }
+  };
 
   const {
     editingRows,
@@ -99,7 +100,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
     try {
       setIsLoading(true);
 
-      // validar que los datos hayan cambiado 
+      // validar que los datos hayan cambiado
       if (!editedData[id]) {
         throw new Error("No hay datos para actualizar");
       }
@@ -109,16 +110,15 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       if (result && (result.status === 200 || result.status === 201)) {
         cancelEditing(id);
         toast.success("Periférico actualizado correctamente");
-          refreshItems?.();
+        refreshItems?.();
       } else {
         toast.error("Error al actualizar el periférico");
       }
     } catch (error: any) {
-
-      const errorMessage = error instanceof Error ? error.message : 'Error Inesperado'
+      const errorMessage =
+        error instanceof Error ? error.message : "Error Inesperado";
       toast.error(errorMessage);
       console.log(error);
-
     } finally {
       setIsLoading(false);
     }
@@ -127,22 +127,38 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const hasChange = (id: number, originalData: any, typeAccesory: string) => {
     if (!editedData[id]) return false;
 
-    const fieldsToCompare = typeAccesory === 'periferico'
-    ? ['name', 'brand', 'model', 'serial', `description`, 'status', 'inventoryNumber']
-    : typeAccesory === 'hardware'
-    ? ['name', 'brand', 'capacity', 'speed', `description`, 'model', 'serial']
-    : ['name', 'versions', 'license', 'otherData', 'installDate', 'status'];
+    const fieldsToCompare =
+      typeAccesory === "periferico"
+        ? [
+            "name",
+            "brand",
+            "model",
+            "serial",
+            `description`,
+            "status",
+            "inventoryNumber",
+          ]
+        : typeAccesory === "hardware"
+        ? [
+            "name",
+            "brand",
+            "capacity",
+            "speed",
+            `description`,
+            "model",
+            "serial",
+          ]
+        : ["name", "versions", "license", "otherData", "installDate", "status"];
 
     return fieldsToCompare.some((field) => {
       const originalValue = originalData[field];
       const editedValue = editedData[id][field];
       return originalValue !== editedValue;
     });
-  }
+  };
 
-  const { showAnimation, closing } = useAnimation(
-    isOpen,
-    () => setIsOpen(false),
+  const { showAnimation, closing } = useAnimation(isOpen, () =>
+    setIsOpen(false)
   );
 
   useBlockScroll(isOpen);
@@ -205,7 +221,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                           handleInputChange(acc.id, "name", value)
                         }
                         type="autocomplete-name"
-                        typeItem='periferico'
+                        typeItem="periferico"
                         fieldId={`acc-${acc.id}-name`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -318,18 +334,19 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                     <td className="p-2">
                       {editingRows[acc.id] ? (
                         <div className="flex space-x-1">
-
                           <button
                             onClick={() =>
                               handleUpdateAccesory(acc.id, "perifericos")
                             }
                             className={`px-2 py-1 text-xs text-white rounded ${
-                              isLoading || !hasChange(acc.id, acc, 'periferico')
-                              ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
-                              : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
+                              isLoading || !hasChange(acc.id, acc, "periferico")
+                                ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
+                                : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
                             }`}
                             title="Guardar cambios"
-                            disabled={isLoading || !hasChange(acc.id, acc, 'periferico')}
+                            disabled={
+                              isLoading || !hasChange(acc.id, acc, "periferico")
+                            }
                             type="button"
                           >
                             {isLoading ? "Guardando..." : "Guardar"}
@@ -364,10 +381,12 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         type="button"
                         className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
                         title="Eliminar"
-                        onClick={() =>  handleDeleteClick(acc.id,'periferico', acc.name)}
+                        onClick={() =>
+                          handleDeleteClick(acc.id, "perifericos", acc.name)
+                        }
                         disabled={isDeleting}
-                      > 
-                      <MdDeleteOutline className="w-5 h-5" />
+                      >
+                        <MdDeleteOutline className="w-5 h-5" />
                       </button>
                     </td>
                   </tr>
@@ -420,7 +439,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                           handleInputChange(comp.id, "name", value)
                         }
                         type="autocomplete-name"
-                        typeItem={'hardware'}
+                        typeItem={"hardware"}
                         fieldId={`comp-${comp.id}-name`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
@@ -532,12 +551,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                               handleUpdateAccesory(comp.id, "hardware")
                             }
                             className={`px-2 py-1 text-xs text-white rounded ${
-                              isLoading || !hasChange(comp.id, comp, 'hardware')
+                              isLoading || !hasChange(comp.id, comp, "hardware")
                                 ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
                                 : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
                             }`}
                             title="Guardar cambios"
-                            disabled={isLoading || !hasChange(comp.id, comp, 'hardware')}
+                            disabled={
+                              isLoading || !hasChange(comp.id, comp, "hardware")
+                            }
                             type="button"
                           >
                             {isLoading ? "Guardando..." : "Guardar"}
@@ -572,7 +593,9 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         type="button"
                         className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
                         title="Eliminar"
-                        onClick={() => handleDeleteClick(comp.id, 'hardware', comp.name)}
+                        onClick={() =>
+                          handleDeleteClick(comp.id, "hardware", comp.name)
+                        }
                         disabled={isDeleting}
                       >
                         <MdDeleteOutline className="w-5 h-5" />
@@ -731,12 +754,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                               handleUpdateAccesory(soft.id, "software")
                             }
                             className={`px-2 py-1 text-xs text-white rounded ${
-                              isLoading || !hasChange(soft.id, soft, 'software')
+                              isLoading || !hasChange(soft.id, soft, "software")
                                 ? "bg-gray-400 hover:bg-gray-500 transition-colors duration-300 cursor-not-allowed"
                                 : "hover:bg-green-600 bg-green-500 transition-colors duration-300"
                             }`}
                             title="Guardar cambios"
-                            disabled={isLoading || !hasChange(soft.id, soft, 'software')}
+                            disabled={
+                              isLoading || !hasChange(soft.id, soft, "software")
+                            }
                             type="button"
                           >
                             {isLoading ? "Guardando..." : "Guardar"}
@@ -771,7 +796,9 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         type="button"
                         className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
                         title="Eliminar"
-                        onClick={() => handleDeleteClick(soft.id, 'software', soft.name)}
+                        onClick={() =>
+                          handleDeleteClick(soft.id, "software", soft.name)
+                        }
                         disabled={isDeleting}
                       >
                         <MdDeleteOutline className="w-5 h-5" />
@@ -1022,7 +1049,6 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
         onConfirm={handleConfirmDelete}
         iteamName={itemToDelete?.name || ""}
       />
-
     </>
   );
 };
