@@ -1,42 +1,80 @@
-//*Funciones y hooks
 import React, { useState } from "react";
 import { api } from "@/utils/api-config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
-
+import { toast } from "react-toastify"; // Asegúrate de tener react-toastify instalado
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
 
 const Login: React.FC = () => {
   const [dniNumber, setDniNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
   const navigate = useNavigate();
-  const { login } = useAuth(); // Utiliza el hook useAuth para acceder a la función login
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(""); // Limpiar errores previos
+    setIsLoading(true); // Activar estado de carga
+
     try {
       // Hacer la solicitud al servidor para el login
       const response = await api.post("/login", { dniNumber, password });
 
-      // Si la autorización es correcta, guardar el token en el contexto de autenticación y el rol en localStorage
-      const { token, rol, user, Municipio } = response.data;
+      // Extraer datos de la respuesta (accessToken en lugar de token)
+      const { accessToken, rol, user, Municipio, message } = response.data;
 
-      localStorage.setItem("rol", rol); // Guardar el rol en localStorage
-      localStorage.setItem("Municipio", Municipio); // Guardar el municipio en el localstorage
-      localStorage.setItem("user", JSON.stringify(user)); //* Guardar datos del usuario en localStorage
+      // Usar la función login actualizada del contexto
+      // Ya no necesitas guardar manualmente en localStorage, el contexto lo hace
+      login(accessToken, rol, Municipio, user);
 
-      login(token, rol, Municipio); // Llamar a la función login del contexto para actualizar el estado de autenticación
+      // Mostrar mensaje de éxito
+      toast.success(message || "¡Bienvenido! Has iniciado sesión correctamente.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
 
-      // Redirigir al usuario según su rol
-      if (rol) {
+      // Verificar si hay una ruta guardada para redireccionar
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      
+      if (redirectPath) {
+        // Si había una ruta guardada, ir ahí
+        sessionStorage.removeItem('redirectPath');
+        navigate(redirectPath);
+      } else {
+        // Redirigir según el rol o a la página principal
         navigate("/home");
-      } // <! VALIDACION DE ROLES "TIENEN QUE ESTAR EN LA BASE" !>
-    } catch (error) {
-      setError(
-        "Error al iniciar sesión, verifica tus credenciales o tu usuario esta inactivo" +
-          error
-      );
+      }
+
+    } catch (error: any) {
+      console.error("Error en login:", error);
+      
+      // Manejo específico de errores
+      if (error.response?.status === 401) {
+        const errorMessage = error.response?.data?.message || "Credenciales incorrectas";
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 5000,
+        });
+      } else if (error.response?.status >= 500) {
+        const serverError = "Error del servidor. Inténtalo más tarde.";
+        setError(serverError);
+        toast.error(serverError, {
+          position: "top-center",
+          autoClose: 5000,
+        });
+      } else {
+        const genericError = "Error al iniciar sesión. Verifica tu conexión e inténtalo nuevamente.";
+        setError(genericError);
+        toast.error(genericError, {
+          position: "top-center",
+          autoClose: 5000,
+        });
+      }
+    } finally {
+      setIsLoading(false); // Desactivar estado de carga
     }
   };
 
@@ -61,7 +99,14 @@ const Login: React.FC = () => {
                 Accede a tu cuenta para continuar
               </p>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
+            
+            {/* Mostrar error si existe */}
+            {error && (
+              <div className="p-3 text-sm text-red-700 bg-red-100 border border-red-300 rounded-lg dark:bg-red-900 dark:text-red-300 dark:border-red-600">
+                {error}
+              </div>
+            )}
+            
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -73,10 +118,13 @@ const Login: React.FC = () => {
                 <input
                   type="text"
                   name="dniNumber"
+                  value={dniNumber}
                   onChange={(e) => setDniNumber(e.target.value)}
-                  className="bg-gray-300 dark:bg-gray-800 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-800 focus:border-primary-600 block w-full p-2.5"
+                  className="bg-gray-300 dark:bg-gray-800 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-800 focus:border-primary-600 block w-full p-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Ingresa tú documento"
                   id="number-document"
+                  required
+                  disabled={isLoading}
                 />
               </div>
               <div>
@@ -89,18 +137,47 @@ const Login: React.FC = () => {
                 <input
                   type="password"
                   name="password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-gray-300 dark:bg-gray-800 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  className="bg-gray-300 dark:bg-gray-800 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Ingresa tú contraseña"
                   id="password-login"
+                  required
+                  disabled={isLoading}
                 />
               </div>
               <div>
                 <button
                   type="submit"
-                  className="w-full text-white bg-color hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:-translate-y-1 hover:scale-100 hover:bg-emerald-900 duration-300"
+                  disabled={isLoading || !dniNumber || !password}
+                  className="w-full text-white bg-color hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:-translate-y-1 hover:scale-100 hover:bg-emerald-900 duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-color"
                 >
-                  Iniciar Sesión
+                  {isLoading ? (
+                    <div className="flex items-center justify-center">
+                      <svg 
+                        className="w-5 h-5 mr-3 animate-spin" 
+                        viewBox="0 0 24 24"
+                      >
+                        <circle 
+                          className="opacity-25" 
+                          cx="12" 
+                          cy="12" 
+                          r="10" 
+                          stroke="currentColor" 
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path 
+                          className="opacity-75" 
+                          fill="currentColor" 
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Iniciando sesión...
+                    </div>
+                  ) : (
+                    "Iniciar Sesión"
+                  )}
                 </button>
               </div>
             </form>

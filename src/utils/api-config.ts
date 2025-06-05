@@ -1,17 +1,31 @@
 import axios from 'axios'
-import { logoutHelper } from '../utils/Logout-helper'
 import { toast } from 'react-toastify'
 
 const token = localStorage.getItem('token')
 
 export const api = axios.create({
     baseURL: `${import.meta.env.VITE_URL_BACKEND}/api/v1`,
-
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': token ? `Bearer ${token}` : undefined
     }
 })
+
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+    failedQueue.forEach((prom) => {
+        if (error) {
+            prom.reject(error);
+        }else {
+            prom.resolve(token);
+        }
+    });
+
+    failedQueue = [];
+}
 
 api.interceptors.request.use(
     (config) => {
@@ -31,37 +45,77 @@ api.interceptors.request.use(
     }
 )
 
-// ? Variable para evitar redirecciones infinitas
-let isRedirecting = false;
-
 api.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
+    async (error) => {
 
+        const originalRequest = error.config;
+        
+        if (error.response.status === 401 && error.response?.data?.code === "TOKEN_EXPIRED" && !originalRequest._retry) {
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject});
+                }).then(token => {
+                    originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                    return api(originalRequest);
+                }).catch((err) => {
+                    return Promise.reject(err);
+                });
+            }
 
-        if (error.response && error.response.status === 401){
+            originalRequest._retry = true;
+            isRefreshing = true;
 
-            if (error.response.headers['token-status'] === 'expired' && !isRedirecting) {
-                isRedirecting = true;
+            try {
+                
+                const refreshResponse = await api.post('/refresh');
+                const { accessToken } = refreshResponse.data;
+
+                localStorage.setItem('token', accessToken)
+                
+                api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+                processQueue(null, accessToken);
+
+                originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+
+                return api(originalRequest);
+
+            } catch (error) {
+                processQueue(error, null);
+
+                localStorage.removeItem('token');
+                localStorage.removeItem('rol');
+                localStorage.removeItem('Municipio');
+                localStorage.removeItem('user');
 
                 const currentPath = window.location.pathname;
                 sessionStorage.setItem('redirectPath', currentPath);
 
-                toast.error('Tu sesión ha expirado. Serás redirigido para iniciar sesión nuevamente.', {
+                toast.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.', {
                     position: 'top-center',
                     autoClose: 3000,
-                    onClick: () => {
-                        logoutHelper();
-                        isRedirecting = false;
-                    }
                 });
 
-            }
+                window.location.href = '/login';
 
+                return Promise.reject(error);
+            }finally{
+                isRefreshing = false;
+            }
         }
+
+        if (error.response.status === 401 && error.response?.data?.code !== "TOKEN_EXPIRED") {
+            toast.error('No tienes permisos para realizar esta acción.', {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+        }
+
         return Promise.reject(error);
+
     }
 )
 
