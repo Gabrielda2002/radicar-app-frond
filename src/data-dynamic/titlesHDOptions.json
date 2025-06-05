@@ -47,5 +47,10 @@
             "RIPS SIVIGILA",
             "RIPS BAI",
             "BIOMETRICO"
+        ],
+            "Infrastructura" : [
+                "CAMARAS DE SEGURIDAD",
+                "PUESTO DE TRABAJO"
         ]
+        
 }
