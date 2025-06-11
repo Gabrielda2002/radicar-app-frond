@@ -4,9 +4,13 @@ import { api } from "@/utils/api-config";
 export const useDownloadReport = () => {
 
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string, statusCups?: string ) => {
         try {
+
+            setLoading(true);
+
             const response = await api.post(`/${endPoint}`, {
               dateStart:  dateStart,
               dateEnd: dateEnd,
@@ -51,9 +55,11 @@ export const useDownloadReport = () => {
               setError("No se encontraron registros para el rango de fechas seleccionado");
             }
             setError("Error al descargar el archivo. " + error);
+          }finally {
+            setLoading(false);
           }
     };
 
-    return { downloadReport, error };
+    return { downloadReport, error, loading };
 
 }
