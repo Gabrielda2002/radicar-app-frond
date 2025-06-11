@@ -4,8 +4,12 @@ import ExpiringSoonStatics from "./ExpiringSoonStatics";
 import QuantityItemsStatics from "./QuantityItemsStatics";
 import ItemsWithLockStatics from "./ItemsWithLockStatics";
 import QuantityTypeItens from "./QuantityTypeItems";
+import { useAuth } from "@/context/authContext";
 
 const StatiticsScreemItems = () => {
+
+  const { rol } = useAuth();
+
   const SECTIONS = [
     { id: 1, name: "Computadoras" },
     { id: 2, name: "Dispositivos Red" },
@@ -47,7 +51,7 @@ const StatiticsScreemItems = () => {
           id={`panel-${activeSection}`}
           className="transition-opacity duration-300"
         >
-          {activeSection === 1 ? (
+          {activeSection === 1 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityTypeItens typeItem="equipos"/>
               <ExpiringSoonStatics typeItem="equipos" />
@@ -55,23 +59,23 @@ const StatiticsScreemItems = () => {
               <ItemsWithLockStatics typeItem="equipos" />
               <QuantityItemsStatics typeItem="equipos" />
             </div>
-          ) : activeSection === 3 ? (
+          ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <ExpiringSoonStatics typeItem="inventario/general" />
               <AgeStatics typeItem="inventario/general" />
               <QuantityItemsStatics typeItem="inventario/general" />
             </div>
-          ) : activeSection === 2 ? (
+          ) : activeSection === 2 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="dispositivos-red" />
             </div>
-          ) :  activeSection === 4 ? (
+          ) :  activeSection === 4 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/televisores" />
               <AgeStatics typeItem="inventario/televisores" />
               <ExpiringSoonStatics typeItem="inventario/televisores" />
             </div>
-          ): activeSection === 5 ? (
+          ): activeSection === 5 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/celulares"/>
               <AgeStatics typeItem="inventario/celulares" />

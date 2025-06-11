@@ -15,7 +15,7 @@ const useFetchSedes = (id: number | null) => {
         const fetchEspecialidadAtcp = async () => {
             try {
     
-                const response = await api.get(`/lugares-radicacion-departamento/${id}`);
+                const response = await api.get(`/sede/departamento/${id}`);
                 if (response.data.length === 0) {
                     setError("No se encontraron resultados");
                     setSedes(null);
