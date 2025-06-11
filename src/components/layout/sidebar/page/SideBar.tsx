@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
 import { FC, useRef, useState, useEffect, useCallback } from "react";
 import { useSidebar } from "@/context/sidebarContext";
-import ModalReporteRadicado from "../components/ModalReporteRadicado";
+import ModalReporteRadicado from "../components/ModalGestionReportes";
 import Category from "../components/CategoriaSideBar";
 import SubCategory from "../components/SubCategoriaSideBar";
 

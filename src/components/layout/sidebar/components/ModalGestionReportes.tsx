@@ -4,6 +4,7 @@ import useAnimation from "@/hooks/useAnimations";
 import { useDownloadReport } from "../hooks/UseDownloadReport";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import { useAuth } from "@/context/authContext";
 //*Icons
 // import back from "../../../assets/icons/back.svg";
 interface ModalReporteRadicadoProps {
@@ -11,10 +12,13 @@ interface ModalReporteRadicadoProps {
   onClose: () => void;
 }
 
-const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
+const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
   isOpen,
   onClose,
 }) => {
+
+  const { rol } = useAuth();
+
   // hook que trae los estados de CUPS
   const loadEstados = true;
   const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
@@ -47,8 +51,10 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
           : reportType == "3" ?
           "report-breakes-active"
           : reportType == "4" ?
-          "report/excel/biometric"
-          : "report-excel-cirugias-filtro";
+          "report/excel/biometric" 
+          : reportType === '5'
+          ? "report-excel-cirugias-filtro"
+          : "report/tickets";
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -126,6 +132,9 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
                   <option value="3">Pausas Activas</option>
                   <option value="4">Registros Biométricos</option>
                   <option value="5">Cirugía</option>
+                  {[1].includes(Number(rol)) && (
+                    <option value="6">Tickets Mesa de Ayuda</option>
+                  )}
                 </select>
               </div>
               {/* rango fecchas radicado */}
@@ -234,4 +243,4 @@ const ModalReporteRadicado: React.FC<ModalReporteRadicadoProps> = ({
   );
 };
 
-export default ModalReporteRadicado;
+export default ModalGestionReportes;
