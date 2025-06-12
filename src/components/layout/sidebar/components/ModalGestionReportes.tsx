@@ -75,6 +75,7 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
         submitText={"Descargar"}
         isSubmitting={loading}
         isValid={!isDownloadDisabled}
+        showSubmitButton={true}
       >
         {/* init-form */}
         <div className="px-4">

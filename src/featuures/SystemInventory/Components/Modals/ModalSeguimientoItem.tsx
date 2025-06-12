@@ -2,11 +2,11 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import useAnimation from "@/hooks/useAnimations";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
 import { createMonitoringItem } from "@/featuures/SystemInventory/Services/CreateMonitoringItem";
 import { toast } from "react-toastify";
+import FormModal from "@/components/common/Ui/FormModal";
 
 interface ModalSeguimientoItemProps {
   id: number;
@@ -20,26 +20,8 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
   refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
-  const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false),
-    300
-  );
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  // * Se crea logica para evitar el desplazamiento del scroll dentro del modal
-  // * Se implementa eventos del DOM para distribucion en demas propiedades anteiormente establecidas
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    document.body.style.overflow = "";
-    setStadopen(false);
-  };
-  if (stadopen) {
-    openModal();
-  }
 
   const user = localStorage.getItem("user");
 
@@ -141,35 +123,20 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
         Nuevo seguimiento
       </button>
 
-      {/* init event modal */}
-      {stadopen && (
-        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm">
-          <section className="fixed inset-0 z-50 flex items-center justify-center">
-            <div
-              className={`w-[50vw] h-[fit-content] overflow-auto bg-white rounded shadow-lg dark:bg-gray-600 transition-transform transform ${
-                showAnimation && !closing
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
-              }`}
+    
+            <FormModal
+              isOpen={stadopen}
+              onClose={() => setStadopen(false)}
+              onSubmit={formik.handleSubmit}
+              title="Nuevo Seguimiento"
+              size="sm"
+              className="max-w-2xl dark:bg-gray-800 dark:text-gray-200"
+              isSubmitting={submitting}
+              isValid={formik.isValid}
+              
             >
-              {/* container-header */}
-              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
-                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Crear Seguimiento
-                </h1>
-                <button
-                  onClick={closeModal}
-                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
-                >
-                  &times;
-                </button>
-              </div>
 
-              {/* init form */}
-              <form
-                onSubmit={formik.handleSubmit}
-                className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
-              >
+              
                 <div className="p-6">
                   <section className="grid grid-cols-2 gap-2">
                     <div className="flex">
@@ -280,28 +247,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                     </div>
                   )}
 
-                {/* container-footer */}
-                <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
-                  <button
-                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={closeModal}
-                  >
-                    Cerrar
-                  </button>
-                  <button
-                    className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                    type="submit"
-                    disabled={submitting}
-                  >
-                    {/* {submitting ? "Actualizando..." : "Actualizando"} */}
-                    Enviar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </section>
-        </div>
-      )}
+            </FormModal>
     </>
   );
 };

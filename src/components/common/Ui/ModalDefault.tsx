@@ -14,10 +14,11 @@ interface ModalContentProps {
   submitText?: string;
   cancelText?: string;
   funtionClick?: () => void;
-  showCancelButton?: boolean;
+  showSubmitButton?: boolean;
   isSubmitting?: boolean;
   isValid?: boolean;
   className?: string;
+  footerVariant?: "form" | "default";
 }
 
 const ModalDefault: React.FC<ModalContentProps> = ({
@@ -28,7 +29,7 @@ const ModalDefault: React.FC<ModalContentProps> = ({
   children,
   submitText = "Guardar",
   cancelText = "Cancelar",
-  showCancelButton = true,
+  showSubmitButton = false,
   isSubmitting = false,
   isValid = true,
   className,
@@ -39,26 +40,26 @@ const ModalDefault: React.FC<ModalContentProps> = ({
       <ModalHeader title={title} onClose={onClose} />
       <ModalBody>{children}</ModalBody>
       <ModalFooter variant="form">
-        {showCancelButton && (
-          <Button
-            type="button"
-            variant="closed"
-            onClick={onClose}
-            disabled={isSubmitting}
-            className="btn btn-secondary"
-          >
-            {cancelText}
-          </Button>
-        )}
         <Button
           type="button"
-          variant="primary"
-          disabled={isSubmitting || !isValid}
-          className="btn btn-primary"
-          onClick={funtionClick}
+          variant="closed"
+          onClick={onClose}
+          disabled={isSubmitting}
+          className="btn btn-secondary"
         >
-          {submitText}
+          {cancelText}
         </Button>
+        {showSubmitButton && (
+          <Button
+            type="button"
+            variant="primary"
+            disabled={isSubmitting || !isValid}
+            className="btn btn-primary"
+            onClick={funtionClick}
+          >
+            {submitText}
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   );

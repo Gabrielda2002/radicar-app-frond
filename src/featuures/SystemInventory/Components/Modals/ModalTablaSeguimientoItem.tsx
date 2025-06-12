@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import { IItems } from "@/models/IItems";
-import useAnimation from "@/hooks/useAnimations";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
@@ -12,10 +11,11 @@ import {
   DocumentTextIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
-import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem } from "../../strategies/ItemStrategy";
 import { IItemsPhone } from "../../Models/IItemsPhone";
+import ModalDefault from "@/components/common/Ui/ModalDefault";
+import { Text } from "lucide-react";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
@@ -35,12 +35,6 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
-  const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false),
-    300
-  );
-  useBlockScroll(stadopen);
 
   // Método para obtener los datos de seguimiento según el tipo de item
   const getSeguimientoData = useMemo(() => {
@@ -79,7 +73,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
 
     return (
       <div className="flex items-center justify-center p-4">
-        <table className="w-full max-w-lg overflow-hidden bg-white border-collapse rounded-lg shadow-md">
+        <table className="w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md">
           <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
               <th className="flex items-center p-3 text-left">
@@ -89,7 +83,10 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 <DocumentTextIcon className="inline-block w-8 h-8 mr-2" /> Tipo
                 de Evento
               </th>
-              <th className="p-3 text-left">Descripción</th>
+              <th className="p-3 text-left">
+                <Text className="inline-block w-8 h-8 mr-2"/>
+                Descripción
+              </th>
               <th className="p-3 text-left">
                 <UserIcon className="inline-block w-8 h-8 mr-2" /> Usuario
               </th>
@@ -127,7 +124,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
 
   return (
     <>
-      <div className="relative group">
+       <div className="relative group">
         <button
           className="p-2 duration-200 border rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
           onClick={() => setStadopen(true)}
@@ -142,46 +139,30 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
         </div>
       </div>
 
-      {stadopen && (
-        <div
-          className={`fixed inset-0 z-40 flex justify-center p-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-            showAnimation && !closing ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <section className="">
-            <div
-              className={`w-[90vw] h-[60vh] overflow-hidden bg-white rounded shadow-lg dark:bg-gray-600 transition-transform duration-300 transform ${
-                showAnimation && !closing ? "translate-y-0" : "translate-y-10"
-              }`}
-            >
-              {/* container-header */}
-              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 border-b-gray-900 dark:bg-gray-600 dark:border-b-white">
-                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  Seguimiento de Items
-                </h1>
-                <button
-                  onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-400 duration-200 rounded-md h-7 w-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900 dark:text-gray-100 "
-                >
-                  &times;
-                </button>
-              </div>
+      <ModalDefault
+        isOpen={stadopen}
+        onClose={() => setStadopen(false)}
+        title="Seguimiento del Item"
+        size="xl"
+        className="max-h-[90vh] overflow-hidden"
+        showSubmitButton={false}
+        cancelText="Cerrar"
+        funtionClick={() => setStadopen(false)}
+      >
+        <div className="flex flex-col max-h-[calc(90vh-120px)]">
+          <div className="px-2 py-3 flex-shrink-0">
+            <ModalSeguimientoItem
+              id={itemId}
+              tipoItem={tipoItem}
+              refreshItems={refreshItems}
+            />
+          </div>
 
-              <div className=" h-full overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
-                <div className="px-2 py-3">
-                  <ModalSeguimientoItem
-                    id={itemId}
-                    tipoItem={tipoItem}
-                    refreshItems={refreshItems}
-                  />
-                </div>
-
-                <div>{renderTrackingTable(getSeguimientoData)}</div>
-              </div>
-            </div>
-          </section>
+          <div className="flex-1 overflow-y-auto">
+            {renderTrackingTable(getSeguimientoData)}
+          </div>
         </div>
-      )}
+      </ModalDefault>
     </>
   );
 };
