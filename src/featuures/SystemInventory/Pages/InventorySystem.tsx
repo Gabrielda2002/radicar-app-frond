@@ -20,7 +20,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import StatiticsScreemItems from "../Components/StatiticsScreemItems";
+import StatiticsScreemItems from "../Components/StatiticsScreenItems";
 import { GlobalSearchResult } from "../Hooks/useGlobalSearch";
 import GlobalSearch from "../Components/GlobalSearch";
 

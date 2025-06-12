@@ -14,7 +14,7 @@ export const useValidateTicketUser = (userId: number) => {
         try {
             await validateUserTicketStatus(userId);
         } catch (error) {
-            console.log(`Error validating user ticket status ${error}`);
+            console.log(error)
         } finally {
             setValidatingTicket(false);
         }
