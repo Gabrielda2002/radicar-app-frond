@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "@/utils/api-config";
+import { api, createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "@/utils/api-config";
 
 interface FileItem { // Renombrado de File a FileItem
     id: string;
@@ -25,7 +25,7 @@ interface FolderContents {
     folders: Folder[];
 }
 
-export const useFileManager = (section: string,initialFolderId?: string) => {
+export const useFileManager = (section: string, initialFolderId?: string) => {
     const [currentFolderId, setCurrentFolderId] = useState<string | null>(initialFolderId || null);
     const [ path, setPath] = useState<{id: string; name: string}[]>([
         {id: "", name: "Inicio"}
@@ -44,7 +44,7 @@ export const useFileManager = (section: string,initialFolderId?: string) => {
     const fetchContents = async () => {
         setLoading(true);
         try {
-
+            console.log("re renderizando useFileManager");
             const response = await getFolderContent(section ,currentFolderId || undefined );
             setContents(response.data);
             setError(null);
@@ -58,6 +58,10 @@ export const useFileManager = (section: string,initialFolderId?: string) => {
     useEffect(() => {
         fetchContents();
     }, [currentFolderId, section]);
+
+    useEffect(() => {
+        setCurrentFolderId(initialFolderId || null);
+    }, [initialFolderId]);
 
     // Function to create a new folder
     const createNewFolder = async (name: string) => {
@@ -136,6 +140,16 @@ export const useFileManager = (section: string,initialFolderId?: string) => {
         }
     }
 
+    const moveItem = async (itemId: string, newParentId: string, type: "carpetas" | "archivos") => {
+        try {
+            await api.put(`/${type}/${itemId}/move`, { newParentId, section });
+            await fetchContents(); // Reload contents after moving an item
+        } catch (error: any) {
+            setError(`Error al mover ${type === "carpetas" ? "la carpeta" : "el archivo"}: ${error.message}`);
+            return false;
+        }
+    }
+
     return {
         contents,
         loading,
@@ -148,6 +162,7 @@ export const useFileManager = (section: string,initialFolderId?: string) => {
         navigateBackToFolder,
         path,
         renameItem,
-        section
+        section,
+        moveItem
     };
 };

@@ -39,7 +39,8 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
-    section
+    section,
+    moveItem
   } = useFileManager(activeSection);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
@@ -127,6 +128,8 @@ const FileManager: React.FC = () => {
                       renameItem={renameItem}
                       isInFolder={isInFolder}
                       section={section}
+                      currentFolderId={currentFolderId}
+                      moveItem={moveItem}
                     />
                   </div>
                 )}
@@ -144,6 +147,9 @@ const FileManager: React.FC = () => {
                       onDelete={deleteItemById}
                       onDownload={downloadFileById}
                       renameItem={renameItem}
+                      moveItem={moveItem}
+                      section={section}
+                      currentFolderId={currentFolderId}
                     />
                   </div>
                 )}

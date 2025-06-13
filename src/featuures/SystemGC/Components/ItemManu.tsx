@@ -6,18 +6,36 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ModalMoveItems from "./ModalMoveItems";
+import { Move } from "lucide-react";
 
 //*Properties
 const ModalRenombrarItem = lazy(() => import("./ModalRenombrarItem"));
-const ConfirmDeletePopupProps = lazy(() => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp"));
+const ConfirmDeletePopupProps = lazy(
+  () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
+);
 interface ItemManuProps {
   onDelete: () => void;
   renameItem: (newName: string) => void;
+  onMove: (targetFolderId: string,) => void;
+  itemName: string;
+  itemType: "carpetas" | "archivos";
+  currentFolderId: string;
+  section: string;
 }
 
-const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
+const ItemManu: React.FC<ItemManuProps> = ({
+  onDelete,
+  renameItem,
+  onMove,
+  itemName,
+  itemType,
+  currentFolderId,
+  section,
+}) => {
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
+  const [stadOpenMove, setStadOpenMove] = useState(false);
 
   const toggleModalRename = () => {
     setStadOpenRename(!stadOpenRename);
@@ -32,8 +50,12 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
   const handleModalOpenDelete = () => {
     setStadOpenDelete(true);
     document.body.style.overflow = "hidden";
-    
   };
+
+  const handleModalOpenMove = () => {
+    setStadOpenMove(true);
+    document.body.style.overflow = "hidden";
+  }
 
   const stadOffDelete = () => {
     setStadOpenDelete(false);
@@ -85,6 +107,17 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
                 </button>
               </div>
             </MenuItem>
+            <MenuItem>
+              <div className="flex text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600">
+                <button
+                  className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
+                  onClick={handleModalOpenMove}
+                >
+                  Mover.
+                  <Move className="w-6 h-6 dark:text-white"/>
+                </button>
+              </div>
+            </MenuItem>
           </div>
         </MenuItems>
 
@@ -103,10 +136,26 @@ const ItemManu: React.FC<ItemManuProps> = ({ onDelete, renameItem }) => {
               isOpen={stadOpenDelete} //condicion true
               onClose={stadOffDelete} //cerrar modal
               onConfirm={confirmDeleteItem} //eliminacion acertiva y cerrar el modal
-              iteamName="el elemento"
+              iteamName="Carpeta o Archivo"
               condicClase={true}
             ></ConfirmDeletePopupProps> // pasar prop "cambio de nombre y clases"
           }
+          {stadOpenMove && (
+            <ModalMoveItems
+              isOpen={stadOpenMove}
+              onClose={() => {
+                setStadOpenMove(false);
+                document.body.style.overflow = "";
+              }}
+              itemType={itemType}
+              onMove={(targetFolderId: string) => {
+                onMove(targetFolderId);
+              }}
+              itemName={itemName}
+              section={section}
+              currentFolderId={currentFolderId}
+            />
+          )}
         </Suspense>
       </Menu>
     </>
