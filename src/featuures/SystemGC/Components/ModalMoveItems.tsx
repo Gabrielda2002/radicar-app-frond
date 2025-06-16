@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useFileManager } from "../Hooks/useFileManager";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import { ChevronLeftIcon, FolderIcon } from "lucide-react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { SECTIONS } from "../Page/SistemaArchivosSGC";
+import { useFileManager } from "../Hooks/useFileManager";
 
 interface ModalMoveItemsProps {
   isOpen: boolean;
   onClose: () => void;
-  onMove: (targetFolderId: string) => void;
+  // onMove: (targetFolderId: string, targetSection: string) => void;
   section: string;
   currentFolderId: string | null;
   itemName: string;
   itemType: "carpetas" | "archivos";
+  itemId: string;
 }
 const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   isOpen,
   onClose,
-  onMove,
+  // onMove,
   section,
   currentFolderId,
   itemName,
   itemType,
+  itemId,
 }) => {
   const [navigationPath, setNavigationPath] = useState<
     Array<{ id: string; name: string }>
@@ -29,9 +32,10 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
     undefined
   );
 
-  const { contents, loading, error } = useFileManager(
-    section,
-    selectedFolderId || undefined
+  const [activeSection, setActiveSection] = useState<string>("");
+  const { contents, loading, error, moveItem } = useFileManager(
+    activeSection,
+    selectedFolderId
   );
 
   useEffect(() => {
@@ -40,6 +44,21 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
       setSelectedFolderId(undefined);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setNavigationPath([{ id: "", name: "Inicio" }]);
+      setSelectedFolderId(undefined);
+      setActiveSection((prev) => prev || section);
+    }
+  }, [section, isOpen]);
+
+  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSection = e.target.value;
+    setActiveSection(newSection);
+    setNavigationPath([{ id: "", name: "Inicio" }]);
+    setSelectedFolderId(undefined);
+  };
 
   const navigateToFolder = (folderId: string, folderName: string) => {
     setSelectedFolderId(folderId);
@@ -57,12 +76,11 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
 
   const handleMove = () => {
     if (selectedFolderId !== currentFolderId && selectedFolderId) {
-      onMove(selectedFolderId || "");
+      moveItem(Number(itemId), selectedFolderId || "", itemType);
     }
   };
 
   const isCurrentLocation = selectedFolderId === currentFolderId;
-  const isDisabled = isCurrentLocation || loading;
 
   return (
     <>
@@ -104,6 +122,23 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
               </span>
             </React.Fragment>
           ))}
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-400">
+            Sección:
+          </label>
+          <select
+            value={activeSection}
+            onChange={handleSectionChange}
+            className="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {SECTIONS.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="p-4 overflow-y-auto max-h-[50vh]">

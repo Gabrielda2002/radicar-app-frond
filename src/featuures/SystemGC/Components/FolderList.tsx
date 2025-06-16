@@ -37,7 +37,6 @@ interface FolderListProps {
   ) => void;
   isInFolder: boolean;
   section: string;
-  moveItem: (id: string, targetFolderId: string, type: 'carpetas' | 'archivos') => void;
   currentFolderId: string;
 }
 
@@ -48,7 +47,6 @@ const FolderList: React.FC<FolderListProps> = ({
   renameItem,
   isInFolder,
   section,
-  moveItem,
   currentFolderId,
 }) => {
   
@@ -70,16 +68,6 @@ const FolderList: React.FC<FolderListProps> = ({
   };
 
   const { rol } = useAuth();
-
-  const handleMove = (folderId: string, targetFolderId: string) => {
-    moveItem(folderId, targetFolderId, 'carpetas');
-    toast.success("Carpeta movida con éxito!", {
-      position: "bottom-right",
-      autoClose: 5000,
-      theme: "colored",
-      transition: Bounce,
-    });
-  }
   
   const handleRename = (folderId: string, newName: string) => {
     //Llama la funcion de renombrado
@@ -194,13 +182,11 @@ const FolderList: React.FC<FolderListProps> = ({
                   renameItem={(newName: string) =>
                     handleRename(folder.id, newName)
                   }
-                  onMove={(targetFolderId: string) => 
-                    handleMove(folder.id, targetFolderId)
-                  }
                   itemName={folder.name}
                   itemType="carpetas"
                   currentFolderId={currentFolderId}
                   section={section}
+                  itemId={folder.id}
                 />
               </div>
             )}

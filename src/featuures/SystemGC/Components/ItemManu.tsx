@@ -17,21 +17,21 @@ const ConfirmDeletePopupProps = lazy(
 interface ItemManuProps {
   onDelete: () => void;
   renameItem: (newName: string) => void;
-  onMove: (targetFolderId: string,) => void;
   itemName: string;
   itemType: "carpetas" | "archivos";
   currentFolderId: string;
   section: string;
+  itemId: string;
 }
 
 const ItemManu: React.FC<ItemManuProps> = ({
   onDelete,
   renameItem,
-  onMove,
   itemName,
   itemType,
   currentFolderId,
   section,
+  itemId
 }) => {
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
@@ -148,12 +148,10 @@ const ItemManu: React.FC<ItemManuProps> = ({
                 document.body.style.overflow = "";
               }}
               itemType={itemType}
-              onMove={(targetFolderId: string) => {
-                onMove(targetFolderId);
-              }}
               itemName={itemName}
               section={section}
               currentFolderId={currentFolderId}
+              itemId={itemId}
             />
           )}
         </Suspense>

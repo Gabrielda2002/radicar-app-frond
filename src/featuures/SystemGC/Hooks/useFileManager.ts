@@ -44,7 +44,6 @@ export const useFileManager = (section: string, initialFolderId?: string) => {
     const fetchContents = async () => {
         setLoading(true);
         try {
-            console.log("re renderizando useFileManager");
             const response = await getFolderContent(section ,currentFolderId || undefined );
             setContents(response.data);
             setError(null);
@@ -140,12 +139,13 @@ export const useFileManager = (section: string, initialFolderId?: string) => {
         }
     }
 
-    const moveItem = async (itemId: string, newParentId: string, type: "carpetas" | "archivos") => {
+    const moveItem = async (itemId: number, newParentId: string, type: "carpetas" | "archivos") => {
         try {
             await api.put(`/${type}/${itemId}/move`, { newParentId, section });
-            await fetchContents(); // Reload contents after moving an item
+            await fetchContents();
         } catch (error: any) {
             setError(`Error al mover ${type === "carpetas" ? "la carpeta" : "el archivo"}: ${error.message}`);
+            console.log(error);
             return false;
         }
     }

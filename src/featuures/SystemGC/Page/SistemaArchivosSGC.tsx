@@ -15,7 +15,7 @@ import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
-const SECTIONS = [
+export const SECTIONS = [
   { id: "suh", name: "Sistema Único de Habilitación" },
   { id: "ci", name: "Centro de Investigación" },
   { id: "sst", name: "Seguridad y Salud en el Trabajo" },
@@ -39,8 +39,6 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
-    section,
-    moveItem
   } = useFileManager(activeSection);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
@@ -127,9 +125,8 @@ const FileManager: React.FC = () => {
                       onDelete={deleteItemById}
                       renameItem={renameItem}
                       isInFolder={isInFolder}
-                      section={section}
+                      section={activeSection}
                       currentFolderId={currentFolderId}
-                      moveItem={moveItem}
                     />
                   </div>
                 )}
@@ -147,8 +144,7 @@ const FileManager: React.FC = () => {
                       onDelete={deleteItemById}
                       onDownload={downloadFileById}
                       renameItem={renameItem}
-                      moveItem={moveItem}
-                      section={section}
+                      section={activeSection}
                       currentFolderId={currentFolderId}
                     />
                   </div>

@@ -24,7 +24,6 @@ interface FileListProps {
     newName: string,
     type: "carpetas" | "archivo"
   ) => void;
-  moveItem: (id: string, targetFolderId: string, type: 'carpetas' | 'archivos') => void;
   currentFolderId: string;
   section: string;
 }
@@ -34,7 +33,6 @@ const FileList: React.FC<FileListProps> = ({
   onDownload,
   onDelete,
   renameItem,
-  moveItem,
   currentFolderId,
   section,
 }) => {
@@ -53,22 +51,6 @@ const FileList: React.FC<FileListProps> = ({
         return docIcon;
     }
   };
-
-  const handleMove = (fileId: string, targetFolderId: string) => {
-    try {
-      
-      moveItem(fileId, targetFolderId, 'archivos');
-
-      toast.success("Archivo movido con éxito!", {
-        position: "bottom-right",
-        autoClose: 5000,
-        theme: "colored",
-        transition: Bounce,
-      });
-    } catch (error) {
-      console.log("Error al mover el archivo:", error);
-    }
-  }
 
   const handleFileOpen = (file: File) => {
     let filePath = getPublicFilePath(file.path);
@@ -116,11 +98,11 @@ const FileList: React.FC<FileListProps> = ({
             <ItemManu
               onDelete={() => handleDelete(file.id)}
               renameItem={(newName: string) => handleRename(file.id, newName)}
-              onMove={(targetFolderId: string) => handleMove(file.id, targetFolderId)}
               itemName={file.name}
               currentFolderId={currentFolderId}
               section={section}
               itemType="archivos"
+              itemId={file.id}
             />
           </div>
           )}
