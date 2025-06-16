@@ -39,10 +39,6 @@ const ItemManu: React.FC<ItemManuProps> = ({
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
   const [stadOpenMove, setStadOpenMove] = useState(false);
 
-  const toggleModalRename = () => {
-    setStadOpenRename(!stadOpenRename);
-    document.body.style.overflow = "";
-  };
 
   const handleModalOpenRename = () => {
     setStadOpenRename(true);
@@ -93,7 +89,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
                   className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
                   onClick={handleModalOpenDelete}
                 >
-                  Eliminar.
+                  Eliminar
                   <TrashIcon className="w-6 h-6 dark:text-white" />
                 </button>
               </div>
@@ -104,7 +100,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
                   className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
                   onClick={handleModalOpenRename}
                 >
-                  Renombrar.
+                  Renombrar
                   <PencilIcon className="w-6 h-6 dark:text-white" />
                 </button>
               </div>
@@ -115,7 +111,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
                   className="flex justify-between items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-blue-100 data-[focus]:text-gray-900 w-full text-left dark:text-gray-100 dark:data-[focus]:bg-gray-600"
                   onClick={handleModalOpenMove}
                 >
-                  Mover.
+                  Mover
                   <Move className="w-6 h-6 dark:text-white"/>
                 </button>
               </div>
@@ -126,7 +122,9 @@ const ItemManu: React.FC<ItemManuProps> = ({
         <Suspense fallback={<LoadingSpinner />}>
           {
             <ModalRenombrarItem
-              toggleModal={toggleModalRename}
+              toggleModal={() => {
+                setStadOpenRename(false);
+              }}
               standOpen={stadOpenRename}
               renameItem={renameItem}
             />
