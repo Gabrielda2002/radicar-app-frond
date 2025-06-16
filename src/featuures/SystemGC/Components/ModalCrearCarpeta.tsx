@@ -1,5 +1,4 @@
-import useAnimation from "@/hooks/useAnimations";
-import { useBlockScroll } from "@/hooks/useBlockScroll";
+import ModalDefault from "@/components/common/Ui/ModalDefault";
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 
@@ -17,19 +16,13 @@ const ModalCrearCarpeta = ({
   const [Error, setError] = useState("");
   const [folderName, setFolderName] = useState("");
 
-  useBlockScroll(standOpen);
-
-  const { showAnimation, closing} = useAnimation(standOpen, () => {
-    toggleModal();
-  });
-
   const handleCreateFolder = () => {
     if (folderName.trim()) {
       createNewFolder(folderName);
       toast.success("Carpeta creada correctamente");
       toggleModal();
     } else {
-      alert("El nombre de la carpeta es requerido");
+      setError("El nombre de la carpeta no puede estar vacío");
     }
   };
 
@@ -53,74 +46,38 @@ const ModalCrearCarpeta = ({
 
   return (
     <>
-      {standOpen && (
-        <div
-        className={`fixed inset-0 z-50 flex items-center justify-center pt-10 pb-10 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-          showAnimation && !closing ? "opacity-100" : "opacity-0"
-        }`}
+      <ModalDefault
+        isOpen={standOpen}
+        onClose={toggleModal}
+        title="Crear Carpeta"
+        funtionClick={handleCreateFolder}
+        showSubmitButton={true}
+        isSubmitting={false}
+        isValid={!Error && folderName.trim() !== ""}
+        submitText="Crear"
+        cancelText="Cerrar"
+        footerVariant="form"
+        size="lg"
       >
-        <div
-          className={`w-[450px] md:w-[900px] max-w-2xl 2xl:max-w-5xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
-            standOpen && !closing
-              ? "translate-y-0 opacity-100"
-              : "translate-y-10 opacity-0"
-          }`}
-        >
-          {/* Header del modal */}
-          <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
-            <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-              Crear Carpeta
-            </h1>
-            <button
-              onClick={toggleModal}
-              // disabled={!videoCompleted || loading || !success}
-              className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
-            >
-              &times;
-            </button>
+        <div className="grid grid-cols-1 gap-10 mb-4">
+          <div className="p-4">
+            <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
+              Nombre:
+            </label>
+            <input
+              type="text"
+              placeholder="Ingrese el nombre..."
+              className={`w-full px-3 py-2 border-2 rounded dark:bg-gray-700 dark:text-white ${
+                Error
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              }`}
+              onChange={handleInputChange}
+            />
+            {Error && <p className="mt-2 text-red-500">{Error}</p>}
           </div>
-
-              {/* Formulario con dos columnas */}
-
-              <div className="grid grid-cols-1 gap-10 mb-4">
-                <div className="p-4">
-                  <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-                    Nombre:
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Ingrese el nombre..."
-                    className={`w-full px-3 py-2 border-2 rounded dark:bg-gray-700 dark:text-white ${
-                      Error
-                        ? "border-red-500"
-                        : "border-gray-300 dark:border-gray-600"
-                    }`}
-                    onChange={handleInputChange}
-                  />
-                  {Error && <p className="mt-2 text-red-500">{Error}</p>}
-                </div>
-              </div>
-
-              {/* Botones */}
-
-              <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
-                <button
-                  onClick={toggleModal}
-                  className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                >
-                  Cerrar
-                </button>
-                <button
-                  className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-800 dark:hover:bg-gray-600"
-                  onClick={handleCreateFolder}
-                  disabled={!!Error || !folderName.trim()}
-                >
-                  Crear
-                </button>
-              </div>
-            </div>
         </div>
-      )}
+      </ModalDefault>
     </>
   );
 };

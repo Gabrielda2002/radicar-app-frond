@@ -151,6 +151,7 @@ const FileManager: React.FC = () => {
                       renameItem={renameItem}
                       section={activeSection}
                       currentFolderId={currentFolderId}
+                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}

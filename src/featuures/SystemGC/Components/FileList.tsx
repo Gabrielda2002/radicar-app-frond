@@ -26,6 +26,7 @@ interface FileListProps {
   ) => void;
   currentFolderId: string;
   section: string;
+  handleRefresh?: () => void;
 }
 
 const FileList: React.FC<FileListProps> = ({
@@ -35,6 +36,7 @@ const FileList: React.FC<FileListProps> = ({
   renameItem,
   currentFolderId,
   section,
+  handleRefresh
 }) => {
 
   const { rol } = useAuth();
@@ -103,6 +105,7 @@ const FileList: React.FC<FileListProps> = ({
               section={section}
               itemType="archivos"
               itemId={file.id}
+              handleRefresh={handleRefresh || (() => {})}
             />
           </div>
           )}
