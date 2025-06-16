@@ -22,6 +22,7 @@ interface ItemManuProps {
   currentFolderId: string;
   section: string;
   itemId: string;
+  handleRefresh: () => void;
 }
 
 const ItemManu: React.FC<ItemManuProps> = ({
@@ -31,7 +32,8 @@ const ItemManu: React.FC<ItemManuProps> = ({
   itemType,
   currentFolderId,
   section,
-  itemId
+  itemId,
+  handleRefresh,
 }) => {
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
@@ -148,10 +150,11 @@ const ItemManu: React.FC<ItemManuProps> = ({
                 document.body.style.overflow = "";
               }}
               itemType={itemType}
-              itemName={itemName}
+              itemNameToMove={itemName}
               section={section}
               currentFolderId={currentFolderId}
               itemId={itemId}
+              handleRefresh={handleRefresh}
             />
           )}
         </Suspense>

@@ -27,6 +27,10 @@ const FileManager: React.FC = () => {
 
   const [activeSection , setActiveSection] = useState<string>("sgc");
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => setRefreshKey(prev => prev + 1);
+
   const {
     contents,
     loading,
@@ -39,7 +43,7 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
-  } = useFileManager(activeSection);
+  } = useFileManager(activeSection, undefined, refreshKey);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
   const isInFolder: boolean = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
@@ -127,6 +131,7 @@ const FileManager: React.FC = () => {
                       isInFolder={isInFolder}
                       section={activeSection}
                       currentFolderId={currentFolderId}
+                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}

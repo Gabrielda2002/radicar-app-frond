@@ -25,7 +25,7 @@ interface FolderContents {
     folders: Folder[];
 }
 
-export const useFileManager = (section: string, initialFolderId?: string) => {
+export const useFileManager = (section: string, initialFolderId?: string, refreshKey?: number) => {
     const [currentFolderId, setCurrentFolderId] = useState<string | null>(initialFolderId || null);
     const [ path, setPath] = useState<{id: string; name: string}[]>([
         {id: "", name: "Inicio"}
@@ -44,6 +44,7 @@ export const useFileManager = (section: string, initialFolderId?: string) => {
     const fetchContents = async () => {
         setLoading(true);
         try {
+            console.log('re fetch contents')
             const response = await getFolderContent(section ,currentFolderId || undefined );
             setContents(response.data);
             setError(null);
@@ -56,7 +57,7 @@ export const useFileManager = (section: string, initialFolderId?: string) => {
 
     useEffect(() => {
         fetchContents();
-    }, [currentFolderId, section]);
+    }, [currentFolderId, section, refreshKey]); // Dependiendo de currentFolderId y section
 
     useEffect(() => {
         setCurrentFolderId(initialFolderId || null);
@@ -139,14 +140,18 @@ export const useFileManager = (section: string, initialFolderId?: string) => {
         }
     }
 
-    const moveItem = async (itemId: number, newParentId: string, type: "carpetas" | "archivos") => {
+    const moveItem = async (itemId: number, newParentId: string, type: "carpetas" | "archivos"): Promise<boolean> => {
         try {
+            setLoading(true);
             await api.put(`/${type}/${itemId}/move`, { newParentId, section });
             await fetchContents();
+            return true;
         } catch (error: any) {
             setError(`Error al mover ${type === "carpetas" ? "la carpeta" : "el archivo"}: ${error.message}`);
             console.log(error);
             return false;
+        }finally{
+            setLoading(false);
         }
     }
 

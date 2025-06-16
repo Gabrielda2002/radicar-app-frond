@@ -4,27 +4,31 @@ import { ChevronLeftIcon, FolderIcon } from "lucide-react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { SECTIONS } from "../Page/SistemaArchivosSGC";
 import { useFileManager } from "../Hooks/useFileManager";
+import { Bounce, toast } from "react-toastify";
 
 interface ModalMoveItemsProps {
   isOpen: boolean;
   onClose: () => void;
-  // onMove: (targetFolderId: string, targetSection: string) => void;
   section: string;
   currentFolderId: string | null;
-  itemName: string;
+  itemNameToMove: string;
   itemType: "carpetas" | "archivos";
   itemId: string;
+  handleRefresh: () => void;
 }
 const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   isOpen,
   onClose,
-  // onMove,
   section,
   currentFolderId,
-  itemName,
+  itemNameToMove,
   itemType,
   itemId,
+  handleRefresh,
 }) => {
+  console.log("currentFolderId", currentFolderId);
+  console.log("item id ", itemId);
+
   const [navigationPath, setNavigationPath] = useState<
     Array<{ id: string; name: string }>
   >([{ id: "", name: "Inicio" }]);
@@ -76,7 +80,50 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
 
   const handleMove = () => {
     if (selectedFolderId !== currentFolderId && selectedFolderId) {
-      moveItem(Number(itemId), selectedFolderId || "", itemType);
+      moveItem(Number(itemId), selectedFolderId || "", itemType)
+        .then((success) => {
+          if (success) {
+            onClose();
+            handleRefresh();
+            toast.success(
+              `El ${
+                itemType === "carpetas" ? "carpeta" : "archivo"
+              } se ha movido correctamente.`,
+              {
+                position: "bottom-right",
+                autoClose: 5000,
+                theme: "colored",
+                transition: Bounce,
+              }
+            );
+          } else {
+            toast.error(
+              `Error al mover el ${
+                itemType === "carpetas" ? "carpeta" : "archivo"
+              }. Por favor, inténtalo de nuevo.`,
+              {
+                position: "bottom-right",
+                autoClose: 5000,
+                theme: "colored",
+                transition: Bounce,
+              }
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error moving item:", error);
+          toast.error(
+            `Error al mover el ${
+              itemType === "carpetas" ? "carpeta" : "archivo"
+            }. Por favor, inténtalo de nuevo.`,
+            {
+              position: "bottom-right",
+              autoClose: 5000,
+              theme: "colored",
+              transition: Bounce,
+            }
+          );
+        });
     }
   };
 
@@ -89,7 +136,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         onClose={() => onClose()}
         title={`Mover ${
           itemType === "carpetas" ? "carpeta" : "archivo"
-        }: ${itemName}`}
+        }: ${itemNameToMove}`}
         funtionClick={handleMove}
         isSubmitting={loading}
         isValid={!!selectedFolderId && !isCurrentLocation}

@@ -38,6 +38,7 @@ interface FolderListProps {
   isInFolder: boolean;
   section: string;
   currentFolderId: string;
+  handleRefresh: () => void;
 }
 
 const FolderList: React.FC<FolderListProps> = ({
@@ -48,6 +49,7 @@ const FolderList: React.FC<FolderListProps> = ({
   isInFolder,
   section,
   currentFolderId,
+  handleRefresh,
 }) => {
   
   const handleDelete = (folderId: string) => {
@@ -187,6 +189,7 @@ const FolderList: React.FC<FolderListProps> = ({
                   currentFolderId={currentFolderId}
                   section={section}
                   itemId={folder.id}
+                  handleRefresh={handleRefresh}
                 />
               </div>
             )}
