@@ -12,6 +12,7 @@ import SubCategory from "../components/SubCategoriaSideBar";
 import { FaFolderOpen, FaRegFolder } from "react-icons/fa";
 import { MdOutlineInventory } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import { IoMagnetOutline } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import user from "/assets/user.svg";
 import user2 from "/assets/user2.svg";
@@ -44,7 +45,8 @@ const SideBar: FC = () => {
     reports: false,
     tablets: false,
     admin: false,
-    RRHH: false
+    RRHH: false,
+    demandaInducida: false
   });
   // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
@@ -76,7 +78,8 @@ const SideBar: FC = () => {
         reports: false,
         tablets: false,
         admin: false,
-        RRHH: false
+        RRHH: false,
+        demandaInducida: false
       };
       newState[key] = !prev[key];
       return newState;
@@ -276,6 +279,22 @@ const SideBar: FC = () => {
                   />
                 </Category>
               </div>
+            )}
+
+            {[1].includes(Number(rol)) && (
+              <Category
+                title="Gestión demanda inducida"
+                icon={userMain}
+                isOpen={openAccordions.demandaInducida}
+                toggle={() => toggleAccordion("demandaInducida")}
+              >
+                <SubCategory
+                  to="/demanda/inducida"
+                  icon={IoMagnetOutline}
+                  title="Demanda Inducida"
+                  isCollapsed={isCollapsed}
+                />
+              </Category>
             )}
 
             {/* Categoria de reportes */}
