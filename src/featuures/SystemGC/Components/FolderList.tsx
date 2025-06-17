@@ -37,6 +37,8 @@ interface FolderListProps {
   ) => void;
   isInFolder: boolean;
   section: string;
+  currentFolderId: string;
+  handleRefresh: () => void;
 }
 
 const FolderList: React.FC<FolderListProps> = ({
@@ -45,7 +47,9 @@ const FolderList: React.FC<FolderListProps> = ({
   onDelete,
   renameItem,
   isInFolder,
-  section
+  section,
+  currentFolderId,
+  handleRefresh,
 }) => {
   
   const handleDelete = (folderId: string) => {
@@ -66,7 +70,7 @@ const FolderList: React.FC<FolderListProps> = ({
   };
 
   const { rol } = useAuth();
-
+  
   const handleRename = (folderId: string, newName: string) => {
     //Llama la funcion de renombrado
     renameItem(folderId, newName, "carpetas");
@@ -180,6 +184,12 @@ const FolderList: React.FC<FolderListProps> = ({
                   renameItem={(newName: string) =>
                     handleRename(folder.id, newName)
                   }
+                  itemName={folder.name}
+                  itemType="carpetas"
+                  currentFolderId={currentFolderId}
+                  section={section}
+                  itemId={folder.id}
+                  handleRefresh={handleRefresh}
                 />
               </div>
             )}

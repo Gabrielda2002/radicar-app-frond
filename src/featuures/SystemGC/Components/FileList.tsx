@@ -24,6 +24,9 @@ interface FileListProps {
     newName: string,
     type: "carpetas" | "archivo"
   ) => void;
+  currentFolderId: string;
+  section: string;
+  handleRefresh?: () => void;
 }
 
 const FileList: React.FC<FileListProps> = ({
@@ -31,6 +34,9 @@ const FileList: React.FC<FileListProps> = ({
   onDownload,
   onDelete,
   renameItem,
+  currentFolderId,
+  section,
+  handleRefresh
 }) => {
 
   const { rol } = useAuth();
@@ -94,6 +100,12 @@ const FileList: React.FC<FileListProps> = ({
             <ItemManu
               onDelete={() => handleDelete(file.id)}
               renameItem={(newName: string) => handleRename(file.id, newName)}
+              itemName={file.name}
+              currentFolderId={currentFolderId}
+              section={section}
+              itemType="archivos"
+              itemId={file.id}
+              handleRefresh={handleRefresh || (() => {})}
             />
           </div>
           )}

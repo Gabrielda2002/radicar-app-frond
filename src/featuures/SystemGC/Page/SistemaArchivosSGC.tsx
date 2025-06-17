@@ -15,7 +15,7 @@ import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 
-const SECTIONS = [
+export const SECTIONS = [
   { id: "suh", name: "Sistema Único de Habilitación" },
   { id: "ci", name: "Centro de Investigación" },
   { id: "sst", name: "Seguridad y Salud en el Trabajo" },
@@ -26,6 +26,10 @@ const SECTIONS = [
 const FileManager: React.FC = () => {
 
   const [activeSection , setActiveSection] = useState<string>("sgc");
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => setRefreshKey(prev => prev + 1);
 
   const {
     contents,
@@ -39,8 +43,7 @@ const FileManager: React.FC = () => {
     setCurrentFolderId,
     createNewFolder,
     renameItem,
-    section
-  } = useFileManager(activeSection);
+  } = useFileManager(activeSection, undefined, refreshKey);
 
   const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
   const isInFolder: boolean = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
@@ -126,7 +129,9 @@ const FileManager: React.FC = () => {
                       onDelete={deleteItemById}
                       renameItem={renameItem}
                       isInFolder={isInFolder}
-                      section={section}
+                      section={activeSection}
+                      currentFolderId={currentFolderId}
+                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}
@@ -144,6 +149,9 @@ const FileManager: React.FC = () => {
                       onDelete={deleteItemById}
                       onDownload={downloadFileById}
                       renameItem={renameItem}
+                      section={activeSection}
+                      currentFolderId={currentFolderId}
+                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}

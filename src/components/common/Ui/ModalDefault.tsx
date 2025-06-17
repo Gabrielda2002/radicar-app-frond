@@ -56,6 +56,7 @@ const ModalDefault: React.FC<ModalContentProps> = ({
             disabled={isSubmitting || !isValid}
             className="btn btn-primary"
             onClick={funtionClick}
+            isLoading={isSubmitting}
           >
             {submitText}
           </Button>
