@@ -190,6 +190,7 @@ const FolderList: React.FC<FolderListProps> = ({
                   section={section}
                   itemId={folder.id}
                   handleRefresh={handleRefresh}
+                  nameItemOld={folder.name}
                 />
               </div>
             )}

@@ -106,6 +106,7 @@ const FileList: React.FC<FileListProps> = ({
               itemType="archivos"
               itemId={file.id}
               handleRefresh={handleRefresh || (() => {})}
+              nameItemOld={file.name}
             />
           </div>
           )}
