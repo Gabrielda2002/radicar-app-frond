@@ -23,6 +23,7 @@ interface ItemManuProps {
   section: string;
   itemId: string;
   handleRefresh: () => void;
+  nameItemOld: string;
 }
 
 const ItemManu: React.FC<ItemManuProps> = ({
@@ -34,6 +35,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
   section,
   itemId,
   handleRefresh,
+  nameItemOld,
 }) => {
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
@@ -127,6 +129,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
               }}
               standOpen={stadOpenRename}
               renameItem={renameItem}
+              nameItemOld={nameItemOld}
             />
           }
 

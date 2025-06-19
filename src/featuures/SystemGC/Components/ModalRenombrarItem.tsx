@@ -5,15 +5,17 @@ type ModalRenombrarItemProps = {
   standOpen: boolean;
   toggleModal: () => void;
   renameItem: (newName: string) => void;
+  nameItemOld: string;
 };
 
 const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   standOpen,
   toggleModal,
   renameItem,
+  nameItemOld
 }) => {
   const [Error, setError] = useState("");
-  const [folderNewName, setFolderNewName] = useState("");
+  const [folderNewName, setFolderNewName] = useState<string>(nameItemOld || "");
 
   const handleRename = useCallback(() => {
     if (folderNewName.trim()) {
@@ -65,6 +67,7 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
             </label>
             <input
               type="text"
+              value={folderNewName}
               placeholder="Ingrese el nombre..."
               className={`w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white ${
                 Error
