@@ -1,4 +1,5 @@
 import ModalSection from '@/components/common/HeaderPage/HeaderPage'
+import ModalCreateDI from '../Components/ModalCreateDI'
 
 const DemandInduce = () => {
   return (
@@ -12,6 +13,9 @@ const DemandInduce = () => {
     />
     <div className='w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10'>
     {/* Barra de busqueda y demas parametros */}
+
+        <ModalCreateDI/>
+
         <div className='mt-4 mb-5 overflow-y-auto'>
             <table className='min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg'>
                 <thead>
