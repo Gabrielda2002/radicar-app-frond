@@ -1,6 +1,7 @@
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
+import Input from "@/components/common/Ui/Input";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
@@ -30,6 +31,7 @@ const ModalCreateDI = () => {
     phoneNumber: Yup.string().required("El número de teléfono es obligatorio"),
     phoneNumber2: Yup.string().optional(),
     address: Yup.string().required("La dirección es obligatoria"),
+
     // llamada telefonica (2)
     classification: Yup.boolean().when("elementDemand", {
       is: (value: string) => value == "2",
@@ -182,16 +184,23 @@ const ModalCreateDI = () => {
         submitText="Crear"
         onSubmit={formik.handleSubmit}
       >
-        <div className="">
+        <div className="grid grid-cols-4 gap-4">
           <div className="">
-            <label htmlFor="document">Documento:</label>
-            <input
+            <Input
               type="text"
               id="document"
               value={documento}
               onChange={(e) => setDocumento(e.target.value)}
               onBlur={() => getData(documento)}
+              touched={formik.touched.document}
+              error={formik.errors.document}
+              label="Documento"
             />
+            {error && (
+            <div className="text-red-500">
+              Error al buscar el paciente: {error}
+            </div>
+          )}
           </div>
 
           {data && (
@@ -207,34 +216,59 @@ const ModalCreateDI = () => {
                 </select>
               </div>
               <div>
-                <label htmlFor="email">Email:</label>
-                <input type="text" id="email" value={data.email} />
-              </div>
-              <div>
-                <label htmlFor="phoneNumber">Telefono:</label>
-                <input type="text" id="phoneNumber" value={data.phoneNumber} />
-              </div>
-              <div>
-                <label htmlFor="phoneNumber2">
-                  Segundo Numero de telefono:
-                </label>
-                <input
+                <Input
+                  label="Email"
                   type="text"
-                  id="phoneNumber2"
-                  value={data.phoneNumber2 || ""}
+                  id="email"
+                  variant="default"
+                  value={data.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="email"
+                  touched={formik.touched.email}
+                  error={formik.errors.email}
                 />
               </div>
               <div>
-                <label htmlFor="address">Direccion de residencia:</label>
-                <input type="text" id="address" value={data.address} />
+                <Input
+                  label="Telefono"
+                  type="text"
+                  id="phoneNumber"
+                  value={data.phoneNumber}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="phoneNumber"
+                  touched={formik.touched.phoneNumber}
+                  error={formik.errors.phoneNumber}
+                />
+              </div>
+              <div>
+                <Input
+                  label="Segundo Numero de telefono"
+                  type="text"
+                  id="phoneNumber2"
+                  value={data.phoneNumber2 || ""}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="phoneNumber2"
+                  touched={formik.touched.phoneNumber2}
+                  error={formik.errors.phoneNumber2}
+                />
+              </div>
+              <div>
+                <Input
+                  label="Direccion de residencia:"
+                  type="text"
+                  id="address"
+                  value={data.address}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="address"
+                  touched={formik.touched.address}
+                  error={formik.errors.address}
+                />
               </div>
             </>
-          )}
-
-          {error && (
-            <div className="text-red-500">
-              Error al buscar el paciente: {error}
-            </div>
           )}
 
           <div>
@@ -284,241 +318,189 @@ const ModalCreateDI = () => {
           {formik.values.elementDemand == "2" && (
             <>
               <div>
-                <label htmlFor="classification">Clasificación:</label>
-                <input
+                <Input
                   type="checkbox"
                   id="classification"
                   checked={formik.values.classification}
-                  onChange={(e) =>
-                    formik.setFieldValue("classification", e.target.checked)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="classification"
+                  label="Clasificación de la llamada"
+                  touched={formik.touched.classification}
+                  error={formik.errors.classification}
                 />
-                {formik.touched.classification &&
-                  formik.errors.classification && (
-                    <div className="text-red-500">
-                      {formik.errors.classification}
-                    </div>
-                  )}
               </div>
+
               {/* clasificacion === true (llamda efectiva) */}
               {formik.values.classification ? (
                 <>
                   <div>
-                    <label htmlFor="acceptCall">Persona recibe llamada:</label>
-                    <input
+                    <Input
+                      label="Persona recibe llamada"
                       type="text"
                       id="acceptCall"
                       value={formik.values.acceptCall}
-                      onChange={(e) =>
-                        formik.setFieldValue("acceptCall", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="acceptCall"
+                      touched={formik.touched.acceptCall}
+                      error={formik.errors.acceptCall}
                     />
-                    {formik.touched.acceptCall && formik.errors.acceptCall && (
-                      <div className="text-red-500">
-                        {formik.errors.acceptCall}
-                      </div>
-                    )}
                   </div>
 
                   <div>
-                    <label htmlFor="relationshipUser">
-                      Relación con el usuario:
-                    </label>
-                    <input
+                    <Input
+                      label="Relación con el usuario"
                       type="text"
                       id="relationshipUser"
                       value={formik.values.relationshipUser}
-                      onChange={(e) =>
-                        formik.setFieldValue("relationshipUser", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="relationshipUser"
+                      touched={formik.touched.relationshipUser}
+                      error={formik.errors.relationshipUser}
                     />
-                    {formik.touched.relationshipUser &&
-                      formik.errors.relationshipUser && (
-                        <div className="text-red-500">
-                          {formik.errors.relationshipUser}
-                        </div>
-                      )}
                   </div>
                   <div>
-                    <label htmlFor="dateCallWait">Fecha llamada:</label>
-                    <input
+                    <Input
+                      label="Fecha llamada"
                       type="date"
                       id="dateCallWait"
                       value={formik.values.dateCall}
-                      onChange={(e) =>
-                        formik.setFieldValue("dateCallWait", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="dateCall"
+                      touched={formik.touched.dateCall}
+                      error={formik.errors.dateCall}
                     />
-                    {formik.touched.dateCall && formik.errors.dateCall && (
-                      <div className="text-red-500">
-                        {formik.errors.dateCall}
-                      </div>
-                    )}
                   </div>
                   <div>
-                    <label htmlFor="dateCall">Hora llamada:</label>
-                    <input
+                    <Input
+                      label="Hora llamada"
                       type="time"
                       id="dateCall"
                       value={formik.values.dateCall}
-                      onChange={(e) =>
-                        formik.setFieldValue("dateCall", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="hourCall"
+                      touched={formik.touched.hourCall}
+                      error={formik.errors.hourCall}
                     />
-                    {formik.touched.dateCall && formik.errors.dateCall && (
-                      <div className="text-red-500">
-                        {formik.errors.dateCall}
-                      </div>
-                    )}
                   </div>
                   <div>
-                    <label htmlFor="textCall">Texto llamada:</label>
-                    <textarea
+                    <Input
+                      label="Texto llamada"
                       id="textCall"
                       value={formik.values.textCall}
-                      onChange={(e) =>
-                        formik.setFieldValue("textCall", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      type="text"
+                      name="textCall"
+                      touched={formik.touched.textCall}
+                      error={formik.errors.textCall}
                     />
-                    {formik.touched.textCall && formik.errors.textCall && (
-                      <div className="text-red-500">
-                        {formik.errors.textCall}
-                      </div>
-                    )}
                   </div>
 
                   <div>
-                    <label htmlFor="dificulties">
-                      Dificultades para el acceso al tratamiento?:
-                    </label>
-                    <input
+                    <Input
+                      label="Dificultades para el acceso al tratamiento"
                       type="checkbox"
                       id="dificulties"
                       checked={formik.values.dificulties}
-                      onChange={(e) =>
-                        formik.setFieldValue("dificulties", e.target.checked)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="dificulties"
+                      touched={formik.touched.dificulties}
+                      error={formik.errors.dificulties}
                     />
-                    {formik.touched.dificulties &&
-                      formik.errors.dificulties && (
-                        <div className="text-red-500">
-                          {formik.errors.dificulties}
-                        </div>
-                      )}
                   </div>
+
                   {/* presenta dificultades para asistir === true */}
                   {formik.values.dificulties && (
                     <>
                       <div>
-                        <label htmlFor="areaDificulties">
-                          Área de dificultades:
-                        </label>
-                        <input
+                        <Input
+                          label="Área de dificultades"
                           type="text"
                           id="areaDificulties"
                           value={formik.values.areaDificulties}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              "areaDificulties",
-                              e.target.value
-                            )
-                          }
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          name="areaDificulties"
+                          touched={formik.touched.areaDificulties}
+                          error={formik.errors.areaDificulties}
                         />
-                        {formik.touched.areaDificulties &&
-                          formik.errors.areaDificulties && (
-                            <div className="text-red-500">
-                              {formik.errors.areaDificulties}
-                            </div>
-                          )}
                       </div>
                       <div>
-                        <label htmlFor="areaEps">Área EPS:</label>
-                        <input
+                        <Input
+                          label="Área EPS"
                           type="text"
                           id="areaEps"
                           value={formik.values.areaEps}
-                          onChange={(e) =>
-                            formik.setFieldValue("areaEps", e.target.value)
-                          }
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          name="areaEps"
+                          touched={formik.touched.areaEps}
+                          error={formik.errors.areaEps}
                         />
-                        {formik.touched.areaEps && formik.errors.areaEps && (
-                          <div className="text-red-500">
-                            {formik.errors.areaEps}
-                          </div>
-                        )}
                       </div>
                     </>
                   )}
 
                   {/* otros campos llamada telefonica */}
                   <div>
-                    <label htmlFor="summaryCall">Resumen llamada:</label>
-                    <textarea
+                    <Input
+                      label="Resumen llamada"
+                      type="text"
+                      name="summaryCall"
                       id="summaryCall"
                       value={formik.values.summaryCall}
-                      onChange={(e) =>
-                        formik.setFieldValue("summaryCall", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      touched={formik.touched.summaryCall}
+                      error={formik.errors.summaryCall}
                     />
-                    {formik.touched.summaryCall &&
-                      formik.errors.summaryCall && (
-                        <div className="text-red-500">
-                          {formik.errors.summaryCall}
-                        </div>
-                      )}
                   </div>
                   <div>
-                    <label htmlFor="conditionUser">
-                      Condición del usuario:
-                    </label>
-                    <input
+                    <Input
+                      label="Condición del usuario"
                       type="checkbox"
                       id="conditionUser"
                       checked={formik.values.conditionUser}
-                      onChange={(e) =>
-                        formik.setFieldValue("conditionUser", e.target.checked)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="conditionUser"
+                      touched={formik.touched.conditionUser}
+                      error={formik.errors.conditionUser}
                     />
-                    {formik.touched.conditionUser &&
-                      formik.errors.conditionUser && (
-                        <div className="text-red-500">
-                          {formik.errors.conditionUser}
-                        </div>
-                      )}
                   </div>
                   <div>
-                    <label htmlFor="suport">Soportes:</label>
-                    <input
+                    <Input
+                      label="Soporte"
                       type="text"
                       id="suport"
                       value={formik.values.suport}
-                      onChange={(e) =>
-                        formik.setFieldValue("suport", e.target.value)
-                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="suport"
+                      touched={formik.touched.suport}
+                      error={formik.errors.suport}
                     />
-                    {formik.touched.suport && formik.errors.suport && (
-                      <div className="text-red-500">{formik.errors.suport}</div>
-                    )}
                   </div>
                 </>
               ) : (
                 <div>
-                  <label htmlFor="resultCall">
-                    Resultado de la llamada no efectiva:
-                  </label>
-                  <input
+                  <Input
+                    label="Resultado de la llamada no efectiva"
                     type="text"
                     id="resultCall"
                     value={formik.values.resultCall}
-                    onChange={(e) =>
-                      formik.setFieldValue("resultCall", e.target.value)
-                    }
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="resultCall"
+                    touched={formik.touched.resultCall}
+                    error={formik.errors.resultCall}
                   />
-                  {formik.touched.resultCall && formik.errors.resultCall && (
-                    <div className="text-red-500">
-                      {formik.errors.resultCall}
-                    </div>
-                  )}
                 </div>
               )}
             </>
@@ -528,45 +510,43 @@ const ModalCreateDI = () => {
           {formik.values.elementDemand == "1" && (
             <>
               <div>
-                <label htmlFor="dateSend">Fecha de envío:</label>
-                <input
+                <Input
+                  label="Fecha de envío"
                   type="date"
                   id="dateSend"
                   value={formik.values.dateSend}
-                  onChange={(e) =>
-                    formik.setFieldValue("dateSend", e.target.value)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="dateSend"
+                  touched={formik.touched.dateSend}
+                  error={formik.errors.dateSend}
                 />
-                {formik.touched.dateSend && formik.errors.dateSend && (
-                  <div className="text-red-500">{formik.errors.dateSend}</div>
-                )}
               </div>
               <div>
-                <label htmlFor="hourSend">Hora de envío:</label>
-                <input
+                <Input
+                  label="Hora de envío"
                   type="time"
                   id="hourSend"
                   value={formik.values.hourSend}
-                  onChange={(e) =>
-                    formik.setFieldValue("hourSend", e.target.value)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="hourSend"
+                  touched={formik.touched.hourSend}
+                  error={formik.errors.hourSend}
                 />
-                {formik.touched.hourSend && formik.errors.hourSend && (
-                  <div className="text-red-500">{formik.errors.hourSend}</div>
-                )}
               </div>
               <div>
-                <label htmlFor="textSend">Texto de envío:</label>
-                <textarea
+                <Input
+                  label="Texto de envío"
                   id="textSend"
                   value={formik.values.textSend}
-                  onChange={(e) =>
-                    formik.setFieldValue("textSend", e.target.value)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="text"
+                  name="textSend"
+                  touched={formik.touched.textSend}
+                  error={formik.errors.textSend}
                 />
-                {formik.touched.textSend && formik.errors.textSend && (
-                  <div className="text-red-500">{formik.errors.textSend}</div>
-                )}
               </div>
             </>
           )}
@@ -575,106 +555,86 @@ const ModalCreateDI = () => {
           {formik.values.elementDemand == "4" && (
             <>
               <div>
-                <label htmlFor="dateVisit">Fecha de visita:</label>
-                <input
+                <Input
+                  label="Fecha de visita"
                   type="date"
                   id="dateVisit"
                   value={formik.values.dateVisit}
-                  onChange={(e) =>
-                    formik.setFieldValue("dateVisit", e.target.value)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="dateVisit"
+                  touched={formik.touched.dateVisit}
+                  error={formik.errors.dateVisit}
                 />
-                {formik.touched.dateVisit && formik.errors.dateVisit && (
-                  <div className="text-red-500">{formik.errors.dateVisit}</div>
-                )}
               </div>
               <div>
-                <label htmlFor="sumaryVisit">Resumen de la visita:</label>
-                <textarea
+                <Input
+                  label="Resumen de la visita"
                   id="sumaryVisit"
                   value={formik.values.sumaryVisit}
-                  onChange={(e) =>
-                    formik.setFieldValue("sumaryVisit", e.target.value)
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="text"
+                  name="sumaryVisit"
+                  touched={formik.touched.sumaryVisit}
+                  error={formik.errors.sumaryVisit}
                 />
-                {formik.touched.sumaryVisit && formik.errors.sumaryVisit && (
-                  <div className="text-red-500">
-                    {formik.errors.sumaryVisit}
-                  </div>
-                )}
               </div>
               <div>
-                <label htmlFor="reasonVisitNotEffective">
-                  Motivo de la visita no efectiva:
-                </label>
-                <input
+                <Input
+                  label="Motivo de la visita no efectiva"
                   type="text"
                   id="reasonVisitNotEffective"
                   value={formik.values.reasonVisitNotEffective}
-                  onChange={(e) =>
-                    formik.setFieldValue(
-                      "reasonVisitNotEffective",
-                      e.target.value
-                    )
-                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="reasonVisitNotEffective"
+                  touched={formik.touched.reasonVisitNotEffective}
+                  error={formik.errors.reasonVisitNotEffective}
                 />
-                {formik.touched.reasonVisitNotEffective &&
-                  formik.errors.reasonVisitNotEffective && (
-                    <div className="text-red-500">
-                      {formik.errors.reasonVisitNotEffective}
-                    </div>
-                  )}
               </div>
             </>
           )}
 
           {/* campos finales */}
           <div>
-            <label htmlFor="areaPersonProcess">
-              Área de la persona que procesa:
-            </label>
-            <input
+            <Input
+              label="Área de la persona que procesa"
               type="text"
               id="areaPersonProcess"
               value={formik.values.areaPersonProcess}
-              onChange={(e) =>
-                formik.setFieldValue("areaPersonProcess", e.target.value)
-              }
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              name="areaPersonProcess"
+              touched={formik.touched.areaPersonProcess}
+              error={formik.errors.areaPersonProcess}
             />
-            {formik.touched.areaPersonProcess &&
-              formik.errors.areaPersonProcess && (
-                <div className="text-red-500">
-                  {formik.errors.areaPersonProcess}
-                </div>
-              )}
           </div>
           <div>
-            <label htmlFor="programPerson">Programa:</label>
-            <input
+            <Input
+              label="Programa"
               type="text"
               id="programPerson"
               value={formik.values.programPerson}
-              onChange={(e) =>
-                formik.setFieldValue("programPerson", e.target.value)
-              }
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              name="programPerson"
+              touched={formik.touched.programPerson}
+              error={formik.errors.programPerson}
             />
-            {formik.touched.programPerson && formik.errors.programPerson && (
-              <div className="text-red-500">{formik.errors.programPerson}</div>
-            )}
           </div>
           <div>
-            <label htmlFor="assignmentDate">Fecha de asignación:</label>
-            <input
+            <Input
+              label="Fecha de asignación"
               type="date"
               id="assignmentDate"
               value={formik.values.assignmentDate}
-              onChange={(e) =>
-                formik.setFieldValue("assignmentDate", e.target.value)
-              }
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              name="assignmentDate"
+              touched={formik.touched.assignmentDate}
+              error={formik.errors.assignmentDate}
             />
-            {formik.touched.assignmentDate && formik.errors.assignmentDate && (
-              <div className="text-red-500">{formik.errors.assignmentDate}</div>
-            )}
           </div>
         </div>
       </FormModal>
