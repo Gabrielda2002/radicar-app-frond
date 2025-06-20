@@ -175,6 +175,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                 label="Grupo Servicios"
                 onInputChanged={(id) => setGroupService(Number(id))}
                 apiRoute="grupo-servicios-name"
+                placeholder="Ej: Cirugía Ambulatoria"
               />
               <button
                 type="button"
@@ -390,6 +391,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                                 formik.setFieldValue("ips", value)
                               }
                               apiRoute="ips-remite-name"
+                              placeholder="Ej: Hospital San Juan"
+                              error={
+                                formik.touched.ips && formik.errors.ips
+                                  ? formik.errors.ips
+                                  : undefined
+                              }
+                              touched={formik.touched.ips}
+                              required={true}
                             />
                             <AnimatePresence>
                               {formik.touched.ips && formik.errors.ips ? (

@@ -289,10 +289,9 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                         formik.setFieldValue("responsable", value)
                       }
                       apiRoute="search-user-by-name"
-                      error={
-                        formik.touched.responsable &&
-                        !!formik.errors.responsable
-                      }
+                      error={formik.touched.responsable && formik.errors.responsable ? formik.errors.responsable : undefined}
+                      touched={formik.touched.responsable}
+                      placeholder="Ej: Juan Perez"
                     />
 
                     <div className="flex flex-col justify-center w-full">

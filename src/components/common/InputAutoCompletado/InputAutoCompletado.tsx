@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import useFetchEspecialidadAtcp from "../../../hooks/useFetchInputAtcp";
+import Input from "../Ui/Input";
 
 interface InputAutocompletadoProps {
   label: string;
   onInputChanged: (value: string, id?: string) => void;
   apiRoute: string;
-  error?: boolean; //*Nueva propiedad para manejar el error
+  error?: string; 
+  touched?: boolean;
+  required?: boolean;
+  placeholder?: string;
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   label,
   onInputChanged,
   apiRoute,
-  error = false, //*Establece un valor por defecto
+  error,
+  touched,
+  required = false,
+  placeholder = "",
 }) => {
   const [inputValue, setInputValue] = useState("");
   const {
@@ -44,20 +51,16 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
 
   return (
     <div className="relative">
-      <label>
-        <span className="flex mb-1 text-lg font-bold text-gray-700 dark:text-gray-200">
-          {label}
-        </span>
-        <input
+        <Input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          className={`w-full px-3 py-2 border-2 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-            error ? "border-red-500 dark:border-red-500" : "border-gray-200"
-          }`}
-          placeholder={`Escribe ${label.toLowerCase()}...`}
+          placeholder={placeholder}
+          touched={touched}
+          error={error}
+          required={required}
+          label={label}
         />
-      </label>
 
       {fetchError && (
         <p className="text-red-500 dark:text-red-300">{fetchError}</p>

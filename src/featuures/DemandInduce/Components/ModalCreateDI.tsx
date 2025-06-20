@@ -212,9 +212,10 @@ const ModalCreateDI = () => {
                 onInputChanged={(value) => {
                   formik.setFieldValue("elementDemand", value);
                 }}
-                error={
-                  formik.touched.elementDemand && !!formik.errors.elementDemand
-                }
+                error={formik.touched.elementDemand && formik.errors.elementDemand ? formik.errors.elementDemand : undefined}
+                required={true}
+                placeholder="Ej: Llamada telefónica"
+                touched={formik.touched.elementDemand}
               />
               {formik.touched.elementDemand && formik.errors.elementDemand && (
                 <div className="text-red-500">
@@ -227,8 +228,11 @@ const ModalCreateDI = () => {
               <InputAutocompletado
                 apiRoute="tipo/demanda-inducida/buscar"
                 label="Tipo de elemento de demanda inducida"
-                onInputChanged={(value) => console.log(value)}
-                error={false}
+                onInputChanged={(value) => formik.setFieldValue("typeElementDemand", value)}
+                error={formik.touched.typeElementDemand && formik.errors.typeElementDemand ? formik.errors.typeElementDemand : undefined}
+                required={true}
+                placeholder="Ej: Mensaje"
+                touched={formik.touched.typeElementDemand}
               />
               {formik.touched.typeElementDemand &&
                 formik.errors.typeElementDemand && (
@@ -242,8 +246,11 @@ const ModalCreateDI = () => {
               <InputAutocompletado
                 apiRoute="objetivo/demanda-inducida/buscar"
                 label="Objetivo"
-                onInputChanged={(value) => console.log(value)}
-                error={false}
+                onInputChanged={(value) => formik.setFieldValue("objetive", value)}
+                error={formik.touched.objetive && formik.errors.objetive ? formik.errors.objetive : undefined}
+                required={true}
+                placeholder="Ej: Autocuidado"
+                touched={formik.touched.objetive}
               />
               {formik.touched.objetive && formik.errors.objetive && (
                 <div className="text-red-500">{formik.errors.objetive}</div>
@@ -372,10 +379,10 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("relationshipUser", value)
                         }
-                        error={
-                          formik.touched.relationshipUser &&
-                          !!formik.errors.relationshipUser
-                        }
+                        error={formik.touched.relationshipUser && formik.errors.relationshipUser ? formik.errors.relationshipUser : undefined}
+                        required={true}
+                        placeholder="Ej: Padre"
+                        touched={formik.touched.relationshipUser}
                       />
                       {formik.touched.relationshipUser &&
                         formik.errors.relationshipUser && (
@@ -461,9 +468,10 @@ const ModalCreateDI = () => {
                             onInputChanged={(value) =>
                               formik.setFieldValue("areaEps", value)
                             }
-                            error={
-                              formik.touched.areaEps && !!formik.errors.areaEps
-                            }
+                            error={formik.touched.areaEps && formik.errors.areaEps ? formik.errors.areaEps : undefined}
+                            required={true}
+                            placeholder="Ej: Afiliaciones"
+                            touched={formik.touched.areaEps}
                           />
                           {formik.touched.areaEps && formik.errors.areaEps && (
                             <div className="text-red-500">
@@ -482,10 +490,10 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("summaryCall", value)
                         }
-                        error={
-                          formik.touched.summaryCall &&
-                          !!formik.errors.summaryCall
-                        }
+                        error={formik.touched.summaryCall && formik.errors.summaryCall ? formik.errors.summaryCall : undefined}
+                        required={true}
+                        placeholder="Ej: Educación de salud"
+                        touched={formik.touched.summaryCall}
                       />
                       {formik.touched.summaryCall &&
                         formik.errors.summaryCall && (
@@ -532,9 +540,10 @@ const ModalCreateDI = () => {
                     onInputChanged={(value) =>
                       formik.setFieldValue("resultCall", value)
                     }
-                    error={
-                      formik.touched.resultCall && !!formik.errors.resultCall
-                    }
+                    error={formik.touched.resultCall && formik.errors.resultCall ? formik.errors.resultCall : undefined}
+                    required={true}
+                    placeholder="Ej: Otro"
+                    touched={formik.touched.resultCall}
                   />
                   {formik.touched.resultCall && formik.errors.resultCall && (
                     <div className="text-red-500">
@@ -638,10 +647,10 @@ const ModalCreateDI = () => {
                     onInputChanged={(value) =>
                       formik.setFieldValue("reasonVisitNotEffective", value)
                     }
-                    error={
-                      formik.touched.reasonVisitNotEffective &&
-                      !!formik.errors.reasonVisitNotEffective
-                    }
+                    error={formik.touched.reasonVisitNotEffective && formik.errors.reasonVisitNotEffective ? formik.errors.reasonVisitNotEffective : undefined}
+                    required={true}
+                    placeholder="Ej: No esta interesado"
+                    touched={formik.touched.reasonVisitNotEffective}
                   />
                   {formik.touched.reasonVisitNotEffective &&
                     formik.errors.reasonVisitNotEffective && (
@@ -666,10 +675,10 @@ const ModalCreateDI = () => {
                 onInputChanged={(value) =>
                   formik.setFieldValue("areaPersonProcess", value)
                 }
-                error={
-                  formik.touched.areaPersonProcess &&
-                  !!formik.errors.areaPersonProcess
-                }
+                error={formik.touched.areaPersonProcess && formik.errors.areaPersonProcess ? formik.errors.areaPersonProcess : undefined}
+                required={true}
+                placeholder="Ej: PYMS"
+                touched={formik.touched.areaPersonProcess}
               />
               {formik.touched.areaPersonProcess &&
                 formik.errors.areaPersonProcess && (

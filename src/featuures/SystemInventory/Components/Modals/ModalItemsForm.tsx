@@ -513,7 +513,10 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   formik.setFieldValue("manager", value)
                 }
                 apiRoute="search-user-by-name"
-                error={formik.touched.manager && !!formik.errors.manager}
+                error={formik.touched.manager && formik.errors.manager ? formik.errors.manager : undefined}
+                touched={formik.touched.manager}
+                required={true}
+                placeholder="Ej: Juan Perez"
               />
             )}
             {/* SISTEMA OPERATIVO */}

@@ -549,9 +549,10 @@ const ModalRadicacion = () => {
                     formik.setFieldValue("idIpsRemite", value)
                   }
                   apiRoute="ips-remite-name"
-                  error={
-                    formik.touched.idIpsRemite && !!formik.errors.idIpsRemite
-                  }
+                  error={formik.errors.idIpsRemite}
+                  touched={formik.touched.idIpsRemite}
+                  placeholder="Ej: IPS San Juan"
+                  required={true}
                 />
                 <AnimatePresence>
                   {formik.touched.idIpsRemite && formik.errors.idIpsRemite ? (
@@ -566,10 +567,10 @@ const ModalRadicacion = () => {
                     formik.setFieldValue("idEspecialidad", value)
                   }
                   apiRoute="especialidades-name"
-                  error={
-                    formik.touched.idEspecialidad &&
-                    !!formik.errors.idEspecialidad
-                  }
+                  error={formik.errors.idEspecialidad}
+                  touched={formik.touched.idEspecialidad}
+                  placeholder="Ej: Endodoncia"
+                  required={true}
                 />
                 {formik.touched.idEspecialidad &&
                 formik.errors.idEspecialidad ? (
@@ -615,10 +616,10 @@ const ModalRadicacion = () => {
                     formik.setFieldValue("idGrupoServicios", value)
                   }
                   apiRoute="grupo-servicios-name"
-                  error={
-                    formik.touched.idGrupoServicios &&
-                    !!formik.errors.idGrupoServicios
-                  }
+                  error={formik.errors.idGrupoServicios}
+                  touched={formik.touched.idGrupoServicios}
+                  placeholder="Ej: Cirugía General"
+                  required={true}
                 />
                 <AnimatePresence>
                   {formik.touched.idGrupoServicios &&
@@ -636,10 +637,10 @@ const ModalRadicacion = () => {
                     formik.setFieldValue("idTipoServicios", value)
                   }
                   apiRoute="servicios-name"
-                  error={
-                    formik.touched.idTipoServicios &&
-                    !!formik.errors.idTipoServicios
-                  }
+                  error={formik.errors.idTipoServicios}
+                  touched={formik.touched.idTipoServicios}
+                  placeholder="Ej: PGP"
+                  required={true}
                 />
                 <AnimatePresence>
                   {formik.touched.idTipoServicios &&
@@ -655,10 +656,10 @@ const ModalRadicacion = () => {
                     formik.setFieldValue("idLugarRadicacion", value)
                   }
                   apiRoute="lugares-radicacion-name"
-                  error={
-                    formik.touched.idLugarRadicacion &&
-                    !!formik.errors.idLugarRadicacion
-                  }
+                  error={formik.errors.idLugarRadicacion}
+                  touched={formik.touched.idLugarRadicacion}
+                  placeholder="Ej: Calle 15"
+                  required={true}
                 />
                 <AnimatePresence>
                   {formik.touched.idLugarRadicacion &&
