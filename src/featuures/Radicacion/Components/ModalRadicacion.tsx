@@ -9,6 +9,7 @@ import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
+import medicList from "@/data-dynamic/ListMedic.json";
 
 //*Icons
 import id from "/assets/id.svg";
@@ -19,6 +20,7 @@ import telephone from "/assets/telephone.svg";
 import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
 import { submitRadicado } from "../Services/SubmitRadicado";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
+import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -743,34 +745,15 @@ const ModalRadicacion = () => {
                       ) : null}
                     </div>
                     <div>
-                      <label htmlFor="">
-                        <span className=" block text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                          Profesional Remite
-                        </span>
-                        <input
-                          type="text"
-                          id=""
-                          name="nombreProfesional"
-                          placeholder="Digite nombre"
-                          onChange={formik.handleChange}
-                          value={formik.values.nombreProfesional}
-                          onBlur={formik.handleBlur}
-                          className={` ${
-                            formik.touched.nombreProfesional &&
-                            formik.errors.nombreProfesional
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          } w-full px-3 py-2 border-2 rounded dark:text-white dark:bg-gray-800 text-stone-700 dark:border-gray-600`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.nombreProfesional &&
-                          formik.errors.nombreProfesional ? (
-                            <ErrorMessage>
-                              {formik.errors.nombreProfesional}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </label>
+                      <InputAutoCompleteJson
+                        label="Profesional remite"
+                        data={medicList.nombres}
+                        onSelect={(value) => formik.setFieldValue("nombreProfesional", value)}
+                        error={formik.touched.nombreProfesional ? formik.errors.nombreProfesional : undefined}
+                        touched={formik.touched.nombreProfesional}
+                        required={true}
+                        placeholder="Digite nombre del profesional..."
+                      />
                     </div>
                     <div>
                       <label htmlFor="">
