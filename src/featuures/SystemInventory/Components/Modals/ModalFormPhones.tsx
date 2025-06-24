@@ -870,10 +870,10 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
                         formik.setFieldValue("responsable", value)
                       }
                       apiRoute="search-user-by-name"
-                      error={
-                        formik.touched.responsable &&
-                        !!formik.errors.responsable
-                      }
+                      error={formik.errors.responsable && formik.touched.responsable ? formik.errors.responsable : undefined}
+                      touched={formik.touched.responsable}
+                      required={true}
+                      placeholder="Ej: Juan Perez"
                     />
 
                     <div className="flex flex-col justify-center w-full">

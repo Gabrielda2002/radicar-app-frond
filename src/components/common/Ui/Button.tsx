@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "closed" | "secondary" | "danger" | "success" | "ghost" | "outline";
+  variant?: "primary" | "closed" | "secondary" | "danger" | "success" | "ghost" | "outline" | "any";
   size?: "xs"| "sm" | "md" | "lg" | "xl";
   fullWidth?: boolean;
   isLoading?: boolean;
@@ -37,6 +37,7 @@ const Button: React.FC<ButtonProps> = ({
       "text-blue-400 hover:text-red-500 hover:border-red-500 active:text-red-600 dark:text-gray-200 dark:hover:text-gray-200 border-2 border-gray-400 bg-transparent focus:ring-blue-500",
     outline:
       "text-gray-600 bg-transparent hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 border-2 border-gray-400 focus:ring-gray-500",
+    any: ""
   };
 
   const sizeClasses = {

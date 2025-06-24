@@ -722,10 +722,10 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                           formik.setFieldValue("responsable", value)
                         }
                         apiRoute="search-user-by-name"
-                        error={
-                          formik.touched.responsable &&
-                          !!formik.errors.responsable
-                        }
+                        error={formik.errors.responsable && formik.touched.responsable ? formik.errors.responsable : undefined}
+                        touched={formik.touched.responsable}
+                        required={true}
+                        placeholder="Ej: Juan Perez"
                       />
                     </div>
 
