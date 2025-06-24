@@ -10,7 +10,7 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "
   required?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
-  variant?: "default" | "dark" | "error";
+  variant?: "default" | "dark" | "error" | "checkbox";
   size?: "sm" | "md" | "lg";
   helpText?: string;
 }
@@ -27,6 +27,7 @@ const Input: React.FC<InputProps> = ({
   size = "md",
   helpText,
   disabled,
+  type,
   ...props 
 }) => {
   const getSizeClasses = () => {
@@ -48,19 +49,53 @@ const Input: React.FC<InputProps> = ({
     switch (variant) {
       case "dark":
         return "border-gray-600 dark:border-gray-600 bg-gray-700 dark:bg-gray-700 text-white dark:text-white";
+      case "checkbox":
+        return "border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100";
       default:
         return "border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white";
     }
   };
 
+  // Para checkbox, no usar inputClasses normales ni iconos dentro del input
   const inputClasses = `
     w-full border-2 rounded focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
     ${getSizeClasses()}
     ${getVariantClasses()}
     ${disabled ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-75" : ""}
-    ${icon ? (iconPosition === "left" ? "pl-10" : "pr-10") : ""}
+    ${icon && type !== "checkbox" ? (iconPosition === "left" ? "pl-10" : "pr-10") : ""}
     ${className}
   `.trim();
+
+  if (type === "checkbox" || variant === "checkbox") {
+    return (
+      <div className="mb-4 flex items-center">
+        <input
+          type="checkbox"
+          className={`mr-2 ${getVariantClasses()} ${className}`}
+          disabled={disabled}
+          {...props}
+        />
+        {icon && (
+          <span className="mr-2 flex items-center text-gray-500 dark:text-gray-300">
+            {icon}
+          </span>
+        )}
+        {label && (
+          <label className="text-base font-bold text-gray-700 dark:text-gray-200 select-none">
+            {label}
+            {required && (
+              <span className="ml-2 text-red-600 after:content-['*']"></span>
+            )}
+          </label>
+        )}
+        <AnimatePresence>
+          {error && touched && (
+            <ErrorMessage className="ml-2">{error}</ErrorMessage>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-4">
@@ -85,6 +120,7 @@ const Input: React.FC<InputProps> = ({
         )}
         
         <input
+          type={type}
           className={inputClasses}
           disabled={disabled}
           {...props}
