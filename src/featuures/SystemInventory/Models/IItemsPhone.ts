@@ -32,6 +32,7 @@ export interface IItemsPhone {
     responsableName:      string;
     responsableLastName: string;
     nameSaved?:           string;
+    inventoryNumber:      string;
 }
 
 interface SeguimientoRelation {
