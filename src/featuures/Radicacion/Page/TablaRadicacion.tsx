@@ -1,14 +1,16 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense, useCallback } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals.tsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Cup, IRadicados } from "@/models/IRadicados.ts";
 import { useFetchDocumentoRadicado } from "../Hooks/UseFetchDocumentRadicado.ts";
 
 //? Using lazy load functions for modals
 const ModalGestionAuxiliar = lazy(
-  () => import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar.tsx")
+  () =>
+    import(
+      "@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar.tsx"
+    )
 );
 const ModalMostrarDatos = lazy(
   () => import("@/components/common/Modals/ShowData/ModalDatosRadicacion.tsx")
@@ -24,6 +26,8 @@ import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
 import { FormatDate } from "@/utils/FormatDate.ts";
 import { useOpenSupport } from "@/hooks/useOpenSupport.ts";
+import Button from "@/components/common/Ui/Button.tsx";
+import Input from "@/components/common/Ui/Input.tsx";
 
 // const ITEMS_PER_PAGE = 8;
 
@@ -49,13 +53,10 @@ const TablaRadicacion = () => {
     setIsOpen(true);
   }, []);
 
-  const handleShowGestionAuxiliar = useCallback(
-    (radicacion: Cup) => {
-      setSelectedRadicacion(radicacion);
-      setIsOpenGestionAuxiliar(true);
-    },
-    []
-  );
+  const handleShowGestionAuxiliar = useCallback((radicacion: Cup) => {
+    setSelectedRadicacion(radicacion);
+    setIsOpenGestionAuxiliar(true);
+  }, []);
 
   //PRUEBA
   // Estado para mostrar el alerta de cookies
@@ -75,8 +76,8 @@ const TablaRadicacion = () => {
 
   if (loading) return <LoadingSpinner duration={100000} />;
 
-   const [isExpanded, setIsExpanded] = useState(false);
-   const toggleExpand = () => setIsExpanded(!isExpanded);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const toggleExpand = () => setIsExpanded(!isExpanded);
   return (
     <>
       <ModalSection
@@ -90,37 +91,31 @@ const TablaRadicacion = () => {
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}
         <section className="flex items-end justify-between w-full mb-4">
-          <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar radicado :
-            </label>
-            <input
+          <div className="flex flex-col w-80">
+            <Input
+              label="Buscar por Documento Paciente:"
               type="text"
               value={documento}
-              onChange={(e) => setDocumento(e.target.value)} // Escuchar eventos de teclado
+              onChange={(e) => setDocumento(e.target.value)}
               placeholder="Documento Paciente"
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              error={errorRadicados ? errorRadicados : undefined}
+              touched={!!errorRadicados}
+              required={true}
+              helpText="Ingrese el número de documento del paciente para buscar su radicación."
             />
-            <button
-              className="w-full text-white bg-teal-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:translate-y-1 hover:scale-100 hover:bg-emerald-700 duration-300 mt-3"
+            <Button
+              variant="secondary"
+              type="button"
               onClick={() => getData(documento)}
             >
               Buscar
-            </button>
-            <AnimatePresence>
-              {errorRadicados && (
-                <ErrorMessage className="text-center">
-                  {errorRadicados}
-                </ErrorMessage>
-              )}
-            </AnimatePresence>
+            </Button>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalRadicacion />
-            </Suspense>
-          </div>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ModalRadicacion />
+          </Suspense>
         </section>
 
         {radicados && radicados?.length > 0 && (
@@ -381,7 +376,9 @@ const TablaRadicacion = () => {
                           className="p-2 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-400"
                         >
                           <div className="grid grid-cols-[35%_65%] gap-2 text-sm p-1">
-                            <div className="text-gray-500 dark:text-gray-400">CUPS</div>
+                            <div className="text-gray-500 dark:text-gray-400">
+                              CUPS
+                            </div>
                             <div className="border-b dark:border-gray-700">
                               {cup.code}
                             </div>
@@ -400,7 +397,9 @@ const TablaRadicacion = () => {
                               {cup.description}
                             </div>
 
-                            <div className="mt-2 text-gray-500 dark:text-gray-400">Auditoria</div>
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">
+                              Auditoria
+                            </div>
                             <div
                               className="mt-2 border-b dark:border-gray-700"
                               style={{
@@ -413,7 +412,9 @@ const TablaRadicacion = () => {
                               {cup.status}
                             </div>
 
-                            <div className="mt-2 text-gray-500 dark:text-gray-400">Gestión </div>
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">
+                              Gestión{" "}
+                            </div>
 
                             <div
                               className="mt-2 text-gray-500 dark:text-gray-400"
@@ -431,7 +432,9 @@ const TablaRadicacion = () => {
                                 : "N/A"}
                             </div>
 
-                            <div className="mt-2 text-gray-500 dark:text-gray-400">Auxiliar</div>
+                            <div className="mt-2 text-gray-500 dark:text-gray-400">
+                              Auxiliar
+                            </div>
                             <button
                               onClick={() => handleShowGestionAuxiliar(cup)}
                             >
@@ -441,41 +444,40 @@ const TablaRadicacion = () => {
                                 alt=""
                               />
                             </button>
-
                           </div>
                         </div>
                       ))}
                     </div>
-                          <div className="mt-2 text-gray-500 dark:text-gray-400">Soporte</div>
-                          <button
-                            onClick={() =>
-                              radicacion.suportName &&
-                              handleOpen(radicacion.suportName)
-                            }
-                          >
-                            <img
-                              className="w-8 h-8 dark:invert"
-                              src={soporte}
-                              alt=""
-                            />
-                          </button>
-                          
-                          <div className="mt-2 text-gray-500 dark:text-gray-400">Mostrar</div>
-                          <button
-                            onClick={() => handleShowData(radicacion)}
-                          >
-                            <img
-                              className="w-8 h-8 dark:invert"
-                              src={mostrar}
-                              alt=""
-                            />
-                          </button>
+                    <div className="mt-2 text-gray-500 dark:text-gray-400">
+                      Soporte
+                    </div>
+                    <button
+                      onClick={() =>
+                        radicacion.suportName &&
+                        handleOpen(radicacion.suportName)
+                      }
+                    >
+                      <img
+                        className="w-8 h-8 dark:invert"
+                        src={soporte}
+                        alt=""
+                      />
+                    </button>
+
+                    <div className="mt-2 text-gray-500 dark:text-gray-400">
+                      Mostrar
+                    </div>
+                    <button onClick={() => handleShowData(radicacion)}>
+                      <img
+                        className="w-8 h-8 dark:invert"
+                        src={mostrar}
+                        alt=""
+                      />
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* modal mostrar datos */}
 
             <Suspense fallback={<LoadingSpinner />}>
               <ModalMostrarDatos
@@ -491,14 +493,6 @@ const TablaRadicacion = () => {
                 cirugias={null}
               />
             </Suspense>
-
-            {/* Controles de la Paginacion */}
-            {/* <div>‎ </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={paginate}
-            /> */}
           </>
         )}
       </section>
