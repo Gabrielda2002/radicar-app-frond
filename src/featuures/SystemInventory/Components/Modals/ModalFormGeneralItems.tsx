@@ -1,6 +1,4 @@
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import useAnimation from "@/hooks/useAnimations";
-import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import { AnimatePresence } from "framer-motion";
@@ -18,6 +16,10 @@ import { toast } from "react-toastify";
 import { useFetchAreaDependency } from "../../Hooks/useFetchAreaDependency";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
 import { FormatDate } from "@/utils/FormatDate";
+import FormModal from "@/components/common/Ui/FormModal";
+import Button from "@/components/common/Ui/Button";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
@@ -34,14 +36,6 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   refreshItems,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  useBlockScroll(isOpen);
-
-  const { showAnimation, closing } = useAnimation(
-    isOpen,
-    () => setIsOpen(false),
-    300
-  );
 
   // clasificacion
   const { classification } = useFetchClassification();
@@ -93,6 +87,12 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           ),
       otherwise: (schema) => schema.optional(),
     }),
+    inventoryNumber: Yup.string()
+      .required("El número de inventario es requerido")
+      .max(
+        150,
+        "El número de inventario debe tener como máximo 150 caracteres"
+      ),
   });
 
   const formik = useFormik({
@@ -116,6 +116,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
       purchaseValue: "",
       warranty: false,
       warrantyPeriod: "",
+      inventoryNumber: "",
     },
     validationSchema: schemaValidation,
     onSubmit: async (values) => {
@@ -142,6 +143,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         formData.append("assetTypeId", values.assetType);
         formData.append("responsableId", values.responsable);
         formData.append("dependencyAreaId", values.areaDependency);
+        formData.append("inventoryNumber", values.inventoryNumber);
 
         const response =
           items === null
@@ -196,6 +198,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         purchaseValue: items.purchaseValue,
         warranty: !!items.warranty,
         warrantyPeriod: items.warrantyPeriod || "",
+        inventoryNumber: items.inventoryNumber || "",
       });
     }
   }, [items, isUpdate]);
@@ -203,10 +206,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   return (
     <>
       <div className="relative group">
-        <button
-          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-          onClick={() => setIsOpen(true)}
-        >
+        <Button type="button" variant="outline" onClick={() => setIsOpen(true)}>
           {isUpdate ? (
             <PencilSquareIcon
               className="w-7 h-7"
@@ -218,714 +218,401 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               <PlusCircleIcon className="w-5 h-5 ml-2" />
             </div>
           )}
-        </button>
+        </Button>
         <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           {isUpdate ? "Actualizar Item" : "Crear Item"}
           <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
         </div>
       </div>
-      {isOpen && (
-        <section
-          className={`fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-            showAnimation && !closing ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <section className="">
-            <div
-              className={`w-[420px] md:w-[1000px] overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-600 ${
-                showAnimation && !closing ? "translate-y-0" : "translate-y-10"
-              }`}
-            >
-              {/* container-header */}
-              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
-                <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
-                  {isUpdate ? "Actualizar Item" : "Crear Item"}
-                </h1>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
-                >
-                  &times;
-                </button>
-              </div>
 
-              {/* container-body */}
-              <div className="max-h-[74Vh] md:max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">
-                <form onSubmit={formik.handleSubmit}>
-                  <div className="grid grid-cols-3 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
-                    <div className="flex flex-col justify-center w-full">
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="name"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Nombre Del Item
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.name && formik.errors.name
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.name && formik.errors.name ? (
-                          <ErrorMessage>{formik.errors.name}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+      {/* container-body */}
+      <FormModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Crear Item General"
+        onSubmit={formik.handleSubmit}
+        isSubmitting={loading}
+        isValid={formik.isValid}
+        size="lg"
+        submitText="Crear"
+      >
+        <div className="grid grid-cols-3 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-col justify-center w-full">
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              label="Nombre Del Item"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.name}
+              error={formik.errors.name}
+              required
+            />
+          </div>
 
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="classification"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Clasificación
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="classification"
-                        value={formik.values.classification}
-                        onChange={(e) => {
-                          formik.setFieldValue(
-                            "classification",
-                            e.target.value
-                          );
-                          fetchData(e.target.value);
-                        }}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.classification &&
-                          formik.errors.classification
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {classification &&
-                          classification.length > 0 &&
-                          classification.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.classification &&
-                        formik.errors.classification ? (
-                          <ErrorMessage>
-                            {formik.errors.classification}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          <div>
+            <Select
+              options={
+                classification
+                  ? classification.map((op) => ({
+                      value: op.id,
+                      label: op.name,
+                    }))
+                  : []
+              }
+              label="Clasificación"
+              name="classification"
+              id="classification"
+              value={formik.values.classification}
+              onChange={(e) => {
+                formik.setFieldValue("classification", e.target.value);
+                fetchData(e.target.value);
+              }}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.classification}
+              error={formik.errors.classification}
+              required
+            />
+          </div>
 
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="asset"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Activo
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="asset"
-                        value={formik.values.asset}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.asset && formik.errors.asset
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {asset &&
-                          asset.length > 0 &&
-                          asset.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.asset && formik.errors.asset ? (
-                          <ErrorMessage>{formik.errors.asset}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          <div>
+            <Select
+              options={
+                asset
+                  ? asset.map((op) => ({
+                      value: op.id,
+                      label: op.name,
+                    }))
+                  : []
+              }
+              label="Activo"
+              name="asset"
+              id="asset"
+              value={formik.values.asset}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.asset}
+              error={formik.errors.asset}
+              required
+            />
+          </div>
 
-                    {/* brand */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="brand"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Marca
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="brand"
-                        name="brand"
-                        value={formik.values.brand}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.brand && formik.errors.brand
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.brand && formik.errors.brand ? (
-                          <ErrorMessage>{formik.errors.brand}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* brand */}
+          <div>
+            <Input
+              type="text"
+              id="brand"
+              name="brand"
+              label="Marca"
+              value={formik.values.brand}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.brand}
+              error={formik.errors.brand}
+              required
+            />
+          </div>
 
-                    {/* model */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="model"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Modelo
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="model"
-                        name="model"
-                        value={formik.values.model}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.model && formik.errors.model
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.model && formik.errors.model ? (
-                          <ErrorMessage>{formik.errors.model}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* model */}
+          <div>
+            <Input
+              type="text"
+              id="model"
+              name="model"
+              label="Modelo"
+              value={formik.values.model}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.model}
+              error={formik.errors.model}
+              required
+            />
+          </div>
 
-                    {/* material */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="material"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Material
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="material"
-                        value={formik.values.material}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.material && formik.errors.material
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {materials &&
-                          materials.length > 0 &&
-                          materials.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.material && formik.errors.material ? (
-                          <ErrorMessage>{formik.errors.material}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* material */}
+          <div>
+            <Select
+              options={
+                materials
+                  ? materials.map((op) => ({
+                      value: op.id,
+                      label: op.name,
+                    }))
+                  : []
+              }
+              label="Material"
+              name="material"
+              id="material"
+              value={formik.values.material}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.material}
+              error={formik.errors.material}
+              required
+            />
+          </div>
 
-                    {/* serialNumber */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="serialNumber"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Número de serie
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="serialNumber"
-                        name="serialNumber"
-                        value={formik.values.serialNumber}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.serialNumber &&
-                          formik.errors.serialNumber
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.serialNumber &&
-                        formik.errors.serialNumber ? (
-                          <ErrorMessage>
-                            {formik.errors.serialNumber}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* serialNumber */}
+          <div>
+            <Input
+              type="text"
+              id="serialNumber"
+              name="serialNumber"
+              label="Número de serie"
+              value={formik.values.serialNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.serialNumber}
+              error={formik.errors.serialNumber}
+              required
+            />
+          </div>
 
-                    {/* status */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="status"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Estado
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="status"
-                        value={formik.values.status}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.status && formik.errors.status
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {statusIvGeneral &&
-                          statusIvGeneral.length > 0 &&
-                          statusIvGeneral.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.status && formik.errors.status ? (
-                          <ErrorMessage>{formik.errors.status}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* status */}
+          <div>
+            <Select
+              options={
+                statusIvGeneral.map((op) => ({
+                  value: op.id,
+                  label: op.name,
+                })) || []
+              }
+              label="Estado"
+              name="status"
+              id="status"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.status}
+              error={formik.errors.status}
+              required
+            />
+          </div>
 
-                    {/* areaType */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="areaType"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Tipo de área
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="areaType"
-                        value={formik.values.areaType}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.areaType && formik.errors.areaType
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {typeArea &&
-                          typeArea.length > 0 &&
-                          typeArea.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.areaType && formik.errors.areaType ? (
-                          <ErrorMessage>{formik.errors.areaType}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* areaType */}
+          <div>
+            <Select
+              options={
+                typeArea.map((op) => ({
+                  value: op.id,
+                  label: op.name,
+                })) || []
+              }
+              label="Tipo de área"
+              name="areaType"
+              id="areaType"
+              value={formik.values.areaType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.areaType}
+              error={formik.errors.areaType}
+              required
+            />
+          </div>
 
-                    {/* areaDependency */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="areaDependency"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Dependencia
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="areaDependency"
-                        value={formik.values.areaDependency}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.areaDependency &&
-                          formik.errors.areaDependency
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {areaDependency &&
-                          areaDependency.length > 0 &&
-                          areaDependency.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.areaDependency &&
-                        formik.errors.areaDependency ? (
-                          <ErrorMessage>
-                            {formik.errors.areaDependency}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* areaDependency */}
+          <div>
+            <Select
+              options={
+                areaDependency
+                  ? areaDependency.map((op) => ({
+                      value: op.id,
+                      label: op.name,
+                    }))
+                  : []
+              }
+              label="Dependencia"
+              name="areaDependency"
+              id="areaDependency"
+              value={formik.values.areaDependency}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.areaDependency}
+              touched={formik.touched.areaDependency}
+              required
+            />
+          </div>
 
-                    {/* location */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="location"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Ubicación
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="location"
-                        name="location"
-                        value={formik.values.location}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.location && formik.errors.location
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.location && formik.errors.location ? (
-                          <ErrorMessage>{formik.errors.location}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* location */}
+          <div>
+            <Input
+              type="text"
+              id="location"
+              name="location"
+              label="Ubicación"
+              value={formik.values.location}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.location}
+              error={formik.errors.location}
+              required
+            />
+          </div>
 
-                    {/* assetType */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="assetType"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Tipo de activo
-                        </label>
-                      </div>
-                      <select
-                        name=""
-                        id="assetType"
-                        value={formik.values.assetType}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.assetType && formik.errors.assetType
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">SELECT</option>
-                        {assetType &&
-                          assetType.length > 0 &&
-                          assetType.map((op) => (
-                            <option key={op.id} value={op.id}>
-                              {op.name}
-                            </option>
-                          ))}
-                      </select>
-                      <AnimatePresence>
-                        {formik.touched.assetType && formik.errors.assetType ? (
-                          <ErrorMessage>{formik.errors.assetType}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* assetType */}
+          <div>
+            <Select
+              options={
+                assetType
+                  ? assetType.map((op) => ({
+                      value: op.id,
+                      label: op.name,
+                    }))
+                  : []
+              }
+              label="Tipo de activo"
+              name="assetType"
+              id="assetType"
+              value={formik.values.assetType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.assetType}
+              error={formik.errors.assetType}
+              required
+            />
+          </div>
 
-                    {/* quantity */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="quantity"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Cantidad
-                        </label>
-                      </div>
-                      <input
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        value={formik.values.quantity}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.quantity && formik.errors.quantity
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.quantity && formik.errors.quantity ? (
-                          <ErrorMessage>{formik.errors.quantity}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* quantity */}
+          <div>
+            <Input
+              type="number"
+              id="quantity"
+              name="quantity"
+              label="Cantidad"
+              value={formik.values.quantity}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.quantity}
+              error={formik.errors.quantity}
+              required
+            />
+          </div>
 
-                    {/* responsable */}
-                    <div>
-                      <InputAutocompletado
-                        label="Responsable"
-                        onInputChanged={(value) =>
-                          formik.setFieldValue("responsable", value)
-                        }
-                        apiRoute="search-user-by-name"
-                        error={formik.errors.responsable && formik.touched.responsable ? formik.errors.responsable : undefined}
-                        touched={formik.touched.responsable}
-                        required={true}
-                        placeholder="Ej: Juan Perez"
-                      />
-                    </div>
+          {/* responsable */}
+          <div>
+            <InputAutocompletado
+              label="Responsable"
+              onInputChanged={(value) =>
+                formik.setFieldValue("responsable", value)
+              }
+              apiRoute="search-user-by-name"
+              error={
+                formik.errors.responsable && formik.touched.responsable
+                  ? formik.errors.responsable
+                  : undefined
+              }
+              touched={formik.touched.responsable}
+              required={true}
+              placeholder="Ej: Juan Perez"
+            />
+          </div>
 
-                    {/* othersDetails */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="othersDetails"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Detalles adicionales
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        id="othersDetails"
-                        name="othersDetails"
-                        value={formik.values.othersDetails}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.othersDetails &&
-                          formik.errors.othersDetails
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.othersDetails &&
-                        formik.errors.othersDetails ? (
-                          <ErrorMessage>
-                            {formik.errors.othersDetails}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* othersDetails */}
+          <div>
+            <Input
+              type="text"
+              id="othersDetails"
+              name="othersDetails"
+              label="Detalles adicionales"
+              value={formik.values.othersDetails}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.othersDetails}
+              error={formik.errors.othersDetails}
+              required
+            />
+          </div>
 
-                    {/* acquisitionDate */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="acquisitionDate"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Fecha de adquisición
-                        </label>
-                      </div>
-                      <input
-                        type="date"
-                        id="acquisitionDate"
-                        name="acquisitionDate"
-                        value={formik.values.acquisitionDate}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.acquisitionDate &&
-                          formik.errors.acquisitionDate
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.acquisitionDate &&
-                        formik.errors.acquisitionDate ? (
-                          <ErrorMessage>
-                            {formik.errors.acquisitionDate}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          <div>
+            <Input
+              type="date"
+              id="acquisitionDate"
+              name="acquisitionDate"
+              label="Fecha de adquisición"
+              value={formik.values.acquisitionDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.acquisitionDate}
+              error={formik.errors.acquisitionDate}
+              required
+            />
+          </div>
 
-                    {/* purchaseValue */}
-                    <div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="purchaseValue"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Valor de compra
-                        </label>
-                      </div>
-                      <input
-                        type="number"
-                        id="purchaseValue"
-                        name="purchaseValue"
-                        value={formik.values.purchaseValue}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.purchaseValue &&
-                          formik.errors.purchaseValue
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.purchaseValue &&
-                        formik.errors.purchaseValue ? (
-                          <ErrorMessage>
-                            {formik.errors.purchaseValue}
-                          </ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* purchaseValue */}
+          <div>
+            <Input
+              type="number"
+              id="purchaseValue"
+              name="purchaseValue"
+              label="Valor de compra"
+              value={formik.values.purchaseValue}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.purchaseValue}
+              error={formik.errors.purchaseValue}
+              required
+            />
+          </div>
 
-                    {/* warranty */}
-                    <div>
-                      <div className="flex items-center ">
-                        <input
-                          type="checkbox"
-                          id="warranty"
-                          name="warranty"
-                          checked={formik.values.warranty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={`mr-2 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.warranty && formik.errors.warranty
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <label
-                          htmlFor="warranty"
-                          className="block font-semibold text-md md:text-lg"
-                        >
-                          Garantía
-                        </label>
-                      </div>
-                      <AnimatePresence>
-                        {formik.touched.warranty && formik.errors.warranty ? (
-                          <ErrorMessage>{formik.errors.warranty}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
+          {/* warranty */}
+          <div>
+            <Input
+              type="checkbox"
+              id="warranty"
+              name="warranty"
+              label="Garantía"
+              checked={formik.values.warranty}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.warranty}
+              error={formik.errors.warranty}
+              variant="checkbox"
+            />
+          </div>
 
-                    {/* warrantyPeriod */}
-                    {formik.values.warranty && (
-                      <div>
-                        <div className="flex items-center">
-                          <label
-                            htmlFor="warrantyPeriod"
-                            className="block font-semibold text-md md:text-lg"
-                          >
-                            Periodo de garantía
-                          </label>
-                        </div>
-                        <input
-                          type="text"
-                          id="warrantyPeriod"
-                          name="warrantyPeriod"
-                          value={formik.values.warrantyPeriod}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                            formik.touched.warrantyPeriod &&
-                            formik.errors.warrantyPeriod
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.warrantyPeriod &&
-                          formik.errors.warrantyPeriod ? (
-                            <ErrorMessage>
-                              {formik.errors.warrantyPeriod}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                  </div>
-
-                  {error && (
-                    <AnimatePresence>
-                      <ErrorMessage>{error}</ErrorMessage>
-                    </AnimatePresence>
-                  )}
-
-                  <div className="flex items-center justify-end w-full gap-2 p-2 text-sm font-semibold bg-gray-200 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
-                    <button
-                      className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                      onClick={() => setIsOpen(false)}
-                      type="button"
-                    >
-                      Cerrar
-                    </button>
-                    <button
-                      className="w-24 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
-                      type="submit"
-                      disabled={loading || !formik.isValid}
-                    >
-                      {isUpdate ? "Actualizar" : "Crear"}
-                    </button>
-                  </div>
-                </form>
-              </div>
+          {/* warrantyPeriod */}
+          {formik.values.warranty && (
+            <div>
+              <Input
+                type="text"
+                id="warrantyPeriod"
+                name="warrantyPeriod"
+                label="Periodo de garantía"
+                value={formik.values.warrantyPeriod}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                touched={formik.touched.warrantyPeriod}
+                error={formik.errors.warrantyPeriod}
+                required
+              />
             </div>
-          </section>
-        </section>
-      )}
+          )}
+
+          {/* inventoryNumber */}
+          <div>
+            <Input
+              type="text"
+              id="inventoryNumber"
+              name="inventoryNumber"
+              label="Número de inventario"
+              value={formik.values.inventoryNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.inventoryNumber}
+              error={formik.errors.inventoryNumber}
+              required
+            />
+          </div>
+        </div>
+
+        {error && (
+          <AnimatePresence>
+            <ErrorMessage>{error}</ErrorMessage>
+          </AnimatePresence>
+        )}
+      </FormModal>
     </>
   );
 };
