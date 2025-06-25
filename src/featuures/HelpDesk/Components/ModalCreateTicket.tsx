@@ -18,6 +18,7 @@ interface TitlesHDOptions{
   Hardware: string[];
   Redes: string[];
   Administrativo: string[];
+  Infraestructura: string[];
   "Otros Soportes": string[];
   [key: string]: string[];
 }
@@ -136,6 +137,7 @@ const HelpDesk = () => {
   };
 
   if (loading || validatingTicket) return <LoadingSpinner />;
+  console.log(formik.errors);
   return (
     <>
       <button

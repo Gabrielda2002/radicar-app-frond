@@ -1,56 +1,46 @@
 {
-        "Software" : [
-            "Plenus",
-            "PLENUS",
-            "PANA",
-            "THARSIS",
-            "PORTAL SAP",
-            "PORTAL SICU",
-            "PORTAL SSAS",
-            "TRANSACCIONES EN LINEA",
-            "SHAREPOINT COMPENSAR",
-            "SHAREPOINT NORDVITAL",
-            "SIGIRES"
-        ],
-        "Hardware": [
-            "COMPUTADOR",
-            "IMPRESORA",
-            "TECLADO",
-            "MOUSE",
-            "ESCANER",
-            "TELEVISOR",
-            "CELULAR"
-        ],
-        "Redes": [
-            "INTERNET",
-            "CABLEADO",
-            "WIFI",
-            "INTRANET",
-            "CORREO ELECTRONICO"
-        ],
-        "Administrativo": [
-            "PARAMETRIZACIÓN DE SERVICIOS",
-            "CREACIÓN DE USUARIOS",
-            "DESBLOQUEAR USUARIOS",
-            "GENERACIÓN DE REPORTES",
-            "SOLICITUD DE COMPRAS",
-            "SOLICITUD DESARROLLO",
-            "CAPACITACIÓN",
-            "CANCELACIÓN DE CITA PANA",
-            "ANULACIÓN DE ORDENAMIENTO",
-            "ACTIVACIÓN USUARIO PANA"
-        ],
-        "Otros Soportes" : [
-            "DIGITURNO",
-            "PORTAL WEB NUEVA EPS",
-            "PORTAL WEB COOSALUD",
-            "RIPS SIVIGILA",
-            "RIPS BAI",
-            "BIOMETRICO"
-        ],
-            "Infrastructura" : [
-                "CAMARAS DE SEGURIDAD",
-                "PUESTO DE TRABAJO"
-        ]
-        
+  "Software": [
+    "Plenus",
+    "PLENUS",
+    "PANA",
+    "THARSIS",
+    "PORTAL SAP",
+    "PORTAL SICU",
+    "PORTAL SSAS",
+    "TRANSACCIONES EN LINEA",
+    "SHAREPOINT COMPENSAR",
+    "SHAREPOINT NORDVITAL",
+    "SIGIRES"
+  ],
+  "Hardware": [
+    "COMPUTADOR",
+    "IMPRESORA",
+    "TECLADO",
+    "MOUSE",
+    "ESCANER",
+    "TELEVISOR",
+    "CELULAR"
+  ],
+  "Redes": ["INTERNET", "CABLEADO", "WIFI", "INTRANET", "CORREO ELECTRONICO"],
+  "Administrativo": [
+    "PARAMETRIZACIÓN DE SERVICIOS",
+    "CREACIÓN DE USUARIOS",
+    "DESBLOQUEAR USUARIOS",
+    "GENERACIÓN DE REPORTES",
+    "SOLICITUD DE COMPRAS",
+    "SOLICITUD DESARROLLO",
+    "CAPACITACIÓN",
+    "CANCELACIÓN DE CITA PANA",
+    "ANULACIÓN DE ORDENAMIENTO",
+    "ACTIVACIÓN USUARIO PANA"
+  ],
+  "Infraestructura": ["CAMARAS DE SEGURIDAD", "PUESTO DE TRABAJO"],
+  "Otros Soportes": [
+    "DIGITURNO",
+    "PORTAL WEB NUEVA EPS",
+    "PORTAL WEB COOSALUD",
+    "RIPS SIVIGILA",
+    "RIPS BAI",
+    "BIOMETRICO"
+  ]
 }
