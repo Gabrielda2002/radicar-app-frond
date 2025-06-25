@@ -99,6 +99,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
       .max(50, "utilidad debe tener maximo 50 caracteres"),
     responsable: Yup.string().required("responsable es requerido"),
     inventoryNumber: Yup.string().required("numero de inventario es requerido"),
+    sedeId: Yup.string().optional()
   });
 
   const formik = useFormik({
@@ -128,7 +129,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
       controlRemote: false,
       utility: "",
       responsable: "",
-      sedeId: sedeId,
+      sedeId: sedeId ? sedeId.toString() : "",
       inventoryNumber: "",
     },
     validationSchema,
@@ -196,7 +197,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
         controlRemote: !!items.controlRemote,
         utility: items.utility,
         responsable: items.responsableId.toString(),
-        sedeId: sedeId,
+        sedeId: sedeId ? sedeId.toString() : items.sedeId.toString(),
         inventoryNumber: items.inventoryNumber,
       });
     }
@@ -229,7 +230,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
         isValid={formik.isValid}
         size="lg"
         onSubmit={formik.handleSubmit}
-        submitText="Crear"
+        submitText={items ? "Actualizar" : "Crear"}
       >
         <div className="grid grid-cols-3 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col justify-center w-full">
@@ -649,6 +650,25 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
               required
             />
           </div>
+          {sedeId === null && (
+              <div>
+                <InputAutocompletado
+                  label="Sede"
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("sedeId", value)
+                  }
+                  apiRoute="lugares-radicacion-name"
+                  placeholder="Ej: Sede 15"
+                  error={
+                    formik.touched.sedeId && formik.errors.sedeId
+                      ? formik.errors.sedeId
+                      : undefined
+                  }
+                  touched={formik.touched.sedeId}
+                  helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
+                />
+              </div>
+            )}
         </div>
 
         {error && (

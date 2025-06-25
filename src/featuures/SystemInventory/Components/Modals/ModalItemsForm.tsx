@@ -13,8 +13,6 @@ import Input from "@/components/common/Ui/Input";
 //*Icons
 import {
   TagIcon,
-  ComputerDesktopIcon,
-  TvIcon,
   GlobeAltIcon,
   MapPinIcon,
   CalendarIcon,
@@ -31,6 +29,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import FormModal from "@/components/common/Ui/FormModal";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import Select from "@/components/common/Ui/Select";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -88,6 +87,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           200,
           "El número de inventario debe tener como máximo 200 caracteres"
         ),
+      sedeId: Yup.string().optional(),
     };
 
     if (typeItem === "equipos") {
@@ -191,6 +191,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       codigo: "",
       docDelivery: null,
       inventoryNumber: "",
+      sedeId: "",
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
@@ -203,7 +204,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         formData.append("serial", values.serial);
         formData.append("addressIp", values.addressIp);
         formData.append("mac", values.mac);
-        formData.append("sedeId", idSede?.toString() || "");
+        formData.append("sedeId", idSede?.toString() || values.sedeId);
         formData.append("dhcp", values.dhcp.toString());
         formData.append("inventoryNumber", values.inventoryNumber);
 
@@ -333,6 +334,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           (items as IItems).inventoryNumberEquipment ||
           (items as IItemsNetworking).inventoryNumber ||
           "",
+        sedeId: String(items.sedeId) || String(idSede) || "",
       });
     }
   }, [items, idItem, tipoItem]);
@@ -397,79 +399,51 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
 
             {tipoItem === "equipos" && (
               <div>
-                <div className="flex items-center">
-                  <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />
-                  <label
-                    htmlFor="typeEquipment"
-                    className="block font-semibold text-md md:text-lg"
-                  >
-                    Tipo de Equipo
-                  </label>
-                </div>
-                <select
+                <Select
+                  options={["TODO EN 1", "LAPTOP", "PC MESA"].map((option) => ({
+                    value: option,
+                    label: option,
+                  }))}
+                  label="Tipo de Equipo"
                   name="typeEquipment"
                   value={formik.values.typeEquipment}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                    formik.touched.typeEquipment && formik.errors.typeEquipment
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-200 dark:border-gray-600"
-                  }`}
-                >
-                  <option value="">- SELECT -</option>
-                  <option value="TODO EN 1">Todo en 1</option>
-                  <option value="LAPTOP">Portatil</option>
-                  <option value="PC MESA">Escritorio</option>
-                </select>
-                <AnimatePresence>
-                  {formik.touched.typeEquipment &&
-                  formik.errors.typeEquipment ? (
-                    <ErrorMessage>{formik.errors.typeEquipment}</ErrorMessage>
-                  ) : null}
-                </AnimatePresence>
+                  touched={formik.touched.typeEquipment}
+                  error={formik.errors.typeEquipment}
+                  required
+                />
               </div>
             )}
             {/* MARCA */}
             <div>
-              <div className="flex items-center">
-                <TvIcon className="w-8 h-8 mr-2 dark:text-white" />
-                <label
-                  htmlFor="brand"
-                  className="block font-semibold text-md md:text-lg"
-                >
-                  Marca
-                </label>
-              </div>
-              <select
+              <Select
+                options={[
+                  "LENOVO",
+                  "COMPUMAX",
+                  "ASUS",
+                  "ACER",
+                  "HP",
+                  "DELL",
+                  "EZVIZ",
+                  "TPLINK",
+                  "TENDA",
+                  "UNIFI",
+                  "GRANDSTREAM",
+                ].map((option) => ({
+                  value: option,
+                  label: option,
+                }))}
+                label="Marca"
+                id="brand"
                 name="brand"
                 value={formik.values.brand}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                  formik.touched.brand && formik.errors.brand
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-              >
-                <option value="">- SELECT -</option>
-                <option value="LENOVO">Lenovo</option>
-                <option value="COMPUMAX">Compumax</option>
-                <option value="ASUS">Asus</option>
-                <option value="ACER">Acer</option>
-                <option value="HP">HP</option>
-                <option value="DELL">Dell</option>
-                <option value="EZVIZ">EZVIZ</option>
-                <option value="TPLINK">TPLINK</option>
-                <option value="TENDA">TENDA</option>
-                <option value="UNIFI">UNIFI</option>
-                <option value="GRANDSTREAM">GRANDSTREAM</option>
-              </select>
-              <AnimatePresence>
-                {formik.touched.brand && formik.errors.brand ? (
-                  <ErrorMessage>{formik.errors.brand}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
+                touched={formik.touched.brand}
+                error={formik.errors.brand}
+                required
+              />
             </div>
             {/* MODELO */}
             <div>
@@ -508,40 +482,31 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             {/* SISTEMA OPERATIVO */}
             {tipoItem === "equipos" && (
               <div>
-                <div className="flex items-center">
-                  <GlobeAltIcon className="w-8 h-8 mr-2 dark:text-white" />
-                  <label
-                    htmlFor="operationalSystem"
-                    className="block font-semibold text-md md:text-lg"
-                  >
-                    Sistema Operativo
-                  </label>
-                </div>
-                <select
+                <Select
+                  options={[
+                    "WINDOWS 10",
+                    "WINDOWS 11",
+                    "WINDOWS 7",
+                    "LINUX",
+                    "MACOS",
+                  ].map((option) => ({
+                    value: option,
+                    label: option,
+                  }))}
+                  id="operationalSystem"
+                  label="Sistema Operativo"
+                  touched={formik.touched.operationalSystem}
+                  error={
+                    formik.touched.operationalSystem &&
+                    formik.errors.operationalSystem
+                      ? formik.errors.operationalSystem
+                      : undefined
+                  }
                   name="operationalSystem"
                   value={formik.values.operationalSystem}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                    formik.touched.operationalSystem &&
-                    formik.errors.operationalSystem
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-200 dark:border-gray-600"
-                  }`}
-                >
-                  <option value="">- SELECT -</option>
-                  <option value="WINDOWS 10">Windows 10</option>
-                  <option value="WINDOWS 11">Windows 11</option>
-                  <option value="WINDOWS 7">Windows 7</option>
-                </select>
-                <AnimatePresence>
-                  {formik.touched.operationalSystem &&
-                  formik.errors.operationalSystem ? (
-                    <ErrorMessage>
-                      {formik.errors.operationalSystem}
-                    </ErrorMessage>
-                  ) : null}
-                </AnimatePresence>
+                />
               </div>
             )}
             <div>
@@ -649,6 +614,25 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                 icon={<TagIcon className="w-5 h-5" />}
               />
             </div>
+            {idSede === null && (
+              <div>
+                <InputAutocompletado
+                  label="Sede"
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("sedeId", value)
+                  }
+                  apiRoute="lugares-radicacion-name"
+                  placeholder="Ej: Sede 15"
+                  error={
+                    formik.touched.sedeId && formik.errors.sedeId
+                      ? formik.errors.sedeId
+                      : undefined
+                  }
+                  touched={formik.touched.sedeId}
+                  helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
+                />
+              </div>
+            )}
           </div>
           {tipoItem === "dispositivos-red" && (
             <div>

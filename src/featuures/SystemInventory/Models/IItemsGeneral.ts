@@ -16,6 +16,7 @@ export interface IItemsGeneral {
   updatedAt: Date;
   classificationId: number;
   headquarters: string;
+  headquartersId: number;
   responsable: string;
   classification: string;
   asset: string;

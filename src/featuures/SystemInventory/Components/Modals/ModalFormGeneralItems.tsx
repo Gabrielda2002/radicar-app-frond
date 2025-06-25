@@ -93,6 +93,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         150,
         "El número de inventario debe tener como máximo 150 caracteres"
       ),
+      sedeId: Yup.string().optional(),
   });
 
   const formik = useFormik({
@@ -117,6 +118,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
       warranty: false,
       warrantyPeriod: "",
       inventoryNumber: "",
+      sedeId: idSede?.toString() || "",
     },
     validationSchema: schemaValidation,
     onSubmit: async (values) => {
@@ -135,7 +137,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         formData.append("warranty", values.warranty.toString());
         formData.append("warrantyPeriod", values.warrantyPeriod);
         formData.append("classificationId", values.classification);
-        formData.append("headquartersId", idSede?.toString() || "");
+        formData.append("headquartersId", idSede?.toString() || values.sedeId);
         formData.append("statusId", values.status);
         formData.append("assetId", values.asset);
         formData.append("materialId", values.material);
@@ -199,6 +201,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         warranty: !!items.warranty,
         warrantyPeriod: items.warrantyPeriod || "",
         inventoryNumber: items.inventoryNumber || "",
+        sedeId: items.headquartersId?.toString() || "",
       });
     }
   }, [items, isUpdate]);
@@ -234,7 +237,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         isSubmitting={loading}
         isValid={formik.isValid}
         size="lg"
-        submitText="Crear"
+        submitText={isUpdate ? "Actualizar" : "Crear"}
       >
         <div className="grid grid-cols-3 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col justify-center w-full">
@@ -605,6 +608,25 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               required
             />
           </div>
+          {idSede === null && (
+              <div>
+                <InputAutocompletado
+                  label="Sede"
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("sedeId", value)
+                  }
+                  apiRoute="lugares-radicacion-name"
+                  placeholder="Ej: Sede 15"
+                  error={
+                    formik.touched.sedeId && formik.errors.sedeId
+                      ? formik.errors.sedeId
+                      : undefined
+                  }
+                  touched={formik.touched.sedeId}
+                  helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
+                />
+              </div>
+            )}
         </div>
 
         {error && (
