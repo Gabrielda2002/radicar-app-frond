@@ -66,18 +66,13 @@ const Inicio = () => {
         >
           <div className="container mx-auto">
             {/* Contenido */}
-            <div className="p-4 mb-8 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
+            <div className="p-4 mb-3 border-2 rounded-lg shadow-md dark:shadow-indigo-800 bg-gray-50 dark:bg-gray-700 dark:border-color">
               <div>
                 <div>
                   <h1 className="p-2 text-[27px] mr-2 text-center md:text-left font-extrabold border-black rounded-lg md:text-[42px] dark:border-color box-decoration-clone title-font dark:text-gray-200 text-color">
                     Bienvenidos a Nordvital IPS | Sede {headquarterUser}
                   </h1>
                 </div>
-                <p className="p-2 font-light text-gray-700 text-md md:text-lg dark:text-gray-300">
-                  Nuestra misión es brindar servicios de salud de alta calidad,
-                  asegurando el bienestar de nuestros pacientes con tecnología
-                  avanzada y un equipo humano altamente capacitado.
-                </p>
               </div>
             </div>
             {/* Sección de bienvenida */}
