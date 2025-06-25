@@ -196,6 +196,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                         <option value="ENTREGA EQUIPO">Entrega Equipo</option>
                         <option value="RETIRO EQUIPO">Retiro Equipo</option>
                         <option value="DAR DE BAJA">Dar de Baja</option>
+                        <option value="TRASLADO">Traslado</option>
                       </select>
                       <div></div>
                       <AnimatePresence>
