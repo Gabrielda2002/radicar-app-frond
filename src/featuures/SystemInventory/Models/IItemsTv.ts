@@ -1,5 +1,6 @@
 export interface IItemsTv {
     id:               number;
+    sedeId:           number;
     name:             string;
     location:         string;
     brand:            string;

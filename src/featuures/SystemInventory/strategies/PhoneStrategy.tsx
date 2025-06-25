@@ -188,6 +188,10 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           <strong>Observaciones: </strong>
           {item.observation || "Sin observaciones"}
         </li>
+        <li>
+          <strong>Numero Inventario: </strong>
+          {item.inventoryNumber || "Sin numero de inventario"}
+        </li>
       </>
     );
   }

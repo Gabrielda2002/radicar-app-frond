@@ -10,6 +10,7 @@ interface InputAutocompletadoProps {
   touched?: boolean;
   required?: boolean;
   placeholder?: string;
+  helpText?: string;
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
@@ -20,6 +21,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   touched,
   required = false,
   placeholder = "",
+  helpText = "",
 }) => {
   const [inputValue, setInputValue] = useState("");
   const {
@@ -60,6 +62,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
           error={error}
           required={required}
           label={label}
+          helpText={helpText}
         />
 
       {fetchError && (
