@@ -2,13 +2,13 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import { createMonitoringItem } from "@/featuures/SystemInventory/Services/CreateMonitoringItem";
 import { toast } from "react-toastify";
 import FormModal from "@/components/common/Ui/FormModal";
 import { createPortal } from "react-dom";
 import { useTheme } from "@/context/blackWhiteContext";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 interface ModalSeguimientoItemProps {
   id: number;
@@ -139,99 +139,58 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
               className="max-w-2xl dark:bg-gray-800 dark:text-gray-200"
               isSubmitting={submitting}
               isValid={formik.isValid}
+              submitText="Guardar"
             >
               <div className="p-6">
                 <section className="grid grid-cols-2 gap-2">
                   <div className="flex">
-                    <label className="w-full">
-                      <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                        Fecha de Evento
-                      </span>
-                      <input
-                        type="date"
-                        name="dateEvent"
-                        value={formik.values.dateEvent}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                          formik.touched.dateEvent && formik.errors.dateEvent
-                            ? "border-red-500 dark:border-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      />
-                      <AnimatePresence>
-                        {formik.touched.dateEvent && formik.errors.dateEvent ? (
-                          <ErrorMessage>{formik.errors.dateEvent}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </label>
+                    <Input
+                      type="date"
+                      name="dateEvent"
+                      label="Fecha de Evento"
+                      value={formik.values.dateEvent}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      touched={formik.touched.dateEvent}
+                      error={formik.errors.dateEvent}
+                      required
+                    />
                   </div>
                   <div className="flex">
-                    <label className="w-full">
-                      <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                        Tipo de Evento
-                      </span>
-                      <select
-                        id=""
-                        name="typeEvent"
-                        value={formik.values.typeEvent}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={` w-full p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                          formik.touched.typeEvent && formik.errors.typeEvent
-                            ? "border-red-500 dark:borde-red-500"
-                            : "border-gray-200 dark:border-gray-600"
-                        }`}
-                      >
-                        <option value="">- SELECT -</option>
-                        <option value="MANTENIMIENTO PREVENTIVO">
-                          Mantenimiento Preventivo
-                        </option>
-                        <option value="MANTENIMIENTO CORRECTIVO">
-                          Mantenimiento Correctivo
-                        </option>
-                        <option value="CAMBIO DE DISPOSITIVO">
-                          Cambio de Dispositivo
-                        </option>
-                        <option value="ENTREGA EQUIPO">Entrega Equipo</option>
-                        <option value="RETIRO EQUIPO">Retiro Equipo</option>
-                        <option value="DAR DE BAJA">Dar de Baja</option>
-                      </select>
-                      <div></div>
-                      <AnimatePresence>
-                        {formik.touched.typeEvent && formik.errors.typeEvent ? (
-                          <ErrorMessage>{formik.errors.typeEvent}</ErrorMessage>
-                        ) : null}
-                      </AnimatePresence>
-                    </label>
+                    <Select
+                      name="typeEvent"
+                      label="Tipo de Evento"
+                      value={formik.values.typeEvent}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      touched={formik.touched.typeEvent}
+                      error={formik.errors.typeEvent}
+                      required
+                      options={[
+                        { value: "", label: "- SELECT -" },
+                        { value: "MANTENIMIENTO PREVENTIVO", label: "Mantenimiento Preventivo" },
+                        { value: "MANTENIMIENTO CORRECTIVO", label: "Mantenimiento Correctivo" },
+                        { value: "CAMBIO DE DISPOSITIVO", label: "Cambio de Dispositivo" },
+                        { value: "ENTREGA EQUIPO", label: "Entrega Equipo" },
+                        { value: "RETIRO EQUIPO", label: "Retiro Equipo" },
+                        { value: "DAR DE BAJA", label: "Dar de Baja" },
+                        { value: "TRASLADO", label: "Traslado" },
+                      ]}
+                    />
                   </div>
                 </section>
                 <div className="w-full h-full">
-                  <label className="">
-                    <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                      Descripcion del evento
-                    </span>
-                    <input
-                      type="text"
-                      id=""
-                      name="description"
-                      value={formik.values.description}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={`w-full h-full p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                        formik.touched.description && formik.errors.description
-                          ? "border-red-500 dark:borde-red-500"
-                          : "border-gray-200 dark:border-gray-600"
-                      }`}
-                    />
-                    <div></div>
-                    <AnimatePresence>
-                      {formik.touched.description &&
-                      formik.errors.description ? (
-                        <ErrorMessage>{formik.errors.description}</ErrorMessage>
-                      ) : null}
-                    </AnimatePresence>
-                  </label>
+                  <Input
+                    type="text"
+                    name="description"
+                    label="Descripción del evento"
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    touched={formik.touched.description}
+                    error={formik.errors.description}
+                    required
+                  />
                 </div>
               </div>
 
