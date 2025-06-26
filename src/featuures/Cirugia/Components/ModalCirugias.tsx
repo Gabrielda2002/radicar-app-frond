@@ -7,7 +7,6 @@ import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModa
 import { AnimatePresence } from "framer-motion";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { CreateCirugia } from "../Services/CreateCirugia";
-import listMedic from "@/data-dynamic/ListMedic.json";
 import Input from "@/components/common/Ui/Input";
 
 //*Icons
@@ -15,9 +14,9 @@ import programar from "/assets/programar.svg";
 import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
 import { FormatDate } from "@/utils/FormatDate";
 import { Bounce, toast } from "react-toastify";
-import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Button from "@/components/common/Ui/Button";
+import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
 
 interface ModalCirugiasProps {
   data: ICirugias;
@@ -409,22 +408,23 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
 
                           {/* Especialista */}
                           <div className="">
-                            <InputAutoCompleteJson
+                            <InputAutocompletado
                               label="Especialista"
-                              data={listMedic.nombres}
-                              onSelect={(value) => {
-                                formik.setFieldValue("especialista", value);
-                              }}
+                              apiRoute="profesionales/buscar"
                               error={
-                                formik.touched.especialista &&
-                                formik.errors.especialista
+                                formik.touched.especialista
                                   ? formik.errors.especialista
                                   : undefined
                               }
+                              onInputChanged={(value) =>
+                                formik.setFieldValue(".especialista", value)
+                              }
                               touched={formik.touched.especialista}
                               required={true}
-                              placeholder="Ej: Juan Perez"
+                              placeholder="Digite nombre del profesional..."
+                              helpText={`¿No encuentras el profesional?`}
                             />
+                            <ModalProfessional />
                           </div>
 
                           <div className="">
