@@ -8,13 +8,11 @@ import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import medicList from "@/data-dynamic/ListMedic.json";
 import Input from "@/components/common/Ui/Input";
 
 //*Icons
 import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
 import { submitRadicado } from "../Services/SubmitRadicado";
-import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
 import FormModal from "@/components/common/Ui/FormModal";
 import { toast } from "react-toastify";
 import {
@@ -26,6 +24,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import Button from "@/components/common/Ui/Button";
+import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -85,9 +84,7 @@ const ModalRadicacion = () => {
     idLugarRadicacion: Yup.string().required("Campo requerido"),
     idTipoServicios: Yup.string().required("Campo requerido"),
     nombreProfesional: Yup.string()
-      .required("Campo requerido")
-      .min(3, "El nombre debe tener al menos 3 caracteres.")
-      .max(100, "El nombre debe tener máximo 100 caracteres."),
+      .required("Campo requerido"),
     dateOrden: Yup.string().required("Campo requerido"),
     soporte: Yup.mixed().required("Campo requerido"),
   });
@@ -207,7 +204,7 @@ const ModalRadicacion = () => {
     },
   });
 
-  // console.log(formik.values);
+  console.log(formik.errors);
 
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
@@ -580,21 +577,23 @@ const ModalRadicacion = () => {
                 ) : null}
               </div>
               <div>
-                <InputAutoCompleteJson
+                <InputAutocompletado
                   label="Profesional remite"
-                  data={medicList.nombres}
-                  onSelect={(value) =>
-                    formik.setFieldValue("nombreProfesional", value)
-                  }
+                  apiRoute="profesionales/buscar"
                   error={
                     formik.touched.nombreProfesional
                       ? formik.errors.nombreProfesional
                       : undefined
                   }
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("nombreProfesional", value)
+                  }
                   touched={formik.touched.nombreProfesional}
                   required={true}
                   placeholder="Digite nombre del profesional..."
+                  helpText={`¿No encuentras el profesional?`}
                 />
+                <ModalProfessional/>
               </div>
               <div>
                 <Input
