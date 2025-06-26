@@ -89,9 +89,7 @@ const ModalRadicacion = () => {
     idLugarRadicacion: Yup.string().required("Campo requerido"),
     idTipoServicios: Yup.string().required("Campo requerido"),
     nombreProfesional: Yup.string()
-      .required("Campo requerido")
-      .min(3, "El nombre debe tener al menos 3 caracteres.")
-      .max(100, "El nombre debe tener máximo 100 caracteres."),
+      .required("Campo requerido"),
     dateOrden: Yup.string().required("Campo requerido"),
     soporte: Yup.mixed().required("Campo requerido"),
   });
@@ -211,7 +209,7 @@ const ModalRadicacion = () => {
     },
   });
 
-  // console.log(formik.values);
+  console.log(formik.errors);
 
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
