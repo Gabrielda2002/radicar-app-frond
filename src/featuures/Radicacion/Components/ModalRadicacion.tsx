@@ -8,13 +8,11 @@ import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
-import medicList from "@/data-dynamic/ListMedic.json";
 import Input from "@/components/common/Ui/Input";
 
 //*Icons
 import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
 import { submitRadicado } from "../Services/SubmitRadicado";
-import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
 import FormModal from "@/components/common/Ui/FormModal";
 import { toast } from "react-toastify";
 import {
@@ -26,6 +24,8 @@ import {
   Smartphone,
 } from "lucide-react";
 import Button from "@/components/common/Ui/Button";
+import { api } from "@/utils/api-config";
+import ModalDefault from "@/components/common/Ui/ModalDefault";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -35,6 +35,10 @@ const ModalRadicacion = () => {
     /* hook que trae los datos del paciente */
   }
   const { data, error, getData } = useFetchPaciente();
+
+  const [isOpenMedic, setIsOpenMedic] = useState<boolean>(false);
+  const [newMedic, setNewMedic] = useState<string>("");
+  const [addMedicError, setAddMedicError] = useState<string | null>(null);
 
   const { diagnostico, loading, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
@@ -580,21 +584,98 @@ const ModalRadicacion = () => {
                 ) : null}
               </div>
               <div>
-                <InputAutoCompleteJson
+                <InputAutocompletado
                   label="Profesional remite"
-                  data={medicList.nombres}
-                  onSelect={(value) =>
-                    formik.setFieldValue("nombreProfesional", value)
-                  }
+                  apiRoute="profesionales/buscar"
                   error={
                     formik.touched.nombreProfesional
                       ? formik.errors.nombreProfesional
                       : undefined
                   }
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("nombreProfesional", value)
+                  }
                   touched={formik.touched.nombreProfesional}
                   required={true}
                   placeholder="Digite nombre del profesional..."
+                  helpText={`¿No encuentras el profesional?`}
                 />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="xs"
+                  className="w-full mt-2"
+                  onClick={() => {
+                    setIsOpenMedic(true);
+                    setNewMedic("");
+                    setAddMedicError(null);
+                  }}
+                >
+                  Agregalo Aqui.
+                </Button>
+                <ModalDefault
+                  isOpen={isOpenMedic}
+                  onClose={() => {
+                    setIsOpenMedic(false)
+                    setNewMedic("");
+                    setAddMedicError(null);
+                    }}
+                    title="Registrar Nuevo Profesional"
+                    showSubmitButton={true}
+                    funtionClick={async () => {
+                    try {
+                      const response = await api.post<{ status: number }>("/profesionales", {
+                      name: newMedic
+                      });
+
+                      if (response.status === 201) {
+                      setIsOpenMedic(false);
+                      setNewMedic("");
+                      setAddMedicError(null);
+                      toast.success("Profesional agregado exitosamente", {
+                        position: "top-right",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+                      }
+
+                    } catch (error: any) {
+                      console.error("Error al agregar el profesional:", error);
+                      if (error.response && error.response.status === 400) {
+                      setAddMedicError("El profesional ya existe.");
+                      } else {
+                      setAddMedicError("Error al agregar el profesional. Inténtalo de nuevo.");
+                      }
+                    }
+
+                    }}
+                    submitText="Agregar"
+                    size="sm"
+                    isValid={!!newMedic.trim()}
+                  >
+                    <div>
+                      <Input
+                        type="text"
+                        value={newMedic}
+                        onChange={(e) => {
+                          setNewMedic(e.target.value)
+                          setAddMedicError(null);
+                        }}
+                        placeholder="Nombre del profesional"
+                        label="Nuevo Profesional"
+                        required={true}
+                        error={addMedicError ? addMedicError : undefined}
+                        helpText="Ingrese el nombre completo del profesional, con los apellidos y nombres que tenga."
+                      />
+                      {addMedicError && (
+                        <ErrorMessage>{addMedicError}</ErrorMessage>
+                      )}
+                    </div>
+                  </ModalDefault>
               </div>
               <div>
                 <Input
