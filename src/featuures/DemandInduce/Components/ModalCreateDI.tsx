@@ -5,7 +5,7 @@ import Input from "@/components/common/Ui/Input";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 const ModalCreateDI = () => {
@@ -28,8 +28,10 @@ const ModalCreateDI = () => {
     email: Yup.string()
       .email("Email inválido")
       .required("El email es obligatorio"),
-    phoneNumber: Yup.string().required("El número de teléfono es obligatorio"),
-    phoneNumber2: Yup.string().optional(),
+    phoneNumber: Yup.string()
+      .required("El número de teléfono es obligatorio")
+      .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
+    phoneNumber2: Yup.string().optional().max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -156,6 +158,7 @@ const ModalCreateDI = () => {
       areaPersonProcess: "",
       programPerson: "",
       assignmentDate: "",
+      idPatient: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -163,6 +166,17 @@ const ModalCreateDI = () => {
       // Aquí puedes manejar el envío del formulario
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      formik.setFieldValue("tipoDocumento", data.documentRelation.name);
+      formik.setFieldValue("email", data.email);
+      formik.setFieldValue("phoneNumber", data.phoneNumber);
+      formik.setFieldValue("phoneNumber2", data.phoneNumber2);
+      formik.setFieldValue("address", data.address);
+      formik.setFieldValue("idPatient", data.id.toString());
+    }
+  }, [documento, data]);
 
   return (
     <>
@@ -212,7 +226,11 @@ const ModalCreateDI = () => {
                 onInputChanged={(value) => {
                   formik.setFieldValue("elementDemand", value);
                 }}
-                error={formik.touched.elementDemand && formik.errors.elementDemand ? formik.errors.elementDemand : undefined}
+                error={
+                  formik.touched.elementDemand && formik.errors.elementDemand
+                    ? formik.errors.elementDemand
+                    : undefined
+                }
                 required={true}
                 placeholder="Ej: Llamada telefónica"
                 touched={formik.touched.elementDemand}
@@ -228,8 +246,15 @@ const ModalCreateDI = () => {
               <InputAutocompletado
                 apiRoute="tipo/demanda-inducida/buscar"
                 label="Tipo de elemento de demanda inducida"
-                onInputChanged={(value) => formik.setFieldValue("typeElementDemand", value)}
-                error={formik.touched.typeElementDemand && formik.errors.typeElementDemand ? formik.errors.typeElementDemand : undefined}
+                onInputChanged={(value) =>
+                  formik.setFieldValue("typeElementDemand", value)
+                }
+                error={
+                  formik.touched.typeElementDemand &&
+                  formik.errors.typeElementDemand
+                    ? formik.errors.typeElementDemand
+                    : undefined
+                }
                 required={true}
                 placeholder="Ej: Mensaje"
                 touched={formik.touched.typeElementDemand}
@@ -246,8 +271,14 @@ const ModalCreateDI = () => {
               <InputAutocompletado
                 apiRoute="objetivo/demanda-inducida/buscar"
                 label="Objetivo"
-                onInputChanged={(value) => formik.setFieldValue("objetive", value)}
-                error={formik.touched.objetive && formik.errors.objetive ? formik.errors.objetive : undefined}
+                onInputChanged={(value) =>
+                  formik.setFieldValue("objetive", value)
+                }
+                error={
+                  formik.touched.objetive && formik.errors.objetive
+                    ? formik.errors.objetive
+                    : undefined
+                }
                 required={true}
                 placeholder="Ej: Autocuidado"
                 touched={formik.touched.objetive}
@@ -265,27 +296,30 @@ const ModalCreateDI = () => {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label htmlFor="tipoDocumento">Tipo de Documento:</label>
-                  <select id="tipoDocumento" value={data.documentRelation.name}>
-                    {data.documentRelation && (
-                      <option value={data.documentRelation.id}>
-                        {data.documentRelation.name}
-                      </option>
-                    )}
-                  </select>
+                  <Input
+                    label="Tipo de Documento"
+                    id="tipoDocumento"
+                    value={data.documentRelation.name}
+                    touched={formik.touched.tipoDocumento}
+                    error={formik.errors.tipoDocumento}
+                    required
+                    readOnly
+                  />
                 </div>
+
                 <div>
                   <Input
                     label="Email"
                     type="text"
                     id="email"
                     variant="default"
-                    value={data.email}
+                    value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     name="email"
                     touched={formik.touched.email}
                     error={formik.errors.email}
+                    required
                   />
                 </div>
                 <div>
@@ -293,12 +327,13 @@ const ModalCreateDI = () => {
                     label="Telefono"
                     type="text"
                     id="phoneNumber"
-                    value={data.phoneNumber}
+                    value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     name="phoneNumber"
                     touched={formik.touched.phoneNumber}
                     error={formik.errors.phoneNumber}
+                    required
                   />
                 </div>
                 <div>
@@ -306,7 +341,7 @@ const ModalCreateDI = () => {
                     label="Segundo Numero de telefono"
                     type="text"
                     id="phoneNumber2"
-                    value={data.phoneNumber2 || ""}
+                    value={formik.values.phoneNumber2 || ""}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     name="phoneNumber2"
@@ -319,12 +354,13 @@ const ModalCreateDI = () => {
                     label="Direccion de residencia:"
                     type="text"
                     id="address"
-                    value={data.address}
+                    value={formik.values.address}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     name="address"
                     touched={formik.touched.address}
                     error={formik.errors.address}
+                    required
                   />
                 </div>
               </div>
@@ -379,7 +415,12 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("relationshipUser", value)
                         }
-                        error={formik.touched.relationshipUser && formik.errors.relationshipUser ? formik.errors.relationshipUser : undefined}
+                        error={
+                          formik.touched.relationshipUser &&
+                          formik.errors.relationshipUser
+                            ? formik.errors.relationshipUser
+                            : undefined
+                        }
                         required={true}
                         placeholder="Ej: Padre"
                         touched={formik.touched.relationshipUser}
@@ -468,7 +509,11 @@ const ModalCreateDI = () => {
                             onInputChanged={(value) =>
                               formik.setFieldValue("areaEps", value)
                             }
-                            error={formik.touched.areaEps && formik.errors.areaEps ? formik.errors.areaEps : undefined}
+                            error={
+                              formik.touched.areaEps && formik.errors.areaEps
+                                ? formik.errors.areaEps
+                                : undefined
+                            }
                             required={true}
                             placeholder="Ej: Afiliaciones"
                             touched={formik.touched.areaEps}
@@ -490,7 +535,12 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("summaryCall", value)
                         }
-                        error={formik.touched.summaryCall && formik.errors.summaryCall ? formik.errors.summaryCall : undefined}
+                        error={
+                          formik.touched.summaryCall &&
+                          formik.errors.summaryCall
+                            ? formik.errors.summaryCall
+                            : undefined
+                        }
                         required={true}
                         placeholder="Ej: Educación de salud"
                         touched={formik.touched.summaryCall}
@@ -540,7 +590,11 @@ const ModalCreateDI = () => {
                     onInputChanged={(value) =>
                       formik.setFieldValue("resultCall", value)
                     }
-                    error={formik.touched.resultCall && formik.errors.resultCall ? formik.errors.resultCall : undefined}
+                    error={
+                      formik.touched.resultCall && formik.errors.resultCall
+                        ? formik.errors.resultCall
+                        : undefined
+                    }
                     required={true}
                     placeholder="Ej: Otro"
                     touched={formik.touched.resultCall}
@@ -647,7 +701,12 @@ const ModalCreateDI = () => {
                     onInputChanged={(value) =>
                       formik.setFieldValue("reasonVisitNotEffective", value)
                     }
-                    error={formik.touched.reasonVisitNotEffective && formik.errors.reasonVisitNotEffective ? formik.errors.reasonVisitNotEffective : undefined}
+                    error={
+                      formik.touched.reasonVisitNotEffective &&
+                      formik.errors.reasonVisitNotEffective
+                        ? formik.errors.reasonVisitNotEffective
+                        : undefined
+                    }
                     required={true}
                     placeholder="Ej: No esta interesado"
                     touched={formik.touched.reasonVisitNotEffective}
@@ -675,7 +734,12 @@ const ModalCreateDI = () => {
                 onInputChanged={(value) =>
                   formik.setFieldValue("areaPersonProcess", value)
                 }
-                error={formik.touched.areaPersonProcess && formik.errors.areaPersonProcess ? formik.errors.areaPersonProcess : undefined}
+                error={
+                  formik.touched.areaPersonProcess &&
+                  formik.errors.areaPersonProcess
+                    ? formik.errors.areaPersonProcess
+                    : undefined
+                }
                 required={true}
                 placeholder="Ej: PYMS"
                 touched={formik.touched.areaPersonProcess}
