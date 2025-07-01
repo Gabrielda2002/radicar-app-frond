@@ -183,7 +183,7 @@ const SideBar: FC = () => {
             </Category>
 
             {/* Categoria de Inventario */}
-            {[1, 6].includes(Number(rol)) && (
+            {[1, 6, 4].includes(Number(rol)) && (
               <Category
                 title="Gestión de Inventarios"
                 icon={MdOutlineInventory}
