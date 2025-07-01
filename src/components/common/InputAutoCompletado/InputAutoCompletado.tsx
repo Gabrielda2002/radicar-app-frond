@@ -24,12 +24,12 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   helpText = "",
 }) => {
   const [inputValue, setInputValue] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const {
     data,
     error: fetchError,
     fetchInputAtcp,
   } = useFetchEspecialidadAtcp();
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     if (inputValue.trim() !== "") {

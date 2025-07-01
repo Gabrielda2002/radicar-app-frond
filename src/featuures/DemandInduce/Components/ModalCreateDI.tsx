@@ -72,7 +72,12 @@ const ModalCreateDI = () => {
     dificulties: Yup.boolean().optional(),
     areaDificulties: Yup.string().optional(),
     areaEps: Yup.string().optional(),
-    summaryCall: Yup.string().optional(),
+    summaryCall: Yup.string().when("classification", {
+      is: (value: boolean) => value === true,
+      then: (schema) =>
+        schema.required("El resumen de la llamada es obligatorio"),
+      otherwise: (schema) => schema.optional(),
+    }),
     conditionUser: Yup.boolean().optional(),
     suport: Yup.string().optional(),
     // resultado de la llamada no efectiva
@@ -226,11 +231,7 @@ const ModalCreateDI = () => {
                 onInputChanged={(value) => {
                   formik.setFieldValue("elementDemand", value);
                 }}
-                error={
-                  formik.touched.elementDemand && formik.errors.elementDemand
-                    ? formik.errors.elementDemand
-                    : undefined
-                }
+                error={formik.touched.elementDemand && formik.errors.elementDemand ? formik.errors.elementDemand : undefined}
                 required={true}
                 placeholder="Ej: Llamada telefónica"
                 touched={formik.touched.elementDemand}
@@ -374,7 +375,7 @@ const ModalCreateDI = () => {
             <>
               <div>
                 <Input
-                  label="Clasificación de la llamada"
+                  label="Clasificación del seguimiento"
                   type="checkbox"
                   id="classification"
                   checked={formik.values.classification}
@@ -383,7 +384,7 @@ const ModalCreateDI = () => {
                   name="classification"
                   touched={formik.touched.classification}
                   error={formik.errors.classification}
-                  helpText="Checkea si la llamada fue efectiva o no"
+                  helpText="Checkea si la llamada es efectiva."
                 />
               </div>
 
@@ -535,12 +536,7 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("summaryCall", value)
                         }
-                        error={
-                          formik.touched.summaryCall &&
-                          formik.errors.summaryCall
-                            ? formik.errors.summaryCall
-                            : undefined
-                        }
+                        error={formik.errors.summaryCall}
                         required={true}
                         placeholder="Ej: Educación de salud"
                         touched={formik.touched.summaryCall}
@@ -752,14 +748,10 @@ const ModalCreateDI = () => {
                 )}
             </div>
             <div>
-              <Input
+              <InputAutocompletado
+                apiRoute="programas/buscar"
+                onInputChanged={(value) => formik.setFieldValue("programPerson", value)}
                 label="Programa"
-                type="text"
-                id="programPerson"
-                value={formik.values.programPerson}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="programPerson"
                 touched={formik.touched.programPerson}
                 error={formik.errors.programPerson}
                 placeholder="Ej: Vacunación menores de 6"

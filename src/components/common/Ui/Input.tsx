@@ -88,6 +88,13 @@ const Input: React.FC<InputProps> = ({
             )}
           </label>
         )}
+
+        {helpText && !error && (
+          <p className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+            {helpText}
+          </p>
+        )}
+
         <AnimatePresence>
           {error && touched && (
             <ErrorMessage className="ml-2">{error}</ErrorMessage>
