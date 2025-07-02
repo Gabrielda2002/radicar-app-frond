@@ -23,6 +23,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   placeholder = "",
   helpText = "",
 }) => {
+
   const [inputValue, setInputValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const {
@@ -51,6 +52,16 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
     setShowSuggestions(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.ctrlKey && e.code === "Space") {
+      setInputValue("@");
+      onInputChanged("@");
+      setShowSuggestions(true);
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    }
+  }
+
   return (
     <div className="relative">
         <Input
@@ -63,6 +74,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
           required={required}
           label={label}
           helpText={helpText}
+          onKeyDown={handleKeyDown}
         />
 
       {fetchError && (

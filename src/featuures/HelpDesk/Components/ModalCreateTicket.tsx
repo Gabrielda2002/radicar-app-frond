@@ -137,7 +137,6 @@ const HelpDesk = () => {
   };
 
   if (loading || validatingTicket) return <LoadingSpinner />;
-  console.log(formik.errors);
   return (
     <>
       <button
