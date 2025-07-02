@@ -55,7 +55,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           tipoItem="equipos"
           refreshItems={refreshItems}
         />
-        <ModalAccesorioItem id={item.id} />
+        <ModalAccesorioItem id={item.id} refreshItems={refreshItems} />
         <div className="relative group">
           <button
             type="button"
