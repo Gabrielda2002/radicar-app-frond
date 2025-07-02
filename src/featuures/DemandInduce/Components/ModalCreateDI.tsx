@@ -2,6 +2,7 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
@@ -128,6 +129,7 @@ const ModalCreateDI = () => {
     ),
     programPerson: Yup.string().required("El programa es obligatorio"),
     assignmentDate: Yup.string().required("La de asignación es obligatoria"),
+    profetional: Yup.string().required("El profesional es obligatorio"),
   });
 
   const formik = useFormik({
@@ -164,6 +166,7 @@ const ModalCreateDI = () => {
       programPerson: "",
       assignmentDate: "",
       idPatient: "",
+      profetional: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -241,7 +244,7 @@ const ModalCreateDI = () => {
                   {formik.errors.elementDemand}
                 </div>
               )}
-            </div>
+            </div>  
 
             <div>
               <InputAutocompletado
@@ -769,6 +772,23 @@ const ModalCreateDI = () => {
                 name="assignmentDate"
                 touched={formik.touched.assignmentDate}
                 error={formik.errors.assignmentDate}
+                required={true}
+              />
+            </div>
+            <div>
+              <Select
+                options={[
+                  { value : "Medicina General", label: "Medicina General" },
+                  { value: "Enfermería", label: "Enfermería"},
+                ]}
+                label="Profesional"
+                id="profetional"
+                value={formik.values.profetional}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="profetional"
+                touched={formik.touched.profetional}
+                error={formik.errors.profetional}
                 required={true}
               />
             </div>
