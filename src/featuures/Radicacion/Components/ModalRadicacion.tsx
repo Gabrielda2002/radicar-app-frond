@@ -203,9 +203,6 @@ const ModalRadicacion = () => {
       }
     },
   });
-
-  console.log(formik.errors);
-
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
     if (data) {

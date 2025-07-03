@@ -213,11 +213,6 @@
             "name": "AUXILIAR SISTEMAS"
         },
         {
-            "id": 41,
-            "type": "cargo",
-            "name": "AUXILIAR ADMINISTRATIVO"
-        },
-        {
             "id": 42,
             "type": "cargo",
             "name": "JEFE DE AUTORIZACIONES"
@@ -363,11 +358,6 @@
             "name": "FONOAUDIOLOGO"
         },
         {
-            "id": 71,
-            "type": "cargo",
-            "name": "AUXILIAR SERVICIO AL USUARIO"
-        },
-        {
             "id": 72,
             "type": "cargo",
             "name": "AUXILIAR JURIDICO"
@@ -410,20 +400,15 @@
         {
             "id": 80,
             "type": "cargo",
-            "name": "MEDICO GENERAL"
+            "name": "LIDER CALLCENTER"  
         },
         {
             "id": 81,
             "type": "cargo",
-            "name": "LIDER CALLCENTER"  
-        },
-        {
-            "id": 82,
-            "type": "cargo",
             "name": "JEFE SIAU"
         },
         {
-            "id": 83,
+            "id": 82,
             "type": "cargo",
             "name": "MÉDICO"
         }

@@ -2,6 +2,7 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
@@ -31,7 +32,9 @@ const ModalCreateDI = () => {
     phoneNumber: Yup.string()
       .required("El número de teléfono es obligatorio")
       .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
-    phoneNumber2: Yup.string().optional().max(10, "El número de teléfono debe tener al menos 10 dígitos"),
+    phoneNumber2: Yup.string()
+      .optional()
+      .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -70,9 +73,23 @@ const ModalCreateDI = () => {
       otherwise: (schema) => schema.optional(),
     }),
     dificulties: Yup.boolean().optional(),
-    areaDificulties: Yup.string().optional(),
-    areaEps: Yup.string().optional(),
-    summaryCall: Yup.string().optional(),
+    areaDificulties: Yup.string().when("dificulties", {
+      is: (value: boolean) => value === true,
+      then: (schema) =>
+        schema.required("El área de dificultades es obligatoria"),
+      otherwise: (schema) => schema.optional(),
+    }), // cambiar validacion
+    areaEps: Yup.string().when("dificulties", {
+      is: (value: boolean) => value === true,
+      then: (schema) => schema.required("El área EPS es obligatoria"),
+      otherwise: (schema) => schema.optional(),
+    }),
+    summaryCall: Yup.string().when("classification", {
+      is: (value: boolean) => value === true,
+      then: (schema) =>
+        schema.required("El resumen de la llamada es obligatorio"),
+      otherwise: (schema) => schema.optional(),
+    }),
     conditionUser: Yup.boolean().optional(),
     suport: Yup.string().optional(),
     // resultado de la llamada no efectiva
@@ -123,6 +140,7 @@ const ModalCreateDI = () => {
     ),
     programPerson: Yup.string().required("El programa es obligatorio"),
     assignmentDate: Yup.string().required("La de asignación es obligatoria"),
+    profetional: Yup.string().required("El profesional es obligatorio"),
   });
 
   const formik = useFormik({
@@ -159,6 +177,7 @@ const ModalCreateDI = () => {
       programPerson: "",
       assignmentDate: "",
       idPatient: "",
+      profetional: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -374,7 +393,7 @@ const ModalCreateDI = () => {
             <>
               <div>
                 <Input
-                  label="Clasificación de la llamada"
+                  label="Clasificación del seguimiento"
                   type="checkbox"
                   id="classification"
                   checked={formik.values.classification}
@@ -383,7 +402,7 @@ const ModalCreateDI = () => {
                   name="classification"
                   touched={formik.touched.classification}
                   error={formik.errors.classification}
-                  helpText="Checkea si la llamada fue efectiva o no"
+                  helpText="Selecciona si la llamada es efectiva."
                 />
               </div>
 
@@ -406,6 +425,7 @@ const ModalCreateDI = () => {
                         touched={formik.touched.acceptCall}
                         error={formik.errors.acceptCall}
                         placeholder="Ej: Juan Pérez"
+                        required
                       />
                     </div>
                     <div>
@@ -421,7 +441,7 @@ const ModalCreateDI = () => {
                             ? formik.errors.relationshipUser
                             : undefined
                         }
-                        required={true}
+                        required
                         placeholder="Ej: Padre"
                         touched={formik.touched.relationshipUser}
                       />
@@ -443,6 +463,7 @@ const ModalCreateDI = () => {
                         name="dateCall"
                         touched={formik.touched.dateCall}
                         error={formik.errors.dateCall}
+                        required
                       />
                     </div>
                     <div>
@@ -456,6 +477,7 @@ const ModalCreateDI = () => {
                         name="hourCall"
                         touched={formik.touched.hourCall}
                         error={formik.errors.hourCall}
+                        required
                       />
                     </div>
                     <div>
@@ -470,6 +492,7 @@ const ModalCreateDI = () => {
                         touched={formik.touched.textCall}
                         error={formik.errors.textCall}
                         placeholder="Ej: Llamada realizada con éxito, paciente en buen estado de salud."
+                        required
                       />
                     </div>
                     <div>
@@ -500,6 +523,7 @@ const ModalCreateDI = () => {
                             name="areaDificulties"
                             touched={formik.touched.areaDificulties}
                             error={formik.errors.areaDificulties}
+                            required
                           />
                         </div>
                         <div>
@@ -535,12 +559,7 @@ const ModalCreateDI = () => {
                         onInputChanged={(value) =>
                           formik.setFieldValue("summaryCall", value)
                         }
-                        error={
-                          formik.touched.summaryCall &&
-                          formik.errors.summaryCall
-                            ? formik.errors.summaryCall
-                            : undefined
-                        }
+                        error={formik.errors.summaryCall}
                         required={true}
                         placeholder="Ej: Educación de salud"
                         touched={formik.touched.summaryCall}
@@ -627,6 +646,7 @@ const ModalCreateDI = () => {
                     name="dateSend"
                     touched={formik.touched.dateSend}
                     error={formik.errors.dateSend}
+                    required
                   />
                 </div>
                 <div>
@@ -640,6 +660,7 @@ const ModalCreateDI = () => {
                     name="hourSend"
                     touched={formik.touched.hourSend}
                     error={formik.errors.hourSend}
+                    required
                   />
                 </div>
                 <div>
@@ -654,6 +675,7 @@ const ModalCreateDI = () => {
                     touched={formik.touched.textSend}
                     error={formik.errors.textSend}
                     placeholder="Ej: Mensaje enviado con éxito, paciente informado."
+                    required
                   />
                 </div>
               </div>
@@ -752,14 +774,12 @@ const ModalCreateDI = () => {
                 )}
             </div>
             <div>
-              <Input
+              <InputAutocompletado
+                apiRoute="programas/buscar"
+                onInputChanged={(value) =>
+                  formik.setFieldValue("programPerson", value)
+                }
                 label="Programa"
-                type="text"
-                id="programPerson"
-                value={formik.values.programPerson}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="programPerson"
                 touched={formik.touched.programPerson}
                 error={formik.errors.programPerson}
                 placeholder="Ej: Vacunación menores de 6"
@@ -777,6 +797,23 @@ const ModalCreateDI = () => {
                 name="assignmentDate"
                 touched={formik.touched.assignmentDate}
                 error={formik.errors.assignmentDate}
+                required={true}
+              />
+            </div>
+            <div>
+              <Select
+                options={[
+                  { value: "Medicina General", label: "Medicina General" },
+                  { value: "Enfermería", label: "Enfermería" },
+                ]}
+                label="Profesional"
+                id="profetional"
+                value={formik.values.profetional}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="profetional"
+                touched={formik.touched.profetional}
+                error={formik.errors.profetional}
                 required={true}
               />
             </div>

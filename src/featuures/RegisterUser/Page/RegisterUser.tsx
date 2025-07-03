@@ -1,8 +1,6 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import React, { useMemo } from "react";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import { useCreateUser } from "@/featuures/RegisterUser/Hooks/useCreateUser";
 import areas from '@/data-dynamic/areas.json'; 
 import {
@@ -14,6 +12,9 @@ import logo from "@/assets/Layout/logo.png";
 import { useFormik } from "formik";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 import { useFetchSede } from "@/hooks/UseFetchSede";
+import Input from "@/components/common/Ui/Input";
+import Select, { SelectOption } from "@/components/common/Ui/Select";
+import Button from "@/components/common/Ui/Button";
 
 const RegistrarUsuarios: React.FC = () => {
   const isOpen = true;
@@ -30,6 +31,7 @@ const RegistrarUsuarios: React.FC = () => {
   const validationSchema = useMemo(
     () =>
       Yup.object({
+        rol: Yup.string().required("El rol es obligatorio"),
         tipoDocumento: Yup.string().required(
           "El tipo de documento es obligatorio"
         ),
@@ -112,10 +114,38 @@ const RegistrarUsuarios: React.FC = () => {
       }
 
     },
-  });
+});
+
+  console.log(formik.errors)
   
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
+
+  // Adaptar los datos a opciones para Select
+  const tipoDocumentoOptions: SelectOption[] = dataDocumento?.map((tipoDoc) => ({
+    value: tipoDoc.id,
+    label: tipoDoc.name,
+  })) || [];
+
+  const areaOptions: SelectOption[] = areas.areas.map((area) => ({
+    value: area.name,
+    label: area.name,
+  }));
+
+  const cargoOptions: SelectOption[] = areas.cargos.map((cargo) => ({
+    value: cargo.name,
+    label: cargo.name,
+  }));
+
+  const sedeOptions: SelectOption[] = data?.map((sede) => ({
+    value: sede.id,
+    label: sede.name,
+  })) || [];
+
+  const rolOptions: SelectOption[] = dataRol?.map((rol) => ({
+    value: rol.id,
+    label: rol.name,
+  })) || [];
 
   return (
     <div className="flex items-center justify-center min-h-screen dark:bg-gray-900">
@@ -131,325 +161,165 @@ const RegistrarUsuarios: React.FC = () => {
         <form onSubmit={formik.handleSubmit}>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Tipo de Documento */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Tipo de Documento
-              </label>
-              <select
-                name="tipoDocumento"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.tipoDocumento && formik.errors.tipoDocumento
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.tipoDocumento}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {dataDocumento.map((tipoDoc) => (
-                  <option key={tipoDoc.id} value={tipoDoc.id}>
-                    {tipoDoc.name}
-                  </option>
-                ))}
-              </select>
-              <AnimatePresence>
-                {formik.touched.tipoDocumento && formik.errors.tipoDocumento ? (
-                  <ErrorMessage>{formik.errors.tipoDocumento}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Select
+              label="Tipo de Documento"
+              name="tipoDocumento"
+              options={tipoDocumentoOptions}
+              value={formik.values.tipoDocumento}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.tipoDocumento}
+              touched={formik.touched.tipoDocumento}
+              required
+            />
 
             {/* Número Documento */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Número Documento 
-              </label>
-              <input
-                type="text"
-                name="numeroDocumento"
-                placeholder="Número de Documento"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.numeroDocumento &&
-                  formik.errors.numeroDocumento
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.numeroDocumento}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.numeroDocumento &&
-                formik.errors.numeroDocumento ? (
-                  <ErrorMessage>{formik.errors.numeroDocumento}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Input
+              label="Número Documento"
+              name="numeroDocumento"
+              type="text"
+              placeholder="Número de Documento"
+              value={formik.values.numeroDocumento}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.numeroDocumento}
+              touched={formik.touched.numeroDocumento}
+              required
+            />
+
             {/* Area */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Area
-              </label>
-              <select
-               name="area" 
-               id="area"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.area && formik.errors.area
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.area}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-               >
-                <option value="">SELECCIONE</option>
-                {
-                  areas.areas.map((area) => (
-                    <option key={area.id} value={area.name}>
-                      {area.name}
-                    </option>
-                  ))
-                }
-               </select>
-              <AnimatePresence>
-                {formik.touched.area && formik.errors.area ? (
-                  <ErrorMessage>{formik.errors.area}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Select
+              label="Area"
+              name="area"
+              options={areaOptions}
+              value={formik.values.area}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.area}
+              touched={formik.touched.area}
+              required
+            />
 
             {/* Cargo */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Cargo
-              </label>
-              <select
-                name="cargo"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.cargo && formik.errors.cargo
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.cargo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {
-                  areas.cargos.map((cargo) => (
-                    <option key={cargo.id} value={cargo.name}>
-                      {cargo.name}
-                    </option>
-                  ))
-                }
-              </select>
-              <AnimatePresence>
-                {formik.touched.cargo && formik.errors.cargo ? (
-                  <ErrorMessage>{formik.errors.cargo}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Select
+              label="Cargo"
+              name="cargo"
+              options={cargoOptions}
+              value={formik.values.cargo}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.cargo}
+              touched={formik.touched.cargo}
+              required
+            />
 
             {/* Sede */}
-            
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Sede
-              </label>
-              <select
-                name="sede"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.sede && formik.errors.sede
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.sede}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {data?.map((sede) => (
-                  <option key={sede.id} value={sede.id}>
-                    {sede.name}
-                  </option>
-                ))}
-              </select>
-              <AnimatePresence>
-                {formik.touched.sede && formik.errors.sede ? (
-                  <ErrorMessage>{formik.errors.sede}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
-              
-              {/* Celular */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Celular
-              </label>
-              <input
-                type="text"
-                name="celular"
-                placeholder="Número de Celular"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.celular && formik.errors.celular
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.celular}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.celular && formik.errors.celular ? (
-                  <ErrorMessage>{formik.errors.celular}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Select
+              label="Sede"
+              name="sede"
+              options={sedeOptions}
+              value={formik.values.sede}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.sede}
+              touched={formik.touched.sede}
+              required
+            />
+
+            {/* Celular */}
+            <Input
+              label="Celular"
+              name="celular"
+              type="text"
+              placeholder="Número de Celular"
+              value={formik.values.celular}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.celular}
+              touched={formik.touched.celular}
+              required
+            />
 
             {/* Nombres Completos */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Nombres Completos
-              </label>
-              <input
-                type="text"
-                name="nombresCompletos"
-                placeholder="Nombres Completos"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.nombresCompletos &&
-                  formik.errors.nombresCompletos
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.nombresCompletos}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.nombresCompletos &&
-                formik.errors.nombresCompletos ? (
-                  <ErrorMessage>{formik.errors.nombresCompletos}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Input
+              label="Nombres Completos"
+              name="nombresCompletos"
+              type="text"
+              placeholder="Nombres Completos"
+              value={formik.values.nombresCompletos}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.nombresCompletos}
+              touched={formik.touched.nombresCompletos}
+              required
+            />
 
             {/* Apellidos Completos */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Apellidos Completos
-              </label>
-              <input
-                type="text"
-                name="apellidosCompletos"
-                placeholder="Apellidos Completos"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.apellidosCompletos &&
-                  formik.errors.apellidosCompletos
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.apellidosCompletos}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.apellidosCompletos &&
-                formik.errors.apellidosCompletos ? (
-                  <ErrorMessage>
-                    {formik.errors.apellidosCompletos}
-                  </ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Input
+              label="Apellidos Completos"
+              name="apellidosCompletos"
+              type="text"
+              placeholder="Apellidos Completos"
+              value={formik.values.apellidosCompletos}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.apellidosCompletos}
+              touched={formik.touched.apellidosCompletos}
+              required
+            />
 
             {/* Rol */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Rol
-              </label>
-              <select
-                name="rol"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.rol && formik.errors.rol
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.rol}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">SELECCIONE</option>
-                {dataRol.map((rol) => (
-                  <option key={rol.id} value={rol.id}>
-                    {rol.name}
-                  </option>
-                ))}
-              </select>
-              <AnimatePresence>
-                {formik.touched.rol && formik.errors.rol ? (
-                  <ErrorMessage>{formik.errors.rol}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Select
+              label="Rol"
+              name="rol"
+              options={rolOptions}
+              value={formik.values.rol}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.rol}
+              touched={formik.touched.rol}
+              required
+            />
 
             {/* Correo */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Correo
-              </label>
-              <input
-                type="email"
-                name="correo"
-                placeholder="Correo"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.correo && formik.errors.correo
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.correo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <AnimatePresence>
-                {formik.touched.correo && formik.errors.correo ? (
-                  <ErrorMessage>{formik.errors.correo}</ErrorMessage>
-                ) : null}
-              </AnimatePresence>
-            </div>
+            <Input
+              label="Correo"
+              name="correo"
+              type="email"
+              placeholder="Correo"
+              value={formik.values.correo}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.correo}
+              touched={formik.touched.correo}
+              required
+            />
 
             {/* Contraseña */}
-            <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                name="contraseña"
-                placeholder="Contraseña"
-                className={` w-full px-3 py-2 border-2 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white ${
-                  formik.touched.contraseña && formik.errors.contraseña
-                    ? "border-red-500 dark:border-red-500"
-                    : "border-gray-200 dark:border-gray-600"
-                }`}
-                value={formik.values.contraseña}
-                onChange={formik.handleChange}
-              />
-              {formik.touched.contraseña && formik.errors.contraseña ? (
-                <div className="text-red-500">{formik.errors.contraseña}</div>
-              ) : null}
-            </div>
+            <Input
+              label="Contraseña"
+              name="contraseña"
+              type="password"
+              placeholder="Contraseña"
+              value={formik.values.contraseña}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.contraseña}
+              touched={formik.touched.contraseña || !!formik.errors.contraseña}
+              required
+              helpText="Debe tener al menos una mayúscula, una minúscula, un número y un caracter especial (!@#$%^&*)"
+            />
           </div>
 
           {/* Botón de Envío */}
           <div className="mt-6">
-            <button
+            <Button
               type="submit"
-              disabled={ !formik.isValid || loading}
+              disabled={!formik.isValid || loading}
               className="w-full py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
             >
               {loading ? "Enviando..." : "Registrar Usuario"}
-            </button>
+            </Button>
             {error && <div className="text-red-500">{error}</div>}
             {success && (
               <div className="text-green-500">Usuario registrado con éxito</div>
@@ -460,5 +330,4 @@ const RegistrarUsuarios: React.FC = () => {
     </div>
   );
 };
-
 export default RegistrarUsuarios;
