@@ -20,11 +20,11 @@ import {
   CalendarIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
-import { createAccesoryEquipment } from "@/featuures/SystemInventory/Services/CreateAccesoryEquipment";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select, { SelectOption } from "@/components/common/Ui/Select";
 import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
+import { useCreateAcceosry } from "../../Hooks/useCreateAccesory";
 
 interface ModalAccesorioItemProps {
   id: number;
@@ -36,10 +36,8 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
   refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
-  // estados para controlar el estado del formulario
-  const [success, setSuccess] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>("");
+
+  const { createAccesory, error, loading } = useCreateAcceosry();
 
   // estado para controlar que se va a agregar al equipo
   const baseValidationSchema = {
@@ -153,8 +151,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
     validationSchema: Yup.object(baseValidationSchema),
     onSubmit: async (values) => {
       try {
-        setSubmitting(true);
-
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("otherData", values.othersData);
@@ -185,12 +181,10 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
           formData.append("inventoryNumber", values.inventoryNumber);
         }
 
-        const response = await createAccesoryEquipment(formData, ep);
+        const response = await createAccesory(formData, ep);
 
         if (response?.status === 200 || response?.status === 201) {
-          setSubmitting(false);
           formik.resetForm();
-          setSuccess(true);
           refreshItems();
           toast.success("Datos enviados con éxito", {
             position: "bottom-right",
@@ -202,29 +196,15 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
             progress: undefined,
             theme: "colored",
           });
-          setError(null);
           setTimeout(() => {
-            setSuccess(false);
             setStadopen(false);
           }, 3000);
         }
       } catch (error) {
-        setError("Error al crear el accesorio" + error);
-        toast.error(`Error al crear el accesorio: ${error}`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        console.log("Error al crear el accesorio:", error);
       }
-      setSubmitting(false);
     },
   });
-  console.log(formik.errors);
 
   // Opciones para los selects de estado
   const statusOptions: SelectOption[] = [
@@ -262,7 +242,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
         onClose={() => setStadopen(false)}
         title="Agregar Accesorio"
         onSubmit={formik.handleSubmit}
-        isSubmitting={submitting}
+        isSubmitting={loading}
         showCancelButton
         submitText="Guardar"
         isValid={formik.isValid && formik.dirty}
@@ -303,32 +283,6 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
                   onSelect={(value) => formik.setFieldValue("name", value)}
                   placeholder="Ej: Mouse"
                 />
-                {/* <Input
-                    label="Nombre"
-                    name="name"
-                    value={search}
-                    onChange={handleSearchChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.errors.name}
-                    touched={formik.touched.name}
-                    required
-                    size="md"
-                    icon={<TagIcon className="w-5 h-5 dark:text-white" />}
-                  />
-                  {suggestions.length > 0 && (
-                    <ul className="absolute z-10 w-full overflow-y-auto bg-white border border-gray-200 rounded top-22 dark:bg-gray-800 dark:border-gray-600 max-h-40">
-                      {suggestions.map((suggestion) => (
-                        <li
-                          key={suggestion}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-200"
-                        >
-                          {suggestion}
-                        </li>
-                      ))}
-                    </ul>
-                  )} */}
-
                 <Input
                   label="Otros Datos"
                   name="othersData"
@@ -517,15 +471,8 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
           </section>
         </div>
         <AnimatePresence>
-          {success && (
-            <div className="fixed bottom-4 right-4 z-50">
-              <div className="p-4 text-white bg-green-500 rounded-lg shadow-lg">
-                Accesorio agregado exitosamente
-              </div>
-            </div>
-          )}
           {error && (
-            <div className="fixed bottom-4 right-4 z-50">
+            <div>
               <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
                 {error}
               </div>

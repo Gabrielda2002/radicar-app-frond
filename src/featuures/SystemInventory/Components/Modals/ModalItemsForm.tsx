@@ -4,8 +4,6 @@ import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import { IItems } from "@/models/IItems";
 import React, { useEffect, useState } from "react";
-import { createItem } from "@/featuures/SystemInventory/Services/CreateItem";
-import { updateItem } from "@/featuures/SystemInventory/Services/UpdateItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import Input from "@/components/common/Ui/Input";
@@ -30,6 +28,7 @@ import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModa
 import FormModal from "@/components/common/Ui/FormModal";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import Select from "@/components/common/Ui/Select";
+import { useCreateItemEqDr } from "../../Hooks/useCreateItemEqDr";
 
 interface ModalItemsFormProps {
   idSede: number | null;
@@ -48,9 +47,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  // estados para la reaccion del formulario
-  const [error, setError] = useState<string | null>(null);
-  const [submiting, setSubmiting] = useState(false);
+  const {
+    createItem,
+    updateItem,
+    error,
+    loading: submiting,
+  } = useCreateItemEqDr();
 
   const getValidationSchema = (typeItem: string | null) => {
     const validationSchema = {
@@ -195,7 +197,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     },
     validationSchema: Yup.object(getValidationSchema(tipoItem)),
     onSubmit: async (values) => {
-      setSubmiting(true);
       try {
         const formData = new FormData();
         formData.append("name", values.name);
@@ -239,7 +240,6 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         }
 
         if (response?.status === 201 || response?.status === 200) {
-          setError(null);
           toast.success("Datos enviados con éxito", {
             position: "bottom-right",
             autoClose: 3000,
@@ -255,33 +255,10 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           if (onSuccess) {
             onSuccess();
           }
-        } else {
-          setError("Error al enviar los datos");
-          toast.error("Error al enviar los datos", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
         }
       } catch (error) {
-        setError(`Error al enviar los datos: ${error}`);
-        toast.error(`Error al enviar los datos: ${error}`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        console.log("Error al enviar los datos:", error);
       }
-      setSubmiting(false);
     },
   });
 
@@ -829,7 +806,15 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   />
                 </div>
               )}
-              {error && <ErrorMessage className="mt-2">{error}</ErrorMessage>}
+              <AnimatePresence>
+                {error && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
