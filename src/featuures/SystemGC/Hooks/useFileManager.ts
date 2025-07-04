@@ -44,12 +44,11 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
     const fetchContents = async () => {
         setLoading(true);
         try {
-            console.log('re fetch contents')
             const response = await getFolderContent(section ,currentFolderId || undefined );
             setContents(response.data);
             setError(null);
-        } catch (err) {
-            setError(`Error al mostrar el contenido de la carpeta. ${err}`);
+        } catch (err: any) {
+            setError(`Error al mostrar el contenido de la carpeta. ${err.response?.data?.message}`);
         } finally {
             setLoading(false);
         }
@@ -69,8 +68,8 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
         try {
             await createFolder(currentFolderId || null, name, section);
             await fetchContents(); // Reload contents after creating a folder
-        } catch (err) {
-            setError(`Error al crear la carpeta, intente nuevamente. ${err}`);
+        } catch (err: any) {
+            setError(`Error al crear la carpeta, intente nuevamente. ${err.response?.data?.message}`);
         }
     };
 
@@ -80,8 +79,8 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
         try {
             await uploadFile(formData, id);
             await fetchContents(); // Reload contents after uploading a file
-        } catch (err) {
-            setError(`Error al subir el archivo, intente nuevamente. ${err}`);
+        } catch (err: any) {
+            setError(`Error al subir el archivo, intente nuevamente. ${err.response?.data?.message}`);
         }
     };
 
@@ -90,8 +89,8 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
         try {
             await deleteItem(id, type);
             await fetchContents(); // Reload contents after deleting an item
-        } catch (err) {
-            setError(`Error al eliminar ${type === "carpetas" ? "revisa que la carpeta este vacía" : "file"}, intente nuevamente ${err}`);
+        } catch (err: any) {
+            setError(`Error al eliminar ${type === "carpetas" ? "revisa que la carpeta este vacía" : "file"}, intente nuevamente ${err.response?.data?.message}`);
         }
     };
 
@@ -110,8 +109,8 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
     
             // Clean up the URL object
             window.URL.revokeObjectURL(url);
-        } catch (err) {
-            setError(`Error downloading file ${err}`);
+        } catch (err: any) {
+            setError(`Error downloading file ${err.response?.data?.message || ''}`);
         }
     };
     
@@ -135,8 +134,8 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
         try {
             await renameItems(id, currentFolderId || null, name, type);
             await fetchContents(); // Reload contents after renaming an item
-        } catch (err) {
-            setError(`Error al renombrar ${type === "carpetas" ? "la carpeta" : "el archivo"} ${err}.`);
+        } catch (err: any) {
+            setError(`Error al renombrar ${type === "carpetas" ? "la carpeta" : "el archivo"} ${err.response?.data?.message}.`);
         }
     }
 
@@ -147,7 +146,7 @@ export const useFileManager = (section: string, initialFolderId?: string, refres
             await fetchContents();
             return true;
         } catch (error: any) {
-            setError(`Error al mover ${type === "carpetas" ? "la carpeta" : "el archivo"}: ${error.message}`);
+            setError(`Error al mover ${type === "carpetas" ? "la carpeta" : "el archivo"}: ${error.response?.data?.message}`);
             console.log(error);
             return false;
         }finally{
