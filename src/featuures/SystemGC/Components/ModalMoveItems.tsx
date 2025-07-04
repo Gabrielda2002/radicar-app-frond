@@ -26,9 +26,6 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   itemId,
   handleRefresh,
 }) => {
-  console.log("currentFolderId", currentFolderId);
-  console.log("item id ", itemId);
-
   const [navigationPath, setNavigationPath] = useState<
     Array<{ id: string; name: string }>
   >([{ id: "", name: "Inicio" }]);
@@ -79,7 +76,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   };
 
   const handleMove = () => {
-    if (selectedFolderId !== currentFolderId && selectedFolderId) {
+    if (selectedFolderId !== currentFolderId && (itemType === "carpetas" ? selectedFolderId == undefined : !!selectedFolderId)) {
       moveItem(Number(itemId), selectedFolderId || "", itemType)
         .then((success) => {
           if (success) {
@@ -139,7 +136,12 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         }: ${itemNameToMove}`}
         funtionClick={handleMove}
         isSubmitting={loading}
-        isValid={!!selectedFolderId && !isCurrentLocation}
+        isValid={
+          itemType === "carpetas"
+            ? selectedFolderId !== currentFolderId ||
+              selectedFolderId !== undefined
+            : !!selectedFolderId && !isCurrentLocation && selectedFolderId !== ""
+        }
         submitText="Mover"
         cancelText="Cancelar"
         footerVariant="form"
@@ -170,6 +172,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
             </React.Fragment>
           ))}
         </div>
+        
 
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-400">
