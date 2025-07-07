@@ -25,6 +25,10 @@ const ModalCreateDI = () => {
       "El tipo de elemento de demanda inducida es obligatorio"
     ),
     objetive: Yup.string().required("El objetivo es obligatorio"),
+    contactNumbers: Yup.string().required("Los numeros de contacto es obligatorio")
+      .min(10, "El número de contacto debe tener al menos 10 dígitos")
+      .max(30, "El número de contacto no debe exceder los 30 dígitos"),
+
     // actualizaciond e datos del paciente
     email: Yup.string()
       .email("Email inválido")
@@ -154,6 +158,7 @@ const ModalCreateDI = () => {
       elementDemand: "",
       typeElementDemand: "",
       objetive: "",
+      contactNumbers: "",
       classification: false,
       acceptCall: "",
       relationshipUser: "",
@@ -305,6 +310,22 @@ const ModalCreateDI = () => {
               {formik.touched.objetive && formik.errors.objetive && (
                 <div className="text-red-500">{formik.errors.objetive}</div>
               )}
+            </div>
+            <div>
+              <Input
+                label="Numeros contacto"
+                helpText="Ingresa los numeros con los que se intenta contactar al paciente"
+                type="text"
+                id="contactNumbers"
+                value={formik.values.contactNumbers}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="contactNumbers"
+                touched={formik.touched.contactNumbers}
+                error={formik.errors.contactNumbers}
+                required
+                placeholder="Ej: 30012345673012345678"
+              />
             </div>
           </div>
           {/* datos del paciente */}
