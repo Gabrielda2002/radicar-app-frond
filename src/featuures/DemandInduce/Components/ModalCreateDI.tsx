@@ -103,8 +103,8 @@ const ModalCreateDI = () => {
     conditionUser: Yup.boolean().optional(),
     suport: Yup.string().optional(),
     // resultado de la llamada no efectiva
-    resultCall: Yup.string().when("classification", {
-      is: (value: boolean) => value === false,
+    resultCall: Yup.string().when(["classification", "elementDemand"], {
+      is: (classification: boolean, elementDemand: string) => classification === false && elementDemand == "2",
       then: (schema) =>
         schema.required("El resultado de la llamada es obligatorio"),
       otherwise: (schema) => schema.optional(),

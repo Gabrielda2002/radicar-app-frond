@@ -3,9 +3,43 @@ import ModalCreateDI from "../Components/ModalCreateDI";
 import { useFetchDI } from "../Hooks/useFetchDI";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
+import usePagination from "@/hooks/usePagination";
+import useSearch from "@/hooks/useSearch";
+import { IDemandInduced } from "@/models/IDemandInduced";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import { useCallback } from "react";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
+import { Search } from "lucide-react";
 
 const DemandInduce = () => {
+  const ITEMS_PER_PAGE = 10;
+
   const { data, loading, error } = useFetchDI();
+
+  const { query, setQuery, filteredData } = useSearch<IDemandInduced>(data, [
+    "id",
+    "typeDocument",
+    "document",
+    "dateCreated",
+    "elementDI",
+    "typeElementDI",
+    "objetive",
+    "programPerson",
+    "personProcess",
+    "areaPersonProcess",
+    "assignmentDate",
+  ]);
+
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, ITEMS_PER_PAGE);
+
+  const handleItemsPerPageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setItemsPerPage(Number(e.target.value));
+    },
+    [setItemsPerPage]
+  );
 
   return (
     <>
@@ -13,7 +47,10 @@ const DemandInduce = () => {
         <LoadingSpinner />
       ) : error ? (
         <div className="flex items-center justify-center h-screen">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
             <strong className="font-bold">Error:</strong>
             <span className="block sm:inline"> {error}</span>
           </div>
@@ -32,6 +69,29 @@ const DemandInduce = () => {
 
             <ModalCreateDI />
 
+            <div className="flex flex-col items-start w-full mt-2 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar"
+                icon={<Search className="text-black dark:text-white"></Search>}
+                size="md"
+              />
+
+              <div className="flex items-center space-x-[10px] md:ml-4 w-full md:w-auto">
+                <Select
+                  options={[
+                    { value: "10", label: "10 Paginas" },
+                    { value: "20", label: "20 Paginas" },
+                    { value: "30", label: "30 Paginas" },
+                  ]}
+                  id="itemsPerPage"
+                  selectSize="md"
+                  value={ITEMS_PER_PAGE}
+                  onChange={handleItemsPerPageChange}
+                />
+              </div>
+            </div>
             <div className="mt-4 mb-5 overflow-y-auto">
               <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
                 <thead>
@@ -50,49 +110,33 @@ const DemandInduce = () => {
                   </tr>
                 </thead>
                 <tbody className="text-sm text-gray-600 dark:text-gray-300">
-                  {data.map((d) => (
+                  {currentData().map((d) => (
                     <tr
                       key={d.id}
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                     >
-                      <td>
-                        {d.typeDocument}
-                      </td>
-                      <td className="">
-                        {d.document}
-                      </td>
-                      <td className="">
-                        {FormatDate(d.dateCreated)}
-                      </td>
-                      <td className="">
-                        {d.elementDI}
-                      </td>
-                      <td className="">
-                        {d.typeElementDI}
-                      </td>
+                      <td>{d.typeDocument}</td>
+                      <td className="">{d.document}</td>
+                      <td className="">{FormatDate(d.dateCreated)}</td>
+                      <td className="">{d.elementDI}</td>
+                      <td className="">{d.typeElementDI}</td>
                       <td className="">
                         {d.classification ? "Efectiva" : "No Efectiva"}
                       </td>
-                      <td className="">
-                        {d.objetive}
-                      </td>
-                      <td className="">
-                        {d.programPerson}
-                      </td>
-                      <td className="">
-                        {d.personProcess}
-                      </td>
-                      <td className="">
-                        {d.areaPersonProcess}
-                      </td>
-                      <td className="">
-                        {FormatDate(d.assignmentDate)}
-                      </td>
-                      
+                      <td className="">{d.objetive}</td>
+                      <td className="">{d.programPerson}</td>
+                      <td className="">{d.personProcess}</td>
+                      <td className="">{d.areaPersonProcess}</td>
+                      <td className="">{FormatDate(d.assignmentDate, false)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={paginate}
+              />
             </div>
           </div>
         </>
