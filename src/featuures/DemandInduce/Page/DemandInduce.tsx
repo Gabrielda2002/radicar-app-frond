@@ -15,7 +15,7 @@ import { Search } from "lucide-react";
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
 
-  const { data, loading, error } = useFetchDI();
+  const { data, loading, error, refetch } = useFetchDI();
 
   const { query, setQuery, filteredData } = useSearch<IDemandInduced>(data, [
     "id",
@@ -67,7 +67,9 @@ const DemandInduce = () => {
           <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10">
             {/* Barra de busqueda y demas parametros */}
 
-            <ModalCreateDI />
+            <ModalCreateDI
+                refresh={refetch}
+            />
 
             <div className="flex flex-col items-start w-full mt-2 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
               <Input

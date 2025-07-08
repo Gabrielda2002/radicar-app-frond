@@ -6,13 +6,19 @@ import Select from "@/components/common/Ui/Select";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useCreateDI } from "../Hooks/useCreateDI";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 
-const ModalCreateDI = () => {
+interface ModalCreateDIProps {
+  refresh: () => void;
+}
+
+const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
+  refresh,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [documento, setDocumento] = useState<string>("");
 
@@ -199,6 +205,7 @@ const ModalCreateDI = () => {
         if (response ) {
           formik.resetForm();
           setDocumento("");
+          await refresh();
           toast.success("Demanda inducida creada exitosamente");
         }
         
