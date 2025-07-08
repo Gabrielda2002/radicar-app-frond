@@ -2,7 +2,8 @@ import { AnimatePresence } from "framer-motion";
 import React from "react";
 import ErrorMessage from "../ErrorMessageModal/ErrorMessageModals";
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
   className?: string;
   error?: string;
@@ -11,14 +12,14 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   variant?: "default" | "dark" | "error" | "checkbox";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "full";
   helpText?: string;
 }
 
-const Input: React.FC<InputProps> = ({ 
-  label, 
-  className = "", 
-  error, 
+const Input: React.FC<InputProps> = ({
+  label,
+  className = "",
+  error,
   touched,
   required = false,
   icon,
@@ -28,7 +29,7 @@ const Input: React.FC<InputProps> = ({
   helpText,
   disabled,
   type,
-  ...props 
+  ...props
 }) => {
   const getSizeClasses = () => {
     switch (size) {
@@ -36,6 +37,10 @@ const Input: React.FC<InputProps> = ({
         return "px-2 py-1 text-sm";
       case "lg":
         return "px-4 py-3 text-lg";
+      case "md":
+        return "px-3 py-2 text-base";
+      case "full":
+        return "w-full px-3 py-2 text-base";
       default:
         return "px-3 py-2";
     }
@@ -45,7 +50,7 @@ const Input: React.FC<InputProps> = ({
     if (error && touched) {
       return "border-red-500 dark:border-red-500 focus:ring-red-500";
     }
-    
+
     switch (variant) {
       case "dark":
         return "border-gray-600 dark:border-gray-600 bg-gray-700 dark:bg-gray-700 text-white dark:text-white";
@@ -61,8 +66,18 @@ const Input: React.FC<InputProps> = ({
     w-full border-2 rounded focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
     ${getSizeClasses()}
     ${getVariantClasses()}
-    ${disabled ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-75" : ""}
-    ${icon && type !== "checkbox" ? (iconPosition === "left" ? "pl-10" : "pr-10") : ""}
+    ${
+      disabled
+        ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-75"
+        : ""
+    }
+    ${
+      icon && type !== "checkbox"
+        ? iconPosition === "left"
+          ? "pl-10"
+          : "pr-10"
+        : ""
+    }
     ${className}
   `.trim();
 
@@ -116,7 +131,7 @@ const Input: React.FC<InputProps> = ({
           </span>
         </label>
       )}
-      
+
       <div className="relative">
         {icon && iconPosition === "left" && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -125,14 +140,14 @@ const Input: React.FC<InputProps> = ({
             </div>
           </div>
         )}
-        
+
         <input
           type={type}
           className={inputClasses}
           disabled={disabled}
           {...props}
         />
-        
+
         {icon && iconPosition === "right" && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
             <div className="w-5 h-5 text-gray-400 dark:text-gray-300">
