@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import { Search } from "lucide-react";
+import ModalSummaryDI from "../Components/ModalSummaryDI";
 
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
@@ -93,6 +94,7 @@ const DemandInduce = () => {
                   onChange={handleItemsPerPageChange}
                 />
               </div>
+              <ModalSummaryDI/>
             </div>
             <div className="mt-4 mb-5 overflow-y-auto">
               <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">

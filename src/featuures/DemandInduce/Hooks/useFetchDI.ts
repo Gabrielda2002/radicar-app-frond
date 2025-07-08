@@ -2,6 +2,21 @@ import { IDemandInduced } from "@/models/IDemandInduced";
 import { api } from "@/utils/api-config";
 import { useCallback, useEffect, useState } from "react";
 
+// Interfaces para el resumen
+export interface ISummaryByElement {
+  elementDI: string;
+  total: number;
+  classified: number;
+  unclassified: number;
+}
+
+export interface IDISummary {
+  totalRecords: number;
+  totalClassified: number;
+  totalUnclassified: number;
+  byElement: ISummaryByElement[];
+}
+
 export const useFetchDI = () => {
   const [data, setData] = useState<IDemandInduced[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -55,10 +70,49 @@ export const useFetchDI = () => {
     fetchDI();
   }, [fetchDI]);
 
+  // Función para calcular el resumen
+  const calculateSummary = useCallback((): IDISummary => {
+    const summary: IDISummary = {
+      totalRecords: data.length,
+      totalClassified: 0,
+      totalUnclassified: 0,
+      byElement: []
+    };
+
+    // Contar totales generales
+    summary.totalClassified = data.filter(item => item.classification).length;
+    summary.totalUnclassified = data.filter(item => !item.classification).length;
+
+    // Agrupar por elementDI
+    const elementGroups = data.reduce((acc, item) => {
+      const element = item.elementDI;
+      if (!acc[element]) {
+        acc[element] = {
+          elementDI: element,
+          total: 0,
+          classified: 0,
+          unclassified: 0
+        };
+      }
+      acc[element].total++;
+      if (item.classification) {
+        acc[element].classified++;
+      } else {
+        acc[element].unclassified++;
+      }
+      return acc;
+    }, {} as Record<string, ISummaryByElement>);
+
+    summary.byElement = Object.values(elementGroups);
+
+    return summary;
+  }, [data]);
+
   return {
     data,
     error,
     loading,
     refetch,
+    calculateSummary,
   };
 };
