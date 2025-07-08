@@ -14,10 +14,40 @@ function getNestedValue<T>(obj: T, path: string): any {
   }, obj);
 }
 
+// Función para formatear fecha a string comparable
+function formatDateForSearch(date: Date | string | null | undefined): string {
+  if (!date) return '';
+  
+  try {
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+    
+    // Formato: YYYY-MM-DD, DD/MM/YYYY, DD-MM-YYYY
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    
+    return [
+      `${year}-${month}-${day}`,     // 2024-01-15
+      `${day}/${month}/${year}`,     // 15/01/2024
+      `${day}-${month}-${year}`,     // 15-01-2024
+      `${day}/${month}`,             // 15/01
+      `${day}-${month}`,             // 15-01
+      `${month}/${year}`,            // 01/2024
+      `${month}-${year}`,            // 01-2024
+      String(year),                  // 2024
+      String(month),                 // 01
+      String(day)                    // 15
+    ].join(' ');
+  } catch {
+    return '';
+  }
+}
+
 function useSearch<T extends object>(data: T[], searchKeys: NestedKeyOf<T>[]) {
   const [query, setQuery] = useState('');
 
-  const normalizedQuery = query.toLowerCase();
+  const normalizedQuery = query.toLowerCase().trim();
 
   const filteredData = useMemo(() => {
     if (normalizedQuery === '') {
@@ -28,18 +58,40 @@ function useSearch<T extends object>(data: T[], searchKeys: NestedKeyOf<T>[]) {
       .filter((item) =>
         searchKeys.some((key) => {
           const value = getNestedValue(item, key as string);
-          return value !== undefined && 
-                 String(value).toLowerCase().includes(normalizedQuery);
+          
+          if (value === undefined || value === null) return false;
+          
+          // Si es una fecha (Date object o string que parece fecha)
+          if (value instanceof Date || 
+              (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value))) {
+            const dateString = formatDateForSearch(value);
+            return dateString.toLowerCase().includes(normalizedQuery);
+          }
+          
+          // Búsqueda normal para otros tipos
+          return String(value).toLowerCase().includes(normalizedQuery);
         })
       )
       .sort((a, b) => {
+        // Priorizar coincidencias exactas
         const aMatch = searchKeys.some((key) => {
           const value = getNestedValue(a, key as string);
+          if (value instanceof Date || 
+              (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value))) {
+            const dateString = formatDateForSearch(value);
+            return dateString.toLowerCase() === normalizedQuery;
+          }
           return value !== undefined && 
                  String(value).toLowerCase() === normalizedQuery;
         });
+        
         const bMatch = searchKeys.some((key) => {
           const value = getNestedValue(b, key as string);
+          if (value instanceof Date || 
+              (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value))) {
+            const dateString = formatDateForSearch(value);
+            return dateString.toLowerCase() === normalizedQuery;
+          }
           return value !== undefined && 
                  String(value).toLowerCase() === normalizedQuery;
         });
@@ -47,6 +99,7 @@ function useSearch<T extends object>(data: T[], searchKeys: NestedKeyOf<T>[]) {
         if (aMatch && !bMatch) return -1;
         if (!aMatch && bMatch) return 1;
 
+        // Ordenar por el primer campo como fallback
         const firstKey = searchKeys[0];
         if (firstKey) {
           const aValue = getNestedValue(a, firstKey as string);
