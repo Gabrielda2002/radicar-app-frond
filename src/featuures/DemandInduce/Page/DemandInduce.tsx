@@ -53,7 +53,7 @@ const DemandInduce = () => {
             role="alert"
           >
             <strong className="font-bold">Error:</strong>
-            <span className="block sm:inline"> {error}</span>
+            <span className="block sm:inline">{error}</span>
           </div>
         </div>
       ) : (
@@ -65,23 +65,21 @@ const DemandInduce = () => {
               { label: "Inducción de demanda", path: "/demanda/inducida" },
             ]}
           />
-          <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10">
+          <div className="w-full max-w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10">
             {/* Barra de busqueda y demas parametros */}
 
-            <ModalCreateDI
-                refresh={refetch}
-            />
-
-            <div className="flex flex-col items-start w-full mt-2 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar"
-                icon={<Search className="text-black dark:text-white"></Search>}
-                size="md"
-              />
-
-              <div className="flex items-center space-x-[10px] md:ml-4 w-full md:w-auto">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
+              <div className="flex flex-col md:flex-row md:items-center space-x-2 mb-4 md:mb-0 md:w-full w-2/5 gap-4">
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar"
+                  icon={
+                    <Search className="text-black dark:text-white"></Search>
+                  }
+                  className="ml-2"
+                  size="md"
+                />
                 <Select
                   options={[
                     { value: "10", label: "10 Paginas" },
@@ -93,8 +91,11 @@ const DemandInduce = () => {
                   value={ITEMS_PER_PAGE}
                   onChange={handleItemsPerPageChange}
                 />
+                <ModalSummaryDI />
               </div>
-              <ModalSummaryDI/>
+              <div className="flex justify-start md:justify-end w-full">
+                <ModalCreateDI refresh={refetch} />
+              </div>
             </div>
             <div className="mt-4 mb-5 overflow-y-auto">
               <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
@@ -131,7 +132,9 @@ const DemandInduce = () => {
                       <td className="">{d.programPerson}</td>
                       <td className="">{d.personProcess}</td>
                       <td className="">{d.areaPersonProcess}</td>
-                      <td className="">{FormatDate(d.assignmentDate, false)}</td>
+                      <td className="">
+                        {FormatDate(d.assignmentDate, false)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -64,7 +64,7 @@ const Select: React.FC<SelectProps> = ({
   `.trim();
 
   return (
-    <div className="mb-4">
+    <div>
       {label && (
         <label className="block mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
           <span className="flex items-center">

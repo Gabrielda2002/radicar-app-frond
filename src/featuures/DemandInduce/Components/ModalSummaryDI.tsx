@@ -15,7 +15,8 @@ const ModalSummaryDI = () => {
     <Button
       variant="outline"
       onClick={() => setIsOpen(true)}
-      size="sm"
+      size="md"
+      className="truncate md:w-auto md:max-w-xs ml-0"
     >
       Resumen DI
     </Button>
