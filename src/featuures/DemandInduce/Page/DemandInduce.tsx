@@ -91,7 +91,7 @@ const DemandInduce = () => {
                   value={ITEMS_PER_PAGE}
                   onChange={handleItemsPerPageChange}
                 />
-                <ModalSummaryDI />
+                <ModalSummaryDI filteredData={filteredData} totalRecords={data.length} />
               </div>
               <div className="flex justify-start md:justify-end w-full">
                 <ModalCreateDI refresh={refetch} />

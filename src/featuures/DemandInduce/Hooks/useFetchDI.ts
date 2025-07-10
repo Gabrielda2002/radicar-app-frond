@@ -71,20 +71,22 @@ export const useFetchDI = () => {
   }, [fetchDI]);
 
   // Función para calcular el resumen
-  const calculateSummary = useCallback((): IDISummary => {
+  const calculateSummary = useCallback((customData?: IDemandInduced[]): IDISummary => {
+    const dataToUse = customData || data;
+    
     const summary: IDISummary = {
-      totalRecords: data.length,
+      totalRecords: dataToUse.length,
       totalClassified: 0,
       totalUnclassified: 0,
       byElement: []
     };
 
     // Contar totales generales
-    summary.totalClassified = data.filter(item => item.classification).length;
-    summary.totalUnclassified = data.filter(item => !item.classification).length;
+    summary.totalClassified = dataToUse.filter(item => item.classification).length;
+    summary.totalUnclassified = dataToUse.filter(item => !item.classification).length;
 
     // Agrupar por elementDI
-    const elementGroups = data.reduce((acc, item) => {
+    const elementGroups = dataToUse.reduce((acc, item) => {
       const element = item.elementDI;
       if (!acc[element]) {
         acc[element] = {

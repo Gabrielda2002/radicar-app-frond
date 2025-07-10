@@ -2,13 +2,20 @@ import Button from "@/components/common/Ui/Button"
 import ModalDefault from "@/components/common/Ui/ModalDefault"
 import { useFetchDI } from "../Hooks/useFetchDI";
 import { useState } from "react";
+import { IDemandInduced } from "@/models/IDemandInduced";
 
-const ModalSummaryDI = () => {
+interface ModalSummaryDIProps {
+  filteredData?: IDemandInduced[];
+  totalRecords?: number;
+}
+
+const ModalSummaryDI = ({ filteredData, totalRecords }: ModalSummaryDIProps) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { calculateSummary } = useFetchDI();
 
-  const summary = calculateSummary();
+  const summary = calculateSummary(filteredData);
+  const isFiltered = filteredData && totalRecords && filteredData.length < totalRecords;
 
   return (
     <>
@@ -27,6 +34,18 @@ const ModalSummaryDI = () => {
         size="lg"
       >
         <div className="space-y-6">
+          {/* Indicador de datos filtrados */}
+          {isFiltered && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                  Mostrando datos filtrados ({summary.totalRecords} de {totalRecords} registros)
+                </span>
+              </div>
+            </div>
+          )}
+          
           {/* Resumen General */}
           <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
             <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">
@@ -46,7 +65,7 @@ const ModalSummaryDI = () => {
                   {summary.totalClassified}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Clasificadas
+                  Efectivas
                 </div>
               </div>
               <div className="text-center">
@@ -54,7 +73,7 @@ const ModalSummaryDI = () => {
                   {summary.totalUnclassified}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Sin Clasificar
+                  No Efectivas
                 </div>
               </div>
             </div>
@@ -76,10 +95,10 @@ const ModalSummaryDI = () => {
                       Total
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Clasificadas
+                      Efectivas
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Sin Clasificar
+                      No Efectivas
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       % Clasificación
