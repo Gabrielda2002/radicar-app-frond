@@ -20,6 +20,7 @@ export interface IDemandInduced {
   areaEps: string;
   conditionUser: boolean;
   suport: string | null;
+  namePatient: string;
   phoneNumberPatient: string;
   emailPatient: string;
   resultCALL: string;

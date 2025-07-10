@@ -91,7 +91,10 @@ const DemandInduce = () => {
                   value={ITEMS_PER_PAGE}
                   onChange={handleItemsPerPageChange}
                 />
-                <ModalSummaryDI filteredData={filteredData} totalRecords={data.length} />
+                <ModalSummaryDI
+                  filteredData={filteredData}
+                  totalRecords={data.length}
+                />
               </div>
               <div className="flex justify-start md:justify-end w-full">
                 <ModalCreateDI refresh={refetch} />
@@ -118,21 +121,39 @@ const DemandInduce = () => {
                   {currentData().map((d) => (
                     <tr
                       key={d.id}
-                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                     >
-                      <td>{d.typeDocument}</td>
-                      <td className="">{d.document}</td>
-                      <td className="">{FormatDate(d.dateCreated)}</td>
-                      <td className="">{d.elementDI}</td>
-                      <td className="">{d.typeElementDI}</td>
-                      <td className="">
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.typeDocument}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.document}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {FormatDate(d.dateCreated)}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.elementDI}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.typeElementDI}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
                         {d.classification ? "Efectiva" : "No Efectiva"}
                       </td>
-                      <td className="">{d.objetive}</td>
-                      <td className="">{d.programPerson}</td>
-                      <td className="">{d.personProcess}</td>
-                      <td className="">{d.areaPersonProcess}</td>
-                      <td className="">
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.objetive}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.programPerson}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.namePatient}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                        {d.areaPersonProcess}
+                      </td>
+                      <td className="md:p-3 p-1 border-b dark:border-gray-700">
                         {FormatDate(d.assignmentDate, false)}
                       </td>
                     </tr>
