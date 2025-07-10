@@ -9,7 +9,7 @@ import { useFetchDocumentoRadicado } from "../Hooks/UseFetchDocumentRadicado.ts"
 const ModalGestionAuxiliar = lazy(
   () =>
     import(
-      "@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar.tsx"
+      "@/components/common/Modals/GestionAuxiliar/ModalTableMonitoringAssistent.tsx"
     )
 );
 const ModalMostrarDatos = lazy(

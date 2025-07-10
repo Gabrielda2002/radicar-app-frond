@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Cup, Seguimiento } from "@/models/IRadicados";
-import ModalGestionServicio from "./Components/ModalGestionServicio";
+import ModalGestionServicio from "./Components/ModalCreateMonitoringAssistent";
 import {
   GestionAuxiliarCirugia,
   programacion,

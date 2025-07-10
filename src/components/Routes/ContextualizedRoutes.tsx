@@ -39,7 +39,7 @@ const TablaAuditoria = lazy(
   () => import("@/featuures/Auditoria/Pages/TablaAuditoria.tsx")
 );
 const TablaRadicacion = lazy(
-  () => import("@/featuures/Radicacion/Page/TablaRadicacion.tsx")
+  () => import("@/featuures/Radicacion/Page/TableServiceRequestSubmission")
 );
 const TablaAutorizarServicios = lazy(
   () => import("@/featuures/AuthorizeService/Pages/TablaAutorizarServicios.tsx")
