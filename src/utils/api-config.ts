@@ -215,10 +215,6 @@ export const autorizarCups = async (data: object, id: number) => {
     })
 }
 
-export const updateCupsAuditados = async (id: number, data: FormData) => {
-    return api.put(`/actualizar-cups/${id}`, data)
-}
-
 export const updateStatusData = async (id: number, data: FormData, endPoint: string) => {
     return api.put(`/${endPoint}/${id}`, data);
 }

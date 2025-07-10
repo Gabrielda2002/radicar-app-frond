@@ -6,13 +6,14 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 import { Cup, IAuditados } from "@/models/IAuditados";
-import { useFetchAuditados } from "../Hooks/UseFetchAuditados";
+import { useFetchAuditados } from "../Hooks/UseCUPSAuthorized";
 
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
+import Button from "@/components/common/Ui/Button";
 const ModalActualizarCupsAuditoria = lazy(
   () => import("../Components/ModalActualizarCupsAuditados")
 );
@@ -186,8 +187,6 @@ const TableContent: React.FC<TableContentProps> = ({
     setExpandedRow(expandedRow === id ? null : id); // Alternar entre expandir y colapsar
   };
 
-  
-
   return (
     <>
       <div className="overflow-x-auto">
@@ -219,10 +218,10 @@ const TableContent: React.FC<TableContentProps> = ({
                     {auditado.patientName}
                   </td>
                   <td className="p-3 border-b dark:border-gray-700">
-                    <button
+                    <Button
                       title="Ver Cups Auditados"
                       onClick={() => toggleRow(auditado.id)}
-                      className="px-2 py-1 text-white bg-gray-100 rounded md:py-2 md:px-4 hover:bg-gray-100 dark:bg-color dark:hover:bg-teal-600"
+                      variant="secondary"
                     >
                       {expandedRow === auditado.id ? (
                         <>
@@ -233,7 +232,7 @@ const TableContent: React.FC<TableContentProps> = ({
                           <ChevronUpIcon className="w-6 h-6 text-black dark:text-white" />
                         </>
                       )}
-                    </button>
+                    </Button>
                   </td>
                 </tr>
                 <AnimatePresence>
@@ -289,16 +288,17 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
             className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
             key={cup.id}
           >
-            <td className="p-0 border-b md:p-3 dark:border-gray-700">{cup.code}</td>
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
+              {cup.code}
+            </td>
             <td className="border-b dark:border-gray-700">
-              <span
-                className="block cursor-pointer"
-                title={cup.description}
-              >
+              <span className="block cursor-pointer" title={cup.description}>
                 {cup.description}
               </span>
             </td>
-            <td className="p-0 border-b md:p-3 dark:border-gray-700">{cup.status}</td>
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
+              {cup.status}
+            </td>
             <td className="p-0 border-b md:p-3 dark:border-gray-700">
               {cup.observation}
             </td>
