@@ -1,27 +1,35 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useMemo, useState } from "react";
-import { AnimatePresence } from "framer-motion";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { submitGestionAuxiliar } from "../Services/submitGestionAuxiliar";
+import FormModal from "@/components/common/Ui/FormModal";
+import Button from "@/components/common/Ui/Button";
+import { createPortal } from "react-dom";
+import { useTheme } from "@/context/blackWhiteContext";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
+import { useCreateMonitoringRaSg } from "../Hooks/useCreateMonitoringRaSg";
+import { toast } from "react-toastify";
 
 interface ModalGestionServicioProps {
-  onClose: () => void;
   idRadicado: number | null;
   idCirugias: number | null;
+  disabledButton?: boolean;
 }
 
 const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
-  onClose,
   idRadicado,
   idCirugias,
+  disabledButton = false,
 }) => {
-  const [success, setSuccess] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { createMonitoring, error, loading } = useCreateMonitoringRaSg();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const user = localStorage.getItem("user");
 
   const idUsuario = user ? JSON.parse(user).id : "";
+
+  const { theme } = useTheme();
 
   // Esquema de validación con Yup
   const validationSchema = useMemo(
@@ -46,9 +54,6 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
     },
     validationSchema,
     onSubmit: async (values) => {
-      setIsSubmitting(true);
-      setSuccess(false);
-
       const formData = new FormData();
       formData.append("observation", values.observacion);
       formData.append("status", values.estadoSeguimiento);
@@ -63,138 +68,98 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
         } else if (idRadicado !== null) {
           formData.append("idRadicacion", idRadicado.toString());
           formData.append("userId", idUsuario);
-          endPoint = "seguimientos-auxiliares"; 
+          endPoint = "seguimientos-auxiliares";
         }
 
-        const response = await submitGestionAuxiliar(formData, endPoint);
+        const response = await createMonitoring(formData, endPoint);
 
-        if (response && response.status === 200) {
-          setSuccess(true);
-          setTimeout(() => {
-            onClose();
-            window.location.reload();
-          }, 2000);
-        } else {
-          throw new Error("Error al registrar la gestión.");
+        if (
+          (response && response.status === 200) ||
+          (response && response.status === 201)
+        ) {
+          toast.success("Gestión registrada con éxito");
+          formik.resetForm();
         }
       } catch (error) {
         console.error(error);
       }
-
-      setIsSubmitting(false);
     },
   });
 
   return (
-    <section className="fixed inset-0 z-50 flex justify-center transition-opacity duration-300 bg-black bg-opacity-50 pt-14 backdrop-blur-sm">
-      <section>
-        <div className="w-full p-4 overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800">
-          <div className="flex items-center justify-between px-2 py-2">
-            <h1 className="text-xl font-semibold text-color dark:text-gray-200 ">
-              Gestión Servicio Cliente
-            </h1>
-            <button
-              onClick={onClose}
-              className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 w-7 h-7 hover:bg-gray-400 dark:hover:text-gray-900 hover:text-gray-900"
-            >
-              &times;
-            </button>
-          </div>
+    <>
+      <Button
+        onClick={() => setIsOpen(true)}
+        variant="outline"
+        size="md"
+        disabled={disabledButton}
+      >
+        Registrar Gestión Servicio
+      </Button>
 
-          <form onSubmit={formik.handleSubmit}>
-            <section className="py-2 px-4 max-h-[70Vh] overflow-y-auto grid grid-cols-2 mb-4 ms-2 dark:bg-gray-800 gap-12">
-              <div className="">
-                <label htmlFor="estadoSeguimiento">
-                  <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white">
-                    Estado Seguimiento
-                  </span>
-                  <select
+      {isOpen &&
+        createPortal(
+          <div className={`${theme === "dark" ? "dark" : ""}`}>
+            <FormModal
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              title="Crear Gestión Servicio"
+              onSubmit={formik.handleSubmit}
+              isSubmitting={loading}
+              isValid={formik.isValid}
+              submitText="Crear"
+              size="md"
+            >
+              <section className="py-2 px-4 max-h-[70Vh] overflow-y-auto grid grid-cols-2 mb-4 ms-2 dark:bg-gray-800 gap-12">
+                <div className="">
+                  <Select
+                    options={[
+                      { value: "1", label: "Asignado" },
+                      { value: "2", label: "Cancelado" },
+                      { value: "3", label: "Cerrado" },
+                      { value: "4", label: "Cumplido" },
+                      { value: "5", label: "Incumplido" },
+                      { value: "6", label: "Pendiente" },
+                      { value: "7", label: "Reprogramado" },
+                      { value: "9", label: "Programado" },
+                    ]}
+                    label="Estado Seguimiento"
                     id="estadoSeguimiento"
                     name="estadoSeguimiento"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.estadoSeguimiento}
-                    className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-gray-200 dark:bg-gray-800"
-                  >
-                    <option value="">- SELECT -</option>
-                    <option value="1">Asignado</option>
-                    <option value="2">Cancelado</option>
-                    <option value="3">Cerrado</option>
-                    <option value="4">Cumplido</option>
-                    <option value="5">Incumplido</option>
-                    <option value="6">Pendiente</option>
-                    <option value="7">Reprogramado</option>
-                    <option value="9">Programado</option>
-                  </select>
-                  <AnimatePresence>
-                    {formik.touched.estadoSeguimiento &&
-                      formik.errors.estadoSeguimiento && (
-                        <ErrorMessage>
-                          {formik.errors.estadoSeguimiento}
-                        </ErrorMessage>
-                      )}
-                  </AnimatePresence>
-                </label>
-              </div>
+                    touched={formik.touched.estadoSeguimiento}
+                    error={formik.errors.estadoSeguimiento}
+                    required
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="observacion">
-                  <span className="flex mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-white">
-                    Observación
-                  </span>
-                  <textarea
+                <div>
+                  <Input
+                    label="Observación"
                     id="observacion"
                     name="observacion"
-                    placeholder="Observación . . ."
+                    placeholder="Observación"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.observacion}
-                    className={`w-full px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                      formik.touched.observacion && formik.errors.observacion
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                  ></textarea>
-                  <AnimatePresence>
-                    {formik.touched.observacion &&
-                      formik.errors.observacion && (
-                        <ErrorMessage>
-                          {formik.errors.observacion}
-                        </ErrorMessage>
-                      )}
-                  </AnimatePresence>
-                </label>
-              </div>
-            </section>
-
-            <div className="flex items-center justify-end w-full h-12 gap-2 px-4 py-4 text-sm font-semibold bg-white dark:bg-gray-800">
-              <button
-                type="button"
-                className="w-20 h-10 text-blue-400 duration-200 border-2 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
-                onClick={onClose}
-              >
-                Cerrar
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting || !formik.isValid}
-                className={`w-16 h-10 text-white rounded-md bg-color hover:bg-emerald-900 border-2 hover:border-gray-900 duration-200 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600 ${
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {isSubmitting ? "Enviando..." : "Enviar"}
-              </button>
-            </div>
-          </form>
-
-          {success && (
-            <div className="mb-4 text-green-500">
-              ¡Gestión registrada con éxito!
-            </div>
-          )}
-        </div>
-      </section>
-    </section>
+                    touched={formik.touched.observacion}
+                    error={formik.errors.observacion}
+                    required
+                  />
+                </div>
+              </section>
+              {error && (
+                <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
+                  {error}
+                </div>
+              )}
+            </FormModal>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
