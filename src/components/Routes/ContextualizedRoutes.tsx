@@ -12,7 +12,7 @@ const Usuarios = lazy(
 );
 import RecoverLetterPage from "@/featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
 import RecoverLastPage from "@/featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
-import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TablaRegistrosAuditados";
+import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TableCUPSAuthorized";
 import TablaCups from "@/featuures/CUPS/Pages/TablaCups";
 import TablaPacientes from "@/featuures/Patient/Pages/TablaPacientes";
 import TablaDiagnostico from "@/featuures/Diagnostico/Pages/TablaDiagnostico";

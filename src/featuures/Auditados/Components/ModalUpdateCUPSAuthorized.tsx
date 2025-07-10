@@ -9,7 +9,7 @@ import editar from "/assets/editar.svg";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
-import { useFetchAuditados } from "../Hooks/UseCUPSAuthorized";
+import { useCUPSAuthorized } from "../Hooks/UseCUPSAuthorized";
 import { toast } from "react-toastify";
 import Button from "@/components/common/Ui/Button";
 
@@ -22,7 +22,7 @@ const ModalActualizarCupsAuditoria: React.FC<
 > = ({ cup }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { UpdateCupsAuthorized, loading, error, refetch } = useFetchAuditados();
+  const { UpdateCupsAuthorized, loading, error, refetch } = useCUPSAuthorized();
 
   // * se agreaga estado para el control de la carga de los estados
   const [loadEstados, setLoadEstados] = useState(false);

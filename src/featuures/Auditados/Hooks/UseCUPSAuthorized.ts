@@ -3,7 +3,7 @@ import { fetchAuditados } from "@/services/apiService";
 import { useCallback, useEffect, useState } from "react";
 import { UpdateCups } from "../Services/UpdateCups";
 
-export const useFetchAuditados = () => {
+export const useCUPSAuthorized = () => {
   const [data, setData] = useState<IAuditados[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

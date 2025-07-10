@@ -6,7 +6,7 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 import { Cup, IAuditados } from "@/models/IAuditados";
-import { useFetchAuditados } from "../Hooks/UseCUPSAuthorized";
+import { useCUPSAuthorized } from "../Hooks/UseCUPSAuthorized";
 
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
@@ -15,13 +15,13 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
 import Button from "@/components/common/Ui/Button";
 const ModalActualizarCupsAuditoria = lazy(
-  () => import("../Components/ModalActualizarCupsAuditados")
+  () => import("../Components/ModalUpdateCUPSAuthorized")
 );
 
 const ITEMS_PER_PAGE = 10;
 
-const TablaRegistrosAuditados: React.FC = () => {
-  const { data, loading, error } = useFetchAuditados();
+const TableCUPSAuthorized: React.FC = () => {
+  const { data, loading, error } = useCUPSAuthorized();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
   const { query, setQuery, filteredData } = useSearch<IAuditados>(data, [
     "id",
@@ -317,4 +317,4 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
   </div>
 );
 
-export default TablaRegistrosAuditados;
+export default TableCUPSAuthorized;
