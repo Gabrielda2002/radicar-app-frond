@@ -51,7 +51,7 @@ const SistemaInventario = lazy(
   () => import("@/featuures/SystemInventory/Pages/InventorySystem.tsx")
 );
 const RegistroUsuarios = lazy(
-  () => import("@/featuures/UserRegister/Page/RegistroUsuario.tsx")
+  () => import("@/featuures/UserRegister/Page/TableRegisterBiometric")
 );
 const GestionTickets = lazy(
   () => import("@/featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")

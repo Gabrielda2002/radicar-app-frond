@@ -1,6 +1,6 @@
 import { IRegisterUser } from "@/models/IRegisterUser";
 import { useState } from "react";
-import { getRegisterUser } from "../Service/getRegisterUser";
+import { GetRegisterBiometric } from "../Service/GetRegisterBiometric";
 
 export const useFetchRegisterEntries = () => {
     const [dataRegister, setDataRegister] = useState<IRegisterUser[]>([]);
@@ -12,7 +12,7 @@ export const useFetchRegisterEntries = () => {
             
             setLoadingRegister(true);
             
-            const response = await getRegisterUser(documentNumber, dateStart, dateEnd);
+            const response = await GetRegisterBiometric(documentNumber, dateStart, dateEnd);
             setDataRegister(response);
 
         } catch (error: any) {
