@@ -342,8 +342,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
             </div>
             <div>
               <Input
-                label="Numeros contacto"
-                helpText="Ingresa los numeros con los que se intenta contactar al paciente"
+                label="Número de telefono con el que se establece el contacto"
+                helpText="Ingresa los numeros con los que se intenta contactar al paciente sin espacios ni caracteres especiales."
                 type="text"
                 id="contactNumbers"
                 value={formik.values.contactNumbers}

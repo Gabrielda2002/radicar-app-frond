@@ -130,7 +130,7 @@ const DemandInduce = () => {
                         {d.document}
                       </td>
                       <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                        {FormatDate(d.dateCreated)}
+                        {FormatDate(d.dateCreated, false)}
                       </td>
                       <td className="md:p-3 p-1 border-b dark:border-gray-700">
                         {d.elementDI}
