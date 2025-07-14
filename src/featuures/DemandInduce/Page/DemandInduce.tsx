@@ -13,6 +13,7 @@ import Input from "@/components/common/Ui/Input";
 import { Search } from "lucide-react";
 import ModalSummaryDI from "../Components/ModalSummaryDI";
 import Button from "@/components/common/Ui/Button";
+import ModalProgramGoals from "../Components/ModalProgramGoals";
 
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
@@ -121,6 +122,7 @@ const DemandInduce = () => {
                       filteredData={filteredData}
                       totalRecords={data.length}
                     />
+                    <ModalProgramGoals/>
                   </div>
                   <div className="flex justify-start md:justify-end w-full">
                     <ModalCreateDI refresh={refetch} />
