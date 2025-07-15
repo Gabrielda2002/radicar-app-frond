@@ -16,7 +16,7 @@ interface ModalGestionServicioProps {
   disabledButton?: boolean;
 }
 
-const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
+const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
   idRadicado,
   idCirugias,
   disabledButton = false,
@@ -163,4 +163,4 @@ const ModalGestionServicio: React.FC<ModalGestionServicioProps> = ({
   );
 };
 
-export default ModalGestionServicio;
+export default ModalCreateMonitoring;

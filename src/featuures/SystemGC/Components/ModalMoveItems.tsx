@@ -26,9 +26,6 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   itemId,
   handleRefresh,
 }) => {
-  console.log("currentFolderId", currentFolderId);
-  console.log("item id ", itemId);
-
   const [navigationPath, setNavigationPath] = useState<
     Array<{ id: string; name: string }>
   >([{ id: "", name: "Inicio" }]);
@@ -79,7 +76,13 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   };
 
   const handleMove = () => {
-    if (selectedFolderId !== currentFolderId && selectedFolderId) {
+
+      const isValidMove =
+    itemType === "carpetas"
+      ? selectedFolderId !== currentFolderId && selectedFolderId !== itemId
+      : !!selectedFolderId && selectedFolderId !== currentFolderId;
+
+    if (isValidMove) {
       moveItem(Number(itemId), selectedFolderId || "", itemType)
         .then((success) => {
           if (success) {
@@ -139,7 +142,12 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         }: ${itemNameToMove}`}
         funtionClick={handleMove}
         isSubmitting={loading}
-        isValid={!!selectedFolderId && !isCurrentLocation}
+        isValid={
+          itemType === "carpetas"
+            ? selectedFolderId !== currentFolderId ||
+              selectedFolderId !== undefined
+            : !!selectedFolderId && !isCurrentLocation && selectedFolderId !== ""
+        }
         submitText="Mover"
         cancelText="Cancelar"
         footerVariant="form"
@@ -159,7 +167,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
                 <span className="mx-1 text-gray-500 dark:text-gray-400">/</span>
               )}
               <span
-                className="text-blue-600 cursor-pointer hover:underline dark:text-blue-400"
+                className="text-blue-600 hover:underline dark:text-blue-400"
                 onClick={() => {
                   setSelectedFolderId(item.id);
                   setNavigationPath(navigationPath.slice(0, index + 1));
@@ -170,6 +178,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
             </React.Fragment>
           ))}
         </div>
+        
 
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-400">
@@ -202,19 +211,19 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
               {contents?.folders?.map((f) => (
                 <div
                   key={f.id}
-                  className={`flex flex-col items-center p-3 border rounded-md cursor-pointer 
+                  className={`flex flex-col items-center p-3 border rounded-md 
                         ${
-                          f.id === currentFolderId
+                          f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId)
                             ? "border-red-500 bg-red-50 opacity-50 dark:bg-red-900/20 dark:border-red-700 cursor-not-allowed"
                             : "border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
                         }`}
                   onClick={() => {
-                    if (f.id !== currentFolderId) {
+                    if ( !(f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId))) {
                       navigateToFolder(f.id, f.name);
                     }
                   }}
                   title={
-                    f.id === currentFolderId
+                    f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId)
                       ? "No puedes mover a la carpeta actual"
                       : f.name
                   }

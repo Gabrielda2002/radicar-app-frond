@@ -89,8 +89,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
     }),
     especialista: Yup.string()
       .required("Campo requerido")
-      .min(3, "El nombre del especialista debe tener al menos 3 caracteres")
-      .max(255, "El nombre del especialista debe tener maximo 50 caracteres"),
   });
 
   const formik = useFormik({
@@ -417,7 +415,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                                   : undefined
                               }
                               onInputChanged={(value) =>
-                                formik.setFieldValue(".especialista", value)
+                                formik.setFieldValue("especialista", value)
                               }
                               touched={formik.touched.especialista}
                               required={true}
