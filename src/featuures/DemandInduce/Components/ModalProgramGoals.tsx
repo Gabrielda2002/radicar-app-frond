@@ -6,11 +6,12 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import EditableCell from "@/featuures/SystemInventory/Components/EditableCell";
 import { useEditableRow } from "@/featuures/SystemInventory/Hooks/useEditableRow";
 import { useAuth } from "@/context/authContext";
+import ModalCreateGoalProgram from "./ModalCreateGoalProgram";
 
 const ModalProgramGoals = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data, error, loading, handleUpdateGoal } = useProgramsGoals();
+  const { data, error, loading, handleUpdateGoal, refetch } = useProgramsGoals();
 
   const { rol } = useAuth();
 
@@ -26,6 +27,7 @@ const ModalProgramGoals = () => {
 
   const handleUpdate = async (goalId: number) => {
     await handleUpdateGoal(goalId.toString(), editedData);
+    cancelEditing(goalId); // Limpiar el estado de edición después de actualizar
   };
 
   return (
@@ -50,9 +52,12 @@ const ModalProgramGoals = () => {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Metas"
-          size="md"
+          size="lg"
         >
-          <div>
+          <div className="flex flex-col space-y-4 p-5">
+            {[1].includes(Number(rol)) && (
+              <ModalCreateGoalProgram onGoalCreated={refetch} />
+            )}
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
