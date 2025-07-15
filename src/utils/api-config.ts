@@ -203,10 +203,6 @@ export const saveCups = async (data: FormData) => {
     return api.post(`/cups-radicados`, data);
 }
 
-export const saveGestionAuxiliar = async (data: FormData, endpoint: string) => {
-    return api.post(`/${endpoint}`, data)
-}
-
 export const AuditarRadicado = async (data: object, id: number) => {
     return api.put(`/autorizar-radicado/${id}`, data)
 }
@@ -217,10 +213,6 @@ export const autorizarCups = async (data: object, id: number) => {
             'Content-Type': 'application/json',
         },
     })
-}
-
-export const updateCupsAuditados = async (id: number, data: FormData) => {
-    return api.put(`/actualizar-cups/${id}`, data)
 }
 
 export const updateStatusData = async (id: number, data: FormData, endPoint: string) => {

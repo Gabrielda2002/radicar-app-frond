@@ -6,6 +6,9 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch.ts";
 import { IRegisterUser } from "@/models/IRegisterUser.ts";
 import usePagination from "@/hooks/usePagination";
+import Input from "@/components/common/Ui/Input";
+import Button from "@/components/common/Ui/Button";
+import Select from "@/components/common/Ui/Select";
 
 const RegistroUsuario = () => {
   const ITEMS_PER_PAGE = 8;
@@ -47,66 +50,59 @@ const RegistroUsuario = () => {
       />
       <section className="p-5 bg-white rounded-lg shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         <section className="flex items-end justify-between w-full mb-7">
-          <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar Registro De Usuario:
-            </label>
-            <input
+          <div className="flex flex-col space-y-2 w-full md:w-2/5">
+            <Input
+              id="documento"
+              label="Buscar por Documento"
               type="text"
               value={documento}
               onChange={(e) => setDocumento(e.target.value)}
-              placeholder="Documento Usuario"
-              className="h-10 pl-3 border rounded-md md:w-72 w-[360px] border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Ej: 123456789"
             />
-            <div className="grid grid-cols-1 mt-2 font-semibold text-md text-stone-600 dark:text-stone-300">
-              Fecha de Inicio
-            </div>
-            <input
+            <Input
+              id="fechaInicio"
+              label="Fecha Inicio"
               type="date"
               value={dateStart}
               onChange={(e) => setDateStart(e.target.value)}
               placeholder="Fecha Inicio"
-              className="h-10 pl-3 mb-2 border rounded-md md:w-72 w-[360px] border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               title="Fecha Inicio"
             />
-            <div className="grid grid-cols-1 font-semibold text-md text-stone-600 dark:text-stone-300">
-              Fecha de Fin
-            </div>
-            <input
+            <Input
               type="date"
+              id="fechaFin"
+              label="Fecha Fin"
               value={dateEnd}
               onChange={(e) => setDateEnd(e.target.value)}
               placeholder="Fecha Fin"
-              className="h-10 pl-3 border rounded-md md:w-72 w-[360px] border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               title="Fecha Fin"
             />
-            <button
-              className="w-full text-white bg-teal-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:translate-y-1 hover:scale-100 hover:bg-emerald-700 duration-300 mt-3"
+            <Button
               onClick={() => getData(documento, dateStart, dateEnd)}
             >
               Buscar
-            </button>
+            </Button>
           </div>
         </section>
 
         {/* vista escritorio */}
         <div className="flex flex-col items-center justify-between mb-4 md:flex-row">
           <div className="flex items-center w-full space-x-2">
-            <input
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar..."
-              className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
-            <select
+            <Select
+              options={[
+                { value: "10", label: "10 Páginas" },
+                { value: "20", label: "20 Páginas" },
+                { value: "30", label: "30 Páginas" },
+              ]}
+              id="itemsPerPage"
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-full h-10 border border-gray-300 rounded-md md:w-24 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="10">10 Páginas</option>
-              <option value="20">20 Páginas</option>
-              <option value="30">30 Páginas</option>
-            </select>
+            />
           </div>
         </div>
         {filteredData.length > 0 ? (

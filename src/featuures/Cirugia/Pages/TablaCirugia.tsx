@@ -22,7 +22,7 @@ const ModalMostrarDatosCUPS = lazy(
 );
 const ModalGestionAuxiliar = lazy(
   () =>
-    import("@/components/common/Modals/GestionAuxiliar/ModalGestionAuxiliar")
+    import("@/components/common/Modals/GestionAuxiliar/ModalTableMonitoringAssistent")
 );
 
 const ITEMS_PER_PAGE = 8;

@@ -9,12 +9,14 @@ import usePagination from "@/hooks/usePagination";
 
 //*Properties
 import ModalActionUsuario from "../Components/ModalUpdateUsers";
-import {useUsers} from "@/featuures/Usuarios/Context/UsersContext.tsx";
+import { useUsers } from "@/featuures/Usuarios/Context/UsersContext.tsx";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
 
 const ITEMS_PER_PAGE = 10;
 
 const Usuarios = () => {
-  const { users:data, loading, error } = useUsers();
+  const { users: data, loading, error } = useUsers();
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IUsuarios>(data, [
@@ -57,30 +59,28 @@ const Usuarios = () => {
       />
       <section className="p-5 bg-white rounded-md shadow-lg container-table dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         {/* header-table */}
-        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar Usuarios:
-        </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center space-x-2 container-filter">
-            <input
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar"
+              placeholder="Buscar"
               className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
 
           <div className="flex items-center space-x-2 pt-1-">
-            <select
+            <Select
+              options={[
+                { value: "", label: "Páginas" },
+                { value: "10", label: "10 Páginas" },
+                { value: "20", label: "20 Páginas" },
+                { value: "30", label: "30 Páginas" },
+              ]}
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
               className="border-2 h-[40px] w-[100px] rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            >
-              <option value="">Páginas</option>
-              <option value="10">10 Páginas</option>
-              <option value="20">20 Páginas</option>
-              <option value="30">30 Páginas</option>
-            </select>
+            />
           </div>
         </section>
 
@@ -152,93 +152,93 @@ const Usuarios = () => {
                 </tbody>
               </table>
             </div>
-        {/* responsive */}
+            {/* responsive */}
 
-        <div className="grid grid-cols-1 gap-4 md:hidden">
-          {currentData().map((usuario) => (
-            <div
-              key={usuario.id}
-              className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-gray-700 dark:text-white">
-                  usuario #{usuario.id}
-                </h3>
-              </div>
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+              {currentData().map((usuario) => (
+                <div
+                  key={usuario.id}
+                  className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold text-gray-700 dark:text-white">
+                      usuario #{usuario.id}
+                    </h3>
+                  </div>
 
-              <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Id:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.id}
-                </div>
+                  <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Id:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.id}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  N° Documento:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.dniNumber}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      N° Documento:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.dniNumber}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Nombres:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.name}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Nombres:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.name}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Apellidos:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.lastName}
-                </div>
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Tipo de Documento:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.documento}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Apellidos:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.lastName}
+                    </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Tipo de Documento:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.documento}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Mail:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.email}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Mail:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.email}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Estado:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.status ? "Activo" : "Inactivo"}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Estado:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.status ? "Activo" : "Inactivo"}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Rol:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.roles}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Rol:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.roles}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Municipio:
-                </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  {usuario.municipio}
-                </div>
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Municipio:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      {usuario.municipio}
+                    </div>
 
-                <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                  Editar:
+                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
+                      Editar:
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-100">
+                      <ModalActionUsuario id={usuario.id} ususario={usuario} />
+                    </div>
+                  </div>
                 </div>
-                <div className="text-gray-800 dark:text-gray-100">
-                  <ModalActionUsuario id={usuario.id} ususario={usuario} />
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
             <div>‎</div>
             {/* Controles de de Paginacion */}
             <Pagination
@@ -248,7 +248,6 @@ const Usuarios = () => {
             />
           </>
         )}
-
       </section>
     </>
   );

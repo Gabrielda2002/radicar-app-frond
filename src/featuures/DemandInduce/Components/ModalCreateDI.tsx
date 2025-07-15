@@ -6,17 +6,28 @@ import Select from "@/components/common/Ui/Select";
 import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { useCreateDI } from "../Hooks/useCreateDI";
+import { AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
-const ModalCreateDI = () => {
+interface ModalCreateDIProps {
+  refresh: () => void;
+}
+
+const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
+  refresh,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [documento, setDocumento] = useState<string>("");
 
   const { data, error, getData } = useFetchPaciente();
 
+  const { createDI, error: errorCreating, loading } = useCreateDI();
+
   const validationSchema = Yup.object({
-    document: Yup.string().required("El documento es obligatorio"),
+    document: Yup.string(),
     tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
     elementDemand: Yup.string().required(
       "El elemento de demanda inducida es obligatorio"
@@ -25,6 +36,11 @@ const ModalCreateDI = () => {
       "El tipo de elemento de demanda inducida es obligatorio"
     ),
     objetive: Yup.string().required("El objetivo es obligatorio"),
+    contactNumbers: Yup.string()
+      .required("Los numeros de contacto es obligatorio")
+      .min(10, "El número de contacto debe tener al menos 10 dígitos")
+      .max(30, "El número de contacto no debe exceder los 30 dígitos"),
+
     // actualizaciond e datos del paciente
     email: Yup.string()
       .email("Email inválido")
@@ -34,7 +50,7 @@ const ModalCreateDI = () => {
       .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     phoneNumber2: Yup.string()
       .optional()
-      .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
+      .max(10, "El número de teléfono debe tener al menos 10 dígitos").nullable(),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -93,8 +109,8 @@ const ModalCreateDI = () => {
     conditionUser: Yup.boolean().optional(),
     suport: Yup.string().optional(),
     // resultado de la llamada no efectiva
-    resultCall: Yup.string().when("classification", {
-      is: (value: boolean) => value === false,
+    resultCall: Yup.string().when(["classification", "elementDemand"], {
+      is: (classification: boolean, elementDemand: string) => classification === false && elementDemand == "2",
       then: (schema) =>
         schema.required("El resultado de la llamada es obligatorio"),
       otherwise: (schema) => schema.optional(),
@@ -154,6 +170,7 @@ const ModalCreateDI = () => {
       elementDemand: "",
       typeElementDemand: "",
       objetive: "",
+      contactNumbers: "",
       classification: false,
       acceptCall: "",
       relationshipUser: "",
@@ -176,13 +193,25 @@ const ModalCreateDI = () => {
       areaPersonProcess: "",
       programPerson: "",
       assignmentDate: "",
-      idPatient: "",
+      idPatient: data?.id || "",
       profetional: "",
+      idUser: 1,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
-      // Aquí puedes manejar el envío del formulario
+    onSubmit: async (values) => {
+      try {
+        const response = await createDI(values);
+
+        if (response ) {
+          formik.resetForm();
+          setDocumento("");
+          await refresh();
+          toast.success("Demanda inducida creada exitosamente");
+        }
+        
+      } catch (error) {
+        console.log("Error inesperado al crear la demanda inducida. :", error);
+      }
     },
   });
 
@@ -216,6 +245,7 @@ const ModalCreateDI = () => {
         size="lg"
         submitText="Crear"
         onSubmit={formik.handleSubmit}
+        isSubmitting={loading}
       >
         <div className="py-3 px-5">
           {/* datos iniciales de la demanda inducida */}
@@ -228,8 +258,12 @@ const ModalCreateDI = () => {
                 type="text"
                 id="document"
                 value={documento}
+                name="document"
                 onChange={(e) => setDocumento(e.target.value)}
-                onBlur={() => getData(documento)}
+                onBlur={() => {
+                  getData(documento)
+                  formik.handleBlur
+                }}
                 touched={formik.touched.document}
                 error={formik.errors.document}
                 label="Documento"
@@ -305,6 +339,22 @@ const ModalCreateDI = () => {
               {formik.touched.objetive && formik.errors.objetive && (
                 <div className="text-red-500">{formik.errors.objetive}</div>
               )}
+            </div>
+            <div>
+              <Input
+                label="Número de telefono con el que se establece el contacto"
+                helpText="Ingresa los numeros con los que se intenta contactar al paciente sin espacios ni caracteres especiales."
+                type="text"
+                id="contactNumbers"
+                value={formik.values.contactNumbers}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="contactNumbers"
+                touched={formik.touched.contactNumbers}
+                error={formik.errors.contactNumbers}
+                required
+                placeholder="Ej: 30012345673012345678"
+              />
             </div>
           </div>
           {/* datos del paciente */}
@@ -470,8 +520,8 @@ const ModalCreateDI = () => {
                       <Input
                         label="Hora llamada"
                         type="time"
-                        id="dateCall"
-                        value={formik.values.dateCall}
+                        id="hourCall"
+                        value={formik.values.hourCall}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         name="hourCall"
@@ -818,6 +868,17 @@ const ModalCreateDI = () => {
               />
             </div>
           </div>
+
+            <AnimatePresence>
+                {errorCreating && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {errorCreating}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
+
         </div>
       </FormModal>
     </>

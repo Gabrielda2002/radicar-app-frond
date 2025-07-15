@@ -54,10 +54,10 @@ const FormPacientesCS = () => {
                   <th  className="px-2 py-3 text-center">2* Nombre</th>
                   <th  className="px-2 py-3 text-center">Fecha Nacimiento</th>
                   <th  className="px-2 py-3 text-center">Genero</th>
-                  <th  className="px-2 py-3 text-center">TPS RGM ID</th>
                   <th  className="px-2 py-3 text-center">Direccion</th>
                   <th  className="px-2 py-3 text-center">Telefono</th>
                   <th  className="px-2 py-3 text-center">Regimen</th>
+                  <th  className="px-2 py-3 text-center">Categoria/Rango</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,10 +70,10 @@ const FormPacientesCS = () => {
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.aflSegundoNombre}</td>
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.aflFechaNacimiento}</td>
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.tpsGnrId}</td>
-                  <td className="px-2 py-3 text-sm font-medium text-center">{patients.tpsRgmId}</td>
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.direccion}</td>
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.telefono}</td>
                   <td className="px-2 py-3 text-sm font-medium text-center">{patients.regimen}</td>
+                  <td className="px-2 py-3 text-sm font-medium text-center">{patients.tpsRgmId}</td>
                 </tr>
               </tbody>
             </table>
