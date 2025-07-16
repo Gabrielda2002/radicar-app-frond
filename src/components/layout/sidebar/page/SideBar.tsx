@@ -281,7 +281,7 @@ const SideBar: FC = () => {
               </div>
             )}
 
-            {[1].includes(Number(rol)) && (
+            {[1,19,20].includes(Number(rol)) && (
               <Category
                 title="Gestión demanda inducida"
                 icon={userMain}

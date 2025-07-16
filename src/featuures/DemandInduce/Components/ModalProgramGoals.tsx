@@ -7,11 +7,13 @@ import EditableCell from "@/featuures/SystemInventory/Components/EditableCell";
 import { useEditableRow } from "@/featuures/SystemInventory/Hooks/useEditableRow";
 import { useAuth } from "@/context/authContext";
 import ModalCreateGoalProgram from "./ModalCreateGoalProgram";
+import { AnimatePresence } from "framer-motion";
 
 const ModalProgramGoals = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data, error, loading, handleUpdateGoal, refetch } = useProgramsGoals();
+  const { data, error, loading, handleUpdateGoal, refetch } =
+    useProgramsGoals();
 
   const { rol } = useAuth();
 
@@ -36,16 +38,7 @@ const ModalProgramGoals = () => {
         Ver Metas del Programa
       </Button>
 
-      {error ? (
-        <div className="flex items-center justify-center min-h-fit">
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline">{error}</span>
-          </div>
-        </div>
-      ) : loading ? (
+      {loading ? (
         <LoadingSpinner />
       ) : (
         <ModalDefault
@@ -89,43 +82,54 @@ const ModalProgramGoals = () => {
                         setActiveFieldId={setActiveFieldId}
                       />
                     </td>
-                    <td>
-                      {editingRows[p.id] ? (
-                        <>
+                    {[1, 20].includes(Number(rol)) && (
+                      <td>
+                        {editingRows[p.id] ? (
+                          <>
+                            <Button
+                              variant="success"
+                              onClick={() => handleUpdate(p.id)}
+                              title="Guardar cambios"
+                              disabled={
+                                !editedData[p.id] || !editedData[p.id]["goal"]
+                              }
+                              isLoading={loading}
+                            >
+                              Guardar
+                            </Button>
+                            <Button
+                              variant="closed"
+                              onClick={() => cancelEditing(p.id)}
+                              title="Cancelar edición"
+                              disabled={loading}
+                            >
+                              Cancelar
+                            </Button>
+                          </>
+                        ) : (
                           <Button
-                            variant="success"
-                            onClick={() => handleUpdate(p.id)}
-                            title="Guardar cambios"
-                            disabled={
-                              !editedData[p.id] || !editedData[p.id]["goal"]
-                            }
-                            isLoading={loading}
+                            onClick={() => startEditing(p.id, p)}
+                            title="Editar meta"
+                            variant="secondary"
                           >
-                            Guardar
+                            Editar
                           </Button>
-                          <Button
-                            variant="closed"
-                            onClick={() => cancelEditing(p.id)}
-                            title="Cancelar edición"
-                            disabled={loading}
-                          >
-                            Cancelar
-                          </Button>
-                        </>
-                      ) : (
-                        <Button
-                          onClick={() => startEditing(p.id, p)}
-                          title="Editar meta"
-                          variant="secondary"
-                        >
-                          Editar
-                        </Button>
-                      )}
-                    </td>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
             </table>
+            <AnimatePresence>
+              {error && (
+                <div>
+                  <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                    {error}
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
           </div>
         </ModalDefault>
       )}
