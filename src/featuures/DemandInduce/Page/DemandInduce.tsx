@@ -14,6 +14,7 @@ import { Search } from "lucide-react";
 import ModalSummaryDI from "../Components/ModalSummaryDI";
 import Button from "@/components/common/Ui/Button";
 import ModalProgramGoals from "../Components/ModalProgramGoals";
+import { AnimatePresence } from "framer-motion";
 
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
@@ -55,16 +56,6 @@ const DemandInduce = () => {
     <>
       {loading ? (
         <LoadingSpinner />
-      ) : error ? (
-        <div className="flex items-center justify-center h-screen">
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <strong className="font-bold">Error:</strong>
-            <span className="block sm:inline">{error}</span>
-          </div>
-        </div>
       ) : (
         <>
           <ModalSection
@@ -122,7 +113,7 @@ const DemandInduce = () => {
                       filteredData={filteredData}
                       totalRecords={data.length}
                     />
-                    <ModalProgramGoals/>
+                    <ModalProgramGoals />
                   </div>
                   <div className="flex justify-start md:justify-end w-full">
                     <ModalCreateDI refresh={refetch} />
@@ -146,46 +137,54 @@ const DemandInduce = () => {
                       </tr>
                     </thead>
                     <tbody className="text-sm text-gray-600 dark:text-gray-300">
-                      {currentData().map((d) => (
-                        <tr
-                          key={d.id}
-                          className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-                        >
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.typeDocument}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.document}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {FormatDate(d.dateCreated, false)}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.elementDI}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.typeElementDI}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.classification ? "Efectiva" : "No Efectiva"}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.objetive}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.programPerson}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.namePatient}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {d.areaPersonProcess}
-                          </td>
-                          <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                            {FormatDate(d.assignmentDate, false)}
+                      {currentData().length === 0 ? (
+                        <tr>
+                          <td colSpan={11} className="text-center p-4">
+                            No hay datos disponibles
                           </td>
                         </tr>
-                      ))}
+                      ) : (
+                        currentData().map((d) => (
+                          <tr
+                            key={d.id}
+                            className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                          >
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.typeDocument}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.document}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {FormatDate(d.dateCreated, false)}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.elementDI}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.typeElementDI}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.classification ? "Efectiva" : "No Efectiva"}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.objetive}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.programPerson}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.namePatient}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.areaPersonProcess}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {FormatDate(d.assignmentDate, false)}
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                   <Pagination
@@ -204,6 +203,15 @@ const DemandInduce = () => {
                 </div>
               )
             )}
+            <AnimatePresence>
+              {error && (
+                <div>
+                  <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                    {error}
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
           </div>
         </>
       )}
