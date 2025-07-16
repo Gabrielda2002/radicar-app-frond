@@ -15,6 +15,7 @@ import ModalSummaryDI from "../Components/ModalSummaryDI";
 import Button from "@/components/common/Ui/Button";
 import ModalProgramGoals from "../Components/ModalProgramGoals";
 import { AnimatePresence } from "framer-motion";
+import StatisticsDemandInduced from "../Components/StatisticsDemandInduced";
 
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
@@ -198,7 +199,7 @@ const DemandInduce = () => {
               activeSection === 2 && (
                 <div>
                   <p className="text-center text-gray-500 dark:text-gray-300">
-                    Parte de estadisticas
+                    <StatisticsDemandInduced/>
                   </p>
                 </div>
               )
