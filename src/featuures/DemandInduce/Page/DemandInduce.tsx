@@ -63,7 +63,7 @@ const DemandInduce = () => {
             title="Inducción de demanda"
             breadcrumb={[
               { label: "Inicio", path: "/" },
-              { label: "Inducción de demanda", path: "/demanda/inducida" },
+              { label: "/Inducción de demanda", path: "/demanda/inducida" },
             ]}
           />
           {SECTIONS.map((s) => (

@@ -142,23 +142,6 @@ const StatisticsDemandInduced = () => {
                 </motion.div>
               </div>
             </div>
-
-            {/* Indicador de datos filtrados */}
-            {hasAppliedFilters && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                    Mostrando datos filtrados ({statistics.meta} registros
-                    encontrados)
-                  </span>
-                </div>
-              </motion.div>
-            )}
           </motion.div>
         ) : hasAppliedFilters ? (
           <motion.div

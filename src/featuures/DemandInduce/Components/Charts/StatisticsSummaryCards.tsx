@@ -18,25 +18,25 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
 
   const cards = [
     {
-      title: "Total Registros",
+      title: "Meta mensual Programa Seleccionado",
       value: statistics.meta,
-      icon: "📊",
+      icon: "🎯",
       color: "bg-blue-500",
       textColor: "text-blue-600 dark:text-blue-400"
     },
     {
-      title: "Programas Activos",
-      value: totalProgramas,
-      icon: "📋",
-      color: "bg-indigo-500",
-      textColor: "text-indigo-600 dark:text-indigo-400"
-    },
-    {
-      title: "Total Actividades",
+      title: "Total DI Programas Registrados",
       value: totalCantidadProgramas,
       icon: "⚡",
       color: "bg-purple-500",
       textColor: "text-purple-600 dark:text-purple-400"
+    },
+    {
+      title: "Cantidad de programas activos ",
+      value: totalProgramas,
+      icon: "📋",
+      color: "bg-indigo-500",
+      textColor: "text-indigo-600 dark:text-indigo-400"
     },
     {
       title: "Llamadas Efectivas",
@@ -55,7 +55,7 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
     {
       title: "Efectividad",
       value: `${porcentajeEfectividad}%`,
-      icon: "🎯",
+      icon: "📊",
       color: "bg-amber-500",
       textColor: "text-amber-600 dark:text-amber-400"
     }
