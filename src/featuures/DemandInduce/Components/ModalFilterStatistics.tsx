@@ -10,7 +10,11 @@ import Select from "@/components/common/Ui/Select";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 
-const ModalFilterStatistics = () => {
+interface ModalFilterStatisticsProps {
+  onFiltersApplied?: (filters: any) => void;
+}
+
+const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps) => {
   const { error, fetchStatistics, loading } = useFetchStatistics();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -38,11 +42,14 @@ const ModalFilterStatistics = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      console.log("Form values being submitted:", values);
 
       const response = await fetchStatistics(values);
       if (response?.status === 200 || response?.status === 201) {
         formik.resetForm();
+        setIsOpen(false);
         toast.success("Filtros aplicados correctamente");
+        onFiltersApplied?.(values);
       }
 
     },
