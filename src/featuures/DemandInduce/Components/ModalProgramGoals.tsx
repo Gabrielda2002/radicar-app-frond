@@ -56,6 +56,7 @@ const ModalProgramGoals = () => {
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                   <th>Programa</th>
                   <th>Meta</th>
+                  <th>Profesional</th>
                   {[1].includes(Number(rol)) && <th>Actualizar estado</th>}
                 </tr>
               </thead>
@@ -66,6 +67,7 @@ const ModalProgramGoals = () => {
                     className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                   >
                     <td>{p.program}</td>
+                    <td>{p.professional}</td>
                     <td>
                       <EditableCell
                         isEditing={editingRows[p.id]}
