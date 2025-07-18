@@ -7,12 +7,13 @@ interface StatisticsSummaryCardsProps {
 
 const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statistics }) => {
   // Calcular totales
-  const totalProgramas = statistics.estadisticasPorPrograma.length;
-  const totalCantidadProgramas = statistics.estadisticasPorPrograma.reduce((acc, curr) => acc + curr.cantidad, 0);
+  const totalCantidadProgramas = statistics.cantidadDemandInduced.reduce((acc, curr) => acc + curr.cantidad, 0);
   const totalEfectivas = statistics.estadisticasLlamadasTelefonicas.efectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
   const totalNoEfectivas = statistics.estadisticasLlamadasTelefonicas.noEfectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
   const totalLlamadas = totalEfectivas + totalNoEfectivas;
-  
+  // porcentaje comparativo meta con total de programas
+  const porcentajeMeta = statistics.meta ? ((statistics.cantidadDemandInduced.reduce((acc, curr) => acc + curr.cantidad, 0) / statistics.meta) * 100).toFixed(1) : 0;
+
   // Calcular porcentaje de efectividad
   const porcentajeEfectividad = totalLlamadas > 0 ? ((totalEfectivas / totalLlamadas) * 100).toFixed(1) : 0;
 
@@ -32,11 +33,11 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
       textColor: "text-purple-600 dark:text-purple-400"
     },
     {
-      title: "Cantidad de programas activos ",
-      value: totalProgramas,
-      icon: "📋",
-      color: "bg-indigo-500",
-      textColor: "text-indigo-600 dark:text-indigo-400"
+      title: "Porcentaje de Meta Alcanzada",
+      value: `${porcentajeMeta}%`,
+      icon: "📈",
+      color: "bg-yellow-500",
+      textColor: "text-yellow-600 dark:text-yellow-400"
     },
     {
       title: "Llamadas Efectivas",

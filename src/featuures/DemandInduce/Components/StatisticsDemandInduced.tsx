@@ -94,8 +94,8 @@ const StatisticsDemandInduced = () => {
                 transition={{ delay: 0.1 }}
               >
                 <StatisticsByProgramChart
-                  data={statistics.estadisticasPorPrograma}
-                  title="Estadísticas por Programa"
+                  data={statistics.estResultadoLlamadasNoEfectivas}
+                  title="Estadísticas resultado Llamadas No Efectivas"
                 />
               </motion.div>
 
@@ -116,7 +116,7 @@ const StatisticsDemandInduced = () => {
                       noEfectivas={
                         statistics.estadisticasLlamadasTelefonicas.noEfectivas
                       }
-                      title="Llamadas Telefónicas por Profesional"
+                      title="Estadísticas de Llamadas Efectivas y No Efectivas"
                     />
                   ) : (
                     <EffectiveCallsOnlyChart

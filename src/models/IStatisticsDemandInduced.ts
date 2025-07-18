@@ -3,6 +3,8 @@ export interface IStatisticsDemandInduced {
     estadisticasPorPrograma: EstadisticasPorPrograma[];
     estadisticasLlamadasTelefonicas: EstadisticasLlamadasTelefonicas;
     estadisticasLlamadasNoEfectivas: EstadisticasLlamadasNoEfectivas[];
+    cantidadDemandInduced: CantidadDemandInduced[];
+    estResultadoLlamadasNoEfectivas: EstResultadoLlamadasNoEfectivas[];
 }
 
 export interface EstadisticasPorPrograma {
@@ -29,5 +31,15 @@ export interface EstadisticasLlamadasNoEfectivas {
     resultadoLlamada: string;
     profesional: string;
     porcentaje: number;
+    cantidad: number;
+}
+
+export interface CantidadDemandInduced {
+    programa: string;
+    cantidad: number;
+}
+
+export interface EstResultadoLlamadasNoEfectivas {
+    resultadoLlamada: string;
     cantidad: number;
 }

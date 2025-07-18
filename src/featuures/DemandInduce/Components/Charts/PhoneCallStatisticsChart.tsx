@@ -22,7 +22,7 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
       professionalMap.set(item.profesional, {
         profesional: item.profesional,
         efectivas: item.cantidad,
-        efectivasPorcentaje: item.porcentaje,
+        efectivasPorcentaje: item.porcentaje <= 0 ? 1 : item.porcentaje,
         noEfectivas: 0,
         noEfectivasPorcentaje: 0
       });
@@ -33,14 +33,14 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
       const existing = professionalMap.get(item.profesional);
       if (existing) {
         existing.noEfectivas = item.cantidad;
-        existing.noEfectivasPorcentaje = item.porcentaje;
+        existing.noEfectivasPorcentaje = item.porcentaje <= 0 ? 1 : item.porcentaje;
       } else {
         professionalMap.set(item.profesional, {
           profesional: item.profesional,
           efectivas: 0,
           efectivasPorcentaje: 0,
           noEfectivas: item.cantidad,
-          noEfectivasPorcentaje: item.porcentaje
+          noEfectivasPorcentaje: item.porcentaje <= 0 ? 1 : item.porcentaje
         });
       }
     });
@@ -49,6 +49,45 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
   };
 
   const chartData = combineData();
+
+    const EffectiveLabelContent = (props: any) => {
+    const { x, y, width, value, payload } = props;
+
+    if(value === 0 || !payload || !payload.efectivasPorcentaje) {
+      return null
+    };
+
+    return (
+      <text
+        x={x + width / 2}
+        y={y - 10}
+        fill="#10B981"
+        textAnchor="middle"
+        fontSize={12}
+        fontWeight="bold"
+      >
+        {payload.efectivasPorcentaje}
+      </text>
+    );
+  };
+
+  const NotEffectiveLabelContent = (props: any) => {
+    const { x, y, width, value, payload } = props;
+    if(value === 0 || !payload || !payload.noEfectivasPorcentaje) return null;
+
+    return (
+      <text
+        x={x + width / 2}
+        y={y - 10}
+        fill="#EF4444"
+        textAnchor="middle"
+        fontSize={12}
+        fontWeight="bold"
+      >
+        {payload.noEfectivasPorcentaje}
+      </text>
+    );
+  };
 
   // Tooltip personalizado
   const CustomTooltip = ({ active, payload }: any) => {
@@ -85,7 +124,7 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+            margin={{ top: 40, right: 30, left: 20, bottom: 60 }}
           >
             <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
             <XAxis 
@@ -108,12 +147,14 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
               name="Llamadas Efectivas" 
               fill="#10B981"
               radius={[2, 2, 0, 0]}
+              label={<EffectiveLabelContent />}
             />
             <Bar 
               dataKey="noEfectivas" 
               name="Llamadas No Efectivas" 
               fill="#EF4444"
               radius={[2, 2, 0, 0]}
+              label={<NotEffectiveLabelContent />}
             />
           </BarChart>
         </ResponsiveContainer>
