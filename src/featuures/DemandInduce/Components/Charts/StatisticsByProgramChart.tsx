@@ -1,9 +1,9 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { EstadisticasPorPrograma } from '@/models/IStatisticsDemandInduced';
+import { EstResultadoLlamadasNoEfectivas } from '@/models/IStatisticsDemandInduced';
 
 interface StatisticsByProgramChartProps {
-  data: EstadisticasPorPrograma[];
+  data: EstResultadoLlamadasNoEfectivas[];
   title?: string;
 }
 
@@ -13,12 +13,8 @@ const StatisticsByProgramChart: React.FC<StatisticsByProgramChartProps> = ({
 }) => {
   // Preparar los datos para el gráfico
   const chartData = data.map(item => ({
-    programa: item.programa.length > 20 ? `${item.programa.substring(0, 20)}...` : item.programa,
-    programaCompleto: item.programa,
     cantidad: item.cantidad,
-    porcentaje: item.porcentaje,
-    elemento: item.elemento,
-    profesional: item.profesional
+    resultadoLlamada: item.resultadoLlamada,
   }));
 
   // Tooltip personalizado
@@ -28,19 +24,10 @@ const StatisticsByProgramChart: React.FC<StatisticsByProgramChartProps> = ({
       return (
         <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-900 dark:text-gray-100">
-            {data.programaCompleto}
+            {data.resultadoLlamada}
           </p>
           <p className="text-blue-600 dark:text-blue-400">
             Cantidad: {data.cantidad}
-          </p>
-          <p className="text-green-600 dark:text-green-400">
-            Porcentaje: {data.porcentaje}%
-          </p>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            Elemento: {data.elemento}
-          </p>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            Profesional: {data.profesional}
           </p>
         </div>
       );
