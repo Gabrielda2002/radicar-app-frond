@@ -2,7 +2,7 @@ export interface IStatisticsDemandInduced {
     meta: number;
     estadisticasPorPrograma: EstadisticasPorPrograma[];
     estadisticasLlamadasTelefonicas: EstadisticasLlamadasTelefonicas;
-    estadisticasLlamadasNoEfectivas: any[];
+    estadisticasLlamadasNoEfectivas: EstadisticasLlamadasNoEfectivas[];
 }
 
 export interface EstadisticasPorPrograma {
@@ -22,4 +22,12 @@ export interface EstadisticaProfesional {
     profesional: string;
     cantidad: number;
     porcentaje: number;
+}
+
+export interface EstadisticasLlamadasNoEfectivas {
+    programa: string;
+    resultadoLlamada: string;
+    profesional: string;
+    porcentaje: number;
+    cantidad: number;
 }

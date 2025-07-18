@@ -136,7 +136,7 @@ const StatisticsDemandInduced = () => {
                   transition={{ delay: 0.3 }}
                 >
                   <PercentageDistributionChart
-                    data={statistics.estadisticasPorPrograma}
+                    data={statistics.estadisticasLlamadasNoEfectivas}
                     title="Distribución de Porcentajes"
                   />
                 </motion.div>

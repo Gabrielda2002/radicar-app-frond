@@ -49,7 +49,7 @@ const DemandInduce = () => {
   );
 
   const SECTIONS = [
-    { id: 1, name: "Tabla de DI" },
+    { id: 1, name: "Listado DI" },
     { id: 2, name: "Cuadro de Control DI" },
   ];
 

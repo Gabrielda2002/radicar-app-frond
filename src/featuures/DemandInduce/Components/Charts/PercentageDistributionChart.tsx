@@ -1,9 +1,9 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { EstadisticasPorPrograma } from '@/models/IStatisticsDemandInduced';
+import { EstadisticasLlamadasNoEfectivas } from '@/models/IStatisticsDemandInduced';
 
 interface PercentageDistributionChartProps {
-  data: EstadisticasPorPrograma[];
+  data: EstadisticasLlamadasNoEfectivas[];
   title?: string;
 }
 
@@ -17,16 +17,24 @@ const PercentageDistributionChart: React.FC<PercentageDistributionChartProps> = 
     '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'
   ];
 
-  // Preparar los datos para el gráfico de dona
-  const chartData = data.map((item, index) => ({
-    name: item.programa.length > 25 ? `${item.programa.substring(0, 25)}...` : item.programa,
-    nombreCompleto: item.programa,
-    value: item.porcentaje,
-    cantidad: item.cantidad,
-    elemento: item.elemento,
-    profesional: item.profesional,
-    color: COLORS[index % COLORS.length]
-  }));
+  const chartData = data.map((item, index) => {
+    // Si todos los porcentajes son 0, usar cantidad en su lugar
+    const totalCantidad = data.reduce((sum, d) => sum + d.cantidad, 0);
+    const shouldUseQuantity = data.every(d => d.porcentaje === 0) && totalCantidad > 0;
+    
+    return {
+      name: item.programa.length > 25 ? `${item.programa.substring(0, 25)}...` : item.programa,
+      nombreCompleto: item.programa,
+      value: shouldUseQuantity ? item.cantidad : item.porcentaje,
+      cantidad: item.cantidad,
+      porcentaje: item.porcentaje,
+      resultadoLlamada: item.resultadoLlamada,
+      profesional: item.profesional,
+      color: COLORS[index % COLORS.length]
+    };
+  });
+
+  console.log("chart data", chartData);
 
   // Tooltip personalizado
   const CustomTooltip = ({ active, payload }: any) => {
@@ -44,9 +52,9 @@ const PercentageDistributionChart: React.FC<PercentageDistributionChartProps> = 
             <p className="text-green-600 dark:text-green-400">
               Cantidad: {data.cantidad}
             </p>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {/* <p className="text-gray-600 dark:text-gray-400 text-sm">
               Elemento: {data.elemento}
-            </p>
+            </p> */}
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Profesional: {data.profesional}
             </p>
