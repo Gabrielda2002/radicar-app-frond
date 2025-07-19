@@ -46,6 +46,7 @@ const EffectiveCallsOnlyChart: React.FC<EffectiveCallsOnlyChartProps> = ({
       <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
         {title}
       </h3>
+      {efectivas && efectivas.length > 0 ? (
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -77,7 +78,7 @@ const EffectiveCallsOnlyChart: React.FC<EffectiveCallsOnlyChartProps> = ({
           </BarChart>
         </ResponsiveContainer>
       </div>
-      {chartData.length === 0 && (
+      ) : (
         <div className="flex items-center justify-center h-80">
           <p className="text-gray-500 dark:text-gray-400">
             No hay datos de llamadas efectivas disponibles

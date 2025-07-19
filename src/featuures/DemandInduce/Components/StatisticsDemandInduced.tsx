@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalFilterStatistics from "./ModalFilterStatistics";
-import StatisticsByProgramChart from "./Charts/StatisticsByProgramChart";
+import StatisticsByProgramChart from "./Charts/StatisticsResultCallChart";
 import PhoneCallStatisticsChart from "./Charts/PhoneCallStatisticsChart";
 import EffectiveCallsOnlyChart from "./Charts/EffectiveCallsOnlyChart";
 import StatisticsSummaryCards from "./Charts/StatisticsSummaryCards";
-import PercentageDistributionChart from "./Charts/PercentageDistributionChart";
+// import PercentageDistributionChart from "./Charts/PercentageDistributionChart";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchStatistics } from "../Hooks/useFetchStatistics";
 
@@ -41,7 +41,9 @@ const StatisticsDemandInduced = () => {
             profesional
           </p>
         </div>
+        <div className="flex items-center space-x-2">
         <ModalFilterStatistics onFiltersApplied={handleFiltersApplied} />
+        </div>
       </div>
 
       {/* Contenido Principal */}
@@ -130,7 +132,7 @@ const StatisticsDemandInduced = () => {
                 </motion.div>
 
                 {/* Distribución de Porcentajes */}
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
@@ -139,7 +141,7 @@ const StatisticsDemandInduced = () => {
                     data={statistics.estadisticasLlamadasNoEfectivas}
                     title="Distribución de Porcentajes"
                   />
-                </motion.div>
+                </motion.div> */}
               </div>
             </div>
           </motion.div>

@@ -1,6 +1,15 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { EstadisticaProfesional } from '@/models/IStatisticsDemandInduced';
+import React from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { EstadisticaProfesional } from "@/models/IStatisticsDemandInduced";
 
 interface PhoneCallStatisticsChartProps {
   efectivas: EstadisticaProfesional[];
@@ -8,39 +17,40 @@ interface PhoneCallStatisticsChartProps {
   title?: string;
 }
 
-const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({ 
-  efectivas, 
-  noEfectivas, 
-  title = "Estadísticas de Llamadas Telefónicas"
+const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
+  efectivas,
+  noEfectivas,
+  title = "Estadísticas de Llamadas Telefónicas",
 }) => {
   // Combinar datos efectivas y no efectivas por profesional
   const combineData = () => {
     const professionalMap = new Map();
 
     // Agregar llamadas efectivas
-    efectivas.forEach(item => {
+    efectivas.forEach((item) => {
       professionalMap.set(item.profesional, {
         profesional: item.profesional,
         efectivas: item.cantidad,
         efectivasPorcentaje: item.porcentaje <= 0 ? 1 : item.porcentaje,
         noEfectivas: 0,
-        noEfectivasPorcentaje: 0
+        noEfectivasPorcentaje: 0,
       });
     });
 
     // Agregar llamadas no efectivas
-    noEfectivas.forEach(item => {
+    noEfectivas.forEach((item) => {
       const existing = professionalMap.get(item.profesional);
       if (existing) {
         existing.noEfectivas = item.cantidad;
-        existing.noEfectivasPorcentaje = item.porcentaje <= 0 ? 1 : item.porcentaje;
+        existing.noEfectivasPorcentaje =
+          item.porcentaje <= 0 ? 1 : item.porcentaje;
       } else {
         professionalMap.set(item.profesional, {
           profesional: item.profesional,
           efectivas: 0,
           efectivasPorcentaje: 0,
           noEfectivas: item.cantidad,
-          noEfectivasPorcentaje: item.porcentaje <= 0 ? 1 : item.porcentaje
+          noEfectivasPorcentaje: item.porcentaje <= 0 ? 1 : item.porcentaje,
         });
       }
     });
@@ -50,12 +60,12 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
 
   const chartData = combineData();
 
-    const EffectiveLabelContent = (props: any) => {
+  const EffectiveLabelContent = (props: any) => {
     const { x, y, width, value, payload } = props;
 
-    if(value === 0 || !payload || !payload.efectivasPorcentaje) {
-      return null
-    };
+    if (value === 0 || !payload || !payload.efectivasPorcentaje) {
+      return null;
+    }
 
     return (
       <text
@@ -73,7 +83,7 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
 
   const NotEffectiveLabelContent = (props: any) => {
     const { x, y, width, value, payload } = props;
-    if(value === 0 || !payload || !payload.noEfectivasPorcentaje) return null;
+    if (value === 0 || !payload || !payload.noEfectivasPorcentaje) return null;
 
     return (
       <text
@@ -120,46 +130,47 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
       <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
         {title}
       </h3>
-      <div className="h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={chartData}
-            margin={{ top: 40, right: 30, left: 20, bottom: 60 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-            <XAxis 
-              dataKey="profesional" 
-              angle={-45}
-              textAnchor="end"
-              height={80}
-              interval={0}
-              tick={{ fontSize: 12 }}
-              className="text-gray-600 dark:text-gray-400"
-            />
-            <YAxis 
-              tick={{ fontSize: 12 }}
-              className="text-gray-600 dark:text-gray-400"
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Bar 
-              dataKey="efectivas" 
-              name="Llamadas Efectivas" 
-              fill="#10B981"
-              radius={[2, 2, 0, 0]}
-              label={<EffectiveLabelContent />}
-            />
-            <Bar 
-              dataKey="noEfectivas" 
-              name="Llamadas No Efectivas" 
-              fill="#EF4444"
-              radius={[2, 2, 0, 0]}
-              label={<NotEffectiveLabelContent />}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-      {chartData.length === 0 && (
+      {chartData && chartData.length > 0 ? (
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData}
+              margin={{ top: 40, right: 30, left: 20, bottom: 60 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+              <XAxis
+                dataKey="profesional"
+                angle={-45}
+                textAnchor="end"
+                height={80}
+                interval={0}
+                tick={{ fontSize: 12 }}
+                className="text-gray-600 dark:text-gray-400"
+              />
+              <YAxis
+                tick={{ fontSize: 12 }}
+                className="text-gray-600 dark:text-gray-400"
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <Bar
+                dataKey="efectivas"
+                name="Llamadas Efectivas"
+                fill="#10B981"
+                radius={[2, 2, 0, 0]}
+                label={<EffectiveLabelContent />}
+              />
+              <Bar
+                dataKey="noEfectivas"
+                name="Llamadas No Efectivas"
+                fill="#EF4444"
+                radius={[2, 2, 0, 0]}
+                label={<NotEffectiveLabelContent />}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      ) : (
         <div className="flex items-center justify-center h-80">
           <p className="text-gray-500 dark:text-gray-400">
             No hay datos disponibles para mostrar
