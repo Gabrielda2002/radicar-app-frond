@@ -16,13 +16,22 @@ interface ModalCreateDIProps {
   refresh: () => void;
 }
 
-const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
-  refresh,
-}) => {
+const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [documento, setDocumento] = useState<string>("");
 
+  const programsValidation = [
+    124, 34, 22, 43, 27, 54, 41, 7, 33, 3, 21, 23, 48, 49, 56, 57, 59, 60, 61,
+    67, 68, 69, 70, 72, 74, 75, 78, 79, 80, 81, 82, 83, 88, 89, 90, 91, 92, 93,
+    95, 97, 99, 101, 102, 103, 104, 114, 116, 119, 11, 78, 120, 121, 122, 123,
+    124, 125, 126, 129, 133, 134, 139, 147, 148,
+  ];
+
   const { data, error, getData } = useFetchPaciente();
+
+  const user = localStorage.getItem("user");
+
+  const idUsuario = user ? JSON.parse(user).id : "";
 
   const { createDI, error: errorCreating, loading } = useCreateDI();
 
@@ -50,7 +59,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
       .max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     phoneNumber2: Yup.string()
       .optional()
-      .max(10, "El número de teléfono debe tener al menos 10 dígitos").nullable(),
+      .max(10, "El número de teléfono debe tener al menos 10 dígitos")
+      .nullable(),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -110,7 +120,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
     suport: Yup.string().optional(),
     // resultado de la llamada no efectiva
     resultCall: Yup.string().when(["classification", "elementDemand"], {
-      is: (classification: boolean, elementDemand: string) => classification === false && elementDemand == "2",
+      is: (classification: boolean, elementDemand: string) =>
+        classification === false && elementDemand == "2",
       then: (schema) =>
         schema.required("El resultado de la llamada es obligatorio"),
       otherwise: (schema) => schema.optional(),
@@ -155,7 +166,17 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
       "El área de la persona que procesa es obligatoria"
     ),
     programPerson: Yup.string().required("El programa es obligatorio"),
-    assignmentDate: Yup.string().required("La de asignación es obligatoria"),
+    assignmentDate: Yup.string().when(["classification", "programPerson"], {
+      is: (classification: boolean, programPerson: string) => {
+        return (
+          classification === true ||
+          !programsValidation.includes(parseInt(programPerson))
+        );
+      },
+      then: (schema) =>
+        schema.required("La fecha de asignación es obligatoria"),
+      otherwise: (schema) => schema.optional(),
+    }),
     profetional: Yup.string().required("El profesional es obligatorio"),
   });
 
@@ -195,20 +216,19 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
       assignmentDate: "",
       idPatient: data?.id || "",
       profetional: "",
-      idUser: 1,
+      idUser: idUsuario,
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
         const response = await createDI(values);
 
-        if (response ) {
+        if (response) {
           formik.resetForm();
           setDocumento("");
           await refresh();
           toast.success("Demanda inducida creada exitosamente");
         }
-        
       } catch (error) {
         console.log("Error inesperado al crear la demanda inducida. :", error);
       }
@@ -261,8 +281,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                 name="document"
                 onChange={(e) => setDocumento(e.target.value)}
                 onBlur={() => {
-                  getData(documento)
-                  formik.handleBlur
+                  getData(documento);
+                  formik.handleBlur;
                 }}
                 touched={formik.touched.document}
                 error={formik.errors.document}
@@ -288,11 +308,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                 placeholder="Ej: Llamada telefónica"
                 touched={formik.touched.elementDemand}
               />
-              {formik.touched.elementDemand && formik.errors.elementDemand && (
-                <div className="text-red-500">
-                  {formik.errors.elementDemand}
-                </div>
-              )}
             </div>
 
             <div>
@@ -312,12 +327,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                 placeholder="Ej: Mensaje"
                 touched={formik.touched.typeElementDemand}
               />
-              {formik.touched.typeElementDemand &&
-                formik.errors.typeElementDemand && (
-                  <div className="text-red-500">
-                    {formik.errors.typeElementDemand}
-                  </div>
-                )}
             </div>
 
             <div>
@@ -336,9 +345,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                 placeholder="Ej: Autocuidado"
                 touched={formik.touched.objetive}
               />
-              {formik.touched.objetive && formik.errors.objetive && (
-                <div className="text-red-500">{formik.errors.objetive}</div>
-              )}
             </div>
             <div>
               <Input
@@ -495,12 +501,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                         placeholder="Ej: Padre"
                         touched={formik.touched.relationshipUser}
                       />
-                      {formik.touched.relationshipUser &&
-                        formik.errors.relationshipUser && (
-                          <div className="text-red-500">
-                            {formik.errors.relationshipUser}
-                          </div>
-                        )}
                     </div>
                     <div>
                       <Input
@@ -592,11 +592,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                             placeholder="Ej: Afiliaciones"
                             touched={formik.touched.areaEps}
                           />
-                          {formik.touched.areaEps && formik.errors.areaEps && (
-                            <div className="text-red-500">
-                              {formik.errors.areaEps}
-                            </div>
-                          )}
                         </div>
                       </>
                     )}
@@ -614,12 +609,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                         placeholder="Ej: Educación de salud"
                         touched={formik.touched.summaryCall}
                       />
-                      {formik.touched.summaryCall &&
-                        formik.errors.summaryCall && (
-                          <div className="text-red-500">
-                            {formik.errors.summaryCall}
-                          </div>
-                        )}
                     </div>
                     <div>
                       <Input
@@ -668,11 +657,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                     placeholder="Ej: Otro"
                     touched={formik.touched.resultCall}
                   />
-                  {formik.touched.resultCall && formik.errors.resultCall && (
-                    <div className="text-red-500">
-                      {formik.errors.resultCall}
-                    </div>
-                  )}
                 </div>
               )}
             </>
@@ -783,12 +767,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                     placeholder="Ej: No esta interesado"
                     touched={formik.touched.reasonVisitNotEffective}
                   />
-                  {formik.touched.reasonVisitNotEffective &&
-                    formik.errors.reasonVisitNotEffective && (
-                      <div className="text-red-500">
-                        {formik.errors.reasonVisitNotEffective}
-                      </div>
-                    )}
                 </div>
               </div>
             </>
@@ -816,19 +794,13 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
                 placeholder="Ej: PYMS"
                 touched={formik.touched.areaPersonProcess}
               />
-              {formik.touched.areaPersonProcess &&
-                formik.errors.areaPersonProcess && (
-                  <div className="text-red-500">
-                    {formik.errors.areaPersonProcess}
-                  </div>
-                )}
             </div>
             <div>
               <InputAutocompletado
                 apiRoute="programas/buscar"
-                onInputChanged={(value) =>
-                  formik.setFieldValue("programPerson", value)
-                }
+                onInputChanged={(value) => {
+                  formik.setFieldValue("programPerson", value);
+                }}
                 label="Programa"
                 touched={formik.touched.programPerson}
                 error={formik.errors.programPerson}
@@ -869,16 +841,15 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({
             </div>
           </div>
 
-            <AnimatePresence>
-                {errorCreating && (
-                  <div>
-                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                      {errorCreating}
-                    </div>
-                  </div>
-                )}
-              </AnimatePresence>
-
+          <AnimatePresence>
+            {errorCreating && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {errorCreating}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>
