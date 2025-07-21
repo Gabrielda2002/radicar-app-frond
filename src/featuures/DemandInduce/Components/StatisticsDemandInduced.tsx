@@ -3,9 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ModalFilterStatistics from "./ModalFilterStatistics";
 import StatisticsByProgramChart from "./Charts/StatisticsResultCallChart";
 import PhoneCallStatisticsChart from "./Charts/PhoneCallStatisticsChart";
-import EffectiveCallsOnlyChart from "./Charts/EffectiveCallsOnlyChart";
 import StatisticsSummaryCards from "./Charts/StatisticsSummaryCards";
-// import PercentageDistributionChart from "./Charts/PercentageDistributionChart";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchStatistics } from "../Hooks/useFetchStatistics";
 
@@ -24,13 +22,9 @@ const StatisticsDemandInduced = () => {
   };
 
   // Verificar si tenemos datos válidos
-  const hasValidData =
-    statistics &&
-    statistics.estadisticasPorPrograma &&
-    statistics.estadisticasPorPrograma.length > 0;
+  const hasValidData = statistics;
   return (
     <div className="p-6 space-y-6">
-      {/* Header y Filtros */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -42,11 +36,10 @@ const StatisticsDemandInduced = () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-        <ModalFilterStatistics onFiltersApplied={handleFiltersApplied} />
+          <ModalFilterStatistics onFiltersApplied={handleFiltersApplied} />
         </div>
       </div>
 
-      {/* Contenido Principal */}
       <AnimatePresence mode="wait">
         {loading ? (
           <motion.div
@@ -89,7 +82,6 @@ const StatisticsDemandInduced = () => {
 
             {/* Gráficas */}
             <div className="space-y-6">
-              {/* Primera fila - Gráfico de barras por programa */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -101,47 +93,22 @@ const StatisticsDemandInduced = () => {
                 />
               </motion.div>
 
-              {/* Segunda fila - Gráficos lado a lado */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                {/* Estadísticas de Llamadas */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  {statistics.estadisticasLlamadasTelefonicas?.noEfectivas
-                    ?.length > 0 ? (
-                    <PhoneCallStatisticsChart
-                      efectivas={
-                        statistics.estadisticasLlamadasTelefonicas.efectivas
-                      }
-                      noEfectivas={
-                        statistics.estadisticasLlamadasTelefonicas.noEfectivas
-                      }
-                      title="Estadísticas de Llamadas Efectivas y No Efectivas"
-                    />
-                  ) : (
-                    <EffectiveCallsOnlyChart
-                      efectivas={
-                        statistics.estadisticasLlamadasTelefonicas?.efectivas ||
-                        []
-                      }
-                      title="Llamadas Efectivas por Profesional"
-                    />
-                  )}
-                </motion.div>
-
-                {/* Distribución de Porcentajes */}
-                {/* <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <PercentageDistributionChart
-                    data={statistics.estadisticasLlamadasNoEfectivas}
-                    title="Distribución de Porcentajes"
+                  <PhoneCallStatisticsChart
+                    efectivas={
+                      statistics.estadisticasLlamadasTelefonicas.efectivas
+                    }
+                    noEfectivas={
+                      statistics.estadisticasLlamadasTelefonicas.noEfectivas
+                    }
+                    title="Estadísticas de Llamadas Efectivas y No Efectivas"
                   />
-                </motion.div> */}
+                </motion.div>
               </div>
             </div>
           </motion.div>
