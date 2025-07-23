@@ -198,9 +198,7 @@ const DemandInduce = () => {
             ) : (
               activeSection === 2 && (
                 <div>
-                  <p className="text-center text-gray-500 dark:text-gray-300">
-                    <StatisticsDemandInduced/>
-                  </p>
+                  <StatisticsDemandInduced/>
                 </div>
               )
             )}
