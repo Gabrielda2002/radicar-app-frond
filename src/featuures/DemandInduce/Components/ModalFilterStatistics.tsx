@@ -14,8 +14,18 @@ interface ModalFilterStatisticsProps {
   onFiltersApplied?: (filters: any) => void;
 }
 
-const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps) => {
+const ModalFilterStatistics = ({
+  onFiltersApplied,
+}: ModalFilterStatisticsProps) => {
   const { error, fetchStatistics, loading } = useFetchStatistics();
+
+  const [selectedFilters, setSelectedFilters] = useState({
+    element: "",
+    program: "",
+    professional: "",
+    year: "",
+    month: "",
+  });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -42,8 +52,6 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("Form values being submitted:", values);
-
       const response = await fetchStatistics(values);
       if (response?.status === 200 || response?.status === 201) {
         formik.resetForm();
@@ -51,12 +59,48 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
         toast.success("Filtros aplicados correctamente");
         onFiltersApplied?.(values);
       }
-
     },
   });
 
   return (
     <>
+      {Object.values(selectedFilters).some((v) => v) && (
+        <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 border border-gray-400 rounded">
+          <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Filtros seleccionados:</h4>
+          <ul className="text-sm">
+            <li>
+              <span className="font-bold text-gray-700 dark:text-gray-100">Elemento:</span>
+              <span className="text-gray-600 dark:text-gray-400 pl-2">
+                {selectedFilters.element || "No seleccionado"}
+              </span>
+            </li>
+            <li>
+              <span className="font-bold text-gray-700 dark:text-gray-100">Programa:</span>
+              <span className="text-gray-600 dark:text-gray-400 pl-2">
+                {selectedFilters.program || "No seleccionado"}
+              </span>
+            </li>
+            <li>
+              <span className="font-bold text-gray-700 dark:text-gray-100">Profesional:</span>
+              <span className="text-gray-600 dark:text-gray-400 pl-2">
+                {selectedFilters.professional || "No seleccionado"}
+              </span>
+            </li>
+            <li>
+              <span className="font-bold text-gray-700 dark:text-gray-100">Año:</span>
+              <span className="text-gray-600 dark:text-gray-400 pl-2">
+                {selectedFilters.year || "No seleccionado"}
+              </span>
+            </li>
+            <li>
+              <span className="font-bold text-gray-700 dark:text-gray-100">Mes:</span>
+              <span className="text-gray-600 dark:text-gray-400 pl-2">
+                {selectedFilters.month || "No seleccionado"}
+              </span>
+            </li>
+          </ul>
+        </div>
+      )}
       <Button onClick={() => setIsOpen(true)} variant="secondary">
         Aplicar Filtros
       </Button>
@@ -75,8 +119,9 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
           <InputAutocompletado
             apiRoute="elementos/demanda-inducida/buscar"
             label="Elemento de demanda inducida"
-            onInputChanged={(value) => {
-              formik.setFieldValue("element", value);
+            onInputChanged={(id, name) => {
+              setSelectedFilters((prev) => ({ ...prev, element: name ?? "" }));
+              formik.setFieldValue("element", id);
             }}
             error={
               formik.touched.element && formik.errors.element
@@ -89,7 +134,10 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
           />
           <InputAutocompletado
             apiRoute="programas/buscar"
-            onInputChanged={(value) => formik.setFieldValue("program", value)}
+            onInputChanged={(id, name) => {
+              setSelectedFilters((prev) => ({ ...prev, program: name ?? "" }));
+              formik.setFieldValue("program", id);
+            }}
             label="Programa"
             touched={formik.touched.program}
             error={formik.errors.program}
@@ -105,7 +153,10 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
             label="Profesional"
             id="professiona"
             value={formik.values.professional}
-            onChange={formik.handleChange}
+            onChange={ (e) => {
+              formik.handleChange(e);
+              setSelectedFilters((prev) => ({ ...prev, professional: e.target.value }));
+            }}
             onBlur={formik.handleBlur}
             name="professional"
             touched={formik.touched.professional}
@@ -118,7 +169,10 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
             label="Año"
             id="year"
             value={formik.values.year}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setSelectedFilters((prev) => ({ ...prev, year: e.target.value }));
+            }}
             onBlur={formik.handleBlur}
             name="year"
             touched={formik.touched.year}
@@ -130,7 +184,13 @@ const ModalFilterStatistics = ({ onFiltersApplied }: ModalFilterStatisticsProps)
             label="Mes"
             id="month"
             value={formik.values.month}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setSelectedFilters((prev) => ({
+                ...prev,
+                month: e.target.value,
+              }));
+            }}
             onBlur={formik.handleBlur}
             name="month"
             touched={formik.touched.month}
