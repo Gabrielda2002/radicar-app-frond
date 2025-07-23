@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { EstResultadoLlamadasNoEfectivas } from "@/models/IStatisticsDemandInduced";
@@ -26,18 +25,39 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
     resultadoLlamada: item.resultadoLlamada,
   }));
 
-  // Tooltip personalizado
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
+  // Tooltip personalizado que muestra todos los datos
+  const CustomTooltip = ({ active }: any) => {
+    if (active && chartData && chartData.length > 0) {
+      // Calcular el total
+      const total = chartData.reduce((sum, item) => sum + item.cantidad, 0);
+      
       return (
-        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg">
-          <p className="font-semibold text-gray-900 dark:text-gray-100">
-            {data.resultadoLlamada}
+        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-w-xs">
+          <p className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+            Resumen de Resultados de Llamadas
           </p>
-          <p className="text-blue-600 dark:text-blue-400">
-            Cantidad: {data.cantidad}
-          </p>
+          <div className="space-y-2 max-h-48 overflow-y-auto">
+            {chartData.map((item, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <p className="text-gray-700 dark:text-gray-300 text-sm truncate pr-2">
+                  {item.resultadoLlamada}:
+                </p>
+                <p className="text-blue-600 dark:text-blue-400 font-medium text-sm">
+                  {item.cantidad}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-2 mt-3">
+            <div className="flex justify-between items-center">
+              <p className="font-semibold text-gray-900 dark:text-gray-100">
+                Total:
+              </p>
+              <p className="font-bold text-blue-600 dark:text-blue-400">
+                {total}
+              </p>
+            </div>
+          </div>
         </div>
       );
     }
