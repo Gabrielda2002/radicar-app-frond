@@ -82,18 +82,6 @@ const StatisticsDemandInduced = () => {
 
             {/* Gráficas */}
             <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <StatisticsByProgramChart
-                  data={statistics.estResultadoLlamadasNoEfectivas}
-                  title="Estadísticas resultado Llamadas No Efectivas"
-                />
-              </motion.div>
-
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -109,6 +97,17 @@ const StatisticsDemandInduced = () => {
                     title="Estadísticas de Llamadas Efectivas y No Efectivas"
                   />
                 </motion.div>
+              <div className="">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <StatisticsByProgramChart
+                  data={statistics.estResultadoLlamadasNoEfectivas}
+                  title="Estadísticas resultado Llamadas No Efectivas"
+                />
+              </motion.div>
               </div>
             </div>
           </motion.div>

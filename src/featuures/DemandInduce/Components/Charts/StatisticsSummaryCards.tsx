@@ -61,7 +61,7 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
       textColor: "text-red-600 dark:text-red-400"
     },
     {
-      title: "Efectividad",
+      title: "Efectividad de Llamadas",
       value: `${porcentajeEfectividad}%`,
       icon: "📊",
       color: "bg-amber-500",

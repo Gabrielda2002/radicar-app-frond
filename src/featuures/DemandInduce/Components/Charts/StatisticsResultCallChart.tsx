@@ -58,8 +58,8 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
             >
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
               <XAxis
-                dataKey="programa"
-                angle={-45}
+                dataKey="resultadoLlamada"
+                angle={-35}
                 textAnchor="end"
                 height={80}
                 interval={0}
@@ -67,11 +67,11 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
                 className="text-gray-600 dark:text-gray-400"
               />
               <YAxis
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 20 }}
                 className="text-gray-600 dark:text-gray-400"
               />
               <Tooltip content={<CustomTooltip />} />
-              <Legend />
+              {/* <Legend /> */}
               <Bar
                 dataKey="cantidad"
                 name="Cantidad"

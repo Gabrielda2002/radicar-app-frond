@@ -12,18 +12,13 @@ export const useFetchStatistics = () => {
       setLoading(true);
       setError(null);
 
-      console.log("Sending request to API with data:", data);
-
       const response = await api.post<IStatisticsDemandInduced>(
         "demanda/inducida/estadistica",
         data
       );
 
-      console.log("API Response:", response);
-
       if (response.status === 200 || response.status === 201) {
         setData(response.data);
-        console.log("Statistics data set:", response.data);
         setError(null);
         return response;
       }
