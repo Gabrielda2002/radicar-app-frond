@@ -19,10 +19,13 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
   data,
   title = "Estadísticas por Programa",
 }) => {
+
+  const totalResultsCall = data.length;
   // Preparar los datos para el gráfico
   const chartData = data.map((item) => ({
     cantidad: item.cantidad,
     resultadoLlamada: item.resultadoLlamada,
+    percent: (item.cantidad / totalResultsCall) * 100,
   }));
 
   // Tooltip personalizado que muestra todos los datos
@@ -36,14 +39,17 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
           <p className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
             Resumen de Resultados de Llamadas
           </p>
-          <div className="space-y-2 max-h-48 overflow-y-auto">
+          <div className="space-y-2 max-h-fit overflow-y-auto">
             {chartData.map((item, index) => (
-              <div key={index} className="flex justify-between items-center">
+              <div key={index} className="grid grid-cols-3 justify-between items-center">
                 <p className="text-gray-700 dark:text-gray-300 text-sm truncate pr-2">
                   {item.resultadoLlamada}:
                 </p>
-                <p className="text-blue-600 dark:text-blue-400 font-medium text-sm">
+                <p className="text-center text-blue-600 dark:text-blue-400 font-medium text-sm">
                   {item.cantidad}
+                </p>
+                <p className="text-right text-blue-600 dark:text-blue-400 font-medium text-sm">
+                  {`${item.percent.toFixed(1)}%`}
                 </p>
               </div>
             ))}
