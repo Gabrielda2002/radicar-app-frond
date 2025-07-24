@@ -170,7 +170,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       is: (classification: boolean, programPerson: string) => {
         return (
           classification === true ||
-          !programsValidation.includes(parseInt(programPerson))
+          programsValidation.includes(parseInt(programPerson))
         );
       },
       then: (schema) =>
