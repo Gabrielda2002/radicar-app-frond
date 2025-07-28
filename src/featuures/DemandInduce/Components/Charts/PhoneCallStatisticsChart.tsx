@@ -140,12 +140,12 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
               <XAxis
                 dataKey="profesional"
-                angle={-45}
+                angle={0}
+                tickMargin={10}
                 textAnchor="end"
                 height={80}
                 interval={0}
-                tick={{ fontSize: 12 }}
-                className="text-gray-600 dark:text-gray-400"
+                tick={{ fontSize: 17 }}
               />
               <YAxis
                 tick={{ fontSize: 12 }}

@@ -20,8 +20,7 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
   title = "Estadísticas por Programa",
 }) => {
 
-  const totalResultsCall = data.length;
-  // Preparar los datos para el gráfico
+  const totalResultsCall = data.map(item => item.cantidad).reduce((acc, curr) => acc + curr, 0);
   const chartData = data.map((item) => ({
     cantidad: item.cantidad,
     resultadoLlamada: item.resultadoLlamada,
@@ -35,14 +34,14 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
       const total = chartData.reduce((sum, item) => sum + item.cantidad, 0);
       
       return (
-        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-w-xs">
+        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-w-md">
           <p className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
             Resumen de Resultados de Llamadas
           </p>
           <div className="space-y-2 max-h-fit overflow-y-auto">
             {chartData.map((item, index) => (
               <div key={index} className="grid grid-cols-3 justify-between items-center">
-                <p className="text-gray-700 dark:text-gray-300 text-sm truncate pr-2">
+                <p className="text-gray-700 dark:text-gray-300 text-sm pr-2">
                   {item.resultadoLlamada}:
                 </p>
                 <p className="text-center text-blue-600 dark:text-blue-400 font-medium text-sm">
