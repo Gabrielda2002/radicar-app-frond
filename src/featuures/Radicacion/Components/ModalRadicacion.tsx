@@ -163,7 +163,7 @@ const ModalRadicacion = () => {
       formData.append("specialty", values.idEspecialidad);
       formData.append("groupServices", values.idGrupoServicios);
       formData.append("place", values.idLugarRadicacion);
-      formData.append("typeServices", values.idTipoServicios);
+      formData.append("typeServices", values.idTipoServicios); 
       formData.append("radicador", idUsuario);
       formData.append("profetional", values.nombreProfesional);
       formData.append("orderDate", values.dateOrden);
