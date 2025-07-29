@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { EstResultadoLlamadasNoEfectivas } from "@/models/IStatisticsDemandInduced";
+import useDarkMode from "@/hooks/useDarkmode";
 
 interface StatisticsByProgramChartProps {
   data: EstResultadoLlamadasNoEfectivas[];
@@ -20,7 +21,11 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
   title = "Estadísticas por Programa",
 }) => {
 
-  const totalResultsCall = data.map(item => item.cantidad).reduce((acc, curr) => acc + curr, 0);
+  const { theme } = useDarkMode();
+
+  const totalResultsCall = data
+    .map((item) => item.cantidad)
+    .reduce((acc, curr) => acc + curr, 0);
   const chartData = data.map((item) => ({
     cantidad: item.cantidad,
     resultadoLlamada: item.resultadoLlamada,
@@ -32,7 +37,7 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
     if (active && chartData && chartData.length > 0) {
       // Calcular el total
       const total = chartData.reduce((sum, item) => sum + item.cantidad, 0);
-      
+
       return (
         <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-w-md">
           <p className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
@@ -40,7 +45,10 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
           </p>
           <div className="space-y-2 max-h-fit overflow-y-auto">
             {chartData.map((item, index) => (
-              <div key={index} className="grid grid-cols-3 justify-between items-center">
+              <div
+                key={index}
+                className="grid grid-cols-3 justify-between items-center"
+              >
                 <p className="text-gray-700 dark:text-gray-300 text-sm pr-2">
                   {item.resultadoLlamada}:
                 </p>
@@ -84,15 +92,13 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
               <XAxis
                 dataKey="resultadoLlamada"
-                angle={-35}
-                textAnchor="end"
+                tickMargin={10}
                 height={80}
                 interval={0}
-                tick={{ fontSize: 12 }}
-                className="text-gray-600 dark:text-gray-400"
+                tick={{ fontSize: 20, fill: `${theme === "dark" ? "#ffffff" : "#000000"}` }}
               />
               <YAxis
-                tick={{ fontSize: 20 }}
+                tick={{ fontSize: 12 }}
                 className="text-gray-600 dark:text-gray-400"
               />
               <Tooltip content={<CustomTooltip />} />
@@ -100,7 +106,7 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
               <Bar
                 dataKey="cantidad"
                 name="Cantidad"
-                fill="#3B82F6"
+                fill="#46ACC2"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>

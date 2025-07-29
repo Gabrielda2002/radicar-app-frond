@@ -145,7 +145,7 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
                 textAnchor="end"
                 height={80}
                 interval={0}
-                tick={{ fontSize: 17 }}
+                tick={{ fontSize: 20, fill: "#ffffff" }}
               />
               <YAxis
                 tick={{ fontSize: 12 }}
@@ -156,14 +156,14 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
               <Bar
                 dataKey="efectivas"
                 name="Llamadas Efectivas"
-                fill="#10B981"
+                fill="#7EB77F"
                 radius={[2, 2, 0, 0]}
                 label={<EffectiveLabelContent />}
               />
               <Bar
                 dataKey="noEfectivas"
                 name="Llamadas No Efectivas"
-                fill="#EF4444"
+                fill="#A44A3F"
                 radius={[2, 2, 0, 0]}
                 label={<NotEffectiveLabelContent />}
               />
