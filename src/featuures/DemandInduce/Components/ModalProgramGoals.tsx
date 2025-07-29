@@ -48,7 +48,7 @@ const ModalProgramGoals = () => {
           size="lg"
         >
           <div className="flex flex-col space-y-4 p-5">
-            {[1].includes(Number(rol)) && (
+            {[1,19,20].includes(Number(rol)) && (
               <ModalCreateGoalProgram onGoalCreated={refetch} />
             )}
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
