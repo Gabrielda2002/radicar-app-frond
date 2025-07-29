@@ -45,7 +45,9 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
           ? "report/excel/biometric"
           : reportType === "5"
           ? "report-excel-cirugias-filtro"
-          : "report/tickets";
+          : reportType === "6"
+          ? "report/tickets"
+          : "reporte/demanda/inducida";
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -96,6 +98,9 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
               <option value="5">Cirugía</option>
               {[1].includes(Number(rol)) && (
                 <option value="6">Tickets Mesa de Ayuda</option>
+              )}
+              {[1, 19, 20].includes(Number(rol)) && (
+                <option value="7">Demanda Inducida</option>
               )}
             </select>
           </div>

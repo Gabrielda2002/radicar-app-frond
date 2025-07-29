@@ -10,13 +10,14 @@ import * as Yup from "yup";
 import { useProgramsGoals } from "../Hooks/useProgramsGoals";
 import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
+import Select from "@/components/common/Ui/Select";
 
 interface ModalCreateGoalProgramProps {
   onGoalCreated?: () => void; // Callback para notificar al padre
 }
 
-const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({ 
-  onGoalCreated 
+const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
+  onGoalCreated,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -27,12 +28,14 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
   const validationSchema = Yup.object({
     goal: Yup.number().required("La meta es requerida"),
     program: Yup.string().required("El programa es requerido"),
+    professional: Yup.string().required(),
   });
 
   const formik = useFormik({
     initialValues: {
       goal: "",
       program: "",
+      professional: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -93,16 +96,31 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
                   placeholder="Ej: Vacunación menores de 6"
                   required={true}
                 />
+                <Select
+                  options={[
+                    { value: "Medicina General", label: "Medicina General" },
+                    { value: "Enfermería", label: "Enfermería" },
+                  ]}
+                  label="Profesional"
+                  id="professional"
+                  value={formik.values.professional}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="professional"
+                  touched={formik.touched.professional}
+                  error={formik.errors.professional}
+                  required={true}
+                />
               </div>
-                <AnimatePresence>
-                  {error && (
-                    <div>
-                      <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                        {error}
-                      </div>
+              <AnimatePresence>
+                {error && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
                     </div>
-                  )}
-                </AnimatePresence>
+                  </div>
+                )}
+              </AnimatePresence>
             </FormModal>
           </div>,
           document.body

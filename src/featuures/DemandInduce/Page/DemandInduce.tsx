@@ -15,6 +15,7 @@ import ModalSummaryDI from "../Components/ModalSummaryDI";
 import Button from "@/components/common/Ui/Button";
 import ModalProgramGoals from "../Components/ModalProgramGoals";
 import { AnimatePresence } from "framer-motion";
+import StatisticsDemandInduced from "../Components/StatisticsDemandInduced";
 
 const DemandInduce = () => {
   const ITEMS_PER_PAGE = 10;
@@ -48,7 +49,7 @@ const DemandInduce = () => {
   );
 
   const SECTIONS = [
-    { id: 1, name: "Tabla de DI" },
+    { id: 1, name: "Listado DI" },
     { id: 2, name: "Cuadro de Control DI" },
   ];
 
@@ -62,7 +63,7 @@ const DemandInduce = () => {
             title="Inducción de demanda"
             breadcrumb={[
               { label: "Inicio", path: "/" },
-              { label: "Inducción de demanda", path: "/demanda/inducida" },
+              { label: "/Inducción de demanda", path: "/demanda/inducida" },
             ]}
           />
           {SECTIONS.map((s) => (
@@ -197,9 +198,7 @@ const DemandInduce = () => {
             ) : (
               activeSection === 2 && (
                 <div>
-                  <p className="text-center text-gray-500 dark:text-gray-300">
-                    Parte de estadisticas
-                  </p>
+                  <StatisticsDemandInduced/>
                 </div>
               )
             )}
