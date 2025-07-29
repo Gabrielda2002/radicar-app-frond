@@ -298,7 +298,7 @@ const SideBar: FC = () => {
             )}
 
             {/* Categoria de reportes */}
-            {[6, 2, 14, 3, 15, 1, 18].includes(Number(rol)) && (
+            {[6, 2, 14, 3, 15, 1, 18, 19, 20].includes(Number(rol)) && (
               <div>
                 <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                   Reportes
