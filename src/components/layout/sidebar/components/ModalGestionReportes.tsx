@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDownloadReport } from "../hooks/UseDownloadReport";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
@@ -19,6 +19,11 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   const { rol } = useAuth();
 
+    const user = localStorage.getItem("user");
+
+  const headquarterCurrentUser = user ? JSON.parse(user).headquartersId : "";
+  console.log("headquarterCurrentUser", headquarterCurrentUser);
+
   const loadEstados = true;
   const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
 
@@ -31,6 +36,12 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   // Estado para manejar el tipo de reporte
   const [reportType, setReportType] = useState("");
+  
+  useEffect(() => {
+    if (rol && Number(rol) === 21) {
+      setHeadquarter(Number(headquarterCurrentUser));
+    }
+  }, []);
 
   const { downloadReport, error, loading } = useDownloadReport();
 
