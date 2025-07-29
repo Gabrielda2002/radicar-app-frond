@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { EstadisticaProfesional } from "@/models/IStatisticsDemandInduced";
+import { useTheme } from "@/context/blackWhiteContext";
 
 interface PhoneCallStatisticsChartProps {
   efectivas: EstadisticaProfesional[];
@@ -22,6 +23,9 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
   noEfectivas,
   title = "Estadísticas de Llamadas Telefónicas",
 }) => {
+
+  const {theme} = useTheme();
+
   // Combinar datos efectivas y no efectivas por profesional
   const combineData = () => {
     const professionalMap = new Map();
@@ -145,7 +149,7 @@ const PhoneCallStatisticsChart: React.FC<PhoneCallStatisticsChartProps> = ({
                 textAnchor="end"
                 height={80}
                 interval={0}
-                tick={{ fontSize: 20, fill: "#ffffff" }}
+                tick={{ fontSize: 20, fill: `${theme === "dark" ? "#ffffff" : "#000000"}` }}
               />
               <YAxis
                 tick={{ fontSize: 12 }}

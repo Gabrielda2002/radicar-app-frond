@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { EstResultadoLlamadasNoEfectivas } from "@/models/IStatisticsDemandInduced";
-import useDarkMode from "@/hooks/useDarkmode";
+import { useTheme } from "@/context/blackWhiteContext";
 
 interface StatisticsByProgramChartProps {
   data: EstResultadoLlamadasNoEfectivas[];
@@ -21,7 +21,7 @@ const StatisticsResultCallChart: React.FC<StatisticsByProgramChartProps> = ({
   title = "Estadísticas por Programa",
 }) => {
 
-  const { theme } = useDarkMode();
+  const { theme } = useTheme();
 
   const totalResultsCall = data
     .map((item) => item.cantidad)
