@@ -6,7 +6,7 @@ export const useDownloadReport = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string, statusCups?: string ) => {
+    const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string, headquarter: number, statusCups?: string) => {
         try {
 
             setLoading(true);
@@ -15,7 +15,8 @@ export const useDownloadReport = () => {
               dateStart:  dateStart,
               dateEnd: dateEnd,
               cupsCode: cupsCode,
-              statusCups: statusCups
+              statusCups: statusCups,
+              headquarter: headquarter
             },{
               responseType: 'blob',
             });
