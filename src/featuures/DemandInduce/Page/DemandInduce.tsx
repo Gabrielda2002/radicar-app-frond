@@ -36,6 +36,8 @@ const DemandInduce = () => {
     "personProcess",
     "areaPersonProcess",
     "assignmentDate",
+    "profetional",
+    "personProcess"
   ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -135,6 +137,8 @@ const DemandInduce = () => {
                         <th>Paciente</th>
                         <th>Area P. Seguimiento</th>
                         <th>Fecha Cita</th>
+                        <th>Enfermera</th>
+                        <th>Profesional</th>
                       </tr>
                     </thead>
                     <tbody className="text-sm text-gray-600 dark:text-gray-300">
@@ -157,7 +161,7 @@ const DemandInduce = () => {
                               {d.document}
                             </td>
                             <td className="md:p-3 p-1 border-b dark:border-gray-700">
-                              {FormatDate(d.dateCreated, false)}
+                              {FormatDate(d.dateCreated, true)}
                             </td>
                             <td className="md:p-3 p-1 border-b dark:border-gray-700">
                               {d.elementDI}
@@ -165,7 +169,7 @@ const DemandInduce = () => {
                             <td className="md:p-3 p-1 border-b dark:border-gray-700">
                               {d.typeElementDI}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className={`md:p-3 p-1 border-b dark:border-gray-700 ${d.classification ? "text-green-500" : "text-red-500"}`}>
                               {d.classification ? "Efectiva" : "No Efectiva"}
                             </td>
                             <td className="md:p-3 p-1 border-b dark:border-gray-700">
@@ -182,6 +186,12 @@ const DemandInduce = () => {
                             </td>
                             <td className="md:p-3 p-1 border-b dark:border-gray-700">
                               {FormatDate(d.assignmentDate, false)}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.personProcess}
+                            </td>
+                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                              {d.profetional}
                             </td>
                           </tr>
                         ))
