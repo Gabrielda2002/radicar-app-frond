@@ -28,7 +28,8 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
   const validationSchema = Yup.object({
     goal: Yup.number().required("La meta es requerida"),
     program: Yup.string().required("El programa es requerido"),
-    professional: Yup.string().required(),
+    professional: Yup.string().required("El profesional es requerido"),
+    headquarters: Yup.string().required("La sede es requerida"),
   });
 
   const formik = useFormik({
@@ -36,6 +37,7 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
       goal: "",
       program: "",
       professional: "",
+      headquarters: ""
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -110,6 +112,17 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
                   touched={formik.touched.professional}
                   error={formik.errors.professional}
                   required={true}
+                />
+                <InputAutocompletado
+                  label="Sede"
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("headquarters", value)
+                  }
+                  apiRoute="lugares-radicacion-name"
+                  placeholder="Ej: Calle 15"
+                  required
+                  error={formik.errors.headquarters}
+                  touched={formik.touched.headquarters}
                 />
               </div>
               <AnimatePresence>

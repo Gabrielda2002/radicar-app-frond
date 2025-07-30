@@ -72,7 +72,7 @@ const ModalProgramGoals = () => {
           size="lg"
         >
           <div className="flex flex-col space-y-4 p-5">
-            {[1,19,20,21].includes(Number(rol)) && (
+            {[1,20,21].includes(Number(rol)) && (
               <ModalCreateGoalProgram onGoalCreated={refetch} />
             )}
             <p className="text-sm text-gray-400 text-center ">
@@ -82,8 +82,9 @@ const ModalProgramGoals = () => {
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                   <th>Programa</th>
-                  <th>Meta</th>
+                  <th>Sede</th>
                   <th>Profesional</th>
+                  <th>Meta</th>
                   {[1,20,21].includes(Number(rol)) && <th>Meta siguiente mes</th>}
                   {[1,20].includes(Number(rol)) && <th>Eliminar</th>}
                 </tr>
@@ -95,7 +96,8 @@ const ModalProgramGoals = () => {
                     className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                   >
                     <td>{p.program}</td>
-                    <td>{p.professional}</td>
+                    <td>{p.headquarters}</td>
+                    <td>{p.headquarters}</td>
                     <td>
                       <EditableCell
                         isEditing={editingRows[p.id]}
