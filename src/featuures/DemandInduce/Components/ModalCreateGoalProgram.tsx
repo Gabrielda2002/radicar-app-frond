@@ -55,7 +55,7 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
   return (
     <>
       <Button onClick={() => setIsOpen(true)} variant="secondary">
-        Crear Meta del Programa
+        Crear Meta Programa
       </Button>
       {isOpen &&
         createPortal(

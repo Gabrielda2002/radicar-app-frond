@@ -1,6 +1,6 @@
 import Button from "@/components/common/Ui/Button";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useProgramsGoals } from "../Hooks/useProgramsGoals";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import EditableCell from "@/featuures/SystemInventory/Components/EditableCell";
@@ -8,11 +8,15 @@ import { useEditableRow } from "@/featuures/SystemInventory/Hooks/useEditableRow
 import { useAuth } from "@/context/authContext";
 import ModalCreateGoalProgram from "./ModalCreateGoalProgram";
 import { AnimatePresence } from "framer-motion";
+import { MdDeleteOutline } from "react-icons/md";
+import ConfirmDeletePopup from "@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp";
 
 const ModalProgramGoals = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [ openComfirmation, setOpenConfirmation ] = useState<boolean>(false);
+  const deleteProgramGoal = useRef<number>(0);
 
-  const { data, error, loading, handleUpdateGoal, refetch } =
+  const { data, error, loading, handleUpdateGoal, refetch, deleteGoal } =
     useProgramsGoals();
 
   const { rol } = useAuth();
@@ -32,6 +36,26 @@ const ModalProgramGoals = () => {
     cancelEditing(goalId); // Limpiar el estado de edición después de actualizar
   };
 
+
+  const handleDelete = (goalId: number) => {
+    deleteProgramGoal.current = goalId;
+    console.log(goalId)
+    setOpenConfirmation(true);
+  }
+
+  const handleComfirmationDelete = async () => {
+    const goalId = deleteProgramGoal.current;
+    if (!goalId || goalId === 0) return;
+
+    await deleteGoal(goalId);
+    setOpenConfirmation(false);
+    deleteProgramGoal.current = 0;
+  }
+
+  const handleCancelDelete = () => {
+    setOpenConfirmation(false);
+  };
+
   return (
     <>
       <Button variant="outline" onClick={() => setIsOpen(true)}>
@@ -48,16 +72,20 @@ const ModalProgramGoals = () => {
           size="lg"
         >
           <div className="flex flex-col space-y-4 p-5">
-            {[1,19,20].includes(Number(rol)) && (
+            {[1,19,20,21].includes(Number(rol)) && (
               <ModalCreateGoalProgram onGoalCreated={refetch} />
             )}
+            <p className="text-sm text-gray-400 text-center ">
+              💡Cada comienzo de mes las metas del mes anterior dejarán de visualizarse, se verán las metas del mes actual exclusivamente.
+            </p>
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                   <th>Programa</th>
                   <th>Meta</th>
                   <th>Profesional</th>
-                  {[1].includes(Number(rol)) && <th>Actualizar estado</th>}
+                  {[1,20,21].includes(Number(rol)) && <th>Meta siguiente mes</th>}
+                  {[1,20].includes(Number(rol)) && <th>Eliminar</th>}
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-600 dark:text-gray-300">
@@ -84,7 +112,7 @@ const ModalProgramGoals = () => {
                         setActiveFieldId={setActiveFieldId}
                       />
                     </td>
-                    {[1, 20].includes(Number(rol)) && (
+                    {[1, 20,21].includes(Number(rol)) && (
                       <td>
                         {editingRows[p.id] ? (
                           <>
@@ -111,12 +139,23 @@ const ModalProgramGoals = () => {
                         ) : (
                           <Button
                             onClick={() => startEditing(p.id, p)}
-                            title="Editar meta"
-                            variant="secondary"
+                            title="Agregar nueva meta del mes siguiente"
+                            variant="outline"
                           >
-                            Editar
+                            Agregar nueva meta
                           </Button>
                         )}
+                      </td>
+                    )}
+                    {[1, 20].includes(Number(rol)) && (
+                      <td>
+                        <Button
+                          variant="danger"
+                          onClick={() => handleDelete(p.id)}
+                          title="Eliminar meta"
+                        >
+                          <MdDeleteOutline className="text-lg" />
+                        </Button>
                       </td>
                     )}
                   </tr>
@@ -135,6 +174,12 @@ const ModalProgramGoals = () => {
           </div>
         </ModalDefault>
       )}
+      <ConfirmDeletePopup
+        isOpen={openComfirmation}
+        onClose={handleCancelDelete}
+        onConfirm={handleComfirmationDelete}
+        iteamName="Meta Programa"
+      />
     </>
   );
 };
