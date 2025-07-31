@@ -5,4 +5,5 @@ export interface IProgramsGoals {
     year: number;
     month: number;
     professional: string;
+    headquarters: string;
 }

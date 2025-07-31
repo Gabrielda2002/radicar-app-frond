@@ -16,7 +16,6 @@ import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
-import { IPacientes } from "../models/IPacientes";
 import { ICirugias } from "../models/ICirugias";
 import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
@@ -198,17 +197,6 @@ export const fetchRoles = async (): Promise<IRol[]> => {
         createdAt: new Date(rol.createdAt)
     }));
     return roles;
-}
-
-// traer los pacientes
-export const fetchPacientes = async (): Promise<IPacientes[]> => {
-    const response = await api.get(`/pacientes`);
-    const pacientes = response.data.map((paciente: IPacientes) => ({
-        ...paciente,
-        updatedAt: new Date(paciente.updatedAt),
-        createdAt: new Date(paciente.createdAt)
-    }));
-    return pacientes;
 }
 
 // tabla cirugias

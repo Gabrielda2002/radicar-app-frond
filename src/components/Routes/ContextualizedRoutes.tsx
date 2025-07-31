@@ -14,7 +14,7 @@ import RecoverLetterPage from "@/featuures/RecoverLetter/Pages/RecoverLetterPage
 import RecoverLastPage from "@/featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
 import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TableCUPSAuthorized";
 import TablaCups from "@/featuures/CUPS/Pages/TablaCups";
-import TablaPacientes from "@/featuures/Patient/Pages/TablaPacientes";
+import TablaPacientes from "@/featuures/Patient/Pages/TablaPatient";
 import TablaDiagnostico from "@/featuures/Diagnostico/Pages/TablaDiagnostico";
 import TablaRadicadores from "@/featuures/Radicador/Pages/TablaRadicadores";
 import TablaMunicipios from "@/featuures/Municipality/Pages/TablaMunicipios";

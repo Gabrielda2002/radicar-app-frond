@@ -6,7 +6,7 @@ const TablaConvenio = lazy(
   () => import("@/featuures/Convenio/Pages/TablaConvenio")
 );
 const TablaPacientes = lazy(
-  () => import("@/featuures/Patient/Pages/TablaPacientes")
+  () => import("@/featuures/Patient/Pages/TablaPatient")
 );
 const TablaIpsRemite = lazy(
   () => import("@/featuures/IpsRemite/Pages/TablaIpsRemite")

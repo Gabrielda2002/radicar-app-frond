@@ -441,7 +441,21 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
               </div>
             </>
           ) : (
-            error && <div className="text-red-500">{error}</div>
+            error && (
+              <div className="text-red-500">
+                {error}
+                <a
+                  href="/tabla-pacientes"
+                  className="text-blue-500 underline ml-2"
+                  onClick={() => setIsOpen(false)}
+                  target="_blank"
+                  title="Ir a Pacientes para crear el paciente"
+                  
+                >
+                  Ir a Pacientes
+                </a>
+              </div>
+            )
           )}
 
           {/* elemento = llamada telefonica */}

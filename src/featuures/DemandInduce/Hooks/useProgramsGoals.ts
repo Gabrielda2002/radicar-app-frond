@@ -93,6 +93,31 @@ export const useProgramsGoals = () => {
     }
   }
 
+  const deleteGoal = async (id: number) => {
+    try {
+      
+      setLoading(true);
+
+      const response = await api.delete(`/metas/programas/${id}`);
+
+      if (response.status === 200 || response.status === 204) {
+        toast.success("Meta eliminada correctamente");
+        await fetchProgramsGoals();
+        setError(null);
+        return response;
+      }
+
+    } catch (error: any) {
+      if (error.response?.status === 500) {
+        setError("Error interno del servidor, por favor intente más tarde");
+      }else {
+        setError(error.response?.data?.message);
+      }
+    }finally {
+      setLoading(false);
+    }
+  }
+
   return {
     data,
     loading,
@@ -101,5 +126,6 @@ export const useProgramsGoals = () => {
     refetch,
     handleUpdateGoal,
     handleCreateGoal,
+    deleteGoal
   };
 };
