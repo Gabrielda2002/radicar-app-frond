@@ -21,13 +21,14 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { Pencil, PlusCircleIcon, Smartphone } from "lucide-react";
 import { usePatient } from "../Hooks/usePatient";
+import { AnimatePresence } from "framer-motion";
 
-interface ModalPacienteProps {
+interface ModalPatientProps {
   id: number | null;
   paciente: IPacientes | null;
 }
 
-const ModalPaciente: React.FC<ModalPacienteProps> = ({
+const ModalPatient: React.FC<ModalPatientProps> = ({
   id,
   paciente,
 }) => {
@@ -35,7 +36,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
 
   const [load, setLoad] = useState(false);
 
-  const { createPatient, updatePatient } = usePatient();
+  const { createPatient, updatePatient, error, loading } = usePatient();
 
   //hook para traer los tipos de documentos
   const { dataDocumento, errorDocumento } = useFetchDocumento(load);
@@ -123,10 +124,8 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         }
 
         if (response?.status === 200 || response?.status === 201) {
-          setTimeout(() => {
             setIsOpen(false);
-            window.location.reload();
-          }, 2000);
+            formik.resetForm();
         }
       } catch (error) {
         console.error("Error al crear o actualizar el paciente:", error);
@@ -170,7 +169,7 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
         onClose={() => setIsOpen(false)}
         title={`Modal ${id !== null ? "Editar" : "Crear"} Paciente`}
         onSubmit={formik.handleSubmit}
-        isSubmitting={formik.isSubmitting}
+        isSubmitting={loading}
         size="lg"
         isValid={formik.isValid}
         submitText={id !== null ? "Actualizar" : "Crear"}
@@ -348,9 +347,18 @@ const ModalPaciente: React.FC<ModalPacienteProps> = ({
               />
             </div>
           </div>
+           <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>
   );
 };
-export default ModalPaciente;
+export default ModalPatient;

@@ -7,9 +7,9 @@ import { useFetchPaciente } from "@/hooks/useFetchPaciente";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
-const ModalPaciente = lazy(() => import("../Components/ModalPaciente"));
+const ModalPaciente = lazy(() => import("../Components/ModalPatient"));
 
-const TablaPacientes = () => {
+const TablaPatient = () => {
   const { data: patients, error, getData } = useFetchPaciente();
 
   const [identificacion, setIdentificacion] = useState<string>("");
@@ -183,4 +183,4 @@ const TablaPacientes = () => {
   );
 };
 
-export default TablaPacientes;
+export default TablaPatient;
