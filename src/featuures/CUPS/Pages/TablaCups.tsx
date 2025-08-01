@@ -10,6 +10,8 @@ import { ICups } from "@/models/ICups";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
 const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
@@ -56,30 +58,24 @@ const TablaCups = () => {
         {/* header-tale */}
 
         <section className="grid items-center justify-between grid-cols-1 pb-6 md:flex header-tabla">
-          <div className="container-filter">
-            <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Cups:
-            </label>
-            <input
+          <div>
+            <Input
+              label="Buscar Cups"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            ></input>
+              placeholder="Buscar"
+            />
           </div>
           <div className="flex items-center pt-3 space-x-2">
-            <select
-              name=""
-              id=""
-              className="border-2 border-stone-300 h-[40px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            <Select
+              options={[
+                { value: "10", label: "10 Items" },
+                { value: "20", label: "20 Items" },
+                { value: "30", label: "30 Items" },
+              ]}
               onChange={handleItemsPerPageChange}
               value={itemsPerPage}
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
             <Suspense fallback={<LoadingSpinner />}>
               <ModalCrearCupsDiagnostico modulo="cups" />
             </Suspense>
@@ -132,7 +128,6 @@ const TablaCups = () => {
                 </tbody>
               </table>
             </div>
-            <div>‎ </div>
             {/* Controles de paginación */}
             <Pagination
               currentPage={currentPage}
