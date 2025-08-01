@@ -5,11 +5,27 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '',
+  base: '/',
   resolve: {
     alias: {
       "@hooks": path.resolve(__dirname, "./src/hooks"),
       '@' : path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom']
+        }
+      }
+    }
+  },
+  preview: {
+    port: 4173,
+    host: true
+  }
 });

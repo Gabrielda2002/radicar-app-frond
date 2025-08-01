@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.1.5",
     "@heroicons/react": "^2.1.5",
+    "@pdfslick/react": "^3.0.0",
     "@types/js-cookie": "^3.0.6",
     "@types/react-big-calendar": "^1.8.11",
     "axios": "^1.7.4",
