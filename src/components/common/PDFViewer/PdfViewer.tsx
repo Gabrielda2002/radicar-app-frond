@@ -2,6 +2,7 @@ import React from "react";
 import { usePDFSlick } from "@pdfslick/react";
 import PDFNavigation from "./PDFNavigation";
 import ModalDefault from "../Ui/ModalDefault";
+import "@/utils/pdfWorkerConfig";
 
 interface PdfViewerProps {
   pdfFile: string;
