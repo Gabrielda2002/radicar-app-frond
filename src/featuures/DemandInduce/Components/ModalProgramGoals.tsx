@@ -97,7 +97,7 @@ const ModalProgramGoals = () => {
                   >
                     <td>{p.program}</td>
                     <td>{p.headquarters}</td>
-                    <td>{p.headquarters}</td>
+                    <td>{p.professional}</td>
                     <td>
                       <EditableCell
                         isEditing={editingRows[p.id]}
