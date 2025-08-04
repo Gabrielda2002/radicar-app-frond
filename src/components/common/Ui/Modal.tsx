@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({
     onClose,
     size = 'lg',
     children,
-    closeOnBackdrop = true,
+    closeOnBackdrop = false,
     className,
 }) => {
 
