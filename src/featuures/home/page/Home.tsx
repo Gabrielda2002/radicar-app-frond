@@ -9,9 +9,9 @@ import ConsultarSvContratados from "../components/ConsultarSvContratados";
 import icon from "@/featuures/home/images/ico.png";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
-const Calendario = lazy(() => import("../components/Calendario"));
+const Calendario = lazy(() => import("../components/CalendarEvent"));
 
-const Inicio = () => {
+const Home = () => {
   const [isLoading, setisLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -166,4 +166,4 @@ const Inicio = () => {
   );
 };
 
-export default Inicio;
+export default Home;
