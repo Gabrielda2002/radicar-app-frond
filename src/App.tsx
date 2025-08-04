@@ -22,6 +22,8 @@ import { UserProfileProvider } from "./context/userProfileContext";
 import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
 
+import "@pdfslick/react/dist/pdf_viewer.css";
+
 function AppRoutes() {
   return (
     <div>
