@@ -30,20 +30,8 @@ export const useFetchDI = () => {
       const response = await api.get("/demanda/inducida");
 
       if (response.status === 200 || response.status === 201) {
-        // Convertir los strings de fecha a objetos Date
-        const transformedData = response.data.map((item: any) => ({
-          ...item,
-          dateCreated: new Date(item.dateCreated),
-          dateCall: item.dateCall ? new Date(item.dateCall) : null,
-          dateSend: item.dateSend ? new Date(item.dateSend) : null,
-          dateVisit: item.dateVisit ? new Date(item.dateVisit) : null,
-          assignmentDate: new Date(item.assignmentDate),
-          classification: Boolean(item.classification),
-          dificulties: Boolean(item.dificulties),
-          conditionUser: Boolean(item.conditionUser),
-        }));
         
-        setData(transformedData);
+        setData(response.data);
       }
     } catch (error: any) {
       if (error.response?.status === 500) {
