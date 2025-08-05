@@ -5,7 +5,7 @@ import { TicketProvider } from "@/context/ticketContext.tsx";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 
 //*Lazy Components
-const Inicio = lazy(() => import("@/featuures/home/page/Inicio.tsx"));
+const Inicio = lazy(() => import("@/featuures/home/page/Home"));
 const Perfil = lazy(() => import("@/featuures/profile/page/PerfilPage.tsx"));
 const Usuarios = lazy(
   () => import("@/featuures/Usuarios/Pages/TableUsers.tsx")

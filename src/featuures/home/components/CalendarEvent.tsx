@@ -4,18 +4,22 @@ import moment from "moment";
 import { useAuth } from "@/context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import ModalCrearEvento from "./ModalCrearEvento";
+import ModalCrearEvento from "./ModalCreateEvent";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { IEventos } from "@/models/IEventos";
 import { useFetchEvents } from "../hooks/UseFetchEvents";
-import { useEventModal } from "../hooks/UseEventModal";
+import { useState } from "react";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");
 
-const Calendario: React.FC = () => {
-  const { selectedEvent, isModalOpen, handleEventSelect, handleCloseModal } =
-    useEventModal();
+const CalendarEvents: React.FC = () => {
+
+  const [selectedEvent, setSelectedEvent] = useState<IEventos | null>(null);
+
+  const handleEventSelect = (event: IEventos | null) => {
+    setSelectedEvent(event);
+  };
 
   const load = true;
   const { evetns, loadingEventos, errorEventos } = useFetchEvents(load);
@@ -173,20 +177,12 @@ const Calendario: React.FC = () => {
         />
       </div>
       {[1, 18].includes(Number(rol)) && (
-        <button
-          onClick={() => handleEventSelect(null)}
-          className="mt-4 btn-primary"
-        >
-          Crear Evento
-        </button>
-      )}
-      <ModalCrearEvento
-        isOpen={isModalOpen}
+       <ModalCrearEvento
         initialData={selectedEvent || undefined}
-        onClose={handleCloseModal}
       />
+      )}
     </div>
   );
 };
 
-export default Calendario;
+export default CalendarEvents;
