@@ -12,9 +12,7 @@ import Input from "@/components/common/Ui/Input";
 
 //*Icons
 import useFetchDiagnostico from "../Hooks/UseFetchDiagnostico";
-import { submitRadicado } from "../Services/SubmitRadicado";
 import FormModal from "@/components/common/Ui/FormModal";
-import { toast } from "react-toastify";
 import {
   IdCard,
   Mail,
@@ -25,6 +23,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/common/Ui/Button";
 import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
+import { useRequestService } from "../Hooks/useRequestService";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -33,13 +32,18 @@ const ModalRadicacion = () => {
   {
     /* hook que trae los datos del paciente */
   }
-  const { data, error, getData } = useFetchPaciente();
+  const { data, error: errorDataPatient, getData } = useFetchPaciente();
+
+  const {
+    createRequestService,
+    error: errorRequestService,
+    loading: creatingRequestService,
+  } = useRequestService();
+
+  const [errorCups, setErrorCups] = useState<string | null>(null);
 
   const { diagnostico, loading, errorDiagnostico, fetchDiagnostico } =
     useFetchDiagnostico();
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [submiting, setSubmiting] = useState<boolean>(false);
 
   const user = localStorage.getItem("user");
   const nombreUsuario = user
@@ -83,8 +87,7 @@ const ModalRadicacion = () => {
     idGrupoServicios: Yup.string().required("Campo requerido"),
     idLugarRadicacion: Yup.string().required("Campo requerido"),
     idTipoServicios: Yup.string().required("Campo requerido"),
-    nombreProfesional: Yup.string()
-      .required("Campo requerido"),
+    nombreProfesional: Yup.string().required("Campo requerido"),
     dateOrden: Yup.string().required("Campo requerido"),
     soporte: Yup.mixed().required("Campo requerido"),
   });
@@ -111,11 +114,10 @@ const ModalRadicacion = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // console.log(values);
 
       // ? validar que cantidad no este vacia y sea mayor a 0
       if (!quantityInputs || parseInt(quantityInputs) <= 0) {
-        setErrorMessage(
+        setErrorCups(
           "La cantidad de servicios solicitados no puede estar vacía."
         );
         return;
@@ -148,11 +150,9 @@ const ModalRadicacion = () => {
       }
 
       if (errorCups) {
-        setErrorMessage(errorCups);
+        setErrorCups(errorCups);
         return;
       }
-      setSubmiting(true);
-
       const formData = new FormData();
       formData.append("landline", values.telefonoFijo);
       formData.append("phoneNumber", values.numeroCelular);
@@ -163,7 +163,7 @@ const ModalRadicacion = () => {
       formData.append("specialty", values.idEspecialidad);
       formData.append("groupServices", values.idGrupoServicios);
       formData.append("place", values.idLugarRadicacion);
-      formData.append("typeServices", values.idTipoServicios); 
+      formData.append("typeServices", values.idTipoServicios);
       formData.append("radicador", idUsuario);
       formData.append("profetional", values.nombreProfesional);
       formData.append("orderDate", values.dateOrden);
@@ -174,35 +174,18 @@ const ModalRadicacion = () => {
       formData.append("items", JSON.stringify(items));
       formData.append("idPatient", values.idPaciente);
 
-      try {
-        const response = await submitRadicado(formData, values.idPaciente);
+      const response = await createRequestService(formData);
 
-        if (response?.status === 201 || response?.status === 200) {
-          toast.success("Radicación exitosa", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          setErrorMessage(null);
-          formik.resetForm();
-          setTimeout(() => {
-            setStadopen(false);
-            window.location.reload();
-          }, 2000);
-        } else {
-          setErrorMessage("Error al radicar, revise los campos.");
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setSubmiting(false);
+      if (response?.status === 201 || response?.status === 200) {
+        setErrorCups(null);
+        formik.resetForm();
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
     },
   });
+
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
     if (data) {
@@ -319,7 +302,7 @@ const ModalRadicacion = () => {
         onSubmit={formik.handleSubmit}
         size="lg"
         submitText="Radicar"
-        isSubmitting={submiting}
+        isSubmitting={creatingRequestService || formik.isSubmitting}
         isValid={formik.isValid}
       >
         <div>
@@ -347,9 +330,9 @@ const ModalRadicacion = () => {
                   iconPosition="left"
                 />
               </div>
-              {error && !data && (
+              {errorDataPatient && !data && (
                 <div className="text-red-500 dark:text-red-300">
-                  {error}
+                  {errorDataPatient}
                   <div></div>
                   <button
                     type="button"
@@ -590,7 +573,7 @@ const ModalRadicacion = () => {
                   placeholder="Digite nombre del profesional..."
                   helpText={`¿No encuentras el profesional?`}
                 />
-                <ModalProfessional/>
+                <ModalProfessional />
               </div>
               <div>
                 <Input
@@ -735,9 +718,15 @@ const ModalRadicacion = () => {
             </div>
           </div>
 
-          {errorMessage && (
-            <div className="text-red-500 dark:text-red-300">{errorMessage}</div>
-          )}
+          <AnimatePresence>
+            {errorRequestService || errorCups && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {errorRequestService || errorCups}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>
