@@ -841,6 +841,9 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 options={[
                   { value: "Medicina General", label: "Medicina General" },
                   { value: "Enfermería", label: "Enfermería" },
+                  { value: "Nutrición", label: "Nutrición" },
+                  { value: "Ginecobstetricia", label: "Ginecobstetricia" },
+                  { value: "Psicología", label: "Psicología" }
                 ]}
                 label="Profesional"
                 id="profetional"
