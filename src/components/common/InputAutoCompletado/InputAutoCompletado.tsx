@@ -6,7 +6,7 @@ interface InputAutocompletadoProps {
   label: string;
   onInputChanged: (value: string, id?: string) => void;
   apiRoute: string;
-  error?: string; 
+  error?: string;
   touched?: boolean;
   required?: boolean;
   placeholder?: string;
@@ -23,9 +23,11 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   placeholder = "",
   helpText = "",
 }) => {
-
   const [inputValue, setInputValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+
   const {
     data,
     error: fetchError,
@@ -33,49 +35,101 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   } = useFetchEspecialidadAtcp();
 
   useEffect(() => {
-    if (inputValue.trim() !== "") {
-      fetchInputAtcp(inputValue, apiRoute);
-      setShowSuggestions(true);
-    } else {
-      setShowSuggestions(false);
+    const debounceTimer = setTimeout(() => {
+      if (inputValue.trim() !== "") {
+        fetchInputAtcp(inputValue, apiRoute);
+        setShowSuggestions(true);
+        setSelectedIndex(-1);
+      } else {
+        setSelectedIndex(-1);
+        setShowSuggestions(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [inputValue, apiRoute]);
+
+  // Agregar después del useEffect existente (después de la línea 47)
+  useEffect(() => {
+    if (selectedIndex >= 0 && showSuggestions) {
+      const suggestionElement = document.querySelector(
+        `[data-suggestion-index="${selectedIndex}"]`
+      ) as HTMLElement;
+
+      if (suggestionElement) {
+        suggestionElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+      }
     }
-  }, [inputValue]);
+  }, [selectedIndex, showSuggestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     onInputChanged(e.target.value);
+    setSelectedIndex(-1);
   };
 
   const handleSuggestionClick = (suggestion: string, id?: string) => {
     setInputValue(suggestion);
     onInputChanged(id ?? "", suggestion);
     setShowSuggestions(false);
+    setSelectedIndex(-1);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.ctrlKey && e.code === "Space") {
-      setInputValue("@");
-      onInputChanged("@");
-      setShowSuggestions(true);
-    } else if (e.key === "Escape") {
-      setShowSuggestions(false);
+    if (!showSuggestions || !data || data.length === 0) {
+      if (e.ctrlKey && e.code === "Space") {
+        setInputValue("@");
+        onInputChanged("@");
+        setShowSuggestions(true);
+      }
+      return;
     }
-  }
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev < data.length - 1 ? prev + 1 : 0));
+        break;
+
+      case "ArrowUp":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : data.length - 1));
+        break;
+
+      case "Enter":
+        e.preventDefault();
+        if (selectedIndex >= 0 && data[selectedIndex]) {
+          const selectedItem = data[selectedIndex];
+          handleSuggestionClick(selectedItem.name, selectedItem.id);
+        }
+        break;
+
+      case "Escape":
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="relative">
-        <Input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          touched={touched}
-          error={error}
-          required={required}
-          label={label}
-          helpText={helpText}
-          onKeyDown={handleKeyDown}
-        />
+      <Input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder={placeholder}
+        touched={touched}
+        error={error}
+        required={required}
+        label={label}
+        helpText={helpText}
+        onKeyDown={handleKeyDown}
+      />
 
       {fetchError && (
         <p className="text-red-500 dark:text-red-300">{fetchError}</p>
@@ -84,11 +138,17 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
       {/* Mostrar sugerencias */}
       {showSuggestions && data && (
         <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 rounded shadow-md dark:bg-gray-800 dark:border-gray-600 max-h-40">
-          {data.map((item) => (
+          {data.map((item, index) => (
             <li
               key={item.id}
-              className="px-3 py-2 text-gray-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
+              data-suggestion-index={index}
+              className={`px-3 py-2 cursor-pointer dark:text-gray-200 ${
+                index === selectedIndex
+                  ? "bg-blue-100 text-teal-500 dark:bg-teal-600 dark:text-white"
+                  : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
               onClick={() => handleSuggestionClick(item.name, item?.id)}
+              onMouseEnter={() => setSelectedIndex(index)}
             >
               {item.name}
             </li>
