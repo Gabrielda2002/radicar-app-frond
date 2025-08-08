@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useFetchEspecialidadAtcp from "../../../hooks/useFetchInputAtcp";
 import Input from "../Ui/Input";
 
@@ -28,6 +28,8 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
 
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
+  const suggestionsRef = useRef<HTMLUListElement>(null);
+
   const {
     data,
     error: fetchError,
@@ -49,18 +51,25 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
     return () => clearTimeout(debounceTimer);
   }, [inputValue, apiRoute]);
 
-  // Agregar después del useEffect existente (después de la línea 47)
   useEffect(() => {
     if (selectedIndex >= 0 && showSuggestions) {
       const suggestionElement = document.querySelector(
         `[data-suggestion-index="${selectedIndex}"]`
       ) as HTMLElement;
 
-      if (suggestionElement) {
-        suggestionElement.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-        });
+      const suggestionsContainer = suggestionElement?.parentElement;
+
+      if (suggestionElement && suggestionsContainer) {
+
+        const containerScrollTop = suggestionsContainer.scrollTop;
+        const elementOffserTop = suggestionElement.offsetTop;
+        const elementHeight = suggestionElement.offsetHeight;
+
+        if (elementOffserTop < containerScrollTop) {
+          suggestionsContainer.scrollTop = elementOffserTop;
+        }else if (elementOffserTop + elementHeight > containerScrollTop + suggestionsContainer.clientHeight){
+          suggestionsContainer.scrollTop = elementOffserTop + elementHeight - suggestionsContainer.clientHeight;
+        }
       }
     }
   }, [selectedIndex, showSuggestions]);
@@ -137,7 +146,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
 
       {/* Mostrar sugerencias */}
       {showSuggestions && data && (
-        <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 rounded shadow-md dark:bg-gray-800 dark:border-gray-600 max-h-40">
+        <ul ref={suggestionsRef} className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 rounded shadow-md dark:bg-gray-800 dark:border-gray-600 max-h-40">
           {data.map((item, index) => (
             <li
               key={item.id}
