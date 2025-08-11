@@ -61,8 +61,9 @@ const FileList: React.FC<FileListProps> = ({
     let filePath = getPublicFilePath(file.path);
     if (file.mimeType === "application/pdf") {
       const fullPdfUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/uploads/${filePath}`;
-      setPdfUrl(fullPdfUrl);
-      setShowPdfViewer(true);
+      window.open(`${fullPdfUrl}`, "_blank");
+      // setPdfUrl(fullPdfUrl);
+      // setShowPdfViewer(true);
     } else {
       onDownload(file.id, file.name);
     }
