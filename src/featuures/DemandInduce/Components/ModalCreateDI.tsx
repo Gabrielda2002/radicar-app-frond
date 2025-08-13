@@ -178,7 +178,11 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
         schema.required("La fecha de asignación es obligatoria"),
       otherwise: (schema) => schema.optional(),
     }),
-    profetional: Yup.string().required("El profesional es obligatorio"),
+    profetional: Yup.string().when("classification" , {
+      is: (classification: boolean) => classification === true,
+      then: (schema) => schema.required("El profesional es obligatorio"),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   const formik = useFormik({
@@ -859,7 +863,12 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                   { value: "Enfermería", label: "Enfermería" },
                   { value: "Nutrición", label: "Nutrición" },
                   { value: "Ginecobstetricia", label: "Ginecobstetricia" },
-                  { value: "Psicología", label: "Psicología" }
+                  { value: "Psicología", label: "Psicología" },
+                  { value: "Odontología", label: "Odontología" },
+                  { value: "Toma de muestras de laboratorio", label: "Toma de muestras de laboratorio" },
+                  { value: "Trabajo social", label: "Trabajo social" },
+                  { value: "Pediatría", label: "Pediatría" },
+                  { value: "Otras especialidades", label: "Otras especialidades" }
                 ]}
                 label="Profesional"
                 id="profetional"
