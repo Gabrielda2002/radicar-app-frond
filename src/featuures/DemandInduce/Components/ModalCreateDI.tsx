@@ -61,6 +61,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       .optional()
       .max(10, "El número de teléfono debe tener al menos 10 dígitos")
       .nullable(),
+    landline: Yup.string().optional().max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -187,6 +188,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       email: "",
       phoneNumber: "",
       phoneNumber2: "",
+      landline: "",
       address: "",
       elementDemand: "",
       typeElementDemand: "",
@@ -241,6 +243,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       formik.setFieldValue("email", data.email);
       formik.setFieldValue("phoneNumber", data.phoneNumber);
       formik.setFieldValue("phoneNumber2", data.phoneNumber2);
+      formik.setFieldValue("landline", data.landline);
       formik.setFieldValue("address", data.address);
       formik.setFieldValue("idPatient", data.id.toString());
     }
@@ -399,7 +402,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 </div>
                 <div>
                   <Input
-                    label="Telefono"
+                    label="Número de telefono"
                     type="text"
                     id="phoneNumber"
                     value={formik.values.phoneNumber}
@@ -422,6 +425,19 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                     name="phoneNumber2"
                     touched={formik.touched.phoneNumber2}
                     error={formik.errors.phoneNumber2}
+                  />
+                </div>
+                <div>
+                  <Input
+                    label="Telefono fijo"
+                    type="text"
+                    id="landline"
+                    value={formik.values.landline || ""}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="landline"
+                    touched={formik.touched.landline}
+                    error={formik.errors.landline}
                   />
                 </div>
                 <div>
