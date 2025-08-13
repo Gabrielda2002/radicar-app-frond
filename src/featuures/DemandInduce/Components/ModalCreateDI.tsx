@@ -36,8 +36,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
   const { createDI, error: errorCreating, loading } = useCreateDI();
 
   const validationSchema = Yup.object({
-    document: Yup.string(),
-    tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
     elementDemand: Yup.string().required(
       "El elemento de demanda inducida es obligatorio"
     ),
@@ -46,11 +44,13 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
     ),
     objetive: Yup.string().required("El objetivo es obligatorio"),
     contactNumbers: Yup.string()
-      .required("Los numeros de contacto es obligatorio")
-      .min(10, "El número de contacto debe tener al menos 10 dígitos")
-      .max(30, "El número de contacto no debe exceder los 30 dígitos"),
-
+    .required("Los numeros de contacto es obligatorio")
+    .min(10, "El número de contacto debe tener al menos 10 dígitos")
+    .max(30, "El número de contacto no debe exceder los 30 dígitos"),
+    
     // actualizaciond e datos del paciente
+    document: Yup.string(),
+    tipoDocumento: Yup.string().required("El tipo de documento es obligatorio"),
     email: Yup.string()
       .email("Email inválido")
       .required("El email es obligatorio"),
@@ -61,6 +61,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       .optional()
       .max(10, "El número de teléfono debe tener al menos 10 dígitos")
       .nullable(),
+    landline: Yup.string().optional().max(10, "El número de teléfono debe tener al menos 10 dígitos"),
     address: Yup.string().required("La dirección es obligatoria"),
 
     // llamada telefonica (2)
@@ -177,7 +178,11 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
         schema.required("La fecha de asignación es obligatoria"),
       otherwise: (schema) => schema.optional(),
     }),
-    profetional: Yup.string().required("El profesional es obligatorio"),
+    profetional: Yup.string().when("classification" , {
+      is: (classification: boolean) => classification === true,
+      then: (schema) => schema.required("El profesional es obligatorio"),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   const formik = useFormik({
@@ -187,6 +192,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       email: "",
       phoneNumber: "",
       phoneNumber2: "",
+      landline: "",
       address: "",
       elementDemand: "",
       typeElementDemand: "",
@@ -214,7 +220,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       areaPersonProcess: "",
       programPerson: "",
       assignmentDate: "",
-      idPatient: data?.id || "",
+      idPatient: "",
       profetional: "",
       idUser: idUsuario,
     },
@@ -241,6 +247,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       formik.setFieldValue("email", data.email);
       formik.setFieldValue("phoneNumber", data.phoneNumber);
       formik.setFieldValue("phoneNumber2", data.phoneNumber2);
+      formik.setFieldValue("landline", data.landline);
       formik.setFieldValue("address", data.address);
       formik.setFieldValue("idPatient", data.id.toString());
     }
@@ -266,6 +273,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
         submitText="Crear"
         onSubmit={formik.handleSubmit}
         isSubmitting={loading}
+        isValid={formik.isValid}
       >
         <div className="py-3 px-5">
           {/* datos iniciales de la demanda inducida */}
@@ -284,8 +292,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                   getData(documento);
                   formik.handleBlur;
                 }}
-                touched={formik.touched.document}
-                error={formik.errors.document}
+                touched={formik.touched.document || error ? true : false}
+                error={formik.errors.document || (error ?? undefined)}
                 label="Documento"
                 placeholder="Ej: 123456789"
                 required={true}
@@ -399,7 +407,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 </div>
                 <div>
                   <Input
-                    label="Telefono"
+                    label="Número de telefono"
                     type="text"
                     id="phoneNumber"
                     value={formik.values.phoneNumber}
@@ -422,6 +430,19 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                     name="phoneNumber2"
                     touched={formik.touched.phoneNumber2}
                     error={formik.errors.phoneNumber2}
+                  />
+                </div>
+                <div>
+                  <Input
+                    label="Telefono fijo"
+                    type="text"
+                    id="landline"
+                    value={formik.values.landline || ""}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="landline"
+                    touched={formik.touched.landline}
+                    error={formik.errors.landline}
                   />
                 </div>
                 <div>
@@ -450,9 +471,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                   onClick={() => setIsOpen(false)}
                   target="_blank"
                   title="Ir a Pacientes para crear el paciente"
-                  
                 >
-                  Ir a Pacientes
+                  Go to Patients for create
                 </a>
               </div>
             )
@@ -833,7 +853,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 name="assignmentDate"
                 touched={formik.touched.assignmentDate}
                 error={formik.errors.assignmentDate}
-                required={true}
+                required={formik.values.classification === true || programsValidation.includes(parseInt(formik.values.programPerson))  ? true : false}
               />
             </div>
             <div>
@@ -843,7 +863,12 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                   { value: "Enfermería", label: "Enfermería" },
                   { value: "Nutrición", label: "Nutrición" },
                   { value: "Ginecobstetricia", label: "Ginecobstetricia" },
-                  { value: "Psicología", label: "Psicología" }
+                  { value: "Psicología", label: "Psicología" },
+                  { value: "Odontología", label: "Odontología" },
+                  { value: "Toma de muestras de laboratorio", label: "Toma de muestras de laboratorio" },
+                  { value: "Trabajo social", label: "Trabajo social" },
+                  { value: "Pediatría", label: "Pediatría" },
+                  { value: "Otras especialidades", label: "Otras especialidades" }
                 ]}
                 label="Profesional"
                 id="profetional"
@@ -853,7 +878,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 name="profetional"
                 touched={formik.touched.profetional}
                 error={formik.errors.profetional}
-                required={true}
+                required={formik.values.classification === true ? true : false}
               />
             </div>
           </div>

@@ -411,6 +411,11 @@
             "id": 82,
             "type": "cargo",
             "name": "MÉDICO"
+        },
+        {
+            "id": 83,
+            "type": "cargo",
+            "name": "PROFESIONAL DE GESTIÓN HUMANA"
         }
     ]
 }
