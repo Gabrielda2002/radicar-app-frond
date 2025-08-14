@@ -151,7 +151,12 @@ const ModalFilterStatistics = ({
               { value: "Enfermería", label: "Enfermería" },
               { value: "Nutrición", label: "Nutrición" },
               { value: "Ginecobstetricia", label: "Ginecobstetricia" },
-              { value: "Psicología", label: "Psicología" }
+              { value: "Psicología", label: "Psicología" },
+              { value: "Odontología", label: "Odontología" },
+              { value: "Trabajo Social", label: "Trabajo Social" },
+              { value: "Trabajo social", label: "Trabajo social"},
+              { value: "Pediatría", label: "Pediatría" },
+              { value: "Otras especialidades", label: "Otras especialidades" }
             ]}
             label="Profesional"
             id="professiona"
