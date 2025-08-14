@@ -26,7 +26,7 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
       textColor: "text-blue-600 dark:text-blue-400"
     },
     {
-      title: "Total DI Registrados",
+      title: "Total DI Registrados (programa y profesional seleccionados)",
       value: totalCantidadProgramas,
       icon: "⚡",
       color: "bg-purple-500",
@@ -47,14 +47,14 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
       textColor: "text-yellow-600 dark:text-yellow-400"
     },
     {
-      title: "Llamadas Efectivas",
+      title: "Efectivas",
       value: totalEfectivas,
       icon: "✅",
       color: "bg-green-500",
       textColor: "text-green-600 dark:text-green-400"
     },
     {
-      title: "Llamadas No Efectivas",
+      title: "No Efectivas",
       value: totalNoEfectivas,
       icon: "❌",
       color: "bg-red-500",
@@ -63,7 +63,7 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
     {
       title: "Efectividad de Llamadas",
       value: `${porcentajeEfectividad}%`,
-      icon: "📊",
+      icon: "📈",
       color: "bg-amber-500",
       textColor: "text-amber-600 dark:text-amber-400"
     }
