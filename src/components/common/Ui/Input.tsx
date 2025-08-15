@@ -53,17 +53,17 @@ const Input: React.FC<InputProps> = ({
 
     switch (variant) {
       case "dark":
-        return "border-gray-600 dark:border-gray-600 bg-gray-700 dark:bg-gray-700 text-white dark:text-white";
+        return "border-gray-600 dark:border-gray-600 bg-gray-700 bg:gray-200 dark:bg-gray-700 text-white dark:text-white";
       case "checkbox":
-        return "border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100";
+        return "border-gray-300 dark:border-gray-500 bg-white bg:gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100";
       default:
-        return "border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white";
+        return "border-gray-200 dark:border-gray-600 bg-transparent dark:bg-gray-800 dark:text-white";
     }
   };
 
   // Para checkbox, no usar inputClasses normales ni iconos dentro del input
   const inputClasses = `
-    w-full border-2 rounded focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
+    w-full border-2 rounded bg-transparent focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
     ${getSizeClasses()}
     ${getVariantClasses()}
     ${
@@ -83,7 +83,7 @@ const Input: React.FC<InputProps> = ({
 
   if (type === "checkbox" || variant === "checkbox") {
     return (
-      <div className="mb-4 flex items-center">
+      <div className="flex items-center mb-4">
         <input
           type="checkbox"
           className={`mr-2 ${getVariantClasses()} ${className}`}
@@ -91,12 +91,12 @@ const Input: React.FC<InputProps> = ({
           {...props}
         />
         {icon && (
-          <span className="mr-2 flex items-center text-gray-500 dark:text-gray-300">
+          <span className="flex items-center mr-2 text-gray-500 dark:text-gray-300">
             {icon}
           </span>
         )}
         {label && (
-          <label className="text-base font-bold text-gray-700 dark:text-gray-200 select-none">
+          <label className="text-base font-bold text-gray-700 select-none dark:text-gray-200">
             {label}
             {required && (
               <span className="ml-2 text-red-600 after:content-['*']"></span>

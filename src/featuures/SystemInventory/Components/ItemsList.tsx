@@ -10,6 +10,8 @@ import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 import FilterChips from "./FilterChips";
 import { useItemsFilter } from "../Hooks/useItemsFilter";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 // * Interface
 interface ItemsListProps {
@@ -155,7 +157,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
 
           {/* Search Form */}
           <div className="relative flex items-center mt-6 mb-6">
-            <input
+            <Input
               type="text"
               className="w-full p-2 border-2 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-white"
               placeholder="Buscar"
@@ -167,14 +169,14 @@ const ItemsList: React.FC<ItemsListProps> = ({
               <div className="relative ml-2">
                 <button
                   type="button"
-                  className="p-2 border-2 truncate rounded-md bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 flex items-center gap-2"
+                  className="flex items-center gap-2 p-2 truncate bg-white border-2 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600"
                   onClick={() => setShowAreaDropdown(!showAreaDropdown)}
                 >
                   Filtro dependencia
                   <span className="ml-1">&#9662;</span>
                 </button>
                 {showAreaDropdown && (
-                  <div className="absolute z-20 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-gray-400 rounded shadow-lg w-56 max-h-60 overflow-auto">
+                  <div className="absolute z-20 w-56 mt-2 overflow-auto bg-white border border-gray-300 rounded shadow-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 max-h-60">
                     {areaDependency?.map((a) => (
                       <label
                         key={a.id}
@@ -211,20 +213,20 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       prev.filter((name) => name !== filter)
                     )
                   }
-                />
+              />
               </div>
             )}
-            <select
+            <Select
+              options={[
+                {value: "10", label: "10"},
+                {value: "20", label: "20"},
+                {value: "30", label: "30"}
+              ]}
               name="itemsPerPage"
               id=""
               onChange={handleItemsPerPageChange}
               className="border-2 ml-2 border-stone-300 h-[45px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 items</option>
-              <option value="20">20 items</option>
-              <option value="30">30 items</option>
-            </select>
+            />
           </div>
 
           {filteredData.length > 0 && invetario && invetario.length > 0 ? (

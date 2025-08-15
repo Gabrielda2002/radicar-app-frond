@@ -51,7 +51,7 @@ const Select: React.FC<SelectProps> = ({
       case "dark":
         return "border-gray-600 dark:border-gray-600 bg-gray-700 dark:bg-gray-700 text-white dark:text-white";
       default:
-        return "border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white";
+        return "border-gray-200 bg-transparent dark:border-gray-600 dark:bg-gray-800 dark:text-white";
     }
   };
 
