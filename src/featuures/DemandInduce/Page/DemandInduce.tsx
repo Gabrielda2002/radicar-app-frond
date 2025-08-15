@@ -37,7 +37,8 @@ const DemandInduce = () => {
     "areaPersonProcess",
     "assignmentDate",
     "profetional",
-    "personProcess"
+    "personProcess",
+    "headquartersPersonProcess"
   ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -90,7 +91,7 @@ const DemandInduce = () => {
             {activeSection === 1 ? (
               <>
                 <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
-                  <div className="flex flex-col md:flex-row md:items-center space-x-2 mb-4 md:mb-0 md:w-full w-2/5 gap-4">
+                  <div className="flex flex-col w-2/5 gap-4 mb-4 space-x-2 md:flex-row md:items-center md:mb-0 md:w-full">
                     <Input
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
@@ -118,14 +119,14 @@ const DemandInduce = () => {
                     />
                     <ModalProgramGoals />
                   </div>
-                  <div className="flex justify-start md:justify-end w-full">
+                  <div className="flex justify-start w-full md:justify-end">
                     <ModalCreateDI refresh={refetch} />
                   </div>
                 </div>
                 <div className="mt-4 mb-5 overflow-y-auto">
                   <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
                     <thead>
-                      <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                      <tr className="text-sm text-center text-gray-600 bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
                         <th>Tipo Documento</th>
                         <th>Documento</th>
                         <th>Fecha Creacion</th>
@@ -138,13 +139,14 @@ const DemandInduce = () => {
                         <th>Area P. Seguimiento</th>
                         <th>Fecha Cita</th>
                         <th>Enfermera</th>
+                        <th>Sede</th>
                         <th>Profesional</th>
                       </tr>
                     </thead>
                     <tbody className="text-sm text-gray-600 dark:text-gray-300">
                       {currentData().length === 0 ? (
                         <tr>
-                          <td colSpan={11} className="text-center p-4">
+                          <td colSpan={14} className="p-4 text-center">
                             No hay datos disponibles
                           </td>
                         </tr>
@@ -152,45 +154,48 @@ const DemandInduce = () => {
                         currentData().map((d) => (
                           <tr
                             key={d.id}
-                            className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                            className="text-xs transition duration-200 ease-in-out bg-white shadow-md md:text-sm dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
                           >
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.typeDocument}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.document}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {FormatDate(d.dateCreated, true)}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.elementDI}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.typeElementDI}
                             </td>
                             <td className={`md:p-3 p-1 border-b dark:border-gray-700 ${d.classification ? "text-green-500" : "text-red-500"}`}>
                               {d.classification ? "Efectiva" : "No Efectiva"}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.objetive}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.programPerson}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.namePatient}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.areaPersonProcess}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {FormatDate(d.assignmentDate, false)}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.personProcess}
                             </td>
-                            <td className="md:p-3 p-1 border-b dark:border-gray-700">
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
+                              {d.headquartersPersonProcess}
+                            </td>
+                            <td className="p-1 border-b md:p-3 dark:border-gray-700">
                               {d.profetional}
                             </td>
                           </tr>

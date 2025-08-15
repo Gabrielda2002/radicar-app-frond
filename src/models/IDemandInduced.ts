@@ -32,6 +32,7 @@ export interface IDemandInduced {
   reasonVisit: string;
   personProcess: string;
   areaPersonProcess: string;
+  headquartersPersonProcess: string;
   programPerson: string;
   assignmentDate: Date;
   profetional: string;
