@@ -7,9 +7,11 @@ import { CreateActiveBreakes } from "../services/CreateActiveBreakes";
 import { useYoutubePlayer } from "../Hooks/useYoutubePlayer";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { MdOutlineInterests } from "react-icons/md";
+import Button from "@/components/common/Ui/Button";
+import Input from "@/components/common/Ui/Input";
+import { AnimatePresence } from "framer-motion";
 
 const ModalPausasActivas = () => {
-
   const {
     videoCompleted,
     isModalOpen,
@@ -29,7 +31,6 @@ const ModalPausasActivas = () => {
   });
 
   useBlockScroll(isModalOpen);
-
 
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -85,14 +86,14 @@ const ModalPausasActivas = () => {
   return (
     <>
       {/* Botón para abrir el modal */}
-      <button
-        type="button"
+      <Button
+        variant="any"
         onClick={() => setIsModalOpen(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
         title="Pausas Activas"
       >
         <MdOutlineInterests className="w-6 h-6" />
-      </button>
+      </Button>
 
       {/* Modal */}
       {isModalOpen && (
@@ -121,8 +122,6 @@ const ModalPausasActivas = () => {
                 &times;
               </button>
             </div>
-
-            {/* Contenido del modal */}
             <div className="p-4 space-y-3">
               {/* Video */}
               <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-lg aspect-[26/14.7] md:aspect-[38/16] max-h-[45vh] md:max-h-[70vh]">
@@ -193,38 +192,47 @@ const ModalPausasActivas = () => {
                 </div>
 
                 <div className="mb-4">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
-                    Comentario de la pausa activa:
-                  </h3>
                   <div className="p-2 overflow-y-auto border rounded-lg dark:border-gray-700 dark:bg-gray-900 max-h-48">
-                    <textarea
+                    <Input
+                      label="Observación:"
                       name="observacion"
                       onChange={formik.handleChange}
                       value={formik.values.observacion}
                       onBlur={formik.handleBlur}
                       className="w-full h-16 p-2 border rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                       placeholder="Escribe tu comentario aquí..."
-                    ></textarea>
-                    {formik.touched.observacion && formik.errors.observacion ? (
-                      <div className="text-red-500">
-                        {formik.errors.observacion}
-                      </div>
-                    ) : null}
+                      error={
+                        formik.touched.observacion && formik.errors.observacion
+                          ? formik.errors.observacion
+                          : ""
+                      }
+                      touched={formik.touched.observacion}
+                      required={false}
+                    />
                   </div>
-                  <button
+                  <Button
                     type="submit"
+                    isLoading={loading}
                     disabled={!videoCompleted || loading}
                     className="px-4 py-2 mt-2 text-sm font-semibold text-white bg-teal-600 rounded hover:bg-teal-700"
                   >
                     {loading ? "Enviando..." : "Registrar pausa activa"}
-                  </button>
+                  </Button>
 
                   {success && (
                     <div className="text-green-500">
                       Observación enviada correctamente
                     </div>
                   )}
-                  {error && <div className="text-red-500">{error}</div>}
+                  <AnimatePresence>
+                    {error && (
+                      <div>
+                        <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                          {error}
+                        </div>
+                      </div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </form>
             </div>
