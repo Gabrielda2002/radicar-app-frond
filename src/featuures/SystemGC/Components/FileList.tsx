@@ -7,6 +7,7 @@ import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
 import { getPublicFilePath } from "../Services/getPublicFilePath";
 import PdfViewer from "@/components/common/PDFViewer/PdfViewer";
+import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
 
 interface File {
   id: string;
@@ -43,6 +44,8 @@ const FileList: React.FC<FileListProps> = ({
   const { rol } = useAuth();
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
+
+  const {openSecureFile} = useSecureFileAccess()
 
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
@@ -125,7 +128,7 @@ const FileList: React.FC<FileListProps> = ({
 
             {/* Icono del archivo */}
             <div
-              onClick={() => handleFileOpen(file)}
+              onClick={() => openSecureFile(file.id, "VIEW")}
               className="flex flex-col items-center"
             >
               <img
