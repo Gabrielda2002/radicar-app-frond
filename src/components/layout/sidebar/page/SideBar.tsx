@@ -201,7 +201,7 @@ const SideBar: FC = () => {
 
             {/* carta recobro */}
 
-            {[1].includes(Number(rol)) && (
+            {[1,10,6].includes(Number(rol)) && (
               <Category
                 title="Gestión Carta Recobro"
                 icon={recobro}
@@ -214,7 +214,7 @@ const SideBar: FC = () => {
                   title="Solicitar"
                   isCollapsed={isCollapsed}
                 />
-                {[1].includes(Number(rol)) && (
+                {[1, 6].includes(Number(rol)) && (
                   <SubCategory
                     to="/auditoria"
                     icon={auditoria}
