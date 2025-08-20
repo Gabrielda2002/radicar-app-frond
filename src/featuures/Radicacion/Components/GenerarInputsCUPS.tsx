@@ -53,7 +53,7 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
           placeholder="Código"
         />
-      </div>
+      </div>  
 
       <div>
         <Input

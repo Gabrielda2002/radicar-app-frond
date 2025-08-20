@@ -10,6 +10,8 @@ import ModalRequestForm from "../Components/ModalRequestForm";
 import { handleDownload } from "../Utils/HandleDownload";
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { FormatDate } from "@/utils/FormatDate";
+import Input from "@/components/common/Ui/Input";
+import Button from "@/components/common/Ui/Button";
 
 
 const RecoverLetterPage = () => {
@@ -52,23 +54,22 @@ const RecoverLetterPage = () => {
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
         <section className="flex items-end justify-between w-full mb-4">
           <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar Solicitudes:
-            </label>
-            <input
-              type="text"
+            <Input
+              label="Documento del Paciente"
               placeholder="Documento del paciente"
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               value={document}
               onChange={(e) => setDocument(e.target.value)}
+              required
             />
 
-            <button
+            <Button
               className="w-full text-white bg-teal-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:translate-y-1 hover:scale-100 hover:bg-emerald-700 duration-300 mt-3"
               onClick={() => getData(document)}
+              variant="primary"
             >
               Buscar
-            </button>
+            </Button>
           </div>
         </section>
 
@@ -78,10 +79,10 @@ const RecoverLetterPage = () => {
               <thead className="bg-gray-200 dark:bg-gray-700">
                 <tr className="shadow-md dark:text-gray-300 rounded-t-md">
                   <th>N* Radicado</th>
-                  <th>Fecha-hora Radicado</th>
-                  <th>Tipo Documento Paciente</th>
-                  <th>N. Documento Paciente</th>
-                  <th>Nombre Paciente</th>
+                  <th>Fecha-hora</th>
+                  <th>T. Documento Paciente</th>
+                  <th>N* Documento Paciente</th>
+                  <th>Paciente</th>
                   <th>Convenio</th>
                   <th>Profesional</th>
                   <th>CUPS</th>
