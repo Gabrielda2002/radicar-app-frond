@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { api } from "@/utils/api-config";
-import defaultUserPicture from "@/../public/assets/icon-user.svg";
 import { IProfile } from "@/models/IProfile";
 
 export const usePerfil = () => {
@@ -32,7 +31,7 @@ export const usePerfil = () => {
       setProfile(userData);
       userData.photo = userData.photo
         ? `${baseUrl}/${userData.photo}`
-        : defaultUserPicture;
+        : "/assets/icon-user.svg";
       // Guardar la imagen actual del usuario en cookies
       Cookies.set(`profileImage_${userData.id}`, userData.photo || "");
     }

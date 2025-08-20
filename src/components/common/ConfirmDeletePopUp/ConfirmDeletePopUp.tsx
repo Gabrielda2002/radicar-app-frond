@@ -1,6 +1,5 @@
 import React from "react";
 
-import danger from "@/../public/assets/danger.svg";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 
 interface ConfirmDeletePopupProps {
@@ -44,7 +43,7 @@ const ConfirmDeletePopup: React.FC<ConfirmDeletePopupProps> = ({
 
         {/* content */}
         <div className="grid grid-cols-2 px-2 -space-x-36 ms-2">
-          <img src={danger} alt="" className="-top-8 htext-red-400" />
+          <img src="/assets/danger.svg" alt="Warning icon" className="-top-8 htext-red-400" />
           <h2 className="pb-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             ¿Estas seguro de eliminar "{iteamName}"?
             <p className="col-span-2 text-xs text-gray-600 dark:text-gray-300">

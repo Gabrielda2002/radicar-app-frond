@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import pdfIcon from "@/../public/assets/pdf-file.svg";
-import docIcon from "@/../public/assets/docx-file.svg";
-import xlsxIcon from "@/../public/assets/excel-file.svg";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
@@ -50,13 +47,13 @@ const FileList: React.FC<FileListProps> = ({
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
       case "application/pdf":
-        return pdfIcon;
+        return "/assets/pdf-file.svg";
       case "application/msword":
-        return docIcon;
+        return "/assets/docx-file.svg";
       case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-        return xlsxIcon;
+        return "/assets/excel-file.svg";
       default:
-        return docIcon;
+        return "/assets/docx-file.svg";
     }
   };
 
