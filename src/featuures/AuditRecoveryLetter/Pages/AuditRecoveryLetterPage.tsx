@@ -11,6 +11,8 @@ import { CupsAuthorizedLetter, IAuditLetter } from "@/models/IAuditLetter";
 import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
 
 const RecoverLastPage = () => {
   const { auditLetter, loading, error } = useFetchAuditLetter();
@@ -48,18 +50,19 @@ const RecoverLastPage = () => {
   // const [idRadicado] = useState<number>(0);
 
   if (loading) return <LoadingSpinner duration={100000} />;
-  
-  if (error) return (
-    <>
-      <div>
-        <ModalSection
-          title="Auditoria"
-          breadcrumb={[{ label: "Inicio", path: "/home" }]}
-        />
-      </div>
-      <div className="text-red-500">{error}</div>
-    </>
-  );
+
+  if (error)
+    return (
+      <>
+        <div>
+          <ModalSection
+            title="Auditoria"
+            breadcrumb={[{ label: "Inicio", path: "/home" }]}
+          />
+        </div>
+        <div className="text-red-500">{error}</div>
+      </>
+    );
 
   return (
     <>
@@ -77,8 +80,7 @@ const RecoverLastPage = () => {
         </label>
         <section className="flex items-center justify-between pb-6 header-tabla">
           <div className="flex items-center w-full space-x-2 container-filter">
-            <input
-              type="text"
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar"
@@ -86,18 +88,18 @@ const RecoverLastPage = () => {
             />
           </div>
           <div className="flex items-center space-x-[10px] ml-4">
-            <select
+            <Select
+              options={[
+                { label: "10", value: "10" },
+                { label: "20", value: "20" },
+                { label: "30", value: "30" },
+              ]}
               name=""
               id=""
               value={itemsPerPage}
               onCanPlay={handleItemsPerPageChange}
               className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Numero Registros</option>
-              <option value="10">10 Registros</option>
-              <option value="20">20 Registros</option>
-              <option value="30">30 Registros</option>
-            </select>
+            />
           </div>
         </section>
 
@@ -111,9 +113,9 @@ const RecoverLastPage = () => {
               <thead className="bg-gray-200 dark:bg-gray-700">
                 <tr className="shadow-md dark:text-gray-300 rounded-t-md">
                   <th>N* Radicado</th>
-                  <th>Nombre Paciente</th>
+                  <th>Paciente</th>
                   <th>Tipo Documento</th>
-                  <th>Numero Documento</th>
+                  <th>N* Documento</th>
                   <th>Convenio</th>
                   <th>Auditar</th>
                 </tr>
@@ -162,11 +164,11 @@ const RecoverLastPage = () => {
             </table>
           </div>
         )}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={paginate}
-      />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={paginate}
+        />
       </div>
       <Suspense fallback={<LoadingSpinner />}>
         <ModalAuditForm

@@ -128,9 +128,9 @@ const TablaRadicacion = () => {
                     <th>Fecha - Hora</th>
                     <th>N.º Radicado</th>
                     <th>Documento</th>
-                    <th>Convenio</th>
                     <th>N.º Documento</th>
                     <th>Paciente</th>
+                    <th>Convenio</th>
                     <th>Fecha Auditoría</th>
                     <th>Gestión del servicio</th>
                     <th>Soporte</th>
@@ -151,16 +151,16 @@ const TablaRadicacion = () => {
                         {radicacion.id}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.documentNumber}
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
-                        {radicacion.convenioName}
-                      </td>
-                      <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.documentType}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.documentNumber}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
                         {radicacion.namePatient}
+                      </td>
+                      <td className="p-3 border-b dark:border-gray-700">
+                        {radicacion.convenioName}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {FormatDate(radicacion.auditDate, false)}
