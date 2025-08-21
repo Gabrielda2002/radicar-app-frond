@@ -63,7 +63,6 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
             onClick={() => handleOpen && handleOpen(item.documentId.toString(), "VIEW", "soporte")}
             aria-label="Acta de entrega"
           >
-            {item.documentId}
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
           </button>
           {/* Tooltip */}
