@@ -28,8 +28,7 @@ import { FormatDate } from "@/utils/FormatDate.ts";
 import { useOpenSupport } from "@/hooks/useOpenSupport.ts";
 import Button from "@/components/common/Ui/Button.tsx";
 import Input from "@/components/common/Ui/Input.tsx";
-
-// const ITEMS_PER_PAGE = 8;
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess.ts";
 
 const TablaRadicacion = () => {
   // estado para el numero de documento del paciente
@@ -38,6 +37,9 @@ const TablaRadicacion = () => {
   // hook para buscar radicado por numero documento paciente
   const { radicados, loading, errorRadicados, getData } =
     useFetchDocumentoRadicado();
+
+  const {openSecureFile} = useSecureFileAccess();
+
   // console.log(radicados)
   const { handleOpen } = useOpenSupport();
 
@@ -251,10 +253,7 @@ const TablaRadicacion = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
-                          onClick={() =>
-                            radicacion.suportName &&
-                            handleOpen(radicacion.suportName)
-                          }
+                          onClick={() => openSecureFile(radicacion.supportId.toString(), "VIEW", "soporte")}
                         >
                           <img className="dark:invert" src={soporte} alt="" />
                         </button>
@@ -453,8 +452,8 @@ const TablaRadicacion = () => {
                     </div>
                     <button
                       onClick={() =>
-                        radicacion.suportName &&
-                        handleOpen(radicacion.suportName)
+                        radicacion.supportName &&
+                        handleOpen(radicacion.supportName)
                       }
                     >
                       <img

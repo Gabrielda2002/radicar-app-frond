@@ -13,7 +13,8 @@ export interface IRadicados {
     ipsPrimaria:     string;
     ipsRemitente:    string;
     auditDate:       Date | null;
-    suportName:      string;
+    supportName:      string;
+    supportId:       number;
     radicacionPlace: string;
     profetional:     string;
     specialty:       string;

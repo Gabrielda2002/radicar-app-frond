@@ -8,11 +8,13 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
+type FileType = "files" | "soporte";
+
 interface UseSecureFileAccessReturn {
     isLoading: boolean;
     error: string | null;
-    openSecureFile: (fileId: string, action: "VIEW" | "DOWNLOAD") => Promise<void>;
-    downloadSecureFile: (fileId: string) => Promise<void>;
+    openSecureFile: (fileId: string, action: "VIEW" | "DOWNLOAD", type?: FileType) => Promise<void>;
+    downloadSecureFile: (fileId: string, type?: FileType) => Promise<void>;
 }
 
 export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
@@ -21,10 +23,13 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
 
     // solicitar token de acceso para el archivo
-    const requestAccessToken = async (fileId: number, action: "VIEW" | "DOWNLOAD"): Promise<FileAccessTokenResponse> => {
+    const requestAccessToken = async (fileId: number, action: "VIEW" | "DOWNLOAD", type: FileType = "files"): Promise<FileAccessTokenResponse> => {
 
         try {
-            const response = await api.post(`/files/${fileId}/access-token?action=${action}`)
+
+            const endPoint = type === "files" ? "files" : "soportes";
+
+            const response = await api.post(`/${endPoint}/${fileId}/access-token?action=${action}`)
     
             if (response.status === 200) {
                 setError(null);
@@ -38,15 +43,17 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
         }
     }
 
-    const openSecureFile = async (fileId: string, action: "VIEW" | "DOWNLOAD") => {
+    const openSecureFile = async (fileId: string, action: "VIEW" | "DOWNLOAD", type: FileType = "files") => {
         setIsLoading(true);
         setError(null);
         try {
-            
-            const tokenData = await requestAccessToken(Number(fileId), action);
 
-            const secureUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/secure-file/${tokenData.token}`;
-            
+            const tokenData = await requestAccessToken(Number(fileId), action, type);
+
+            const endPoint = type === "files" ? "secure-files" : "secure-soporte";
+
+            const secureUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/${endPoint}/${tokenData.token}`;
+
             if (action === "VIEW") {
                 window.open(secureUrl, "_blank");
             }else if (action === "DOWNLOAD"){
@@ -65,8 +72,8 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
         }
     }
 
-    const downloadSecureFile = async (fileId: string) => {
-        await openSecureFile(fileId, "DOWNLOAD");
+    const downloadSecureFile = async (fileId: string, type: FileType = "files") => {
+        await openSecureFile(fileId, "DOWNLOAD", type);
     }
 
     return{
