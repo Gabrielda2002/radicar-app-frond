@@ -25,7 +25,6 @@ import gestion from "/assets/gestion.svg";
 import mostrar from "/assets/mostrar.svg";
 import soporte from "/assets/soporte.svg";
 import { FormatDate } from "@/utils/FormatDate.ts";
-import { useOpenSupport } from "@/hooks/useOpenSupport.ts";
 import Button from "@/components/common/Ui/Button.tsx";
 import Input from "@/components/common/Ui/Input.tsx";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess.ts";
@@ -39,9 +38,6 @@ const TablaRadicacion = () => {
     useFetchDocumentoRadicado();
 
   const {openSecureFile} = useSecureFileAccess();
-
-  // console.log(radicados)
-  const { handleOpen } = useOpenSupport();
 
   // estado para controlar la apertura del modal
   const [isOpen, setIsOpen] = useState(false);
@@ -452,8 +448,7 @@ const TablaRadicacion = () => {
                     </div>
                     <button
                       onClick={() =>
-                        radicacion.supportName &&
-                        handleOpen(radicacion.supportName)
+                        openSecureFile(radicacion.supportId.toString(), "VIEW", "soporte")
                       }
                     >
                       <img

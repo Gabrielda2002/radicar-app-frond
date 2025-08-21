@@ -14,7 +14,8 @@ export interface IAuditar {
     typeServices:   string;
     radicador:      string;
     statusCups:     IStatusCup[];
-    soportes:       string;
+    supportName:    string;
+    supportId:      number;
 }
 
 export enum Convenio {

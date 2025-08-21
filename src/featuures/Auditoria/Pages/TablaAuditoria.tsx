@@ -17,7 +17,8 @@ import autorizar from "/assets/autorizar.svg";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { FormatDate } from "@/utils/FormatDate";
-import { useOpenSupport } from "@/hooks/useOpenSupport";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
+
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
@@ -29,8 +30,8 @@ const TablaAuditoria = () => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const { handleOpen } = useOpenSupport();
+  
+  const { openSecureFile } = useSecureFileAccess();
 
   const { query, setQuery, filteredData } = useSearch<IAuditar>(data, [
     "documentNumber",
@@ -202,7 +203,7 @@ const TablaAuditoria = () => {
                           {/* Botón Ver Soporte */}
                           <button
                             onClick={() =>
-                              handleOpen(auditoria.soportes, "Soportes")
+                              openSecureFile(auditoria.supportId.toString(), "VIEW", "soporte")
                             }
                             className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                             title="Ver Soporte"
@@ -352,7 +353,7 @@ const TablaAuditoria = () => {
                       {/* Botón Ver Soporte */}
                       <button
                         onClick={() =>
-                          handleOpen(auditoria.soportes, "Soportes")
+                          openSecureFile(auditoria.supportId.toString(), "VIEW", "soporte")
                         }
                         className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                         title="Ver Soporte"
