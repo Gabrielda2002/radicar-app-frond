@@ -32,6 +32,7 @@ export interface IItemsPhone {
     responsableName:      string;
     responsableLastName: string;
     nameSaved?:           string;
+    documentId:           number;
     inventoryNumber:      string;
 }
 

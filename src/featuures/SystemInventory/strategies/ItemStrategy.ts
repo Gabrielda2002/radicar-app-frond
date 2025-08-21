@@ -19,7 +19,7 @@ export interface ItemStrategy<T> {
   renderActionButtons(
     item: T,
     refreshItems: () => void,
-    handleOpen?: (nombreSoporte: string | null, ruta: string) => void
+    handleOpen?: (fileId: string, action: "VIEW" | "DOWNLOAD", type?: "files" | "soporte") => Promise<void>
   ): ReactNode;
   renderBasicInfo(item: T): ReactNode;
   renderTechnicalDetails(item: T): ReactNode;

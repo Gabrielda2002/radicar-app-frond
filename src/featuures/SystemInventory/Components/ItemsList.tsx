@@ -5,13 +5,13 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 
 // * Icons
-import { useOpenSupport } from "@/hooks/useOpenSupport";
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
 import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
 import FilterChips from "./FilterChips";
 import { useItemsFilter } from "../Hooks/useItemsFilter";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 
 // * Interface
 interface ItemsListProps {
@@ -41,7 +41,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
   >([]);
   const [showAreaDropdown, setShowAreaDropdown] = useState(false);
 
-  const { handleOpen } = useOpenSupport();
+  const { openSecureFile } = useSecureFileAccess();
 
   const [isLoading, setIsLoading] = useState(true);
   const ITEMS_PER_PAGE = 9;
@@ -259,7 +259,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
                       {strategy?.renderActionButtons(
                         item,
                         onItemsUpdate,
-                        handleOpen
+                        openSecureFile
                       )}
                     </div>
                   </div>

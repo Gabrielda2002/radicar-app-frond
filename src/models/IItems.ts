@@ -24,6 +24,7 @@ export interface IItems {
     nameUser:                 string;
     lastNameUser:             string;
     nameDocument:             string;
+    documentId:               number;
     processEquipment:         ProcessEquipment[];
     accessories:              Accessory[];
     components:               Component[];

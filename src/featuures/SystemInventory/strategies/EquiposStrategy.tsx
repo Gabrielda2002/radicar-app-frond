@@ -37,7 +37,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
   renderActionButtons(
     item: IItems,
     refreshItems: () => void,
-    handleOpen: (nombreSoporte: string | null, ruta: string) => void
+    handleOpen?: (fileId: string, action: "VIEW" | "DOWNLOAD", type?: "files" | "soporte") => Promise<void>
   ) {
     // Aquí puedes usar hooks customizados si lo necesitas
 
@@ -60,9 +60,10 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           <button
             type="button"
             className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() =>handleOpen && handleOpen(item.nameDocument || "", "ActasEntrega")}
+            onClick={() => handleOpen && handleOpen(item.documentId.toString(), "VIEW", "soporte")}
             aria-label="Acta de entrega"
           >
+            {item.documentId}
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
           </button>
           {/* Tooltip */}

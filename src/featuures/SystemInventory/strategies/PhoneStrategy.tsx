@@ -35,7 +35,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
   renderActionButtons(
     item: IItemsPhone,
     refreshItems: () => void,
-    handleOpen?: (nombreSoporte: string | null, ruta: string) => void
+    handleOpen?: (fileId: string, action: "VIEW" | "DOWNLOAD", type?: "files" | "soporte") => Promise<void>
   ): ReactNode {
     return (
       <>
@@ -54,7 +54,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
           <button
             type="button"
             className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() => handleOpen && handleOpen(item.nameSaved || "", "ActasEntrega")}
+            onClick={() => handleOpen && handleOpen(item.documentId.toString(), "VIEW", "soporte")}
             aria-label="Acta de entrega"
           >
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
