@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
-import { getPublicFilePath } from "../Services/getPublicFilePath";
 import PdfViewer from "@/components/common/PDFViewer/PdfViewer";
 import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
 
@@ -30,7 +29,7 @@ interface FileListProps {
 
 const FileList: React.FC<FileListProps> = ({
   files,
-  onDownload,
+  // onDownload,
   onDelete,
   renameItem,
   currentFolderId,
@@ -42,7 +41,7 @@ const FileList: React.FC<FileListProps> = ({
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
 
-  const {openSecureFile} = useSecureFileAccess()
+  const {openSecureFile, downloadSecureFile} = useSecureFileAccess()
 
   const getIcon = (mimeType: string) => {
     switch (mimeType) {
@@ -57,15 +56,13 @@ const FileList: React.FC<FileListProps> = ({
     }
   };
 
-  const handleFileOpen = (file: File) => {
-    let filePath = getPublicFilePath(file.path);
+  const handleFileOpen = (file: File, action: "VIEW" | "DOWNLOAD", type: "files" | "soporte") => {
     if (file.mimeType === "application/pdf") {
-      const fullPdfUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/uploads/${filePath}`;
-      window.open(`${fullPdfUrl}`, "_blank");
+      openSecureFile(file.id, action, type);
       // setPdfUrl(fullPdfUrl);
       // setShowPdfViewer(true);
     } else {
-      onDownload(file.id, file.name);
+      downloadSecureFile(file.id, type);
     }
   };
 
@@ -125,7 +122,7 @@ const FileList: React.FC<FileListProps> = ({
 
             {/* Icono del archivo */}
             <div
-              onClick={() => openSecureFile(file.id, "VIEW")}
+              onClick={() => handleFileOpen(file, "VIEW", "files")}
               className="flex flex-col items-center"
             >
               <img

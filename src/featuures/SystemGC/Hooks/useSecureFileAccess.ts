@@ -50,7 +50,7 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
             const tokenData = await requestAccessToken(Number(fileId), action, type);
 
-            const endPoint = type === "files" ? "secure-files" : "secure-soporte";
+            const endPoint = type === "files" ? "secure-file" : "secure-soporte";
 
             const secureUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/${endPoint}/${tokenData.token}`;
 
