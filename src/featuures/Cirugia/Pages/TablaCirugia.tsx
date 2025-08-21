@@ -14,7 +14,7 @@ import soporte from "/assets/soporte.svg";
 
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
-import { useOpenSupport } from "@/hooks/useOpenSupport";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 
 const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(
@@ -35,8 +35,9 @@ const TablaCirugias = () => {
     null
   );
   const [cupsRadicado, setCupsRadicado] = useState<Cup[] | null>(null);
-  const { handleOpen } = useOpenSupport();
   const [dateOrden, setDateOrden] = useState<Date | null>(null);
+
+  const { openSecureFile } = useSecureFileAccess();
 
   const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
@@ -180,7 +181,10 @@ const TablaCirugias = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
-                          onClick={() => handleOpen(cirugia.nombreSoporte)}
+                          onClick={() => {
+                            openSecureFile(cirugia.sopportId.toString(), "VIEW", "soporte")
+                             console.log("click")
+                            }}
                         >
                           <img src={soporte} alt="soporte icon" />
                         </button>
@@ -297,7 +301,7 @@ const TablaCirugias = () => {
                   Soporte:
                 </div>
                 <div className="text-xs text-gray-800 dark:text-gray-100">
-                  <button onClick={() => handleOpen(cirugia.nombreSoporte)}>
+                  <button onClick={() => openSecureFile(cirugia.sopportId.toString(), "VIEW", "soporte")}>
                     <img
                       src={soporte}
                       alt="soporte icon"
@@ -359,7 +363,6 @@ const TablaCirugias = () => {
           ))}
         </div>
         {/* pagination */}
-        <div>‎ </div>
         <Pagination
           totalPages={totalPages}
           onPageChange={paginate}
