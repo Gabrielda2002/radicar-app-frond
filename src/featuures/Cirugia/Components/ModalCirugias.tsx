@@ -3,8 +3,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ICirugias } from "@/models/ICirugias";
 import React, { useState } from "react";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { CreateCirugia } from "../Services/CreateCirugia";
 import Input from "@/components/common/Ui/Input";
