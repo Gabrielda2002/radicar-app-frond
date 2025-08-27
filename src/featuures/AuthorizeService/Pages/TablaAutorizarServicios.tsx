@@ -2,10 +2,11 @@
 import * as Yup from "yup";
 import { useState, useMemo } from "react";
 import { useFormik } from "formik";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLocation } from "react-router-dom";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
+import Button from "@/components/common/Ui/Button";
 import {
   CupsDetail,
   FormikErrors,
@@ -144,101 +145,60 @@ const FormularioAutorizacion = () => {
             <div className="flex flex-col w-full md:w-full">
               {/* Auditora */}
               <div className="flex flex-col">
-                <label
-                  htmlFor="auditora"
-                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                >
-                  Auditora:
-                </label>
-                <input
+                <Input
                   id="auditora"
                   type="text"
                   name="auditora"
+                  label="Auditora:"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.auditora}
-                  className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    formik.touched.auditora && formik.errors.auditora
-                      ? "border-red-500 dark:border-red-500"
-                      : "dark:border-gray-600 border-gray-200"
-                  }`}
+                  error={formik.errors.auditora}
+                  touched={formik.touched.auditora}
                   placeholder="Nombre de la auditora"
                 />
-                <AnimatePresence>
-                  {formik.touched.auditora && formik.errors.auditora && (
-                    <ErrorMessage>{formik.errors.auditora}</ErrorMessage>
-                  )}
-                </AnimatePresence>
               </div>
 
               {/* Fecha Auditoría */}
               <div className="flex flex-col">
-                <label
-                  htmlFor="fechaAuditoria"
-                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                >
-                  Fecha Auditoría:
-                </label>
-                <input
-                  onChange={formik.handleChange}
+                <Input
                   id="fechaAuditoria"
                   type="date"
+                  name="fechaAuditoria"
+                  label="Fecha Auditoría:"
+                  onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.fechaAuditoria}
-                  name="fechaAuditoria"
-                  className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    formik.touched.fechaAuditoria &&
-                    formik.errors.fechaAuditoria
-                      ? "border-red-500 dark:border-red-500"
-                      : "dark:border-gray-600 border-gray-200"
-                  }`}
+                  error={formik.errors.fechaAuditoria}
+                  touched={formik.touched.fechaAuditoria}
                 />
-                <AnimatePresence>
-                  {formik.touched.fechaAuditoria &&
-                    formik.errors.fechaAuditoria && (
-                      <ErrorMessage>
-                        {formik.errors.fechaAuditoria}
-                      </ErrorMessage>
-                    )}
-                </AnimatePresence>
               </div>
               {/* Justificación Concepto Auditor */}
               <div className="flex flex-col">
-                <label
-                  htmlFor="justificacion"
-                  className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                >
-                  Justificación:
-                </label>
-                <input
+                <Input
                   id="justificacion"
                   type="text"
+                  name="justificacion"
+                  label="Justificación:"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.justificacion}
-                  name="justificacion"
+                  error={formik.errors.justificacion}
+                  touched={formik.touched.justificacion}
                   placeholder="Justificación"
-                  className={`w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    formik.touched.justificacion && formik.errors.justificacion
-                      ? "border-red-500 dark:border-red-500"
-                      : "dark:border-gray-600 border-gray-200"
-                  }`}
                 />
-                <AnimatePresence>
-                  {formik.touched.justificacion &&
-                    formik.errors.justificacion && (
-                      <ErrorMessage>{formik.errors.justificacion}</ErrorMessage>
-                    )}
-                </AnimatePresence>
               </div>
               <div className="hidden translate-x-0 translate-y-4 md:flex md:translate-y-10 md:translate-x-1">
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                  variant="primary"
+                  size="lg"
+                  fullWidth={true}
+                  isLoading={isSubmitting}
                 >
-                  {isSubmitting ? "Enviando..." : "Autorizar"}
-                </button>
+                  Autorizar
+                </Button>
               </div>
             </div>
 
@@ -247,22 +207,16 @@ const FormularioAutorizacion = () => {
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}
-                  className="w-full p-3 mx-1 mb-4 bg-gray-200 border rounded-md shadow-md dark:bg-gray-900"
+                  className="w-full p-3 mx-1 mb-4 bg-gray-100 border border-gray-700 rounded-md shadow-md dark:bg-gray-900"
                 >
                   {/* Código CUPS 1*/}
                   <div className="mb-4">
-                    <label
-                      htmlFor={`cupsDetails[${index}].codigoCups`}
-                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                    >
-                      Código CUPS:
-                    </label>
-                    <input
+                    <Input
                       id={`cupsDetails[${index}].codigoCups`}
                       type="text"
-                      value={detalle.code} // Muestra el código CUPS correspondiente
+                      label="Código CUPS:"
+                      value={detalle.code}
                       readOnly
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       placeholder="Código CUPS"
                     />
                   </div>
@@ -279,7 +233,7 @@ const FormularioAutorizacion = () => {
                       id={`cupsDetails[${index}].descripcionCups`}
                       value={detalle.description} // Muestra la descripción CUPS correspondiente
                       readOnly
-                      className="w-full p-1 text-sm border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="w-full p-1 text-sm bg-transparent border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       rows={3}
                       placeholder="Descripción CUPS"
                     />
@@ -287,146 +241,120 @@ const FormularioAutorizacion = () => {
 
                   {/* Observación CUPS */}
                   <div className="flex flex-col mb-6">
-                    <label
-                      htmlFor={`cupsDetails[${index}].observacionCups`}
-                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                    >
-                      Observación CUPS:
-                    </label>
-                    <input
+                    <Input
                       id={`cupsDetails[${index}].observacionCups`}
                       type="text"
+                      name={`cupsDetails[${index}].observacionCups`}
+                      label="Observación CUPS:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.cupsDetails[index].observacionCups}
-                      name={`cupsDetails[${index}].observacionCups`}
-                      className={` w-full p-2 border-2 border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                        formik.touched.cupsDetails && formik.errors.cupsDetails
-                          ? "border-red-500 dark:borde-red-500"
-                          : "dark:border-gray-600 border-gray-200"
-                      }`}
-                      placeholder="Observación CUPS"
-                    />
-                    <AnimatePresence>
-                      {formik.touched.cupsDetails?.[index]?.observacionCups &&
+                      error={
+                        formik.touched.cupsDetails?.[index]?.observacionCups &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.observacionCups && (
-                          <ErrorMessage>
-                            Requerido, máximo 500 caracteres.
-                          </ErrorMessage>
-                        )}
-                    </AnimatePresence>
+                        ]?.observacionCups
+                          ? "Requerido, máximo 500 caracteres."
+                          : undefined
+                      }
+                      touched={formik.touched.cupsDetails?.[index]?.observacionCups}
+                      placeholder="Observación CUPS"
+                    />
                   </div>
 
                   {/* Unidad Funcional */}
                   <div className="flex flex-col mb-4">
-                    <label
-                      htmlFor={`cupsDetails[${index}].unidadFuncional`}
-                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                    >
-                      Unidad Funcional:
-                    </label>
-                    <select
+                    <Select
                       id={`cupsDetails[${index}].unidadFuncional`}
                       name={`cupsDetails[${index}].unidadFuncional`}
+                      label="Unidad Funcional:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.cupsDetails[index].unidadFuncional}
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    >
-                      <option value="">Seleccione</option>
-                      {data.map((unidad) => (
-                        <option key={unidad.id} value={unidad.id}>
-                          {unidad.name}
-                        </option>
-                      ))}
-                    </select>
-                    <AnimatePresence>
-                      {formik.touched.cupsDetails?.[index]?.unidadFuncional &&
+                      options={data.map((unidad) => ({
+                        value: unidad.id,
+                        label: unidad.name,
+                      }))}
+                      error={
+                        formik.touched.cupsDetails?.[index]?.unidadFuncional &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.unidadFuncional && (
-                          <ErrorMessage>Requerido.</ErrorMessage>
-                        )}
-                    </AnimatePresence>
+                        ]?.unidadFuncional
+                          ? "Requerido."
+                          : undefined
+                      }
+                      touched={formik.touched.cupsDetails?.[index]?.unidadFuncional}
+                    />
                   </div>
 
                   {/* Estado CUPS 2*/}
                   <div className="flex flex-col mb-4">
-                    <label
-                      htmlFor={`cupsDetails[${index}].estadoCups`}
-                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                    >
-                      Estado CUPS:
-                    </label>
-                    <select
+                    <Select
                       id={`cupsDetails[${index}].estadoCups`}
                       name={`cupsDetails[${index}].estadoCups`}
+                      label="Estado CUPS:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.cupsDetails[index].estadoCups}
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    >
-                      <option value="">Seleccione</option>
-                      {dataEstados.map((estado) => (
-                        <option key={estado.id} value={estado.id}>
-                          {estado.name}
-                        </option>
-                      ))}
-                    </select>
-                    <AnimatePresence>
-                      {formik.touched.cupsDetails?.[index]?.estadoCups &&
+                      options={dataEstados.map((estado) => ({
+                        value: estado.id,
+                        label: estado.name,
+                      }))}
+                      error={
+                        formik.touched.cupsDetails?.[index]?.estadoCups &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.estadoCups && (
-                          <ErrorMessage>Requerido.</ErrorMessage>
-                        )}
-                    </AnimatePresence>
+                        ]?.estadoCups
+                          ? "Requerido."
+                          : undefined
+                      }
+                      touched={formik.touched.cupsDetails?.[index]?.estadoCups}
+                    />
                   </div>
 
                   <div className="flex flex-col mb-4">
-                    <label
-                      htmlFor={`cupsDetails[${index}].quantity`}
-                      className="mb-2 font-medium text-stone-600 dark:text-stone-300"
-                    >
-                      Cantidad:
-                    </label>
-                    <input
-                      type="number"
+                    <Input
                       id={`cupsDetails[${index}].cantidad`}
+                      type="number"
                       name={`cupsDetails[${index}].cantidad`}
+                      label="Cantidad:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.cupsDetails[index].cantidad}
-                      className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    />
-                    <AnimatePresence>
-                      {formik.touched.cupsDetails?.[index]?.cantidad &&
+                      error={
+                        formik.touched.cupsDetails?.[index]?.cantidad &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.cantidad && <ErrorMessage>Requerido.</ErrorMessage>}
-                    </AnimatePresence>
+                        ]?.cantidad
+                          ? "Requerido."
+                          : undefined
+                      }
+                      touched={formik.touched.cupsDetails?.[index]?.cantidad}
+                    />
                   </div>
                 </div>
               ))}
             </div>
             <div className="flex translate-x-0 translate-y-1 md:hidden md:translate-y-8 md:translate-x-1">
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting || !formik.isValid}
-                className="w-full h-12 text-white rounded-md md:h-16 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+                variant="primary"
+                size="md"
+                fullWidth={true}
+                isLoading={isSubmitting}
+                className="h-12 md:h-16"
               >
                 {isSubmitting ? "Enviando..." : "Autorizar"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

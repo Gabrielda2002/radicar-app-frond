@@ -18,6 +18,9 @@ import autorizar from "/assets/autorizar.svg";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { FormatDate } from "@/utils/FormatDate";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
+import Button from "@/components/common/Ui/Button";
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
@@ -76,45 +79,49 @@ const TablaAuditoria = () => {
       />
 
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar registro Auditoría :
-        </label>
         <div className="grid items-center justify-between w-[98%] grid-cols-2 pb-6 md:flex header-tabla">
           <div className="flex items-center w-[120%] sm:w-[115%] md:w-[90%] space-x-2 container-filter">
-            <input
+            <Input
+              label="Buscar"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Buscar"
             />
           </div>
           <div className="flex items-center space-x-[10px] ml-12 md:ml-4">
-            <select
-              name=""
-              id=""
+            <Select
+              options={[
+                { label: "8 Páginas", value: "8" },
+                { label: "20 Páginas", value: "20" },
+                { label: "30 Páginas", value: "30" }
+              ]}
+              name="itemsPerPage"
+              id="itemsPerPage"
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="h-10 border border-gray-300 rounded-md w-28 md:w-24 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
           </div>
 
           <div className="flex items-center mt-4 ml-0 space-x-2 md:ml-4 md:mt-0">
             <Link to={"/tabla-radicacion"}>
-              <button className="border-2 w-[170px] md:w-[150px] h-10 rounded-md focus:outline-none bg-color text-white hover:bg-teal-800 active:bg-teal-900">
+              <Button 
+                variant="secondary"
+                title="Ir a Radicación"
+                className="h-10 truncate w-fit"
+              >
                 Ver Autorizaciones
-              </button>
+              </Button>
             </Link>
           </div>
           <div className="flex items-center mt-4 ml-0 space-x-2 md:ml-3 md:mt-0">
             <Link to={"/tabla-registros-auditados"}>
-              <button className="border-2 w-[130px] md:w-[100px] h-10 focus:outline-none rounded-md bg-color  text-white hover:bg-teal-800 active:bg-teal-900 ">
+              <Button 
+                variant="secondary"
+                title="Ir a Auditados"
+                className="h-10 truncate w-fit"
+              >
                 Auditados
-              </button>
+              </Button>
               {/* ! no se funciona | focus:outline-none | ! */}
             </Link>
           </div>
@@ -200,49 +207,37 @@ const TablaAuditoria = () => {
                       <td className="p-2 border-b dark:border-gray-700">
                         <div className="grid items-center justify-center grid-cols-1 gap-1 2xl:grid-cols-3 sm:gap-1">
                           {/* Botón Ver Soporte */}
-                          <button
+                          <Button
+                            variant="secondary"
                             onClick={() =>
                               handleOpen(auditoria.soportes, "Soportes")
                             }
-                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                             title="Ver Soporte"
-                          >
-                            <img
-                              src={soporte}
-                              alt="soporte-icon"
-                              className="w-7 h-7 dark:invert"
-                            />
-                          </button>
+                            icon={<img src={soporte} alt="soporte-icon" className="w-7 h-7 dark:invert" />}
+                          />
 
                           {/* Botón Mostrar Servicios */}
-                          <button
+                          <Button
+                            variant="secondary"
                             onClick={() =>
                               handleShowServicios(auditoria.statusCups)
                             }
-                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                             title="Mostrar Servicios"
-                          >
-                            <img
-                              src={mostrar}
-                              alt="mostrar-icon"
-                              className="w-7 h-7 dark:invert"
-                            />
-                          </button>
+                            icon={<img src={mostrar} alt="mostrar-icon" className="w-7 h-7 dark:invert" />}
+                          />
 
-                          {/* Enlace Autorizar Servicios */}
                           <Link
                             to="/tabla-autorizar-servicios"
                             state={{
                               CUPS: auditoria.statusCups,
                               id: auditoria.id,
                             }}
-                            className="p-2 duration-300 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-600"
                             title="Autorizar Servicios"
                           >
-                            <img
-                              className="w-7 h-7 dark:invert"
-                              src={autorizar}
-                              alt="autorizar-icon"
+                            <Button
+                              variant="secondary"
+                              title="Autorizar Servicios"
+                              icon={<img src={autorizar} alt="autorizar-icon" className="w-7 h-7 dark:invert" />}
                             />
                           </Link>
                         </div>
