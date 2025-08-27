@@ -15,6 +15,8 @@ import soporte from "/assets/soporte.svg";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
 import { useOpenSupport } from "@/hooks/useOpenSupport";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
 const ModalMostrarDatosCUPS = lazy(
@@ -22,7 +24,9 @@ const ModalMostrarDatosCUPS = lazy(
 );
 const ModalGestionAuxiliar = lazy(
   () =>
-    import("@/components/common/Modals/GestionAuxiliar/ModalTableMonitoringAssistent")
+    import(
+      "@/components/common/Modals/GestionAuxiliar/ModalTableMonitoringAssistent"
+    )
 );
 
 const ITEMS_PER_PAGE = 8;
@@ -47,7 +51,7 @@ const TablaCirugias = () => {
     "numeroDocumento",
     "nombrePaciente",
     "especialidad",
-    "grupoServicios"
+    "grupoServicios",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
     usePagination(filteredData, ITEMS_PER_PAGE);
@@ -90,27 +94,24 @@ const TablaCirugias = () => {
         {/*header-table*/}
         <section className="flex items-end justify-between mb-4">
           <div className="flex flex-col w-full">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar Cirugía:
-            </label>
-            <input
+            <Input
+              label="Buscar"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="w-full h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Buscar"
             />
           </div>
           <div className="flex items-center ml-4 space-x-4">
-            <select
+            <Select
+              options={[
+                { label: "8", value: "8" },
+                { label: "10", value: "10" },
+                { label: "15", value: "15" },
+                { label: "20", value: "20" },
+              ]}
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
           </div>
         </section>
         {filteredData.length === 0 ? (
@@ -144,7 +145,11 @@ const TablaCirugias = () => {
                   {currentData().map((cirugia) => (
                     <tr
                       className={`transition duration-200 ease-in-out shadow-md hover:bg-gray-300 dark:hover:bg-gray-700
-                        ${cirugia.programacionCirugia.length > 0 ? 'border-b bg-green-500/15 dark:bg-green-600/15 dark:border-gray-700' : 'bg-white dark:bg-gray-800'}
+                        ${
+                          cirugia.programacionCirugia.length > 0
+                            ? "border-b bg-green-500/15 dark:bg-green-600/15 dark:border-gray-700"
+                            : "bg-white dark:bg-gray-800"
+                        }
                         `}
                       key={cirugia.id}
                     >
@@ -188,7 +193,10 @@ const TablaCirugias = () => {
                       <td className="p-3 border-b dark:border-gray-700">
                         <button
                           onClick={() =>
-                            handleShowGestion(cirugia.programacionCirugia[0], cirugia.cups)
+                            handleShowGestion(
+                              cirugia.programacionCirugia[0],
+                              cirugia.cups
+                            )
                           }
                         >
                           <img src={gestion} alt="Gestion-icon" />
@@ -313,7 +321,10 @@ const TablaCirugias = () => {
                 <div className="text-xs text-gray-800 dark:text-gray-100">
                   <button
                     onClick={() =>
-                      handleShowGestion(cirugia.programacionCirugia[0], cirugia.cups)
+                      handleShowGestion(
+                        cirugia.programacionCirugia[0],
+                        cirugia.cups
+                      )
                     }
                   >
                     <img
