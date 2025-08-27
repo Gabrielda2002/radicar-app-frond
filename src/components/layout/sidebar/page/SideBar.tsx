@@ -325,7 +325,7 @@ const SideBar: FC = () => {
                     />
                     {!isCollapsed && (
                       <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
-                        Reporte de Radicación y Otros
+                        Modal de reportes
                       </span>
                     )}
                   </button>
