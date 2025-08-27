@@ -45,7 +45,7 @@ const Select: React.FC<SelectProps> = ({
 
   const getVariantClasses = () => {
     if (error && touched) {
-      return "border-red-500 dark:border-red-500 focus:ring-red-500";
+      return "border-red-500 dark:border-red-500 focus:ring-red-500 bg-transparent dark:bg-gray-800 text-red-600 dark:text-red-400";
     }
     switch (variant) {
       case "dark":
