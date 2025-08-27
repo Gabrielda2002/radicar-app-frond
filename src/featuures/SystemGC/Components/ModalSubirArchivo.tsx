@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import upload from "/assets/upload.svg";
 import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
+import Input from "@/components/common/Ui/Input";
 
 interface FileUploaderProps {
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -91,10 +92,8 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
       >
         <div className="grid grid-cols-1 gap-10 mb-4">
           <div className="p-4">
-            <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-              Archivos :
-            </label>
-            <input
+            <Input
+              label="Seleccione archivos"
               type="file"
               id="files"
               className="hidden"
