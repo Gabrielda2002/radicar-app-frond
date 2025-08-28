@@ -1,4 +1,3 @@
-import useAnimation from "@/hooks/useAnimations";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
 import React from "react";
@@ -7,6 +6,11 @@ import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
 import { useTickets } from "@/context/ticketContext";
+import Button from "@/components/common/Ui/Button";
+import FormModal from "@/components/common/Ui/FormModal";
+import { AnimatePresence } from "framer-motion";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
 
 interface CerrarModalProps {
   IdTicket: number;
@@ -17,17 +21,12 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   IdTicket,
   onTicketClosed,
 }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useBlockScroll(showModal);
 
   const { validateUserTicketStatus } = useTickets();
-
-  const { showAnimation, closing } = useAnimation(showModal, () =>
-    setShowModal(false)
-  );
 
   const user = localStorage.getItem("user");
   const idUsuario = user ? JSON.parse(user).id : "";
@@ -47,8 +46,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        setLoading(true);
-
         const formData = new FormData();
 
         formData.append("ticketId", IdTicket.toString());
@@ -79,170 +76,91 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         }
       } catch (errors) {
         setError(`Error al cerrar el ticket ${errors}`);
-      } finally {
-        setLoading(false);
       }
     },
   });
 
   return (
     <>
-      <button
-        type="button"
-        className="text-2xl font-extrabold text-gray-500 transition-colors duration-200 md:text-xl hover:text-red-600 focus:outline-none"
+      <Button
+        variant="secondary"
         onClick={() => setShowModal(true)}
         title="Cambiar estado"
       >
         O
-      </button>
-      {showModal && (
-        <div
-          className={`fixed inset-0 z-50 flex items-center justify-center  transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-            showAnimation && !closing ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div
-            className={`w-[90%] p-4 max-w-2xl overflow-hidden transition-transform duration-300 transform bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
-              showModal && !closing
-                ? "translate-y-0 opacity-100"
-                : "translate-y-10 opacity-0"
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                Cerrar Ticket #{IdTicket}
-              </h3>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-2xl font-extrabold text-gray-500 transition-colors duration-200 hover:text-red-600 focus:outline-none"
-              >
-                &times;
-              </button>
-            </div>
-            <form onSubmit={formik.handleSubmit}>
-              <div className="mb-4">
-                <label
-                  htmlFor="observation"
-                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
-                >
-                  Estado
-                </label>
+      </Button>
 
-                <select
-                  name="status"
-                  id="status"
-                  value={formik.values.status}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                    formik.touched.status && formik.errors.status
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-200 dark:border-gray-600"
-                  }`}
-                >
-                  <option value="">Seleccione</option>
-                  <option value="2">Cerrado</option>
-                  <option value="3">Pendiente</option>
-                </select>
-                {formik.touched.status && formik.errors.status ? (
-                  <div className="mt-1 text-sm text-red-600">
-                    {formik.errors.status}
-                  </div>
-                ) : null}
-              </div>
+      <FormModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Cambiar Estado Ticket"
+        onSubmit={formik.handleSubmit}
+        submitText={`${
+          formik.values.status == "2" ? "Cerrar" : "En Espera"
+        } Ticket`}
+        isSubmitting={formik.isSubmitting}
+        isValid={formik.isValid}
+        size="md"
+      >
+        <div className="px-5 py-6">
+          <div className="mb-4">
+            <Select
+              label="Estado"
+              options={[
+                { value: "2", label: "Cerrado"},
+                { value: "3", label: "Pendiente"}
+              ]}
+              name="status"
+              id="status"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.status && formik.touched.status ? formik.errors.status : undefined}
+              touched={formik.touched.status}
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="remote"
-                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
-                >
-                  Remoto
-                </label>
-                <input
-                  type="checkbox"
-                  id="remote"
-                  name="remote"
-                  checked={formik.values.remote}
-                  onChange={(e) =>
-                    formik.setFieldValue("remote", e.target.checked)
-                  }
-                  className={`w-5 h-5 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                    formik.touched.remote && formik.errors.remote
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-200 dark:border-gray-600"
-                  }`}
-                />
-                <label
-                  htmlFor="remote"
-                  className="ml-2 text-sm text-gray-700 dark:text-gray-200"
-                >
-                  ¿El ticket fue cerrado de forma remota?
-                </label>
-                {formik.touched.remote && formik.errors.remote ? (
-                  <div className="mt-1 text-sm text-red-600">
-                    {formik.errors.remote}
-                  </div>
-                ) : null}
-              </div>
+          <div className="mb-4">
+            <Input
+              variant="checkbox"
+              label="¿El ticket fue cerrado de forma remota?"
+              type="checkbox"
+              id="remote"
+              name="remote"
+              checked={formik.values.remote}
+              onChange={(e) => formik.setFieldValue("remote", e.target.checked)}
+              error={formik.errors.remote && formik.touched.remote ? formik.errors.remote : undefined}
+              touched={formik.touched.remote}
+            />
+          </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="observation"
-                  className="flex items-center text-base font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200"
-                >
-                  Observación (Motivo de cierre)
-                </label>
-                <textarea
-                  id="observation"
-                  name="observation"
-                  value={formik.values.observation}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  rows={4}
-                  className={` w-full px-3 py-2 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                    formik.touched.observation && formik.errors.observation
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-200 dark:border-gray-600"
-                  }`}
-                  placeholder="Escriba el motivo por el cual está cerrando este ticket..."
-                ></textarea>
-                {formik.touched.observation && formik.errors.observation ? (
-                  <div className="mt-1 text-sm text-red-600">
-                    {formik.errors.observation}
-                  </div>
-                ) : null}
-              </div>
+          <div className="mb-4">
+            <Input
+              label="Observación (Motivo de cierre)"
+              id="observation"
+              name="observation"
+              value={formik.values.observation}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              placeholder="Escriba el motivo por el cual está cerrando este ticket..."
+              error={formik.errors.observation && formik.touched.observation ? formik.errors.observation : undefined}
+              touched={formik.touched.observation}
+              required
+            />
+          </div>
 
-              {error && (
-                <div className="p-2 mb-4 text-sm text-red-600 bg-red-200 rounded-lg">
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
                   {error}
                 </div>
-              )}
-
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-200 border border-gray-400 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className={`px-4 py-2 text-sm font-medium text-white ${
-                    formik.values.status == "2"
-                      ? "bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                      : "bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700"
-                  }  rounded-lg`}
-                  disabled={!formik.isValid || loading}
-                >
-                  Cerrar Ticket
-                </button>
               </div>
-            </form>
-          </div>
+            )}
+          </AnimatePresence>
         </div>
-      )}
+      </FormModal>
     </>
   );
 };

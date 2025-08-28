@@ -3,8 +3,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ICirugias } from "@/models/ICirugias";
 import React, { useState } from "react";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { CreateCirugia } from "../Services/CreateCirugia";
 import Input from "@/components/common/Ui/Input";
@@ -87,8 +85,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       then: (schema) => schema.required("Campo requerido"),
       otherwise: (schema) => schema.optional(),
     }),
-    especialista: Yup.string()
-      .required("Campo requerido")
+    especialista: Yup.string().required("Campo requerido"),
   });
 
   const formik = useFormik({
@@ -164,23 +161,21 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
       >
         <div className="p-6">
           {data.programacionCirugia.length == 0 && (
-            <div className="w-[250px] mb-8">
-              <h5 className="mb-4 text-xl text-left text-blue-500 dark:text-white">
-                Grupo de servicios:
-              </h5>
+            <div className="flex flex-wrap items-center justify-between mb-6">
               <InputAutocompletado
                 label="Grupo Servicios"
                 onInputChanged={(id) => setGroupService(Number(id))}
                 apiRoute="grupo-servicios-name"
                 placeholder="Ej: Cirugía Ambulatoria"
+                helpText="Cambia el grupo de servicios si es necesario. No es obligatorio llenar este campo para programar la cirugía."
               />
-              <button
-                type="button"
+              <Button
+                variant="secondary"
                 onClick={handleUpdate}
-                className="w-24 h-12 text-white duration-200 border-2 rounded-md bg-color hover:bg-emerald-900 dark:bg-gray-900 dark:hover:bg-gray-700"
+                className="mt-4"
               >
                 Actualizar
-              </button>
+              </Button>
               {errorUpdate && (
                 <div className="mt-2 text-red-500 dark:text-red-300">
                   {errorUpdate}
@@ -251,7 +246,8 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
 
                     <div className="space-y-4">
                       <label htmlFor="" className="flex items-center space-x-2">
-                        <input
+                        <Input
+                          variant="checkbox"
                           className="w-4 h-4"
                           type="checkbox"
                           checked={soporte}
@@ -264,7 +260,8 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                       </label>
 
                       <label htmlFor="" className="flex items-center space-x-2">
-                        <input
+                        <Input
+                          variant="checkbox"
                           className="w-4 h-4"
                           type="checkbox"
                           checked={paraclinicos}
@@ -276,7 +273,8 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                       </label>
 
                       <label htmlFor="" className="flex items-center space-x-2">
-                        <input
+                        <Input
+                          variant="checkbox"
                           className="w-4 h-4"
                           checked={valoracion}
                           onChange={(e) => setValoracion(e.target.checked)}
@@ -289,12 +287,12 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
 
                       {!isValidate && (
                         <div>
-                          <button
+                          <Button
+                            variant="secondary"
                             onClick={handleValidation}
-                            className="w-24 h-12 mb-8 text-white duration-200 rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-700"
                           >
                             <span className="text-base">Siguiente</span>
-                          </button>
+                          </Button>
                         </div>
                       )}
                       {error && (
@@ -397,11 +395,6 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                               touched={formik.touched.ips}
                               required={true}
                             />
-                            <AnimatePresence>
-                              {formik.touched.ips && formik.errors.ips ? (
-                                <ErrorMessage>{formik.errors.ips}</ErrorMessage>
-                              ) : null}
-                            </AnimatePresence>
                           </div>
 
                           {/* Especialista */}
@@ -454,36 +447,22 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                             />
                           </div>
                         </div>
-
                         <div>
-                          <label className="font-bold text-gray-700 dark:text-white">
-                            <div className="flex">
-                              <h5 className="text-base">Observación:</h5>
-                              <span className="ml-2 text-lg text-red-600">
-                                *
-                              </span>
-                            </div>
-                          </label>
-                          <textarea
+                          <Input
+                            label="Observación"
                             name="observacion"
                             onChange={formik.handleChange}
                             value={formik.values.observacion}
                             onBlur={formik.handleBlur}
-                            className={` w-full h-40 px-3 py-2 mt-1 text-gray-700 border-2 border-gray-200 rounded dark:border-gray-600 dark:text-white dark:bg-gray-800 ${
-                              formik.touched.observacion &&
-                              formik.errors.observacion
-                                ? "border-red-500 dark:border-red-500"
-                                : "border-gray-200 dark:border-gray-600"
-                            } `}
-                          ></textarea>
-                          <AnimatePresence>
-                            {formik.touched.observacion &&
-                              formik.errors.observacion && (
-                                <ErrorMessage>
-                                  {formik.errors.observacion}
-                                </ErrorMessage>
-                              )}
-                          </AnimatePresence>
+                            error={
+                              formik.errors.observacion &&
+                              formik.touched.observacion
+                                ? formik.errors.observacion
+                                : undefined
+                            }
+                            touched={formik.touched.observacion}
+                            required
+                          />
                         </div>
                       </div>
                     </div>

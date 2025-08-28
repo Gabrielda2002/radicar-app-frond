@@ -1,39 +1,38 @@
 import { useState } from "react";
 import { useFetchServicioContratado } from "../hooks/UseFetchServiciosContratados";
 import { AnimatePresence } from "framer-motion";
+import Button from "@/components/common/Ui/Button";
+import Input from "@/components/common/Ui/Input";
 
 const ConsultarSvContratados = () => {
+  const [codigo, setCodigo] = useState("");
 
-      const [codigo, setCodigo] = useState("");
-
-        const { servicios, errorServicios, getData } = useFetchServicioContratado();
-    
+  const { servicios, errorServicios, getData, loadingServicios } =
+    useFetchServicioContratado();
 
   return (
     <>
       <div className="p-1">
         <div className="p-1 rounded-lg ">
-          <label
-            htmlFor=""
-            className="w-5/6 dark:text-gray-200 text-[19px] md:text-[24px]"
-          >
-            Ingrese el código del servicio:
-            <div>
-              <input
-                type="text"
-                value={codigo}
-                onChange={(e) => setCodigo(e.target.value)}
-                className="p-2 mt-3 mr-4 border-2 border-gray-400 rounded-lg b-2 w-44 md:w-56 dark:text-gray-700 text-[17px]"
-                placeholder="Código del servicio"
-              />
-              <button
-                className="px-5 font-bold text-white bg-teal-500 rounded-md shadow-md mt-23 py-2 hover:bg-teal-600 hover:shadow-teal-600 dark:hover:shadow-teal-500 text-[16px]"
-                onClick={() => getData(codigo)}
-              >
-                Consultar
-              </button>
-            </div>
-          </label>
+          <div className="flex flex-wrap w-full">
+            <Input
+              label="Código del Servicio"
+              type="text"
+              id="codigo"
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+              placeholder="Ej: 78912"
+              required
+            />
+            <Button
+              onClick={() => getData(codigo)}
+              variant="secondary"
+              className="h-10 mt-6 ml-2 md:mt-8"
+              isLoading={loadingServicios}
+            >
+              Consultar
+            </Button>
+          </div>
           <div className="hidden w-full mt-4 md:table justify-items-center dark:text-gray-200">
             {servicios?.map((servicio) => (
               <div
@@ -155,7 +154,7 @@ const ConsultarSvContratados = () => {
                   <div className="text-gray-800 dark:text-gray-100">
                     {servicio.Relations.map((s) => s.nameConvenio).join("N/A")}
                   </div>
-                  
+
                   <div className="font-semibold text-gray-600 dark:text-gray-400/90">
                     Sede:
                   </div>
@@ -181,19 +180,20 @@ const ConsultarSvContratados = () => {
                     Estado:
                   </div>
                   <div className="text-gray-800 dark:text-gray-100">
-                   
                     <span
                       className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
                         servicio.Relations[0].isContrated
                           ? "bg-teal-500 text-gray-800 dark:bg-teal-600 dark:text-white"
                           : "bg-red-500 text-gray-800 dark:bg-red-600 dark:text-white"
                       }`}
-                      >
-                      {servicio.Relations[0].isContrated ? "Contratado" : "No Contratado"}
+                    >
+                      {servicio.Relations[0].isContrated
+                        ? "Contratado"
+                        : "No Contratado"}
                     </span>
                   </div>
-                  </div>               
                 </div>
+              </div>
             ))}
           </div>
 
