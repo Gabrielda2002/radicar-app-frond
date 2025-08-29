@@ -45,22 +45,25 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   const { downloadReport, error, loading } = useDownloadReport();
 
+  const REPORT_ENDPOINTS: Record<string, string> = {
+    "1": "report-excel-filtro",
+    "2": "report-excel-gestion-auxiliar", 
+    "3": "report-breakes-active",
+    "4": "report/excel/biometric",
+    "5": "report-excel-cirugias-filtro",
+    "6": "report/tickets",
+    "7": "reporte/demanda/inducida",
+    "8": "report/equipments",
+    "9": "report/device-red",
+    "10": "report/general-inventory",
+    "11": "report/tv",
+    "12": "report/phones",
+  };
+
   const handleDownloadReport = async () => {
     try {
-      const endPoint: string =
-        reportType == "1"
-          ? "report-excel-filtro"
-          : reportType == "2"
-          ? "report-excel-gestion-auxiliar"
-          : reportType == "3"
-          ? "report-breakes-active"
-          : reportType == "4"
-          ? "report/excel/biometric"
-          : reportType === "5"
-          ? "report-excel-cirugias-filtro"
-          : reportType === "6"
-          ? "report/tickets"
-          : "reporte/demanda/inducida";
+      const endPoint: string = REPORT_ENDPOINTS[reportType] || "reporte/demanda/inducida";
+      
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -106,6 +109,11 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
                 { value: "5", label: "Cirugía" },
                 { value: "6", label: "Tickets Mesa de Ayuda" },
                 { value: "7", label: "Demanda Inducida" },
+                { value: "8", label: "Equipos" },
+                { value: "9", label: "Dispositivos de Red" },
+                { value: "10", label: "Inventario General" },
+                { value: "11", label: "Televisores" },
+                { value: "12", label: "Teléfonos" },
               ]}
               name="reportType"
               onChange={(e) => setReportType(e.target.value)}
