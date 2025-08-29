@@ -11,7 +11,7 @@ interface InputProps
   required?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
-  variant?: "default" | "dark" | "error" | "checkbox";
+  variant?: "default" | "dark" | "error" | "checkbox" | "any";
   size?: "sm" | "md" | "lg" | "full";
   helpText?: string;
 }
@@ -56,6 +56,10 @@ const Input: React.FC<InputProps> = ({
         return "border-gray-600 dark:border-gray-600 bg-gray-700 bg:gray-200 dark:bg-gray-700 text-white dark:text-white";
       case "checkbox":
         return "border-gray-300 dark:border-gray-500 bg-white bg:gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100";
+      case "error":
+        return "border-red-500 dark:border-red-500 bg-red-100 dark:bg-red-800 text-red-900 dark:text-red-100";
+      case "any":
+        return ""
       default:
         return "border-gray-200 dark:border-gray-600 bg-transparent dark:bg-gray-800 dark:text-white";
     }

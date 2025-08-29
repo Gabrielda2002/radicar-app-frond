@@ -10,14 +10,35 @@ import ModalCreateGoalProgram from "./ModalCreateGoalProgram";
 import { AnimatePresence } from "framer-motion";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmDeletePopup from "@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp";
+import useSearch from "@/hooks/useSearch";
+import { IProgramsGoals } from "@/models/IProgramsGoals";
+import usePagination from "@/hooks/usePagination";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
 
 const ModalProgramGoals = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [ openComfirmation, setOpenConfirmation ] = useState<boolean>(false);
+  const [openComfirmation, setOpenConfirmation] = useState<boolean>(false);
   const deleteProgramGoal = useRef<number>(0);
 
   const { data, error, loading, handleUpdateGoal, refetch, deleteGoal } =
     useProgramsGoals();
+
+  const ITEMS_PER_PAGE = 10;
+
+  const { query, setQuery, filteredData } = useSearch<IProgramsGoals>(data, [
+    "headquarters",
+    "professional",
+    "program",
+  ]);
+
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, ITEMS_PER_PAGE);
+
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+  }
 
   const { rol } = useAuth();
 
@@ -36,12 +57,11 @@ const ModalProgramGoals = () => {
     cancelEditing(goalId); // Limpiar el estado de edición después de actualizar
   };
 
-
   const handleDelete = (goalId: number) => {
     deleteProgramGoal.current = goalId;
-    console.log(goalId)
+    console.log(goalId);
     setOpenConfirmation(true);
-  }
+  };
 
   const handleComfirmationDelete = async () => {
     const goalId = deleteProgramGoal.current;
@@ -50,7 +70,7 @@ const ModalProgramGoals = () => {
     await deleteGoal(goalId);
     setOpenConfirmation(false);
     deleteProgramGoal.current = 0;
-  }
+  };
 
   const handleCancelDelete = () => {
     setOpenConfirmation(false);
@@ -72,12 +92,39 @@ const ModalProgramGoals = () => {
           size="lg"
         >
           <div className="flex flex-col space-y-4 p-5">
-            {[1,20,21].includes(Number(rol)) && (
+            {[1, 20, 21].includes(Number(rol)) && (
               <ModalCreateGoalProgram onGoalCreated={refetch} />
             )}
             <p className="text-sm text-gray-400 text-center ">
-              💡Cada comienzo de mes las metas del mes anterior dejarán de visualizarse, se verán las metas del mes actual exclusivamente.
+              💡Cada comienzo de mes las metas del mes anterior dejarán de
+              visualizarse, se verán las metas del mes actual exclusivamente.
             </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center space-x-2">
+                <label htmlFor="itemsPerPage" className="text-sm text-gray-600 dark:text-gray-300">
+                  Items por página:
+                </label>
+                <Select
+                  options={[
+                    { value: 5, label: "5" },
+                    { value: 10, label: "10" },
+                    { value: 20, label: "20" },
+                    { value: 50, label: "50" },
+                  ]}
+                  id="itemsPerPage"
+                  value={ITEMS_PER_PAGE}
+                  onChange={handleItemsPerPageChange}
+                  className="border border-gray-300 rounded-md p-1"
+                />
+              </div>
+              <Input
+                variant="default"
+                type="text"
+                placeholder="Buscar"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
               <thead>
                 <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
@@ -85,12 +132,14 @@ const ModalProgramGoals = () => {
                   <th>Sede</th>
                   <th>Profesional</th>
                   <th>Meta</th>
-                  {[1,20,21].includes(Number(rol)) && <th>Meta siguiente mes</th>}
-                  {[1,20].includes(Number(rol)) && <th>Eliminar</th>}
+                  {[1, 20, 21].includes(Number(rol)) && (
+                    <th>Meta siguiente mes</th>
+                  )}
+                  {[1, 20].includes(Number(rol)) && <th>Eliminar</th>}
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-600 dark:text-gray-300">
-                {data.map((p) => (
+                {currentData().map((p) => (
                   <tr
                     key={p.id}
                     className="text-xs md:text-sm transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
@@ -114,7 +163,7 @@ const ModalProgramGoals = () => {
                         setActiveFieldId={setActiveFieldId}
                       />
                     </td>
-                    {[1, 20,21].includes(Number(rol)) && (
+                    {[1, 20, 21].includes(Number(rol)) && (
                       <td>
                         {editingRows[p.id] ? (
                           <>
@@ -164,6 +213,11 @@ const ModalProgramGoals = () => {
                 ))}
               </tbody>
             </table>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={paginate}
+            />
             <AnimatePresence>
               {error && (
                 <div>
