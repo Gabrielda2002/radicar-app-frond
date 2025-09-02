@@ -7,11 +7,11 @@ import onOff from "/assets/on-off.svg";
 import FormModal from "../../Ui/FormModal";
 import Input from "../../Ui/Input";
 import Select from "../../Ui/Select";
-import { useUpdateCUPSDiag } from "./Hook/useUpdateCUPSDiag";
 import { AnimatePresence } from "framer-motion";
 import { ICups } from "@/models/ICups";
 import { IDiagnostico } from "@/models/IDiagnostico";
 import Button from "../../Ui/Button";
+import { useCUPSDiagMutations } from "./Hook/useCUPSDiagMutations";
 
 interface ModalUpdateCupsDiagnosticoProps {
   item: ICups | IDiagnostico;
@@ -26,13 +26,13 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { error, loading, updateCUPSDiag } = useUpdateCUPSDiag();
+  const { error, loading, updateCUPSDiag } = useCUPSDiagMutations();
 
   // Paso 2: Definir valores iniciales como una variable separada para poder compararlos
   const initialValues = useMemo(() => ({
     id: item.id,
-    status: (item as ICups) ? ((item as ICups).status ? 1 : 0) : undefined,
-    description: (item as ICups)
+    status: modulo === "cups" ? ((item as ICups).status ? 1 : 0) : undefined,
+    description: modulo === "cups"
       ? (item as ICups).name
       : (item as IDiagnostico).description,
     modulo: modulo,

@@ -69,7 +69,7 @@ const TablaCups = () => {
           <div className="flex items-center pt-3 space-x-2">
             <Select
               options={[
-                { value: "10", label: "10 Items" },
+                { value: "8", label: "8 Items" },
                 { value: "20", label: "20 Items" },
                 { value: "30", label: "30 Items" },
               ]}

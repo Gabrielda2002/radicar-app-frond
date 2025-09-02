@@ -10,6 +10,8 @@ import {  useFetchDiagnostic } from "../Hooks/UseFetchDiagnostic";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IDiagnostico } from "@/models/IDiagnostico";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
 const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
@@ -60,29 +62,23 @@ const TablaDiagnostico = () => {
 
         <section className="items-center justify-between pb-6 md:flex header-tabla">
           <div className="container-filter">
-            <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-              Buscar Diagnostico:
-            </label>
-            <input
+            <Input
+              label="Buscar Diagnostico"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100  dark:focus:bg-gray-500 dark:focus:ring-gray-400  dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            ></input>
+              placeholder="Buscar"
+            />
           </div>
           <div className="flex items-center pt-4 space-x-2 md:pt-1">
-            <select
-              name=""
-              id=""
-              className="border-2 border-stone-300 h-[40px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            <Select
+              options={[
+                { value: "8", label: "8 Paginas" },
+                { value: "20", label: "20 Paginas" },
+                { value: "30", label: "30 Paginas" },
+              ]}
               onChange={handleItemsPerPageChange}
               value={itemsPerPage}
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
             <Suspense fallback={<LoadingSpinner />}>
               <ModalCrearCupsDiagnostico
                 modulo="diagnostico"
@@ -110,27 +106,27 @@ const TablaDiagnostico = () => {
                 </thead>
 
                 <tbody className="text-sm text-center dark:text-gray-200">
-                  {currentData().map((cups) => (
+                  {currentData().map((diag) => (
                     <tr
                       className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-                      key={cups.id}
+                      key={diag.id}
                     >
                       <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {cups.id}
+                        {diag.id}
                       </td>
                       <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {cups.code}
+                        {diag.code}
                       </td>
                       <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {cups.description}
+                        {diag.description}
                       </td>
                       <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalUpdateCupsDiagnostico
-                           item={cups}
-                           modulo="diagnostico"
-                           onSuccess={handleUpdateSuccess}
-                           />
+                            item={diag}
+                            modulo="diagnostico"
+                            onSuccess={handleUpdateSuccess}
+                          />
                         </Suspense>
                       </td>
                     </tr>

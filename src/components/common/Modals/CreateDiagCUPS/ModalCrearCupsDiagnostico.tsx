@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Button from "../../Ui/Button";
 import FormModal from "../../Ui/FormModal";
-import { useCUPS } from "@/featuures/CUPS/Hook/useCUPS";
 import Input from "../../Ui/Input";
+import { useCUPSDiagMutations } from "../UpdateDiagCUPS/Hook/useCUPSDiagMutations";
 
 interface ModalCrearCupsDiagnosticoProps {
   modulo: string;
@@ -19,63 +19,50 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { createCUPS,error, loading} = useCUPS();
+  // const { createCUPS,error, loading} = useCUPS();
+  const { createCUPSDiag, error, loading } = useCUPSDiagMutations();
 
-  const getValidationSchema = (Modulo: string) => {
-    const validationSchema = {
-      description: Yup.string()
-        .required("El nombre del cups es requerido")
-        .min(1, "El nombre del cups debe tener al menos 1 caracter")
-        .max(150, "El nombre del cups debe tener máximo 150 caracteres"),
-    };
-
-    if (Modulo === "diagnostico") {
-      return {
-        ...validationSchema,
-        code: Yup.string()
-          .required("El estado del cups es requerido")
-          .matches(
-            /^[a-zA-Z]{1,2}(\d{1,3}[a-zA-Z]?|[a-zA-Z]{1})$/,
-            "El código debe tener 1 o 2 letras seguidas de 1 a 3 dígitos y opcionalmente una letra"
-          ),
-      };
-    } else {
-      return {
-        ...validationSchema,
-        code: Yup.string()
-          .required("El estado del cups es requerido")
-          .min(1, "El código debe tener al menos 1 caracter")
-          .max(10, "El código debe tener máximo 10 caracteres"),
-      };
-    }
-
-    return validationSchema;
-  };
+  const validationSchema = Yup.object({
+    code: Yup.string().when("modulo", {
+      is: (value: string) => value === "diagnostico",
+      then: (schema) => schema
+        .required("El código es requerido")
+        .matches(
+          /^[a-zA-Z]{1,2}(\d{1,3}[a-zA-Z]?|[a-zA-Z]{1})$/,
+          "El código debe tener 1 o 2 letras seguidas de 1 a 3 dígitos y opcionalmente una letra"
+        ),
+      otherwise: (schema) => schema
+        .required("El código es requerido")
+        .min(1, "El código debe tener al menos 1 caracter")
+        .max(10, "El código debe tener máximo 10 caracteres"),
+    }),
+    description: Yup.string()
+      .required("La descripción es requerida")
+      .min(3, "La descripción debe tener al menos 3 caracteres")
+      .max(255, "La descripción debe tener máximo 255 caracteres"),
+  });
 
   const formik = useFormik({
     initialValues: {
       code: "",
       description: "",
+      modulo: modulo,
     },
-    validationSchema: Yup.object(getValidationSchema(modulo)),
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-        formData.append("code", values.code);
-        formData.append("name", values.description);
 
-        const response = await createCUPS(
-          formData,
-          modulo == "cups" ? "servicio-solicitado" : "diagnosticos"
-        );
-
-        if (response?.status === 200 || response?.status === 201) {
+        await  createCUPSDiag(
+          values,
+          modulo == "cups" ? "servicio-solicitado" : "diagnosticos", () => {
             setStadopen(false);
             formik.resetForm();
             if (onSuccess) {
               onSuccess();
             }
-        }
+          }
+        );
+
       } catch (error) {
 
       }
