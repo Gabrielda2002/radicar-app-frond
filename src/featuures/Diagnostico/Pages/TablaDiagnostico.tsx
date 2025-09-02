@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useCallback } from "react";
 
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
@@ -16,8 +16,13 @@ const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaDiagnostico = () => {
-  const { diagnostico, loading, errorDiagnostico } = useFetchDiagnostic();
+  const { diagnostico, loading, errorDiagnostico, refetch } = useFetchDiagnostic();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  // Callback para refrescar datos cuando la actualización sea exitosa
+  const handleUpdateSuccess = useCallback(() => {
+    refetch();
+  }, [refetch]);
 
   const { query, setQuery, filteredData } = useSearch<IDiagnostico>(diagnostico || [], [
     "id",
@@ -81,6 +86,7 @@ const TablaDiagnostico = () => {
             <Suspense fallback={<LoadingSpinner />}>
               <ModalCrearCupsDiagnostico
                 modulo="diagnostico"
+                onSuccess={handleUpdateSuccess}
               />
             </Suspense>
           </div>
@@ -121,8 +127,9 @@ const TablaDiagnostico = () => {
                       <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalUpdateCupsDiagnostico
-                           id={cups.id}
+                           item={cups}
                            modulo="diagnostico"
+                           onSuccess={handleUpdateSuccess}
                            />
                         </Suspense>
                       </td>
