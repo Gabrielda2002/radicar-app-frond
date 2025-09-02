@@ -120,7 +120,7 @@ const TablaCups = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
-                          <ModalUpdateCupsDiagnostico id={cups.id} modulo="cups" />
+                          <ModalUpdateCupsDiagnostico item={cups} modulo="cups" />
                         </Suspense>
                       </td>
                     </tr>

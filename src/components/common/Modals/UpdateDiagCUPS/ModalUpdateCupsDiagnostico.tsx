@@ -1,91 +1,64 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import { useState } from "react";
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
-import { AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
-import useAnimation from "@/hooks/useAnimations";
-import { updateCupsData } from "./Services/UpdateData";
 //*Icons
 import onOff from "/assets/on-off.svg";
-import { useBlockScroll } from "@/hooks/useBlockScroll";
+import FormModal from "../../Ui/FormModal";
+import Input from "../../Ui/Input";
+import Select from "../../Ui/Select";
+import { useUpdateCUPSDiag } from "./Hook/useUpdateCUPSDiag";
+import { AnimatePresence } from "framer-motion";
+import { ICups } from "@/models/ICups";
+import { IDiagnostico } from "@/models/IDiagnostico";
 
 interface ModalUpdateCupsDiagnosticoProps {
-  id: number;
+  item: ICups | IDiagnostico;
   modulo: string;
 }
 
 const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
-  id,
+  item,
   modulo,
 }) => {
   const [stadopen, setStadopen] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string>("");
-  const { showAnimation, closing } = useAnimation(
-    stadopen,
-    () => setStadopen(false),
-    300
-  );
-  useBlockScroll(stadopen);
 
-  const getValidationSchema = (Modulo: string) => {
-    const validationSchema = {
-      nombreCups: Yup.string()
-        .required("El nombre del cups es requerido")
-        .min(1, "El nombre del cups debe tener al menos 1 caracter")
-        .max(150, "El nombre del cups debe tener máximo 150 caracteres"),
-    };
+  const { error, loading, updateCUPSDiag } = useUpdateCUPSDiag();
 
-    if (Modulo === "cups") {
-      return {
-        ...validationSchema,
-        estado: Yup.string().required("El estado del cups es requerido"),
-      };
-    }
-    return validationSchema;
-  };
+  const validationSchema = Yup.object({
+    description: Yup.string()
+      .min(3, "Mínimo 3 caracteres")
+      .required("El nombre del cups es requerido")
+      .max(255, "Máximo 255 caracteres"),
+    status: Yup.number().when("modulo", {
+      is: (value: string) => value === "cups",
+      then: (schema) => schema.required("El estado es requerido"),
+      otherwise: (schema) => schema.optional(),
+    }),
+  });
 
   const formik = useFormik({
     initialValues: {
-      id: id,
-      estado: "",
-      nombreCups: "",
+      id: item.id,
+      status: item as ICups ? ((item as ICups).status ? 1 : 0) : undefined,
+      description: item as ICups ? (item as ICups).name : (item as IDiagnostico).description,
+      modulo: modulo,
     },
-    validationSchema: Yup.object(getValidationSchema(modulo)),
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-
-        if (values.nombreCups) {
-          formData.append("name", values.nombreCups);
-        }
-        if (values.estado) {
-          formData.append("status", values.estado);
-        }
-
-        const response = await updateCupsData(
-          formData,
-          id,
+        const endPoint =
           modulo === "cups"
             ? "servicio-solicitado-update-table"
-            : "diagnosticos"
-        );
+            : "diagnosticos";
 
-        if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
-          setError("");
-          setTimeout(() => {
-            setStadopen(false);
-            window.location.reload();
-          }, 2000);
-        }
+        await updateCUPSDiag(values, item.id, endPoint);
       } catch (error) {
-        setError(`Error al modificar ${modulo} ${error}`);
-        setSuccess(false);
+        console.error(error);
       }
     },
   });
+  console.log(formik.errors);
 
   return (
     <>
@@ -93,158 +66,83 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
         <img className="dark:invert " src={onOff} alt="" />
       </button>
 
-      {/* init event modal */}
-      {stadopen && (
-        <section
-          className={`fixed inset-0 z-50 flex justify-center  pt-12 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${
-            showAnimation && !closing ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <section className="">
-            <div
-              className={` w-[440px] md:w-full overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 ${
-                showAnimation && !closing
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
-              }`}
-            >
-              {/* container-header */}
-              <div className="flex items-center justify-between p-3 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white">
-                <h1 className="text-2xl font-semibold text-color dark:text-gray-200 ">
-                  Modificar {modulo === "cups" ? "CUPS" : "Diagnóstico"}
-                </h1>
-                <button
-                  onClick={() => setStadopen(false)}
-                  className="text-xl text-gray-400 duration-200 rounded-md dark:text-gray-100 hover:bg-gray-300 dark:hover:text-gray-900 hover:text-gray-900 w-7 h-7"
-                >
-                  &times;
-                </button>
+      <FormModal
+        isOpen={stadopen}
+        onClose={() => setStadopen(false)}
+        title={`${
+          modulo === "cups" ? "Modificar CUPS" : "Modificar Diagnóstico"
+        }`}
+        onSubmit={formik.handleSubmit}
+        isSubmitting={formik.isSubmitting || loading}
+        isValid={formik.isValid}
+        size="lg"
+        submitText="Guardar"
+      >
+        <section className="grid grid-cols-1 md:grid-cols-3 py-3 px-5 gap-4">
+          <Input
+            label={`${modulo === "cups" ? "ID CUPS" : "ID Diagnóstico"}`}
+            type="text"
+            id="id"
+            name="id"
+            value={formik.values.id}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched && formik.errors.id ? formik.errors.id : undefined
+            }
+            touched={formik.touched.id}
+            disabled
+            required
+          />
+          {modulo === "cups" && (
+            <Select
+              label="Estado"
+              options={[
+                { value: 1, label: "Activo" },
+                { value: 0, label: "Inactivo" },
+              ]}
+              id="status"
+              name="status"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.status && formik.errors.status
+                  ? formik.errors.status
+                  : undefined
+              }
+              touched={formik.touched.status}
+            />
+          )}
+          <Input
+            label={`${
+              modulo === "cups" ? "Descripción Cups" : "Descripción Diagnóstico"
+            }`}
+            type="text"
+            id="description"
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.description && formik.errors.description
+                ? formik.errors.description
+                : undefined
+            }
+            touched={formik.touched.description}
+            required
+          />
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
               </div>
-
-              {/* init form */}
-              <form
-                onSubmit={formik.handleSubmit}
-                className=" max-h-[70Vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200"
-              >
-                <div className="p-4">
-                  <section className="grid grid-cols-1 p-6 md:grid-cols-3">
-                    <div className="flex">
-                      <label htmlFor="" className="p-x-2">
-                        <span className="flex mb-2 text-base font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          ID {modulo === "cups" ? "Cups" : "Diagnóstico"}:
-                        </span>
-                        <input
-                          type="text"
-                          id=""
-                          name="id"
-                          value={formik.values.id}
-                          className={`w-[200px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-700 cursor-not-allowed ${
-                            formik.touched.id && formik.errors.id
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                          disabled
-                        />
-                        <AnimatePresence>
-                          {formik.touched.id && formik.errors.id ? (
-                            <ErrorMessage>{formik.errors.id}</ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </label>
-                    </div>
-                    {modulo === "cups" && (
-                      <div className="flex">
-                        <label htmlFor="">
-                          <span className="flex text-base mb-2 font-bold text-gray-700 after:content-['*'] after:ml-2 after:text-red-600 dark:text-gray-200">
-                            Estado:
-                          </span>
-                          <select
-                            id=""
-                            name="estado"
-                            value={formik.values.estado}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            className={` w-[200px] p-2 px-3 py-2 border-2 border-gray-200 rounded text-stone-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 ${
-                              formik.touched.estado && formik.errors.estado
-                                ? "border-red-500 dark:border-red-500"
-                                : "border-gray-200 dark:border-gray-600"
-                            }`}
-                          >
-                            <option value="">- SELECT -</option>
-                            <option value={1}>Activo</option>
-                            <option value={0}>Inactivo</option>
-                          </select>
-                          <AnimatePresence>
-                            {formik.touched.estado && formik.errors.estado ? (
-                              <ErrorMessage>
-                                {formik.errors.estado}
-                              </ErrorMessage>
-                            ) : null}
-                          </AnimatePresence>
-                        </label>
-                      </div>
-                    )}
-                    <div className="flex">
-                      <label htmlFor="">
-                        <span className="flex text-base mb-2 font-bold text-gray-700 dark:text-gray-200 after:content-['*'] after:ml-2 after:text-red-600">
-                          Descripción{" "}
-                          {modulo === "cups" ? "Cups" : "Diagnóstico"}:
-                        </span>
-                        <input
-                          type="text"
-                          id=""
-                          name="nombreCups"
-                          value={formik.values.nombreCups}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className={`w-[350px] md:w-[250px] p-2 px-3 border-2 border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800 ${
-                            formik.touched.nombreCups &&
-                            formik.errors.nombreCups
-                              ? "border-red-500 dark:border-red-500"
-                              : "border-gray-200 dark:border-gray-600"
-                          }`}
-                        />
-                        <AnimatePresence>
-                          {formik.touched.nombreCups &&
-                          formik.errors.nombreCups ? (
-                            <ErrorMessage className="text-base">
-                              {formik.errors.nombreCups}
-                            </ErrorMessage>
-                          ) : null}
-                        </AnimatePresence>
-                      </label>
-                    </div>
-                  </section>
-                </div>
-
-                {/* container-footer */}
-                <div className="flex items-center justify-end w-full gap-2 px-4 py-4 text-sm font-semibold bg-gray-300 border-t-2 h-14 dark:bg-gray-600 border-t-gray-900 dark:border-t-white">
-                  <button
-                    className="w-20 h-10 text-blue-400 duration-200 border-2 border-gray-500 rounded-md hover:border-red-500 hover:text-red-400 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200"
-                    onClick={() => setStadopen(false)}
-                  >
-                    Cerrar
-                  </button>
-                  <button className="w-20 h-10 text-white duration-200 border-2 rounded-md dark:hover:border-gray-900 bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600">
-                    Actualizar
-                  </button>
-
-                  {success && (
-                    <div className="text-green-500 dark:text-green-300">
-                      Actualizado correctamente.
-                    </div>
-                  )}
-                  {error && (
-                    <div className="text-red-500 dark:text-red-300">
-                      {error}
-                    </div>
-                  )}
-                </div>
-              </form>
-            </div>
-          </section>
+            )}
+          </AnimatePresence>
         </section>
-      )}
+      </FormModal>
     </>
   );
 };
