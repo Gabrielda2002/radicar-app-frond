@@ -10,10 +10,12 @@ import Input from "../../Ui/Input";
 
 interface ModalCrearCupsDiagnosticoProps {
   modulo: string;
+  onSuccess?: () => void;
 }
 
 const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
   modulo,
+  onSuccess,
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
@@ -70,6 +72,9 @@ const ModalCrearCupsDiagnostico: React.FC<ModalCrearCupsDiagnosticoProps> = ({
         if (response?.status === 200 || response?.status === 201) {
             setStadopen(false);
             formik.resetForm();
+            if (onSuccess) {
+              onSuccess();
+            }
         }
       } catch (error) {
 

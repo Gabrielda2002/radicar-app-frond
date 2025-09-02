@@ -18,7 +18,7 @@ const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/
 const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaCups = () => {
-  const { data, loading, error } = useFetchCups();
+  const { data, loading, error, refetch } = useFetchCups();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<ICups>(data, [
@@ -77,7 +77,10 @@ const TablaCups = () => {
               value={itemsPerPage}
             />
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalCrearCupsDiagnostico modulo="cups" />
+              <ModalCrearCupsDiagnostico 
+                modulo="cups" 
+                onSuccess={refetch}
+              />
             </Suspense>
           </div>
         </section>
@@ -120,7 +123,11 @@ const TablaCups = () => {
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         <Suspense fallback={<LoadingSpinner />}>
-                          <ModalUpdateCupsDiagnostico item={cups} modulo="cups" />
+                          <ModalUpdateCupsDiagnostico 
+                            item={cups} 
+                            modulo="cups" 
+                            onSuccess={refetch}
+                          />
                         </Suspense>
                       </td>
                     </tr>

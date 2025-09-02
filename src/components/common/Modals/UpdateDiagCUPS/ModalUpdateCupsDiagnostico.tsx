@@ -1,6 +1,6 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useFormik } from "formik";
 //*Icons
 import onOff from "/assets/on-off.svg";
@@ -11,19 +11,32 @@ import { useUpdateCUPSDiag } from "./Hook/useUpdateCUPSDiag";
 import { AnimatePresence } from "framer-motion";
 import { ICups } from "@/models/ICups";
 import { IDiagnostico } from "@/models/IDiagnostico";
+import Button from "../../Ui/Button";
 
 interface ModalUpdateCupsDiagnosticoProps {
   item: ICups | IDiagnostico;
   modulo: string;
+  onSuccess?: () => void;
 }
 
 const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   item,
   modulo,
+  onSuccess,
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
   const { error, loading, updateCUPSDiag } = useUpdateCUPSDiag();
+
+  // Paso 2: Definir valores iniciales como una variable separada para poder compararlos
+  const initialValues = useMemo(() => ({
+    id: item.id,
+    status: (item as ICups) ? ((item as ICups).status ? 1 : 0) : undefined,
+    description: (item as ICups)
+      ? (item as ICups).name
+      : (item as IDiagnostico).description,
+    modulo: modulo,
+  }), [item, modulo]);
 
   const validationSchema = Yup.object({
     description: Yup.string()
@@ -38,12 +51,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   });
 
   const formik = useFormik({
-    initialValues: {
-      id: item.id,
-      status: item as ICups ? ((item as ICups).status ? 1 : 0) : undefined,
-      description: item as ICups ? (item as ICups).name : (item as IDiagnostico).description,
-      modulo: modulo,
-    },
+    initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
@@ -52,19 +60,43 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
             ? "servicio-solicitado-update-table"
             : "diagnosticos";
 
-        await updateCUPSDiag(values, item.id, endPoint);
+        await updateCUPSDiag(values, item.id, endPoint, () => {
+          setStadopen(false);
+          formik.resetForm();
+          if (onSuccess) {
+            onSuccess();
+          }
+        });
       } catch (error) {
         console.error(error);
       }
     },
   });
-  console.log(formik.errors);
+
+  // Paso 4: Función para detectar si hay cambios reales en los datos
+  const hasChanges = useMemo(() => {
+    // Comparar solo los campos editables (excluyendo id y modulo)
+    const editableFields = modulo === "cups" 
+      ? ['description', 'status'] 
+      : ['description'];
+    
+    return editableFields.some(field => {
+      const currentValue = formik.values[field as keyof typeof formik.values];
+      const initialValue = initialValues[field as keyof typeof initialValues];
+      return currentValue !== initialValue;
+    });
+  }, [formik.values, initialValues, modulo]);
+
+  // Paso 5: El formulario es válido Y tiene cambios
+  const canSubmit = formik.isValid && hasChanges;
 
   return (
     <>
-      <button className=" focus:outline-none" onClick={() => setStadopen(true)}>
-        <img className="dark:invert " src={onOff} alt="" />
-      </button>
+      <Button
+        variant="secondary"
+        onClick={() => setStadopen(true)}
+        icon={<img className="dark:invert " src={onOff} alt="" />}
+      />
 
       <FormModal
         isOpen={stadopen}
@@ -74,7 +106,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
         }`}
         onSubmit={formik.handleSubmit}
         isSubmitting={formik.isSubmitting || loading}
-        isValid={formik.isValid}
+        isValid={canSubmit}
         size="lg"
         submitText="Guardar"
       >
