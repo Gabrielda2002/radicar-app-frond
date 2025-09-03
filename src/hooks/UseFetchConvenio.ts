@@ -1,18 +1,15 @@
 import { IConvenios } from "@/models/IConvenios";
 import { fetchConvenio } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useFetchConvenio = (shouldFetch: boolean) => {
   const [dataConvenios, setDataConvenios] = useState<IConvenios[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorConvenio, setErrorConvenio] = useState<string | null>(null);
 
-  useEffect(() => {
 
-    if (!shouldFetch) return; // Si shouldFetch es false, no hacer la solicitud
-
-    const getData = async () => {
-      try {
+  const getData = useCallback(async () => {
+     try {
         const convenios = await fetchConvenio();
         setDataConvenios(convenios);
       } catch (error) {
@@ -20,10 +17,15 @@ export const useFetchConvenio = (shouldFetch: boolean) => {
       } finally {
         setLoading(false);
       }
-    };
+  }, [])
 
+  const refetch = useCallback(() => {
     getData();
-  }, [shouldFetch]);
+  }, [getData]);
 
-  return { dataConvenios, loading, errorConvenio };
+  useEffect(() => {
+    getData()
+  }, [getData])
+
+  return { dataConvenios, loading, errorConvenio, refetch };
 };
