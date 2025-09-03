@@ -219,10 +219,6 @@ export const updateStatusData = async (id: number, data: FormData, endPoint: str
     return api.put(`/${endPoint}/${id}`, data);
 }
 
-export const createTableRadicacion = (name: string, endPoint: string) => {
-    return api.post(`/${endPoint}`, { name });
-}
-
 export const createUsuario = async (data: FormData) => {
     return api.post(`/usuarios`, data);
 }
