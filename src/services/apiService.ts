@@ -1,6 +1,5 @@
 import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
-import { IDocumento } from "../models/IDocumento";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IIPSPrimaria } from "../models/IIpsPrimaria";
 import { IIPSRemite } from "../models/IIpsRemite";
@@ -82,16 +81,6 @@ export const fetchConvenio = async (): Promise<IConvenios[]> => {
         createdAt: new Date(convenio.createdAt)
     }));
     return convenios;
-}
-
-export const fetchDocumento = async (): Promise<IDocumento[]> => {
-    const response = await api.get('/documento');
-    const documentos = response.data.map((documento: IDocumento) => ({
-        ...documento,
-        updatedAt: new Date(documento.updatedAt),
-        createdAt: new Date(documento.createdAt)
-    }));
-    return documentos;
 }
 
 export const fetchIpsPrimaria = async (): Promise<IIPSPrimaria[]> => {
