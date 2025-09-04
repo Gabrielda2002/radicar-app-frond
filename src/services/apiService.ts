@@ -2,7 +2,6 @@ import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
-import { IServicios } from "../models/IServicio";
 import { IUsuarios } from "../models/IUsuarios";
 import { api } from "../utils/api-config";
 import { IAuditar } from "../models/IAuditar";
@@ -65,16 +64,6 @@ export const fetchConvenio = async (): Promise<IConvenios[]> => {
         createdAt: new Date(convenio.createdAt)
     }));
     return convenios;
-}
-
-export const fetchServicio = async (): Promise<IServicios[]> => {
-    const response = await api.get('/servicios');
-    const servicios = response.data.map((servicio: IServicios) => ({
-        ...servicio,
-        updatedAt: new Date(servicio.updatedAt),
-        createdAt: new Date(servicio.createdAt)
-    }));
-    return servicios;
 }
 
 export const fetchUsuario = async (): Promise<IUsuarios[]> => {

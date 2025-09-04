@@ -9,13 +9,16 @@ import { useFetchService } from "../Hooks/UseFetchService";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IServicios } from "@/models/IServicio";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
 
 const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
 const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
-const ITEMS_PER_PAGE = 8;
 
 const TablaTipoServicio = () => {
-  const { data, loading, error } = useFetchService();
+  const { data, loading, error, refetch } = useFetchService();
+
+  const ITEMS_PER_PAGE = 10;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IServicios>(data, [
@@ -53,29 +56,24 @@ const TablaTipoServicio = () => {
         {/* header-tale */}
         <section className="items-center justify-between mb-4 md:flex">
           <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar registro Radicación :
-            </label>
-            <input
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Consultar..."
-              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="flex items-center mt-3 space-x-4 md:mt-4">
-            <select
+            <Select
+              options={[
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+                { value: "30", label: "30" },
+              ]}
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalAgregarDato name="Tipo Servicio" endPoint="servicios" />
+              <ModalAgregarDato name="Tipo Servicio" endPoint="servicios" onSuccess={refetch} />
             </Suspense>
           </div>
         </section>
@@ -116,8 +114,9 @@ const TablaTipoServicio = () => {
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalAction
                             name="Tipo Servicio"
-                            id={servicio.id}
+                            item={servicio}
                             endPoint="update-status-servicio"
+                            onSuccess={refetch}
                           />
                         </Suspense>
                       </td>

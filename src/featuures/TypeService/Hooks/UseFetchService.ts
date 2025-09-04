@@ -1,26 +1,48 @@
 import { IServicios } from "@/models/IServicio";
-import { fetchServicio } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { api } from "@/utils/api-config";
+import { useCallback, useEffect, useState } from "react";
 
-export const useFetchService = () => {
-    const [data, setData] = useState<IServicios[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    
+type UseFetchServiceResult = {
+  data: IServicios[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+};
+
+
+export const useFetchService = (): UseFetchServiceResult => {
+  const [data, setData] = useState<IServicios[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const getData = useCallback( async () => {
+    try {
+      const response = await api.get("/servicios");
+
+      if (response.status === 200 || response.status === 201) {
+        setData(response.data);
+        setError(null);
+      }
+    } catch (error: any) {
+      if (error.response?.status === 500) {
+        setError(
+          "Error del servidor. Por favor, inténtelo de nuevo más tarde."
+        );
+      } else {
+        setError(error.response?.data?.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  } , []);
+
+  const refetch = useCallback(() => {
+    getData();
+  }, [getData]);
+
     useEffect(() => {
-        const getData = async () => {
-        try {
-            const servicios = await fetchServicio();
-            setData(servicios);
-        } catch (error) {
-            setError("Error al obtener los datos de la tabla servicios o no tienes los permisos necesarios. " + error);
-        } finally {
-            setLoading(false);
-        }
-        };
-    
-        getData();
-    }, []);
-    
-    return { data, loading, error };
-}
+    getData();
+  }, [getData]);
+
+  return { data, loading, error, refetch };
+};
