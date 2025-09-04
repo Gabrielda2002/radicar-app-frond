@@ -8,15 +8,12 @@ type UseFetchMunicipioResult = {
   error: string | null;
 }
 
-export const useFetchMunicipio = (shouldFetch: boolean): UseFetchMunicipioResult => {
+export const useFetchMunicipio = (): UseFetchMunicipioResult => {
   const [municipios, setMunicipios] = useState<IMunicipios[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMunicipios, setErrorMunicipios] = useState<string | null>(null);
 
   useEffect(() => {
-    
-    if (!shouldFetch) return;
-
     const getData = async () => {
       setLoading(true);
       try {
@@ -39,7 +36,7 @@ export const useFetchMunicipio = (shouldFetch: boolean): UseFetchMunicipioResult
     };
 
     getData();
-  }, [shouldFetch]);
+  }, []);
 
   return { municipios, loading, error: errorMunicipios };
 };

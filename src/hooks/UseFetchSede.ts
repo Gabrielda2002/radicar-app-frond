@@ -1,26 +1,49 @@
 import { ILugarRadicacion } from "@/models/ILugarRadicado";
-import { fetchLugarRadicado } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { api } from "@/utils/api-config";
+import { useCallback, useEffect, useState } from "react";
 
-export const useFetchSede = () => {
+type UseFetchSedeResult = {
+  data: ILugarRadicacion[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+};
+
+export const useFetchSede = (): UseFetchSedeResult => {
   const [data, setData] = useState<ILugarRadicacion[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const lugarRadicado = await fetchLugarRadicado();
-        setData(lugarRadicado);
-      } catch (error) {
-        setError("Error al obtener los datos de la tabla lugar radicacion o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getData = useCallback(async () => {
+    try {
+      setLoading(true);
 
-    getData();
+      const lugarRadicado = await api.get("/lugares-radicacion");
+
+      if (lugarRadicado.status === 200 || lugarRadicado.status === 201) {
+        setData(lugarRadicado.data);
+        setError(null);
+      }
+    } catch (error: any) {
+      if (error.response.status === 500) {
+        setError(
+          "Error del servidor. Por favor, inténtelo de nuevo más tarde."
+        );
+      } else {
+        setError(error.response?.data?.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return { data, loading, error };
+  const refetch = useCallback(() => {
+    getData();
+  }, [getData]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  return { data, loading, error, refetch };
 };

@@ -2,7 +2,6 @@ import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IIPSRemite } from "../models/IIpsRemite";
-import { ILugarRadicacion } from "../models/ILugarRadicado";
 import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
@@ -68,16 +67,6 @@ export const fetchConvenio = async (): Promise<IConvenios[]> => {
         createdAt: new Date(convenio.createdAt)
     }));
     return convenios;
-}
-
-export const fetchLugarRadicado = async (): Promise<ILugarRadicacion[]> => {
-    const response = await api.get('/lugares-radicacion');
-    const lugarRadicado = response.data.map((lugar: ILugarRadicacion) => ({
-        ...lugar,
-        updatedAt: new Date(lugar.updatedAt),
-        createdAt: new Date(lugar.createdAt)
-    }));
-    return lugarRadicado;
 }
 
 export const fetchIpsRemite = async (): Promise<IIPSRemite[]> => {
