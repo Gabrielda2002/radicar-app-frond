@@ -15,7 +15,6 @@ import { IEstados } from "../models/IEstados";
 import { IAuditados } from "../models/IAuditados";
 import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
-import { IDepartamentos } from "../models/IDepartamentos";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
@@ -199,17 +198,6 @@ export const fetchCirugias = async (): Promise<ICirugias[]> => {
         
     }));
     return cirugias;
-}
-
-// traer los departamentos
-export const fetchDepartarmentsEp = async (): Promise<IDepartamentos[]> => {
-    const response = await api.get("/departamentos");
-    const departamentos = response.data.map((departamento: IDepartamentos) => ({
-        ...departamento,
-        updatedAt: new Date(departamento.updatedAt),
-        createdAt: new Date(departamento.createdAt)
-    }));
-    return departamentos;
 }
 
 export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
