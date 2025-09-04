@@ -1,26 +1,47 @@
 import { IEspecialidad } from "@/models/IEspecialidad";
-import { fetchEspecialidad } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { api } from "@/utils/api-config";
+import { useCallback, useEffect, useState } from "react";
 
-export const useFetchEspecialidad = () => {
-    const [data, setData] = useState<IEspecialidad[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    
-    useEffect(() => {
-        const getData = async () => {
-        try {
-            const especialidad = await fetchEspecialidad();
-            setData(especialidad);
-        } catch (error) {
-            setError("Error al obtener los datos de la tabla especialidades o no tienes los permisos necesarios. " + error);
-        } finally {
-            setLoading(false);
+type UseFetchEspecialidadResult = {
+  data: IEspecialidad[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+};
+
+export const useFetchEspecialidad = (): UseFetchEspecialidadResult => {
+  const [data, setData] = useState<IEspecialidad[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const getData = useCallback( async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/especialidades');
+
+        if (response.status === 200 || response.status === 201) {
+            setData(response.data);
+            setError(null);
         }
-        };
-    
-        getData();
-    }, []);
-    
-    return { data, loading, error };
-}
+
+    } catch (error: any) {
+        if (error.response?.status === 500) {
+            setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
+        }else{
+            setError(error.response?.data?.message);
+        }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const refetch = useCallback(() => {
+    getData();
+  }, [getData]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  return { data, loading, error, refetch };
+};

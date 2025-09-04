@@ -1,6 +1,5 @@
 import { IConvenios } from "../models/IConvenios";
 import { ICups } from "../models/ICups";
-import { IEspecialidad } from "../models/IEspecialidad";
 import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
@@ -66,16 +65,6 @@ export const fetchConvenio = async (): Promise<IConvenios[]> => {
         createdAt: new Date(convenio.createdAt)
     }));
     return convenios;
-}
-
-export const fetchEspecialidad = async (): Promise<IEspecialidad[]> => {
-    const response = await api.get('/especialidades');
-    const especialidad = response.data.map((especialidad: IEspecialidad) => ({
-        ...especialidad,
-        updatedAt: new Date(especialidad.updatedAt),
-        createdAt: new Date(especialidad.createdAt)
-    }));
-    return especialidad;
 }
 
 export const fetchServicio = async (): Promise<IServicios[]> => {

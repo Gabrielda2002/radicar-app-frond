@@ -10,13 +10,15 @@ import { useFetchEspecialidad } from "../Hooks/UseFetchEspecialidad";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IEspecialidad } from "@/models/IEspecialidad";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
 const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
-const ITEMS_PER_PAGE = 10;
 
 const TablaEspecialidad = () => {
-  const { data, loading, error } = useFetchEspecialidad();
+  const { data, loading, error, refetch } = useFetchEspecialidad();
+  const ITEMS_PER_PAGE = 10;
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IEspecialidad>(data, [
@@ -54,29 +56,24 @@ const TablaEspecialidad = () => {
         {/* header-tale */}
         <section className="items-center justify-between mb-4 md:flex">
           <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar registro Radicación :
-            </label>
-            <input
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Buscar"
             />
           </div>
           <div className="flex items-center mt-3 space-x-4 md:mt-4">
-            <select
+            <Select
+              options={[
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+                { value: "30", label: "30" },
+              ]}
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalAgregarDato name="Especialidad" endPoint="especialidades" />
+              <ModalAgregarDato name="Especialidad" endPoint="especialidades" onSuccess={refetch} />
             </Suspense>
           </div>
         </section>
@@ -117,8 +114,9 @@ const TablaEspecialidad = () => {
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalAction
                             name="Especialidad"
-                            id={especialidad.id}
+                            item={especialidad}
                             endPoint="update-status-especialidad"
+                            onSuccess={refetch}
                           />
                         </Suspense>
                       </td>
