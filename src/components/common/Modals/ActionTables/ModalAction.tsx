@@ -10,6 +10,7 @@ import FormModal from "../../Ui/FormModal";
 import Input from "../../Ui/Input";
 import Select from "../../Ui/Select";
 import { IConvenios } from "@/models/IConvenios";
+import { IDepartamentos } from "@/models/IDepartamentos";
 import { IMunicipios } from "@/models/IMunicipios";
 import { IRadicador } from "@/models/IRadicador";
 import { IServicios } from "@/models/IServicio";
@@ -20,8 +21,8 @@ import { IIPSRemite } from "@/models/IIpsRemite";
 import { IDocumento } from "@/models/IDocumento";
 import { useTableMutations } from "../CrearDataTables/Hook/useTablesMutations";
 import { AnimatePresence } from "framer-motion";
-import { useFetchDepartment } from "@/featuures/SystemInventory/Hooks/UseFetchDeparment";
-import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
+import { useLazyFetchDepartment } from "@/hooks/useLazyFetchDepartment";
+import { useLazyFetchMunicipio } from "@/hooks/useLazyFetchMunicipio";
 
 // En el archivo ModalAction.tsx
 type ModalActionItem =
@@ -51,9 +52,20 @@ const ModalAction: React.FC<ModalActionProps> = ({
 
   const { loading, error, update } = useTableMutations();
 
-    const { municipios } = useFetchMunicipio()
-  
-      const { department } = useFetchDepartment();
+  const { municipios, fetchMunicipios } = useLazyFetchMunicipio();
+  const { department, fetchDepartments } = useLazyFetchDepartment();
+
+  // Función para abrir el modal y cargar datos solo cuando sea necesario
+  const handleOpenModal = async () => {
+    setStadopen(true);
+    // Solo cargar datos si el modal es para "Lugar Radicacion"
+    if (name === "Lugar Radicacion") {
+      await Promise.all([
+        fetchMunicipios(),
+        fetchDepartments()
+      ]);
+    }
+  };
 
   const validationSchema = useMemo(
     () =>
@@ -118,7 +130,7 @@ const ModalAction: React.FC<ModalActionProps> = ({
     <>
       <Button
         variant="secondary"
-        onClick={() => setStadopen(true)}
+        onClick={handleOpenModal}
         icon={
           <img className="dark:invert " src={onOff} alt="Configuraciones" />
         }
@@ -208,7 +220,7 @@ const ModalAction: React.FC<ModalActionProps> = ({
                   value={formik.values.department}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  options={department.map((dept) => ({
+                  options={department.map((dept: IDepartamentos) => ({
                     value: dept.id,
                     label: dept.name,
                   }))}
@@ -225,7 +237,7 @@ const ModalAction: React.FC<ModalActionProps> = ({
                   value={formik.values.city}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  options={municipios.map((mun) => ({
+                  options={municipios.map((mun: IMunicipios) => ({
                     value: mun.id,
                     label: mun.name,
                   }))}
