@@ -1,26 +1,47 @@
 import { IIPSRemite } from "@/models/IIpsRemite";
-import { fetchIpsRemite } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { api } from "@/utils/api-config";
+import { useCallback, useEffect, useState } from "react";
 
-export const useFetchIpsRemite = () => {
+type UseFetchIpsRemiteResult = {
+  data: IIPSRemite[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+export const useFetchIpsRemite = (): UseFetchIpsRemiteResult => {
   const [data, setData] = useState<IIPSRemite[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
+  const getData = useCallback( async () => {
       try {
-        const ipsRemite = await fetchIpsRemite();
-        setData(ipsRemite);
-      } catch (error) {
-        setError("Error al obtener los datos de la tabla IPS remite o no tienes los permisos necesarios. " + error);
+        setLoading(true);
+        const response = await api.get('/ips-remite');
+
+        if (response.status === 200 || response.status === 201) {
+          setData(response.data);
+          setError(null);
+        }
+
+      } catch (error: any) {
+        if (error.response?.status === 500) {
+          setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
+        }else{
+          setError(error.response?.data?.message);
+        }
       } finally {
         setLoading(false);
       }
-    };
+    } , []);
 
-    getData();
-  }, []);
+    const refetch = useCallback(() => {
+      getData();
+    }, [getData]);
 
-  return { data, loading, error };
+    useEffect(() => {
+      getData();
+    }, [getData]);
+
+  return { data, loading, error, refetch };
 };
