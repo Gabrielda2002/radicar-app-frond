@@ -3,22 +3,22 @@ import React, { useEffect, useState, useMemo } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import areas from "@/data-dynamic/areas.json";
-import { useFetchRoles } from "@/hooks/UseFetchRoles";
 import { IUsuarios } from "@/models/IUsuarios";
 import { updateUsuarios } from "../Services/UpdarteUsuarios";
-import { useFetchSede } from "@/hooks/UseFetchSede";
 
 //*Icons
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { useFetchDocumento } from "@/hooks/UseFetchDocument";
 import { Bounce, toast } from "react-toastify";
 import { useUsers } from "@/featuures/Usuarios/Context/UsersContext.tsx";
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
+import { useLazyFetchRol } from "@/hooks/useLazyFetchRol";
+import { useLazyFetchHeadquarters } from "@/hooks/useLazyFetchHeadquarters";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -41,22 +41,20 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   const [searchCargo, setSearchCargo] = useState<string>("");
   const [suggestionsCargo, setSuggestionsCargo] = useState<string[]>([]);
 
-  const [load, setLoad] = useState(false);
 
   //hook para traer los tipos de documentos
-  const { dataDocumento, errorDocumento } = useFetchDocumento(load);
+  const { dataDocument, errorDocument, fetchDocument } = useLazyFetchTypeDocument();
 
   // hook para traer los roles
-  const { dataRol, errorRol } = useFetchRoles(load);
+  const { rols, errorRol, fetchRols } = useLazyFetchRol();
 
   // hook para traer las sedes
-  const { data } = useFetchSede();
+  const { headquarters, errorHeadquarters, fetchHeadquarters } = useLazyFetchHeadquarters();
 
-  useEffect(() => {
-    if (isOpen) {
-      setLoad(true);
-    }
-  }, [isOpen]);
+  const handleOpenModal = async () => {
+    setIsOpen(true);
+    Promise.all([fetchDocument(), fetchRols(), fetchHeadquarters()]);
+  }
 
   const validationSchema = useMemo(
     () =>
@@ -241,12 +239,13 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     setSearchCargo(suggestion);
     setSuggestionsCargo([]);
   };
-  if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
-  if (errorRol) return <p>Error al cargar las ips primarias</p>;
+  if (errorDocument) return <p>{errorDocument}</p>;
+  if (errorRol) return <p>{errorRol}</p>;
+  if (errorHeadquarters) return <p>{errorHeadquarters}</p>;
 
   return (
     <>
-      <Button type="button" onClick={() => setIsOpen(true)} variant="outline">
+      <Button type="button" onClick={handleOpenModal} variant="outline">
         Actualizar
       </Button>
       <FormModal
@@ -302,7 +301,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                     value={formik.values.tipoDocumento}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    options={dataDocumento.map((item) => ({
+                    options={dataDocument.map((item) => ({
                       value: item.id,
                       label: item.name,
                     }))}
@@ -410,7 +409,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   value={formik.values.sede}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  options={data.map((item) => ({
+                  options={headquarters.map((item) => ({
                     value: item.id,
                     label: item.name,
                   }))}
@@ -457,7 +456,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   value={formik.values.rol}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  options={dataRol.map((item) => ({
+                  options={rols.map((item) => ({
                     value: item.id,
                     label: item.name,
                   }))}
