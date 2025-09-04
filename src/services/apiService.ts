@@ -3,7 +3,6 @@ import { ICups } from "../models/ICups";
 import { IEspecialidad } from "../models/IEspecialidad";
 import { IIPSRemite } from "../models/IIpsRemite";
 import { ILugarRadicacion } from "../models/ILugarRadicado";
-import { IMunicipios } from "../models/IMunicipios";
 import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
 import { IServicios } from "../models/IServicio";
@@ -59,16 +58,6 @@ export const fetchRadicador = async (): Promise<IRadicador[]> => {
     }));
     return radicadores;
 
-}
-
-export const fetchMunicipio = async (): Promise<IMunicipios[]> => {
-    const response = await api.get('/municipios');
-    const municipios = response.data.map((municipio: IMunicipios) => ({
-        ...municipio,
-        updatedAt: new Date(municipio.updatedAt),
-        createdAt: new Date(municipio.createdAt)
-    }));
-    return municipios;
 }
 
 export const fetchConvenio = async (): Promise<IConvenios[]> => {
