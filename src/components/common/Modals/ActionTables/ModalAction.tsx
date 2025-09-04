@@ -20,6 +20,8 @@ import { IIPSRemite } from "@/models/IIpsRemite";
 import { IDocumento } from "@/models/IDocumento";
 import { useTableMutations } from "../CrearDataTables/Hook/useTablesMutations";
 import { AnimatePresence } from "framer-motion";
+import { useFetchDepartment } from "@/featuures/SystemInventory/Hooks/UseFetchDeparment";
+import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 
 // En el archivo ModalAction.tsx
 type ModalActionItem =
@@ -39,10 +41,19 @@ interface ModalActionProps {
   onSuccess?: () => void;
 }
 
-const ModalAction: React.FC<ModalActionProps> = ({ item, name, endPoint, onSuccess }) => {
+const ModalAction: React.FC<ModalActionProps> = ({
+  item,
+  name,
+  endPoint,
+  onSuccess,
+}) => {
   const [stadopen, setStadopen] = useState(false);
 
   const { loading, error, update } = useTableMutations();
+
+    const { municipios } = useFetchMunicipio()
+  
+      const { department } = useFetchDepartment();
 
   const validationSchema = useMemo(
     () =>
@@ -53,15 +64,39 @@ const ModalAction: React.FC<ModalActionProps> = ({ item, name, endPoint, onSucce
           .optional()
           .min(2, "El nombre debe tener al menos 3 caracteres")
           .max(200, "El nombre debe tener como máximo 200 caracteres"),
+        address: Yup.string().when("reference",{
+          is: (value: string) => value === "Lugar Radicacion",
+          then: (schema) => schema.required("La dirección es obligatoria"),
+          otherwise: (schema) => schema.notRequired(),
+        } ),
+        department: Yup.string().when("reference",{
+          is: (value: string) => value === "Lugar Radicacion",
+          then: (schema) => schema.required("El departamento es obligatorio"),
+          otherwise: (schema) => schema.notRequired(),
+        }),
+        city: Yup.string().when("reference",{
+          is: (value: string) => value === "Lugar Radicacion",
+          then: (schema) => schema.required("El municipio es obligatorio"),
+          otherwise: (schema) => schema.notRequired(),
+        } ),
+        headquartersNumber: Yup.number().when("reference",{
+          is: (value: string) => value === "Lugar Radicacion",
+          then: (schema) => schema.min(1, "El número de sede debe ser al menos 1").required("El número de sede es obligatorio"),
+          otherwise: (schema) => schema.notRequired(),
+        } ),
       }),
     []
   );
-
   const formik = useFormik({
     initialValues: {
       id: item.id,
       status: item.status ? 1 : 0,
       name: item.name,
+      address: (item as ILugarRadicacion).address || "",
+      department: (item as ILugarRadicacion).departmentId || "",
+      city: (item as ILugarRadicacion).cityId || "",
+      reference: name,
+      headquartersNumber: (item as ILugarRadicacion).headquartersNumber || 0
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -100,71 +135,136 @@ const ModalAction: React.FC<ModalActionProps> = ({ item, name, endPoint, onSucce
       >
         <div className="p-6 w-[430px] md:w-[900px]">
           <section className="grid grid-cols-1 md:grid-cols-3">
-            <div className="flex">
-              <Input
-                label={`ID ${name}`}
-                type="text"
-                id="id"
-                name="id"
-                value={formik.values.id}
-                readOnly
-                error={
-                  formik.errors.id && formik.touched.id
-                    ? formik.errors.id
-                    : undefined
-                }
-                touched={formik.touched.id}
-                required
-              />
-            </div>
-            <div className="flex">
-              <Select
-                options={[
-                  { value: 1, label: "Activo" },
-                  { value: 0, label: "Inactivo" },
-                ]}
-                label="Estado"
-                id=""
-                name="status"
-                value={formik.values.status}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.status && formik.errors.status
-                    ? formik.errors.status
-                    : undefined
-                }
-                touched={formik.touched.status}
-              />
-            </div>
-            <div className="">
-              <Input
-                label="Nombre"
-                type="text"
-                id=""
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.name && formik.errors.name
-                    ? formik.errors.name
-                    : undefined
-                }
-                touched={formik.touched.name}
-                required
-              />
-            </div>
-            <AnimatePresence>
-              {error && (
-                <div>
-                  <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                    {error}
-                  </div>
-                </div>
-              )}
-            </AnimatePresence>
+            <Input
+              label={`ID ${name}`}
+              type="text"
+              id="id"
+              name="id"
+              value={formik.values.id}
+              readOnly
+              error={
+                formik.errors.id && formik.touched.id
+                  ? formik.errors.id
+                  : undefined
+              }
+              touched={formik.touched.id}
+              required
+            />
+            <Select
+              options={[
+                { value: 1, label: "Activo" },
+                { value: 0, label: "Inactivo" },
+              ]}
+              label="Estado"
+              id=""
+              name="status"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.status && formik.errors.status
+                  ? formik.errors.status
+                  : undefined
+              }
+              touched={formik.touched.status}
+            />
+            <Input
+              label="Nombre"
+              type="text"
+              id=""
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.name && formik.errors.name
+                  ? formik.errors.name
+                  : undefined
+              }
+              touched={formik.touched.name}
+              required
+            />
+            {name === "Lugar Radicacion" && (
+              <>
+                <Input
+                  label="Dirección"
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={formik.values.address}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.address && formik.errors.address
+                      ? formik.errors.address
+                      : undefined
+                  }
+                  touched={formik.touched.address}
+                  required
+                />
+                <Select
+                  label="Departamento"
+                  name="department"
+                  value={formik.values.department}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  options={department.map((dept) => ({
+                    value: dept.id,
+                    label: dept.name,
+                  }))}
+                  error={
+                    formik.errors.department && formik.touched.department
+                      ? formik.errors.department
+                      : undefined
+                  }
+                  touched={formik.touched.department}
+                />
+                <Select
+                  label="Municipio"
+                  name="city"
+                  value={formik.values.city}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  options={municipios.map((mun) => ({
+                    value: mun.id,
+                    label: mun.name,
+                  }))}
+                  error={
+                    formik.errors.city && formik.touched.city
+                      ? formik.errors.city
+                      : undefined
+                  }
+                  touched={formik.touched.city}
+                  required
+                />
+                <Input
+                  label="Número de Sede"
+                  type="number"
+                  id="headquartersNumber"
+                  name="headquartersNumber"
+                  value={formik.values.headquartersNumber}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.headquartersNumber && formik.errors.headquartersNumber
+                      ? formik.errors.headquartersNumber
+                      : undefined
+                  }
+                  touched={formik.touched.headquartersNumber}
+                  required
+                />
+              </>
+            )}
           </section>
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>
