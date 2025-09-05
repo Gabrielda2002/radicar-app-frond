@@ -16,7 +16,6 @@ import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TableCUPSAuthor
 import TablaCups from "@/featuures/CUPS/Pages/TablaCups";
 import TablaPacientes from "@/featuures/Patient/Pages/TablaPatient";
 import TablaDiagnostico from "@/featuures/Diagnostico/Pages/TablaDiagnostico";
-import TablaRadicadores from "@/featuures/Radicador/Pages/TablaRadicadores";
 import TablaMunicipios from "@/featuures/Municipality/Pages/TablaMunicipios";
 import TablaConvenios from "@/featuures/Convenio/Pages/TablaConvenio";
 import TablaTipoDocumento from "@/featuures/DocumentType/Pages/TablaTipoDocumento";
@@ -89,7 +88,6 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-cups" element={<TablaCups />} />
         <Route path="/tabla-pacientes" element={<TablaPacientes />}></Route>
         <Route path="/tabla-diagnostico" element={<TablaDiagnostico />} />
-        <Route path="/tabla-radicadores" element={<TablaRadicadores />} />
         <Route path="/tabla-municipios" element={<TablaMunicipios />} />
         <Route path="/tabla-convenios" element={<TablaConvenios />} />
         <Route path="/tabla-tipo-documento" element={<TablaTipoDocumento />} />

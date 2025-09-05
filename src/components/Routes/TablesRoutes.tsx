@@ -17,9 +17,6 @@ const TablaMunicipios = lazy(
 const TablaIpsPrimaria = lazy(
   () => import("../../featuures/IpsPrimaria/Pages/TablaIpsPrimaria")
 );
-const TablaRadicadores = lazy(
-  () => import("@/featuures/Radicador/Pages/TablaRadicadores")
-);
 const TablaEspecialidad = lazy(
   () => import("../../featuures/Especialidad/Pages/TablaEspecialidad")
 );
@@ -52,7 +49,6 @@ export default function TablaRoutes() {
           element={<TablaRegistrosAuditados />}
         />
         <Route path="/tabla-pacientes" element={<TablaPacientes />} />
-        <Route path="/tabla-radicadores" element={<TablaRadicadores />} />
         <Route path="/tabla-municipios" element={<TablaMunicipios />} />
         <Route path="/tabla-convenios" element={<TablaConvenio />} />
         <Route path="/tabla-tipo-documento" element={<TablaTipoDocumento />} />

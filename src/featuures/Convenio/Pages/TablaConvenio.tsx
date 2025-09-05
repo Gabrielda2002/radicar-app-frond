@@ -19,8 +19,7 @@ const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearData
 const ITEMS_PER_PAGE = 10;
 
 const TablaConvenios = () => {
-  const load = true;
-  const { dataConvenios, loading, errorConvenio, refetch } = useFetchConvenio(load);
+  const { dataConvenios, loading, errorConvenio, refetch } = useFetchConvenio();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
   const { query, setQuery, filteredData } = useSearch<IConvenios>(

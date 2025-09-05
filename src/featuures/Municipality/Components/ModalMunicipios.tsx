@@ -17,7 +17,7 @@ interface ModalMunicipiosProps {
 const ModalMunicipios: React.FC<ModalMunicipiosProps> = ({ onSuccess }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { department, loading, error, fetchDepartments } = useLazyFetchDepartment();
+  const { department, error, fetchDepartments } = useLazyFetchDepartment();
 
   const { createMunicipio, error: errorCreating } = useMunicipalityMutations();
 
