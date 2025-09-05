@@ -1,7 +1,7 @@
 export interface IMunicipios {
     id:           number;
     name:         string;
-    nitMunicipio: number | string;
+    municipioCode: number | string;
     status:       boolean;
     updatedAt:    Date;
     createdAt:    Date;

@@ -1,11 +1,12 @@
 import { IMunicipios } from "@/models/IMunicipios";
 import { api } from "@/utils/api-config";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type UseFetchMunicipioResult = {
   municipios: IMunicipios[];
   loading: boolean;
   error: string | null;
+  refetch: () => Promise<void>;
 }
 
 export const useFetchMunicipio = (): UseFetchMunicipioResult => {
@@ -13,8 +14,7 @@ export const useFetchMunicipio = (): UseFetchMunicipioResult => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMunicipios, setErrorMunicipios] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
+    const getData = useCallback(async () => {
       setLoading(true);
       try {
         const municipios = await api.get('/municipios');
@@ -33,10 +33,15 @@ export const useFetchMunicipio = (): UseFetchMunicipioResult => {
       } finally {
         setLoading(false);
       }
-    };
+    }, []);
 
+  const refetch = useCallback(async () => {
     getData();
-  }, []);
+  }, [getData]);
 
-  return { municipios, loading, error: errorMunicipios };
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  return { municipios, loading, error: errorMunicipios, refetch };
 };

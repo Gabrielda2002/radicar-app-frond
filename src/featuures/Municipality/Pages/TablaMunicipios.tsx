@@ -10,19 +10,20 @@ import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IMunicipios } from "@/models/IMunicipios";
+import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 
 const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
 const ModalMunicipios = lazy(() => import("../Components/ModalMunicipios"));
 const ITEMS_PER_PAGE = 10;
 
 const TablaMunicipios = () => {
-  const load = true;
-  const { municipios, loading, errorMunicipios } = useFetchMunicipio(load);
+  const { municipios, loading, error: errorMunicipios, refetch } = useFetchMunicipio();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const { query, setQuery, filteredData } = useSearch<IMunicipios>(municipios, [
     "id",
     "name",
-    "nitMunicipio",
+    "municipioCode",
     "status",
   ]);
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -56,29 +57,24 @@ const TablaMunicipios = () => {
         {/* header-tale */}
         <section className="items-center justify-between mb-4 md:flex">
           <div className="flex flex-col">
-            <label className="mb-1 text-lg font-semibold text-stone-600 dark:text-stone-300">
-              Buscar Municipios:
-            </label>
-            <input
+            <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Consultar..."
-              className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Buscar"
             />
           </div>
           <div className="flex items-center mt-3 space-x-4 md:mt-4">
-            <select
+            <Select
+              options={[
+                { value: "10", label: "10 Paginas" },
+                { value: "20", label: "20 Paginas" },
+                { value: "30", label: "30 Paginas" },
+              ]}
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-24 h-10 border border-gray-300 rounded-md focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalMunicipios></ModalMunicipios>
+            />
+            <Suspense fallback={<LoadingSpinner />} >
+              <ModalMunicipios onSuccess={refetch} />
             </Suspense>
           </div>
         </section>
@@ -95,7 +91,7 @@ const TablaMunicipios = () => {
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                     <th className=" w-[70px]">ID</th>
                     <th className="">Nombre Municipio</th>
-                    <th className="">Nit Municipio</th>
+                    <th className="">Codigo Municipio</th>
                     <th className=" w-[150px]">Estado</th>
                     <th className=" w-[150px]">Acciones</th>
                   </tr>
@@ -103,7 +99,7 @@ const TablaMunicipios = () => {
 
                 <tbody className="text-xs text-center dark:text-gray-200">
                   {currentData().map((municipio) => (
-                    <tr className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
+                    <tr key={municipio.id} className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
                       <td className="p-3 border-b dark:border-gray-700">
                         {municipio.id}
                       </td>
@@ -111,7 +107,7 @@ const TablaMunicipios = () => {
                         {municipio.name}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
-                        {municipio.nitMunicipio}
+                        {municipio.municipioCode}
                       </td>
                       <td className="p-3 border-b dark:border-gray-700">
                         {municipio.status ? "Activo" : "Inactivo"}
@@ -120,8 +116,9 @@ const TablaMunicipios = () => {
                         <Suspense fallback={<LoadingSpinner />}>
                           <ModalAction
                             name="Municipio"
-                            id={municipio.id}
+                            item={municipio}
                             endPoint="update-status-municipio"
+                            onSuccess={refetch}
                           />
                         </Suspense>
                       </td>
