@@ -3,9 +3,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { IPacientes } from "@/models/IPacientes";
-import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
-import { useFetchDocumento } from "@/hooks/UseFetchDocument";
-import { useFetchIpsPrimaria } from "@/hooks/UseFetchIpsPrimaria";
 
 //*Icons
 import {
@@ -22,6 +19,9 @@ import Select from "@/components/common/Ui/Select";
 import { Pencil, PlusCircleIcon, Smartphone } from "lucide-react";
 import { usePatient } from "../Hooks/usePatient";
 import { AnimatePresence } from "framer-motion";
+import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
+import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
+import { useLazyFetchIpsPrimary } from "@/hooks/useLazyFetchIpsPrimary";
 
 interface ModalPatientProps {
   id: number | null;
@@ -34,24 +34,21 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [load, setLoad] = useState(false);
-
   const { createPatient, updatePatient, error, loading } = usePatient();
 
   //hook para traer los tipos de documentos
-  const { dataDocumento, errorDocumento } = useFetchDocumento(load);
+  const { dataDocument, errorDocument, fetchDocument } = useLazyFetchTypeDocument();
 
   // hook para traer los convenios
-  const { dataConvenios, errorConvenio } = useFetchConvenio(load);
+  const { dataConvenios, errorConvenio, fetchConvenios } = useLazyFetchConvenio();
 
   // hook para traer  las ips primarias
-  const { dataIpsPrimaria, errorIpsPrimaria } = useFetchIpsPrimaria(load);
+  const { dataIpsPrimaria, errorIpsPrimaria, fetchIpsPrimaria } = useLazyFetchIpsPrimary();
 
-  useEffect(() => {
-    if (isOpen) {
-      setLoad(true);
-    }
-  }, [isOpen]);
+const handleModalOpen = async () => {
+    setIsOpen(true);
+    await Promise.all([fetchConvenios(), fetchDocument(), fetchIpsPrimaria()]);
+}
 
   const validationSchema = useMemo(
     () =>
@@ -149,16 +146,16 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
     }
   }, [id, paciente]);
 
-  if (errorDocumento) return <p>Error al cargar los tipos de documentos</p>;
-  if (errorConvenio) return <p>Error al cargar los convenios</p>;
-  if (errorIpsPrimaria) return <p>Error al cargar las ips primarias</p>;
+  if (errorDocument) return <p>{errorDocument}</p>;
+  if (errorConvenio) return <p>{errorConvenio}</p>;
+  if (errorIpsPrimaria) return <p>{errorIpsPrimaria}</p>;
 
   return (
     <>
       <Button
         variant="primary"
         type="button"
-        onClick={() => setIsOpen(true)}
+        onClick={handleModalOpen}
         icon={id !== null ? <Pencil className="w-5 h-5" /> : <PlusCircleIcon className="w-5 h-5" />}
       >
         {id !== null ? "Editar" : "Crear Paciente"}
@@ -184,7 +181,7 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
                   value={formik.values.tipoDocumento}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  options={dataDocumento.map((item) => ({
+                  options={dataDocument.map((item) => ({
                     value: item.id,
                     label: item.name,
                   }))}
