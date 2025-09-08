@@ -18,7 +18,7 @@ export const useLazyFetchIpsPrimary = (): UseLazyFetchIpsPrimaryResult => {
         if(dataIpsPrimaria.length > 0) return; 
         setLoading(true);
         try {
-            const response = await api.get("/api/ips-primaria");
+            const response = await api.get("/ips-primaria");
             if (response.status === 200 || response.status === 201) {
                 setDataIpsPrimaria(response.data);
                 setErrorIpsPrimaria(null);

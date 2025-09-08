@@ -19,7 +19,7 @@ export const useLazyFetchConvenio = (): UseLazyFetchConvenioResult => {
         setLoading(true);
         try {
 
-            const response = await api.get("/ips-primaria");
+            const response = await api.get("/convenio");
 
             if (response.status === 200 || response.status === 201) {
                 setDataConvenios(response.data);
