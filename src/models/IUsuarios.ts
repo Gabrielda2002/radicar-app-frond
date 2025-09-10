@@ -17,4 +17,7 @@ export interface IUsuarios {
     cargo:       string;
     sedeId:      number;
     celular:     number;
+    contractType: string;
+    dateStartContract: Date;
+    positionId: number;
 }

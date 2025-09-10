@@ -4,13 +4,11 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import areas from "@/data-dynamic/areas.json";
 import { IUsuarios } from "@/models/IUsuarios";
-import { updateUsuarios } from "../Services/UpdarteUsuarios";
 
 //*Icons
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { Bounce, toast } from "react-toastify";
 import { useUsers } from "@/featuures/Usuarios/Context/UsersContext.tsx";
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
@@ -19,6 +17,8 @@ import Select from "@/components/common/Ui/Select";
 import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
 import { useLazyFetchRol } from "@/hooks/useLazyFetchRol";
 import { useLazyFetchHeadquarters } from "@/hooks/useLazyFetchHeadquarters";
+import { FormatDate } from "@/utils/FormatDate";
+import { useUsersMutations } from "../Hooks/useUsersMutations";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -30,8 +30,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   ususario,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string>("");
 
   const { refreshUsers } = useUsers();
 
@@ -50,6 +48,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
   // hook para traer las sedes
   const { headquarters, errorHeadquarters, fetchHeadquarters } = useLazyFetchHeadquarters();
+
+  const { error, isLoading, update } = useUsersMutations();
 
   const handleOpenModal = async () => {
     setIsOpen(true);
@@ -104,6 +104,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
           .required("El celular es obligatorio")
           .min(1, "El celular debe tener al menos 1 caracteres")
           .max(10, "El celular debe tener como máximo 10 caracteres"),
+        dateStartContract: Yup.date().optional().nullable(),
+        contractType: Yup.string().optional(),
+        // positionId: Yup.string().optional(),
       }),
     []
   );
@@ -122,6 +125,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       cargo: "",
       sede: "",
       celular: "",
+      dateStartContract: "",
+      contractType: "",
+      // positionId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -139,36 +145,18 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         formData.append("position", values.cargo);
         formData.append("headquarters", values.sede);
         formData.append("phoneNumber", values.celular);
+        formData.append("dateStartContract", values.dateStartContract);
+        formData.append("contractType", values.contractType);
+        // formData.append("positionId", values.positionId);
 
-        const response = await updateUsuarios(id, formData);
+        await update(id, formData, () => {
+          setIsOpen(false);
+          refreshUsers();
+          formik.resetForm();
+        });
 
-        if (response?.status === 200 || response?.status === 201) {
-          setSuccess(true);
-
-          toast.success("Usuario Actualizado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-
-          await refreshUsers();
-
-          setError("");
-          setTimeout(() => {
-            setIsOpen(false);
-          }, 30000);
-        } else {
-          setError("Error revise los campos e intente nuevamente.");
-        }
       } catch (error) {
-        setSuccess(false);
-        setError(`Error inesperado ${error}`);
+        console.error(error);
       }
     },
   });
@@ -189,6 +177,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         cargo: ususario.cargo,
         sede: ususario.sedeId.toString(),
         celular: ususario.celular.toString(),
+        dateStartContract: ususario.dateStartContract ? FormatDate(ususario.dateStartContract, false) : "",
+        contractType: ususario.contractType || "",
+        // positionId: ususario.positionId ? ususario.positionId.toString() : "",
       });
       setSearchArea(ususario.area);
       setSearchCargo(ususario.cargo);
@@ -254,7 +245,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         title="Actualizar Usuario"
         onSubmit={formik.handleSubmit}
         isValid={formik.isValid}
-        isSubmitting={formik.isSubmitting}
+        isSubmitting={formik.isSubmitting || isLoading}
         submitText="Actualizar"
       >
         <div>
@@ -417,6 +408,32 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                   touched={formik.touched.sede}
                   required
                 />
+                <Input
+                  label="Fecha de Inicio de Contrato"
+                  name="dateStartContract"
+                  type="date"
+                  value={formik.values.dateStartContract}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.errors.dateStartContract}
+                  touched={formik.touched.dateStartContract}
+                />
+                <Select
+                  label="Tipo de Contrato"
+                  name="contractType"
+                  value={formik.values.contractType}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  options={[
+                    { value: "FIJO", label: "Fijo" },
+                    { value: "INDEFINIDO", label: "Indefinido" },
+                    { value: "POR OBRA LABOR", label: "Por Obra Labor" },
+                    { value: "PRESTACION DE SERVICIOS", label: "Prestación de Servicios"},
+                  ]}
+                  error={formik.errors.contractType}
+                  touched={formik.touched.contractType}
+                />
+
               </div>
 
               {/* USER MAIL AND DATES */}
@@ -494,12 +511,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
               </div>
             </div>
           </div>
-
-          {success && (
-            <span className="text-xl text-right text-green-500 ">
-              Usuario actualizado con éxito!
-            </span>
-          )}
           {error && (
             <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
               {error}

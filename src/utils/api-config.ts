@@ -238,11 +238,6 @@ export const updatePasswordUsuarioEp = async (data: FormData, id: number) => {
     return api.put(`/usuario-update-password/${id}`, data);
 }
 
-// actualizar la tabla usuarios
-export const updateUsuariosTableEp = async (data: FormData, id: number) => {
-    return api.put(`/usuario-update-table/${id}`, data);
-}
-
 // crear item sistema inventario
 export const createItemEp = async (data: FormData, ep: string) => {
 
