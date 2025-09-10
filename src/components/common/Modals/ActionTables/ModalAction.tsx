@@ -10,7 +10,6 @@ import FormModal from "../../Ui/FormModal";
 import Input from "../../Ui/Input";
 import Select from "../../Ui/Select";
 import { IConvenios } from "@/models/IConvenios";
-import { IDepartamentos } from "@/models/IDepartamentos";
 import { IMunicipios } from "@/models/IMunicipios";
 import { IRadicador } from "@/models/IRadicador";
 import { IServicios } from "@/models/IServicio";
@@ -21,7 +20,6 @@ import { IIPSRemite } from "@/models/IIpsRemite";
 import { IDocumento } from "@/models/IDocumento";
 import { useTableMutations } from "../CrearDataTables/Hook/useTablesMutations";
 import { AnimatePresence } from "framer-motion";
-import { useLazyFetchDepartment } from "@/hooks/useLazyFetchDepartment";
 import { useLazyFetchMunicipio } from "@/hooks/useLazyFetchMunicipio";
 
 // En el archivo ModalAction.tsx
@@ -53,7 +51,6 @@ const ModalAction: React.FC<ModalActionProps> = ({
   const { loading, error, update } = useTableMutations();
 
   const { municipios, fetchMunicipios } = useLazyFetchMunicipio();
-  const { department, fetchDepartments } = useLazyFetchDepartment();
 
   // Función para abrir el modal y cargar datos solo cuando sea necesario
   const handleOpenModal = async () => {
@@ -62,7 +59,6 @@ const ModalAction: React.FC<ModalActionProps> = ({
     if (name === "Lugar Radicacion") {
       await Promise.all([
         fetchMunicipios(),
-        fetchDepartments()
       ]);
     }
   };
@@ -81,11 +77,6 @@ const ModalAction: React.FC<ModalActionProps> = ({
           then: (schema) => schema.required("La dirección es obligatoria"),
           otherwise: (schema) => schema.notRequired(),
         } ),
-        department: Yup.string().when("reference",{
-          is: (value: string) => value === "Lugar Radicacion",
-          then: (schema) => schema.required("El departamento es obligatorio"),
-          otherwise: (schema) => schema.notRequired(),
-        }),
         city: Yup.string().when("reference",{
           is: (value: string) => value === "Lugar Radicacion",
           then: (schema) => schema.required("El municipio es obligatorio"),
@@ -105,7 +96,6 @@ const ModalAction: React.FC<ModalActionProps> = ({
       status: item.status ? 1 : 0,
       name: item.name,
       address: (item as ILugarRadicacion).address || "",
-      department: (item as ILugarRadicacion).departmentId || "",
       city: (item as ILugarRadicacion).cityId || "",
       reference: name,
       headquartersNumber: (item as ILugarRadicacion).headquartersNumber || 0
@@ -213,23 +203,6 @@ const ModalAction: React.FC<ModalActionProps> = ({
                   }
                   touched={formik.touched.address}
                   required
-                />
-                <Select
-                  label="Departamento"
-                  name="department"
-                  value={formik.values.department}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  options={department.map((dept: IDepartamentos) => ({
-                    value: dept.id,
-                    label: dept.name,
-                  }))}
-                  error={
-                    formik.errors.department && formik.touched.department
-                      ? formik.errors.department
-                      : undefined
-                  }
-                  touched={formik.touched.department}
                 />
                 <Select
                   label="Municipio"
