@@ -1,7 +1,6 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
 import React, { useMemo } from "react";
-import { useCreateUser } from "@/featuures/RegisterUser/Hooks/useCreateUser";
 import areas from '@/data-dynamic/areas.json'; 
 import {
   useFetchRoles,
@@ -15,6 +14,7 @@ import { useFetchSede } from "@/hooks/UseFetchSede";
 import Input from "@/components/common/Ui/Input";
 import Select, { SelectOption } from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";
+import { useUsersMutations } from "@/featuures/Usuarios/Hooks/useUsersMutations";
 
 const RegistrarUsuarios: React.FC = () => {
   const isOpen = true;
@@ -26,7 +26,8 @@ const RegistrarUsuarios: React.FC = () => {
   // hook pora traer las sedes
   const { data } = useFetchSede();
 
-  const { createUser, success, error, loading } = useCreateUser();
+
+  const { create, error, isLoading} = useUsersMutations();
 
   const validationSchema = useMemo(
     () =>
@@ -104,11 +105,9 @@ const RegistrarUsuarios: React.FC = () => {
 
       try {
 
-        const response = await createUser(formData);
-
-        if (response?.status === 200 || response?.status === 201) {
+         await create(formData, () => {
           formik.resetForm();
-        }
+         });
       } catch (error) {
         console.log('Error inesperado al registrar usuario', error);
       }
@@ -311,19 +310,16 @@ const RegistrarUsuarios: React.FC = () => {
             />
           </div>
 
-          {/* Botón de Envío */}
           <div className="mt-6">
             <Button
               type="submit"
-              disabled={!formik.isValid || loading}
-              className="w-full py-2 text-white rounded-md bg-color hover:bg-emerald-900 active:bg-emerald-950 dark:bg-gray-900 dark:hover:bg-gray-600"
+              disabled={!formik.isValid || isLoading}
+              isLoading={isLoading || formik.isSubmitting}
+              variant="primary"
             >
-              {loading ? "Enviando..." : "Registrar Usuario"}
+              Crear
             </Button>
             {error && <div className="text-red-500">{error}</div>}
-            {success && (
-              <div className="text-green-500">Usuario registrado con éxito</div>
-            )}
           </div>
         </form>
       </div>
