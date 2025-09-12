@@ -46,7 +46,8 @@ const SideBar: FC = () => {
     tablets: false,
     admin: false,
     RRHH: false,
-    demandaInducida: false
+    demandaInducida: false,
+    area: false
   });
   // * referencias para el acordeon y el sidebar
   const accordionRef = useRef<HTMLDivElement>(null);
@@ -79,7 +80,8 @@ const SideBar: FC = () => {
         tablets: false,
         admin: false,
         RRHH: false,
-        demandaInducida: false
+        demandaInducida: false,
+        area: false
       };
       newState[key] = !prev[key];
       return newState;
@@ -474,6 +476,12 @@ const SideBar: FC = () => {
                     to="/Usuarios"
                     icon={user1}
                     title="Usuarios"
+                    isCollapsed={isCollapsed}
+                  />
+                  <SubCategory
+                    to="/Area"
+                    icon={report}
+                    title="Areas"
                     isCollapsed={isCollapsed}
                   />
                   <SubCategory

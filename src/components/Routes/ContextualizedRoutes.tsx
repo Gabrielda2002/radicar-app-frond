@@ -25,6 +25,7 @@ import TablaIpsRemite from "@/featuures/IpsRemite/Pages/TablaIpsRemite";
 import TablaEspecialidad from "@/featuures/Especialidad/Pages/TablaEspecialidad";
 import TablaTipoServicio from "@/featuures/TypeService/Pages/TablaTipoServicio";
 import DemandInduce from "@/featuures/DemandInduce/Page/DemandInduce";
+import Area from "@/featuures/Areas/Page/Area";
 const RegistrarUsuarios = lazy(
   () => import("@/featuures/RegisterUser/Page/RegisterUser.tsx")
 );
@@ -112,6 +113,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/SistemaInventario" element={<SistemaInventario />} />
         <Route path="/RegistroUsuarios" element={<RegistroUsuarios />} />
         <Route path="/demanda/inducida" element={<DemandInduce />}/>
+        <Route path="/area" element={<Area />} />
 
         {/* Rutas con contextos específicos */}
         <Route path="/usuarios" element={<UsersPage />} />
