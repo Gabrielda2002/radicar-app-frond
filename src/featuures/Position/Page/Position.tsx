@@ -25,7 +25,7 @@ const Position = () => {
             ]}
           />
           <div className="w-full max-w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter pb-4">
               <div className="flex flex-col w-2/5 gap-4 mb-4 space-x-2 md:flex-row md:items-center md:mb-0 md:w-full">
                 <Input
                   //   value={query}
@@ -75,7 +75,7 @@ const Position = () => {
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                     <td>{item.areaName}</td>
-                    <td>{item.status}</td>
+                    <td>{item.status ? "Activo" : "Inactivo"}</td>
                     <td>
                         <ModalPositionMutatios onSuccess={refetch} item={item} />
                     </td>

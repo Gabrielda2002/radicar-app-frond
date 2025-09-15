@@ -7,6 +7,8 @@ import { IPosition } from "@/models/IPosition";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import { usePositionMutation } from "../Hooks/usePositionMutation";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalPositionMutatiosProps {
   item: IPosition | null;
@@ -18,6 +20,8 @@ const ModalPositionMutatios: React.FC<ModalPositionMutatiosProps> = ({
   onSuccess,
 }: ModalPositionMutatiosProps) => {
   const [isOpnen, setIsOpen] = useState<boolean>(false);
+
+  const { create, update, error, isLoading } = usePositionMutation();
 
   const validationSchema = {
     name: Yup.string()
@@ -33,20 +37,28 @@ const ModalPositionMutatios: React.FC<ModalPositionMutatiosProps> = ({
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      description: "",
-      areaId: 0,
-      status: false,
+      name: item ? item?.name : "",
+      description: item ? item.description : "",
+      areaId: item ? item.areaId : "",
+      status: item ? item.status : true,
     },
     validationSchema: Yup.object(validationSchema),
     onSubmit: (values) => {
-        try {
-            console.log(values)
-            onSuccess();
-            
-        } catch (error) {
-            
-        }
+      try {
+        item
+          ? update(item.id, values, () => {
+              setIsOpen(false);
+              formik.resetForm();
+              onSuccess();
+            })
+          : create(values, () => {
+              setIsOpen(false);
+              formik.resetForm();
+              onSuccess();
+            });
+      } catch (error) {
+        console.error("Error inesperado", error);
+      }
     },
   });
 
@@ -63,9 +75,9 @@ const ModalPositionMutatios: React.FC<ModalPositionMutatiosProps> = ({
         isValid={formik.isValid && formik.dirty}
         size="lg"
         submitText="Guardar"
-        isSubmitting={formik.isSubmitting}
+        isSubmitting={formik.isSubmitting || isLoading}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 py-3 px-6 ovcerflow-y-auto">
           <Input
             label="Nombre"
             id="name"
@@ -128,6 +140,15 @@ const ModalPositionMutatios: React.FC<ModalPositionMutatiosProps> = ({
             required
           />
         </div>
+        <AnimatePresence>
+          {error && (
+            <div>
+              <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                {error}
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
       </FormModal>
     </>
   );
