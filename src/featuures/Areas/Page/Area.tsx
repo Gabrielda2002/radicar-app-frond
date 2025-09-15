@@ -4,6 +4,7 @@ import Select from "@/components/common/Ui/Select";
 import { Search } from "lucide-react";
 import { useFetchArea } from "../Hooks/useFetchArea";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ModalMutationArea from "@/components/common/ModalMutationArea/ModalMutationArea";
 
 const Area = () => {
   const { area, isLoading, error, refetch } = useFetchArea();
@@ -13,9 +14,7 @@ const Area = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : error !== null ? (
-        <h1 className="flex justify-center text-lg dark:text-white">
-          {error}
-        </h1>
+        <h1 className="flex justify-center text-lg dark:text-white">{error}</h1>
       ) : (
         <>
           <ModalSection
@@ -51,7 +50,7 @@ const Area = () => {
                 />
               </div>
               <div className="flex justify-start w-full md:justify-end">
-                {/* Modal de creacion */}
+                <ModalMutationArea onSuccess={refetch} />
               </div>
             </div>
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
@@ -76,6 +75,9 @@ const Area = () => {
                     <td className="">{a.description}</td>
                     <td className="">{a.status ? "Activo" : "Inactivo"}</td>
                     <td className="">{a.managerName}</td>
+                    <td>
+                      <ModalMutationArea onSuccess={refetch} item={a} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
