@@ -26,6 +26,7 @@ import TablaEspecialidad from "@/featuures/Especialidad/Pages/TablaEspecialidad"
 import TablaTipoServicio from "@/featuures/TypeService/Pages/TablaTipoServicio";
 import DemandInduce from "@/featuures/DemandInduce/Page/DemandInduce";
 import Area from "@/featuures/Areas/Page/Area";
+import Position from "@/featuures/Position/Page/Position";
 const RegistrarUsuarios = lazy(
   () => import("@/featuures/RegisterUser/Page/RegisterUser.tsx")
 );
@@ -114,6 +115,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/RegistroUsuarios" element={<RegistroUsuarios />} />
         <Route path="/demanda/inducida" element={<DemandInduce />}/>
         <Route path="/area" element={<Area />} />
+        <Route path="/cargo" element={<Position />} />
 
         {/* Rutas con contextos específicos */}
         <Route path="/usuarios" element={<UsersPage />} />
