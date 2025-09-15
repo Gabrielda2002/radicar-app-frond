@@ -4,6 +4,7 @@ import Select from "@/components/common/Ui/Select";
 import { Search } from "lucide-react";
 import { useFetchPosition } from "../Hooks/useFetchPosition";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ModalPositionMutatios from "../Componentes/ModalPositionMutatios";
 
 const Position = () => {
   const { data, isLoading, error, refetch } = useFetchPosition();
@@ -50,6 +51,7 @@ const Position = () => {
               </div>
               <div className="flex justify-start w-full md:justify-end">
                 {/* Modal */}
+                <ModalPositionMutatios onSuccess={refetch} item={null} />
               </div>
             </div>
             <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
@@ -60,6 +62,7 @@ const Position = () => {
                   <th>Descripcion</th>
                   <th>Area</th>
                   <th>Estado</th>
+                  <th>Accion</th>
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-600 dark:text-gray-300">
@@ -73,6 +76,9 @@ const Position = () => {
                     <td>{item.description}</td>
                     <td>{item.areaName}</td>
                     <td>{item.status}</td>
+                    <td>
+                        <ModalPositionMutatios onSuccess={refetch} item={item} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
