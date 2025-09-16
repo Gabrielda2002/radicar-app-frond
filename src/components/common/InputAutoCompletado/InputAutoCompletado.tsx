@@ -11,6 +11,9 @@ interface InputAutocompletadoProps {
   required?: boolean;
   placeholder?: string;
   helpText?: string;
+  value?: string;
+  initialId?: string; // ID del valor seleccionado para modo edición
+  initialName?: string; // Nombre del valor seleccionado para modo edición
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
@@ -22,8 +25,12 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   required = false,
   placeholder = "",
   helpText = "",
+  value = "",
+  initialId = "",
+  initialName = "",
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(initialName || value);
+  const [selectedId, setSelectedId] = useState<string>(initialId);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
@@ -35,6 +42,16 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
     error: fetchError,
     fetchInputAtcp,
   } = useFetchEspecialidadAtcp();
+
+  // Efecto para manejar cambios en las props iniciales
+  useEffect(() => {
+    if (initialName && initialName !== inputValue) {
+      setInputValue(initialName);
+    }
+    if (initialId && initialId !== selectedId) {
+      setSelectedId(initialId);
+    }
+  }, [initialName, initialId]);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -75,13 +92,25 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   }, [selectedIndex, showSuggestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    onInputChanged(e.target.value);
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    
+    // Si el usuario borra todo o cambia el valor, limpiar la selección
+    if (newValue !== initialName) {
+      setSelectedId("");
+      onInputChanged("", ""); // Notificar que no hay selección válida
+    } else if (newValue === initialName && selectedId) {
+      onInputChanged(selectedId, newValue); // Mantener la selección inicial si coincide
+    } else {
+      onInputChanged("", newValue); // Valor temporal sin ID
+    }
+    
     setSelectedIndex(-1);
   };
 
   const handleSuggestionClick = (suggestion: string, id?: string) => {
     setInputValue(suggestion);
+    setSelectedId(id || "");
     onInputChanged(id ?? "", suggestion);
     setShowSuggestions(false);
     setSelectedIndex(-1);
@@ -112,7 +141,11 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         e.preventDefault();
         if (selectedIndex >= 0 && data[selectedIndex]) {
           const selectedItem = data[selectedIndex];
-          handleSuggestionClick(selectedItem.name, selectedItem.id);
+          setInputValue(selectedItem.name);
+          setSelectedId(selectedItem.id);
+          onInputChanged(selectedItem.id, selectedItem.name);
+          setShowSuggestions(false);
+          setSelectedIndex(-1);
         }
         break;
 

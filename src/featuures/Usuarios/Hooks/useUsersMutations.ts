@@ -6,7 +6,7 @@ type UseUsersMutationsProps = {
   error: string | null;
   isLoading: boolean;
   create: (data: FormData, onSuccess?: () => void) => Promise<void>;
-  update: (id: number, data: FormData, onSuccess?: () => void) => Promise<void>;
+  update: (id: number, data: Object, onSuccess?: () => void) => Promise<void>;
 };
 
 export const useUsersMutations = (): UseUsersMutationsProps => {
@@ -37,7 +37,7 @@ export const useUsersMutations = (): UseUsersMutationsProps => {
     }
   };
 
-  const update = async (id: number, data: FormData, onSuccess?: () => void) => {
+  const update = async (id: number, data: Object, onSuccess?: () => void) => {
     setIsLoading(true);
     try {
       const response = await api.put(`/usuario-update-table/${id}`, data);

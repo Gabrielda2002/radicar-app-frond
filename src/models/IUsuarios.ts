@@ -20,4 +20,5 @@ export interface IUsuarios {
     contractType: string;
     dateStartContract: Date;
     positionId: number;
+    positionName: string;
 }
