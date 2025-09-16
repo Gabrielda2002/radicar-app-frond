@@ -5,9 +5,32 @@ import { Search } from "lucide-react";
 import { useFetchArea } from "../Hooks/useFetchArea";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMutationArea from "@/components/common/ModalMutationArea/ModalMutationArea";
+import React, { useState } from "react";
+import useSearch from "@/hooks/useSearch";
+import { IArea } from "@/models/IArea";
+import usePagination from "@/hooks/usePagination";
+import Pagination from "@/components/common/PaginationTable/PaginationTable";
 
 const Area = () => {
   const { area, isLoading, error, refetch } = useFetchArea();
+
+  const ITEMS_PER_PAGE = 10;
+
+  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
+
+  const { query, setQuery, filteredData } = useSearch<IArea>(area, [
+    "description",
+    "name",
+    "managerName",
+  ]);
+  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
+    usePagination(filteredData, itemsPerPage);
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   return (
     <>
@@ -25,11 +48,11 @@ const Area = () => {
             ]}
           />
           <div className="w-full max-w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/10">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter pb-4">
               <div className="flex flex-col w-2/5 gap-4 mb-4 space-x-2 md:flex-row md:items-center md:mb-0 md:w-full">
                 <Input
-                  //   value={query}
-                  //   onChange={(e) => setQuery(e.target.value)}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   placeholder="Buscar"
                   icon={
                     <Search className="text-black dark:text-white"></Search>
@@ -45,8 +68,8 @@ const Area = () => {
                   ]}
                   id="itemsPerPage"
                   selectSize="md"
-                  //   value={ITEMS_PER_PAGE}
-                  //   onChange={handleItemsPerPageChange}
+                  value={ITEMS_PER_PAGE}
+                  onChange={handleItemsPerPageChange}
                 />
               </div>
               <div className="flex justify-start w-full md:justify-end">
@@ -65,7 +88,7 @@ const Area = () => {
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-600 dark:text-gray-300">
-                {area.map((a) => (
+                {currentData().map((a) => (
                   <tr
                     key={a.id}
                     className="text-xs transition duration-200 ease-in-out bg-white shadow-md md:text-sm dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
@@ -82,6 +105,11 @@ const Area = () => {
                 ))}
               </tbody>
             </table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={paginate}
+          />
           </div>
         </>
       )}

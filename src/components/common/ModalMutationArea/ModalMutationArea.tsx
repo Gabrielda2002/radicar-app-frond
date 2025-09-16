@@ -59,7 +59,7 @@ const ModalMutationArea: React.FC<ModalMutationAreaProps> = ({
 
   return (
     <>
-      <Button variant="secondary" onClick={() => setIsOpen(true)}>
+      <Button variant="primary" onClick={() => setIsOpen(true)}>
         {item ? "Editar" : "Crear Area"}
       </Button>
       <FormModal
