@@ -10,7 +10,6 @@ import cargo from "/assets/cargo.svg";
 import sede from "/assets/sede.svg";
 import id from "/assets/id.svg";
 import municipio from "/assets/municipio.svg";
-import estado from "/assets/estado.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
@@ -66,10 +65,10 @@ const Perfil: React.FC = () => {
                       </div>
 
                       <div className="flex flex-col items-start mt-2 text-gray-800 dark:text-gray-200">
-                        {/* Rol del usuario
+                        {/* Rol del usuario */}
                         <span className="flex px-4 space-y-2 text-sm font-normal text-gray-800 dark:text-gray-200">
                           Rol: {profile.rol}
-                        </span> */}
+                        </span>
 
                         {/* ID del usuario */}
                         <div className="flex px-4 mb-4">
@@ -78,7 +77,9 @@ const Perfil: React.FC = () => {
                             alt="Ide Icon"
                             className="flex w-6 text-gray-600 h-7 dark:text-gray-300 dark:filter dark:invert"
                           />
-                          <span className="px-2 mt-1 text-sm font-normal">{profile.id}</span>
+                          <span className="px-2 mt-1 text-sm font-normal">
+                            {profile.id}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -86,7 +87,7 @@ const Perfil: React.FC = () => {
 
                   <div className="flex bg-gray-200 flex-col-2 rounded-3xl dark:bg-gray-700">
                     <div className="mt-4 ml-5 mr-4 space-x-4 space-y-2">
-                      <div className="grid grid-cols-1 gap-4 md:gap-20 md:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-4 md:gap-20 md:grid-cols-2 mb-4">
                         <div className="flex flex-col items-start space-y-2 text-gray-800 md:-space-x-2 dark:text-gray-200">
                           <h2>Información Personal</h2>
                           {/* Email */}
@@ -174,17 +175,6 @@ const Perfil: React.FC = () => {
                               {profile.municipality}
                             </span>
                           </div>
-                          {/* Estado */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={estado}
-                              alt="Status Icon"
-                              className="w-6 h-6 mb-3 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="mb-3 text-sm font-normal">
-                              {profile.status}
-                            </span>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -224,9 +214,8 @@ const Perfil: React.FC = () => {
                 />
               </div>
             </div>
-                   
-            <div>
-            </div>
+
+            <div></div>
             {/* Formulario Section */}
             <div className="flex gap-4 p-4 mb-2">
               <div className="flex-1 p-6 bg-gray-300 shadow-md md:p-8 rounded-2xl dark:bg-gray-800 w-fit h-fit">
@@ -241,7 +230,6 @@ const Perfil: React.FC = () => {
                 </motion.div>
               </div>
             </div>
-              
           </div>
         </div>
       </section>

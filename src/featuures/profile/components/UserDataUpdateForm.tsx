@@ -11,8 +11,8 @@ interface UserDataUpdateFormProps {
     name: string;
     lastname: string;
     email: string;
-    id: string;
-    phone: string;
+    id: number ;
+    phone: number;
   };
 }
 
@@ -38,7 +38,7 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
       .required("El correo electrónico es requerido")
       .min(10, "El correo electrónico debe tener al menos 10 caracteres")
       .max(150, "El correo electrónico debe tener como máximo 150 caracteres"),
-    phone: Yup.string()
+    phone: Yup.number()
       .required("El teléfono es requerido")
       .max(10, "El teléfono debe tener 10 caracteres"),
   });
@@ -61,7 +61,7 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
       formDataUpdate.append("name", values.nombre);
       formDataUpdate.append("lastName", values.apellido);
       formDataUpdate.append("email", values.email);
-      formDataUpdate.append("phone", values.phone);
+      formDataUpdate.append("phone", values.phone.toString());
 
       try {
         const response = await updateUserData(

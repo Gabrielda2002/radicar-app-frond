@@ -220,7 +220,7 @@ export const createUsuario = async (data: FormData) => {
 }
 
 // actualizar datos del perfil del usuario
-export const updateUserDataEp = async (data: FormData, id: string) => {
+export const updateUserDataEp = async (data: FormData, id: number) => {
     return api.put(`/usuario-datos-basicos/${id}`, data);
 }
 

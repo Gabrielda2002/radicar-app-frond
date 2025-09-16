@@ -1,6 +1,6 @@
 import { updateUserDataEp } from "@/utils/api-config";
 
-export const updateUserData = async (data: FormData, id: string) => {
+export const updateUserData = async (data: FormData, id: number) => {
     try {
         
         const response = await updateUserDataEp(data, id);

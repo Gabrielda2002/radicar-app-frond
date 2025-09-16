@@ -5,16 +5,16 @@ import { IProfile } from "@/models/IProfile";
 
 export const usePerfil = () => {
   const [profile, setProfile] = useState<IProfile>({
+    id: 0,
     name: "",
     lastname: "",
     email: "",
-    phone: "",
+    phone: 0,
     photo: "",
     rol: "",
-    status: "",
+    status: false,
     municipality: "",
-    dniNumber: "",
-    id: "",
+    dniNumber: 0,
     area: "",
     position: "",
     headquarters: "",

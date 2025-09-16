@@ -6,7 +6,7 @@ interface UserProfile {
   lastName: string;
   email: string;
   imageUrl: string;
-  phone: string;
+  phone: number;
   role: string;
 }
 
@@ -35,7 +35,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
     lastName: "",
     email: "",
     imageUrl: "", // Imagen predeterminada en blanco
-    phone: "",
+    phone: 0,
     role: "",
   });
 

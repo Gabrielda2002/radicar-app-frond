@@ -1,14 +1,14 @@
 export interface IProfile {
-  id: string;
+  id: number;
   name: string;
   lastname: string;
   email: string;
-  phone: string;
+  phone: number;
   photo: string;
   rol: string;
-  status: string;
+  status: boolean;
   municipality: string;
-  dniNumber: string;
+  dniNumber: number;
   area: string;
   position: string;
   headquarters: string;
