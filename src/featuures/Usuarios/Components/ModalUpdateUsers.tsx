@@ -19,6 +19,7 @@ import { useLazyFetchHeadquarters } from "@/hooks/useLazyFetchHeadquarters";
 import { FormatDate } from "@/utils/FormatDate";
 import { useUsersMutations } from "../Hooks/useUsersMutations";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -384,11 +385,15 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 required
               />
             </div>
-          {error && (
-            <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
-              {error}
-            </div>
-          )}
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>

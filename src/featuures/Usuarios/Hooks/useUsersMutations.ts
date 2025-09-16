@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 type UseUsersMutationsProps = {
   error: string | null;
   isLoading: boolean;
-  create: (data: FormData, onSuccess?: () => void) => Promise<void>;
+  create: (data: Object, onSuccess?: () => void) => Promise<void>;
   update: (id: number, data: Object, onSuccess?: () => void) => Promise<void>;
 };
 
@@ -13,7 +13,7 @@ export const useUsersMutations = (): UseUsersMutationsProps => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const create = async (data: FormData, onSuccess?: () => void) => {
+  const create = async (data: Object, onSuccess?: () => void) => {
     setIsLoading(true);
     try {
       const response = await api.post(`/usuarios`, data);
