@@ -34,14 +34,14 @@ const ModalFilterStatistics = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const validationSchema = Yup.object({
-    element: Yup.string().notRequired(),
-    program: Yup.string().notRequired(),
-    professional: Yup.string().notRequired(),
+    element: Yup.string().required("El elemento es requerido"),
+    program: Yup.string().required("El programa es requerido"),
+    professional: Yup.string().required("El profesional es requerido"),
     year: Yup.number()
-      .notRequired()
+      .required("El año es requerido")
       .min(2000, "El año debe ser mayor o igual a 2000"),
     month: Yup.number()
-      .notRequired()
+      .required("El mes es requerido")
       .min(1, "El mes debe ser entre 1 y 12")
       .max(12, "El mes debe ser entre 1 y 12"),
     responsable: Yup.string().notRequired(),
