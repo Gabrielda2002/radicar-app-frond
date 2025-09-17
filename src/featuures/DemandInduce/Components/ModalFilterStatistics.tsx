@@ -9,6 +9,7 @@ import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAu
 import Select from "@/components/common/Ui/Select";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
+import { useAuth } from "@/context/authContext";
 
 interface ModalFilterStatisticsProps {
   onFiltersApplied?: (filters: any) => void;
@@ -19,27 +20,31 @@ const ModalFilterStatistics = ({
 }: ModalFilterStatisticsProps) => {
   const { error, fetchStatistics, loading } = useFetchStatistics();
 
+  const { rol } = useAuth();
+
   const [selectedFilters, setSelectedFilters] = useState({
     element: "",
     program: "",
     professional: "",
     year: "",
     month: "",
+    responsable: "",
   });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const validationSchema = Yup.object({
-    element: Yup.string().required("El elemento es requerido"),
-    program: Yup.string().required("El programa es requerido"),
-    professional: Yup.string().required("El profesional es requerido"),
+    element: Yup.string().notRequired(),
+    program: Yup.string().notRequired(),
+    professional: Yup.string().notRequired(),
     year: Yup.number()
-      .required("El año es requerido")
+      .notRequired()
       .min(2000, "El año debe ser mayor o igual a 2000"),
     month: Yup.number()
-      .required("El mes es requerido")
+      .notRequired()
       .min(1, "El mes debe ser entre 1 y 12")
       .max(12, "El mes debe ser entre 1 y 12"),
+    responsable: Yup.string().notRequired(),
   });
 
   const formik = useFormik({
@@ -49,6 +54,7 @@ const ModalFilterStatistics = ({
       professional: "",
       year: 0,
       month: 0,
+      responsable: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -66,34 +72,46 @@ const ModalFilterStatistics = ({
     <>
       {Object.values(selectedFilters).some((v) => v) && (
         <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 border border-gray-400 rounded">
-          <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Filtros seleccionados:</h4>
+          <h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
+            Filtros seleccionados:
+          </h4>
           <ul className="text-sm">
             <li>
-              <span className="font-bold text-gray-700 dark:text-gray-100">Elemento:</span>
+              <span className="font-bold text-gray-700 dark:text-gray-100">
+                Elemento:
+              </span>
               <span className="text-gray-600 dark:text-gray-400 pl-2">
                 {selectedFilters.element || "No seleccionado"}
               </span>
             </li>
             <li>
-              <span className="font-bold text-gray-700 dark:text-gray-100">Programa:</span>
+              <span className="font-bold text-gray-700 dark:text-gray-100">
+                Programa:
+              </span>
               <span className="text-gray-600 dark:text-gray-400 pl-2">
                 {selectedFilters.program || "No seleccionado"}
               </span>
             </li>
             <li>
-              <span className="font-bold text-gray-700 dark:text-gray-100">Profesional:</span>
+              <span className="font-bold text-gray-700 dark:text-gray-100">
+                Profesional:
+              </span>
               <span className="text-gray-600 dark:text-gray-400 pl-2">
                 {selectedFilters.professional || "No seleccionado"}
               </span>
             </li>
             <li>
-              <span className="font-bold text-gray-700 dark:text-gray-100">Año:</span>
+              <span className="font-bold text-gray-700 dark:text-gray-100">
+                Año:
+              </span>
               <span className="text-gray-600 dark:text-gray-400 pl-2">
                 {selectedFilters.year || "No seleccionado"}
               </span>
             </li>
             <li>
-              <span className="font-bold text-gray-700 dark:text-gray-100">Mes:</span>
+              <span className="font-bold text-gray-700 dark:text-gray-100">
+                Mes:
+              </span>
               <span className="text-gray-600 dark:text-gray-400 pl-2">
                 {selectedFilters.month || "No seleccionado"}
               </span>
@@ -154,16 +172,19 @@ const ModalFilterStatistics = ({
               { value: "Psicología", label: "Psicología" },
               { value: "Odontología", label: "Odontología" },
               { value: "Trabajo Social", label: "Trabajo Social" },
-              { value: "Trabajo social", label: "Trabajo social"},
+              { value: "Trabajo social", label: "Trabajo social" },
               { value: "Pediatría", label: "Pediatría" },
-              { value: "Otras especialidades", label: "Otras especialidades" }
+              { value: "Otras especialidades", label: "Otras especialidades" },
             ]}
             label="Profesional"
             id="professiona"
             value={formik.values.professional}
-            onChange={ (e) => {
+            onChange={(e) => {
               formik.handleChange(e);
-              setSelectedFilters((prev) => ({ ...prev, professional: e.target.value }));
+              setSelectedFilters((prev) => ({
+                ...prev,
+                professional: e.target.value,
+              }));
             }}
             onBlur={formik.handleBlur}
             name="professional"
@@ -205,6 +226,22 @@ const ModalFilterStatistics = ({
             error={formik.errors.month}
             required
           />
+          {[1, 21].includes(Number(rol)) && (
+            <InputAutocompletado
+              label="Responsable"
+              onInputChanged={(value) =>
+                formik.setFieldValue("responsable", value)
+              }
+              apiRoute="search-user-by-name"
+              error={
+                formik.touched.responsable && formik.errors.responsable
+                  ? formik.errors.responsable
+                  : undefined
+              }
+              touched={formik.touched.responsable}
+              placeholder="Ej: Juan Perez"
+            />
+          )}
         </div>
         <AnimatePresence>
           {error && (
