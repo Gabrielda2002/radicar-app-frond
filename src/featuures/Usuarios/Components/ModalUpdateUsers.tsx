@@ -85,14 +85,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
             "La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un caracter especial (!@#$%^&*)"
           ),
         status: Yup.string().required("El estado es obligatorio"),
-        area: Yup.string()
-          .required("El área es obligatoria")
-          .min(2, "El área debe tener al menos 2 caracteres")
-          .max(100, "El área debe tener como máximo 100 caracteres"),
-        cargo: Yup.string()
-          .required("El cargo es obligatorio")
-          .min(2, "El cargo debe tener al menos 2 caracteres")
-          .max(200, "El cargo debe tener como máximo 200 caracteres"),
         headquarters: Yup.string().required("La sede es obligatoria"),
         phoneNumber: Yup.string()
           .required("El celular es obligatorio")
@@ -115,8 +107,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       rol: "",
       password: "",
       status: "",
-      area: "",
-      cargo: "",
       headquarters: "",
       phoneNumber: "",
       dateStartContract: "",
@@ -149,8 +139,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
         rol: ususario.idRol.toString(),
         password: "",
         status: ususario.status ? "1" : "0",
-        area: ususario.area,
-        cargo: ususario.cargo,
         headquarters: ususario.sedeId.toString(),
         phoneNumber: ususario.celular.toString(),
         dateStartContract: ususario.dateStartContract
@@ -165,6 +153,8 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   if (errorDocument) return <p>{errorDocument}</p>;
   if (errorRol) return <p>{errorRol}</p>;
   if (errorHeadquarters) return <p>{errorHeadquarters}</p>;
+
+  console.log(formik.errors);
 
   return (
     <>

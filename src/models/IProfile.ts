@@ -12,4 +12,8 @@ export interface IProfile {
   area: string;
   position: string;
   headquarters: string;
+  contractType: string;
+  dateStartContract: Date;
+  managerName: string;
+  managerLastName: string;
 }

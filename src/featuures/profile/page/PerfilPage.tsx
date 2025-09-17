@@ -1,24 +1,37 @@
 import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 
-// Icons
+// External icons
+import { MdDateRange } from "react-icons/md";
+import { FaUserTie, FaFileContract, FaChartLine } from "react-icons/fa";
+
+// Internal components and hooks
+import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
+import UserDataUpdateForm from "@/featuures/profile/components/UserDataUpdateForm";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { FormatDate } from "@/utils/FormatDate";
+
+// Assets
 import mail from "/assets/mail.svg";
 import phone from "/assets/phone.svg";
-import id_ from "/assets/id_.svg";
 import areas from "/assets/areas.svg";
-import cargo from "/assets/cargo.svg";
 import sede from "/assets/sede.svg";
 import id from "/assets/id.svg";
 import municipio from "/assets/municipio.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
-import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
-import UserDataUpdateForm from "@/featuures/profile/components/UserDataUpdateForm";
-import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ProfileField from "../components/ProfileField";
 
 const ConfirmDeletePopup = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
 );
+
+// Animation variants
+const ANIMATION_VARIANTS = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  exit: { opacity: 0, x: -100, transition: { duration: 0.5 } },
+};
 
 const Perfil: React.FC = () => {
   const {
@@ -31,208 +44,162 @@ const Perfil: React.FC = () => {
     closeDeletePopup,
     confirmDeletePhoto,
   } = usePerfil();
-  // Variantes para Motion
-  const variantes = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-    exit: { opacity: 0, x: -100, transition: { duration: 0.5 } },
-  };
 
   return (
-    <div className="flex items-center justify-center mb-8 bg-gray-700 rounded-lg h-1/6 dark:bg-gray-500">
-      <section className="p-0 text-gray-900 md:p-9 dark:text-gray-100 body-font">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:gap-4 md:flex sm:table">
-            {/* Perfil Section */}
-            <div className="flex w-full max-w-xl gap-4 p-4">
-              <div className="overflow-hidden bg-gray-300 shadow-xl rounded-2xl dark:bg-gray-800">
-                <div className="p-4 space-y-4 bg-gray-300 shadow-xl dark:bg-gray-800 rounded-xl">
-                  {/* Sección de perfil */}
-                  <div className="flex items-center space-y-1 text-2xl bg-gray-200 center text- rounded-xl dark:bg-gray-700">
-                    {/* Foto de perfil */}
-                    <img
-                      src={profile.photo}
-                      alt="User profile"
-                      className="object-cover w-[90px] h-[80px] transition-transform transform border-4 border-teal-500 rounded-full shadow-lg md:w-28 md:h-28 hover:scale-110"
-                    />
-
-                    <div className="flex flex-col justify-center text-lg">
-                      <div>
-                        {/* Nombre del usuario */}
-                        <h2 className="px-4 mt-3 font-semibold text-gray-800 text-start dark:text-white text-[15px] md:text-lg">
-                          {profile.name} {profile.lastname}
-                        </h2>
-                      </div>
-
-                      <div className="flex flex-col items-start mt-2 text-gray-800 dark:text-gray-200">
-                        {/* Rol del usuario */}
-                        <span className="flex px-4 space-y-2 text-sm font-normal text-gray-800 dark:text-gray-200">
-                          Rol: {profile.rol}
-                        </span>
-
-                        {/* ID del usuario */}
-                        <div className="flex px-4 mb-4">
-                          <img
-                            src={id_}
-                            alt="Ide Icon"
-                            className="flex w-6 text-gray-600 h-7 dark:text-gray-300 dark:filter dark:invert"
-                          />
-                          <span className="px-2 mt-1 text-sm font-normal">
-                            {profile.id}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex bg-gray-200 flex-col-2 rounded-3xl dark:bg-gray-700">
-                    <div className="mt-4 ml-5 mr-4 space-x-4 space-y-2">
-                      <div className="grid grid-cols-1 gap-4 md:gap-20 md:grid-cols-2 mb-4">
-                        <div className="flex flex-col items-start space-y-2 text-gray-800 md:-space-x-2 dark:text-gray-200">
-                          <h2>Información Personal</h2>
-                          {/* Email */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={mail}
-                              alt="Mail Icon"
-                              className="w-6 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="text-sm font-normal break-words w-60">
-                              {profile.email}
-                            </span>
-                          </div>
-
-                          {/* Teléfono */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={phone}
-                              alt="Phone Icon"
-                              className="w-6 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="text-sm font-normal">
-                              {profile.phone}
-                            </span>
-                          </div>
-
-                          {/* Numero de Documento */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={id}
-                              alt="Dni Icon"
-                              className="w-6 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="text-sm font-normal">
-                              {profile.dniNumber}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-start space-y-2 text-gray-800 dark:text-gray-200 ">
-                          <h2>Información Laboral</h2>
-                          {/* Area */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={areas}
-                              alt="Area Icon"
-                              className="w-5 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="text-sm font-normal">
-                              {profile.area}
-                            </span>
-                          </div>
-                          {/* Actualizar datos */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={cargo}
-                              alt="Position Icon"
-                              className="w-5 text-gray-600 h-7 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="w-56 text-sm font-normal">
-                              {profile.position}
-                            </span>
-                          </div>
-
-                          {/* Sede */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={sede}
-                              alt="Headquearters Icon"
-                              className="w-5 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="text-sm font-normal">
-                              {profile.headquarters}
-                            </span>
-                          </div>
-
-                          {/* Municipio */}
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <img
-                              src={municipio}
-                              alt="Municipality Icon"
-                              className="w-6 h-6 text-gray-600 dark:text-gray-300 dark:filter dark:invert"
-                            />
-                            <span className="mt-2 text-sm font-normal">
-                              {profile.municipality}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Botones */}
-                  <div className="flex justify-center px-6 py-4 space-x-3 bg-gray-200 rounded-xl dark:bg-gray-700">
-                    <button
-                      className="flex items-center px-4 py-2 text-sm font-medium text-white transition duration-300 bg-teal-600 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50 hover:scale-105"
-                      onClick={triggerFileInput}
-                    >
-                      <img
-                        src={upload}
-                        alt="Upload Icon"
-                        className="inline-block w-6 h-6 mr-2 dark:filter dark:invert"
-                      />
-                      Subir
-                    </button>
-                    <button
-                      className="flex items-center px-4 py-2 text-sm font-medium text-white transition duration-300 bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:scale-105"
-                      onClick={openDeletePopup}
-                    >
-                      <img
-                        src={trash}
-                        alt="Trash Icon"
-                        className="inline-block w-6 h-6 mr-2 dark:filter dark:invert"
-                      />
-                      Eliminar
-                    </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {/* Profile Information Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+            {/* Header with profile photo and basic info */}
+            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-6">
+              <div className="flex items-center gap-6">
+                <img
+                  src={profile.photo}
+                  alt="Profile"
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                />
+                <div className="text-white">
+                  <h1 className="text-2xl md:text-3xl font-bold">
+                    {profile.name} {profile.lastname}
+                  </h1>
+                  <p className="text-teal-100 text-lg mt-1">{profile.rol}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-teal-100 text-sm">ID: {profile.id}</span>
                   </div>
                 </div>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
               </div>
             </div>
 
-            <div></div>
-            {/* Formulario Section */}
-            <div className="flex gap-4 p-4 mb-2">
-              <div className="flex-1 p-6 bg-gray-300 shadow-md md:p-8 rounded-2xl dark:bg-gray-800 w-fit h-fit">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={variantes}
-                  className="mt-3"
+            {/* Profile Information Grid */}
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                Información Personal
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ProfileField
+                  icon={mail}
+                  label="Email"
+                  value={profile.email}
+                  title="Correo Electrónico"
+                />
+                
+                <ProfileField
+                  icon={phone}
+                  label="Teléfono"
+                  value={profile.phone.toString()}
+                  title="Número de Teléfono"
+                />
+                
+                <ProfileField
+                  icon={id}
+                  label="Documento"
+                  value={profile.dniNumber.toString()}
+                  title="Número de Documento"
+                />
+                
+                <ProfileField
+                  icon={MdDateRange}
+                  label="Inicio Contrato"
+                  value={FormatDate(profile.dateStartContract, false)}
+                  title="Fecha de Inicio de Contrato"
+                />
+                
+                <ProfileField
+                  icon={FaFileContract}
+                  label="Tipo Contrato"
+                  value={profile.contractType}
+                  title="Tipo de Contrato"
+                />
+                
+                <ProfileField
+                  icon={areas}
+                  label="Área"
+                  value={profile.area}
+                  title="Área de Trabajo"
+                />
+                
+                <ProfileField
+                  icon={FaUserTie}
+                  label="Cargo"
+                  value={profile.position}
+                  title="Cargo o Posición"
+                />
+                
+                <ProfileField
+                  icon={sede}
+                  label="Sede"
+                  value={profile.headquarters}
+                  title="Sede de Trabajo"
+                />
+                
+                <ProfileField
+                  icon={municipio}
+                  label="Municipio"
+                  value={profile.municipality}
+                  title="Municipio"
+                />
+                
+                <ProfileField
+                  icon={FaChartLine}
+                  label="Jefe Inmediato"
+                  value={`${profile.managerName} ${profile.managerLastName}`}
+                  title="Jefe Inmediato"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
+                  onClick={triggerFileInput}
                 >
-                  <UserDataUpdateForm initialUserData={profile} />
-                </motion.div>
+                  <img
+                    src={upload}
+                    alt="Upload"
+                    className="w-5 h-5 filter invert"
+                  />
+                  Subir Foto
+                </button>
+                
+                <button
+                  className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
+                  onClick={openDeletePopup}
+                >
+                  <img
+                    src={trash}
+                    alt="Delete"
+                    className="w-5 h-5 filter invert"
+                  />
+                  Eliminar Foto
+                </button>
               </div>
             </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+              accept="image/*"
+            />
+          </div>
+
+          {/* User Data Update Form */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={ANIMATION_VARIANTS}
+            >
+              <UserDataUpdateForm initialUserData={profile} />
+            </motion.div>
           </div>
         </div>
-      </section>
+      </div>
+
       <Suspense fallback={<LoadingSpinner />}>
         <ConfirmDeletePopup
           isOpen={isPopupOpen}

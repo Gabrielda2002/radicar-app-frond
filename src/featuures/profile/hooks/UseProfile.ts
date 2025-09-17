@@ -18,6 +18,10 @@ export const usePerfil = () => {
     area: "",
     position: "",
     headquarters: "",
+    contractType: "",
+    dateStartContract: new Date(),
+    managerName: "",
+    managerLastName: "",
   });
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
