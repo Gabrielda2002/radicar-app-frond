@@ -3,6 +3,7 @@ export interface IAuditLetter {
     profetional:    string;
     creatAt:        Date;
     dniNumber:      number;
+    patientName:    string;
     dniType:        string;
     agreement:      string;
     idRadicado:     number;

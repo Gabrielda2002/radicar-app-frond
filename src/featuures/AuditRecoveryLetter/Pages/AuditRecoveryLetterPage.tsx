@@ -131,7 +131,7 @@ const RecoverLastPage = () => {
                       {a.idRadicado}
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
-                      {a.profetional}
+                    {a.patientName}
                     </td>
                     <td className="p-3 border-b dark:border-gray-700">
                       {a.dniType}
