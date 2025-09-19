@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import useFetchCups from "@/hooks/useFetchCups";
 import Input from "@/components/common/Ui/Input";
 
@@ -7,9 +7,11 @@ interface ServicioFormProps {
   servicios: string[];
   quantityServices: string[];
   descripciones: string[];
+  idsServicios: string[];
   onServicioChange: (index: number, value: string) => void;
   onDescripcionChange: (index: number, value: string) => void;
   onCantidadInputChange: (index: number, value: string) => void;
+  onIdServicioChange: (index: number, value: string) => void;
 }
 
 const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
@@ -17,25 +19,35 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
   servicios,
   quantityServices,
   descripciones,
+  idsServicios,
   onServicioChange,
   onDescripcionChange,
   onCantidadInputChange,
+  onIdServicioChange,
 }) => {
   const { data, fetchCups, error, loading } = useFetchCups();
+  const lastIndexRef = useRef<number | null>(null);
   useEffect(() => {
     if (data && data.name) {
-      const index = servicios.indexOf(data.code); // Asumiendo que el objeto `data` tiene un `code`
-
-      // Si el código del servicio ya existe en el array de servicios y la descripción es diferente
-      if (index !== -1 && descripciones[index] !== data.name) {
-        onDescripcionChange(index, data.name);
+      const index = lastIndexRef.current;
+      if (index !== null && index !== undefined) {
+        // Actualiza descripción si cambió
+        if (descripciones[index] !== data.name) {
+          onDescripcionChange(index, data.name);
+        }
+        // Actualiza ID si cambió
+        const idAsString = String(data.id ?? "");
+        if (idsServicios[index] !== idAsString) {
+          onIdServicioChange(index, idAsString);
+        }
       }
     }
-  }, [data, servicios, onDescripcionChange]);
+  }, [data, servicios, descripciones, idsServicios, onDescripcionChange, onIdServicioChange]);
 
   const handleServicioBlur = async (index: number) => {
     const codigoServicio = servicios[index];
     if (codigoServicio) {
+      lastIndexRef.current = index;
       await fetchCups(codigoServicio); // Llamada al API
     }
   };
@@ -53,8 +65,7 @@ const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
           className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
           placeholder="Código"
         />
-      </div>  
-
+      </div>
       <div>
         <Input
           label={`Cantidad Servicio N° ${index + 1}`}

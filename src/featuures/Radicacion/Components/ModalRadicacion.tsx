@@ -57,11 +57,14 @@ const ModalRadicacion = () => {
   const [description, setDescription] = useState<string>("");
   const [quantityInputs, setCantidadInputs] = useState<string>("1");
   const [servicios, setServicios] = useState<string[]>([]);
+
   const [quantityServices, setQuantityServices] = useState<string[]>([]);
   const [descripciones, setDescripciones] = useState<string[]>([]);
+  const [serviceIds, setServiceIds] = useState<string[]>([]);
 
-  const items = servicios.map((servicio, index) => ({
-    code: servicio,
+  const items = Array.from({ length: parseInt(quantityInputs || "0") || 0 }, (_, index) => ({
+    id: serviceIds[index],
+    code: servicios[index],
     description: descripciones[index],
     quantity: quantityServices[index],
   }));
@@ -132,6 +135,12 @@ const ModalRadicacion = () => {
       } else if (descripciones.length !== parseInt(quantityInputs)) {
         errorCups =
           "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
+      } else if (quantityServices.length !== parseInt(quantityInputs)) {
+        errorCups =
+          "La cantidad de cantidades de CUPS no coincide con la cantidad especificada.";
+      } else if (serviceIds.length !== parseInt(quantityInputs)) {
+        errorCups =
+          "La cantidad de IDs de CUPS no coincide con la cantidad especificada.";
       } else {
         for (let i = 0; i < parseInt(quantityInputs); i++) {
           if (!servicios[i]) {
@@ -144,6 +153,10 @@ const ModalRadicacion = () => {
           }
           if (!quantityServices[i]) {
             errorCups = `Falta la cantidad del CUPS N° ${i + 1}.`;
+            break;
+          }
+          if (!serviceIds[i]) {
+            errorCups = `Falta el ID del CUPS N° ${i + 1}.`;
             break;
           }
         }
@@ -254,6 +267,7 @@ const ModalRadicacion = () => {
     setServicios(Array(Number(value)).fill(""));
     setDescripciones(Array(Number(value)).fill(""));
     setQuantityServices(Array(Number(value)).fill(""));
+    setServiceIds(Array(Number(value)).fill(""));
   };
 
   const handleServicioChange = (index: number, value: string) => {
@@ -272,6 +286,12 @@ const ModalRadicacion = () => {
     const newCantidadInput = [...quantityServices];
     newCantidadInput[index] = value;
     setQuantityServices(newCantidadInput);
+  };
+
+  const handleIdServicioChange = (index: number, value: string) => {
+    const newIds = [...serviceIds];
+    newIds[index] = value;
+    setServiceIds(newIds);
   };
 
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -508,6 +528,8 @@ const ModalRadicacion = () => {
                   onServicioChange={handleServicioChange}
                   onDescripcionChange={handleDescripcionChange}
                   onCantidadInputChange={handleCantidadInputChange}
+                  idsServicios={serviceIds}
+                  onIdServicioChange={handleIdServicioChange}
                 />
               </div>
             </section>
