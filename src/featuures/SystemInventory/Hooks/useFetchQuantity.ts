@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { IQuantityItems } from "../Models/IQuantityItems";
-import { getQuantityItems } from "../Services/getQuantityItems";
+import { api } from "@/utils/api-config";
 
-export const useFetchQuantity = (typeItem: string) => {
+type UseFetchQuantityReturn = {
+    quantity: IQuantityItems[] | null;
+    loading: boolean;
+    error: string | null;
+}
+
+export const useFetchQuantity = (typeItem: string, idHeadquartersSelected?: number): UseFetchQuantityReturn => {
     const [quantity, setQuantity] = useState<IQuantityItems[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -22,7 +28,7 @@ export const useFetchQuantity = (typeItem: string) => {
                 ? 'tv/statics/headquarters'
                 : 'celular/statics/headquarters';
 
-                const response = await getQuantityItems(endPoint);
+                const response = await api.get(`${endPoint}/${idHeadquartersSelected}`);
                 if (response.status === 200 || response.status === 201) {
                     setQuantity(response.data);
                     setError(null);
