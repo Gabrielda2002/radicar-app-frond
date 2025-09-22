@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AgeStatics from "./AgeStatics";
 import ExpiringSoonStatics from "./ExpiringSoonStatics";
 import QuantityItemsStatics from "./QuantityItemsStatics";
@@ -6,7 +6,13 @@ import ItemsWithLockStatics from "./ItemsWithLockStatics";
 import QuantityTypeItens from "./QuantityTypeItems";
 import { useAuth } from "@/context/authContext";
 
-const StatiticsScreemItems = () => {
+interface StatiticsScreemItemsProps {
+  idHeadquartersSelected?: number;
+}
+
+const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
+  idHeadquartersSelected 
+}) => {
 
   const { rol } = useAuth();
 
@@ -53,7 +59,7 @@ const StatiticsScreemItems = () => {
         >
           {activeSection === 1 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <QuantityTypeItens typeItem="equipos"/>
+              <QuantityTypeItens typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <ExpiringSoonStatics typeItem="equipos" />
               <AgeStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />

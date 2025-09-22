@@ -6,12 +6,14 @@ import { IQuantityTypeItems } from '../Models/IQuantityTypeItems';
 
 interface QuantityTypeItensProps {
     typeItem: string;
+    idHeadquartersSelected?: number;
 }
 
 const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
     typeItem,
+    idHeadquartersSelected
 }) => {
-    const { quantity, loading, error } = useFetchQuantityTypeItems(typeItem);
+    const { quantity, loading, error } = useFetchQuantityTypeItems(typeItem, idHeadquartersSelected);
 
     // Colores para el gráfico circular
     const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28'];
