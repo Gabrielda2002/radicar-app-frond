@@ -61,14 +61,14 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityTypeItens typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <ExpiringSoonStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
-              <AgeStatics typeItem="equipos" />
+              <AgeStatics typeItem="equipos"  idHeadquartersSelected={idHeadquartersSelected} />
               <ItemsWithLockStatics typeItem="equipos" />
               <QuantityItemsStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <ExpiringSoonStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected} />
-              <AgeStatics typeItem="inventario/general" />
+              <AgeStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected}  />
               <QuantityItemsStatics typeItem="inventario/general" />
             </div>
           ) : activeSection === 2 && [1].includes(Number(rol)) ? (
@@ -78,13 +78,13 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
           ) :  activeSection === 4 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/televisores" />
-              <AgeStatics typeItem="inventario/televisores" />
+              <AgeStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected}  />
               <ExpiringSoonStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ): activeSection === 5 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/celulares"/>
-              <AgeStatics typeItem="inventario/celulares" />
+              <AgeStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected}  />
               <ExpiringSoonStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ) : null}

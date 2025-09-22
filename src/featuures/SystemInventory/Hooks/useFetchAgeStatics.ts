@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { IAgeStatics } from "../Models/IAgeStatics";
-import { getCustomAgeStatics } from "../Services/getCustomAgeStatics";
+import { api } from "@/utils/api-config";
 
-export const useFetchAgeStatics = (typeItem: string) => {
+type UseFetchAgeStaticsReturn = {
+    ageStatics: IAgeStatics | null;
+    loading: boolean;
+    error: string | null;
+}
+
+export const useFetchAgeStatics = (typeItem: string, idHeadquartersSelected?: number): UseFetchAgeStaticsReturn => {
     const [ageStatics, setAgeStatics] = useState<IAgeStatics | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -22,7 +28,7 @@ export const useFetchAgeStatics = (typeItem: string) => {
                 ? 'tv/statics/age'
                 : 'celular/statics/age'
 
-                const response = await getCustomAgeStatics(endPoint)
+                const response = await api.get(`${endPoint}/${idHeadquartersSelected}`);
 
                 if (response.status === 200 || response.status === 201) {
                     setAgeStatics(response.data)

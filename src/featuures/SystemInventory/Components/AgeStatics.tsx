@@ -5,12 +5,14 @@ import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 interface AgeStaticsProps {
   typeItem: string;
+  idHeadquartersSelected?: number;
 }
 
 const AgeStatics: React.FC<AgeStaticsProps> = ({
-  typeItem
+  typeItem,
+  idHeadquartersSelected
 }) => {
-  const { ageStatics, loading, error } = useFetchAgeStatics(typeItem);
+  const { ageStatics, loading, error } = useFetchAgeStatics(typeItem, idHeadquartersSelected);
 
   // Formateador para los valores en el tooltip
   const formatTooltipValue = (value: number) => {
