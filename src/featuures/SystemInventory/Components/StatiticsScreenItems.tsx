@@ -60,14 +60,14 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
           {activeSection === 1 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityTypeItens typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
-              <ExpiringSoonStatics typeItem="equipos" />
+              <ExpiringSoonStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <AgeStatics typeItem="equipos" />
               <ItemsWithLockStatics typeItem="equipos" />
               <QuantityItemsStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <ExpiringSoonStatics typeItem="inventario/general" />
+              <ExpiringSoonStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected} />
               <AgeStatics typeItem="inventario/general" />
               <QuantityItemsStatics typeItem="inventario/general" />
             </div>
@@ -79,13 +79,13 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/televisores" />
               <AgeStatics typeItem="inventario/televisores" />
-              <ExpiringSoonStatics typeItem="inventario/televisores" />
+              <ExpiringSoonStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ): activeSection === 5 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <QuantityItemsStatics typeItem="inventario/celulares"/>
               <AgeStatics typeItem="inventario/celulares" />
-              <ExpiringSoonStatics typeItem="inventario/celular" />
+              <ExpiringSoonStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ) : null}
         </div>
