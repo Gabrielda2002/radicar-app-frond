@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { IItemsWithLock } from "../Models/IItemsWithLock";
 import { api } from "@/utils/api-config";
 
-export const useFetchItemsWithLock = (typeItem: string, idHeadquartersSelected?: number) => {
+type UseFetchItemsWithLockReturn = {
+    withLock: IItemsWithLock | undefined;
+    loading: boolean;
+    error: string | null;
+}
+
+export const useFetchItemsWithLock = (typeItem: string, idHeadquartersSelected?: number): UseFetchItemsWithLockReturn => {
     const [withLock, setWithLock] = useState<IItemsWithLock>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
