@@ -62,7 +62,7 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
               <QuantityTypeItens typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <ExpiringSoonStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <AgeStatics typeItem="equipos"  idHeadquartersSelected={idHeadquartersSelected} />
-              <ItemsWithLockStatics typeItem="equipos" />
+              <ItemsWithLockStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
               <QuantityItemsStatics typeItem="equipos" />
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getItemsWithLock } from "../Services/getItemsWithLock";
 import { IItemsWithLock } from "../Models/IItemsWithLock";
+import { api } from "@/utils/api-config";
 
-export const useFetchItemsWithLock = (typeItem: string) => {
+export const useFetchItemsWithLock = (typeItem: string, idHeadquartersSelected?: number) => {
     const [withLock, setWithLock] = useState<IItemsWithLock>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,7 @@ export const useFetchItemsWithLock = (typeItem: string) => {
 
                 const endpoint = typeItem === "equipos" ? "equipments/statics/withLock" : "items/locked/dispositivos-red";
 
-                const response = await getItemsWithLock(endpoint);
+                const response = await api.get(`/${endpoint}/${idHeadquartersSelected}`);
 
                 if (response.status === 200 || response.status === 201) {
                     setWithLock(response.data);
