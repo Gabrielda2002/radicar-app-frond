@@ -80,7 +80,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Total Registros</h3>
                 <div className='flex flex-col items-center justify-center h-full'>
                   <p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
-                    {ageStatics.distribution.reduce((acc, curr) => acc + curr.value, 0)}
+                    {ageStatics.total}
                   </p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
                     {typeItem === "equipos" ? "Equipos registrados" : "Items registrados"}

@@ -1,6 +1,7 @@
 export interface IAgeStatics {
     distribution: Distribution[];
     averageAge:   AverageAge;
+    total:     number;
 }
 
 export interface AverageAge {
