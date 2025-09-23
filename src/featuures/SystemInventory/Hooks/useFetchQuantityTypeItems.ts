@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react"
-import { getQuantityTypeItems } from "../Services/getQuantityTypeItems"
 import { IQuantityTypeItems } from "../Models/IQuantityTypeItems"
+import { api } from "@/utils/api-config";
 
-export const useFetchQuantityTypeItems = (typeItem: string) => {
+type FetchQuantityTypeItemsReturn = {
+    quantity: IQuantityTypeItems[];
+    loading: boolean;
+    error: string | null;
+}
+
+export const useFetchQuantityTypeItems = (typeItem: string, idHeadquarters?: number): FetchQuantityTypeItemsReturn => {
     const [quantity, setQuantity] = useState<IQuantityTypeItems[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-
         const fetchData = async () => {
             try {
                 
@@ -16,7 +21,7 @@ export const useFetchQuantityTypeItems = (typeItem: string) => {
 
                 const endPoint = typeItem === "equipos" ? "equipments/statics/typeEquipment" : typeItem === "dispositivos-red" ? "dispositivos-red/statistics/headquarters" : "inventario/general/statistics/headquarters"
 
-                const response = await getQuantityTypeItems(endPoint)
+                const response = await api.get(`${endPoint}/${idHeadquarters}`);
 
                 if (response.status === 200 || response.status === 201) {
                     setQuantity(response.data)

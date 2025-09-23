@@ -5,10 +5,12 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from "recha
 
 interface QuantityItemsStaticsProps {
   typeItem: string;
+  idHeadquartersSelected?: number;
 }
 
 const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
   typeItem,
+  idHeadquartersSelected
 }) => {
   const COLORS = [
     "#F1BB87",
@@ -20,7 +22,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
     "#9C9583",
   ];
 
-  const { quantity, loading, error } = useFetchQuantity(typeItem);
+  const { quantity, loading, error } = useFetchQuantity(typeItem, idHeadquartersSelected);
 
   const prepareChartData = () => {
     if (!quantity || quantity.length === 0) return [];

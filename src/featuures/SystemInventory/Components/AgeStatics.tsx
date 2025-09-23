@@ -5,12 +5,14 @@ import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 interface AgeStaticsProps {
   typeItem: string;
+  idHeadquartersSelected?: number;
 }
 
 const AgeStatics: React.FC<AgeStaticsProps> = ({
-  typeItem
+  typeItem,
+  idHeadquartersSelected
 }) => {
-  const { ageStatics, loading, error } = useFetchAgeStatics(typeItem);
+  const { ageStatics, loading, error } = useFetchAgeStatics(typeItem, idHeadquartersSelected);
 
   // Formateador para los valores en el tooltip
   const formatTooltipValue = (value: number) => {
@@ -78,7 +80,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Total Registros</h3>
                 <div className='flex flex-col items-center justify-center h-full'>
                   <p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
-                    {ageStatics.distribution.reduce((acc, curr) => acc + curr.value, 0)}
+                    {ageStatics.total}
                   </p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
                     {typeItem === "equipos" ? "Equipos registrados" : "Items registrados"}

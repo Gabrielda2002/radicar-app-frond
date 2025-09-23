@@ -5,12 +5,14 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 
 interface ItemsWithLockStaticsProps {
     typeItem: "equipos" | "dispositivos-red" | "inventario/general";
+    idHeadquartersSelected?: number;
 }
 
 const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
     typeItem,
+    idHeadquartersSelected
 }) => {
-    const { withLock, loading, error } = useFetchItemsWithLock(typeItem);
+    const { withLock, loading, error } = useFetchItemsWithLock(typeItem, idHeadquartersSelected);
     
     // Colores para el gráfico circular
     const COLORS = ['#FF8042', '#0088FE']; // Naranja para bloqueados, Azul para desbloqueados

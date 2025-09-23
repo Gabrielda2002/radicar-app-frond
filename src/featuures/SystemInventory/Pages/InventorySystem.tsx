@@ -196,7 +196,7 @@ const SistemaInventario: React.FC = () => {
                     <h1 className="text-2xl font-bold mt-5  text-gray-800 dark:text-gray-200">
                       Información general
                     </h1>
-                    <StatiticsScreemItems />
+                    <StatiticsScreemItems idHeadquartersSelected={sedeSelect} />
                     <div>
                       <h2 className="mb-4 text-2xl md:text-3xl dark:text-white">
                         Categorías

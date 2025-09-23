@@ -5,12 +5,14 @@ import React from 'react';
 
 interface ExpiringSoonStaticsProps {
   typeItem: string;
+  idHeadquartersSelected?: number;
 }
 
 const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({
   typeItem,
+  idHeadquartersSelected
 }) => {
-  const { expiringSoon, loading, error } = useFetchExpiringSoon(typeItem);
+  const { expiringSoon, loading, error } = useFetchExpiringSoon(typeItem, idHeadquartersSelected);
 
   // Colores para el gráfico circular
   const COLORS = ['#0088FE', '#FF8042']; // Azul para en garantía, Naranja para sin garantía

@@ -11,6 +11,8 @@ import { FormatDate } from "@/utils/FormatDate";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import { useTickets } from "@/context/ticketContext.tsx";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
+import Select from "@/components/common/Ui/Select";
+import Input from "@/components/common/Ui/Input";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -92,31 +94,25 @@ const ProcessHelpDesk = () => {
         ]}
       />
       <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        <label className="text-lg font-bold text-stone-600 dark:text-stone-300">
-          Buscar Tickets :
-        </label>
-
         <div className="flex flex-col items-start w-full mt-2 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
-          <input
+          <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Consultar..."
-            className="block ps-2 w-full h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            placeholder="Buscar"
           />
 
           <div className="flex items-center space-x-[10px] md:ml-4 w-full md:w-auto">
-            <select
+            <Select
+              options={[
+                { value: "10", label: "10 Paginas" },
+                { value: "20", label: "20 Paginas" },
+                { value: "30", label: "30 Paginas" },
+              ]}
               name=""
               id=""
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="w-full h-10 border border-gray-300 rounded-md md:w-24 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              <option value="">Paginas</option>
-              <option value="10">10 Paginas</option>
-              <option value="20">20 Paginas</option>
-              <option value="30">30 Paginas</option>
-            </select>
+            />
           </div>
         </div>
 
@@ -181,7 +177,7 @@ const ProcessHelpDesk = () => {
                     <td className="p-2">
                       {ticket.status != "Cerrado" ? (
                         <CerrarModal
-                          IdTicket={ticket.id}
+                          ticket={ticket}
                           onTicketClosed={refetchTickets}
                         />
                       ) : (
@@ -212,7 +208,7 @@ const ProcessHelpDesk = () => {
                     <div>
                       {ticket.status != "Cerrado" ? (
                         <CerrarModal
-                          IdTicket={ticket.id}
+                          ticket={ticket}
                           onTicketClosed={refetchTickets}
                         />
                       ) : (
