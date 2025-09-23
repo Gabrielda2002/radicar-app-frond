@@ -2,9 +2,10 @@ import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import { CreateTicket } from "../Services/CreateTickets";
-import { useFetchCategory } from "../Hooks/useFetchCategory";
+// Lazy data hooks to avoid fetching until modal opens
+import { useLazyFetchCategory } from "../Hooks/useLazyFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { useFetchPriority } from "../Hooks/useFetchPriority";
+import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
 import { Bounce, toast } from "react-toastify";
 import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
 import { useTickets } from "@/context/ticketContext.tsx";
@@ -42,8 +43,8 @@ const HelpDesk = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { dataCategory } = useFetchCategory(true);
-  const { dataPriority } = useFetchPriority(true);
+  const { dataCategory, fetchCategory } = useLazyFetchCategory();
+  const { dataPriority, fetchPriority } = useLazyFetchPriority();
 
   const user = localStorage.getItem("user");
 
@@ -133,11 +134,16 @@ const HelpDesk = () => {
     setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
   };
 
+  const handleOpenModal = async () => {
+    setIsModalOpen(true);
+    await Promise.all([fetchCategory(), fetchPriority()]);
+  };
+
   if (loading || validatingTicket) return <LoadingSpinner />;
   return (
     <>
       <Button
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleOpenModal}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
         title="Solicitar Soporte"
         variant="any"
