@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { updatePasswordUsuario } from "../services/UpdatePasswordUsuario";
+import Input from "@/components/common/Ui/Input";
+import Button from "@/components/common/Ui/Button";
 
 interface PasswordUpdateFormProps {
   userId: string;
@@ -67,88 +69,71 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
 
   return (
     <form onSubmit={formikPassword.handleSubmit}>
-      <h2 className="mb-4 text-2xl">Cambiar contraseña</h2>
+      <h2 className="my-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
+        Cambiar contraseña
+      </h2>
       <div className="mb-4">
-        <label
-          htmlFor="currentPassword"
-          className="block mb-1 text-sm text-gray-700 dark:text-gray-300"
-        >
-          Contraseña actual
-        </label>
-        <input
+        <Input
+          label="Contraseña actual"
           type="password"
           id="currentPassword"
           name="currentPassword"
           onChange={formikPassword.handleChange}
           onBlur={formikPassword.handleBlur}
           value={formikPassword.values.currentPassword}
-          className="w-full px-3 py-2 text-gray-900 bg-white rounded-md dark:bg-gray-700 dark:text-gray-300"
+          error={
+            formikPassword.touched.currentPassword &&
+            formikPassword.errors.currentPassword
+              ? formikPassword.errors.currentPassword
+              : undefined
+          }
+          touched={formikPassword.touched.currentPassword}
         />
-        {formikPassword.touched.currentPassword &&
-          formikPassword.errors.currentPassword && (
-            <div className="mt-1 text-sm text-red-500">
-              {formikPassword.errors.currentPassword}
-            </div>
-          )}
       </div>
       <div className="mb-4">
-        <label
-          htmlFor="newPassword"
-          className="block mb-1 text-sm text-gray-800 dark:text-gray-300"
-        >
-          Contraseña nueva
-        </label>
-        <input
+        <Input
+          label="Contraseña nueva"
           type="password"
           id="newPassword"
           name="newPassword"
           onChange={formikPassword.handleChange}
           onBlur={formikPassword.handleBlur}
           value={formikPassword.values.newPassword}
-          className="w-full px-3 py-2 text-gray-900 bg-white rounded-md dark:bg-gray-700 dark:text-gray-300"
+          error={
+            formikPassword.touched.newPassword &&
+            formikPassword.errors.newPassword
+              ? formikPassword.errors.newPassword
+              : undefined
+          }
+          touched={formikPassword.touched.newPassword}
         />
-        {formikPassword.touched.newPassword &&
-          formikPassword.errors.newPassword && (
-            <div className="mt-1 text-sm text-red-500">
-              {formikPassword.errors.newPassword}
-            </div>
-          )}
       </div>
       <div className="mb-4">
-        <label
-          htmlFor="confirmPassword"
-          className="block mb-1 text-sm text-gray-800 dark:text-gray-300"
-        >
-          Confirmar contraseña
-        </label>
-        <input
+        <Input
+          label="Confirmar contraseña nueva"
           type="password"
           id="confirmPassword"
           name="confirmPassword"
           onChange={formikPassword.handleChange}
           onBlur={formikPassword.handleBlur}
           value={formikPassword.values.confirmPassword}
-          className="w-full px-3 py-2 text-gray-900 rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
+          error={
+            formikPassword.touched.confirmPassword &&
+            formikPassword.errors.confirmPassword
+              ? formikPassword.errors.confirmPassword
+              : undefined
+          }
+          touched={formikPassword.touched.confirmPassword}
         />
-        {formikPassword.touched.confirmPassword &&
-          formikPassword.errors.confirmPassword && (
-            <div className="mt-1 text-sm text-red-500">
-              {formikPassword.errors.confirmPassword}
-            </div>
-          )}
       </div>
       <div className="mt-6">
-        <button
-          type="submit"
-          className={`px-4 py-2 text-white rounded-md bg-teal-900    hover:bg-dark duration-200 
-                        ${
-                          !formikPassword.dirty || formikPassword.isSubmitting
-                            ? "opacity-50 cursor-not-allowed"
-                            : "active:bg-emerald-950 dark:bg-teal-600 dark:hover:bg-teal-800"
-                        }`}
+        <Button
+          variant="secondary"
+          disabled={!formikPassword.dirty || formikPassword.isSubmitting}
+          isLoading={formikPassword.isSubmitting}
         >
           Actualizar contraseña
-        </button>
+        </Button>
       </div>
       {errorPassword && (
         <div className="mt-2 text-red-500">{errorPassword}</div>
