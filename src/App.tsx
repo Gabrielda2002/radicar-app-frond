@@ -37,7 +37,7 @@ function AppRoutes() {
             path="/*"
             element={
               <div className="grid min-h-screen grid-rows-layout">
-                <Navbar />
+                <Navbar />  
                 <div className="relative flex">
                   <SidebarImproved />
                   <main className="flex-1 overflow-auto bg-slate-200 dark:bg-gray-900">
