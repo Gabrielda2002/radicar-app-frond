@@ -5,7 +5,6 @@ import arrowUp from "/assets/arrow-up.svg";
 
 interface CategoryProps {
   title: string;
-  // Modificamos el tipo para aceptar tanto un componente como una cadena
   icon: React.ComponentType<{ className?: string }> | string;
   isOpen: boolean;
   toggle: () => void;
@@ -19,7 +18,6 @@ const Category: React.FC<CategoryProps> = ({
   toggle,
   children,
 }) => {
-  // Verificamos si el icono es un componente o una cadena
   const IconComponent = typeof icon !== 'string' ? icon : null;
   
   return (  

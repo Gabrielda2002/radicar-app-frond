@@ -126,7 +126,7 @@ const SideBar: FC = () => {
     <aside
       ref={sidebarRef}
       className={`z-10 flex flex-col transition-all duration-700 ease-in-out overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l bg-white dark:bg-gray-800 dark:border-gray-700 ${
-        isCollapsed ? "-translate-x-full w-16 absolute" : "w-60 absolute"
+        isCollapsed ? "-translate-x-full w-16 absolute" : "w-72 absolute"
       } px-4 py-3 h-full`}
     >
       <div className="flex flex-col justify-between flex-1">
@@ -151,7 +151,6 @@ const SideBar: FC = () => {
                         : "group-hover:text-gray-200 dark:group-hover:invert"
                     } `}
                   />
-                  {!isCollapsed && (
                     <span
                       className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                         isActive
@@ -161,17 +160,14 @@ const SideBar: FC = () => {
                     >
                       Inicio
                     </span>
-                  )}
                 </div>
               )}
             </NavLink>
 
             {/* Categoria Gestiones */}
-            {!isCollapsed && (
               <label className="px-2 text-lg font-bold text-[#049AE7] uppercase">
                 Servicios
               </label>
-            )}
             <Category
               title="Gestión de Calidad"
               icon={FaFolderOpen}
@@ -327,11 +323,9 @@ const SideBar: FC = () => {
                       alt=""
                       className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                     />
-                    {!isCollapsed && (
                       <span className="text-sm font-medium whitespace-nowrap stroke-inherit">
                         Modal de reportes
                       </span>
-                    )}
                   </button>
                 </Category>
               </div>
@@ -357,7 +351,6 @@ const SideBar: FC = () => {
                         alt=""
                         className="w-5 h-5 mx-2 group-hover:invert dark:invert"
                       />
-                      {!isCollapsed && (
                         <span
                           className={`absolute left-8 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                             isActive
@@ -367,7 +360,6 @@ const SideBar: FC = () => {
                         >
                           Gestión de Tickets
                         </span>
-                      )}
                     </div>
                   )}
                 </NavLink>
@@ -377,11 +369,9 @@ const SideBar: FC = () => {
             {/* Categoria de administrador */}
             {[1].includes(Number(rol)) && (
               <div className="flex flex-col space-y-3">
-                {!isCollapsed && (
                   <label className="px-2 text-lg font-bold text-[#049AE7] uppercase dark:text-[#4F9BDC]">
                     Administrador
                   </label>
-                )}
                 {/* Categoria de tablas de radicado */}
                 <Category
                   title="Tablas Radicación"
@@ -405,12 +395,6 @@ const SideBar: FC = () => {
                     to="/tabla-diagnostico"
                     icon={report}
                     title="Diagnostico"
-                    isCollapsed={isCollapsed}
-                  />
-                  <SubCategory
-                    to="/tabla-radicadores"
-                    icon={report}
-                    title="Radicadores"
                     isCollapsed={isCollapsed}
                   />
                   <SubCategory

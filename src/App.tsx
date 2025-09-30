@@ -4,7 +4,6 @@ import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout/layout.tsx";
 import Navbar from "./components/layout/navbar/page/NavBar.tsx";
 import Login from "./featuures/auth/Page/login.tsx";
-import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 import { Route, Routes, Navigate } from "react-router-dom";
 import ContextualizedRoutes from "./components/Routes/ContextualizedRoutes.tsx";
 const CookieConsent = lazy(
@@ -23,6 +22,7 @@ import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
 
 import "@pdfslick/react/dist/pdf_viewer.css";
+import SidebarImproved from "./components/layout/sidebar/SidebarImproved.tsx";
 
 function AppRoutes() {
   return (
@@ -39,7 +39,7 @@ function AppRoutes() {
               <div className="grid min-h-screen grid-rows-layout">
                 <Navbar />
                 <div className="relative flex">
-                  <SideBar />
+                  <SidebarImproved />
                   <main className="flex-1 overflow-auto bg-slate-200 dark:bg-gray-900">
                     <Layout>
                       <ContextualizedRoutes />
