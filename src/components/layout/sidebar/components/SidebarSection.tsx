@@ -16,11 +16,7 @@ const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({
   onToggleAccordion,
   onAction
 }) => {
-  const handleItemAction = (item: any) => {
-    if (typeof item.action === 'string' && onAction) {
-      onAction(item.action);
-    }
-  };
+
 
   return (
     <div className="space-y-3">
@@ -41,13 +37,14 @@ const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({
                 item={item}
                 isOpen={isOpen}
                 onToggle={() => onToggleAccordion(item.id)}
+                onAction={onAction}
               />
             );
           }
 
           return (
-            <div key={item.id} onClick={() => handleItemAction(item)}>
-              <SidebarItem item={item} />
+            <div key={item.id}>
+              <SidebarItem item={item} onAction={onAction} />
             </div>
           );
         })}

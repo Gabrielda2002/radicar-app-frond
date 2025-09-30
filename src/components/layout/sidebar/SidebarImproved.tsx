@@ -21,8 +21,11 @@ const SidebarImproved: React.FC<SidebarProps> = ({ className = '' }) => {
   const filteredSections = filterSectionsByPermissions(SIDEBAR_CONFIG);
 
   // Modal handlers
-  const openModal = useCallback(() => setIsModalOpen(true), []);
-  const closeModal = useCallback(() => setIsModalOpen(false), []);
+  const openModal = useCallback(() => {
+  }, []);
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
   // Action handlers
   const { handleAction } = useSidebarActions({

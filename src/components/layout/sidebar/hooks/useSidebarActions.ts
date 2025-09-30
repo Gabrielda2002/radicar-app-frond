@@ -6,8 +6,10 @@ export interface SidebarActions {
 
 export const useSidebarActions = (actions: SidebarActions) => {
   const handleAction = useCallback((actionKey: string) => {
+    console.log('🚀 Action triggered:', actionKey);
     switch (actionKey) {
       case 'openReportsModal':
+        console.log('📱 Opening reports modal...');
         actions.openReportsModal();
         break;
       default:

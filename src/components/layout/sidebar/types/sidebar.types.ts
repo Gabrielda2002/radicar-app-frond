@@ -29,6 +29,7 @@ export interface CategoryProps {
   onToggle: () => void;
   children?: ReactNode;
   level?: number;
+  onAction?: (actionKey: string) => void;
 }
 
 export interface SubCategoryProps {
@@ -39,6 +40,7 @@ export interface SubCategoryProps {
 export interface SidebarItemProps {
   item: MenuItem;
   level?: number;
+  onAction?: (actionKey: string) => void;
 }
 
 export interface AccordionState {

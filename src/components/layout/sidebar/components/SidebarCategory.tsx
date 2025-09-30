@@ -9,7 +9,8 @@ const SidebarCategory: React.FC<CategoryProps> = ({
   isOpen,
   onToggle,
   children,
-  level = 0
+  level = 0,
+  onAction
 }) => {
   const { getCategoryClass, getIconClass, getImageClass, getTextClass } = useSidebarStyles();
   const IconComponent = typeof item.icon !== 'string' ? item.icon : null;
@@ -54,9 +55,10 @@ const SidebarCategory: React.FC<CategoryProps> = ({
                     isOpen={false} // Nested categories start closed
                     onToggle={() => {}} // Handle nested toggle if needed
                     level={level + 1}
+                    onAction={onAction}
                   />
                 ) : (
-                  <SidebarItem item={child} level={level + 1} />
+                  <SidebarItem item={child} level={level + 1} onAction={onAction} />
                 )}
               </div>
             ))}

@@ -3,13 +3,15 @@ import { NavLink } from 'react-router-dom';
 import { SidebarItemProps } from '../types/sidebar.types';
 import { useSidebarStyles } from '../hooks/useSidebarStyles';
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ item, level = 0 }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ item, level = 0, onAction }) => {
   const { getLinkClass, getIconClass, getImageClass, getTextClass } = useSidebarStyles();
   const IconComponent = typeof item.icon !== 'string' ? item.icon : null;
 
   const handleAction = () => {
     if (typeof item.action === 'function') {
       item.action();
+    } else if (typeof item.action === 'string' && onAction) {
+      onAction(item.action);
     }
   };
 
