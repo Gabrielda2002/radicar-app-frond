@@ -9,6 +9,7 @@ interface ThemeToggleProps {
 
 import sun from "/assets/sun.svg";
 import moon from "/assets/moon.svg";
+import Button from "@/components/common/Ui/Button";
 
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   theme,
@@ -31,7 +32,8 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       : "relative p-2 text-gray-800 bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 group";
 
   return (
-    <button
+    <Button
+      variant="any"
       onClick={onToggle}
       aria-label="Toggle theme"
       title="Modo Oscuro / Claro"
@@ -42,7 +44,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       ) : (
         <img src={sun} alt="Sun Icon" className={`${sizeClasses} invert`} />
       )}
-    </button>
+    </Button>
   );
 };
 
