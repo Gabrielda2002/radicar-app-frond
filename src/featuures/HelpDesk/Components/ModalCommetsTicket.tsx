@@ -26,13 +26,14 @@ const ModalCommetsTicket: React.FC<ModalCommentsTicketProps> = ({
   return (
     <>
       <Button
-        variant="secondary"
+        variant="any"
         onClick={() => {
           setIsModalOpen(true);
           fetchComments(idTicket);
         }}
         title="Comentarios"
         icon={<MessageSquare className="w-4 h-4" />}
+        className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
       />
       {/* Modal */}
       

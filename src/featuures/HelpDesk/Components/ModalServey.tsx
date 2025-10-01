@@ -8,6 +8,7 @@ import { useServey } from "../Hooks/useServey";
 import { Star } from "lucide-react";
 import { Bounce, toast } from "react-toastify";
 import { useNotification } from "@/context/notificationContext";
+import Button from "@/components/common/Ui/Button";
 
 interface ModalServeyProps {
   idTicket: number;
@@ -95,14 +96,15 @@ const ModalServey: React.FC<ModalServeyProps> = ({ idTicket }) => {
 
   return (
     <>
-      <button
+      <Button
+        variant="any"
         type="button"
         onClick={() => setShowModal(true)}
         className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
         title="Encuesta Satisfacción"
       >
         <Star className="w-4 h-4" />
-      </button>
+      </Button>
       {showModal && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center  transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm ${

@@ -7,6 +7,7 @@ import ModalCommetsTicket from "@/featuures/HelpDesk/Components/ModalCommetsTick
 import { Check } from "lucide-react";
 import { useAuth } from "@/context/authContext";
 import { FormatDate } from "@/utils/FormatDate";
+import Button from "./common/Ui/Button";
 
 const NotificationBell: React.FC = () => {
   const {
@@ -87,22 +88,24 @@ const NotificationBell: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mx-auto mt-4 -mr-32 overflow-hidden bg-white rounded-lg shadow-xl md:-mr-0 w-80 dark:bg-gray-800">
+        <div className="absolute right-0 p-2 z-50 mx-auto mt-4 -mr-32 overflow-hidden bg-white rounded-lg shadow-xl md:-mr-0 w-80 dark:bg-gray-800">
           <div className="flex items-center justify-between p-2 border-b dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
               Notificaciones
             </h3>
-            <button
+            <Button
+              variant="any"
               onClick={() => setIsOpen(false)}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
               ×
-            </button>
+            </Button>
           </div>
 
           {/* Botón para activar notificaciones push */}
           <div className="p-2 text-right border-b dark:border-gray-700">
-            <button
+            <Button
+              variant="any"
               onClick={handleSubscribeToPush}
               disabled={pushEnabled}
               className={`text-sm px-3 py-1 rounded ${
@@ -114,7 +117,7 @@ const NotificationBell: React.FC = () => {
               {pushEnabled
                 ? "Notificaciones activadas"
                 : "Activar notificaciones push"}
-            </button>
+            </Button>
           </div>
 
           <div className="overflow-y-auto max-h-96">
@@ -128,7 +131,7 @@ const NotificationBell: React.FC = () => {
                 .map((notification) => (
                   <div
                     key={notification.id}
-                    className={`p-4 border-b dark:border-gray-700 ${
+                    className={`p-4 border-b dark:border-gray-700 mb-5 rounded-lg ${
                       !notification.isRead ? "bg-blue-50 dark:bg-gray-700" : ""
                     }`}
                   >
@@ -141,8 +144,9 @@ const NotificationBell: React.FC = () => {
                     <p className="text-xs text-gray-400 dark:text-gray-500">
                       {FormatDate(notification.createdAt, true)}
                     </p>
+
                     {/* boton encuesta */}
-                    <div className="flex justify-end gap-3">
+                    <div className="flex justify-center mt-2 space-x-2">
                       <div className="flex items-center">
                         <ModalCommetsTicket
                           idTicket={
@@ -164,14 +168,14 @@ const NotificationBell: React.FC = () => {
                       {/* marcar como leido solo a los roles 1*/}
                       {[1, 17].includes(Number(rol)) && (
                         <div className="flex items-center">
-                          <button
+                          <Button
+                            variant="any"
                             onClick={() => {
                               markAsRead(notification.id);
                             }}
-                            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                          >
-                            <Check className="w-4 h-4" />
-                          </button>
+                            className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
+                            icon={<Check className="w-4 h-4" />}
+                          />
                         </div>
                       )}
                     </div>
