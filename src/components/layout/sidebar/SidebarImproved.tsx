@@ -22,6 +22,7 @@ const SidebarImproved: React.FC<SidebarProps> = ({ className = '' }) => {
 
   // Modal handlers
   const openModal = useCallback(() => {
+    setIsModalOpen(true);
   }, []);
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
