@@ -88,17 +88,6 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
           if (success) {
             onClose();
             handleRefresh();
-            toast.success(
-              `El ${
-                itemType === "carpetas" ? "carpeta" : "archivo"
-              } se ha movido correctamente.`,
-              {
-                position: "bottom-right",
-                autoClose: 5000,
-                theme: "colored",
-                transition: Bounce,
-              }
-            );
           } else {
             toast.error(
               `Error al mover el ${

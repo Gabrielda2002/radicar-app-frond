@@ -1,7 +1,6 @@
 import Input from "@/components/common/Ui/Input";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import { useState, useCallback } from "react";
-import { toast } from "react-toastify";
 
 type ModalCrearCarpetaProps = {
   standOpen: boolean;
@@ -20,7 +19,6 @@ const ModalCrearCarpeta = ({
   const handleCreateFolder = () => {
     if (folderName.trim()) {
       createNewFolder(folderName);
-      toast.success("Carpeta creada correctamente");
       toggleModal();
     } else {
       setError("El nombre de la carpeta no puede estar vacío");

@@ -72,7 +72,6 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
 
   const handleUpload = () => {
     onUpload();
-    toast.success("Archivos cargados con éxito");
   };
 
   return (
