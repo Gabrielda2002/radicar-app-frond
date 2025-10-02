@@ -42,7 +42,6 @@ const SubCategory: React.FC<SubCategoryProps> = ({
               }`}
             />
           )}
-          {!isCollapsed && (
             <span
               className={`absolute left-9 mx-2 text-sm font-medium whitespace-nowrap stroke-inherit stroke-[0.75] ${
                 isActive ? "text-white dark:text-gray-200" : ""
@@ -50,7 +49,6 @@ const SubCategory: React.FC<SubCategoryProps> = ({
             >
               {title}
             </span>
-          )}
         </div>
       )}
     </NavLink>

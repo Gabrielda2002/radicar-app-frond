@@ -139,7 +139,7 @@ const ProcessHelpDesk = () => {
                   <th className="p-2">Accion</th>
                 </tr>
               </thead>
-              <tbody className="text-xs text-center dark:text-gray-200">
+              <tbody className="text-xs text-center justify-center items-center dark:text-gray-200">
                 {currentData().map((ticket) => (
                   <tr key={ticket.id} className="border-b dark:border-gray-700">
                     <td className="p-2">{ticket.id}</td>

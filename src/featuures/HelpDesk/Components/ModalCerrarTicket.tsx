@@ -112,11 +112,12 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   return (
     <>
       <Button
-        variant="secondary"
+        variant="any"
         onClick={() => setShowModal(true)}
         title="Cambiar estado"
+        className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
       >
-        O
+      O
       </Button>
 
       <FormModal

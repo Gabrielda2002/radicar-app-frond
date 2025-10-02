@@ -22,7 +22,6 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
     const user = localStorage.getItem("user");
 
   const headquarterCurrentUser = user ? JSON.parse(user).headquartersId : "";
-  console.log("headquarterCurrentUser", headquarterCurrentUser);
 
   const loadEstados = true;
   const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
