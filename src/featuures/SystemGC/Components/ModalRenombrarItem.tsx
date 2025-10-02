@@ -1,5 +1,8 @@
-import ModalDefault from "@/components/common/Ui/ModalDefault";
-import React, { useCallback, useState } from "react";
+import FormModal from "@/components/common/Ui/FormModal";
+import Input from "@/components/common/Ui/Input";
+import { useFormik } from "formik";
+import React from "react";
+import * as Yup from "yup";
 
 type ModalRenombrarItemProps = {
   standOpen: boolean;
@@ -12,74 +15,64 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   standOpen,
   toggleModal,
   renameItem,
-  nameItemOld
+  nameItemOld,
 }) => {
-  const [Error, setError] = useState("");
-  const [folderNewName, setFolderNewName] = useState<string>(nameItemOld || "");
 
-  const handleRename = useCallback(() => {
-    if (folderNewName.trim()) {
-      renameItem(folderNewName);
-      toggleModal();
-    } else {
-      alert("El nombre de la carpeta es requerido");
-    }
-  }, [folderNewName, renameItem, toggleModal]);
+  const SCHEMA_VALIDATION = Yup.object({
+    folderNewName: Yup.string()
+      .required("El nombre de la carpeta es requerido")
+      .max(60, "El nombre de la carpeta no debe exceder los 60 caracteres")
+      .matches(
+        /^[a-zA-Z0-9\s]+$/,
+        "Solo se permiten caracteres alfanuméricos y espacios"
+      ),
+  });
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const regex = /^[a-zA-Z0-9\s]{1,60}$/;
-
-      const inputValue = e.target.value;
-
-      if (!regex.test(inputValue)) {
-        setError(
-          "Solo se permiten 60 caracteres alfanuméricos, sin caracteres especiales"
-        );
-      } else {
-        setError("");
+  const formik = useFormik({
+    initialValues: { folderNewName: nameItemOld || "" },
+    validationSchema: SCHEMA_VALIDATION,
+    onSubmit: (values) => {
+      try {
+        renameItem(values.folderNewName);
+        setTimeout(() => {
+          formik.resetForm();
+          toggleModal();
+        }, 1000);
+      } catch (error) {
+        console.error("Error renombrando la carpeta:", error);
       }
-      console.log(Error);
-      setFolderNewName(inputValue);
     },
-    []
-  );
+  });
 
   return (
     <>
-      <ModalDefault
+      <FormModal
         isOpen={standOpen}
         onClose={toggleModal}
         title="Renombrar Carpeta"
-        funtionClick={handleRename}
-        showSubmitButton={true}
-        isSubmitting={false}
-        isValid={!Error && folderNewName.trim() !== ""}
+        onSubmit={formik.handleSubmit}
+        isSubmitting={formik.isSubmitting}
+        isValid={formik.isValid}
         submitText="Renombrar"
         cancelText="Cerrar"
-        footerVariant="form"
         size="lg"
       >
         <div className="grid grid-cols-1 gap-10 mb-4">
           <div className="p-4">
-            <label className="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-200">
-              Nombre :
-            </label>
-            <input
+            <Input
+              label="Nombre"
               type="text"
-              value={folderNewName}
+              value={formik.values.folderNewName}
               placeholder="Ingrese el nombre..."
-              className={`w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white ${
-                Error
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-              onChange={handleInputChange}
+              onChange={formik.handleChange}
+              error={formik.errors.folderNewName ? formik.errors.folderNewName : undefined}
+              touched={formik.touched.folderNewName ? formik.touched.folderNewName : undefined}
+              name="folderNewName"
+              required
             />
-            {Error && <p className="mt-2 text-red-500">{Error}</p>}
           </div>
         </div>
-      </ModalDefault>
+      </FormModal>
     </>
   );
 };

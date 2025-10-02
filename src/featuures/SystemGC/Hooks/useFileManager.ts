@@ -8,6 +8,7 @@ import {
   renameItems,
   uploadFile,
 } from "@/utils/api-config";
+import { toast } from "react-toastify";
 
 interface FileItem {
   // Renombrado de File a FileItem
@@ -91,10 +92,10 @@ export const useFileManager = (
 
   // Function to create a new folder
   const createNewFolder = async (name: string) => {
-    // if (!currentFolderId) return;
     try {
       await createFolder(currentFolderId || null, name, section);
-      await fetchContents(); // Reload contents after creating a folder
+      await fetchContents();
+      toast.success("Carpeta creada con éxito!");
     } catch (err: any) {
       if (err.response?.status === 500) {
         setError(
@@ -108,11 +109,10 @@ export const useFileManager = (
 
   // funcion para subir un archivo
   const uploadNewFile = async (formData: FormData, id: number | string) => {
-    // Usa el tipo global File ahora
-    // if (!currentFolderId) return;
     try {
       await uploadFile(formData, id);
-      await fetchContents(); // Reload contents after uploading a file
+      await fetchContents();
+      toast.success("Archivo subido con éxito!") 
     } catch (err: any) {
       if (err.response?.status === 500) {
         setError(
@@ -128,7 +128,12 @@ export const useFileManager = (
   const deleteItemById = async (id: string, type: "carpetas" | "archivo") => {
     try {
       await deleteItem(id, type);
-      await fetchContents(); // Reload contents after deleting an item
+      await fetchContents();
+      toast.success(
+        type === "carpetas"
+          ? "Carpeta eliminada con éxito!"
+          : "Archivo eliminado con éxito!"
+      );
     } catch (err: any) {
       if (err.response?.status === 500) {
         setError(
@@ -196,8 +201,10 @@ export const useFileManager = (
     type: "carpetas" | "archivo"
   ) => {
     try {
+      setLoading(true);
       await renameItems(id, currentFolderId || null, name, type);
-      await fetchContents(); // Reload contents after renaming an item
+      await fetchContents(); 
+      toast.success("Renombrado con éxito!");
     } catch (err: any) {
       if (err.response?.status === 500) {
         setError(
@@ -206,6 +213,8 @@ export const useFileManager = (
       } else {
         setError(err.response?.data?.message);
       }
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -218,6 +227,7 @@ export const useFileManager = (
       setLoading(true);
       await api.put(`/${type}/${itemId}/move`, { newParentId, section });
       await fetchContents();
+      toast.success("Movimiento realizado con éxito!");
       return true;
     } catch (error: any) {
       if (error.response?.status === 500) {
