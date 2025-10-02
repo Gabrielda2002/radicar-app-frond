@@ -78,12 +78,6 @@ const FileList: React.FC<FileListProps> = ({
 
   const handleRename = (fileId: string, newName: string) => {
     renameItem(fileId, newName, "archivo");
-    toast.success("Archivo renombrado con éxito!", {
-      position: "bottom-right",
-      autoClose: 5000,
-      theme: "colored",
-      transition: Bounce,
-    });
   };
 
   const handleClosePdfViewer = () => {

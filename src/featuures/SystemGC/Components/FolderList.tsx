@@ -74,19 +74,6 @@ const FolderList: React.FC<FolderListProps> = ({
   const handleRename = (folderId: string, newName: string) => {
     //Llama la funcion de renombrado
     renameItem(folderId, newName, "carpetas");
-
-    //Muestra la notificacion despues de renombrar la carpeta
-    toast.success("Carpeta renombrada con éxito!", {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
   };
 
   // Función para determinar el icono según la sección y nombre de carpeta
