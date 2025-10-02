@@ -12,7 +12,7 @@ const SubCategory: React.FC<SubCategoryProps> = ({
   to,
   icon,
   title,
-  isCollapsed,
+  // isCollapsed,
 }) => {
 
   const IconComponent = typeof icon !== 'string' ? icon : null;
