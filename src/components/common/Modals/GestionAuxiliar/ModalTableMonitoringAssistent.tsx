@@ -12,7 +12,7 @@ import ModalDefault from "../../Ui/ModalDefault";
 interface ModalGestionAuxiliarProps {
   isOpen: boolean;
   onClose: () => void;
-  radicacion: Cup | null;
+  cup: Cup | null;
   cirugias: programacion | null;
   cupsRadicado?: CupCirugia[] | null;
 }
@@ -20,11 +20,11 @@ interface ModalGestionAuxiliarProps {
 const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   isOpen,
   onClose,
-  radicacion,
+  cup,
   cirugias,
   cupsRadicado,
 }) => {
-  // se hace una sobre carga para que la funcion reciba un array de seguimientos de radicacion o de cirugias
+  // se hace una sobre carga para que la funcion reciba un array de seguimientos de cup o de cirugias
   function getUltimoEstado(seguimientos: Seguimiento[]): string | null;
   function getUltimoEstado(
     seguimientos: GestionAuxiliarCirugia[]
@@ -46,11 +46,11 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     return null;
   }
 
-  // obtener el ultimo estao de la cirugia y radicacion
+  // obtener el ultimo estao de la cirugia y cup
   const ultimoEstadoCirugia = useMemo(
     () =>
-      radicacion && radicacion.seguimiento
-        ? getUltimoEstado(radicacion.seguimiento)
+      cup && cup.seguimiento
+        ? getUltimoEstado(cup.seguimiento)
         : null,
     []
   );
@@ -71,7 +71,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     ultimoEstadoRadicacion === "Cancelado";
 
   // Si el modal no está abierto o no hay datos de radicación ni cirugías, no renderiza nada.
-  if (!isOpen || (!cirugias && !radicacion)) return null;
+  if (!isOpen || (!cirugias && !cup)) return null;
 
   const seguimientos = cupsRadicado?.flatMap((c) => c.seguimiento) ?? [];
 
@@ -86,7 +86,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
       >
         <div>
           <ModalGestionServicio
-            idRadicado={radicacion?.id || null}
+            idCups={cup?.id || null}
             idCirugias={cirugias?.id || null}
             disabledButton={isDisabled}
           />
@@ -119,7 +119,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                 </tbody>
               </table>
             </div>
-          ) : !radicacion ? (
+          ) : !cup ? (
             // Mostrar mensaje solo si no hay ni cirugías ni radicaciones
             <div className="p-2 text-center text-stone-400 dark:text-stone-500">
               No se han generado seguimientos...
@@ -160,7 +160,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
           ) : null}
 
           {/* Segunda tabla: Radicaciones */}
-          {radicacion && radicacion.seguimiento.length > 0 ? (
+          {cup && cup.seguimiento.length > 0 ? (
             <div className="flex justify-center w-full p-2">
               <table className="max-h-[100vh] w-auto overflow-y-auto m-2">
                 <thead className="text-center">
@@ -172,7 +172,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
                   </tr>
                 </thead>
                 <tbody className="mt-2 text-sm text-center break-words dark:text-gray-200">
-                  {radicacion.seguimiento.map((seguimiento) => (
+                  {cup.seguimiento.map((seguimiento) => (
                     <tr key={seguimiento.id}>
                       <td className="max-w-[400px]">
                         {seguimiento.observation}

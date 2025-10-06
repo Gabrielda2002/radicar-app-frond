@@ -72,10 +72,11 @@ const TablaRadicacion = () => {
     setShowCookieAlert(false);
   };
 
-  if (loading) return <LoadingSpinner duration={100000} />;
-
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => setIsExpanded(!isExpanded);
+
+  if (loading) return <LoadingSpinner duration={100000} />;
+
   return (
     <>
       <ModalSection
@@ -483,7 +484,7 @@ const TablaRadicacion = () => {
               <ModalGestionAuxiliar
                 isOpen={isOpenGestionAuxiliar}
                 onClose={() => setIsOpenGestionAuxiliar(false)}
-                radicacion={selectedRadicacion as Cup | null} // Se asegura que sea Cup
+                cup={selectedRadicacion as Cup | null} // Se asegura que sea Cup
                 cirugias={null}
               />
             </Suspense>

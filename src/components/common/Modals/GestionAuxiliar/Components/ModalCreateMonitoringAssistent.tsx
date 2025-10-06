@@ -11,16 +11,18 @@ import { useCreateMonitoringRaSg } from "../Hooks/useCreateMonitoringRaSg";
 import { toast } from "react-toastify";
 
 interface ModalGestionServicioProps {
-  idRadicado: number | null;
+  idCups: number | null;
   idCirugias: number | null;
   disabledButton?: boolean;
 }
 
 const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
-  idRadicado,
+  idCups,
   idCirugias,
   disabledButton = false,
 }) => {
+
+  console.log(idCups);
   const { createMonitoring, error, loading } = useCreateMonitoringRaSg();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -65,8 +67,8 @@ const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
           formData.append("surgeryId", idCirugias.toString());
           formData.append("userId", idUsuario);
           endPoint = "seguimiento-auxiliar-cirugia";
-        } else if (idRadicado !== null) {
-          formData.append("idRadicacion", idRadicado.toString());
+        } else if (idCups !== null) {
+          formData.append("idRadicacion", idCups.toString());
           formData.append("userId", idUsuario);
           endPoint = "seguimientos-auxiliares";
         }
