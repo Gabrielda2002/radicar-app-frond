@@ -16,6 +16,7 @@ import usePagination from "@/hooks/usePagination";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import { FormatDate } from "@/utils/FormatDate";
 
 const ModalProgramGoals = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,6 +32,7 @@ const ModalProgramGoals = () => {
     "headquarters",
     "professional",
     "program",
+    "createdAt"
   ]);
 
   const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
@@ -132,6 +134,7 @@ const ModalProgramGoals = () => {
                   <th>Sede</th>
                   <th>Profesional</th>
                   <th>Meta</th>
+                  <th>Fecha Creación</th>
                   {[1, 20, 21].includes(Number(rol)) && (
                     <th>Meta siguiente mes</th>
                   )}
@@ -163,6 +166,7 @@ const ModalProgramGoals = () => {
                         setActiveFieldId={setActiveFieldId}
                       />
                     </td>
+                    <td>{FormatDate(p.createdAt, false)}</td>
                     {[1, 20, 21].includes(Number(rol)) && (
                       <td>
                         {editingRows[p.id] ? (

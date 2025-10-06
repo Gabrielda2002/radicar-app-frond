@@ -6,4 +6,5 @@ export interface IProgramsGoals {
     month: number;
     professional: string;
     headquarters: string;
+    createdAt: Date;
 }
