@@ -393,7 +393,7 @@ const TablaCirugias = () => {
         <ModalGestionAuxiliar
           isOpen={isOpenGestion}
           onClose={() => setIsOpenGestion(false)}
-          radicacion={null}
+          cup={null}
           cirugias={selectedCirugia}
           cupsRadicado={cupsRadicado}
         />
