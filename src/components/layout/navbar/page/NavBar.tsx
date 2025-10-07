@@ -23,6 +23,7 @@ import { SUPPORT_LINKS } from "../config/navBarConfig";
 import SupportMenu from "../components/SupportMenu";
 import UserMenu from "../components/UserMenu";
 import ThemeToggle from "../components/ThemeToggle";
+import ModalRequestPermission from "@/featuures/Permission/components/ModalRequestPermission";
 import type { UserNavigationItem } from "../types/navigation.types";
 
 const Navbar: React.FC = React.memo(() => {
@@ -31,6 +32,7 @@ const Navbar: React.FC = React.memo(() => {
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
+  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -59,13 +61,21 @@ const Navbar: React.FC = React.memo(() => {
     logout();
   }, [logout]);
 
+  const handleOpenPermissionModal = useCallback(() => {
+    setIsPermissionModalOpen(true);
+  }, []);
+
+  const handleClosePermissionModal = useCallback(() => {
+    setIsPermissionModalOpen(false);
+  }, []);
+
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
-      { name: "Permisos", action: () => alert("Funcionalidad en desarrollo") },
+      { name: "Permisos", action: handleOpenPermissionModal },
       { name: "Cerrar Sesión", action: handleLogout },
     ],
-    [handleLogout]
+    [handleLogout, handleOpenPermissionModal]
   );
 
   const toUpperCamelCase = (str: string) => {
@@ -216,6 +226,12 @@ const Navbar: React.FC = React.memo(() => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Permisos */}
+      <ModalRequestPermission 
+        isOpen={isPermissionModalOpen}
+        onClose={handleClosePermissionModal}
+      />
     </header>
   );
 });
