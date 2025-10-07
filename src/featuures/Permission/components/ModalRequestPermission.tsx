@@ -3,6 +3,8 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { UseMutationsPermission } from "../hook/useMutationsPermission";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalRequestPermissionProps {
   isOpen: boolean;
@@ -11,13 +13,11 @@ interface ModalRequestPermissionProps {
 
 const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps) => {
 
+  const {create, error, isLoading} = UseMutationsPermission();
+
   const validationSchema = Yup.object({
     category: Yup.string().required("Se requiere la categoría"),
     granularity: Yup.string().required("Se requiere la granularidad"),
-    requestedDays: Yup.number()
-      .min(1, "Debe ser al menos 1 día")
-      .max(15, "No puede ser más de 15 días")
-      .required("Se requiere el número de días solicitados"),
     startDate: Yup.date()
       .when('granularity', {
         is: (granularity: string) => granularity === 'MULTI_DAY' || granularity === 'DAILY',
@@ -51,7 +51,6 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
     initialValues: {
       category: "",
       granularity: "",
-      requestedDays: 1,
       startDate: "",
       endDate: "",
       startTime: "",
@@ -63,6 +62,10 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      create(values, () => {
+        formik.resetForm();
+        onClose();
+      });
     },
   });
 
@@ -73,10 +76,11 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       title="Solicitar Permiso"
       onSubmit={formik.handleSubmit}
       size="lg"
-      isSubmitting={formik.isSubmitting}
+      isSubmitting={formik.isSubmitting || isLoading}
       isValid={formik.isValid}
       submitText="Solicitar"
     >
+      <div>
         <div className="grid grid-cols-3 gap-4 py-3 px-5">
           <Select
             options={[
@@ -96,9 +100,9 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
           />
           <Select
             options={[
-                { value: "HOURLY", label: "Hourly" },
-                { value: "DAILY", label: "Daily" },
-                { value: "MULTI_DAY", label: "Multi-day" }
+                { value: "HOURLY", label: "Horas" },
+                { value: "DAILY", label: "Días" },
+                { value: "MULTI_DAY", label: "Varios Días" }
             ]}
             label="Granularidad"
             name="granularity"
@@ -107,17 +111,6 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             onBlur={formik.handleBlur}
             error={formik.touched.granularity && formik.errors.granularity ? formik.errors.granularity : undefined}
             touched={formik.touched.granularity}
-            required
-          />
-          <Input
-            label="Días Solicitados"
-            name="requestedDays"
-            type="number"
-            value={formik.values.requestedDays}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.requestedDays && formik.errors.requestedDays ? formik.errors.requestedDays : undefined}
-            touched={formik.touched.requestedDays}
             required
           />
           <Input
@@ -173,7 +166,6 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             onBlur={formik.handleBlur}
             error={formik.touched.compensationTime && formik.errors.compensationTime ? formik.errors.compensationTime : undefined}
             touched={formik.touched.compensationTime}
-            required
           />
           <Input
             label="No Remunerado"
@@ -184,7 +176,6 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             onBlur={formik.handleBlur}
             error={formik.touched.nonRemunerated && formik.errors.nonRemunerated ? formik.errors.nonRemunerated : undefined}
             touched={formik.touched.nonRemunerated}
-            required
           />
           <Input
             label="Notas"
@@ -197,6 +188,16 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             touched={formik.touched.notes}
           />
         </div>
+        <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
+      </div>
     </FormModal>
   );
 };
