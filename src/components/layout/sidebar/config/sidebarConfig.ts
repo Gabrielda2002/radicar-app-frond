@@ -163,6 +163,22 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             type: 'subcategory'
           }
         ]
+      },
+      {
+        id: 'permission-requests',
+        title: 'Solicitudes de Permisos',
+        icon: userMain,
+        type: 'category',
+        roles: [1],
+        children: [
+          {
+            id: 'permission-requests-management',
+            title: 'Solicitudes de Permisos',
+            icon: IoMagnetOutline,
+            path: '/permissions',
+            type: 'subcategory'
+          }
+        ]
       }
     ]
   },
