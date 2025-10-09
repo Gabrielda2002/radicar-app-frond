@@ -1,4 +1,4 @@
-export type IRequestsPermissions = {
+export interface IRequestsPermissions {
     id:               number;
     category:         string;
     granularity:      string;
@@ -14,4 +14,21 @@ export type IRequestsPermissions = {
     notes:            string;
     overallStatus:    string;
     createdAt:        Date;
+    steps:            Step[];
+}
+
+export interface Step {
+    id:             number;
+    order:          number;
+    stepType:       string;
+    approverRole:   null;
+    approverUserId: number;
+    approverName:   string;
+    status:         string;
+    comment:        null | string;
+    createdAt:      Date;
+}
+
+export interface ModalActionsProps{
+    permission: IRequestsPermissions;
 }

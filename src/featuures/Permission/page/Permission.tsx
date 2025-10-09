@@ -1,8 +1,8 @@
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
-import Button from "@/components/common/Ui/Button";
 import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { FormatDate } from "@/utils/FormatDate";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import ModalPermissionsActions from "../components/ModalPermissionsActions";
 
 const Permission = () => {
   const { data, error, isLoading } = UseMutationsPermission();
@@ -42,7 +42,7 @@ const Permission = () => {
                       className="border-b border-gray-200 dark:border-gray-700"
                       key={p.id}
                     >
-                      <td className="text-start text-gray-950 p-0 bg-gray-50 dark:text-gray-50 dark:bg-gray-800">
+                      <td className="text-start py-4 text-gray-950 p-0 bg-gray-50 dark:text-gray-50 dark:bg-gray-800">
                         {p.requesterName}
                       </td>
                       <td className="text-start text-gray-500 p-0 bg-gray-50  dark:bg-gray-800">
@@ -61,10 +61,9 @@ const Permission = () => {
                         {p.overallStatus}
                       </td>
                       <td className="text-center p-0 bg-gray-50  dark:bg-gray-800">
-                        <Button variant="secondary">Aprobar</Button>
-                        <Button variant="danger" className="ml-2">
-                          Rechazar
-                        </Button>
+                        <ModalPermissionsActions
+                          permission={p}
+                        />
                       </td>
                     </tr>
                   ))}
