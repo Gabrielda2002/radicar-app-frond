@@ -1,25 +1,53 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import React, { useState, useMemo } from "react";
 import FormModal from "@/components/common/Ui/FormModal";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
-import React, { useState } from "react";
 import Button from "@/components/common/Ui/Button";
 import { ModalActionsProps } from "../type/IRequestsPermissions";
 import { FormatDate } from "@/utils/FormatDate";
+import {
+  getActionsByStepType,
+  getCommentLabel,
+  isCommentRequired,
+} from "../constants/stepActionsConfig";
 
 const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   permission,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const validationSchema = Yup.object({
-    action: Yup.string().required("Status is required"),
-    comment: Yup.string().max(
-      500,
-      "Comentario debe tener máximo 500 caracteres"
-    ),
-  });
+  const currentStep = useMemo(() => {
+    return permission.steps && permission.steps.length > 0
+      ? permission.steps[0]
+      : null;
+  }, [permission.steps]);
+
+  const availableActions = useMemo(() => {
+    if (!currentStep) return [];
+    return getActionsByStepType(permission.category, currentStep.stepType);
+  }, [currentStep, permission.category]);
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        action: Yup.string()
+          .required("La acción es requerida")
+          .oneOf(
+            availableActions.map((a) => a.value),
+            "Acción no válida para este tipo de aprobación"
+          ),
+        comment: Yup.string()
+          .max(500, "Comentario debe tener máximo 500 caracteres")
+          .when("action", {
+            is: "RECHAZADO",
+            then: (schema) =>
+              schema.required("El comentario es obligatorio al rechazar"),
+          }),
+      }),
+    [availableActions]
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -27,10 +55,21 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
       comment: "",
     },
     validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
+      console.log("Step ID:", currentStep?.id);
+      console.log("Step Type:", currentStep?.stepType);
+      console.log("Values:", values);
     },
   });
+
+  const commentLabel = useMemo(() => {
+    return getCommentLabel(formik.values.action);
+  }, [formik.values.action]);
+
+  const isCommentRequiredForAction = useMemo(() => {
+    return isCommentRequired(formik.values.action);
+  }, [formik.values.action]);
 
   return (
     <>
@@ -47,6 +86,20 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
         submitText="Guardar Cambios"
         size="lg"
       >
+        {!currentStep ? (
+           <div className="text-center py-8">
+            <p className="text-gray-600 dark:text-gray-400">
+              No hay acciones pendientes para esta solicitud.
+            </p>
+          </div>
+        ): availableActions.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600 dark:text-gray-400">
+              Solo puedes visualizar esta solicitud. No hay acciones
+              disponibles.
+            </p>
+          </div>
+        ): (
         <div className="space-y-4">
           <div className="space-y-4 my-4 border rounded-lg dark:border-gray-700 shadow-sm shadow-teal-400 m-4 p-1">
             <div className="border-b border-gray-200 dark:border-gray-700 py-2 mb-4">
@@ -70,6 +123,12 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
               <div>
                 <h5 className="text-base font-semibold dark:text-gray-100">Fecha Creación Solicitud:</h5>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{FormatDate(permission?.createdAt, false)}</p>
+              </div>
+              <div className="col-span-2">
+                <h5 className="text-base font-semibold dark:text-gray-100">Paso Actual:</h5>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {currentStep?.stepType} - Orden {currentStep?.order}
+                </p>
               </div>
               <div>
                 <h5 className="text-base font-semibold dark:text-gray-100">Granularidad:</h5>
@@ -96,8 +155,14 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
                 <p className="text-sm text-gray-500 dark:text-gray-400">{permission.requesterName}</p>
               </div>
               <div>
-                <h5 className="text-base font-semibold dark:text-gray-100">Jefe inmediato (Tu):</h5>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Nombre de jefe inmediato</p>
+                <h5 className="text-base font-semibold dark:text-gray-100">
+                  {currentStep?.stepType === "JEFE" ? "Jefe Inmediato (Tú)" : 
+                   currentStep?.stepType === "RRHH" ? "Recursos Humanos (Tú)" :
+                   `${currentStep?.stepType} (Tú)`}:
+                </h5>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {currentStep?.approverName || "N/A"}
+                </p>
               </div>
               <div>
                 <h5 className="text-base font-semibold dark:text-gray-100">Días Solicitados:</h5>
@@ -112,12 +177,7 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 py-3 px-4">
             <Select
-              options={[
-                { value: "APROBADO", label: "Aprobar" },
-                { value: "RECHAZADO", label: "Rechazar" },
-                { value: "PENDIENTE", label: "Pendiente" },
-                { value: "VISTO", label: "Visto" },
-              ]}
+              options={availableActions}
               label="Acción"
               name="action"
               value={formik.values.action}
@@ -132,7 +192,7 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
               required
             />
             <Input
-              label="Comentario"
+              label={commentLabel}
               name="comment"
               type="text"
               value={formik.values.comment}
@@ -144,9 +204,11 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
                   : undefined
               }
               touched={formik.touched.comment}
+              required={isCommentRequiredForAction}
             />
           </div>
         </div>
+        )}
       </FormModal>
     </>
   );
