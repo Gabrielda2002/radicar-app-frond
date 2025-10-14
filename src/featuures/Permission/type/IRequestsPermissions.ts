@@ -31,4 +31,5 @@ export interface Step {
 
 export interface ModalActionsProps{
     permission: IRequestsPermissions;
+    onSuccess?: () => void;
 }

@@ -1,11 +1,11 @@
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
-import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { FormatDate } from "@/utils/FormatDate";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalPermissionsActions from "../components/ModalPermissionsActions";
+import { useFetchRequestPermissions } from "../hook/useFetchRequestPermissions";
 
 const Permission = () => {
-  const { data, error, isLoading } = UseMutationsPermission();
+  const { data, error, isLoading, refetch } = useFetchRequestPermissions();
 
   return (
     <>
@@ -63,6 +63,7 @@ const Permission = () => {
                       <td className="text-center p-0 bg-gray-50  dark:bg-gray-800">
                         <ModalPermissionsActions
                           permission={p}
+                          onSuccess={refetch}
                         />
                       </td>
                     </tr>

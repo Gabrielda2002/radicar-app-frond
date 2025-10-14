@@ -12,11 +12,17 @@ import {
   getCommentLabel,
   isCommentRequired,
 } from "../constants/stepActionsConfig";
+import { UseMutationsPermission } from "../hook/useMutationsPermission";
+import { toast } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
 
 const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   permission,
+  onSuccess
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const {update, error, isLoading} = UseMutationsPermission();
 
   const currentStep = useMemo(() => {
     return permission.steps && permission.steps.length > 0
@@ -56,10 +62,19 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      console.log("Step ID:", currentStep?.id);
-      console.log("Step Type:", currentStep?.stepType);
-      console.log("Values:", values);
+    onSubmit: async (values) => {
+      try {
+        
+        await update(values, permission.id, currentStep?.id || 0 , () => {
+          setIsOpen(false);
+          formik.resetForm();
+          toast.success("Acción realizada con éxito");
+          onSuccess?.();
+        })
+
+      } catch (error) {
+        
+      }
     },
   });
 
@@ -81,8 +96,8 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
         onClose={() => setIsOpen(false)}
         title="Acciones de Permiso"
         onSubmit={formik.handleSubmit}
-        isValid={formik.isValid}
-        isSubmitting={formik.isSubmitting}
+        isValid={formik.isValid && formik.dirty}
+        isSubmitting={formik.isSubmitting || isLoading}
         submitText="Guardar Cambios"
         size="lg"
       >
@@ -174,7 +189,7 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
               </div>
             </div>
           </div>
-
+          {currentStep && currentStep.status === "PENDIENTE" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 py-3 px-4">
             <Select
               options={availableActions}
@@ -207,6 +222,22 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
               required={isCommentRequiredForAction}
             />
           </div>
+          ): (
+            <div className="grid grid-cols-1 py-3 px-4">
+              <p className="text-gray-600 dark:text-gray-400">
+                Ya se ha tomado una acción en este paso. No se pueden realizar más acciones.
+              </p>
+            </div>
+          )}
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
         )}
       </FormModal>
