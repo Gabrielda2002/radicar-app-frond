@@ -72,7 +72,13 @@ const Navbar: React.FC = React.memo(() => {
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
-      { name: "Permisos", action: handleOpenPermissionModal },
+      { 
+        name: "Permisos",
+        submenu: [
+          { name: "Solicitar Permiso", action: handleOpenPermissionModal },
+          { name: "Mis Solicitudes", href: "/mis-solicitudes" }
+        ]
+      },
       { name: "Cerrar Sesión", action: handleLogout },
     ],
     [handleLogout, handleOpenPermissionModal]

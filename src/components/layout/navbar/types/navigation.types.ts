@@ -4,6 +4,7 @@ export interface UserNavigationItem {
   name: string;
   href?: string;
   action?: () => void;
+  submenu?: UserNavigationItem[];
 }
 
 export interface SupportLink {
