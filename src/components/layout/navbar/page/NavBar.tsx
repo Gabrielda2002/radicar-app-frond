@@ -25,6 +25,7 @@ import UserMenu from "../components/UserMenu";
 import ThemeToggle from "../components/ThemeToggle";
 import ModalRequestPermission from "@/featuures/Permission/components/ModalRequestPermission";
 import type { UserNavigationItem } from "../types/navigation.types";
+import MyRequestsPermissions from "@/featuures/MyRequestsPermissions/page/MyRequestsPermissions";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
@@ -33,6 +34,7 @@ const Navbar: React.FC = React.memo(() => {
   const { theme, toggleTheme } = useTheme();
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
   const [isPermissionModalOpen, setIsPermissionModalOpen] = useState<boolean>(false);
+  const [ isMyPermissionsOpen, setIsMyPermissionsOpen ] = useState<boolean>(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -69,6 +71,14 @@ const Navbar: React.FC = React.memo(() => {
     setIsPermissionModalOpen(false);
   }, []);
 
+  const handleOpenMyPermissions = useCallback(() => {
+    setIsMyPermissionsOpen(true);
+  }, []);
+
+  const handleCloseMyPermissions = useCallback(() => {
+    setIsMyPermissionsOpen(false);
+  }, []);
+
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
@@ -76,7 +86,7 @@ const Navbar: React.FC = React.memo(() => {
         name: "Permisos",
         submenu: [
           { name: "Solicitar Permiso", action: handleOpenPermissionModal },
-          { name: "Mis Solicitudes", href: "/mis-solicitudes" }
+          { name: "Mis Solicitudes", action: handleOpenMyPermissions }
         ]
       },
       { name: "Cerrar Sesión", action: handleLogout },
@@ -237,6 +247,10 @@ const Navbar: React.FC = React.memo(() => {
       <ModalRequestPermission 
         isOpen={isPermissionModalOpen}
         onClose={handleClosePermissionModal}
+      />
+      <MyRequestsPermissions
+        isOpen={isMyPermissionsOpen}
+        onClose={handleCloseMyPermissions}
       />
     </header>
   );
