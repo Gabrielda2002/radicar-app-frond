@@ -140,9 +140,9 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
                 <p className="text-sm text-gray-500 dark:text-gray-400">{FormatDate(permission?.createdAt, false)}</p>
               </div>
               <div className="col-span-2">
-                <h5 className="text-base font-semibold dark:text-gray-100">Paso Actual:</h5>
+                <h5 className="text-base font-semibold dark:text-gray-100">Paso Actual #{currentStep?.order}:</h5>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {currentStep?.stepType} - Orden {currentStep?.order}
+                  {currentStep?.stepType}
                 </p>
               </div>
               <div>

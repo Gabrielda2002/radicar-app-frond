@@ -14,7 +14,6 @@ interface ModalRequestPermissionProps {
 const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps) => {
 
   const {create, error, isLoading} = UseMutationsPermission();
-  console.log(isLoading)
 
   const validationSchema = Yup.object({
     category: Yup.string().required("Se requiere la categoría"),

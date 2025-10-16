@@ -169,7 +169,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Solicitudes de Permisos',
         icon: userMain,
         type: 'category',
-        roles: [1],
+        roles: [1, 18],
         children: [
           {
             id: 'permission-requests-management',
