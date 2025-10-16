@@ -14,6 +14,7 @@ interface ModalRequestPermissionProps {
 const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps) => {
 
   const {create, error, isLoading} = UseMutationsPermission();
+  console.log(isLoading)
 
   const validationSchema = Yup.object({
     category: Yup.string().required("Se requiere la categoría"),
@@ -60,9 +61,8 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       notes: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      create(values, () => {
+    onSubmit: async (values) => {
+      await create(values, () => {
         formik.resetForm();
         onClose();
       });

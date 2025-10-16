@@ -25,7 +25,11 @@ export const UseMutationsPermission = (): UseMutationsPermissionProps => {
         toast.success("Permiso creado con éxito");
       }
     } catch (error: any) {
-      setError("Error al crear el permiso");
+      if (error.response.status === 500) {
+        setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
+      }else {
+        setError(error.response.data.message || "Error al crear el permiso");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +46,11 @@ export const UseMutationsPermission = (): UseMutationsPermissionProps => {
         setError(null);
       }
     } catch (error: any) {
-      setError("Error al actualizar el permiso");
+      if (error.response.status === 500) {
+        setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
+      }else {
+        setError(error.response.data.message || "Error al actualizar el permiso");
+      }
     } finally {
       setIsLoading(false);
     }
