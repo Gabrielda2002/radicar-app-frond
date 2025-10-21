@@ -15,6 +15,8 @@ import {
 import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
+import { File } from "lucide-react";
 
 const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   permission,
@@ -23,6 +25,8 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {update, error, isLoading} = UseMutationsPermission();
+
+  const { openSecureFile } = useSecureFileAccess();
 
   const currentStep = useMemo(() => {
     return permission.steps && permission.steps.length > 0
@@ -139,12 +143,20 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
                 <h5 className="text-base font-semibold dark:text-gray-100">Fecha Creación Solicitud:</h5>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{FormatDate(permission?.createdAt, false)}</p>
               </div>
-              <div className="col-span-2">
+              <div className={`${permission.attachments.length === 0 || !permission.attachments ? 'col-span-2 text-center' : ''}`}>
                 <h5 className="text-base font-semibold dark:text-gray-100">Paso Actual #{currentStep?.order}:</h5>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {currentStep?.stepType}
                 </p>
               </div>
+              {permission.attachments.length > 0 && (
+                <div>
+                  <h5 className="text-base font-semibold dark:text-gray-100">Archivos Adjuntos:</h5>
+                  <div>
+                    <Button onClick={() => openSecureFile(permission.attachments[0].supportId.toString(), 'VIEW', 'attachments' )} icon={<File className="w-4 h-4"/>}/>
+                  </div>
+                </div>
+              )}
               <div>
                 <h5 className="text-base font-semibold dark:text-gray-100">Granularidad:</h5>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{permission?.granularity}</p>

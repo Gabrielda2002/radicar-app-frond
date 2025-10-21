@@ -15,6 +15,7 @@ export interface IRequestsPermissions {
     overallStatus:    string;
     createdAt:        Date;
     steps:            Step[];
+    attachments:      Attachment[];
 }
 
 export interface Step {
@@ -32,4 +33,11 @@ export interface Step {
 export interface ModalActionsProps{
     permission: IRequestsPermissions;
     onSuccess?: () => void;
+}
+
+export interface Attachment {
+    id:         number;
+    supportId:  number;
+    label:     string;
+    createdAt: Date;
 }

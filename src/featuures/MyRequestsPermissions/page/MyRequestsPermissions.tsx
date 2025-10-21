@@ -108,8 +108,8 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
                 key={r.id}
                 className="grid md:grid-cols-2 gap-2 p-4 border border-gray-300 dark:border-gray-900 rounded-md shadow-md"
               >
-                <div className="flex items-center justify-between col-span-2">
-                  <h5>{r.category}</h5>
+                <div className="flex items-center justify-between col-span-2 max-h-4">
+                  <h5>{r.category}</h5> 
                   <div
                     className={`flex items-center gap-2 px-3 py-1 rounded-full ${
                       handleStatus(r.overallStatus).style
@@ -119,12 +119,12 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
                     <span className="font-semibold">{r.overallStatus}</span>
                   </div>
                 </div>
-                <div className={`${r.attachmentsRelation?.length > 0 ? 'col-span-2 text-center' : ''}`}>
+                <div className={`${r.attachmentsRelation?.length === 0 || !r.attachmentsRelation ? 'col-span-2 text-center' : ''}`}>
                   <h5 className="text-base text-gray-800 dark:text-gray-100">
-                    Granularidad:
+                  Granularidad:
                   </h5>
                   <p className="text-sm text-gray-400 dark:text-gray-500">
-                    {r.granularity}
+                  {r.granularity}
                   </p>
                 </div>
                 {r.attachmentsRelation?.length > 0 && (

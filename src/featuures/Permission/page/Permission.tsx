@@ -75,7 +75,6 @@ const Permission = () => {
                 <thead className="text-gray-400 text-base">
                   <tr>
                     <th className="text-start">Colaborador</th>
-                    <th className="text-start">Area</th>
                     <th className="text-start">Categoria</th>
                     <th className="text-start">Granularidad</th>
                     <th className="text-start">Fecha Solicitud</th>
@@ -92,9 +91,6 @@ const Permission = () => {
                       >
                         <td className="text-start py-4 text-gray-950 p-0 bg-gray-50 dark:text-gray-50 dark:bg-gray-800">
                           {p.requesterName}
-                        </td>
-                        <td className="text-start text-gray-500 p-0 bg-gray-50  dark:bg-gray-800">
-                          {p.category}
                         </td>
                         <td className="text-start text-gray-500 p-0 bg-gray-50  dark:bg-gray-800">
                           {p.category}
