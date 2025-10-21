@@ -8,7 +8,7 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
-type FileType = "files" | "soporte";
+type FileType = "files" | "soporte" | "attachments" | null;
 
 interface UseSecureFileAccessReturn {
     isLoading: boolean;
@@ -27,10 +27,10 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
         try {
 
-            const endPoint = type === "files" ? "files" : "soportes";
+            const endPoint = type === "files" ? "files" : type === "attachments" ? 'attachments' : "soportes";
 
             const response = await api.post(`/${endPoint}/${fileId}/access-token?action=${action}`)
-    
+
             if (response.status === 200) {
                 setError(null);
                 return response.data;
@@ -50,13 +50,13 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
             const tokenData = await requestAccessToken(Number(fileId), action, type);
 
-            const endPoint = type === "files" ? "secure-file" : "secure-soporte";
+            const endPoint = type === "files" ? "secure-file" : type === "attachments" ? "secure-attachments" : "secure-soporte";
 
             const secureUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/${endPoint}/${tokenData.token}`;
 
             if (action === "VIEW") {
                 window.open(secureUrl, "_blank");
-            }else if (action === "DOWNLOAD"){
+            } else if (action === "DOWNLOAD") {
                 const link = document.createElement("a");
                 link.href = secureUrl;
                 link.style.display = "none";
@@ -76,7 +76,7 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
         await openSecureFile(fileId, "DOWNLOAD", type);
     }
 
-    return{
+    return {
         isLoading,
         error,
         openSecureFile,

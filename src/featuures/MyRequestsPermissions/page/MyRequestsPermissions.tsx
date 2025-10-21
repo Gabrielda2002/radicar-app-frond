@@ -6,12 +6,14 @@ import {
 } from "../types/MyRquestsPermissions,.type";
 import { useFetchMyRequests } from "../hook/useFetctMyRequests";
 import { FormatDate } from "@/utils/FormatDate";
-import { BadgeCheck, BadgeAlert, Badge } from "lucide-react";
+import { BadgeCheck, BadgeAlert, Badge, File } from "lucide-react";
 import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
+import Button from "@/components/common/Ui/Button";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -21,6 +23,8 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
 }) => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const { data } = useFetchMyRequests();
+
+  const { openSecureFile } = useSecureFileAccess();
 
   const { query, setQuery, filteredData } = useSearch<IMyRequestsPermissions>(
     data || [],
@@ -115,7 +119,7 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
                     <span className="font-semibold">{r.overallStatus}</span>
                   </div>
                 </div>
-                <div className="col-span-2 text-center">
+                <div className={`${r.attachmentsRelation?.length > 0 ? 'col-span-2 text-center' : ''}`}>
                   <h5 className="text-base text-gray-800 dark:text-gray-100">
                     Granularidad:
                   </h5>
@@ -123,6 +127,20 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
                     {r.granularity}
                   </p>
                 </div>
+                {r.attachmentsRelation?.length > 0 && (
+                  <div>
+                    <h5>
+                      Archivos Adjuntos:
+                    </h5>
+                    <div>
+                      <Button
+                        variant="secondary"
+                        onClick={() => openSecureFile(r.attachmentsRelation[0].supportId.toString(), 'VIEW', 'attachments')}
+                        icon={<File className="w-4 h-4"/>}
+                      />
+                    </div>
+                  </div>
+                )}
                 <div>
                   <h5 className="text-base text-gray-800 dark:text-gray-100">
                     Fecha de inicio:
