@@ -45,6 +45,11 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
     notes: Yup.string()
       .min(1, "Debe tener al menos 1 carácter")
       .max(1000, "No puede tener más de 1000 caracteres"),
+    file: Yup.mixed().when('category', {
+      is: (category: string) => category === 'INCAPACIDAD' || category === 'VACACIONES',
+      then: (schema) => schema.required('Se requiere un archivo para este tipo de permiso'),
+      otherwise: (schema) => schema.optional()
+    }),
   });
 
   const formik = useFormik({
@@ -58,6 +63,7 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       compensationTime: "",
       nonRemunerated: false,
       notes: "",
+      file: null,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -185,6 +191,19 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             onBlur={formik.handleBlur}
             error={formik.touched.notes && formik.errors.notes ? formik.errors.notes : undefined}
             touched={formik.touched.notes}
+          />
+          <Input
+            label="Adjuntar Archivo"
+            name="file"
+            type="file"
+            onChange={(event) => {
+              const file  = event.currentTarget.files ? event.currentTarget.files[0] : null;
+              formik.setFieldValue("file", file);
+            }}
+            onBlur={formik.handleBlur}
+            error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
+            touched={formik.touched.file}
+            accept=".pdf"
           />
         </div>
         <AnimatePresence>

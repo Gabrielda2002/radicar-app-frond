@@ -17,7 +17,11 @@ export const UseMutationsPermission = (): UseMutationsPermissionProps => {
     try {
       setIsLoading(true);
 
-      const response = await api.post("/permisos/requests", data);
+      const response = await api.post("/permisos/requests", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201) {
         onSuccess();
