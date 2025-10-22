@@ -7,6 +7,7 @@ import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
 import { Box } from 'lucide-react';
+import { BiMailSend } from 'react-icons/bi';
 
 // Images
 import user from '/assets/user.svg';
@@ -167,14 +168,13 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'permission-requests',
         title: 'Solicitudes de Permisos',
-        icon: userMain,
+        icon: BiMailSend,
         type: 'category',
-        roles: [1, 18],
         children: [
           {
             id: 'permission-requests-management',
             title: 'Solicitudes de Permisos',
-            icon: IoMagnetOutline,
+            icon: auditoria,
             path: '/permissions',
             type: 'subcategory'
           }
