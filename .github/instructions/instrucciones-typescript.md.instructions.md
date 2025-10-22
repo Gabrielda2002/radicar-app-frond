@@ -227,4 +227,26 @@ src/
 
 ---
 
-<!-- Contains AI-generated edits. -->
+## Gestión de Tareas
+- **Sistema de tareas:** Todas las tareas del proyecto se gestionan en Notion
+- **Base de datos:** "Seguimiento de tareas" (https://www.notion.so/1c2e88ee9bde80c4aa11f50a91f3a858)
+- **Responsable principal:** Gabriel Duarte (ID: 1bdd872b-594c-81f7-9e75-000297f4be7a)
+- **Cuando el usuario mencione "tareas":** Usar automáticamente el MCP de Notion para crear, listar o actualizar tareas
+- **Convención de nombres:** El título de la tarea debe incluir un prefijo según el tipo:
+  - `feat:` para Feature
+  - `fix:` para Bug
+  - `refactor:` para Refactor
+  - `maintenance:` para Maintenance
+  - `document:` para Documentation
+  - Ejemplo: "refactor: mejorar lógica de autenticación"
+- **Estructura de tareas:**
+  - Nombre de tarea (título con prefijo según tipo)
+  - Descripción (detallada)
+  - Estado: Sin empezar | En curso | Retrasada | Listo
+  - Prioridad: Alta | Media | Baja
+  - Nivel de esfuerzo: Pequeño | Media | Grande
+  - Tipo Tarea: Feature | Bug | Refactor | Maintenance | Documentation
+  - Módulo: Backend | Frontend | database | servidor (multi-select)
+  - Tiempo Estimado (horas)
+  - Responsable (persona)
+  - Fecha límite (date)
