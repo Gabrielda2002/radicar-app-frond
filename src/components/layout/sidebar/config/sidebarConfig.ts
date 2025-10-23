@@ -53,7 +53,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         children: [
           {
             id: 'quality-ns',
-            title: 'Norte de Santander',
+            title: 'Documentación y Servicios',
             icon: FaRegFolder,
             path: '/SistemGestionCalidad',
             type: 'subcategory'
