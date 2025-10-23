@@ -9,15 +9,19 @@ export interface FileItem {
 }
 
 export interface Folder {
-  id: string;
+  id: string | number;
   name: string;
   path: string;
-  parentId: string | null;
-  idDepartment: string;
+  parentId: string | number | null;
+  idDepartment: string | number;
   createdAt: string;
   updatedAt: string;
   departamentoRelation: {
+    id: number;
     name: string;
+    code: string | null;
+    createdAt: string;
+    updatedAt: string;
   }
 } 
 

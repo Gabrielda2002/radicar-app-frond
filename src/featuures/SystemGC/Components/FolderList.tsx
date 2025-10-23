@@ -1,26 +1,26 @@
 //*Fuctions and Hooks
-import React from "react";
+import React, { useMemo, useState } from "react";
 import ItemManu from "./ItemManu";
 import { Bounce, toast } from "react-toastify";
+import DepartmentSection from "./DepartmentSection";
 
 //*Icons
 import { FolderIcon } from "@heroicons/react/24/outline";
-import suhIcon from "@/assets/sgc/suh/suh-icon.svg"
-import sstIcon from "@/assets/sgc/suh/sst-icon.svg"
-import infIcon from "@/assets/sgc/suh/cdi-icon.svg"
-import dtacionIcon from "@/assets/sgc/sgc/dot-icos.svg"
-import medicIcon from "@/assets/sgc/suh/capsule-icon.svg"
-import pcpIcon from "@/assets/sgc/suh/hospital-icon.svg"
-import docIcon from "@/assets/sgc/suh/doc-icon.svg"
-
-import prcsIcon from "@/assets/sgc/cdi/loader.svg"
-import stdIcon from "@/assets/sgc/cdi/book.svg"
-import staffIcon from "@/assets/sgc/cdi/staff-icon.svg"
-
-import procssIcon from '@/assets/sgc/sgc/process.svg'
-import pamecIcon from '@/assets/sgc/suh/face-mask.svg'
+import SuhIcon from "@/assets/sgc/suh/suh-icon.svg?react";
+import SstIcon from "@/assets/sgc/suh/sst-icon.svg?react";
+import InfIcon from "@/assets/sgc/suh/cdi-icon.svg?react";
+import DtacionIcon from "@/assets/sgc/sgc/dot-icos.svg?react";
+import MedicIcon from "@/assets/sgc/suh/capsule-icon.svg?react";
+import PcpIcon from "@/assets/sgc/suh/hospital-icon.svg?react";
+import DocIcon from "@/assets/sgc/suh/doc-icon.svg?react";
+import PrcsIcon from "@/assets/sgc/cdi/loader.svg?react";
+import StdIcon from "@/assets/sgc/cdi/book.svg?react";
+import StaffIcon from "@/assets/sgc/cdi/staff-icon.svg?react";
+import ProcssIcon from "@/assets/sgc/sgc/process.svg?react";
+import PamecIcon from "@/assets/sgc/suh/face-mask.svg?react";
 import { useAuth } from "@/context/authContext";
-import { FolderListProps } from "../Types/IFileManager";
+import { FolderListProps, Folder } from "../Types/IFileManager";
+import Button from "@/components/common/Ui/Button";
 
 const FolderList: React.FC<FolderListProps> = ({
   folders,
@@ -32,6 +32,9 @@ const FolderList: React.FC<FolderListProps> = ({
   currentFolderId,
   handleRefresh,
 }) => {
+  // Estado para controlar si todas las secciones están expandidas
+  const [expandAll, setExpandAll] = useState<boolean>(true);
+
   const handleDelete = (folderId: string) => {
     //Llama ka funcion de eliminacion
     onDelete(folderId, "carpetas");
@@ -56,119 +59,183 @@ const FolderList: React.FC<FolderListProps> = ({
     renameItem(folderId, newName, "carpetas");
   };
 
+  // Agrupar carpetas por departamento (solo cuando NO estamos en una carpeta)
+  const foldersByDepartment = useMemo(() => {
+    if (isInFolder) {
+      return null; // No agrupamos si estamos dentro de una carpeta
+    }
+
+    const grouped = folders.reduce((acc, folder) => {
+      const deptId = folder.idDepartment.toString();
+      const deptName = folder.departamentoRelation.name;
+
+      if (!acc[deptId]) {
+        acc[deptId] = {
+          id: Number(folder.idDepartment),
+          name: deptName,
+          folders: [],
+        };
+      }
+
+      acc[deptId].folders.push(folder);
+      return acc;
+    }, {} as Record<string, { id: number; name: string; folders: Folder[] }>);
+
+    // Ordenar departamentos alfabéticamente
+    return Object.values(grouped).sort((a, b) => a.name.localeCompare(b.name));
+  }, [folders, isInFolder]);
+
   // Función para determinar el icono según la sección y nombre de carpeta
-  const getIconForFolder = (folderName: string): string => {
+  const getIconForFolder = (folderName: string): React.FC<React.SVGProps<SVGSVGElement>> | null => {
     if (isInFolder) {
       // Si estamos dentro de una carpeta, no usamos iconos personalizados
-      return "";
+      return null;
     }
     
     if (section === "suh") {
       switch (folderName) {
         case "TALENTO HUMANO":
-          return suhIcon;
+          return SuhIcon;
         case "INFRAESTRUCTURA":
-          return infIcon;
+          return InfIcon;
         case "DOTACION":
-          return dtacionIcon;
+          return DtacionIcon;
         case "MEDICAMENTOS":
-          return medicIcon;
+          return MedicIcon;
         case "PROCESOS PRIORITARIOS":
-          return pcpIcon;
+          return PcpIcon;
         case "HISTORIA CLINICA Y REGISTROS":
-          return docIcon;
+          return DocIcon;
         case "INTERDEPENDENCIA":
-          return docIcon;
+          return DocIcon;
         default:
-          return suhIcon;
+          return SuhIcon;
       }
     } else if (section === "sst") {
-      return sstIcon;
+      return SstIcon;
     } else if (section === "ci") {
 
       switch (folderName) {
         case "PROCEDIMIENTOS OPERATIVOS ESTANDAR" :
-          return prcsIcon;
+          return PrcsIcon;
         case "NORMATIVIDAD LEGAL" :
-          return docIcon;
+          return DocIcon;
         case "ESTUDIOS":
-          return stdIcon;
+          return StdIcon;
         case "STAFF":
-          return staffIcon;
+          return StaffIcon;
         default:
-          return prcsIcon;
+          return PrcsIcon;
       }
     }else if (section === "sgc") {
       switch (folderName) {
         case "MODELO DE ATENCION":
-          return staffIcon;
+          return StaffIcon;
         case "POLITICAS":
-          return docIcon;
+          return DocIcon;
         case "PROCESOS":
-          return procssIcon;
+          return ProcssIcon;
         case "PAMEC":
-          return pamecIcon;
+          return PamecIcon;
         default:
-          return procssIcon;
+          return ProcssIcon;
       }
     } else {
-      return suhIcon;
+      return SuhIcon;
     }
   };
 
-  return (
-    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
-      {folders.map((folder) => {
-        // Determinar el icono para esta carpeta específica
-        const customIcon = getIconForFolder(folder.name);
-        // const useCustomIcon = !isInFolder && customIcon;
-        
-        return (
-          <div
-            key={folder.id}
-            onClick={() => onFolderClick(folder.id, folder.name)} // Se abre la carpeta
-            className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
-          >
-            {!isInFolder && customIcon ? (
-              <div>
-                <img
-                  src={customIcon}
-                  alt="Icono de la carpeta"
-                  className="w-8 h-8 md:w-16 md:h-16"
-                />
-              </div>
-            ) : (
-              <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
-            )}
-            {/* Menú en la esquina superior derecha */}
-            {[1, 4].includes(Number(rol)) && (
-              <div
-                className="absolute top-2 right-2"
-                onClick={(e) => e.stopPropagation()} // Evitar que el clic aquí abra la carpeta
-              >
-                <ItemManu
-                  onDelete={() => handleDelete(folder.id)}
-                  renameItem={(newName: string) =>
-                    handleRename(folder.id, newName)
-                  }
-                  itemName={folder.name}
-                  itemType="carpetas"
-                  currentFolderId={currentFolderId}
-                  section={section}
-                  itemId={folder.id}
-                  handleRefresh={handleRefresh}
-                  nameItemOld={folder.name}
-                />
-              </div>
-            )}
+  // Si estamos dentro de una carpeta, mostramos el grid tradicional
+  if (isInFolder) {
+    return (
+      <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
+        {folders.map((folder) => {
+          const CustomIcon = getIconForFolder(folder.name);
+          
+          return (
+            <div
+              key={folder.id}
+              onClick={() => onFolderClick(folder.id.toString(), folder.name)}
+              className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
+            >
+              {CustomIcon ? (
+                <CustomIcon className="w-8 h-8 md:w-16 md:h-16 text-gray-700 dark:text-colorIcon transition-colors duration-300" />
+              ) : (
+                <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
+              )}  
+              
+              {[1, 4].includes(Number(rol)) && (
+                <div
+                  className="absolute top-2 right-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ItemManu
+                    onDelete={() => handleDelete(folder.id.toString())}
+                    renameItem={(newName: string) =>
+                      handleRename(folder.id.toString(), newName)
+                    }
+                    itemName={folder.name}
+                    itemType="carpetas"
+                    currentFolderId={currentFolderId}
+                    section={section}
+                    itemId={folder.id.toString()}
+                    handleRefresh={handleRefresh}
+                    nameItemOld={folder.name}
+                  />
+                </div>
+              )}
 
-            {/* Nombre de la carpeta */}
-            <p className="flex flex-wrap text-sm font-bold text-center text-gray-700 dark:text-stone-200">
-              {folder.name}
-            </p>
+              <p className="flex flex-wrap text-sm font-bold text-center text-gray-700 dark:text-stone-200">
+                {folder.name}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Si NO estamos dentro de una carpeta, mostramos las secciones por departamento
+  return (
+    <div className="space-y-6">
+      {foldersByDepartment && foldersByDepartment.length > 0 ? (
+        <>
+          {/* Botón para expandir/colapsar todas las secciones */}
+          <div className="flex justify-end mb-4">
+            <Button
+              variant="secondary"
+              onClick={() => setExpandAll(!expandAll)}
+            >
+              {expandAll ? "Colapsar Todo" : "Expandir Todo"}
+            </Button>
           </div>
-        );
-      })}
+
+          {foldersByDepartment.map((department) => (
+            <DepartmentSection
+              key={department.id}
+              departmentName={department.name}
+              departmentId={department.id}
+              folders={department.folders}
+              folderCount={department.folders.length}
+              defaultExpanded={expandAll}
+              onFolderClick={onFolderClick}
+              onDelete={onDelete}
+              renameItem={renameItem}
+              section={section}
+              currentFolderId={currentFolderId}
+              handleRefresh={handleRefresh}
+              getIconForFolder={getIconForFolder}
+              rol={rol}
+              ItemManu={ItemManu}
+              FolderIcon={FolderIcon}
+            />
+          ))}
+        </>
+      ) : (
+        <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
+          <p className="text-lg">No hay carpetas disponibles</p>
+        </div>
+      )}
     </div>
   );
 };
