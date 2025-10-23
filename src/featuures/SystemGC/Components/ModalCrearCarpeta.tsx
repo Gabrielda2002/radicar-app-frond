@@ -1,18 +1,13 @@
 import Input from "@/components/common/Ui/Input";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
+import { ModalCrearCarpetaProps } from "../Types/IFileManager";
 
-type ModalCrearCarpetaProps = {
-  standOpen: boolean;
-  toggleModal: () => void;
-  createNewFolder: (name: string) => void;
-};
-
-const ModalCrearCarpeta = ({
+const ModalCrearCarpeta: React.FC<ModalCrearCarpetaProps> = ({
   standOpen,
   toggleModal,
   createNewFolder,
-}: ModalCrearCarpetaProps) => {
+}) => {
   const [error, setError] = useState("");
   const [folderName, setFolderName] = useState("");
 

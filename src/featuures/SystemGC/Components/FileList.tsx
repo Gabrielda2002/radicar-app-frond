@@ -4,28 +4,7 @@ import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
 import PdfViewer from "@/components/common/PDFViewer/PdfViewer";
 import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
-
-interface File {
-  id: string;
-  name: string;
-  size: number;
-  mimeType: string;
-  path: string;
-}
-
-interface FileListProps {
-  files: File[];
-  onDelete: (id: string, type: "carpetas" | "archivo") => void;
-  onDownload: (id: string, fileName: string) => void;
-  renameItem: (
-    id: string,
-    newName: string,
-    type: "carpetas" | "archivo"
-  ) => void;
-  currentFolderId: string;
-  section: string;
-  handleRefresh?: () => void;
-}
+import { FileListProps, FileItem } from "../Types/IFileManager";
 
 const FileList: React.FC<FileListProps> = ({
   files,
@@ -56,7 +35,7 @@ const FileList: React.FC<FileListProps> = ({
     }
   };
 
-  const handleFileOpen = (file: File, action: "VIEW" | "DOWNLOAD", type: "files" | "soporte") => {
+  const handleFileOpen = (file: FileItem, action: "VIEW" | "DOWNLOAD", type: "files" | "soporte") => {
     if (file.mimeType === "application/pdf") {
       openSecureFile(file.id, action, type);
       // setPdfUrl(fullPdfUrl);

@@ -9,31 +9,7 @@ import {
   uploadFile,
 } from "@/utils/api-config";
 import { toast } from "react-toastify";
-
-interface FileItem {
-  // Renombrado de File a FileItem
-  id: string;
-  name: string;
-  size: number;
-  mimeType: string;
-  createdAt: string;
-  updatedAt: string;
-  path: string;
-}
-
-interface Folder {
-  id: string;
-  name: string;
-  path: string;
-  parentId: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface FolderContents {
-  files: FileItem[]; // Actualizado a FileItem
-  folders: Folder[];
-}
+import { FolderContents } from "../Types/IFileManager";
 
 export const useFileManager = (
   section: string,

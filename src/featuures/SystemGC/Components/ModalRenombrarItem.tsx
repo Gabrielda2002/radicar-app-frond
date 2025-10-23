@@ -3,13 +3,7 @@ import Input from "@/components/common/Ui/Input";
 import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
-
-type ModalRenombrarItemProps = {
-  standOpen: boolean;
-  toggleModal: () => void;
-  renameItem: (newName: string) => void;
-  nameItemOld: string;
-};
+import { ModalRenombrarItemProps } from "../Types/IFileManager";
 
 const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   standOpen,

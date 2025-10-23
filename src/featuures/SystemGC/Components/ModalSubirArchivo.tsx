@@ -4,14 +4,7 @@ import upload from "/assets/upload.svg";
 import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Input from "@/components/common/Ui/Input";
-
-interface FileUploaderProps {
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onUpload: () => void;
-  uploading: boolean;
-  stadopen: boolean;
-  toggleModal: () => void;
-}
+import { FileUploaderProps } from "../Types/IFileManager";
 
 const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
   stadopen,

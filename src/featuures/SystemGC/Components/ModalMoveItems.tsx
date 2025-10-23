@@ -5,17 +5,8 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { SECTIONS } from "../Page/SistemaArchivosSGC";
 import { useFileManager } from "../Hooks/useFileManager";
 import { Bounce, toast } from "react-toastify";
+import { ModalMoveItemsProps } from "../Types/IFileManager";
 
-interface ModalMoveItemsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  section: string;
-  currentFolderId: string | null;
-  itemNameToMove: string;
-  itemType: "carpetas" | "archivos";
-  itemId: string;
-  handleRefresh: () => void;
-}
 const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   isOpen,
   onClose,

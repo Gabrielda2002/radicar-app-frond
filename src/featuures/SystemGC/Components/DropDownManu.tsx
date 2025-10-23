@@ -7,16 +7,10 @@ import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { DropDownManuProps } from "../Types/IFileManager";
 
 const ModalSubirArchivo = lazy(() => import("./ModalSubirArchivo"));
 const ModalCrearCarpeta = lazy(() => import("./ModalCrearCarpeta"));
-
-interface DropDownManuProps {
-  currentFolderId: string;
-  uploadNewFile: (formData: FormData, id: string | number) => Promise<void>;
-  createNewFolder: (name: string) => void;
-  isInFolder: boolean;
-}
 
 const DropDownManu: React.FC<DropDownManuProps> = ({
   uploadNewFile,

@@ -20,26 +20,7 @@ import staffIcon from "@/assets/sgc/cdi/staff-icon.svg"
 import procssIcon from '@/assets/sgc/sgc/process.svg'
 import pamecIcon from '@/assets/sgc/suh/face-mask.svg'
 import { useAuth } from "@/context/authContext";
-
-interface Folder {
-  id: string;
-  name: string;
-}
-
-interface FolderListProps {
-  folders: Folder[];
-  onFolderClick: (folderId: string, folderName: string) => void;
-  onDelete: (id: string, type: "carpetas" | "archivo") => void;
-  renameItem: (
-    id: string,
-    newName: string,
-    type: "carpetas" | "archivo"
-  ) => void;
-  isInFolder: boolean;
-  section: string;
-  currentFolderId: string;
-  handleRefresh: () => void;
-}
+import { FolderListProps } from "../Types/IFileManager";
 
 const FolderList: React.FC<FolderListProps> = ({
   folders,
@@ -51,7 +32,6 @@ const FolderList: React.FC<FolderListProps> = ({
   currentFolderId,
   handleRefresh,
 }) => {
-  
   const handleDelete = (folderId: string) => {
     //Llama ka funcion de eliminacion
     onDelete(folderId, "carpetas");

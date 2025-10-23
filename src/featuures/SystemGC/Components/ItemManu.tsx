@@ -8,23 +8,13 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMoveItems from "./ModalMoveItems";
 import { Move } from "lucide-react";
+import { ItemManuProps } from "../Types/IFileManager";
 
 //*Properties
 const ModalRenombrarItem = lazy(() => import("./ModalRenombrarItem"));
 const ConfirmDeletePopupProps = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
 );
-interface ItemManuProps {
-  onDelete: () => void;
-  renameItem: (newName: string) => void;
-  itemName: string;
-  itemType: "carpetas" | "archivos";
-  currentFolderId: string;
-  section: string;
-  itemId: string;
-  handleRefresh: () => void;
-  nameItemOld: string;
-}
 
 const ItemManu: React.FC<ItemManuProps> = ({
   onDelete,

@@ -3,11 +3,7 @@ import React from "react";
 
 //*Icons
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
-
-interface breadcrumbProps {
-  path: { id: string; name: string }[];
-  onNavigate: (id: string) => void;
-}
+import { breadcrumbProps } from "../Types/IFileManager";
 
 const BreadCrumb: React.FC<breadcrumbProps> = ({ path, onNavigate }) => {
   return (
