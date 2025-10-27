@@ -7,12 +7,15 @@ interface StatisticsSummaryCardsProps {
 
 const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statistics }) => {
   // Calcular totales
-  const totalCantidadProgramas = statistics.cantidadDemandInduced.reduce((acc, curr) => acc + curr.cantidad, 0);
-  const totalEfectivas = statistics.estadisticasLlamadasTelefonicas.efectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
-  const totalNoEfectivas = statistics.estadisticasLlamadasTelefonicas.noEfectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
+  const totalCantidadProgramas = statistics.quantityDemandByElement.reduce((acc, curr) => acc + curr.cantidad, 0);
+  const totalEfectivas = statistics.phoneCallStatistics.efectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
+  const totalNoEfectivas = statistics.phoneCallStatistics.noEfectivas.reduce((acc, curr) => acc + curr.cantidad, 0);
   const totalLlamadas = totalEfectivas + totalNoEfectivas;
-  const porcentajeMeta = statistics.meta ? ((statistics.cantidadDemandInduced.reduce((acc, curr) => acc + curr.cantidad, 0) / statistics.meta) * 100).toFixed(1) : 0;
-  const cantidadFaltanes = statistics.meta ? (statistics.meta - totalCantidadProgramas) : 0;
+  // contando con la cantidad total de registros sin tener en cuenta el elemento seleccionado
+  const porcentajeMeta = statistics.goal ? ((statistics.totalRecordsInducedDemand.reduce((acc, curr) => acc + curr.cantidad, 0) / statistics.goal) * 100).toFixed(1) : 0;
+  const totalRegistros = statistics.totalRecordsInducedDemand.reduce((acc, curr) => acc + curr.cantidad, 0);
+  const cantidadFaltanes = statistics.goal ? (statistics.goal - totalRegistros) : 0;
+
 
   // Calcular porcentaje de efectividad
   const porcentajeEfectividad = totalLlamadas > 0 ? ((totalEfectivas / totalLlamadas) * 100).toFixed(1) : 0;
@@ -20,27 +23,34 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
   const cards = [
     {
       title: "Meta mensual",
-      value: statistics.meta,
+      value: statistics.goal,
       icon: "🎯",
       color: "bg-blue-500",
       textColor: "text-blue-600 dark:text-blue-400"
     },
     {
-      title: "Total DI Registrados (programa y profesional seleccionados)",
+      title: "Total DI Registrados (considerando el elemento seleccionado)",
       value: totalCantidadProgramas,
       icon: "⚡",
       color: "bg-purple-500",
       textColor: "text-purple-600 dark:text-purple-400"
     },
     {
-      title: "Cantidad Faltante",
+      title: "Cantidad Faltante (considerando total DI registrados)",
       value: cantidadFaltanes,
       icon: "❗",
       color: "bg-teal-500",
       textColor: "text-teal-600 dark:text-teal-400"
     },
     {
-      title: "Porcentaje de Meta Alcanzada",
+      title: 'Total DI Registrados (considerando todos los filtros menos el elemento seleccionado)',
+      value: statistics.totalRecordsInducedDemand.reduce((acc, curr) => acc + curr.cantidad, 0),
+      icon: "📊",
+      color: "bg-indigo-500",
+      textColor: "text-indigo-600 dark:text-indigo-400"
+    },
+    {
+      title: "% Meta Alcanzada (considerando total DI registrados)",
       value: `${porcentajeMeta}%`,
       icon: "📈",
       color: "bg-yellow-500",
@@ -61,7 +71,7 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
       textColor: "text-red-600 dark:text-red-400"
     },
     {
-      title: "Efectividad de Llamadas",
+      title: "% Efectividad",
       value: `${porcentajeEfectividad}%`,
       icon: "📈",
       color: "bg-amber-500",
@@ -89,16 +99,19 @@ const StatisticsSummaryCards: React.FC<StatisticsSummaryCardsProps> = ({ statist
         key={index}
         className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-200"
         >
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1 truncate">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+          <p 
+            className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 leading-relaxed line-clamp-3" 
+            title={card.title}
+          >
             {card.title}
           </p>
           <p className={`text-2xl font-bold ${card.textColor}`}>
             {card.value}
           </p>
           </div>
-          <div className={`p-3 rounded-full ${card.color} bg-opacity-10`}>
+          <div className={`p-3 rounded-full ${card.color} bg-opacity-10 flex-shrink-0`}>
           <span className="text-2xl">{card.icon}</span>
           </div>
         </div>

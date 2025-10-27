@@ -1,21 +1,22 @@
 export interface IStatisticsDemandInduced {
-    meta: number;
-    estadisticasPorPrograma: EstadisticasPorPrograma[];
-    estadisticasLlamadasTelefonicas: EstadisticasLlamadasTelefonicas;
-    estadisticasLlamadasNoEfectivas: EstadisticasLlamadasNoEfectivas[];
-    cantidadDemandInduced: CantidadDemandInduced[];
-    estResultadoLlamadasNoEfectivas: EstResultadoLlamadasNoEfectivas[];
+    goal: number;
+    // estadisticasPorPrograma: EstadisticasPorPrograma[];
+    phoneCallStatistics: PhoneCallStatistics;
+    // estadisticasLlamadasNoEfectivas: EstadisticasLlamadasNoEfectivas[];
+    quantityDemandByElement: QuantityDemandByElement[];
+    totalRecordsInducedDemand: TotalRecordsInducedDemand[];
+    statisticsIneffectiveCalls: StatisticsIneffectiveCalls[];
 }
+    
+// export interface EstadisticasPorPrograma {
+//     programa: string;
+//     elemento: string;
+//     profesional: string;
+//     cantidad: number;
+//     porcentaje: number;
+// }
 
-export interface EstadisticasPorPrograma {
-    programa: string;
-    elemento: string;
-    profesional: string;
-    cantidad: number;
-    porcentaje: number;
-}
-
-export interface EstadisticasLlamadasTelefonicas {
+export interface PhoneCallStatistics {
     efectivas: EstadisticaProfesional[];
     noEfectivas: any[];
 }
@@ -26,20 +27,24 @@ export interface EstadisticaProfesional {
     porcentaje: number;
 }
 
-export interface EstadisticasLlamadasNoEfectivas {
+// export interface EstadisticasLlamadasNoEfectivas {
+//     programa: string;
+//     resultadoLlamada: string;
+//     profesional: string;
+//     porcentaje: number;
+//     cantidad: number;
+// }
+
+export interface QuantityDemandByElement {
     programa: string;
-    resultadoLlamada: string;
-    profesional: string;
-    porcentaje: number;
     cantidad: number;
 }
 
-export interface CantidadDemandInduced {
-    programa: string;
+export interface TotalRecordsInducedDemand {
     cantidad: number;
 }
 
-export interface EstResultadoLlamadasNoEfectivas {
+export interface StatisticsIneffectiveCalls {
     resultadoLlamada: string;
     cantidad: number;
 }
