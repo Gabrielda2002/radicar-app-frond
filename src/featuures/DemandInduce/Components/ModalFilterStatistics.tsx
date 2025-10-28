@@ -226,7 +226,7 @@ const ModalFilterStatistics = ({
             error={formik.errors.month}
             required
           />
-          {[1, 21].includes(Number(rol)) && (
+          {[1, 21, 20].includes(Number(rol)) && (
             <InputAutocompletado
               label="Responsable"
               onInputChanged={(value) =>
