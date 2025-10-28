@@ -63,6 +63,7 @@ const ModalCrearCarpeta: React.FC<ModalCrearCarpetaProps> = ({
               error={error ? error : undefined}
               value={folderName}
               required
+              helpText="Tener en cuenta: la carpeta se creará en el departamento en que el este tu usuario."
             />
             {error && <p className="mt-2 text-red-500">{error}</p>}
           </div>
