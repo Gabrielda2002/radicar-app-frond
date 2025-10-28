@@ -199,7 +199,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
                         }`}
                   onClick={() => {
                     if ( !(f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId))) {
-                      navigateToFolder(f.id, f.name);
+                      navigateToFolder(f.id.toString(), f.name);
                     }
                   }}
                   title={

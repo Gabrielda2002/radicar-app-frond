@@ -8,11 +8,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { EstResultadoLlamadasNoEfectivas } from "@/models/IStatisticsDemandInduced";
+import { StatisticsIneffectiveCalls } from "@/models/IStatisticsDemandInduced";
 import { useTheme } from "@/context/blackWhiteContext";
 
 interface StatisticsByProgramChartProps {
-  data: EstResultadoLlamadasNoEfectivas[];
+  data: StatisticsIneffectiveCalls[];
   title?: string;
 }
 
