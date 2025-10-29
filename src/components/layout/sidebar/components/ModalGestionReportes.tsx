@@ -45,18 +45,18 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
   const { downloadReport, error, loading } = useDownloadReport();
 
   const REPORT_ENDPOINTS: Record<string, string> = {
-    "1": "report-excel-filtro",
-    "2": "report-excel-gestion-auxiliar", 
-    "3": "report-breakes-active",
+    "1": "report/excel/radicacion",
+    "2": "report/excel/assistants", 
+    "3": "report/excel/breakes",
     "4": "report/excel/biometric",
-    "5": "report-excel-cirugias-filtro",
-    "6": "report/tickets",
-    "7": "reporte/demanda/inducida",
-    "8": "report/equipments",
-    "9": "report/device-red",
-    "10": "report/general-inventory",
-    "11": "report/tv",
-    "12": "report/phones",
+    "5": "report/excel/surgerys",
+    "6": "report/excel/tickets",
+    "7": "report/excel/demand-induced",
+    "8": "report/excel/equipments",
+    "9": "report/excel/device-red",
+    "10": "report/excel/general-inventory",
+    "11": "report/excel/tv",
+    "12": "report/excel/phones",
   };
 
   const handleDownloadReport = async () => {

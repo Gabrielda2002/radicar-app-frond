@@ -48,7 +48,7 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
     file: Yup.mixed().when('category', {
       is: (category: string) => category === 'INCAPACIDAD' || category === 'VACACIONES',
       then: (schema) => schema.required('Se requiere un archivo para este tipo de permiso'),
-      otherwise: (schema) => schema.optional()
+      otherwise: (schema) => schema.nullable()
     }),
   });
 
