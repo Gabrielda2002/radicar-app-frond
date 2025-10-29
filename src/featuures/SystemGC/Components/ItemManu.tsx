@@ -72,7 +72,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
 
         <MenuItems
           transition
-          className="absolute -right-6 md:-right-0 z-10 mt-2 w-44 md:w-56 origin-top-right rounded-md bg-white dark:bg-gray-500 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+          className="absolute -right-6 md:-right-0 z-20 mt-2 w-44 md:w-56 origin-top-right rounded-md bg-white dark:bg-gray-500 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
         >
           <div className="py-1">
             <MenuItem>

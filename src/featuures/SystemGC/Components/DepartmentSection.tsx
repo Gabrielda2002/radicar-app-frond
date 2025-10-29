@@ -84,8 +84,8 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
 
       {/* Contenido colapsable */}
       <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? "max-h-[5000px] opacity-100 mt-4" : "max-h-0 opacity-0"
+        className={`transition-all duration-300 ease-in-out ${
+          isExpanded ? "max-h-[5000px] opacity-100 mt-4" : "max-h-0 opacity-0 overflow-hidden"
         }`}
       >
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 px-2">
