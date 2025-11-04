@@ -28,6 +28,7 @@ import DemandInduce from "@/featuures/DemandInduce/Page/DemandInduce";
 import Area from "@/featuures/Areas/Page/Area";
 import Position from "@/featuures/Position/Page/Position";
 import Permission from "@/featuures/Permission/page/Permission";
+import NotFound from "@/featuures/NotFound/Page/NotFound";
 const RegistrarUsuarios = lazy(
   () => import("@/featuures/RegisterUser/Page/RegisterUser.tsx")
 );
@@ -83,6 +84,7 @@ const ContextualizedRoutes: React.FC = () => {
       }
     >
       <Routes>
+        <Route path="*" element={<NotFound />} />
         {/* Rutas generales sin contextos específicos */}
         <Route path="/home" element={<Inicio />} />
         <Route path="/tabla-radicacion" element={<TablaRadicacion />} />

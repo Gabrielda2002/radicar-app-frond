@@ -30,7 +30,6 @@ function AppRoutes() {
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
-
         {/* Rutas protegidas */}
         <Route element={<PrivateRoutes />}>
           <Route
