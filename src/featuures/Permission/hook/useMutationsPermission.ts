@@ -7,6 +7,7 @@ interface UseMutationsPermissionProps {
   isLoading: boolean;
   create: (data: Object, onSuccess: () => void) => void;
   update: (data: Object, requestId: number, stepId: number, onSuccess: () => void) => void;
+  cancelRequest: (requestId: number, onSuccess: () => void) => void;
 }
 
 export const UseMutationsPermission = (): UseMutationsPermissionProps => {
@@ -60,10 +61,33 @@ export const UseMutationsPermission = (): UseMutationsPermissionProps => {
     }
   };
 
+  const cancelRequest = async (requestId: number, onSuccess: () => void) => {
+    try {
+      
+      const response = await api.put(`/permission/requests/${requestId}/cancel`);
+
+      if (response.status === 200) {
+        onSuccess();
+        setError(null);
+        toast.success("Permiso cancelado con éxito");
+      }
+
+    } catch (error: any) {
+      if (error.response.status === 500) {
+        setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
+      }else {
+        setError(error.response.data.message || "Error al cancelar el permiso");
+      }
+    }finally{
+      setIsLoading(false);
+    }
+  }
+
   return {
     error,
     isLoading,
     create,
     update,
+    cancelRequest,
   };
 };
