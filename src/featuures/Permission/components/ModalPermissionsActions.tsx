@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import { File } from "lucide-react";
+import { useAuth } from "@/context/authContext";
 
 const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   permission,
@@ -28,10 +29,12 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
 
   const { openSecureFile } = useSecureFileAccess();
 
+  const { rol } = useAuth();
+
   const currentStep = useMemo(() => {
     return permission.steps && permission.steps.length > 0
-      ? permission.steps[0]
-      : null;
+      ? rol == '18' ? permission.steps[1] : permission.steps[0]
+      : null
   }, [permission.steps]);
 
   const availableActions = useMemo(() => {

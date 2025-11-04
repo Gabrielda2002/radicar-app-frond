@@ -154,8 +154,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   if (errorRol) return <p>{errorRol}</p>;
   if (errorHeadquarters) return <p>{errorHeadquarters}</p>;
 
-  console.log(formik.errors);
-
   return (
     <>
       <Button type="button" onClick={handleOpenModal} variant="outline">
