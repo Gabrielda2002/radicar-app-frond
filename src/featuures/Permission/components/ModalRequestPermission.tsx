@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { AnimatePresence } from "framer-motion";
+import { CheckFilesFormat, CheckFilesSize } from "../services/CheckFiles";
 
 interface ModalRequestPermissionProps {
   isOpen: boolean;
@@ -47,11 +48,12 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       .max(1000, "No puede tener más de 1000 caracteres"),
     file: Yup.mixed().when('category', {
       is: (category: string) => category === 'INCAPACIDAD' || category === 'VACACIONES',
-      then: (schema) => schema.required('Se requiere un archivo para este tipo de permiso'),
+      then: (schema) => schema.required('Se requiere un archivo para este tipo de permiso')
+        .test('fileFormat', 'Formato de archivo no válido. Solo se permiten archivos PDF.', CheckFilesFormat)
+        .test('fileSize', 'El tamaño del archivo excede el límite permitido de 5 MB.', CheckFilesSize),
       otherwise: (schema) => schema.nullable()
     }),
   });
-
   const formik = useFormik({
     initialValues: {
       category: "",
