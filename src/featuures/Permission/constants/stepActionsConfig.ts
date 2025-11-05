@@ -16,9 +16,12 @@ export const STEP_ACTIONS_CONFIG: StepActionsConfig = {
     ],
   },
   VACACIONES: {
-    RRHH: [
+    JEFE: [
       { value: "APROBADO", label: "Aprobar" },
       { value: "RECHAZADO", label: "Rechazar" },
+    ],
+    RRHH: [
+      { value: "VISTO", label: "Marcar como Visto" },
     ],
   },
   INCAPACIDAD: {
