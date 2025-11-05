@@ -138,14 +138,23 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión Humana',
         icon: userMain,
         type: 'category',
-        roles: [1, 18],
+        roles: [1, 18, 6, 20],
         children: [
           {
             id: 'biometric-users',
             title: 'Biométricos Usuarios',
             icon: user,
             path: '/RegistroUsuarios',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1, 18]
+          },
+          {
+            id: 'permission-requests-management',
+            title: 'Solicitudes de Permisos',
+            icon: BiMailSend,
+            path: '/permissions',
+            type: 'subcategory',
+            roles: [6, 1, 20, 18] 
           }
         ]
       },
@@ -165,21 +174,6 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
           }
         ]
       },
-      {
-        id: 'permission-requests',
-        title: 'Solicitudes de Permisos',
-        icon: BiMailSend,
-        type: 'category',
-        children: [
-          {
-            id: 'permission-requests-management',
-            title: 'Solicitudes de Permisos',
-            icon: auditoria,
-            path: '/permissions',
-            type: 'subcategory'
-          }
-        ]
-      }
     ]
   },
 

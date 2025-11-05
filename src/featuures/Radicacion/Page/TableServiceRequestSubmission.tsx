@@ -101,7 +101,7 @@ const TablaRadicacion = () => {
               error={errorRadicados ? errorRadicados : undefined}
               touched={!!errorRadicados}
               required={true}
-              helpText="Ingrese el número de documento del paciente para buscar su radicación."
+              helpText="Ingrese el número de documento del paciente para buscar su radicado."
             />
             <Button
               variant="secondary"
