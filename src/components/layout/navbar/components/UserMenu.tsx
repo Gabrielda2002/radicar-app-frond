@@ -149,7 +149,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   };
 
   return (
-    <Menu as="div" className="relative" title="Perfil">
+    <Menu as="div" className="relative">
       <MenuButton className={buttonClassName} aria-label="Menú de usuario">
         <img
           alt="Profile"
