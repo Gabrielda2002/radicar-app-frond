@@ -30,3 +30,8 @@ export interface UseFetchBalanceReturn {
     error: string | null;
     refetch: () => void;
 }
+
+export interface ModalConfigBalanceProps{
+    balances: Balance[];
+    onSuccess: () => void;
+}

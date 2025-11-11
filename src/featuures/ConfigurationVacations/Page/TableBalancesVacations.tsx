@@ -1,8 +1,9 @@
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchBalances } from "../Hooks/useFetchBalances";
+import ModalConfigBalance from "../Components/ModalConfigBalance";
 
 const TableBalancesVacations = () => {
-  const { data, loading, error } = useFetchBalances();
+  const { data, loading, error, refetch } = useFetchBalances();
 
   return (
     <>
@@ -45,7 +46,9 @@ const TableBalancesVacations = () => {
                   <td className="text-start py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800">
                     {b.observaciones}
                   </td>
-                  <td className="text-start py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800"></td>
+                  <td className="text-start py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800">
+                    <ModalConfigBalance balances={b.balances} onSuccess={refetch} />
+                  </td>
                 </tr>
               ))}
             </tbody>
