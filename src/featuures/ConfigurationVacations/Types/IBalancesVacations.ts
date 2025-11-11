@@ -23,3 +23,10 @@ export interface Balance {
     vencido:          boolean;
     diasAsignados:    string;
 }
+
+export interface UseFetchBalanceReturn {
+    data: IBalancesVacations;
+    loading: boolean;
+    error: string | null;
+    refetch: () => void;
+}
