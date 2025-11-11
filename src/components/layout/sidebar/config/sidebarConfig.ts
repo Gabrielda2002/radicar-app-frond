@@ -155,6 +155,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             path: '/permissions',
             type: 'subcategory',
             roles: [6, 1, 20, 18] 
+          },
+          {
+            id: 'configuration-vacations',
+            title: 'Configuración Vacaciones',
+            icon: user,
+            path: '/configuration-vacations',
+            type: 'subcategory',
+            roles: [1, 6, 20, 18]
           }
         ]
       },
