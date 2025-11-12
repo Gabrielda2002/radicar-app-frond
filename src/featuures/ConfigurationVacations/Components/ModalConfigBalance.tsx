@@ -2,25 +2,28 @@ import React, { useState } from "react";
 import { ModalConfigBalanceProps } from "../Types/IBalancesVacations";
 import FormModal from "@/components/common/Ui/FormModal";
 import * as Yup from "yup";
-import { useFormik, FieldArray } from "formik";
+import { useFormik } from "formik";
 import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
+import { useBalancesMutations } from "../Hooks/useBalancesMutations";
+import { toast } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
 
 const ModalConfigBalance: React.FC<ModalConfigBalanceProps> = ({
   balances,
   onSuccess,
+  userId,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // lo que el backend espera para la configuracion de balance es un array de objetos donde el objeto tiene { balanceId: number, diasTomandos: number, notas: string}
+  const { configureBalances, error, isLoading } = useBalancesMutations();
 
-  // validacion schema con yup
   const validationSchema = Yup.object({
     configuration: Yup.array()
       .of(
         Yup.object({
           balanceId: Yup.number().required("El ID del balance es obligatorio"),
-          diasTomandos: Yup.number()
+          diasTomados: Yup.number()
             .min(0, "Los días tomados no pueden ser negativos")
             .required("Los días tomados son obligatorios"),
           notas: Yup.string().max(
@@ -45,7 +48,12 @@ const ModalConfigBalance: React.FC<ModalConfigBalanceProps> = ({
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values.configuration);
+      configureBalances(values, userId, () => {
+        setIsOpen(false);
+        onSuccess();
+        formik.resetForm();
+        toast.success("Balances configurados correctamente");
+      });
     },
   });
 
@@ -70,42 +78,47 @@ const ModalConfigBalance: React.FC<ModalConfigBalanceProps> = ({
         onClose={() => setIsOpen(false)}
         onSubmit={formik.handleSubmit}
         size="lg"
+        isSubmitting={formik.isSubmitting || isLoading}
         isValid={formik.isValid}
       >
-        <FieldArray name="configuration">
-          {() => (
-            <>
-              {formik.values.configuration.map((c, index) => (
-                <div key={index}>
-                  <Input
-                    label={`Balance ID: ${c.balanceId}`}
-                    name={`configuration[${index}].diasTomados`}
-                    value={c.diasTomados}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={getFieldError(index, "diasTomados")}
-                  />
-                  <Input
-                    label="Notas"
-                    name={`configuration[${index}].notas`}
-                    value={c.notas}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={getFieldError(index, "notas")}
-                  />
-                  <Input
-                    label={`Días Tomados para Balance ID: ${c.balanceId}`}
-                    name={`configuration[${index}].diasTomados`}
-                    value={c.diasTomados}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={getFieldError(index, "diasTomados")}
-                  />
+        <div className="space-y-4 grid grid-cols-1">
+          {formik.values.configuration.map((c, index) => (
+            <div
+              key={index}
+              className="grid md:grid-cols-2 grid-cols-1 gap-4 py-3 px-4"
+            >
+              <Input
+                type="number"
+                label={`Días Tomados para Balance ID: ${c.balanceId}`}
+                name={`configuration[${index}].diasTomados`}
+                value={formik.values.configuration[index].diasTomados}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={getFieldError(index, "diasTomados")}
+                touched={formik.touched.configuration?.[index]?.diasTomados}
+                required
+              />
+              <Input
+                label="Notas (Opcional)"
+                name={`configuration[${index}].notas`}
+                value={formik.values.configuration[index].notas}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={getFieldError(index, "notas")}
+                touched={formik.touched.configuration?.[index]?.notas}
+              />
+            </div>
+          ))}
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-start text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
                 </div>
-              ))}
-            </>
-          )}
-        </FieldArray>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
       </FormModal>
     </>
   );

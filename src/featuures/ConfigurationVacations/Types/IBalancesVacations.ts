@@ -34,4 +34,11 @@ export interface UseFetchBalanceReturn {
 export interface ModalConfigBalanceProps{
     balances: Balance[];
     onSuccess: () => void;
+    userId: number;
+}
+
+export interface UseBalancesMutationsReturn {
+    isLoading: boolean;
+    error: string | null;
+    configureBalances: (config: Object,userId: number, onSuccess: () => void) => Promise<void>;
 }

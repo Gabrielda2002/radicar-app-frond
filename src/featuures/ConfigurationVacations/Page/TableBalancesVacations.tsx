@@ -23,7 +23,7 @@ const TableBalancesVacations = () => {
               <th className="text-start">Periodos</th>
               <th className="text-start">Revisión</th>
               <th className="text-start">Observaciones</th>
-              <th className="text-center">Balances</th>
+              <th className="text-end">Balances</th>
             </thead>
             <tbody>
               {data?.data?.map((b, index) => (
@@ -46,8 +46,8 @@ const TableBalancesVacations = () => {
                   <td className="text-start py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800">
                     {b.observaciones}
                   </td>
-                  <td className="text-start py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800">
-                    <ModalConfigBalance balances={b.balances} onSuccess={refetch} />
+                  <td className="text-end py-4 text-gray-400 p-0 border-gray-500 dark:text-gray-500 dark:bg-gray-800">
+                    <ModalConfigBalance balances={b.balances} onSuccess={refetch} userId={b.userId} />
                   </td>
                 </tr>
               ))}
