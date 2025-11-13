@@ -83,9 +83,6 @@ const ModalConfigBalance: React.FC<ModalConfigBalanceProps> = ({
         isValid={formik.isValid}
       >
         <>
-          <div className="space-y-4 grid grid-cols-1 p-4">
-            {formik.values.configuration.map((c, index) => (
-              <>
                 <div>
                   {balances.map((b, index) => (
                     <div
@@ -116,6 +113,9 @@ const ModalConfigBalance: React.FC<ModalConfigBalanceProps> = ({
                     </div>
                   ))}
                 </div>
+          <div className="space-y-4 grid grid-cols-1 p-4">
+            {formik.values.configuration.map((c, index) => (
+              <>
                 <div
                   key={index}
                   className="grid md:grid-cols-2 grid-cols-1 gap-4 py-3 px-4"
