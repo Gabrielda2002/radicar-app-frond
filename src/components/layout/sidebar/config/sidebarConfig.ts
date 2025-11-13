@@ -229,13 +229,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
   {
     id: 'admin',
     title: 'Administrador',
-    roles: [1],
+    roles: [1,18],
     items: [
       {
         id: 'radication-tables',
         title: 'Tablas Radicación',
         icon: table,
         type: 'category',
+        roles: [1],
         children: [
           {
             id: 'cups-table',
@@ -321,41 +322,47 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión Usuarios',
         icon: userMain,
         type: 'category',
+        roles: [1,18],
         children: [
           {
             id: 'profile',
             title: 'Mi Perfil',
             icon: user,
             path: '/Perfil',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1]
           },
           {
             id: 'users',
             title: 'Usuarios',
             icon: user1,
             path: '/Usuarios',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1,18]
           },
           {
             id: 'areas',
             title: 'Areas',
             icon: report,
             path: '/Area',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1]
           },
           {
             id: 'positions',
             title: 'Cargos',
             icon: report,
             path: '/cargo',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1]
           },
           {
             id: 'register-users',
             title: 'Registrar Usuarios',
             icon: user2,
             path: '/registrar-usuarios',
-            type: 'subcategory'
+            type: 'subcategory',
+            roles: [1,18]
           }
         ]
       }

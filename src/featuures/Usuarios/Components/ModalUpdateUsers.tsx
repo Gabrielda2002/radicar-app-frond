@@ -20,6 +20,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import { useUsersMutations } from "../Hooks/useUsersMutations";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { AnimatePresence } from "framer-motion";
+import { useAuth } from "@/context/authContext";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -30,6 +31,9 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   id,
   ususario,
 }) => {
+
+  const { rol } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { refreshUsers } = useUsers();
@@ -149,6 +153,16 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       });
     }
   }, [ususario]);
+
+  const isReadOnly = (): boolean => {
+    const rolsAuthorizedToEdit = ['1'];
+
+    if ( rol && [...rolsAuthorizedToEdit].includes(rol)) {
+      return false;
+    }
+
+    return true;
+  }
 
   if (errorDocument) return <p>{errorDocument}</p>;
   if (errorRol) return <p>{errorRol}</p>;
@@ -344,6 +358,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 error={formik.errors.rol}
                 touched={formik.touched.rol}
                 required
+                disabled={isReadOnly()}
               />
 
               <Input
@@ -356,6 +371,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 placeholder="Ingrese Contraseña..."
                 error={formik.errors.password}
                 touched={formik.touched.password}
+                readOnly={isReadOnly()}
               />
 
               <Select
