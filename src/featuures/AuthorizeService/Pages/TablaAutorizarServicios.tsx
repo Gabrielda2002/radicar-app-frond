@@ -1,27 +1,29 @@
 //*Fuctions and Hooks
 import * as Yup from "yup";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useFormik } from "formik";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLocation } from "react-router-dom";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";
-import {
-  CupsDetail,
-  FormikErrors,
-  FormikValues,
-} from "@/models/IFotmikValues";
-import { UpdateService } from "../Services/UpdateService";
+import { CupsDetail, FormikErrors, FormikValues } from "@/models/IFotmikValues";
 import { useFetchFuntionalUnit } from "../Hooks/UseFetchFuntionalUnit";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { useAuthorizeServices } from "../Hooks/useAuthorizeServices";
+import { AnimatePresence } from "framer-motion";
 
 const FormularioAutorizacion = () => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const {
+    authorizeService,
+    error: authorizeError,
+    isLoading,
+  } = useAuthorizeServices();
+
   const loadEstados = true;
 
   const location = useLocation();
@@ -80,38 +82,13 @@ const FormularioAutorizacion = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setIsSubmitting(true);
-
-      try {
-        const response = await UpdateService(values, memoizedId);
-
-        if (response?.status === 200) {
-            toast.success("Autorizado exitosamente.", {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          setTimeout(() => {
-            window.location.href = "/tabla-auditoria";
-          }, 3000);
-        } else {
-          throw new Error("Error al registrar la autorización.");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      setIsSubmitting(false);
+      await authorizeService(values, memoizedId, () => {
+        toast.success("Servicio autorizado correctamente");
+        formik.resetForm();
+        window.location.href = "/tabla-auditoria";
+      });
     },
   });
-     console.log("Errors:", formik.errors);
-  // console.log("Touched:", formik.touched);
 
   if (error) return <h2>{error}</h2>;
   if (loading) return <LoadingSpinner duration={500} />;
@@ -191,15 +168,24 @@ const FormularioAutorizacion = () => {
               <div className="hidden translate-x-0 translate-y-4 md:flex md:translate-y-10 md:translate-x-1">
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !formik.isValid}
+                  disabled={isLoading || !formik.isValid}
                   variant="primary"
                   size="lg"
                   fullWidth={true}
-                  isLoading={isSubmitting}
+                  isLoading={isLoading}
                 >
                   Autorizar
                 </Button>
               </div>
+              <AnimatePresence>
+                {authorizeError && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {authorizeError}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="grid w-full grid-cols-1 gap-3 mt-5 md:mt-0 md:flex sm:grid-cols-1">
@@ -259,7 +245,9 @@ const FormularioAutorizacion = () => {
                           ? "Requerido, máximo 500 caracteres."
                           : undefined
                       }
-                      touched={formik.touched.cupsDetails?.[index]?.observacionCups}
+                      touched={
+                        formik.touched.cupsDetails?.[index]?.observacionCups
+                      }
                       placeholder="Observación CUPS"
                     />
                   </div>
@@ -287,7 +275,9 @@ const FormularioAutorizacion = () => {
                           ? "Requerido."
                           : undefined
                       }
-                      touched={formik.touched.cupsDetails?.[index]?.unidadFuncional}
+                      touched={
+                        formik.touched.cupsDetails?.[index]?.unidadFuncional
+                      }
                     />
                   </div>
 
@@ -346,14 +336,14 @@ const FormularioAutorizacion = () => {
             <div className="flex translate-x-0 translate-y-1 md:hidden md:translate-y-8 md:translate-x-1">
               <Button
                 type="submit"
-                disabled={isSubmitting || !formik.isValid}
+                disabled={isLoading || !formik.isValid}
                 variant="primary"
                 size="md"
                 fullWidth={true}
-                isLoading={isSubmitting}
+                isLoading={isLoading}
                 className="h-12 md:h-16"
               >
-                {isSubmitting ? "Enviando..." : "Autorizar"}
+                {isLoading ? "Enviando..." : "Autorizar"}
               </Button>
             </div>
           </form>
