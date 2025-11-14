@@ -146,25 +146,39 @@ const NotificationBell: React.FC = () => {
                     </p>
 
                     {/* boton encuesta */}
-                    <div className="flex justify-center mt-2 space-x-2">
-                      <div className="flex items-center">
-                        <ModalCommetsTicket
-                          idTicket={
-                            notification.referenceId
-                              ? notification.referenceId
-                              : 0
-                          }
-                        />
-                      </div>
-                      <div className="flex items-center w-fit">
-                        <ModalServey
-                          idTicket={
-                            notification.referenceId
-                              ? notification.referenceId
-                              : 0
-                          }
-                        />
-                      </div>
+                    <div
+                      className={`flex  mt-2 space-x-2 ${
+                        ["update_ticket", "new_ticket", "ticket"].includes(
+                          notification.referenceType || ""
+                        )
+                          ? "justify-center"
+                          : "justify-end"
+                      }`}
+                    >
+                      {["update_ticket", "new_ticket", "ticket"].includes(
+                        notification.referenceType || ""
+                      ) && (
+                        <>
+                          <div className="flex items-center">
+                            <ModalCommetsTicket
+                              idTicket={
+                                notification.referenceId
+                                  ? notification.referenceId
+                                  : 0
+                              }
+                            />
+                          </div>
+                          <div className="flex items-center w-fit">
+                            <ModalServey
+                              idTicket={
+                                notification.referenceId
+                                  ? notification.referenceId
+                                  : 0
+                              }
+                            />
+                          </div>
+                        </>
+                      )}
                       {/* marcar como leido solo a los roles 1*/}
                       {[1, 17].includes(Number(rol)) && (
                         <div className="flex items-center">
