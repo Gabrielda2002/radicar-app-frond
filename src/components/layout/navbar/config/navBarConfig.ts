@@ -23,4 +23,8 @@ export const SUPPORT_LINKS = [
         name: "Comite de convivencia laboral",
         href: "https://docs.google.com/forms/d/e/1FAIpQLScXdjU2mbD3bifKzEje2ypBMgdS64h1w5-_ENI9VvenoVf98g/viewform?usp=sf_link",
       },
+      {
+        name: "Solicitud Gestión Documental",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLScRSu4Qwpbgz1PM9JiGyJBO44yDnlz4AILSeVGLbjsqjocWdw/viewform"
+      }
 ]
