@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 // External icons
 import { MdDateRange } from "react-icons/md";
-import { FaUserTie, FaFileContract, FaChartLine } from "react-icons/fa";
+import { FaUserTie, FaFileContract, FaChartLine, FaRegCheckCircle } from "react-icons/fa";
 
 // Internal components and hooks
 import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
@@ -22,6 +22,7 @@ import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
 import ProfileField from "../components/ProfileField";
 import { useFetchMyBalance } from "../hooks/useFetchMyBalance";
+import { VscError } from "react-icons/vsc";
 
 const ConfirmDeletePopup = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
@@ -171,6 +172,12 @@ const Perfil: React.FC = () => {
                       label={`Fecha Fin ${index + 1}:`}
                       value={FormatDate(p.fechaFin, false)}
                       title={`Fecha de Fin del Periodo ${index + 1}`}
+                    />
+                    <ProfileField
+                      icon={parseInt(p.diasDisponibles) > 0 ? FaRegCheckCircle : VscError}
+                      label={`Dias disponibles ${index + 1}:`}
+                      value={p.diasDisponibles}
+                      title={`Días disponibles del Periodo ${index + 1}`}
                     />
                   </div>
                 ))}
