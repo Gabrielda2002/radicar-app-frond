@@ -7,6 +7,7 @@ import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { useAuth } from "@/context/authContext";
+import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
 interface ModalReporteRadicadoProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,10 +17,9 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
   isOpen,
   onClose,
 }) => {
-
   const { rol } = useAuth();
 
-    const user = localStorage.getItem("user");
+  const user = localStorage.getItem("user");
 
   const headquarterCurrentUser = user ? JSON.parse(user).headquartersId : "";
 
@@ -32,10 +32,13 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
   const [cupsCode, setCupsCode] = useState("");
   const [estadoCups, setEstadoCups] = useState("");
   const [headquarter, setHeadquarter] = useState<number>(0);
+  const [convenio, setConvenio] = useState<number>(0);
 
   // Estado para manejar el tipo de reporte
   const [reportType, setReportType] = useState("");
-  
+
+  const { dataConvenios } = useFetchConvenio();
+
   useEffect(() => {
     if (rol && Number(rol) === 21) {
       setHeadquarter(Number(headquarterCurrentUser));
@@ -46,7 +49,7 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   const REPORT_ENDPOINTS: Record<string, string> = {
     "1": "report/excel/radicacion",
-    "2": "report/excel/assistants", 
+    "2": "report/excel/assistants",
     "3": "report/excel/breakes",
     "4": "report/excel/biometric",
     "5": "report/excel/surgerys",
@@ -61,8 +64,9 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   const handleDownloadReport = async () => {
     try {
-      const endPoint: string = REPORT_ENDPOINTS[reportType] || "reporte/demanda/inducida";
-      
+      const endPoint: string =
+        REPORT_ENDPOINTS[reportType] || "reporte/demanda/inducida";
+
       await downloadReport(
         dateStartRadicado,
         dateEndRadicado,
@@ -70,6 +74,7 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
         endPoint,
         headquarter,
         estadoCups,
+        convenio
       );
     } catch (error) {
       console.log(error);
@@ -116,7 +121,6 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
               ]}
               name="reportType"
               onChange={(e) => setReportType(e.target.value)}
-
             />
           </div>
           {/* rango fecchas radicado */}
@@ -141,14 +145,25 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
                   onChange={(e) => setDateEndRadicado(e.target.value)}
                 />
               </div>
-              {reportType == "7" && [1,20].includes(Number(rol)) && (
+              {reportType == "7" && [1, 20].includes(Number(rol)) && (
                 <InputAutocompletado
                   label="Lugar Radicación"
-                  onInputChanged={(value) =>
-                    setHeadquarter(Number(value))
-                  }
+                  onInputChanged={(value) => setHeadquarter(Number(value))}
                   apiRoute="lugares-radicacion-name"
                   placeholder="Ej: Calle 15"
+                />
+              )}
+              {reportType == "7" && (
+                <Select
+                  options={dataConvenios.map((convenio) => ({
+                    value: convenio.id,
+                    label: convenio.name,
+                  }))}
+                  label="Convenio"
+                  name="convenio"
+                  onChange={(e) => {
+                    setConvenio(Number(e.target.value));
+                  }}
                 />
               )}
             </div>

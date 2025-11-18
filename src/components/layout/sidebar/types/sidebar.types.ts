@@ -46,3 +46,17 @@ export interface SidebarItemProps {
 export interface AccordionState {
   [key: string]: boolean;
 }
+
+export interface UseDownloadReporteReturn {
+  downloadReport: (
+    dateStart: string,
+    dateEnd: string,
+    cupsCode: string | null,
+    endPoint: string,
+    headquarter: number,
+    statusCups?: string,
+    convenio?: number,
+  ) => Promise<void>;
+  error: string | null;
+  loading: boolean;
+}
