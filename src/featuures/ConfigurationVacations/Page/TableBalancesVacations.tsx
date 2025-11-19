@@ -56,14 +56,16 @@ const TableBalancesVacations = () => {
               value={itemsPerPage}
             />
           </div>
-          <table className="w-full">
+            <table className="w-full">
             <thead className="text-gray-400 text-base">
-              <th className="text-start"># Id</th>
-              <th className="text-start">Colaborador</th>
-              <th className="text-start">Periodos</th>
-              <th className="text-start">Revisión</th>
-              <th className="text-start">Observaciones</th>
-              <th className="text-end">Balances</th>
+              <tr>
+              <th className="text-start px-2"># Id</th>
+              <th className="text-start px-2">Colaborador</th>
+              <th className="text-start px-2">Periodos</th>
+              <th className="text-start px-2">Revisión</th>
+              <th className="text-start px-2">Observaciones</th>
+              <th className="text-end px-2">Acciones</th>
+              </tr>
             </thead>
             <tbody>
               {currentData().map((b, index) => (
