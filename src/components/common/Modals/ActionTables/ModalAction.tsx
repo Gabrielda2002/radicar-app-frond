@@ -135,8 +135,8 @@ const ModalAction: React.FC<ModalActionProps> = ({
         submitText="Guardar"
         size="lg"
       >
-        <div className="p-6 w-[430px] md:w-[900px]">
-          <section className="grid grid-cols-1 md:grid-cols-3">
+        <div className="p-6">
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               label={`ID ${name}`}
               type="text"
