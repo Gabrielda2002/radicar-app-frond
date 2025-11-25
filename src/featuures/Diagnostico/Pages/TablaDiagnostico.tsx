@@ -1,44 +1,46 @@
 //*Funciones y Hooks
-import { useState, lazy, Suspense, useCallback } from "react";
+import { lazy, Suspense } from "react";
 
-import Pagination from "@/components/common/PaginationTable/PaginationTable";
-import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import usePagination from "@/hooks/usePagination";
 import {  useFetchDiagnostic } from "../Hooks/UseFetchDiagnostic";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IDiagnostico } from "@/models/IDiagnostico";
-import Input from "@/components/common/Ui/Input";
-import Select from "@/components/common/Ui/Select";
+import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
 
 const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
 const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
-const ITEMS_PER_PAGE = 8; // Puedes ajustar el número de ítems por página
 
 const TablaDiagnostico = () => {
   const { diagnostico, loading, errorDiagnostico, refetch } = useFetchDiagnostic();
-  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
 
-  // Callback para refrescar datos cuando la actualización sea exitosa
-  const handleUpdateSuccess = useCallback(() => {
-    refetch();
-  }, [refetch]);
+  const tableState = useTableState({
+    data: diagnostico || [],
+    searchFields: ["id", "code", "description"],
+    initialItemsPerPage: 10
+  });
 
-  const { query, setQuery, filteredData } = useSearch<IDiagnostico>(diagnostico || [], [
-    "id",
-    "code",
-  ]);
-
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination(filteredData, itemsPerPage);
-
-  const handleItemsPerPageChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setItemsPerPage(Number(e.target.value));
-  };
+  const columns = [
+    {
+      key: "id",
+      header: "ID",
+      width: "10%",
+      accessor: (item: IDiagnostico) => item.id,
+    },
+    {
+      key: "code",
+      header: "Código",
+      width: "20%",
+      accessor: (item: IDiagnostico) => item.code,
+    },
+    {
+      key: "description",
+      header: "Descripción Diagnóstico",
+      width: "40%",
+      accessor: (item: IDiagnostico) => item.description,
+    }
+  ];
 
   if (loading) return <LoadingSpinner duration={500} />;
   if (errorDiagnostico)
@@ -55,95 +57,40 @@ const TablaDiagnostico = () => {
           { label: "/ Servicio Cups", path: "" },
         ]}
       />
-
-      {/* container-table */}
-      <section className="w-full p-5 overflow-hidden bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ">
-        {/* header-tale */}
-
-        <section className="items-center justify-between pb-6 md:flex header-tabla">
-          <div className="container-filter">
-            <Input
-              label="Buscar Diagnostico"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar"
+      <DataTableContainer
+        searchValue={tableState.searchQuery}
+        onSearchChange={tableState.setSearchQuery}
+        itemsPerPage={tableState.itemsPerPage}
+        onItemsPerPageChange={tableState.setItemsPerPage}
+        currentPage={tableState.currentPage}
+        totalPages={tableState.totalPages}
+        onPageChange={tableState.paginate}
+        headerActions={
+          <Suspense fallback={<LoadingSpinner />}>
+            <ModalCrearCupsDiagnostico
+              modulo="diagnostico"
+              onSuccess={refetch}
             />
-          </div>
-          <div className="flex items-center pt-4 space-x-2 md:pt-1">
-            <Select
-              options={[
-                { value: "8", label: "8 Paginas" },
-                { value: "20", label: "20 Paginas" },
-                { value: "30", label: "30 Paginas" },
-              ]}
-              onChange={handleItemsPerPageChange}
-              value={itemsPerPage}
-            />
+          </Suspense>
+        }
+      >
+        <DataTable
+          data={tableState.currentData()}
+          columns={columns}
+          getRowKey={(item) => item.id.toString()}
+          loading={loading}
+          error={errorDiagnostico}
+          renderActions={(item) => (
             <Suspense fallback={<LoadingSpinner />}>
-              <ModalCrearCupsDiagnostico
+              <ModalUpdateCupsDiagnostico
+                item={item}
+                onSuccess={refetch}
                 modulo="diagnostico"
-                onSuccess={handleUpdateSuccess}
               />
             </Suspense>
-          </div>
-        </section>
-
-        {filteredData.length === 0 ? (
-          <div className="text-center text-red-500 dark:text-red-300">
-            No se encontraron resultados para la búsqueda.
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="min-w-full overflow-hidden text-sm rounded-lg shadow-lg">
-                <thead>
-                  <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                    <th className="w-[fit-content]">ID</th>
-                    <th className="">Código</th>
-                    <th className="w-[fit-content]">Descripción</th>
-                    <th className="">Acciones</th>
-                  </tr>
-                </thead>
-
-                <tbody className="text-sm text-center dark:text-gray-200">
-                  {currentData().map((diag) => (
-                    <tr
-                      className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-                      key={diag.id}
-                    >
-                      <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {diag.id}
-                      </td>
-                      <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {diag.code}
-                      </td>
-                      <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        {diag.description}
-                      </td>
-                      <td className="p-1.5 md:p-3 border-b dark:border-gray-700">
-                        <Suspense fallback={<LoadingSpinner />}>
-                          <ModalUpdateCupsDiagnostico
-                            item={diag}
-                            modulo="diagnostico"
-                            onSuccess={handleUpdateSuccess}
-                          />
-                        </Suspense>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div>‎ </div>
-            {/* Controles de paginación */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={paginate}
-            />
-          </>
-        )}
-      </section>
+          )}
+        />
+      </DataTableContainer>
     </>
   );
 };
