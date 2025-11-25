@@ -1,6 +1,5 @@
 //*Funciones y Hooks
 import { lazy, Suspense } from "react";
-import { lazy, Suspense } from "react";
 
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchCups } from "@/hooks/UseFetchCup";
@@ -96,9 +95,6 @@ const TablaCups = () => {
                 onSuccess={refetch}
               />
             </Suspense>
-          )}
-        />
-      </DataTableContainer>
           )}
         />
       </DataTableContainer>
