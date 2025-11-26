@@ -1,7 +1,7 @@
 //*Funciones y Hooks
 import { useState, lazy, Suspense } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { useFetchPaciente } from "@/hooks/useFetchPaciente";
+import { useFetchPatient } from "@/featuures/Patient/Hooks/useFetchPatient";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
@@ -12,7 +12,7 @@ import { IPacientes } from "@/models/IPacientes";
 const ModalPaciente = lazy(() => import("../Components/ModalPatient"));
 
 const TablaPatient = () => {
-  const { data: patients, error, getData } = useFetchPaciente();
+  const { data: patients, error, getData, refetch } = useFetchPatient();
 
   const [identificacion, setIdentificacion] = useState<string>("");
 
@@ -101,7 +101,7 @@ const TablaPatient = () => {
             </Button>
           </div>
           <Suspense fallback={<LoadingSpinner />}>
-            <ModalPaciente id={null} paciente={null} />
+            <ModalPaciente id={null} paciente={null} onSuccess={refetch} />
           </Suspense>
         </section>
         <div>
@@ -115,7 +115,7 @@ const TablaPatient = () => {
                 error={null}
                 renderActions={(item) => (
                   <Suspense fallback={<LoadingSpinner />}>
-                    <ModalPaciente id={item.id} paciente={item} />
+                    <ModalPaciente id={item.id} paciente={item} onSuccess={refetch} />
                   </Suspense>
                 )}
               />

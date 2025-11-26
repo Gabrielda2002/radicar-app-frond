@@ -3,7 +3,7 @@ import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
-import { useFetchPaciente } from "@/hooks/useFetchPaciente";
+import { useFetchPatient } from "@/featuures/Patient/Hooks/useFetchPatient";
 import { useFormik } from "formik";
 import { PlusCircleIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
     124, 125, 126, 129, 133, 134, 139, 147, 148,
   ];
 
-  const { data, error, getData } = useFetchPaciente();
+  const { data, error, getData } = useFetchPatient();
 
   const user = localStorage.getItem("user");
 

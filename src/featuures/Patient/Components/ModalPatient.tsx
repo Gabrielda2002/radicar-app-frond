@@ -17,7 +17,7 @@ import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { Pencil, PlusCircleIcon, Smartphone } from "lucide-react";
-import { usePatient } from "../Hooks/usePatient";
+import { usePatient } from "../Hooks/usePatientMuntations";
 import { AnimatePresence } from "framer-motion";
 import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
 import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
@@ -26,11 +26,13 @@ import { useLazyFetchIpsPrimary } from "@/hooks/useLazyFetchIpsPrimary";
 interface ModalPatientProps {
   id: number | null;
   paciente: IPacientes | null;
+  onSuccess?: () => void;
 }
 
 const ModalPatient: React.FC<ModalPatientProps> = ({
   id,
   paciente,
+  onSuccess,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -123,6 +125,7 @@ const handleModalOpen = async () => {
         if (response?.status === 200 || response?.status === 201) {
             setIsOpen(false);
             formik.resetForm();
+            onSuccess?.();
         }
       } catch (error) {
         console.error("Error al crear o actualizar el paciente:", error);

@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { IPacientes } from "../models/IPacientes";
-import { api } from "../utils/api-config";
+import { useCallback, useState } from "react";
+import { api } from "@/utils/api-config";
+import { IPacientes } from "@/models/IPacientes";
 
-export const useFetchPaciente = () => {
+interface useFetchPatientReturn {
+  data: IPacientes | null;
+  loading: boolean;
+  error: string | null;
+  getData: (documento: string) => Promise<void>;
+  refetch?: () => Promise<void>;
+} 
+
+export const useFetchPatient = (): useFetchPatientReturn => {
   const [data, setData] = useState<IPacientes | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-    const getData = async (documento: string) => {
+    const getData = useCallback( async (documento: string) => {
       try {
 
         setLoading(true);
@@ -18,7 +26,6 @@ export const useFetchPaciente = () => {
         if (pacientes.status === 200 || pacientes.status === 201) {
           setData(pacientes.data);
           setError(null);
-          return pacientes;
         }
       } catch (error: any) {
         if (error.response.status === 500) {
@@ -29,8 +36,13 @@ export const useFetchPaciente = () => {
       } finally {
         setLoading(false);
       }
-    };
+    }, []);
 
-  return { data, loading, error, getData };
+    const refetch = useCallback( async () => {
+      getData(data?.documentNumber.toString() || "");
+      console.log("se ejecuta el refetch")
+    }, [data, getData]);
+
+  return { data, loading, error, getData, refetch };
 };
 

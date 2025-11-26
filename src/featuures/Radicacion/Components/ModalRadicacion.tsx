@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import ServicioForm from "./GenerarInputsCUPS";
 import React, { useEffect, useState } from "react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import { useFetchPaciente } from "@/hooks/useFetchPaciente";
+import { useFetchPatient } from "@/featuures/Patient/Hooks/useFetchPatient";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { AnimatePresence } from "framer-motion";
@@ -32,7 +32,7 @@ const ModalRadicacion = () => {
   {
     /* hook que trae los datos del paciente */
   }
-  const { data, error: errorDataPatient, getData } = useFetchPaciente();
+  const { data, error: errorDataPatient, getData } = useFetchPatient();
 
   const {
     createRequestService,
