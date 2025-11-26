@@ -17,11 +17,12 @@ import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { Pencil, PlusCircleIcon, Smartphone } from "lucide-react";
-import { usePatient } from "../Hooks/usePatientMuntations";
+import { usePatientMutations } from "../Hooks/usePatientMutations";
 import { AnimatePresence } from "framer-motion";
 import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
 import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
 import { useLazyFetchIpsPrimary } from "@/hooks/useLazyFetchIpsPrimary";
+import { toast } from "react-toastify";
 
 interface ModalPatientProps {
   id: number | null;
@@ -36,7 +37,7 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { createPatient, updatePatient, error, loading } = usePatient();
+  const { createPatient, updatePatient, error, loading } = usePatientMutations();
 
   //hook para traer los tipos de documentos
   const { dataDocument, errorDocument, fetchDocument } = useLazyFetchTypeDocument();
@@ -55,96 +56,84 @@ const handleModalOpen = async () => {
   const validationSchema = useMemo(
     () =>
       Yup.object({
-        tipoDocumento: Yup.string().required(
+        documentType: Yup.string().required(
           "El tipo de documento es obligatorio"
         ),
-        correo: Yup.string().required("El correo es obligatorio"),
-        identificacion: Yup.string()
+        email: Yup.string().required("El email es obligatorio"),
+        documentNumber: Yup.string()
           .required("La identificación es obligatoria")
           .min(5, "La identificación debe tener al menos 5 caracteres")
           .max(16, "La identificación debe tener como máximo 16 caracteres"),
-        telefonoFijo: Yup.string()
+        landline: Yup.string()
           .required("El teléfono fijo es obligatorio")
           .min(1, "El teléfono fijo debe tener al menos 1 caracter")
           .max(10, "El teléfono fijo debe tener como máximo 10 caracteres"),
-        nombreCompleto: Yup.string()
+        name: Yup.string()
           .required("El nombre completo es obligatorio")
           .min(3, "El nombre completo debe tener al menos 3 caracteres")
           .max(100, "El nombre completo debe tener como máximo 100 caracteres"),
-        convenio: Yup.string().required("El convenio es obligatorio"),
-        numeroCelular: Yup.string()
+        agreement: Yup.string().required("El convenio es obligatorio"),
+        phoneNumber: Yup.string()
           .required("El número de celular es obligatorio")
           .min(1, "El número de celular debe tener al menos 1 caracter")
           .max(10, "El número de celular debe tener como máximo 10 caracteres"),
-        numeroCelular2: Yup.string()
+        phoneNumber2: Yup.string()
           .optional()
           .min(1, "El número de celular debe tener al menos 1 caracter")
           .max(10, "El número de celular debe tener como máximo 10 caracteres"),
         ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
-        direccion: Yup.string().required("La dirección es obligatoria"),
+        address: Yup.string().required("La dirección es obligatoria"),
       }),
     []
   );
 
   const formik = useFormik({
     initialValues: {
-      tipoDocumento: "",
-      correo: "",
-      identificacion: "",
-      telefonoFijo: "",
-      nombreCompleto: "",
-      convenio: "",
-      numeroCelular: "",
-      numeroCelular2: "",
+      documentType: "",
+      email: "",
+      documentNumber: "",
+      landline: "",
+      name: "",
+      agreement: "",
+      phoneNumber: "",
+      phoneNumber2: "",
       ipsPrimaria: "",
-      direccion: "",
+      address: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-        formData.append("documentType", values.tipoDocumento);
-        formData.append("email", values.correo);
-        formData.append("documentNumber", values.identificacion);
-        formData.append("landline", values.telefonoFijo);
-        formData.append("name", values.nombreCompleto);
-        formData.append("convenio", values.convenio);
-        formData.append("phoneNumber", values.numeroCelular);
-        formData.append("phoneNumber2", values.numeroCelular2);
-        formData.append("ipsPrimaria", values.ipsPrimaria);
-        formData.append("address", values.direccion);
 
-        let response;
-
-        if (id) {
-          response = await updatePatient(formData, id);
-        } else {
-          response = await createPatient(formData);
-        }
-
-        if (response?.status === 200 || response?.status === 201) {
-            setIsOpen(false);
-            formik.resetForm();
-            onSuccess?.();
-        }
-      } catch (error) {
-        console.error("Error al crear o actualizar el paciente:", error);
+      if (id !== null) {
+        await updatePatient(values, id, () => {
+          setIsOpen(false);
+          onSuccess?.();
+          toast.success("Paciente actualizado exitosamente");
+          formik.resetForm();
+        });
+      }else {
+        await createPatient(values, () => {
+          setIsOpen(false);
+          onSuccess?.();
+          toast.success("Paciente creado exitosamente");
+          formik.resetForm();
+        });
       }
     },
   });
+
   useEffect(() => {
     if (id !== null && paciente) {
       formik.setValues({
-        tipoDocumento: paciente.documentRelation.id.toString(),
-        correo: paciente.email,
-        identificacion: paciente.documentNumber.toString(),
-        telefonoFijo: paciente.landline,
-        nombreCompleto: paciente.name,
-        convenio: paciente.convenioRelation.id.toString(),
-        numeroCelular: paciente.phoneNumber,
-        numeroCelular2: paciente.phoneNumber2 ?? "",
+        documentType: paciente.documentRelation.id.toString(),
+        email: paciente.email,
+        documentNumber: paciente.documentNumber.toString(),
+        landline: paciente.landline,
+        name: paciente.name,
+        agreement: paciente.convenioRelation.id.toString(),
+        phoneNumber: paciente.phoneNumber,
+        phoneNumber2: paciente.phoneNumber2 ?? "",
         ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
-        direccion: paciente.address,
+        address: paciente.address,
       });
     }
   }, [id, paciente]);
@@ -180,16 +169,16 @@ const handleModalOpen = async () => {
               <div>
                 <Select
                   label="Tipo documento"
-                  name="tipoDocumento"
-                  value={formik.values.tipoDocumento}
+                  name="documentType"
+                  value={formik.values.documentType}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   options={dataDocument.map((item) => ({
                     value: item.id,
                     label: item.name,
                   }))}
-                  error={formik.errors.tipoDocumento}
-                  touched={formik.touched.tipoDocumento}
+                  error={formik.errors.documentType}
+                  touched={formik.touched.documentType}
                   required
                 />
               </div>
@@ -197,14 +186,14 @@ const handleModalOpen = async () => {
               <div>
                 <Input
                   label="Número documento"
-                  name="identificacion"
-                  value={formik.values.identificacion}
+                  name="documentNumber"
+                  value={formik.values.documentNumber}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   type="number"
                   placeholder="Ingrese Identificación..."
-                  error={formik.errors.identificacion}
-                  touched={formik.touched.identificacion}
+                  error={formik.errors.documentNumber}
+                  touched={formik.touched.documentNumber}
                   required
                   icon={<IdentificationIcon className="w-5 h-5" />}
                 />
@@ -215,13 +204,13 @@ const handleModalOpen = async () => {
               <Input
                 label="Nombre completo"
                 type="text"
-                name="nombreCompleto"
-                value={formik.values.nombreCompleto}
+                name="name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="Ingrese Nombre Completo..."
-                error={formik.errors.nombreCompleto}
-                touched={formik.touched.nombreCompleto}
+                error={formik.errors.name}
+                touched={formik.touched.name}
                 icon={<UserCircleIcon className="w-5 h-5" />}
                 required
               />
@@ -232,14 +221,14 @@ const handleModalOpen = async () => {
             <div>
               <Input
                 label="Teléfono Fijo"
-                name="telefonoFijo"
-                value={formik.values.telefonoFijo}
+                name="landline"
+                value={formik.values.landline}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 type="number"
                 placeholder="Ingrese Teléfono Fijo..."
-                error={formik.errors.telefonoFijo}
-                touched={formik.touched.telefonoFijo}
+                error={formik.errors.landline}
+                touched={formik.touched.landline}
                 icon={<PhoneIcon className="w-5 h-5" />}
                 required
               />
@@ -250,13 +239,13 @@ const handleModalOpen = async () => {
                 <Input
                   label="Número de Celular"
                   type="text"
-                  name="numeroCelular"
-                  value={formik.values.numeroCelular}
+                  name="phoneNumber"
+                  value={formik.values.phoneNumber}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   placeholder="Ingrese Número..."
-                  error={formik.errors.numeroCelular}
-                  touched={formik.touched.numeroCelular}
+                  error={formik.errors.phoneNumber}
+                  touched={formik.touched.phoneNumber}
                   icon={<Smartphone className="w-5 h-5" />}
                   required
                 />
@@ -266,13 +255,13 @@ const handleModalOpen = async () => {
                 <Input
                   label="Número de Celular 2"
                   type="text"
-                  name="numeroCelular2"
-                  value={formik.values.numeroCelular2}
+                  name="phoneNumber2"
+                  value={formik.values.phoneNumber2}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   placeholder="Ingrese Número..."
-                  error={formik.errors.numeroCelular2}
-                  touched={formik.touched.numeroCelular2}
+                  error={formik.errors.phoneNumber2}
+                  touched={formik.touched.phoneNumber2}
                   icon={<Smartphone className="w-5 h-5" />}
                 />
               </div>
@@ -285,13 +274,13 @@ const handleModalOpen = async () => {
               <Input
                 label="Dirección"
                 type="text"
-                name="direccion"
-                value={formik.values.direccion}
+                name="address"
+                value={formik.values.address}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="Ingrese Direccion..."
-                error={formik.errors.direccion}
-                touched={formik.touched.direccion}
+                error={formik.errors.address}
+                touched={formik.touched.address}
                 icon={<MapPinIcon className="w-5 h-5" />}
                 required
               />
@@ -302,12 +291,12 @@ const handleModalOpen = async () => {
                 label="Correo Electrónico"
                 type="email"
                 placeholder="Ingresa Correo..."
-                name="correo"
-                value={formik.values.correo}
+                name="email"
+                value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.errors.correo}
-                touched={formik.touched.correo}
+                error={formik.errors.email}
+                touched={formik.touched.email}
                 icon={<EnvelopeIcon className="w-5 h-5" />}
                 required
               />
@@ -333,16 +322,16 @@ const handleModalOpen = async () => {
             <div>
               <Select
                 label="Convenio"
-                name="convenio"
-                value={formik.values.convenio}
+                name="agreement"
+                value={formik.values.agreement}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                options={dataConvenios.map((convenio) => ({
-                  value: convenio.id,
-                  label: convenio.name,
+                options={dataConvenios.map((agreement) => ({
+                  value: agreement.id,
+                  label: agreement.name,
                 }))}
-                error={formik.errors.convenio}
-                touched={formik.touched.convenio}
+                error={formik.errors.agreement}
+                touched={formik.touched.agreement}
                 required
               />
             </div>

@@ -1,21 +1,26 @@
 import { api } from "@/utils/api-config";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
-export const usePatient = () => {
+interface UsePatientMutationsReturn {
+    loading: boolean;
+    error: string | null;
+    createPatient: (data: Object, onSuccess: () => void) => Promise<any>;
+    updatePatient: (data: Object, id: number, onSuccess: () => void) => Promise<any>;
+}
+
+export const usePatientMutations = (): UsePatientMutationsReturn => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createPatient = async (data: FormData) => {
+    const createPatient = async (data: Object, onSuccess: () => void) => {
         try {
             
             setLoading(true);
-            const response = await api.post("/pacientes" , data);
+            const response = await api.post("/patient" , data);
 
             if (response.status === 200 || response.status === 201) {
                 setError(null);
-                toast.success("Paciente creado exitosamente");
-                return response.data;
+                onSuccess();
             }
 
         } catch (error: any) {
@@ -29,15 +34,14 @@ export const usePatient = () => {
         }
     }
 
-    const updatePatient = async (data: FormData, id: number) => {
+    const updatePatient = async (data: Object, id: number, onSuccess: () => void) => {
         try {
             setLoading(true);
-            const response = await api.put(`/pacientes-actualizar-tablet/${id}`, data);
+            const response = await api.put(`/table/patient/${id}`, data);
 
             if (response.status === 200 || response.status === 201) {
                 setError(null);
-                toast.success("Paciente actualizado exitosamente");
-                return response.data;
+                onSuccess();
             }
 
         } catch (error: any) {
