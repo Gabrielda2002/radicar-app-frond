@@ -33,8 +33,10 @@ const Navbar: React.FC = React.memo(() => {
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
-  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState<boolean>(false);
-  const [ isMyPermissionsOpen, setIsMyPermissionsOpen ] = useState<boolean>(false);
+  const [isPermissionModalOpen, setIsPermissionModalOpen] =
+    useState<boolean>(false);
+  const [isMyPermissionsOpen, setIsMyPermissionsOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -82,28 +84,17 @@ const Navbar: React.FC = React.memo(() => {
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
-      { 
+      {
         name: "Permisos",
         submenu: [
           { name: "Solicitar Permiso", action: handleOpenPermissionModal },
-          { name: "Mis Solicitudes", action: handleOpenMyPermissions }
-        ]
+          { name: "Mis Solicitudes", action: handleOpenMyPermissions },
+        ],
       },
       { name: "Cerrar Sesión", action: handleLogout },
     ],
     [handleLogout, handleOpenPermissionModal]
   );
-
-  const toUpperCamelCase = (str: string) => {
-    return str
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-  const user = localStorage.getItem("user");
-  const nombreUsuario = user ? toUpperCamelCase(JSON.parse(user).name) : "";
 
   return (
     <header
@@ -152,7 +143,6 @@ const Navbar: React.FC = React.memo(() => {
           </div>
 
           <div className="grid grid-flow-col auto-cols-fr md:hidden">
-
             <div className="flex items-center justify-end">
               <ModalPausasActivas />
             </div>
@@ -171,13 +161,20 @@ const Navbar: React.FC = React.memo(() => {
                 <div className="p-2">
                   {/* Mobile theme toggle */}
                   <div className="flex items-center py-2 border-b dark:border-gray-600">
-                    <ThemeToggle theme={theme as "light" | "dark"} onToggle={handleToggleTheme} size="sm" />
+                    <ThemeToggle
+                      theme={theme as "light" | "dark"}
+                      onToggle={handleToggleTheme}
+                      size="sm"
+                    />
                   </div>
                   <hr />
 
                   {/* soportes */}
                   <div className="mt-2">
-                    <SupportMenu links={SUPPORT_LINKS} theme={theme as "light" | "dark"} />
+                    <SupportMenu
+                      links={SUPPORT_LINKS}
+                      theme={theme as "light" | "dark"}
+                    />
                   </div>
                   <hr />
                   {/* perfil  */}
@@ -197,18 +194,13 @@ const Navbar: React.FC = React.memo(() => {
 
         {/* Desktop menu */}
         <div className="items-center justify-end hidden w-auto space-x-2 md:flex">
-          {/* Desktop username display */}
-          <div className="flex items-center mr-2">
-            <h2 className="p-2 text-base font-medium text-black dark:text-white">
-              Hola, {nombreUsuario}
-            </h2>
-          </div>
-
           {/* Theme toggle button */}
-          <ThemeToggle theme={theme as "light" | "dark"} onToggle={handleToggleTheme} />
+          <ThemeToggle
+            theme={theme as "light" | "dark"}
+            onToggle={handleToggleTheme}
+          />
 
           {/* Help desk button (admin only) */}
-
           <div className="flex items-center">
             <HelpDesk />
           </div>
@@ -244,7 +236,7 @@ const Navbar: React.FC = React.memo(() => {
       </div>
 
       {/* Modal de Permisos */}
-      <ModalRequestPermission 
+      <ModalRequestPermission
         isOpen={isPermissionModalOpen}
         onClose={handleClosePermissionModal}
       />

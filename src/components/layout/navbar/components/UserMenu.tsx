@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import type { UserNavigationItem } from "../types/navigation.types";
+import { useAuth } from "@/context/authContext";
 
 interface UserMenuProps {
   items: UserNavigationItem[];
@@ -16,12 +17,25 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   items,
   theme,
   avatarUrl,
-  userIconUrl,
-  buttonClassName =
-    "flex items-center px-3 py-1 text-base bg-gray-200 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white transition duration-300 group",
+  // userIconUrl,
+  buttonClassName = "flex items-center px-3 py-1 text-base bg-gray-200 rounded hover:bg-gray-700 focus:outline-none dark:bg-color dark:hover:bg-teal-600 hover:text-white transition duration-300 group",
   itemsClassName,
 }) => {
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
+
+  const toUpperCamelCase = (str: string) => {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+  const { user: userLocal } = useAuth();
+
+  const userName = userLocal ? toUpperCamelCase(userLocal.name) : "";
+
+  const userRol = userLocal ? userLocal.rol : "";
+  console.log(userRol);
 
   const toggleSubmenu = (index: number) => {
     setOpenSubmenuIndex(openSubmenuIndex === index ? null : index);
@@ -151,22 +165,23 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   return (
     <Menu as="div" className="relative">
       <MenuButton className={buttonClassName} aria-label="Menú de usuario">
+        <div>
+          <p className="text-lg mr-2 dark:text-white">{userName}</p>
+          <p className="text-sm mr-2 text-gray-400">{userRol}</p>
+        </div>
         <img
           alt="Profile"
           src={avatarUrl}
           className="object-cover w-8 h-8 rounded-full dark:border-white"
-        />
-        <img
-          src={userIconUrl}
-          alt="User Logo"
-          className="w-8 h-8 text-white group-hover:invert dark:invert"
         />
       </MenuButton>
       <Menu.Items
         transition
         className={`${
           theme === "dark" ? "bg-gray-800" : "bg-white"
-        } rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${itemsClassName ?? ""}`}
+        } rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${
+          itemsClassName ?? ""
+        }`}
       >
         {items.map((item, index) => renderMenuItem(item, index))}
       </Menu.Items>
