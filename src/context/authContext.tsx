@@ -6,6 +6,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { UserLogin } from "./Auth/Types/Auth.types"
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -15,11 +16,11 @@ type AuthContextType = {
     accessToken: string,
     rol: string,
     Municipio: string,
-    userData: any
+    userData: UserLogin
   ) => void;
   isLoading: boolean;
   logout: () => void;
-  user: any;
+  user: UserLogin;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
