@@ -4,7 +4,7 @@ export const SUPPORT_LINKS = [
         href: "https://docs.google.com/forms/d/e/1FAIpQLSdHshZOrObZv-CJRht81bIZCY7jUQLo1fy5D7scB-1nW_CF-g/viewform",
       },
       {
-        name: "Soporte de equipos biometricos",
+        name: "Soporte de equipos biomedicos",
         href: "https://docs.google.com/forms/d/e/1FAIpQLSe8UZprqV_FqNYIgC0rowHcVCyUDAyZxPmgRxPuHjNXrgOOag/viewform",
       },
       {
