@@ -7,9 +7,8 @@ interface ThemeToggleProps {
   className?: string;
 }
 
-import sun from "/assets/sun.svg";
-import moon from "/assets/moon.svg";
 import Button from "@/components/common/Ui/Button";
+import { Moon, Sun } from "lucide-react";
 
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   theme,
@@ -25,12 +24,11 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   const containerClasses =
     size === "sm"
       ? theme === "dark"
-        ? "bg-gray-600 hover:bg-gray-300 text-white"
-        : "bg-gray-200 hover:bg-gray-500 text-gray-800"
-      : theme === "light"
-      ? "relative p-2 text-gray-800 bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 group"
-      : "relative p-2 text-gray-800 bg-gray-200 border-2 rounded-full dark:border-gray-800 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600 dark:text-gray-200 group";
-
+        ? "bg-gray-700 hover:bg-gray-600 text-gray-200"
+        : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+      : theme === "dark"
+      ? "relative p-2 text-gray-200 bg-gray-700 border-2 border-gray-600 rounded-full dark:bg-color dark:hover:bg-teal-600 hover:bg-gray-600 group"
+      : "relative p-2 text-gray-800 bg-gray-200 border-2 border-gray-300 rounded-full hover:bg-gray-700 hover:text-white group";
   return (
     <Button
       variant="any"
@@ -40,9 +38,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       className={`${baseBtn} ${containerClasses} ${className}`}
     >
       {theme === "light" ? (
-        <img src={moon} alt="Moon Icon" className={`${sizeClasses} group-hover:invert`} />
+        <Sun className={sizeClasses} />
       ) : (
-        <img src={sun} alt="Sun Icon" className={`${sizeClasses} invert`} />
+        <Moon className={sizeClasses} />
       )}
     </Button>
   );

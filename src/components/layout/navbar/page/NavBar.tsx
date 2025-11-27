@@ -143,12 +143,11 @@ const Navbar: React.FC = React.memo(() => {
             </NavLink>
           </div>
 
+          {/* ? Acordion menu responsive mobile */}
           <div className="grid grid-flow-col auto-cols-fr md:hidden">
-            {/* Acordion menu responsive */}
             <div className="flex justify-end items-center">
               <AccordionMenu theme={theme}>
                 <div className="py-2 space-y-1">
-                  {/* Sección: Herramientas */}
                   <div className="px-2 py-1">
                     <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
                       Herramientas
@@ -161,17 +160,14 @@ const Navbar: React.FC = React.memo(() => {
                     theme={theme as "light" | "dark"}
                   />
 
-                  {/* Separador */}
                   <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
 
-                  {/* Sección: Configuración */}
                   <div className="px-2 py-1">
                     <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
                       Configuración
                     </p>
                   </div>
 
-                  {/* Theme toggle como item de menú */}
                   <button
                     onClick={handleToggleTheme}
                     className={`
@@ -198,17 +194,14 @@ const Navbar: React.FC = React.memo(() => {
                     </div>
                   </button>
 
-                  {/* Separador */}
                   <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
 
-                  {/* Sección: Usuario */}
                   <div className="px-2 py-1">
                     <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
                       Cuenta
                     </p>
                   </div>
 
-                  {/* UserMenu integrado */}
                   <div className="relative duration-300 rounded-lg">
                     <UserMenu
                       items={userNavigation}

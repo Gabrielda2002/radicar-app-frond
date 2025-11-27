@@ -20,7 +20,6 @@ const MobileMenuItem: React.FC<MobileMenuItemProps> = ({
   theme = "light",
   className = "",
 }) => {
-    console.log(onClick)
   return (
     <button
       onClick={onClick}
