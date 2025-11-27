@@ -12,8 +12,6 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import NotificacionBell from "@/components/NotificationBell";
 //*Icons
 // sun/moon handled inside ThemeToggle component
-import menu from "/assets/menu.svg";
-import menu2 from "/assets/menu2.svg";
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 import logo from "@/assets/Layout/logo-navbar.png";
@@ -23,20 +21,28 @@ import { SUPPORT_LINKS } from "../config/navBarConfig";
 import SupportMenu from "../components/SupportMenu";
 import UserMenu from "../components/UserMenu";
 import ThemeToggle from "../components/ThemeToggle";
+import MobileMenuItem from "../components/MobileMenuItem";
 import ModalRequestPermission from "@/featuures/Permission/components/ModalRequestPermission";
 import type { UserNavigationItem } from "../types/navigation.types";
 import MyRequestsPermissions from "@/featuures/MyRequestsPermissions/page/MyRequestsPermissions";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { BookOpen } from "lucide-react";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();
+
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
   const [isPermissionModalOpen, setIsPermissionModalOpen] =
     useState<boolean>(false);
   const [isMyPermissionsOpen, setIsMyPermissionsOpen] =
     useState<boolean>(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] =
+    useState<boolean>(false);
+  const [isSupportMenuOpen, setIsSupportMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -81,6 +87,10 @@ const Navbar: React.FC = React.memo(() => {
     setIsMyPermissionsOpen(false);
   }, []);
 
+  const handleOpenSupportMenu = useCallback(() => {
+    setIsSupportMenuOpen(true);
+  }, []);
+
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
@@ -110,23 +120,14 @@ const Navbar: React.FC = React.memo(() => {
             <button
               title="Abrir/Cerrar Sidebar"
               onClick={handleToggleSidebar}
-              className="p-1 mr-2 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600"
+              className="p-1 mr-2 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
             >
               <div className="relative w-6 h-6 md:w-8 md:h-8">
-                <img
-                  src={menu || "/placeholder.svg"}
-                  alt="Menu Icon"
-                  className={`top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                    isCollapsed ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-                <img
-                  src={menu2 || "/placeholder.svg"}
-                  alt="Menu2 Icon"
-                  className={`absolute top-0 left-0 w-6 h-6 md:w-8 md:h-8 transition-opacity duration-300 group-hover:invert dark:invert ${
-                    isCollapsed ? "opacity-0" : "opacity-100"
-                  }`}
-                />
+                {isCollapsed ? (
+                  <PanelRightClose className="w-6 h-6 md:w-8 md:h-8" />
+                ) : (
+                  <PanelRightOpen className="w-6 h-6 md:w-8 md:h-8" />
+                )}
               </div>
             </button>
           </div>
@@ -143,47 +144,87 @@ const Navbar: React.FC = React.memo(() => {
           </div>
 
           <div className="grid grid-flow-col auto-cols-fr md:hidden">
-            <div className="flex items-center justify-end">
-              <ModalPausasActivas />
-            </div>
-
-            <div className="flex items-center justify-start">
-              <HelpDesk />
-            </div>
-
-            <div className="flex items-center justify-end">
-              <NotificacionBell />
-            </div>
-
             {/* Acordion menu responsive */}
             <div className="flex justify-end items-center">
               <AccordionMenu theme={theme}>
-                <div className="p-2">
-                  {/* Mobile theme toggle */}
-                  <div className="flex items-center py-2 border-b dark:border-gray-600">
-                    <ThemeToggle
-                      theme={theme as "light" | "dark"}
-                      onToggle={handleToggleTheme}
-                      size="sm"
-                    />
+                <div className="py-2 space-y-1">
+                  {/* Sección: Herramientas */}
+                  <div className="px-2 py-1">
+                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+                      Herramientas
+                    </p>
                   </div>
-                  <hr />
+                  <MobileMenuItem
+                    icon={<BookOpen className="w-5 h-5" />}
+                    label="Soportes"
+                    onClick={handleOpenSupportMenu}
+                    theme={theme as "light" | "dark"}
+                  />
 
-                  {/* soportes */}
-                  <div className="mt-2">
-                    <SupportMenu
-                      links={SUPPORT_LINKS}
-                      theme={theme as "light" | "dark"}
-                    />
+                  {/* Separador */}
+                  <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
+
+                  {/* Sección: Configuración */}
+                  <div className="px-2 py-1">
+                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+                      Configuración
+                    </p>
                   </div>
-                  <hr />
-                  {/* perfil  */}
-                  <div className="relative mt-3 duration-300 rounded-lg dark:border-gray-800 hover:scale-105">
+
+                  {/* Theme toggle como item de menú */}
+                  <button
+                    onClick={handleToggleTheme}
+                    className={`
+                      w-full flex items-center justify-between px-4 py-3 
+                      transition-all duration-200 rounded-lg
+                      ${
+                        theme === "dark"
+                          ? "hover:bg-gray-700 active:bg-gray-600 text-white"
+                          : "hover:bg-gray-100 active:bg-gray-200 text-gray-900"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 text-xl">
+                        {theme === "light" ? (
+                          <MoonIcon className="w-5 h-5" />
+                        ) : (
+                          <SunIcon className="w-5 h-5" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium">
+                        {theme === "light" ? "Modo Oscuro" : "Modo Claro"}
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Separador */}
+                  <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
+
+                  {/* Sección: Usuario */}
+                  <div className="px-2 py-1">
+                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+                      Cuenta
+                    </p>
+                  </div>
+
+                  {/* UserMenu integrado */}
+                  <div className="relative duration-300 rounded-lg">
                     <UserMenu
                       items={userNavigation}
                       theme={theme as "light" | "dark"}
                       avatarUrl={imageUrl || defaultUserPicture}
                       userIconUrl={userLogo}
+                      buttonClassName={`
+                        w-full flex items-center justify-between px-4 py-3 
+                        transition-all duration-200 rounded-lg
+                        ${
+                          theme === "dark"
+                            ? "hover:bg-gray-700 active:bg-gray-600 text-white"
+                            : "hover:bg-gray-100 active:bg-gray-200 text-gray-900"
+                        }
+                      `}
+                      itemsClassName="relative w-full mt-2"
                     />
                   </div>
                 </div>
@@ -244,6 +285,64 @@ const Navbar: React.FC = React.memo(() => {
         isOpen={isMyPermissionsOpen}
         onClose={handleCloseMyPermissions}
       />
+
+      {/* Modal de Notificaciones en mobile */}
+      {isNotificationsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={() => setIsNotificationsOpen(false)}
+          />
+          <div className="relative z-10 w-full max-w-md">
+            <NotificacionBell />
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Soportes en mobile */}
+      {isSupportMenuOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={() => setIsSupportMenuOpen(false)}
+          />
+          <div
+            className={`relative z-10 w-full max-w-sm p-6 rounded-lg shadow-xl ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold dark:text-white">
+                Enlaces de Soporte
+              </h3>
+              <button
+                onClick={() => setIsSupportMenuOpen(false)}
+                className="text-2xl text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                ×
+              </button>
+            </div>
+            <div className="space-y-2">
+              {SUPPORT_LINKS.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsSupportMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg transition-colors ${
+                    theme === "dark"
+                      ? "hover:bg-gray-700 text-gray-200"
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 });

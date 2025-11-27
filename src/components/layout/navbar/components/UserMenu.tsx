@@ -35,7 +35,6 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   const userName = userLocal ? toUpperCamelCase(userLocal.name) : "";
 
   const userRol = userLocal ? userLocal.rol : "";
-  console.log(userRol);
 
   const toggleSubmenu = (index: number) => {
     setOpenSubmenuIndex(openSubmenuIndex === index ? null : index);

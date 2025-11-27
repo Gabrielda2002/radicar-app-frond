@@ -89,10 +89,11 @@ const ModalPausasActivas = () => {
       <Button
         variant="any"
         onClick={() => setIsModalOpen(true)}
-        className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
+        className="p-1 md:mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color"
         title="Pausas Activas"
+        size="xs"
       >
-        <MdOutlineInterests className="w-6 h-6" />
+        <MdOutlineInterests className="w-6 h-6 md:w-8 md:h-8" />
       </Button>
 
       {/* Modal */}
