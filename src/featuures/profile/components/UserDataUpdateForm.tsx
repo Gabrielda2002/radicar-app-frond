@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserProfile } from "@/context/userProfileContext";
-import PasswordUpdateForm from "./PasswordUpdateForm";
 import { updateUserData } from "../services/UpdateUserData";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
@@ -13,7 +12,7 @@ interface UserDataUpdateFormProps {
     name: string;
     lastname: string;
     email: string;
-    id: number ;
+    id: number;
     phone: number;
   };
 }
@@ -24,7 +23,6 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
   const { updateUserProfile } = useUserProfile();
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
 
   const validationSchema = Yup.object({
     nombre: Yup.string()
@@ -81,143 +79,106 @@ const UserDataUpdateForm: React.FC<UserDataUpdateFormProps> = ({
   });
 
   return (
-    <div className="space-y-6">
-      {/* Navigation Links */}
-      <div className="flex mb-6 space-x-4">
-        <Button
-        variant="any"
-          onClick={() => setShowPasswordForm(false)}
-          className={`px-4 py-2 text-sm ${
-            !showPasswordForm
-              ? "bg-white text-gray-800 rounded border-teal-400 border-b dark:bg-gray-600 dark:text-white"
-              : "text-gray-400 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
-          }`}
-        >
-          Actualizar Datos
-        </Button>
-        <Button
-        variant="any"
-          onClick={() => setShowPasswordForm(true)}
-          className={`px-4 py-2 text-sm ${
-            showPasswordForm
-              ? "bg-white text-gray-800 rounded border-teal-400 border-b dark:bg-gray-600 dark:text-white"
-              : "text-gray-400 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
-          }`}
-        >
-          Actualizar Contraseña
-        </Button>
-      </div>
-
+    <div className="p-6">
       <AnimatePresence mode="wait">
-        {!showPasswordForm ? (
-          <motion.div
-            key="userForm"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
-              Editar Información
-            </h2>
-            <form onSubmit={formik.handleSubmit} className="space-y-4">
-              <div>
-                <Input
-                  label="Nombre"
-                  id="nombre"
-                  name="nombre"
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.nombre}
-                  error={formik.touched.nombre && formik.errors.nombre ? formik.errors.nombre : undefined}
-                  touched={formik.touched.nombre}
-                />
-              </div>
+        <motion.div
+          key="userForm"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
+            Editar Información
+          </h2>
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
+            <div>
+              <Input
+                label="Nombre"
+                id="nombre"
+                name="nombre"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.nombre}
+                error={formik.touched.nombre && formik.errors.nombre ? formik.errors.nombre : undefined}
+                touched={formik.touched.nombre}
+              />
+            </div>
 
-              <div>
-                <Input
-                  label="Apellido"
-                  id="apellido"
-                  name="apellido"
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.apellido}
-                  error={formik.touched.apellido && formik.errors.apellido ? formik.errors.apellido : undefined}
-                  touched={formik.touched.apellido}
-                />
-              </div>
+            <div>
+              <Input
+                label="Apellido"
+                id="apellido"
+                name="apellido"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.apellido}
+                error={formik.touched.apellido && formik.errors.apellido ? formik.errors.apellido : undefined}
+                touched={formik.touched.apellido}
+              />
+            </div>
 
-              <div>
-                <Input
-                  label="Correo Electrónico"
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
-                  touched={formik.touched.email}
-                />
-              </div>
+            <div>
+              <Input
+                label="Correo Electrónico"
+                id="email"
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
+                touched={formik.touched.email}
+              />
+            </div>
 
-              <div>
-                <Input
-                  label="Correo Electrónico"
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
-                  touched={formik.touched.email}
-                />
-              </div>
+            <div>
+              <Input
+                label="Correo Electrónico"
+                id="email"
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                error={formik.touched.email && formik.errors.email ? formik.errors.email : undefined}
+                touched={formik.touched.email}
+              />
+            </div>
 
-              <div>
-                <Input
-                  label="Teléfono"
-                  id="phone"
-                  name="phone"
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.phone}
-                  error={formik.touched.phone && formik.errors.phone ? formik.errors.phone : undefined}
-                  touched={formik.touched.phone}
-                />
-              </div>
+            <div>
+              <Input
+                label="Teléfono"
+                id="phone"
+                name="phone"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.phone}
+                error={formik.touched.phone && formik.errors.phone ? formik.errors.phone : undefined}
+                touched={formik.touched.phone}
+              />
+            </div>
 
-              <div className="flex justify-between ">
-                <Button
-                  disabled={!formik.dirty || formik.isSubmitting}
-                  variant="secondary"
-                >
-                  Guardar Cambios
-                </Button>
-                {success && (
-                  <div className="text-green-500">
-                    Cambios guardados exitosamente.
-                  </div>
-                )}
-                {error && <div className="text-red-500">{error}</div>}
-              </div>
-            </form>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="passwordForm"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <PasswordUpdateForm userId={""} />
-          </motion.div>
-        )}
+            <div className="flex justify-between ">
+              <Button
+                disabled={!formik.dirty || formik.isSubmitting}
+                variant="secondary"
+              >
+                Guardar Cambios
+              </Button>
+              {success && (
+                <div className="text-green-500">
+                  Cambios guardados exitosamente.
+                </div>
+              )}
+              {error && <div className="text-red-500">{error}</div>}
+            </div>
+          </form>
+        </motion.div>
+
       </AnimatePresence>
 
       {error && <div className="mt-4 text-red-500">{error}</div>}

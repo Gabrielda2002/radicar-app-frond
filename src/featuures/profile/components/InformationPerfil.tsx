@@ -9,11 +9,9 @@ import sede from "/assets/sede.svg";
 import id from "/assets/id.svg";
 import municipio from "/assets/municipio.svg";
 
-import { VscError } from "react-icons/vsc";
 import { MdDateRange } from "react-icons/md";
-import { FaUserTie, FaFileContract, FaChartLine, FaRegCheckCircle } from "react-icons/fa";
+import { FaUserTie, FaFileContract, FaChartLine } from "react-icons/fa";
 import { usePerfil } from "../hooks/UseProfile";
-import { useFetchMyBalance } from "../hooks/useFetchMyBalance";
 
 
 const InformationPerfil = () => {
@@ -22,7 +20,6 @@ const InformationPerfil = () => {
     profile,
   } = usePerfil();
 
-  const { data } = useFetchMyBalance();
 
 
   return (
@@ -32,7 +29,7 @@ const InformationPerfil = () => {
           Información Personal
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <ProfileField
             icon={mail}
             label="Email"
@@ -102,34 +99,6 @@ const InformationPerfil = () => {
             value={`${profile.managerName} ${profile.managerLastName}`}
             title="Jefe Inmediato"
           />
-
-          {data?.data.periodos.map((p, index) => (
-            <div
-              key={index}
-            >
-              <h2 className={`text-xl font-semibold ${p.vencido ? "text-rose-600" : "text-gray-900 dark:text-white"} mb-6`}>
-                Periodo #{index + 1}
-              </h2>
-              <ProfileField
-                icon={MdDateRange}
-                label={`Fecha Inicio ${index + 1}:`}
-                value={FormatDate(p.fechaInicio, false)}
-                title={`Fecha de Inicio del Periodo ${index + 1}`}
-              />
-              <ProfileField
-                icon={MdDateRange}
-                label={`Fecha Fin ${index + 1}:`}
-                value={FormatDate(p.fechaFin, false)}
-                title={`Fecha de Fin del Periodo ${index + 1}`}
-              />
-              <ProfileField
-                icon={parseInt(p.diasDisponibles) > 0 ? FaRegCheckCircle : VscError}
-                label={`Dias disponibles ${index + 1}:`}
-                value={p.diasDisponibles}
-                title={`Días disponibles del Periodo ${index + 1}`}
-              />
-            </div>
-          ))}
         </div>
 
 

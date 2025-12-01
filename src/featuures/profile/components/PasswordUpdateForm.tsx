@@ -68,9 +68,9 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
   });
 
   return (
-    <form onSubmit={formikPassword.handleSubmit}>
-      <h2 className="my-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
-        Cambiar contraseña
+    <form onSubmit={formikPassword.handleSubmit} className="p-6">
+      <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-300">
+        Editar Información
       </h2>
       <div className="mb-4">
         <Input
@@ -83,7 +83,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
           value={formikPassword.values.currentPassword}
           error={
             formikPassword.touched.currentPassword &&
-            formikPassword.errors.currentPassword
+              formikPassword.errors.currentPassword
               ? formikPassword.errors.currentPassword
               : undefined
           }
@@ -101,7 +101,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
           value={formikPassword.values.newPassword}
           error={
             formikPassword.touched.newPassword &&
-            formikPassword.errors.newPassword
+              formikPassword.errors.newPassword
               ? formikPassword.errors.newPassword
               : undefined
           }
@@ -119,7 +119,7 @@ const PasswordUpdateForm: React.FC<PasswordUpdateFormProps> = ({ userId }) => {
           value={formikPassword.values.confirmPassword}
           error={
             formikPassword.touched.confirmPassword &&
-            formikPassword.errors.confirmPassword
+              formikPassword.errors.confirmPassword
               ? formikPassword.errors.confirmPassword
               : undefined
           }

@@ -1,5 +1,4 @@
 import React, { Suspense, lazy } from "react";
-import { motion } from "framer-motion";
 // Internal components and hooks
 import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
 import UserDataUpdateForm from "@/featuures/profile/components/UserDataUpdateForm";
@@ -9,17 +8,14 @@ import upload from "/assets/upload.svg";
 
 
 import InformationPerfil from "../components/InformationPerfil";
+import Tabs, { TabItem } from "@/components/common/Ui/Tabs";
+import { Lock, User } from "lucide-react";
+import PasswordUpdateForm from "../components/PasswordUpdateForm";
+import UserBalanceVacations from "../components/UserBalanceVacations";
 
 const ConfirmDeletePopup = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
 );
-
-// Animation variants
-const ANIMATION_VARIANTS = {
-  hidden: { opacity: 0, x: 100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  exit: { opacity: 0, x: -100, transition: { duration: 0.5 } },
-};
 
 const Perfil: React.FC = () => {
   const {
@@ -34,10 +30,51 @@ const Perfil: React.FC = () => {
   } = usePerfil();
 
 
+  const tabs: TabItem[] = [
+    {
+      id: "datos-personales",
+      label: "Datos Personales",
+      icon: <User size={18} />,
+      content: (
+        <div className="space-y-4">
+          {/* Aquí va tu formulario UserDataUpdateForm */}
+          <InformationPerfil />
+        </div>
+      )
+    },
+    {
+      id: "balance",
+      label: "Mis Balances",
+      icon: <User size={18} />,
+      content: (
+        <UserBalanceVacations />
+      )
+    },
+    {
+      id: "update-data-user",
+      label: "Actualizar Datos",
+      icon: <Lock size={18} />,
+      content: (
+        <PasswordUpdateForm userId="" />
+      )
+    },
+    {
+      id: "update-password",
+      label: "Actualizar Contraseña",
+      icon: <Lock size={18} />,
+      content: (
+        <div className="space-y-4">
+          {/* Cambio de contraseña, autenticación 2FA, etc */}
+          <UserDataUpdateForm initialUserData={profile} />
+        </div>
+      )
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-1 gap-8">
           {/* Profile Information Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
             {/* Header with profile photo and basic info */}
@@ -59,36 +96,39 @@ const Perfil: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6">
+                  <button
+                    className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
+                    onClick={triggerFileInput}
+                  >
+                    <img
+                      src={upload}
+                      alt="Upload"
+                      className="w-5 h-5 filter invert"
+                    />
+                    Subir Foto
+                  </button>
+
+                  <button
+                    className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
+                    onClick={openDeletePopup}
+                  >
+                    <img
+                      src={trash}
+                      alt="Delete"
+                      className="w-5 h-5 filter invert"
+                    />
+                    Eliminar Foto
+                  </button>
+                </div>
               </div>
             </div>
-            <InformationPerfil/>
-            {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
-                  onClick={triggerFileInput}
-                >
-                  <img
-                    src={upload}
-                    alt="Upload"
-                    className="w-5 h-5 filter invert"
-                  />
-                  Subir Foto
-                </button>
-
-                <button
-                  className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
-                  onClick={openDeletePopup}
-                >
-                  <img
-                    src={trash}
-                    alt="Delete"
-                    className="w-5 h-5 filter invert"
-                  />
-                  Eliminar Foto
-                </button>
-              </div>
-
+            <Tabs
+              tabs={tabs}
+              defaultTab="datos-personales"
+              variant="default"
+              className="p-4"
+            />
             <input
               type="file"
               ref={fileInputRef}
@@ -98,17 +138,6 @@ const Perfil: React.FC = () => {
             />
           </div>
 
-          {/* User Data Update Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={ANIMATION_VARIANTS}
-            >
-              <UserDataUpdateForm initialUserData={profile} />
-            </motion.div>
-          </div>
         </div>
       </div>
 
