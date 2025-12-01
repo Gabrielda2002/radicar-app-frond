@@ -1,28 +1,14 @@
 import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
-
-// External icons
-import { MdDateRange } from "react-icons/md";
-import { FaUserTie, FaFileContract, FaChartLine, FaRegCheckCircle } from "react-icons/fa";
-
 // Internal components and hooks
 import { usePerfil } from "@/featuures/profile/hooks/UseProfile";
 import UserDataUpdateForm from "@/featuures/profile/components/UserDataUpdateForm";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { FormatDate } from "@/utils/FormatDate";
-
-// Assets
-import mail from "/assets/mail.svg";
-import phone from "/assets/phone.svg";
-import areas from "/assets/areas.svg";
-import sede from "/assets/sede.svg";
-import id from "/assets/id.svg";
-import municipio from "/assets/municipio.svg";
 import trash from "/assets/trash.svg";
 import upload from "/assets/upload.svg";
-import ProfileField from "../components/ProfileField";
-import { useFetchMyBalance } from "../hooks/useFetchMyBalance";
-import { VscError } from "react-icons/vsc";
+
+
+import InformationPerfil from "../components/InformationPerfil";
 
 const ConfirmDeletePopup = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
@@ -47,7 +33,6 @@ const Perfil: React.FC = () => {
     confirmDeletePhoto,
   } = usePerfil();
 
-  const { data } = useFetchMyBalance();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
@@ -76,114 +61,8 @@ const Perfil: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            {/* Profile Information Grid */}
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                Información Personal
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <ProfileField
-                  icon={mail}
-                  label="Email"
-                  value={profile.email}
-                  title="Correo Electrónico"
-                />
-
-                <ProfileField
-                  icon={phone}
-                  label="Teléfono"
-                  value={profile.phone.toString()}
-                  title="Número de Teléfono"
-                />
-
-                <ProfileField
-                  icon={id}
-                  label="Documento"
-                  value={profile.dniNumber.toString()}
-                  title="Número de Documento"
-                />
-
-                <ProfileField
-                  icon={MdDateRange}
-                  label="Inicio Contrato"
-                  value={FormatDate(profile.dateStartContract, false)}
-                  title="Fecha de Inicio de Contrato"
-                />
-
-                <ProfileField
-                  icon={FaFileContract}
-                  label="Tipo Contrato"
-                  value={profile.contractType}
-                  title="Tipo de Contrato"
-                />
-
-                <ProfileField
-                  icon={areas}
-                  label="Área"
-                  value={profile.area}
-                  title="Área de Trabajo"
-                />
-
-                <ProfileField
-                  icon={FaUserTie}
-                  label="Cargo"
-                  value={profile.position}
-                  title="Cargo o Posición"
-                />
-
-                <ProfileField
-                  icon={sede}
-                  label="Sede"
-                  value={profile.headquarters}
-                  title="Sede de Trabajo"
-                />
-
-                <ProfileField
-                  icon={municipio}
-                  label="Municipio"
-                  value={profile.municipality}
-                  title="Municipio"
-                />
-
-                <ProfileField
-                  icon={FaChartLine}
-                  label="Jefe Inmediato"
-                  value={`${profile.managerName} ${profile.managerLastName}`}
-                  title="Jefe Inmediato"
-                />
-
-                {data?.data.periodos.map((p, index) => (
-                  <div
-                    key={index}
-                  >
-                    <h2 className={`text-xl font-semibold ${p.vencido ? "text-rose-600" : "text-gray-900 dark:text-white"} mb-6`}>
-                      Periodo #{index + 1}
-                    </h2>
-                    <ProfileField
-                      icon={MdDateRange}
-                      label={`Fecha Inicio ${index + 1}:`}
-                      value={FormatDate(p.fechaInicio, false)}
-                      title={`Fecha de Inicio del Periodo ${index + 1}`}
-                    />
-                    <ProfileField
-                      icon={MdDateRange}
-                      label={`Fecha Fin ${index + 1}:`}
-                      value={FormatDate(p.fechaFin, false)}
-                      title={`Fecha de Fin del Periodo ${index + 1}`}
-                    />
-                    <ProfileField
-                      icon={parseInt(p.diasDisponibles) > 0 ? FaRegCheckCircle : VscError}
-                      label={`Dias disponibles ${index + 1}:`}
-                      value={p.diasDisponibles}
-                      title={`Días disponibles del Periodo ${index + 1}`}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
+            <InformationPerfil/>
+            {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <button
                   className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
@@ -209,7 +88,6 @@ const Perfil: React.FC = () => {
                   Eliminar Foto
                 </button>
               </div>
-            </div>
 
             <input
               type="file"
