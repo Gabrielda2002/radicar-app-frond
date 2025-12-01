@@ -232,6 +232,7 @@ const Navbar: React.FC = React.memo(() => {
           <ThemeToggle
             theme={theme as "light" | "dark"}
             onToggle={handleToggleTheme}
+            size="xs"
           />
 
           {/* Help desk button (admin only) */}
