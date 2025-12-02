@@ -28,7 +28,7 @@ const ModalMostrarDatosCUPS = lazy(
 );
 const ITEMS_PER_PAGE = 8;
 
-const TablaAuditoria = () => {
+const TableAuthorized = () => {
   const { data, loading, error } = useFetchAuditoria();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
@@ -419,4 +419,4 @@ const TablaAuditoria = () => {
   );
 };
 
-export default TablaAuditoria;
+export default TableAuthorized;

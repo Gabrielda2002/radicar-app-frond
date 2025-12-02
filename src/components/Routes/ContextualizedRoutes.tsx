@@ -40,7 +40,7 @@ const TablaCirugias = lazy(
   () => import("@/featuures/Cirugia/Pages/TablaCirugia.tsx")
 );
 const TablaAuditoria = lazy(
-  () => import("@/featuures/Auditoria/Pages/TablaAuditoria.tsx")
+  () => import("@/featuures/Auditoria/Pages/TableAuthorized")
 );
 const TablaRadicacion = lazy(
   () => import("@/featuures/Radicacion/Page/TableServiceRequestSubmission")
