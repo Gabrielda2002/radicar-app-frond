@@ -43,9 +43,9 @@ const TablaCirugias = () => {
 
   const { openSecureFile } = useSecureFileAccess();
 
-  const { dataCirugias, loadingCirugias, errorCirugias } = useFetchCirugias();
+  const { data, loading, error, refetch } = useFetchCirugias();
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { query, setQuery, filteredData } = useSearch<ICirugias>(dataCirugias, [
+  const { query, setQuery, filteredData } = useSearch<ICirugias>(data, [
     "fechaRadicado",
     "id",
     "convenio",
@@ -75,10 +75,10 @@ const TablaCirugias = () => {
     setDateOrden(orderDate);
   };
 
-  if (loadingCirugias) return <LoadingSpinner />;
-  if (errorCirugias)
+  if (loading) return <LoadingSpinner />;
+  if (error)
     return (
-      <div className="flex justify-center dark:text-white">{errorCirugias}</div>
+      <div className="flex justify-center dark:text-white">{error}</div>
     );
 
   return (
@@ -224,6 +224,7 @@ const TablaCirugias = () => {
                           <ModalCirugias
                             idRadicado={cirugia.id}
                             data={cirugia}
+                            onSuccess={refetch}
                           />
                         </Suspense>
                       </td>

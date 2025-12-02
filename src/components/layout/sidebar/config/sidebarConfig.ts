@@ -121,7 +121,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: surgery,
             path: '/tabla-cirugias',
             type: 'subcategory',
-            roles: [15, 1]
+            roles: [15, 1, 3]
           },
           {
             id: 'audit',

@@ -248,10 +248,6 @@ export const createCupsEp = async (data: FormData, ep: string) => {
   return api.post(`/${ep}`, data);
 };
 
-export const createProgramacionCirugia = async (data: FormData) => {
-  return api.post(`/cirugias`, data);
-};
-
 // actualizar la contrasena del usuario=
 export const updatePasswordUsuarioEp = async (data: FormData, id: number) => {
   return api.put(`/usuario-update-password/${id}`, data);

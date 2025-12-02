@@ -1,25 +1,38 @@
 import { ICirugias } from "@/models/ICirugias";
 import { fetchCirugias } from "@/services/apiService";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-// * traer cirugias
-export const useFetchCirugias = () => {
-  const [dataCirugias, setDataCirugias] = useState<ICirugias[]>([]);
-  const [loadingCirugias, setLoadingCirugias] = useState<boolean>(true);
-  const [errorCirugias, setErrorCirugias] = useState<string | null>(null);
+interface UseFetchSurgeryResult {
+  data: ICirugias[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+export const useFetchCirugias = (): UseFetchSurgeryResult => {
+  const [data, setData] = useState<ICirugias[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const getData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const cirugias = await fetchCirugias();
+      setData(cirugias);
+    } catch (error) {
+      setError("Error al obtener los datos de la tabla cirugias o no tienes los permisos necesarios. " + error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const refetch = useCallback(() => {
+    getData();
+  }, [getData]);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const cirugias = await fetchCirugias();
-        setDataCirugias(cirugias);
-      } catch (error) {
-        setErrorCirugias("Error al obtener los datos de la tabla cirugias o no tienes los permisos necesarios. " + error);
-      } finally {
-        setLoadingCirugias(false);
-      }
-    }
     getData();
-  }, []);
-  return { dataCirugias, loadingCirugias, errorCirugias };
+  }, [getData]);
+
+  return { data, loading, error, refetch };
 }

@@ -4,49 +4,45 @@ import { useFormik } from "formik";
 import { ICirugias } from "@/models/ICirugias";
 import React, { useState } from "react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import { CreateCirugia } from "../Services/CreateCirugia";
 import Input from "@/components/common/Ui/Input";
 
 //*Icons
 import programar from "/assets/programar.svg";
-import { useUpdateGroupService } from "../Hooks/useUpdateGroupService";
+import { useMutationSurgery } from "../Hooks/useMutationSugery";
 import { FormatDate } from "@/utils/FormatDate";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Button from "@/components/common/Ui/Button";
 import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalCirugiasProps {
   data: ICirugias;
   idRadicado: number;
+  onSuccess?: () => void;
 }
 
-const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
+const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado, onSuccess }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // * hook para actualizar el grupo de servicios
-  const { setGroupService, errorUpdate, SendGroupService } =
-    useUpdateGroupService(idRadicado);
+  const { createSurgery, updateGroupService, error: errorMutation, isLoading } =
+    useMutationSurgery();
 
-  const handleUpdate = async () => {
-    const response = await SendGroupService();
-    if (response) {
-      setTimeout(() => {
-        setIsOpen(false);
-        window.location.reload();
-      }, 3000);
-    }
-  };
-
-  // hook para traer las ips remite
-
-  const [submiting, setSubmiting] = useState(false);
-  const [errorSubmit, setErrorSubmit] = useState<string>("");
   const [isValidate, setIsValidate] = useState(false);
   const [soporte, setSoporte] = useState(false);
   const [paraclinicos, setParaclinicos] = useState(false);
   const [valoracion, setValoracion] = useState(false);
   const [error, setError] = useState<string>("");
+
+  const [groupServiceId, setGroupServiceId] = useState<number>(data.idGrupoServicios);
+
+  const handleUpdateGroupService = async () => {
+    await updateGroupService(groupServiceId, idRadicado, () => {
+      toast.success("Grupo de servicios actualizado con éxito");
+      onSuccess?.();
+    });
+  }
 
   const handleValidation = () => {
     if (data.idGrupoServicios === 6) {
@@ -68,76 +64,46 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
   };
 
   const validationSchema = Yup.object({
-    ips: Yup.string().required("Campo requerido"),
-    fechaCirugia: Yup.date().required("Campo requerido"),
-    horaProgramada: Yup.string().required("Campo requerido"),
-    observacion: Yup.string()
+    ipsRemite: Yup.string().required("Campo requerido"),
+    surgeryDate: Yup.date().required("Campo requerido"),
+    scheduledTime: Yup.string().required("Campo requerido"),
+    observation: Yup.string()
       .required("Campo requerido")
       .min(5, "La observacion debe tener al menos 5 caracteres")
       .max(150, "La observacion debe tener maximo 150 caracteres"),
-    fechaAnesteciologia: Yup.date().when("$idGrupoServicios", {
+    anesthesiologyDate: Yup.date().when("$idGrupoServicios", {
       is: 9,
       then: (schema) => schema.required("Campo requerido"),
       otherwise: (schema) => schema.optional(),
     }),
-    fechaParaclinicos: Yup.date().when("$idGrupoServicios", {
+    paraclinicalDate: Yup.date().when("$idGrupoServicios", {
       is: 9,
       then: (schema) => schema.required("Campo requerido"),
       otherwise: (schema) => schema.optional(),
     }),
-    especialista: Yup.string().required("Campo requerido"),
+    specialist: Yup.string().required("Campo requerido"),
   });
 
   const formik = useFormik({
     initialValues: {
-      ips: "",
-      fechaCirugia: "",
-      horaProgramada: "",
-      observacion: "",
-      fechaAnesteciologia: "",
-      fechaParaclinicos: "",
-      especialista: "",
+      ipsRemite: "",
+      surgeryDate: "",
+      scheduledTime: "",
+      observation: "",
+      anesthesiologyDate: "",
+      paraclinicalDate: "",
+      specialist: "",
+      radicadoId: idRadicado
     },
     validationSchema,
     onSubmit: async (values) => {
-      setSubmiting(true);
-      try {
-        const formData = new FormData();
-
-        formData.append("ipsRemite", values.ips);
-        formData.append("surgeryDate", values.fechaCirugia);
-        formData.append("scheduledTime", values.horaProgramada);
-        formData.append("observation", values.observacion);
-        formData.append("radicadoId", data.id.toString());
-        formData.append("specialist", values.especialista);
-        formData.append("anesthesiologyDate", values.fechaAnesteciologia);
-        formData.append("paraclinicalDate", values.fechaParaclinicos);
-
-        const response = await CreateCirugia(formData);
-
-        if (response?.status === 200 || response?.status === 201) {
-          toast.success("Cirugia Programada exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-
-          setTimeout(() => {
-            setIsOpen(false);
-            window.location.reload();
-          }, 1000);
+      await createSurgery(
+        values, () => {
+          toast.success("Cirugía programada con éxito");
+          formik.resetForm();
+          onSuccess?.()
         }
-      } catch (error) {
-        setErrorSubmit("Error al programar la cirugia, intente nuevamente.");
-        console.log(error);
-      }
-      setSubmiting(false);
+      )
     },
   });
 
@@ -164,21 +130,21 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
             <div className="flex flex-wrap items-center justify-between mb-6">
               <InputAutocompletado
                 label="Grupo Servicios"
-                onInputChanged={(id) => setGroupService(Number(id))}
+                onInputChanged={(id) => setGroupServiceId(Number(id))}
                 apiRoute="grupo-servicios-name"
                 placeholder="Ej: Cirugía Ambulatoria"
                 helpText="Cambia el grupo de servicios si es necesario. No es obligatorio llenar este campo para programar la cirugía."
               />
               <Button
                 variant="secondary"
-                onClick={handleUpdate}
+                onClick={handleUpdateGroupService}
                 className="mt-4"
               >
                 Actualizar
               </Button>
-              {errorUpdate && (
+              {errorMutation && (
                 <div className="mt-2 text-red-500 dark:text-red-300">
-                  {errorUpdate}
+                  {errorMutation}
                 </div>
               )}
             </div>
@@ -341,15 +307,15 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                         <div className="">
                           <Input
                             type="date"
-                            name="fechaParaclinicos"
+                            name="paraclinicalDate"
                             onChange={formik.handleChange}
-                            value={formik.values.fechaParaclinicos}
+                            value={formik.values.paraclinicalDate}
                             onBlur={formik.handleBlur}
                             disabled={data.idGrupoServicios === 6}
                             label="Fecha Paraclinicos"
                             required={true}
-                            touched={formik.touched.fechaParaclinicos}
-                            error={formik.errors.fechaParaclinicos}
+                            touched={formik.touched.paraclinicalDate}
+                            error={formik.errors.paraclinicalDate}
                           />
                         </div>
 
@@ -357,15 +323,15 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                         <div className="">
                           <Input
                             type="date"
-                            name="fechaAnesteciologia"
+                            name="anesthesiologyDate"
                             onChange={formik.handleChange}
-                            value={formik.values.fechaAnesteciologia}
+                            value={formik.values.anesthesiologyDate}
                             onBlur={formik.handleBlur}
                             disabled={data.idGrupoServicios === 6}
                             label="Fecha V. Anestesiología"
                             required={true}
-                            touched={formik.touched.fechaAnesteciologia}
-                            error={formik.errors.fechaAnesteciologia}
+                            touched={formik.touched.anesthesiologyDate}
+                            error={formik.errors.anesthesiologyDate}
                           />
                         </div>
                       </section>
@@ -383,16 +349,16 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                             <InputAutocompletado
                               label="Lugar de Cirugía"
                               onInputChanged={(value) =>
-                                formik.setFieldValue("ips", value)
+                                formik.setFieldValue("ipsRemite", value)
                               }
                               apiRoute="ips-remite-name"
                               placeholder="Ej: Hospital San Juan"
                               error={
-                                formik.touched.ips && formik.errors.ips
-                                  ? formik.errors.ips
+                                formik.touched.ipsRemite && formik.errors.ipsRemite
+                                  ? formik.errors.ipsRemite
                                   : undefined
                               }
-                              touched={formik.touched.ips}
+                              touched={formik.touched.ipsRemite}
                               required={true}
                             />
                           </div>
@@ -403,14 +369,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                               label="Especialista"
                               apiRoute="profesionales/buscar"
                               error={
-                                formik.touched.especialista
-                                  ? formik.errors.especialista
+                                formik.touched.specialist
+                                  ? formik.errors.specialist
                                   : undefined
                               }
                               onInputChanged={(value) =>
-                                formik.setFieldValue("especialista", value)
+                                formik.setFieldValue("specialist", value)
                               }
-                              touched={formik.touched.especialista}
+                              touched={formik.touched.specialist}
                               required={true}
                               placeholder="Digite nombre del profesional..."
                               helpText={`¿No encuentras el profesional?`}
@@ -421,14 +387,14 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                           <div className="">
                             <Input
                               type="date"
-                              name="fechaCirugia"
+                              name="surgeryDate"
                               onChange={formik.handleChange}
-                              value={formik.values.fechaCirugia}
+                              value={formik.values.surgeryDate}
                               onBlur={formik.handleBlur}
                               label="Fecha Cirugía"
                               required={true}
-                              touched={formik.touched.fechaCirugia}
-                              error={formik.errors.fechaCirugia}
+                              touched={formik.touched.surgeryDate}
+                              error={formik.errors.surgeryDate}
                             />
                           </div>
 
@@ -436,31 +402,31 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                           <div className="">
                             <Input
                               type="time"
-                              name="horaProgramada"
+                              name="scheduledTime"
                               onChange={formik.handleChange}
-                              value={formik.values.horaProgramada}
+                              value={formik.values.scheduledTime}
                               onBlur={formik.handleBlur}
                               label="Hora de Cirugía"
                               required={true}
-                              touched={formik.touched.horaProgramada}
-                              error={formik.errors.horaProgramada}
+                              touched={formik.touched.scheduledTime}
+                              error={formik.errors.scheduledTime}
                             />
                           </div>
                         </div>
                         <div>
                           <Input
                             label="Observación"
-                            name="observacion"
+                            name="observation"
                             onChange={formik.handleChange}
-                            value={formik.values.observacion}
+                            value={formik.values.observation}
                             onBlur={formik.handleBlur}
                             error={
-                              formik.errors.observacion &&
-                              formik.touched.observacion
-                                ? formik.errors.observacion
+                              formik.errors.observation &&
+                                formik.touched.observation
+                                ? formik.errors.observation
                                 : undefined
                             }
-                            touched={formik.touched.observacion}
+                            touched={formik.touched.observation}
                             required
                           />
                         </div>
@@ -474,15 +440,19 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado }) => {
                     <Button
                       variant="primary"
                       type="submit"
-                      isLoading={submiting}
+                      isLoading={isLoading || formik.isSubmitting}
                     >
                       <span className="text-base">Programar</span>
                     </Button>
-                    {errorSubmit && (
-                      <div className="mt-2 text-red-500 dark:text-red-300">
-                        {errorSubmit}
-                      </div>
-                    )}
+                    <AnimatePresence>
+                      {errorMutation && (
+                        <div>
+                          <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                            {errorMutation}
+                          </div>
+                        </div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </form>
               ) : null}
