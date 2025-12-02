@@ -1,17 +1,18 @@
 export interface IAuditados {
-    id:          number;
+    id: number;
     radicadoDate: Date;
-    document:    number;
+    document: number;
     patientName: string;
-    CUPS:        Cup[];
+    CUPS: Cup[];
 }
 
 export interface Cup {
-    id:          number;
-    code:        number;
+    id: number;
+    code: number;
     description: string;
-    status:      number;
+    statusId: number;
+    status: string;
     observation: string;
-    modifyDate:  Date;
-    quantity:    number;
+    modifyDate: Date;
+    quantity: number;
 }

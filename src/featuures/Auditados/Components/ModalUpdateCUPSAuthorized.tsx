@@ -9,20 +9,21 @@ import editar from "/assets/editar.svg";
 import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
-import { useCUPSAuthorized } from "../Hooks/UseCUPSAuthorized";
 import { toast } from "react-toastify";
 import Button from "@/components/common/Ui/Button";
+import { useMutationCUPSAuth } from "../Hooks/useMutationCUPSAuth";
 
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
+  onSuccess?: () => void;
 }
 
 const ModalActualizarCupsAuditoria: React.FC<
   ModalActualizarCupsAuditadosProps
-> = ({ cup }) => {
+> = ({ cup, onSuccess }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { UpdateCupsAuthorized, loading, error, refetch } = useCUPSAuthorized();
+  const { UpdateCupsAuthorized, loading, error } = useMutationCUPSAuth();
 
   // * se agreaga estado para el control de la carga de los estados
   const [loadEstados, setLoadEstados] = useState(false);
@@ -39,8 +40,8 @@ const ModalActualizarCupsAuditoria: React.FC<
   const validationSchema = useMemo(
     () =>
       Yup.object({
-        estado: Yup.string().required("El estado es requerido."),
-        observacion: Yup.string()
+        status: Yup.string().required("El status es requerido."),
+        observation: Yup.string()
           .min(1, "La observación debe tener al menos 1 caracteres.")
           .max(500, "La observación no debe exceder los 500 caracteres.")
           .required("La observación es requerida."),
@@ -54,29 +55,20 @@ const ModalActualizarCupsAuditoria: React.FC<
   // hook de formik
   const formik = useFormik({
     initialValues: {
-      estado: cup.status,
-      observacion: cup.observation,
+      status: cup.statusId,
+      observation: cup.observation,
       quantity: cup.quantity,
     },
     validationSchema,
     onSubmit: async (values) => {
-      const formData = new FormData();
-      formData.append("observation", values.observacion);
-      formData.append("status", values.estado.toString());
-      formData.append("quantity", values.quantity.toString());
 
-      try {
-        const response = await UpdateCupsAuthorized(cup.id, formData);
+      await UpdateCupsAuthorized(cup.id, values, () => {
+        toast.success("CUPS actualizado con éxito.");
+        setStadopen(false);
+        onSuccess?.();
+      });
 
-        if (response && response.status === 200) {
-          toast.success("CUPS actualizado correctamente.");
-          formik.resetForm();
-          refetch(); 
-        }
-      } catch (error) {
-        console.log(`Ocurrio un error al actualizar el CUPS: ${error}`);
-      }
-    },
+    }
   });
 
   if (errorEstados) return <h2>Error Al cargar Estados {errorEstados}</h2>;
@@ -116,20 +108,20 @@ const ModalActualizarCupsAuditoria: React.FC<
                     <div className="">
                       <Select
                         options={[
-                          ...dataEstados.map((estado) => ({
-                            value: estado.id,
-                            label: estado.name,
+                          ...dataEstados.map((status) => ({
+                            value: status.id,
+                            label: status.name,
                           })),
                         ]}
                         label="Estado CUPS"
-                        id="estado"
-                        name="estado"
-                        value={formik.values.estado}
+                        id="status"
+                        name="status"
+                        value={formik.values.status}
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         required
-                        error={formik.errors.estado}
-                        touched={formik.touched.estado}
+                        error={formik.errors.status}
+                        touched={formik.touched.status}
                       />
                     </div>
                     <div>
@@ -161,13 +153,13 @@ const ModalActualizarCupsAuditoria: React.FC<
                   <Input
                     label="Observación"
                     type="text"
-                    id="observacion"
-                    name="observacion"
-                    value={formik.values.observacion}
+                    id="observation"
+                    name="observation"
+                    value={formik.values.observation}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.errors.observacion}
-                    touched={formik.touched.observacion}
+                    error={formik.errors.observation}
+                    touched={formik.touched.observation}
                     required
                   />
                 </div>

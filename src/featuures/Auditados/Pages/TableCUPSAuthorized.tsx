@@ -6,7 +6,7 @@ import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 import { Cup, IAuditados } from "@/models/IAuditados";
-import { useCUPSAuthorized } from "../Hooks/UseCUPSAuthorized";
+import { useFetchCUPSAuthorized } from "../Hooks/UseFetchCUPSAuthorized";
 
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
@@ -21,7 +21,8 @@ const ModalActualizarCupsAuditoria = lazy(
 const ITEMS_PER_PAGE = 10;
 
 const TableCUPSAuthorized: React.FC = () => {
-  const { data, loading, error } = useCUPSAuthorized();
+  const { data, loading, error, refetch } = useFetchCUPSAuthorized();
+
   const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE);
   const { query, setQuery, filteredData } = useSearch<IAuditados>(data, [
     "id",
@@ -58,6 +59,7 @@ const TableCUPSAuthorized: React.FC = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         paginate={paginate}
+        onSuccess={refetch}
       />
     </>
   );
@@ -83,6 +85,7 @@ interface MainContentProps {
   currentPage: number;
   totalPages: number;
   paginate: (pageNumber: number) => void;
+  onSuccess: () => void;
 }
 
 const MainContent: React.FC<MainContentProps> = ({
@@ -95,6 +98,7 @@ const MainContent: React.FC<MainContentProps> = ({
   currentPage,
   totalPages,
   paginate,
+  onSuccess,
 }) => (
   <section className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
     <SearchAndFilter
@@ -111,6 +115,7 @@ const MainContent: React.FC<MainContentProps> = ({
         currentPage={currentPage}
         totalPages={totalPages}
         paginate={paginate}
+        onSuccess={onSuccess}
       />
     )}
   </section>
@@ -173,6 +178,7 @@ interface TableContentProps {
   currentPage: number;
   totalPages: number;
   paginate: (pageNumber: number) => void;
+  onSuccess: () => void;
 }
 
 const TableContent: React.FC<TableContentProps> = ({
@@ -180,6 +186,7 @@ const TableContent: React.FC<TableContentProps> = ({
   currentPage,
   totalPages,
   paginate,
+  onSuccess,
 }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null); // Estado para controlar el acordeón
 
@@ -245,7 +252,7 @@ const TableContent: React.FC<TableContentProps> = ({
                       className="overflow-hidden bg-gray-100 dark:bg-gray-900"
                     >
                       <td colSpan={5} className="w-full p-1.5 md:p-3">
-                        <CupsTable cups={auditado.CUPS} />
+                        <CupsTable cups={auditado.CUPS} onSuccess={onSuccess} />
                       </td>
                     </motion.tr>
                   )}
@@ -267,9 +274,10 @@ const TableContent: React.FC<TableContentProps> = ({
 
 interface CupsTableProps {
   cups: Cup[];
+  onSuccess: () => void;
 }
 
-const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
+const CupsTable: React.FC<CupsTableProps> = ({ cups, onSuccess }) => (
   <div className="overflow-x-auto">
     <table className="min-w-full overflow-hidden text-xs md:text-sm rounded-lg shadow-lg border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
       <thead>
@@ -307,7 +315,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => (
             </td>
             <td className="p-0 border-b md:p-3 dark:border-gray-700">
               <Suspense fallback={<LoadingSpinner />}>
-                <ModalActualizarCupsAuditoria cup={cup} />
+                <ModalActualizarCupsAuditoria cup={cup} onSuccess={onSuccess} />
               </Suspense>
             </td>
           </tr>
