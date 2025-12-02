@@ -22,7 +22,7 @@ import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
 
 import "@pdfslick/react/dist/pdf_viewer.css";
-import SidebarImproved from "./components/layout/sidebar/SidebarImproved.tsx";
+import SideBar from "./components/layout/sidebar/page/SideBar";
 
 function AppRoutes() {
   return (
@@ -38,7 +38,7 @@ function AppRoutes() {
               <div className="grid min-h-screen grid-rows-layout">
                 <Navbar />  
                 <div className="relative flex">
-                  <SidebarImproved />
+                  <SideBar />
                   <main className="flex-1 overflow-auto bg-slate-200 dark:bg-gray-900">
                     <Layout>
                       <ContextualizedRoutes />
