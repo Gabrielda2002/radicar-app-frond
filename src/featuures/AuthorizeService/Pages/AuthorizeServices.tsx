@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { useAuthorizeServices } from "../Hooks/useAuthorizeServices";
 import { AnimatePresence } from "framer-motion";
 
-const FormularioAutorizacion = () => {
+const AuthorizeServices = () => {
   const {
     authorizeService,
     error: authorizeError,
@@ -353,4 +353,4 @@ const FormularioAutorizacion = () => {
   );
 };
 
-export default FormularioAutorizacion;
+export default AuthorizeServices;
