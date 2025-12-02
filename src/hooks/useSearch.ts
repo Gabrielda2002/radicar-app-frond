@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 
 // Tipo auxiliar para obtener el tipo de un valor anidado usando un path
-type NestedKeyOf<T> = {
+export type NestedKeyOf<T> = {
   [K in keyof T & (string | number)]: T[K] extends object
     ? `${K}` | `${K}.${NestedKeyOf<T[K]>}`
     : `${K}`;

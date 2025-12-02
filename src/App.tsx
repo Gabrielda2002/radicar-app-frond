@@ -22,7 +22,7 @@ import { NotificationProvider } from "@/context/notificationContext.tsx";
 import { TicketProvider } from "./context/ticketContext.tsx";
 
 import "@pdfslick/react/dist/pdf_viewer.css";
-import SideBar from "./components/layout/sidebar/page/SideBar";
+import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 
 function AppRoutes() {
   return (

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import useSearch from "@/hooks/useSearch";
+import useSearch, { type NestedKeyOf } from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 
-export interface UseTableStateProps<T> {
+export interface UseTableStateProps<T extends object> {
   /** Datos originales */
   data: T[];
   /** Campos por los cuales buscar */
-  searchFields: (keyof T | string)[];
+  searchFields: NestedKeyOf<T>[];
   /** Items por página inicial */
   initialItemsPerPage?: number;
 }
@@ -31,33 +31,7 @@ export interface UseTableStateReturn<T> {
   /** Cambiar items por página */
   setItemsPerPage: (items: number) => void;
 }
-
-/**
- * Hook personalizado que combina búsqueda y paginación
- * para simplificar el manejo del estado de las tablas.
- * 
- * @example
- * ```tsx
- * const tableState = useTableState({
- *   data: users,
- *   searchFields: ['name', 'email', 'documentNumber'],
- *   initialItemsPerPage: 10
- * });
- * 
- * <DataTableContainer
- *   searchValue={tableState.searchQuery}
- *   onSearchChange={tableState.setSearchQuery}
- *   itemsPerPage={tableState.itemsPerPage}
- *   onItemsPerPageChange={tableState.setItemsPerPage}
- *   currentPage={tableState.currentPage}
- *   totalPages={tableState.totalPages}
- *   onPageChange={tableState.paginate}
- * >
- *   <DataTable data={tableState.currentData()} />
- * </DataTableContainer>
- * ```
- */
-export function useTableState<T>({
+export function useTableState<T extends object>({
   data,
   searchFields,
   initialItemsPerPage = 10,
