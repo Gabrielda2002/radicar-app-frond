@@ -4,7 +4,7 @@ import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import useSearch from "@/hooks/useSearch";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
-import { useFetchCirugias } from "../Hooks/UseFetchCirugias";
+import { useFetchCirugias } from "../Hooks/useFetchSurgery";
 import { Cup, ICirugias, programacion } from "@/models/ICirugias";
 
 //*iconos
@@ -18,7 +18,7 @@ import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAcc
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 
-const ModalCirugias = lazy(() => import("../Components/ModalCirugias"));
+const ModalCirugias = lazy(() => import("../Components/ModalSurgery"));
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos")
 );

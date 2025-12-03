@@ -8,7 +8,7 @@ import Input from "@/components/common/Ui/Input";
 
 //*Icons
 import programar from "/assets/programar.svg";
-import { useMutationSurgery } from "../Hooks/useMutationSugery";
+import { useMutationSurgery } from "../Hooks/useMutationSurgery";
 import { FormatDate } from "@/utils/FormatDate";
 import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
