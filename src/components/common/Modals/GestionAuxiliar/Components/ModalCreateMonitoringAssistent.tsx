@@ -14,12 +14,14 @@ interface ModalGestionServicioProps {
   idCups: number | null;
   idCirugias: number | null;
   disabledButton?: boolean;
+  onSuccess?: () => void;
 }
 
 const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
   idCups,
   idCirugias,
   disabledButton = false,
+  onSuccess,
 }) => {
 
   console.log(idCups);
@@ -80,7 +82,9 @@ const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
           (response && response.status === 201)
         ) {
           toast.success("Gestión registrada con éxito");
+          onSuccess?.();
           formik.resetForm();
+          setIsOpen(false);
         }
       } catch (error) {
         console.error(error);

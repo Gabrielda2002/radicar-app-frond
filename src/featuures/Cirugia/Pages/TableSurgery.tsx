@@ -397,6 +397,7 @@ const TablaCirugias = () => {
           cup={null}
           cirugias={selectedCirugia}
           cupsRadicado={cupsRadicado}
+          onSuccess={refetch}
         />
       </Suspense>
     </>

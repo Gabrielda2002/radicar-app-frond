@@ -15,6 +15,7 @@ interface ModalGestionAuxiliarProps {
   cup: Cup | null;
   cirugias: programacion | null;
   cupsRadicado?: CupCirugia[] | null;
+  onSuccess?: () => void;
 }
 
 const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
@@ -23,6 +24,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   cup,
   cirugias,
   cupsRadicado,
+  onSuccess,
 }) => {
   // se hace una sobre carga para que la funcion reciba un array de seguimientos de cup o de cirugias
   function getUltimoEstado(seguimientos: Seguimiento[]): string | null;
@@ -89,8 +91,9 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
             idCups={cup?.id || null}
             idCirugias={cirugias?.id || null}
             disabledButton={isDisabled}
+            onSuccess={onSuccess}
           />
-
+          {/* Gestion de cirugias */}
           {cirugias && cirugias.gestionAuxiliarCirugia.length > 0 ? (
             <div className="flex flex-col justify-center items-center w-full p-2">
               <h3 className="text-lg font-semibold text-color dark:text-gray-200">
