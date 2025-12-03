@@ -34,7 +34,7 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     )[0].estado
     : "N/A"
 
-  const ultimoEstadoRadicacion = cup && cup.seguimiento.length > 0 &&
+  const ultimoEstadoRadicacion = cup && cup.seguimiento &&
     cup.seguimiento[0].estado
     ? cup.seguimiento[0].estado
     : "N/A"
