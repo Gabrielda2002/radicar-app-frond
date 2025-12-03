@@ -65,7 +65,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión de Inventarios',
         icon: MdOutlineInventory,
         type: 'category',
-        roles: [1, 6, 4],
+        roles: [1, 6, 4, 2],
         children: [
           {
             id: 'inventory-general',
@@ -81,7 +81,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión Carta Recobro',
         icon: recobro,
         type: 'category',
-        roles: [1, 10, 6],
+        roles: [1, 10, 6, 2],
         children: [
           {
             id: 'recovery-request',
@@ -96,7 +96,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: auditoria,
             path: '/auditoria',
             type: 'subcategory',
-            roles: [1, 6]
+            roles: [1, 6, 2]
           }
         ]
       },
@@ -105,7 +105,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión de Servicios',
         icon: services,
         type: 'category',
-        roles: [10, 3, 1, 15, 6],
+        roles: [10, 3, 1, 15, 6, 2],
         children: [
           {
             id: 'radicator',
@@ -113,7 +113,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: taskList,
             path: '/tabla-radicacion',
             type: 'subcategory',
-            roles: [10, 3, 1, 15, 6]
+            roles: [10, 3, 1, 15, 6, 2]
           },
           {
             id: 'surgery',
@@ -121,7 +121,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: surgery,
             path: '/tabla-cirugias',
             type: 'subcategory',
-            roles: [15, 1, 3]
+            roles: [15, 1, 3, 2]
           },
           {
             id: 'audit',
@@ -129,7 +129,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: audit,
             path: '/tabla-auditoria',
             type: 'subcategory',
-            roles: [3, 1]
+            roles: [3, 1, 2]
           }
         ]
       },
@@ -138,7 +138,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión Humana',
         icon: userMain,
         type: 'category',
-        roles: [1, 18, 6, 20],
+        roles: [1, 18, 6, 20, 2],
         children: [
           {
             id: 'biometric-users',
@@ -146,7 +146,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: user,
             path: '/RegistroUsuarios',
             type: 'subcategory',
-            roles: [1, 18]
+            roles: [1, 18, 2]
           },
           {
             id: 'permission-requests-management',
@@ -154,7 +154,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: BiMailSend,
             path: '/permissions',
             type: 'subcategory',
-            roles: [6, 1, 20, 18] 
+            roles: [6, 1, 20, 18, 2] 
           },
           {
             id: 'configuration-vacations',
@@ -162,7 +162,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: user,
             path: '/configuration-vacations',
             type: 'subcategory',
-            roles: [1, 6, 20, 18]
+            roles: [1, 6, 20, 18, 2]
           }
         ]
       },
@@ -171,7 +171,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión demanda inducida',
         icon: userMain,
         type: 'category',
-        roles: [1, 19, 20, 21],
+        roles: [1, 19, 20, 21, 2],
         children: [
           {
             id: 'demand-induced-management',
