@@ -65,7 +65,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión de Inventarios',
         icon: MdOutlineInventory,
         type: 'category',
-        roles: [1, 6, 4, 2],
+        roles: [1, 6, 4, 2, 17],
         children: [
           {
             id: 'inventory-general',
