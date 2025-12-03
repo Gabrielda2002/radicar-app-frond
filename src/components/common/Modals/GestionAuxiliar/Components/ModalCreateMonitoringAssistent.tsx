@@ -24,7 +24,6 @@ const ModalCreateMonitoring: React.FC<ModalGestionServicioProps> = ({
   onSuccess,
 }) => {
 
-  console.log(idCups);
   const { createMonitoring, error, loading } = useCreateMonitoringRaSg();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);

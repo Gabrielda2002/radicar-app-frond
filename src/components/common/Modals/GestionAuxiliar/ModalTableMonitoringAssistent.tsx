@@ -1,8 +1,7 @@
-import React, { useMemo } from "react";
-import { Cup, Seguimiento } from "@/models/IRadicados";
+import React from "react";
+import { Cup } from "@/models/IRadicados";
 import ModalGestionServicio from "./Components/ModalCreateMonitoringAssistent";
 import {
-  GestionAuxiliarCirugia,
   programacion,
   Cup as CupCirugia,
 } from "@/models/ICirugias";
@@ -26,44 +25,19 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
   cupsRadicado,
   onSuccess,
 }) => {
-  // se hace una sobre carga para que la funcion reciba un array de seguimientos de cup o de cirugias
-  function getUltimoEstado(seguimientos: Seguimiento[]): string | null;
-  function getUltimoEstado(
-    seguimientos: GestionAuxiliarCirugia[]
-  ): string | null;
-  function getUltimoEstado(
-    seguimientos: Seguimiento[] | GestionAuxiliarCirugia[]
-  ): string | null {
-    if (seguimientos.length > 0) {
-      const ultimoSeguimiento = seguimientos[seguimientos.length - 1];
-
-      if ("estadoSeguimientoRelation" in ultimoSeguimiento) {
-        return ultimoSeguimiento.estadoSeguimientoRelation
-          ? ultimoSeguimiento.estado
-          : null;
-      }
-      return ultimoSeguimiento.estado;
-    }
-
-    return null;
-  }
-
   // obtener el ultimo estao de la cirugia y cup
-  const ultimoEstadoCirugia = useMemo(
-    () =>
-      cup && cup.seguimiento
-        ? getUltimoEstado(cup.seguimiento)
-        : null,
-    []
-  );
+  const ultimoEstadoCirugia = cirugias &&
+    cirugias.gestionAuxiliarCirugia
+      .length > 0
+    ? cirugias.gestionAuxiliarCirugia.slice(
+      -1
+    )[0].estado
+    : "N/A"
 
-  const ultimoEstadoRadicacion = useMemo(
-    () =>
-      cirugias && cirugias.gestionAuxiliarCirugia
-        ? getUltimoEstado(cirugias.gestionAuxiliarCirugia)
-        : null,
-    []
-  );
+  const ultimoEstadoRadicacion = cup && cup.seguimiento.length > 0 &&
+    cup.seguimiento[0].estado
+    ? cup.seguimiento[0].estado
+    : "N/A"
 
   // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
   const isDisabled =
@@ -131,8 +105,8 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
 
           {/* mostrar seguimiento de cups radicados en cirugias */}
           {cupsRadicado &&
-          cupsRadicado.length > 0 &&
-          seguimientos.length > 0 ? (
+            cupsRadicado.length > 0 &&
+            seguimientos.length > 0 ? (
             <div className="flex flex-col justify-center items-center w-full p-2">
               <h3 className="text-lg font-semibold text-color dark:text-gray-200">
                 Seguimiento de Auxiliar
