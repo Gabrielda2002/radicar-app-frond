@@ -72,7 +72,7 @@ const ModalRadicacion = () => {
   // * usar formik y yup para validar los campos
   const validationSchema = Yup.object({
     telefonoFijo: Yup.string()
-      .required("Campo requerido")
+      .optional()
       .min(1, "El número debe tener al menos 1 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
     numeroCelular: Yup.string()
@@ -137,7 +137,7 @@ const ModalRadicacion = () => {
           "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
       } else if (quantityServices.length !== parseInt(quantityInputs)) {
         errorCups =
-          "La cantidad de cantidades de CUPS no coincide con la cantidad especificada.";
+          "El número de cantidades de CUPS no coincide con la cantidad especificada.";
       } else if (serviceIds.length !== parseInt(quantityInputs)) {
         errorCups =
           "La cantidad de IDs de CUPS no coincide con la cantidad especificada.";
@@ -425,7 +425,6 @@ const ModalRadicacion = () => {
                   value={formik.values.telefonoFijo}
                   onBlur={formik.handleBlur}
                   label="Telefono Fijo"
-                  required={true}
                   icon={<Phone className="w-5 h-5" />}
                   iconPosition="left"
                   touched={formik.touched.telefonoFijo}
@@ -741,7 +740,7 @@ const ModalRadicacion = () => {
           </div>
 
           <AnimatePresence>
-            {errorRequestService || errorCups && (
+            {(errorRequestService != null || errorCups) && (
               <div>
                 <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
                   {errorRequestService || errorCups}

@@ -224,7 +224,7 @@ const handleModalOpen = async () => {
                 value={formik.values.landline}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                type="number"
+                type="text"
                 placeholder="Ingrese Teléfono Fijo..."
                 error={formik.errors.landline}
                 touched={formik.touched.landline}
