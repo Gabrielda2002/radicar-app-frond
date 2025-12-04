@@ -35,9 +35,9 @@ const ModalGestionAuxiliar: React.FC<ModalGestionAuxiliarProps> = ({
     : "N/A"
 
   const ultimoEstadoRadicacion = cup && cup.seguimiento &&
-    cup.seguimiento[0].estado
+    cup.seguimiento[0]
     ? cup.seguimiento[0].estado
-    : "N/A"
+  : "N/A";
 
   // deshabilitar el boton de registrar gestion si el estado es Cerraado o Cancelado
   const isDisabled =
