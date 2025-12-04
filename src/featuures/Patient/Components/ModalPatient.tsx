@@ -65,7 +65,6 @@ const handleModalOpen = async () => {
           .min(5, "La identificación debe tener al menos 5 caracteres")
           .max(16, "La identificación debe tener como máximo 16 caracteres"),
         landline: Yup.string()
-          .required("El teléfono fijo es obligatorio")
           .min(1, "El teléfono fijo debe tener al menos 1 caracter")
           .max(10, "El teléfono fijo debe tener como máximo 10 caracteres"),
         name: Yup.string()
@@ -230,7 +229,6 @@ const handleModalOpen = async () => {
                 error={formik.errors.landline}
                 touched={formik.touched.landline}
                 icon={<PhoneIcon className="w-5 h-5" />}
-                required
               />
             </div>
 
