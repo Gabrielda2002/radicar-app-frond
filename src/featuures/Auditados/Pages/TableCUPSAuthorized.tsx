@@ -282,6 +282,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups, onSuccess }) => (
     <table className="min-w-full overflow-hidden text-xs md:text-sm rounded-lg shadow-lg border-[2px] border-gray-800 border-dashed dark:border-gray-300 dark:text-gray-100">
       <thead>
         <tr className="text-gray-800 bg-gray-200 rounded-md dark:bg-gray-600 dark:text-gray-200">
+          <th>ID CUPS Radicado</th>
           <th>Código</th>
           <th>Descripción</th>
           <th>Estado</th>
@@ -296,6 +297,9 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups, onSuccess }) => (
             className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
             key={cup.id}
           >
+            <td className="p-0 border-b md:p-3 dark:border-gray-700">
+              {cup.id}
+            </td>
             <td className="p-0 border-b md:p-3 dark:border-gray-700">
               {cup.code}
             </td>
