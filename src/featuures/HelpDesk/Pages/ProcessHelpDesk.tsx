@@ -1,61 +1,123 @@
 //*Funciones y Hooks
-import { useState, useCallback, useEffect } from "react";
-import Pagination from "@/components/common/PaginationTable/PaginationTable.tsx";
-import useSearch from "@/hooks/useSearch.ts";
-import usePagination from "@/hooks/usePagination.ts";
+import { Suspense } from "react";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { ITickets } from "@/models/ITickets";
-import { FormatDate } from "@/utils/FormatDate";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import { useTickets } from "@/context/ticketContext.tsx";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
-import Select from "@/components/common/Ui/Select";
-import Input from "@/components/common/Ui/Input";
-
-const ITEMS_PER_PAGE = 8;
+import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { FormatDate } from "@/utils/FormatDate";
 
 const ProcessHelpDesk = () => {
-  const [itemsPerPage] = useState(ITEMS_PER_PAGE);
-  const { tickets, refetchTickets } = useTickets();
-  const [isMobile, setIsMobile] = useState(false);
+  const { tickets, refetchTickets, error, loading } = useTickets();
 
-  // Detectar si es dispositivo móvil
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
+  const tableState = useTableState({
+    data: tickets,
+    searchFields: ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"],
+    initialItemsPerPage: 10
+  });
 
-    checkIfMobile();
-    window.addEventListener("resize", checkIfMobile);
-
-    return () => {
-      window.removeEventListener("resize", checkIfMobile);
-    };
-  }, []);
-
-  const { query, setQuery, filteredData } = useSearch<ITickets>(tickets, [
-    "id",
-    "title",
-    "description",
-    "nameRequester",
-    "lastNameRequester",
-    "category",
-    "priority",
-    "status",
-  ]);
-
-  const { currentPage, totalPages, paginate, currentData, setItemsPerPage } =
-    usePagination(filteredData, ITEMS_PER_PAGE);
-
-  const handleItemsPerPageChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setItemsPerPage(Number(e.target.value));
+  const columns = [
+    {
+      key: "id",
+      header: "ID",
+      width: "10%",
+      accessor: (item: ITickets) => item.id,
     },
-    [setItemsPerPage]
-  );
-
+    {
+      key: "title",
+      header: "Titulo",
+      width: "20%",
+      accessor: (item: ITickets) => item.title,
+    },
+    {
+      key: "description",
+      header: "Descripcion",
+      width: "30%",
+      accessor: (item: ITickets) => item.description,
+    },
+    {
+      key: "nameRequester",
+      header: "Nombre",
+      width: "15%",
+      accessor: (item: ITickets) => item.nameRequester,
+    },
+    {
+      key: "lastName",
+      header: "Apellido",
+      width: "15%",
+      accessor: (item: ITickets) => item.lastNameRequester,
+    },
+    {
+      key: "status",
+      header: "Estado",
+      width: "15%",
+      render: (item: ITickets) => (
+        <span className={getStatusColor(item.status)}>
+          {item.status}
+        </span>
+      )
+    },
+    {
+      key: "phoneNumber",
+      header: "Celular",
+      width: "15%",
+      accessor: (item: ITickets) => item.phone,
+    },
+    {
+      key: "priority",
+      header: "Prioridad",
+      width: "15%",
+      render: (item: ITickets) => (
+        <span className={getPriorityColor(item.priority)}>
+          {item.priority}
+        </span>
+      )
+    },
+    {
+      key: "category",
+      header: "Categoria",
+      width: "20%",
+      accessor: (item: ITickets) => item.category,
+    },
+    {
+      key: "headquarter",
+      header: "Sede",
+      width: "20%",
+      accessor: (item: ITickets) => item.headquarter,
+    },
+    {
+      key: "municipio",
+      header: "Municipio",
+      width: "20%",
+      accessor: (item: ITickets) => item.municipio,
+    },
+    {
+      key: "createdAt",
+      header: "Creacion",
+      width: "25%",
+      accessor: (item: ITickets) => FormatDate(item.createdAt),
+    },
+    {
+      key: "updatedAt",
+      header: "Ultima modificacion",
+      width: "25%",
+      accessor: (item: ITickets) => FormatDate(item.updatedAt),
+    },
+    {
+      key: "comments",
+      header: "Comentarios",
+      width: "10%",
+      render: (item: ITickets) => (
+        <Suspense fallback={<LoadingSpinner />}>
+          <ModalCommetsTicket idTicket={item.id} />
+        </Suspense>
+      )
+    }
+  ]
   // Función para obtener el color de fondo según el estado del ticket
   const getStatusColor = (status: string): string => {
     switch (status) {
@@ -93,232 +155,37 @@ const ProcessHelpDesk = () => {
           { label: "/ GestiónTickets", path: "" },
         ]}
       />
-      <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-        <div className="flex flex-col items-start w-full mt-2 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0 container-filter">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar"
-          />
-
-          <div className="flex items-center space-x-[10px] md:ml-4 w-full md:w-auto">
-            <Select
-              options={[
-                { value: "10", label: "10 Paginas" },
-                { value: "20", label: "20 Paginas" },
-                { value: "30", label: "30 Paginas" },
-              ]}
-              name=""
-              id=""
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-            />
-          </div>
-        </div>
-
-        <div className="mt-4 mb-5 overflow-x-auto">
-          {!isMobile ? (
-            // Versión de escritorio - tabla normal
-            <table className="min-w-full overflow-hidden text-sm text-center rounded-lg shadow-lg">
-              <thead>
-                <tr className="text-sm text-center bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-                  <th className="p-2"># Ticket</th>
-                  <th className="p-2">Titulo</th>
-                  <th className="p-2">Descripcion</th>
-                  <th className="p-2">Nombre</th>
-                  <th className="p-2">Apellido</th>
-                  <th className="p-2">Estado</th>
-                  <th className="p-2">Celular</th>
-                  <th className="p-2">Prioridad</th>
-                  <th className="p-2">Categoria</th>
-                  <th className="p-2">Sede</th>
-                  <th className="p-2">Municipio</th>
-                  <th className="p-2">Creacion</th>
-                  <th className="p-2">Ultima modificacion</th>
-                  <th className="p-2">Comentario </th>
-                  <th className="p-2">Accion</th>
-                </tr>
-              </thead>
-              <tbody className="text-xs text-center justify-center items-center dark:text-gray-200">
-                {currentData().map((ticket) => (
-                  <tr key={ticket.id} className="border-b dark:border-gray-700">
-                    <td className="p-2">{ticket.id}</td>
-                    <td className="p-2">{ticket.title}</td>
-                    <td className="p-2">{ticket.description}</td>
-                    <td className="p-2">{ticket.nameRequester}</td>
-                    <td className="p-2">{ticket.lastNameRequester}</td>
-                    <td className="p-2">
-                      <span
-                        className={`inline-block px-2 py-1 rounded-full ${getStatusColor(
-                          ticket.status
-                        )}`}
-                      >
-                        {ticket.status}
-                      </span>
-                    </td>
-                    <td className="p-2">{ticket.phone}</td>
-                    <td className="p-2">
-                      <span
-                        className={`inline-block px-2 py-1 rounded-full ${getPriorityColor(
-                          ticket.priority
-                        )}`}
-                      >
-                        {ticket.priority}
-                      </span>
-                    </td>
-                    <td className="p-2">{ticket.category}</td>
-                    <td className="p-2">{ticket.headquarter}</td>
-                    <td className="p-2">{ticket.municipio}</td>
-                    <td className="p-2">{FormatDate(ticket.createdAt)}</td>
-                    <td className="p-2">{FormatDate(ticket.updatedAt)}</td>
-                    <td className="p-2 flex justify-center">
-                      <ModalCommetsTicket idTicket={ticket.id}/>
-                    </td>
-                    <td className="p-2">
-                      {ticket.status != "Cerrado" ? (
-                        <CerrarModal
-                          ticket={ticket}
-                          onTicketClosed={refetchTickets}
-                        />
-                      ) : (
-                        <button
-                          className="text-lg text-gray-400"
-                          title="Ticket ya cerrado"
-                        >
-                          -
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            // responsive
-            <div className="grid grid-cols-1 gap-4">
-              {currentData().map((ticket) => (
-                <div
-                  key={ticket.id}
-                  className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-bold text-gray-700 dark:text-white">
-                      Ticket #{ticket.id}
-                    </h3>
-                    <div>
-                      {ticket.status != "Cerrado" ? (
-                        <CerrarModal
-                          ticket={ticket}
-                          onTicketClosed={refetchTickets}
-                        />
-                      ) : (
-                        <span className="text-sm text-gray-400">Cerrado</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Título:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.title}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Descripción:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.description}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Solicitante:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.nameRequester} {ticket.lastNameRequester}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Estado:
-                    </div>
-                    <div>
-                      <span
-                        className={`inline-block py-1 rounded-full ${getStatusColor(
-                          ticket.status
-                        )}`}
-                      >
-                        {ticket.status}
-                      </span>
-                    </div>
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Celular
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.phone}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Prioridad:
-                    </div>
-                    <div>
-                      <span
-                        className={`inline-block py-1 rounded-full ${getPriorityColor(
-                          ticket.priority
-                        )}`}
-                      >
-                        {ticket.priority}
-                      </span>
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Categoría:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.category}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Sede:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.headquarter}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Municipio:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {ticket.municipio}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Creación:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {FormatDate(ticket.createdAt)}
-                    </div>
-
-                    <div className="font-semibold text-gray-600 dark:text-gray-400/90">
-                      Modificación:
-                    </div>
-                    <div className="text-gray-800 dark:text-gray-100">
-                      {FormatDate(ticket.updatedAt)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <DataTableContainer
+        searchValue={tableState.searchQuery}
+        onSearchChange={tableState.setSearchQuery}
+        itemsPerPage={tableState.itemsPerPage}
+        onItemsPerPageChange={tableState.setItemsPerPage}
+        currentPage={tableState.currentPage}
+        totalPages={tableState.totalPages}
+        onPageChange={tableState.paginate}
+      >
+        <DataTable
+          data={tableState.currentData()}
+          columns={columns}
+          getRowKey={(item) => item.id.toString()}
+          loading={loading}
+          error={error}
+          renderActions={(item) => (
+            item.status != "Cerrado" ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <CerrarModal ticket={item} onTicketClosed={refetchTickets} />
+              </Suspense>
+            ) : (
+              <button
+                className="text-lg text-gray-400"
+                title="Ticket ya cerrado"
+              >
+                -
+              </button>
+            )
           )}
-        </div>
-
-        {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={paginate}
         />
-      </div>
+      </DataTableContainer>
     </>
   );
 };
