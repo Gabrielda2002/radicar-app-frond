@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-export const useUploadFile = (uploadingNewFile: (formData: FormData, id: number | string ) => Promise<void>, folderId: number | string) => {
+export const useUploadFile = (uploadingNewFile: (formData: FormData, id: number | string, onSuccess?: () => void) => Promise<void>, folderId: number | string, toggleModal: () => void) => {
 
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     const [ uploading , setUploading] = useState<boolean>(false);
@@ -20,7 +21,10 @@ export const useUploadFile = (uploadingNewFile: (formData: FormData, id: number 
             });
             try {
 
-                await uploadingNewFile(formData, folderId);
+                await uploadingNewFile(formData, folderId, () => {
+                    toggleModal();
+                    toast.success("Archivo(s) subido(s) con éxito!");
+                });
                 setSelectedFiles(null);
 
             } catch (error) {

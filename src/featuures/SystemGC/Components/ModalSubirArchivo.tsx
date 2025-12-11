@@ -5,14 +5,24 @@ import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Input from "@/components/common/Ui/Input";
 import { FileUploaderProps } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
+import { AnimatePresence } from "framer-motion";
+import { useUploadFile } from "../Hooks/useUploadFile";
 
 const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
   stadopen,
   toggleModal,
-  onFileChange,
-  uploading,
-  onUpload,
 }) => {
+
+  const { error, isLoading, uploadNewFile, path } = useFileManagerStore();
+  const currentFolderId = path[path.length - 1].id;
+
+    const { uploading, handleFileChange: onFileChange, handleUpload } = useUploadFile(
+    uploadNewFile,
+    currentFolderId,
+    toggleModal
+  );
+
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileChange = useCallback(
@@ -63,10 +73,6 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
     );
   };
 
-  const handleUpload = () => {
-    onUpload();
-  };
-
   return (
     <>
       <ModalDefault
@@ -75,7 +81,7 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
         title="Subir Archivos"
         funtionClick={handleUpload}
         showSubmitButton={true}
-        isSubmitting={uploading}
+        isSubmitting={uploading || isLoading}
         isValid={selectedFiles.length > 0}
         submitText="Subir"
         cancelText="Cerrar"
@@ -128,6 +134,15 @@ const ModalSubirArchivo: React.FC<FileUploaderProps> = ({
               </ul>
             )}
           </div>
+            <AnimatePresence>
+                {error && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
         </div>
       </ModalDefault>
     </>

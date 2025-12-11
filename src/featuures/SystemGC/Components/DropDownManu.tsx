@@ -1,7 +1,5 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
-import { useUploadFile } from "../Hooks/useUploadFile";
-import useFileManagerStore from "../Store/FileManagerStore";
 //*Icons
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { FolderPlusIcon } from "@heroicons/react/24/outline";
@@ -19,16 +17,9 @@ interface DropDownManuProps {
 const DropDownManu: React.FC<DropDownManuProps> = ({
   isInFolder,
 }) => {
-  const { uploadNewFile, createNewFolder, path } = useFileManagerStore();
-  const currentFolderId = path[path.length - 1].id;
-  
+
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
-
-  const { uploading, handleFileChange, handleUpload } = useUploadFile(
-    uploadNewFile,
-    currentFolderId
-  );
 
   const toggleModalFolder = () => {
     setStadOpenFolder(!stadOpenFolder);
@@ -58,9 +49,8 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
               Nuevo
               <PlusIcon
                 arial-hidden="true"
-                className={`w-6 h-6 -mr-1 text-gray-800 dark:text-white duration-300 transform ${
-                  open ? "rotate-[132deg]" : ""
-                }`}
+                className={`w-6 h-6 -mr-1 text-gray-800 dark:text-white duration-300 transform ${open ? "rotate-[132deg]" : ""
+                  }`}
               />
             </MenuButton>
           </div>
@@ -104,16 +94,12 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
               <ModalCrearCarpeta
                 standOpen={stadOpenFolder}
                 toggleModal={toggleModalFolder}
-                createNewFolder={createNewFolder}
               />
             )}
 
             {/* Modelo de Subir Archivo */}
             {stadOpenFile && (
               <ModalSubirArchivo
-                onFileChange={handleFileChange}
-                onUpload={handleUpload}
-                uploading={uploading}
                 stadopen={stadOpenFile}
                 toggleModal={toggleModalFile}
               />

@@ -14,7 +14,7 @@ interface FileManagerState {
     setSection: (section: string) => void;
     fetchContents: (folderId?: string) => Promise<void>;
     createNewFolder: (name: string,  parentId?: string) => Promise<void>;
-    uploadNewFile: (data: FormData, folderId: string | number) => Promise<void>;
+    uploadNewFile: (data: FormData, folderId: string | number, onSuccess?: () => void) => Promise<void>;
     deleteItemById: (id: string, type: "carpetas" | "archivo") => Promise<void>;
     downloadFileById: (id: string, fileName: string) => Promise<void>;
     navigateToFolder: (folderId: string, folderName: string) => void;
@@ -77,12 +77,12 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         }
     },
-    uploadNewFile: async (data: FormData, folderId: string | number) => {
+    uploadNewFile: async (data: FormData, folderId: string | number, onSuccess?: () => void) => {
         try {
             set({ error: null });
             await uploadFile(data, folderId);
             await get().fetchContents(folderId?.toString() || undefined);
-            toast.success("Archivo subido con éxito!");
+            onSuccess?.();
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."

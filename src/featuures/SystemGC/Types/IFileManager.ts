@@ -75,7 +75,6 @@ export interface ItemManuProps {
 export interface ModalCrearCarpetaProps  {
   standOpen: boolean;
   toggleModal: () => void;
-  createNewFolder: (name: string) => void;
 };
 
 export interface ModalMoveItemsProps {
@@ -98,9 +97,6 @@ export interface ModalRenombrarItemProps {
 };
 
 export interface FileUploaderProps {
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onUpload: () => void;
-  uploading: boolean;
   stadopen: boolean;
   toggleModal: () => void;
 }
