@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import ItemManu from "./ItemManu";
-import { Bounce, toast } from "react-toastify";
 import { useAuth } from "@/context/authContext";
 import PdfViewer from "@/components/common/PDFViewer/PdfViewer";
 import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
-import { FileListProps, FileItem } from "../Types/IFileManager";
+import { FileItem } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
+
+interface FileListProps {
+  files: FileItem[];
+}
 
 const FileList: React.FC<FileListProps> = ({
   files,
-  // onDownload,
-  onDelete,
-  renameItem,
-  currentFolderId,
-  section,
-  handleRefresh
 }) => {
-
   const { rol } = useAuth();
+  const { deleteItemById } = useFileManagerStore();
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
 
@@ -45,20 +43,6 @@ const FileList: React.FC<FileListProps> = ({
     }
   };
 
-  const handleDelete = (fileId: string) => {
-    onDelete(fileId, "archivo");
-    toast.success("Archivo eliminado con éxito!", {
-      position: "bottom-right",
-      autoClose: 5000,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
-
-  const handleRename = (fileId: string, newName: string) => {
-    renameItem(fileId, newName, "archivo");
-  };
-
   const handleClosePdfViewer = () => {
     setShowPdfViewer(false);
     setPdfUrl(null);
@@ -80,14 +64,10 @@ const FileList: React.FC<FileListProps> = ({
               onClick={(e) => e.stopPropagation()}
             >
               <ItemManu
-                onDelete={() => handleDelete(file.id)}
-                renameItem={(newName: string) => handleRename(file.id, newName)}
+                onDelete={() => deleteItemById(file.id, "archivo")}
                 itemName={file.name}
-                currentFolderId={currentFolderId}
-                section={section}
-                itemType="archivos"
+                itemType="archivo"
                 itemId={file.id}
-                handleRefresh={handleRefresh || (() => {})}
                 nameItemOld={file.name}
               />
             </div>

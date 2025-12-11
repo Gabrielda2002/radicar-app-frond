@@ -1,5 +1,6 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
+import useFileManagerStore from "../Store/FileManagerStore";
 //*Icons
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/outline";
@@ -8,7 +9,14 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMoveItems from "./ModalMoveItems";
 import { Move } from "lucide-react";
-import { ItemManuProps } from "../Types/IFileManager";
+
+interface ItemManuProps {
+  onDelete: () => void;
+  itemName: string;
+  itemType: "carpetas" | "archivo";
+  itemId: string;
+  nameItemOld: string;
+}
 
 //*Properties
 const ModalRenombrarItem = lazy(() => import("./ModalRenombrarItem"));
@@ -18,15 +26,14 @@ const ConfirmDeletePopupProps = lazy(
 
 const ItemManu: React.FC<ItemManuProps> = ({
   onDelete,
-  renameItem,
   itemName,
   itemType,
-  currentFolderId,
-  section,
   itemId,
-  handleRefresh,
   nameItemOld,
 }) => {
+  const { section, path } = useFileManagerStore();
+  const currentFolderId = path[path.length - 1].id;
+  
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
   const [stadOpenMove, setStadOpenMove] = useState(false);
@@ -118,8 +125,9 @@ const ItemManu: React.FC<ItemManuProps> = ({
                 setStadOpenRename(false);
               }}
               standOpen={stadOpenRename}
-              renameItem={renameItem}
               nameItemOld={nameItemOld}
+              itemId={itemId}
+              typeItem={itemType}
             />
           }
 
@@ -142,10 +150,9 @@ const ItemManu: React.FC<ItemManuProps> = ({
               }}
               itemType={itemType}
               itemNameToMove={itemName}
-              section={section}
+              section={section || "sgc"}
               currentFolderId={currentFolderId}
               itemId={itemId}
-              handleRefresh={handleRefresh}
             />
           )}
         </Suspense>

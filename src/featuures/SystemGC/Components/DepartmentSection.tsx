@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Folder } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
+import ItemManu from "./ItemManu";
+import { FolderIcon } from "@heroicons/react/24/outline";
 
 interface DepartmentSectionProps {
   departmentName: string;
@@ -8,35 +11,20 @@ interface DepartmentSectionProps {
   folders: Folder[];
   defaultExpanded?: boolean;
   folderCount: number;
-  onFolderClick: (folderId: string, folderName: string) => void;
-  onDelete: (id: string, type: "carpetas" | "archivo") => void;
-  renameItem: (id: string, newName: string, type: "carpetas" | "archivo") => void;
-  section: string;
-  currentFolderId: string;
-  handleRefresh: () => void;
   getIconForFolder: (folderName: string) => React.FC<React.SVGProps<SVGSVGElement>> | null;
   rol: string | null;
-  ItemManu: React.ComponentType<any>;
-  FolderIcon: React.ComponentType<any>;
 }
 
 const DepartmentSection: React.FC<DepartmentSectionProps> = ({
   departmentName,
-//   departmentId,
   folders,
   defaultExpanded = true,
   folderCount,
-  onFolderClick,
-  onDelete,
-  renameItem,
-  section,
-  currentFolderId,
-  handleRefresh,
   getIconForFolder,
   rol,
-  ItemManu,
-  FolderIcon,
 }) => {
+  const { navigateToFolder, deleteItemById } = useFileManagerStore();
+  
   // Estado para controlar si la sección está expandida o colapsada
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
@@ -44,14 +32,6 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
   useEffect(() => {
     setIsExpanded(defaultExpanded);
   }, [defaultExpanded]);
-
-  const handleDelete = (folderId: string) => {
-    onDelete(folderId, "carpetas");
-  };
-
-  const handleRename = (folderId: string, newName: string) => {
-    renameItem(folderId, newName, "carpetas");
-  };
 
   return (
     <div className="mb-6">
@@ -95,7 +75,7 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
             return (
               <div
                 key={folder.id}
-                onClick={() => onFolderClick(folder.id.toString(), folder.name)}
+                onClick={() => navigateToFolder(folder.id.toString(), folder.name)}
                 className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
               >
                 {CustomIcon ? (
@@ -111,16 +91,10 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <ItemManu
-                      onDelete={() => handleDelete(folder.id.toString())}
-                      renameItem={(newName: string) =>
-                        handleRename(folder.id.toString(), newName)
-                      }
+                      onDelete={() => deleteItemById(folder.id.toString(), "carpetas")}
                       itemName={folder.name}
                       itemType="carpetas"
-                      currentFolderId={currentFolderId}
-                      section={section}
                       itemId={folder.id.toString()}
-                      handleRefresh={handleRefresh}
                       nameItemOld={folder.name}
                     />
                   </div>

@@ -1,8 +1,8 @@
 //*Fuctions and Hooks
 import React, { useMemo, useState } from "react";
 import ItemManu from "./ItemManu";
-import { Bounce, toast } from "react-toastify";
 import DepartmentSection from "./DepartmentSection";
+import useFileManagerStore from "../Store/FileManagerStore";
 
 //*Icons
 import { FolderIcon } from "@heroicons/react/24/outline";
@@ -19,45 +19,23 @@ import StaffIcon from "@/assets/sgc/cdi/staff-icon.svg?react";
 import ProcssIcon from "@/assets/sgc/sgc/process.svg?react";
 import PamecIcon from "@/assets/sgc/suh/face-mask.svg?react";
 import { useAuth } from "@/context/authContext";
-import { FolderListProps, Folder } from "../Types/IFileManager";
+import { Folder } from "../Types/IFileManager";
 import Button from "@/components/common/Ui/Button";
+
+interface FolderListProps {
+  folders: Folder[];
+  isInFolder: boolean;
+}
 
 const FolderList: React.FC<FolderListProps> = ({
   folders,
-  onFolderClick,
-  onDelete,
-  renameItem,
   isInFolder,
-  section,
-  currentFolderId,
-  handleRefresh,
 }) => {
+  const { rol } = useAuth();
+  const { navigateToFolder, deleteItemById, section, path } = useFileManagerStore();
+
   // Estado para controlar si todas las secciones están expandidas
   const [expandAll, setExpandAll] = useState<boolean>(true);
-
-  const handleDelete = (folderId: string) => {
-    //Llama ka funcion de eliminacion
-    onDelete(folderId, "carpetas");
-    //Muestra la notificacion  despues de eliminar la carpeta
-    toast.success("Carpeta eliminada con éxito!", {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
-
-  const { rol } = useAuth();
-  
-  const handleRename = (folderId: string, newName: string) => {
-    //Llama la funcion de renombrado
-    renameItem(folderId, newName, "carpetas");
-  };
 
   // Agrupar carpetas por departamento (solo cuando NO estamos en una carpeta)
   const foldersByDepartment = useMemo(() => {
@@ -91,7 +69,7 @@ const FolderList: React.FC<FolderListProps> = ({
       // Si estamos dentro de una carpeta, no usamos iconos personalizados
       return null;
     }
-    
+
     if (section === "suh") {
       switch (folderName) {
         case "TALENTO HUMANO":
@@ -116,9 +94,9 @@ const FolderList: React.FC<FolderListProps> = ({
     } else if (section === "ci") {
 
       switch (folderName) {
-        case "PROCEDIMIENTOS OPERATIVOS ESTANDAR" :
+        case "PROCEDIMIENTOS OPERATIVOS ESTANDAR":
           return PrcsIcon;
-        case "NORMATIVIDAD LEGAL" :
+        case "NORMATIVIDAD LEGAL":
           return DocIcon;
         case "ESTUDIOS":
           return StdIcon;
@@ -127,7 +105,7 @@ const FolderList: React.FC<FolderListProps> = ({
         default:
           return PrcsIcon;
       }
-    }else if (section === "sgc") {
+    } else if (section === "sgc") {
       switch (folderName) {
         case "MODELO DE ATENCION":
           return StaffIcon;
@@ -151,35 +129,29 @@ const FolderList: React.FC<FolderListProps> = ({
       <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
         {folders.map((folder) => {
           const CustomIcon = getIconForFolder(folder.name);
-          
+
           return (
             <div
               key={folder.id}
-              onClick={() => onFolderClick(folder.id.toString(), folder.name)}
+              onClick={() => navigateToFolder(folder.id.toString(), folder.name)}
               className="relative flex flex-col items-center p-4 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-indigo-500 dark:hover:underline"
             >
               {CustomIcon ? (
                 <CustomIcon className="w-8 h-8 md:w-16 md:h-16 text-gray-700 dark:text-colorIcon transition-colors duration-300" />
               ) : (
                 <FolderIcon className="w-16 h-16 text-gray-700 dark:text-white" />
-              )}  
-              
+              )}
+
               {[1, 4].includes(Number(rol)) && (
                 <div
                   className="absolute top-2 right-2"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ItemManu
-                    onDelete={() => handleDelete(folder.id.toString())}
-                    renameItem={(newName: string) =>
-                      handleRename(folder.id.toString(), newName)
-                    }
+                    onDelete={() => deleteItemById(folder.id.toString(), "carpetas")}
                     itemName={folder.name}
                     itemType="carpetas"
-                    currentFolderId={currentFolderId}
-                    section={section}
                     itemId={folder.id.toString()}
-                    handleRefresh={handleRefresh}
                     nameItemOld={folder.name}
                   />
                 </div>
@@ -218,16 +190,8 @@ const FolderList: React.FC<FolderListProps> = ({
               folders={department.folders}
               folderCount={department.folders.length}
               defaultExpanded={expandAll}
-              onFolderClick={onFolderClick}
-              onDelete={onDelete}
-              renameItem={renameItem}
-              section={section}
-              currentFolderId={currentFolderId}
-              handleRefresh={handleRefresh}
               getIconForFolder={getIconForFolder}
               rol={rol}
-              ItemManu={ItemManu}
-              FolderIcon={FolderIcon}
             />
           ))}
         </>

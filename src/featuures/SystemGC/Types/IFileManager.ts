@@ -84,16 +84,17 @@ export interface ModalMoveItemsProps {
   section: string;
   currentFolderId: string | null;
   itemNameToMove: string;
-  itemType: "carpetas" | "archivos";
+  itemType: "carpetas" | "archivo";
   itemId: string;
-  handleRefresh: () => void;
+  handleRefresh?: () => void; // Opcional ya que el store se actualiza automáticamente
 }
 
 export interface ModalRenombrarItemProps {
   standOpen: boolean;
   toggleModal: () => void;
-  renameItem: (newName: string) => void;
   nameItemOld: string;
+  itemId: string;
+  typeItem: "carpetas" | "archivo";
 };
 
 export interface FileUploaderProps {

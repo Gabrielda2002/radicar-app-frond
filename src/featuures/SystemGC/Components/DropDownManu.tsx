@@ -1,23 +1,27 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
 import { useUploadFile } from "../Hooks/useUploadFile";
+import useFileManagerStore from "../Store/FileManagerStore";
 //*Icons
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { DropDownManuProps } from "../Types/IFileManager";
 
 const ModalSubirArchivo = lazy(() => import("./ModalSubirArchivo"));
 const ModalCrearCarpeta = lazy(() => import("./ModalCrearCarpeta"));
 
+interface DropDownManuProps {
+  isInFolder: boolean;
+}
+
 const DropDownManu: React.FC<DropDownManuProps> = ({
-  uploadNewFile,
-  currentFolderId,
-  createNewFolder,
   isInFolder,
 }) => {
+  const { uploadNewFile, createNewFolder, path } = useFileManagerStore();
+  const currentFolderId = path[path.length - 1].id;
+  
   const [stadOpenFolder, setStadOpenFolder] = useState(false);
   const [stadOpenFile, setStadOpenFile] = useState(false);
 

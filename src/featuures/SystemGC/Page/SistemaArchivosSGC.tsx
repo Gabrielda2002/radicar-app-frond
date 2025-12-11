@@ -1,11 +1,10 @@
 //*Fuctions and hooks
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import FileList from "@/featuures/SystemGC/Components/FileList";
 import BreadCrumb from "@/featuures/SystemGC/Components/BreadCrumb";
 import FolderList from "@/featuures/SystemGC/Components/FolderList";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useAuth } from "@/context/authContext";
-import { useFileManager } from "../Hooks/useFileManager";
 import DropDownManu from "@/featuures/SystemGC/Components/DropDownManu";
 
 //*Icons
@@ -14,53 +13,48 @@ import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
+import useFileManagerStore from "../Store/FileManagerStore";
 
 export const SECTIONS = [
   { id: "suh", name: "Sistema Único de Habilitación" },
   { id: "ci", name: "Centro de Investigación" },
   { id: "sst", name: "Seguridad y Salud en el Trabajo" },
   { id: "sgc", name: "Sistema Gestión de Calidad" },
-
 ];
 
 const FileManager: React.FC = () => {
-
-  const [activeSection , setActiveSection] = useState<string>("sgc");
-
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleRefresh = () => setRefreshKey(prev => prev + 1);
+  const { rol } = useAuth();
 
   const {
     contents,
-    loading,
+    isLoading,
     path,
     error,
-    deleteItemById,
-    downloadFileById,
+    section,
     navigateBackToFolder,
-    uploadNewFile,
-    setCurrentFolderId,
-    createNewFolder,
-    renameItem,
-  } = useFileManager(activeSection, undefined, refreshKey);
+    setSection,
+    fetchContents,
+  } = useFileManagerStore();
 
-  const currentFolderId = useMemo(() => path[path.length - 1].id, [path]);
-  const isInFolder: boolean = useMemo(()=> path.length > 1, [path]); // Si tienes más de un elemento en el path, estás dentro de una carpeta
+  // Fetch inicial cuando monta el componente
+  useEffect(() => {
+    fetchContents();
+  }, []);
 
-  if (loading) return <LoadingSpinner duration={3000} />;
-  if (error)
-    return (
-      <div className="flex justify-center text-lg dark:text-white">{error}</div>
-    );
+  const isInFolder: boolean = useMemo(() => path.length > 1, [path]);
 
   const hasFolder = contents?.folders && contents?.folders.length > 0;
   const hasFiles = contents?.files && contents?.files.length > 0;
   const isEmpty = !hasFolder && !hasFiles;
 
-  const { rol } = useAuth();
+  const activeSectionName = SECTIONS.find(s => s.id === section)?.name || "Sistema Gestión de Calidad";
 
-    const activeSectionName = SECTIONS.find(s => s.id === activeSection)?.name || "Sistema Gestión de Calidad";
+  // if (isLoading) return <LoadingSpinner duration={3000} />;
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center text-lg dark:text-white">{error}</div>
+  //   );
+  // }
 
     return (
       <>
@@ -74,17 +68,17 @@ const FileManager: React.FC = () => {
         
         {/* Pestañas de navegación entre secciones */}
         <div className="grid grid-cols-1 overflow-x-auto shadow-md bg-zinc-100 md:bg-white b-4 md:flex dark:bg-gray-700 md:dark:bg-gray-800 rounded-t-md">
-          {SECTIONS.map(section => (
+          {SECTIONS.map(sec => (
             <button
-              key={section.id}
+              key={sec.id}
               className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${
-                activeSection === section.id
+                section === sec.id
                   ? "text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
                   : "text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
               }`}
-              onClick={() => setActiveSection(section.id)}
+              onClick={() => setSection(sec.id)}
             >
-              {section.name}
+              {sec.name}
             </button>
           ))}
         </div>
@@ -96,9 +90,6 @@ const FileManager: React.FC = () => {
             </div>
             {[4, 1].includes(Number(rol)) && (
               <DropDownManu
-                uploadNewFile={uploadNewFile}
-                currentFolderId={currentFolderId}
-                createNewFolder={createNewFolder}
                 isInFolder={isInFolder}
               />
             )}
@@ -125,13 +116,7 @@ const FileManager: React.FC = () => {
                     </div>
                     <FolderList
                       folders={contents?.folders || []}
-                      onFolderClick={setCurrentFolderId}
-                      onDelete={deleteItemById}
-                      renameItem={renameItem}
                       isInFolder={isInFolder}
-                      section={activeSection}
-                      currentFolderId={currentFolderId}
-                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}
@@ -146,12 +131,6 @@ const FileManager: React.FC = () => {
                     </div>
                     <FileList
                       files={contents?.files || []}
-                      onDelete={deleteItemById}
-                      onDownload={downloadFileById}
-                      renameItem={renameItem}
-                      section={activeSection}
-                      currentFolderId={currentFolderId}
-                      handleRefresh={handleRefresh}
                     />
                   </div>
                 )}

@@ -3,9 +3,9 @@ import ModalDefault from "@/components/common/Ui/ModalDefault";
 import { ChevronLeftIcon, FolderIcon } from "lucide-react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { SECTIONS } from "../Page/SistemaArchivosSGC";
-import { useFileManager } from "../Hooks/useFileManager";
 import { Bounce, toast } from "react-toastify";
 import { ModalMoveItemsProps } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
 
 const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   isOpen,
@@ -25,10 +25,11 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   );
 
   const [activeSection, setActiveSection] = useState<string>("");
-  const { contents, loading, error, moveItem } = useFileManager(
-    activeSection,
-    selectedFolderId
-  );
+  const { moveItem, contents, fetchContents, isLoading, error } = useFileManagerStore();
+
+  useEffect(() => {
+    fetchContents();
+  }, [fetchContents]);
 
   useEffect(() => {
     if (isOpen) {
@@ -78,7 +79,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         .then((success) => {
           if (success) {
             onClose();
-            handleRefresh();
+            handleRefresh?.(); // Llamar solo si existe
           } else {
             toast.error(
               `Error al mover el ${
@@ -121,7 +122,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
           itemType === "carpetas" ? "carpeta" : "archivo"
         }: ${itemNameToMove}`}
         funtionClick={handleMove}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         isValid={
           itemType === "carpetas"
             ? selectedFolderId !== currentFolderId ||
@@ -178,7 +179,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         </div>
 
         <div className="p-4 overflow-y-auto max-h-[50vh]">
-          {loading ? (
+          {isLoading ? (
             <div className="flex items-center justify-center h-40">
               <LoadingSpinner />
             </div>

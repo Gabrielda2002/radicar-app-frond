@@ -4,13 +4,19 @@ import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { ModalRenombrarItemProps } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
+import { AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
 const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   standOpen,
   toggleModal,
-  renameItem,
   nameItemOld,
+  itemId,
+  typeItem
 }) => {
+
+  const { renameItem, error, isLoading } = useFileManagerStore();
 
   const SCHEMA_VALIDATION = Yup.object({
     folderNewName: Yup.string()
@@ -25,16 +31,12 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
   const formik = useFormik({
     initialValues: { folderNewName: nameItemOld || "" },
     validationSchema: SCHEMA_VALIDATION,
-    onSubmit: (values) => {
-      try {
-        renameItem(values.folderNewName);
-        setTimeout(() => {
+    onSubmit: async (values) => {
+        await renameItem(itemId, values.folderNewName, typeItem, () => {
+          toast.success("Renombrado con éxito!");
           formik.resetForm();
           toggleModal();
-        }, 1000);
-      } catch (error) {
-        console.error("Error renombrando la carpeta:", error);
-      }
+        });
     },
   });
 
@@ -45,7 +47,7 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
         onClose={toggleModal}
         title="Renombrar Carpeta"
         onSubmit={formik.handleSubmit}
-        isSubmitting={formik.isSubmitting}
+        isSubmitting={formik.isSubmitting || isLoading}
         isValid={formik.isValid}
         submitText="Renombrar"
         cancelText="Cerrar"
@@ -65,6 +67,15 @@ const ModalRenombrarItem: React.FC<ModalRenombrarItemProps> = ({
               required
             />
           </div>
+            <AnimatePresence>
+                {error && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
         </div>
       </FormModal>
     </>

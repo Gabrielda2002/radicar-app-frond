@@ -14,13 +14,13 @@ interface FileManagerState {
     setSection: (section: string) => void;
     fetchContents: (folderId?: string) => Promise<void>;
     createNewFolder: (name: string,  parentId?: string) => Promise<void>;
-    uploadNewFile: (data: FormData, folderId: string) => Promise<void>;
+    uploadNewFile: (data: FormData, folderId: string | number) => Promise<void>;
     deleteItemById: (id: string, type: "carpetas" | "archivo") => Promise<void>;
     downloadFileById: (id: string, fileName: string) => Promise<void>;
     navigateToFolder: (folderId: string, folderName: string) => void;
     navigateBackToFolder: (folderId: string) => void;
-    renameItem: (id: string, newName: string, type: "carpetas" | "archivo") => Promise<void>;
-    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivos") => Promise<boolean>;
+    renameItem: (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
+    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivo") => Promise<boolean>;
 }
 
 const useFileManagerStore = create<FileManagerState>((set, get) => ({
@@ -77,11 +77,11 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         }
     },
-    uploadNewFile: async (data: FormData, folderId: string) => {
+    uploadNewFile: async (data: FormData, folderId: string | number) => {
         try {
             set({ error: null });
             await uploadFile(data, folderId);
-            await get().fetchContents(folderId || undefined);
+            await get().fetchContents(folderId?.toString() || undefined);
             toast.success("Archivo subido con éxito!");
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
@@ -150,12 +150,12 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
         });
         get().fetchContents(folderId);
     },
-    renameItem: async (id: string, newName: string, type: "carpetas" | "archivo") => {
+    renameItem: async (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => {
         try {
             set({ error: null });
             await renameItems(id, get().currentFolderId || null, newName, type);
             await get().fetchContents(get().currentFolderId || undefined);
-            toast.success("Renombrado con éxito!");
+            onSuccess?.();
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
@@ -163,7 +163,7 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         }
     },
-    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivos") => {
+    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivo") => {
         try {
             set({ error: null });
             
