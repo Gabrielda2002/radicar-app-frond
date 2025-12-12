@@ -29,7 +29,7 @@ const FileManager: React.FC = () => {
     contents,
     isLoading,
     path,
-    error,
+    contentsError: error,
     section,
     navigateBackToFolder,
     setSection,

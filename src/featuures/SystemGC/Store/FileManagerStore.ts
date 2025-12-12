@@ -8,6 +8,7 @@ interface FileManagerState {
     currentFolderId: string | null;
     path: { id: string; name: string }[];
     contents: FolderContents | null;
+    contentsError: string | null;
     isLoading: boolean;
     error: string | null;
     section: string | null;
@@ -31,6 +32,7 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
     currentFolderId: null,
     path: [{ id: "", name: "Inicio"}],
     contents: null,
+    contentsError: null,
     isLoading: false,
     error: null,
     section: "sgc",
@@ -52,19 +54,19 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
 
     fetchContents: async (folderId?: string) => {
         try {
-            set({ isLoading: true, error: null });
+            set({ isLoading: true, contentsError: null });
 
             const section = get().section || "sgc";
 
             const response = await getFolderContent(section, folderId);
 
-            set({ contents: response.data, error: null });
+            set({ contents: response.data, contentsError: null });
 
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
             : error.response?.data?.message || "Error al cargar el contenido";
-            set({ error: errorMsg });
+            set({ contentsError: errorMsg });
         } finally {
             set({ isLoading: false });
         }
