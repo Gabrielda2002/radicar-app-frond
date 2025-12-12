@@ -32,7 +32,7 @@ const FolderList: React.FC<FolderListProps> = ({
   isInFolder,
 }) => {
   const { rol } = useAuth();
-  const { navigateToFolder, deleteItemById, section, path } = useFileManagerStore();
+  const { navigateToFolder, deleteItemById, section } = useFileManagerStore();
 
   // Estado para controlar si todas las secciones están expandidas
   const [expandAll, setExpandAll] = useState<boolean>(true);

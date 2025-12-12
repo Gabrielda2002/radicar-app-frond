@@ -51,7 +51,6 @@ const ItemManu: React.FC<ItemManuProps> = ({
 
   const handleModalOpenMove = () => {
     setStadOpenMove(true);
-    document.body.style.overflow = "hidden";
   }
 
   const stadOffDelete = () => {
@@ -146,7 +145,6 @@ const ItemManu: React.FC<ItemManuProps> = ({
               isOpen={stadOpenMove}
               onClose={() => {
                 setStadOpenMove(false);
-                document.body.style.overflow = "";
               }}
               itemType={itemType}
               itemNameToMove={itemName}

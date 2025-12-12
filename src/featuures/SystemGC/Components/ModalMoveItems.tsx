@@ -3,7 +3,7 @@ import ModalDefault from "@/components/common/Ui/ModalDefault";
 import { ChevronLeftIcon, FolderIcon } from "lucide-react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { SECTIONS } from "../Page/SistemaArchivosSGC";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { ModalMoveItemsProps } from "../Types/IFileManager";
 import useFileManagerStore from "../Store/FileManagerStore";
 
@@ -15,36 +15,39 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   itemNameToMove,
   itemType,
   itemId,
-  handleRefresh,
 }) => {
+
   const [navigationPath, setNavigationPath] = useState<
     Array<{ id: string; name: string }>
   >([{ id: "", name: "Inicio" }]);
   const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
     undefined
   );
-
-  const [activeSection, setActiveSection] = useState<string>("");
-  const { moveItem, contents, fetchContents, isLoading, error } = useFileManagerStore();
-
-  useEffect(() => {
-    fetchContents();
-  }, [fetchContents]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setNavigationPath([{ id: "", name: "Inicio" }]);
-      setSelectedFolderId(undefined);
-    }
-  }, [isOpen]);
+  const [activeSection, setActiveSection] = useState<string>(section);
+  
+  const { 
+    modalContents, 
+    modalLoading, 
+    modalError,
+    error,
+    fetchModalContents, 
+    moveItem 
+  } = useFileManagerStore();
 
   useEffect(() => {
     if (isOpen) {
       setNavigationPath([{ id: "", name: "Inicio" }]);
       setSelectedFolderId(undefined);
-      setActiveSection((prev) => prev || section);
+      setActiveSection(section);
     }
-  }, [section, isOpen]);
+  }, [isOpen, section]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const currentFolder = navigationPath[navigationPath.length - 1].id;
+      fetchModalContents(activeSection, currentFolder || undefined);
+    }
+  }, [isOpen, activeSection, navigationPath]);
 
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSection = e.target.value;
@@ -54,8 +57,8 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
   };
 
   const navigateToFolder = (folderId: string, folderName: string) => {
-    setSelectedFolderId(folderId);
     setNavigationPath((prev) => [...prev, { id: folderId, name: folderName }]);
+    setSelectedFolderId(folderId);
   };
 
   const navigateBack = () => {
@@ -67,47 +70,22 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
     }
   };
 
-  const handleMove = () => {
-
-      const isValidMove =
-    itemType === "carpetas"
-      ? selectedFolderId !== currentFolderId && selectedFolderId !== itemId
-      : !!selectedFolderId && selectedFolderId !== currentFolderId;
+  const handleMove = async () => {
+    const isValidMove =
+      itemType === "carpetas"
+        ? selectedFolderId !== currentFolderId && selectedFolderId !== itemId
+        : !!selectedFolderId && selectedFolderId !== currentFolderId;
 
     if (isValidMove) {
-      moveItem(Number(itemId), selectedFolderId || "", itemType)
-        .then((success) => {
-          if (success) {
-            onClose();
-            handleRefresh?.(); // Llamar solo si existe
-          } else {
-            toast.error(
-              `Error al mover el ${
-                itemType === "carpetas" ? "carpeta" : "archivo"
-              }. Por favor, inténtalo de nuevo.`,
-              {
-                position: "bottom-right",
-                autoClose: 5000,
-                theme: "colored",
-                transition: Bounce,
-              }
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Error moving item:", error);
-          toast.error(
-            `Error al mover el ${
-              itemType === "carpetas" ? "carpeta" : "archivo"
-            }. Por favor, inténtalo de nuevo.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              theme: "colored",
-              transition: Bounce,
-            }
-          );
-        });
+        await moveItem(
+          Number(itemId), 
+          selectedFolderId || "", 
+          itemType === "carpetas" ? "carpetas" : "archivo",
+          activeSection
+        );
+        onClose();
+    } else {
+      toast.warning("Selecciona una ubicación válida diferente a la actual.");
     }
   };
 
@@ -122,7 +100,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
           itemType === "carpetas" ? "carpeta" : "archivo"
         }: ${itemNameToMove}`}
         funtionClick={handleMove}
-        isSubmitting={isLoading}
+        isSubmitting={modalLoading}
         isValid={
           itemType === "carpetas"
             ? selectedFolderId !== currentFolderId ||
@@ -179,32 +157,32 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         </div>
 
         <div className="p-4 overflow-y-auto max-h-[50vh]">
-          {isLoading ? (
+          {modalLoading ? (
             <div className="flex items-center justify-center h-40">
               <LoadingSpinner />
             </div>
-          ) : !contents?.folders || contents.folders.length === 0 ? (
+          ) : !modalContents?.folders || modalContents.folders.length === 0 ? (
             <div className="p-4 text-gray-500 dark:text-gray-400">
               No hay carpetas disponibles para mover.
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {contents?.folders?.map((f) => (
+              {modalContents?.folders?.map((f) => (
                 <div
                   key={f.id}
                   className={`flex flex-col items-center p-3 border rounded-md 
                         ${
-                          f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId)
+                          f.id === currentFolderId || (itemType === "carpetas" && f.id == itemId)
                             ? "border-red-500 bg-red-50 opacity-50 dark:bg-red-900/20 dark:border-red-700 cursor-not-allowed"
                             : "border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
                         }`}
                   onClick={() => {
-                    if ( !(f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId))) {
+                    if ( !(f.id === currentFolderId || (itemType === "carpetas" && f.id == itemId))) {
                       navigateToFolder(f.id.toString(), f.name);
                     }
                   }}
                   title={
-                    f.id === currentFolderId || (itemType === "carpetas" && f.id === itemId)
+                    f.id === currentFolderId || (itemType === "carpetas" && f.id == itemId)
                       ? "No puedes mover a la carpeta actual"
                       : f.name
                   }
@@ -217,8 +195,8 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
               ))}
             </div>
           )}
-          {error && (
-            <div className="mt-4 text-red-500 dark:text-red-400">{error}</div>
+          {modalError || error && (
+            <div className="mt-4 text-red-500 dark:text-red-400">{modalError || error}</div>
           )}
         </div>
       </ModalDefault>

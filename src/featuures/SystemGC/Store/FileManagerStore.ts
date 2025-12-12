@@ -11,8 +11,12 @@ interface FileManagerState {
     isLoading: boolean;
     error: string | null;
     section: string | null;
+    modalContents: FolderContents | null;
+    modalLoading: boolean;
+    modalError: string | null;
     setSection: (section: string) => void;
     fetchContents: (folderId?: string) => Promise<void>;
+    fetchModalContents: (section: string, folderId?: string) => Promise<void>;
     createNewFolder: (name: string, onSuccess?: () => void) => Promise<void>;
     uploadNewFile: (data: FormData, folderId: string | number, onSuccess?: () => void) => Promise<void>;
     deleteItemById: (id: string, type: "carpetas" | "archivo") => Promise<void>;
@@ -20,7 +24,7 @@ interface FileManagerState {
     navigateToFolder: (folderId: string, folderName: string) => void;
     navigateBackToFolder: (folderId: string) => void;
     renameItem: (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
-    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivo") => Promise<boolean>;
+    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string) => Promise<void>;
 }
 
 const useFileManagerStore = create<FileManagerState>((set, get) => ({
@@ -30,6 +34,9 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
     isLoading: false,
     error: null,
     section: "sgc",
+    modalContents: null,
+    modalLoading: false,
+    modalError: null,
 
     setSection: (newSection: string) => {
         set({ 
@@ -60,6 +67,22 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         } finally {
             set({ isLoading: false });
+        }
+    },
+
+    fetchModalContents: async (section: string, folderId?: string) => {
+        try {
+            set({ modalLoading: true, modalError: null });
+
+            const response = await getFolderContent(section, folderId);
+            set({ modalContents: response.data });
+        } catch (error: any) {
+            const errorMsg = error.response?.status === 500
+                ? "Error del servidor. Por favor, intente nuevamente más tarde."
+                : error.response?.data?.message || "Error al cargar carpetas";
+            set({ modalError: errorMsg });
+        } finally {
+            set({ modalLoading: false });
         }
     },
 
@@ -163,25 +186,24 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         }
     },
-    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivo") => {
+    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string) => {
         try {
             set({ error: null });
             
             await api.put(`/${type}/${itemId}/move`, { 
                 newParentId,
-                section: get().section
+                section: targetSection
             });
 
             await get().fetchContents(get().currentFolderId || undefined);
-            toast.success("Movimiento realizado con éxito!");
-            return true;
-
+            toast.success(`${type === "carpetas" ? "Carpeta" : "Archivo"} movido con éxito`);
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
             : error.response?.data?.message || "Error al mover el elemento";
             set({ error: errorMsg });
-            return false;
+            toast.error(errorMsg);
+            throw error;
         }
     },
 

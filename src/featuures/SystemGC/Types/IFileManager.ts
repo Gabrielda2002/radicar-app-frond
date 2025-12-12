@@ -85,7 +85,6 @@ export interface ModalMoveItemsProps {
   itemNameToMove: string;
   itemType: "carpetas" | "archivo";
   itemId: string;
-  handleRefresh?: () => void; // Opcional ya que el store se actualiza automáticamente
 }
 
 export interface ModalRenombrarItemProps {
