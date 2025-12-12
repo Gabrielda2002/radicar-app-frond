@@ -49,44 +49,40 @@ const FileManager: React.FC = () => {
 
   const activeSectionName = SECTIONS.find(s => s.id === section)?.name || "Sistema Gestión de Calidad";
 
-  // if (isLoading) return <LoadingSpinner duration={3000} />;
-  // if (error) {
-  //   return (
-  //     <div className="flex justify-center text-lg dark:text-white">{error}</div>
-  //   );
-  // }
+  return (
+    <>
+      <ModalSection
+        title={activeSectionName}
+        breadcrumb={[
+          { label: "Inicio", path: "/home" },
+          { label: `/ ${activeSectionName}`, path: "" },
+        ]}
+      />
 
-    return (
-      <>
-        <ModalSection
-          title={activeSectionName}
-          breadcrumb={[
-            { label: "Inicio", path: "/home" },
-            { label: `/ ${activeSectionName}`, path: "" },
-          ]}
-        />
-        
-        {/* Pestañas de navegación entre secciones */}
-        <div className="grid grid-cols-1 overflow-x-auto shadow-md bg-zinc-100 md:bg-white b-4 md:flex dark:bg-gray-700 md:dark:bg-gray-800 rounded-t-md">
-          {SECTIONS.map(sec => (
-            <button
-              key={sec.id}
-              className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${
-                section === sec.id
-                  ? "text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
-                  : "text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
+      {/* Pestañas de navegación entre secciones */}
+      <div className="grid grid-cols-1 overflow-x-auto shadow-md bg-zinc-100 md:bg-white b-4 md:flex dark:bg-gray-700 md:dark:bg-gray-800 rounded-t-md">
+        {SECTIONS.map(sec => (
+          <button
+            key={sec.id}
+            className={`px-4 py-3 font-medium transition-colors whitespace-nowrap ${section === sec.id
+                ? "text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400"
+                : "text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
               }`}
-              onClick={() => setSection(sec.id)}
-            >
-              {sec.name}
-            </button>
-          ))}
-        </div>
-        
+            onClick={() => setSection(sec.id)}
+          >
+            {sec.name}
+          </button>
+        ))}
+      </div>
+      {isLoading ? (
+        <LoadingSpinner duration={3000} />
+      ) : error ? (
+        <div className="flex justify-center text-lg text-red-600">{error}</div>
+      ) : (
         <section className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla mb-11 shadow-indigo-500/40">
           <section className="flex items-center justify-between pb-0 md:pb-6 header-tabla">
             <div className="container-filter">
-              {/* Aquí puedes agregar filtros específicos por sección si lo necesitas */}
+              {/* Filtros si se agregan en un futuro */}
             </div>
             {[4, 1].includes(Number(rol)) && (
               <DropDownManu
@@ -138,8 +134,9 @@ const FileManager: React.FC = () => {
             )}
           </div>
         </section>
-      </>
-    );
+      )}
+    </>
+  );
 };
 
 export default FileManager;
