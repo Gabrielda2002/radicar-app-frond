@@ -2,19 +2,27 @@ import Input from "@/components/common/Ui/Input";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import React, { useState, useCallback } from "react";
 import { ModalCrearCarpetaProps } from "../Types/IFileManager";
+import useFileManagerStore from "../Store/FileManagerStore";
+import { AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
 const ModalCrearCarpeta: React.FC<ModalCrearCarpetaProps> = ({
   standOpen,
   toggleModal,
-  createNewFolder,
 }) => {
+
+  const { createNewFolder, error: errorFromStore, isLoading } = useFileManagerStore();
+
   const [error, setError] = useState("");
   const [folderName, setFolderName] = useState("");
 
   const handleCreateFolder = () => {
     if (folderName.trim()) {
-      createNewFolder(folderName);
-      toggleModal();
+      createNewFolder(folderName,() => {
+        toggleModal();
+        setFolderName("");
+        toast.success("Carpeta creada con éxito!");
+      });
     } else {
       setError("El nombre de la carpeta no puede estar vacío");
     }
@@ -46,7 +54,7 @@ const ModalCrearCarpeta: React.FC<ModalCrearCarpetaProps> = ({
         title="Crear Carpeta"
         funtionClick={handleCreateFolder}
         showSubmitButton={true}
-        isSubmitting={false}
+        isSubmitting={isLoading}
         isValid={!error && folderName.trim() !== ""}
         submitText="Crear"
         cancelText="Cerrar"
@@ -65,8 +73,16 @@ const ModalCrearCarpeta: React.FC<ModalCrearCarpetaProps> = ({
               required
               helpText="Tener en cuenta: la carpeta se creará en el departamento en que el este tu usuario."
             />
-            {error && <p className="mt-2 text-red-500">{error}</p>}
           </div>
+            <AnimatePresence>
+                {error || errorFromStore && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error || errorFromStore}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
         </div>
       </ModalDefault>
     </>

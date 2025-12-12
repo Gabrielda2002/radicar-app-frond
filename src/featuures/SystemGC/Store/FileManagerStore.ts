@@ -13,7 +13,7 @@ interface FileManagerState {
     section: string | null;
     setSection: (section: string) => void;
     fetchContents: (folderId?: string) => Promise<void>;
-    createNewFolder: (name: string,  parentId?: string) => Promise<void>;
+    createNewFolder: (name: string, onSuccess?: () => void) => Promise<void>;
     uploadNewFile: (data: FormData, folderId: string | number, onSuccess?: () => void) => Promise<void>;
     deleteItemById: (id: string, type: "carpetas" | "archivo") => Promise<void>;
     downloadFileById: (id: string, fileName: string) => Promise<void>;
@@ -63,13 +63,13 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
         }
     },
 
-    createNewFolder: async (name: string, parentId?: string) => {
+    createNewFolder: async (name: string, onSuccess?: () => void) => {
         try {
             set({ error: null });
             const section = get().section || "sgc";
-            await createFolder(get().currentFolderId || parentId || null, name, section);
-            await get().fetchContents(get().currentFolderId || parentId || undefined);
-            toast.success("Carpeta creada con éxito!");
+            await createFolder(get().currentFolderId || null, name, section);
+            await get().fetchContents(get().currentFolderId || undefined);
+            onSuccess?.();
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
