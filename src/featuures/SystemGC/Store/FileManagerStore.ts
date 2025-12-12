@@ -25,7 +25,7 @@ interface FileManagerState {
     navigateToFolder: (folderId: string, folderName: string) => void;
     navigateBackToFolder: (folderId: string) => void;
     renameItem: (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
-    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string) => Promise<void>;
+    moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string, onSuccess?: () => void) => Promise<void>;
 }
 
 const useFileManagerStore = create<FileManagerState>((set, get) => ({
@@ -188,7 +188,7 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             set({ error: errorMsg });
         }
     },
-    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string) => {
+    moveItem: async (itemId: number, newParentId: string, type: "carpetas" | "archivo", targetSection: string, onSuccess?: () => void) => {
         try {
             set({ error: null });
             
@@ -198,7 +198,7 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             });
 
             await get().fetchContents(get().currentFolderId || undefined);
-            toast.success(`${type === "carpetas" ? "Carpeta" : "Archivo"} movido con éxito`);
+            onSuccess?.();
         } catch (error: any) {
             const errorMsg = error.response?.status === 500 
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
