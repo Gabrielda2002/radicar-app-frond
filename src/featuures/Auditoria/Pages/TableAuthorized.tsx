@@ -139,7 +139,29 @@ const TableAuthorized = () => {
         currentPage={tableState.currentPage}
         totalPages={tableState.totalPages}
         onPageChange={tableState.paginate}
-
+        headerActions={
+          <>
+            <Link to={"/tabla-registros-auditados"}>
+              <Button
+                variant="secondary"
+                title="Ir a Auditados"
+                className="h-10 truncate w-fit"
+              >
+                Auditados
+              </Button>
+              {/* ! no se funciona | focus:outline-none | ! */}
+            </Link>
+            <Link to={"/tabla-radicacion"}>
+              <Button
+                variant="secondary"
+                title="Ir a Radicación"
+                className="h-10 truncate w-fit"
+              >
+                Ver Autorizaciones
+              </Button>
+            </Link>
+          </>
+        }
       >
         <DataTable
           data={tableState.currentData()}

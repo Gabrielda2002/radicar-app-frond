@@ -258,14 +258,15 @@ const TablaRadicacion = () => {
             <ModalRadicacion />
           </Suspense>
         </section>
-
-        <DataTable
-          columns={columns}
-          data={tableState.currentData()}
-          getRowKey={(item) => item.id.toString()}
-          loading={loading}
-          error={errorRadicados}
-        />
+        {radicados && radicados.length !== 0 && (
+          <DataTable
+            columns={columns}
+            data={tableState.currentData()}
+            getRowKey={(item) => item.id.toString()}
+            loading={loading}
+            error={errorRadicados}
+          />
+        )}
 
         {/* Modal para mostrar los datos de la radicación */}
         <Suspense fallback={<LoadingSpinner />}>
