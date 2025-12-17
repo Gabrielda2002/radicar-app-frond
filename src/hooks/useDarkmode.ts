@@ -22,6 +22,16 @@ const useDarkMode = () => {
     }
   }, []);
 
+  // Aplicar la clase 'dark' al body (compatible con Tailwind v4)
+  useEffect(() => {
+    const body = document.body;
+    if (theme === "dark") {
+      body.classList.add("dark");
+    } else {
+      body.classList.remove("dark");
+    }
+  }, [theme]);
+
   return { theme, toggleTheme };
 };
 

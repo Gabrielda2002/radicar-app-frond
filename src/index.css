@@ -3,51 +3,40 @@
 
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@variant dark (&:where(.dark, .dark *));
 
-body {
-  @apply text-gray-900 bg-white; /* Estilos predeterminados */
+@theme {
+  /* Colores personalizados */
+  --color-color: #00776f;
+  --color-color2: #049AE7;
+  --color-colorIcon: #202938;
+  
+  /* Breakpoints personalizados */
+  --breakpoint-tabletMx: 1140px;
+  
+  /* Fuentes personalizadas */
+  --font-family-roboto: 'Roboto', sans-serif;
 }
 
-body.dark {
-  @apply text-gray-200 bg-gray-800; /* Estilos en modo oscuro */
-}
-
-.bg-gray-200 {
-  background-color: #e5e7eb; /* Fondo gris claro */
-}
-
-.text-gray-900 {
-  color: #111827; /* Texto gris oscuro */
-}
-
-.border-black {
-  border-color: #000000; /* Borde negro */
-}
-
-/* Estilos para el modo oscuro */
-body.dark .bg-gray-200 {
-  background-color: #1f2937; /* Fondo gris oscuro en modo oscuro */
-}
-
-body.dark .text-gray-900 {
-  color: #d1d5db; /* Texto gris claro en modo oscuro */
-}
-
-body.dark .border-black {
-  border-color: #424151; /* Borde gris oscuro en modo oscuro */
-}
-
-/* Estilos para elementos de tabla */
 @layer base {
-  th {
-    @apply py-2 ;
+  body {
+    @apply text-gray-900 bg-white;
+    font-family: 'Roboto', sans-serif;
   }
+
+  body.dark {
+    @apply text-gray-200 bg-gray-800;
+  }
+
+  /* Estilos para elementos de tabla */
+  th {
+    @apply py-2;
+  }
+  
   tbody tr {
     @apply border-y hover:bg-blue-100 dark:hover:bg-gray-600;
   }
+  
   tbody td {
     @apply p-2;
   }
@@ -127,7 +116,7 @@ body.dark .border-black {
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
   @apply dark:border-gray-600 dark:bg-gray-800;
 }
-
+wa
 /* ? mensaje agenda vacia*/
 .rbc-agenda-empty {
   @apply dark:text-white text-center;
