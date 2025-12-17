@@ -1,5 +1,5 @@
 import ModalDefault from "@/components/common/Ui/ModalDefault";
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import {
   IMyRequestsPermissions,
   MyRequestsPermissionsProps,
