@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu, MenuButton } from "@headlessui/react";
 import type { SupportLink } from "../types/navigation.types";
-import Button from "@/components/common/Ui/Button";
 
 interface SupportMenuProps {
   links: SupportLink[];
@@ -13,18 +12,13 @@ interface SupportMenuProps {
 export const SupportMenu: React.FC<SupportMenuProps> = ({
   links,
   theme,
-  buttonClassName = "duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color border-2 border-gray-300 dark:border-gray-600",
+  buttonClassName = "duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color border-2 border-gray-300 dark:border-gray-600 px-4 py-2",
   itemsClassName,
 }) => {
   return (
     <Menu as="div" className="relative" title="Soportes">
-      <MenuButton>
-        <Button
-          variant="any"
-          className={buttonClassName}
-        >
-          Soportes
-        </Button>
+      <MenuButton className={buttonClassName}>
+        Soportes
       </MenuButton>
 
       <Menu.Items

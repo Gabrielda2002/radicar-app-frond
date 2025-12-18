@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         title="Primero"
         type="button"
-        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-gray-200 border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
+        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-color  border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
         onClick={() => handleClick(1)}
         disabled={currentPage === 1}
       >
@@ -59,7 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         title="anterior"
         type="button"
-        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-gray-200 border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
+        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-color border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
         onClick={() => handleClick(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -73,10 +73,10 @@ const Pagination: React.FC<PaginationProps> = ({
           key={page}
           type="button"
           title={`Pagina ${page}`}
-          className={`inline-flex items-center justify-center w-10 h-8 text-sm font-bold border rounded shadow-md  text-stone-600 dark:text-white  bg-gray-200  dark:bg-color  hover:bg-gray-500 hover:text-white dark:hover:bg-teal-400 ${
+          className={`inline-flex items-center justify-center w-10 h-8 text-sm font-bold border rounded shadow-md ${
             page === currentPage
-              ? " dark:bg-gray-900 border-teal-500 dark:border-white bg-red-700" //estilo de button activo (no funciona el bg-red ahhhhh!!!)
-              : " " //estilos de buttones inactivos
+              ? "dark:bg-gray-900 border-teal-500 dark:border-white bg-color/50 dark:hover:bg-gray-800 hover:bg-gray-300"
+              : "text-stone-600 dark:text-white  bg-gray-200  dark:bg-gray-800  hover:bg-gray-500 hover:text-white dark:hover:bg-color2/40"
           }`}
           onClick={() => handleClick(page)}
         >
@@ -86,7 +86,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         title="siguiente"
         type="button"
-        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-gray-200 border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
+        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-color border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
         onClick={() => handleClick(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
@@ -95,7 +95,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         title="ultimo"
         type="button"
-        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-gray-200 border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
+        className="inline-flex items-center justify-center w-10 h-8 py-0 bg-color border rounded-md shadow-md cursor-pointer dark:bg-color hover:bg-gray-600 dark:hover:bg-teal-400 group"
         onClick={() => handleClick(totalPages)}
         disabled={currentPage === totalPages}
       >
