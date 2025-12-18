@@ -114,13 +114,13 @@ const Navbar: React.FC = React.memo(() => {
     >
       <div className="flex items-center justify-between p-2 mx-auto border-b-2 border-black md:p-5 dark:border-white">
         {/* mobile menu */}
-        <div className="grid items-center grid-cols-[auto,1fr,auto] max-md:w-full gap-3">
+        <div className="flex items-center justify-between w-full md:w-auto">
           {/* Left side - Logo and sidebar toggle */}
-          <div className="w-fit">
+          <div className="flex items-center gap-2">
             <button
               title="Abrir/Cerrar Sidebar"
               onClick={handleToggleSidebar}
-              className="p-1 mr-2 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg group hover:translate-y-0 hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+              className="p-1.5 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
             >
               <div className="relative w-6 h-6 md:w-8 md:h-8">
                 {isCollapsed ? (
@@ -130,10 +130,7 @@ const Navbar: React.FC = React.memo(() => {
                 )}
               </div>
             </button>
-          </div>
-
-          <div className="flex justify-start">
-            <NavLink to="/home">
+            <NavLink to="/home" className="flex items-center">
               <img
                 src={logo || "/placeholder.svg"}
                 className="w-8 h-8 md:w-10 md:h-10"
@@ -143,35 +140,39 @@ const Navbar: React.FC = React.memo(() => {
             </NavLink>
           </div>
 
-          {/* ? Acordion menu responsive mobile */}
-          <div className="grid grid-flow-col auto-cols-fr md:hidden">
-            <div className="flex justify-end items-center">
-              <AccordionMenu theme={theme}>
-                <div className="py-2 space-y-1">
-                  <div className="px-2 py-1">
-                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-                      Herramientas
-                    </p>
-                  </div>
+          {/* Accordion menu responsive mobile */}
+          <div className="flex items-center md:hidden">
+            <AccordionMenu theme={theme}>
+              <div className="py-3 space-y-2">
+                {/* Herramientas Section */}
+                <div className="px-4 py-2">
+                  <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    Herramientas
+                  </p>
+                </div>
+                <div className="px-2">
                   <MobileMenuItem
                     icon={<BookOpen className="w-5 h-5" />}
                     label="Soportes"
                     onClick={handleOpenSupportMenu}
                     theme={theme as "light" | "dark"}
                   />
+                </div>
 
-                  <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
+                {/* Divider */}
+                <div className="my-3 border-t border-gray-200 dark:border-gray-700" />
 
-                  <div className="px-2 py-1">
-                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-                      Configuración
-                    </p>
-                  </div>
-
+                {/* Configuración Section */}
+                <div className="px-4 py-2">
+                  <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    Configuración
+                  </p>
+                </div>
+                <div className="px-2">
                   <button
                     onClick={handleToggleTheme}
                     className={`
-                      w-full flex items-center justify-between px-4 py-3 
+                      w-full flex items-center gap-3 px-4 py-3 
                       transition-all duration-200 rounded-lg
                       ${
                         theme === "dark"
@@ -180,49 +181,48 @@ const Navbar: React.FC = React.memo(() => {
                       }
                     `}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 text-xl">
-                        {theme === "light" ? (
-                          <MoonIcon className="w-5 h-5" />
-                        ) : (
-                          <SunIcon className="w-5 h-5" />
-                        )}
-                      </div>
-                      <span className="text-sm font-medium">
-                        {theme === "light" ? "Modo Oscuro" : "Modo Claro"}
-                      </span>
+                    <div className="flex items-center justify-center w-8 h-8">
+                      {theme === "light" ? (
+                        <MoonIcon className="w-5 h-5" />
+                      ) : (
+                        <SunIcon className="w-5 h-5" />
+                      )}
                     </div>
+                    <span className="text-sm font-medium">
+                      {theme === "light" ? "Modo Oscuro" : "Modo Claro"}
+                    </span>
                   </button>
-
-                  <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
-
-                  <div className="px-2 py-1">
-                    <p className="text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-                      Cuenta
-                    </p>
-                  </div>
-
-                  <div className="relative duration-300 rounded-lg">
-                    <UserMenu
-                      items={userNavigation}
-                      theme={theme as "light" | "dark"}
-                      avatarUrl={imageUrl || defaultUserPicture}
-                      userIconUrl={userLogo}
-                      buttonClassName={`
-                        w-full flex items-center justify-between px-4 py-3 
-                        transition-all duration-200 rounded-lg
-                        ${
-                          theme === "dark"
-                            ? "hover:bg-gray-700 active:bg-gray-600 text-white"
-                            : "hover:bg-gray-100 active:bg-gray-200 text-gray-900"
-                        }
-                      `}
-                      itemsClassName="relative w-full mt-2"
-                    />
-                  </div>
                 </div>
-              </AccordionMenu>
-            </div>
+
+                {/* Divider */}
+                <div className="my-3 border-t border-gray-200 dark:border-gray-700" />
+
+                {/* Cuenta Section */}
+                <div className="px-4 py-2">
+                  <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    Cuenta
+                  </p>
+                </div>
+                <div className="px-2">
+                  <UserMenu
+                    items={userNavigation}
+                    theme={theme as "light" | "dark"}
+                    avatarUrl={imageUrl || defaultUserPicture}
+                    userIconUrl={userLogo}
+                    buttonClassName={`
+                      w-full flex items-center justify-between px-4 py-3 
+                      transition-all duration-200 rounded-lg
+                      ${
+                        theme === "dark"
+                          ? "hover:bg-gray-700 active:bg-gray-600 text-white"
+                          : "hover:bg-gray-100 active:bg-gray-200 text-gray-900"
+                      }
+                    `}
+                    itemsClassName="relative w-full mt-2"
+                  />
+                </div>
+              </div>
+            </AccordionMenu>
           </div>
         </div>
 

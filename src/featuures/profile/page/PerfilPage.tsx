@@ -55,7 +55,7 @@ const Perfil: React.FC = () => {
       label: "Actualizar Datos",
       icon: <Lock size={18} />,
       content: (
-        <PasswordUpdateForm userId="" />
+          <UserDataUpdateForm initialUserData={profile} />
       )
     },
     {
@@ -63,10 +63,7 @@ const Perfil: React.FC = () => {
       label: "Actualizar Contraseña",
       icon: <Lock size={18} />,
       content: (
-        <div className="space-y-4">
-          {/* Cambio de contraseña, autenticación 2FA, etc */}
-          <UserDataUpdateForm initialUserData={profile} />
-        </div>
+        <PasswordUpdateForm userId="" />
       )
     },
   ];
@@ -78,7 +75,7 @@ const Perfil: React.FC = () => {
           {/* Profile Information Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
             {/* Header with profile photo and basic info */}
-            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-6">
+            <div className="bg-linear-to-r from-teal-500 to-teal-600 p-6">
               <div className="flex items-center gap-6">
                 <img
                   src={profile.photo}
