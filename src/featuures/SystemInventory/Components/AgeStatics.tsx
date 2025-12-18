@@ -15,7 +15,8 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
   const { ageStatics, loading, error } = useFetchAgeStatics(typeItem, idHeadquartersSelected);
 
   // Formateador para los valores en el tooltip
-  const formatTooltipValue = (value: number) => {
+  const formatTooltipValue = (value: number | undefined) => {
+    if (value === undefined) return ["0", "Cantidad"];
     return [`${value} ${typeItem === "equipos" ? "equipos" : "items"}`, "Cantidad"];
   };
 
@@ -57,7 +58,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="label" />
                   <YAxis />
-                  <Tooltip formatter={formatTooltipValue} />
+                  <Tooltip  formatter={formatTooltipValue} />
                   <Legend />
                   <Bar dataKey="value" name="Cantidad" fill="#82ca9d" />
                 </BarChart>

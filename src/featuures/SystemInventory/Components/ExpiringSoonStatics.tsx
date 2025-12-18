@@ -38,13 +38,17 @@ const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({
     outerRadius, 
     percent, 
   }: { 
-    cx: number; 
-    cy: number; 
-    midAngle: number; 
-    innerRadius: number; 
-    outerRadius: number; 
-    percent: number; 
+    cx?: number; 
+    cy?: number; 
+    midAngle?: number; 
+    innerRadius?: number; 
+    outerRadius?: number; 
+    percent?: number; 
   }) => {
+    if (!cx || !cy || midAngle === undefined || !innerRadius || !outerRadius || !percent) {
+      return null;
+    }
+    
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
     const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
