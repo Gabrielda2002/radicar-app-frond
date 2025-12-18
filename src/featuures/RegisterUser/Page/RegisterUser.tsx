@@ -99,8 +99,6 @@ const RegistrarUsuarios: React.FC = () => {
     },
   });
 
-  console.log(formik.errors);
-
   if (errorDocumento) return <div>errorDocumento: {errorDocumento}</div>;
   if (errorRol) return <div>errorRol: {errorRol}</div>;
 
