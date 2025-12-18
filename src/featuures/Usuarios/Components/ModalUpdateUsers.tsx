@@ -130,7 +130,6 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
       }
     },
   });
-  // console.log(formik.errors)
 
   useEffect(() => {
     if (ususario) {
@@ -154,15 +153,12 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
     }
   }, [ususario]);
 
-  const isReadOnly = (): boolean => {
+  const isReadOnly = useMemo(() => {
     const rolsAuthorizedToEdit = ['1'];
-
-    if ( rol && [...rolsAuthorizedToEdit].includes(rol)) {
-      return false;
-    }
-
-    return true;
-  }
+    const rolString = String(rol);
+    const shouldBeReadOnly = !(rol && rolsAuthorizedToEdit.includes(rolString));
+    return shouldBeReadOnly;
+  }, [rol]);
 
   if (errorDocument) return <p>{errorDocument}</p>;
   if (errorRol) return <p>{errorRol}</p>;
@@ -358,7 +354,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 error={formik.errors.rol}
                 touched={formik.touched.rol}
                 required
-                disabled={isReadOnly()}
+                disabled={isReadOnly}
               />
 
               <Input
@@ -371,7 +367,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
                 placeholder="Ingrese Contraseña..."
                 error={formik.errors.password}
                 touched={formik.touched.password}
-                readOnly={isReadOnly()}
+                readOnly={isReadOnly}
               />
 
               <Select
