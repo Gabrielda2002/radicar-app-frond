@@ -164,8 +164,8 @@ const DemandInduce = () => {
                 headerActions={
                   <>
                     <ModalSummaryDI
-                      filteredData={tableState.currentData()}
-                      totalRecords={tableState.currentData().length}
+                      filteredData={tableState.filteredData}
+                      totalRecords={tableState.filteredData.length}
                     />
                     <ModalProgramGoals />
                     <ModalCreateDI refresh={refetch} />
