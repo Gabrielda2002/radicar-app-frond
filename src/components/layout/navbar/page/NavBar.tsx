@@ -28,6 +28,7 @@ import MyRequestsPermissions from "@/featuures/MyRequestsPermissions/page/MyRequ
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import { BookOpen } from "lucide-react";
+import { api } from "@/utils/api-config";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
@@ -91,6 +92,23 @@ const Navbar: React.FC = React.memo(() => {
     setIsSupportMenuOpen(true);
   }, []);
 
+  const MoodleButtonAction = async () => {
+    try {
+      
+      const response = await api.get("/moodle/sso-token");
+
+      if (response.status !== 200 && response.status !== 201 ) {
+        throw new Error("Error generating SSO token");
+      }
+      const data = response.data;
+
+      window.open(data.moodleUrl, "_blank");
+
+    } catch (error) {
+      console.log("Error generating SSO token:", error);
+    }
+  }
+
   const userNavigation: UserNavigationItem[] = useMemo(
     () => [
       { name: "Perfil", href: "/perfil" },
@@ -101,6 +119,7 @@ const Navbar: React.FC = React.memo(() => {
           { name: "Mis Solicitudes", action: handleOpenMyPermissions },
         ],
       },
+      { name: "Plataforma de Capacitación", action: MoodleButtonAction },
       { name: "Cerrar Sesión", action: handleLogout },
     ],
     [handleLogout, handleOpenPermissionModal]
@@ -120,7 +139,7 @@ const Navbar: React.FC = React.memo(() => {
             <button
               title="Abrir/Cerrar Sidebar"
               onClick={handleToggleSidebar}
-              className="p-1.5 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600"
+              className="p-1.5 transition-all duration-300 ease-in-out bg-gray-300 rounded-lg hover:bg-gray-700 dark:text-white dark:bg-color dark:hover:bg-teal-600 hover:text-white"
             >
               <div className="relative w-6 h-6 md:w-8 md:h-8">
                 {isCollapsed ? (
