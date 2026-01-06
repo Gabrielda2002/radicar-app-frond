@@ -7,7 +7,7 @@ import { useAuth } from "@/context/authContext";
 import { useSidebar } from "@/context/sidebarContext";
 import { useTheme } from "@/context/blackWhiteContext";
 import { useUserProfile } from "@/context/userProfileContext";
-import ModalPausasActivas from "../components/ModalPausasActivas";
+// import ModalPausasActivas from "../components/ModalPausasActivas";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import NotificacionBell from "@/components/NotificationBell";
 //*Icons
@@ -241,9 +241,9 @@ const Navbar: React.FC = React.memo(() => {
           </div>
 
           {/* Pausas activas modal */}
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <ModalPausasActivas />
-          </div>
+          </div> */}
 
           {/* Support links dropdown */}
           <SupportMenu
