@@ -26,5 +26,9 @@ export const SUPPORT_LINKS = [
       {
         name: "Solicitud Gestión Documental",
         href: "https://docs.google.com/forms/d/e/1FAIpQLScRSu4Qwpbgz1PM9JiGyJBO44yDnlz4AILSeVGLbjsqjocWdw/viewform"
+      },
+      {
+        name: "Apoyo de Comunicaciones",
+        href: "https://docs.google.com/forms/d/1zDDrAAwFuTGLrQLb7PRbuqf08kSA9XzWY49ACfaQ0ew/edit#responses"
       }
 ]
