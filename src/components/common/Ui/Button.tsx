@@ -101,7 +101,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={clsx(
-        "duration-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 font-medium inline-flex items-center justify-center",
+        "duration-200 cursor-pointer rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 font-medium inline-flex items-center justify-center",
         variantClasses[variant],
         sizeClasses[size],
         fullWidth && "w-full",

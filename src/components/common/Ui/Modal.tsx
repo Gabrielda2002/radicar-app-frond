@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({
     <>
       <section 
         className={clsx(
-            "fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-black bg-opacity-50 backdrop-blur-sm",
+            "fixed inset-0 z-50 flex justify-center pt-16 transition-opacity duration-300 bg-opacity-50 backdrop-blur-sm",
             showAnimation && !closing ? 'opacity-100' : 'opacity-0'
         )}
         onClick={handleBackdropClick}

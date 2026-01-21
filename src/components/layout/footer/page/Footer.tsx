@@ -109,12 +109,12 @@ const Footer = () => {
               className="text-gray-600"
               target="_blank"
             >
-              Nordvital IPS © 2025
+              Nordvital IPS © {new Date().getFullYear()}
             </a>
           </p>
           <span className="inline-flex justify-end mt-2 sm:ml-auto sm:mt-0 sm:justify-start ">
             <div className="flex items-center cursor-pointer">
-              <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-color bg-gradient-to-r from-color to-color2">
+              <p className="px-2 py-1 mr-4 text-white duration-300 border border-black rounded-full dark:border-color bg-linear-to-r from-color to-color2">
                 <a href="/politicas-cookies.html" target="_blank">
                   Políticas de Cookies
                 </a>
