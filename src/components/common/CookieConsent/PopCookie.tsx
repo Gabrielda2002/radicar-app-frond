@@ -26,7 +26,7 @@ const CookieConsent: React.FC = () => {
   if (consent) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center transition-opacity bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="p-6 text-center bg-white rounded-md shadow-md">
         <img src={cookie} alt="cookie" className="w-20 h-15 animate-spin" />
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">

@@ -32,7 +32,7 @@ const HeaderPage: React.FC<ModuleSectionProps> = ({
       if (index < paths.length - 1) {
         autoItems.push({ label, path: accumulatedPath });
       }
-    });
+    })
     
     return autoItems;
   }, [location.pathname]);
@@ -65,7 +65,7 @@ const HeaderPage: React.FC<ModuleSectionProps> = ({
               {title}
             </h1>
             {/* Línea decorativa debajo del título */}
-            <div className="h-1 mt-1 bg-gradient-to-r from-indigo-500 to-transparent rounded-full w-20 dark:from-indigo-400"></div>
+            <div className="h-1 mt-1 bg-linear-to-r from-indigo-500 to-transparent rounded-full w-20 dark:from-indigo-400"></div>
           </div>
         </div>
 
