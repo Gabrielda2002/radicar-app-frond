@@ -230,10 +230,10 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
           <SquaresPlusIcon className="w-7 h-7" />
         </button>
         {/* Tooltip */}
-        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none w-[134px] left-1/2 group-hover:opacity-100 dark:bg-gray-900">
+        <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none w-33.5 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           Agregar Accesorio
           {/* Flechita indicativa */}
-          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-5.5 left-1/2 dark:bg-gray-900"></div>
         </div>
       </div>
 
@@ -259,7 +259,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
               required
               selectSize="md"
               // No error/touched porque no es formik
-              className="w-[200px]"
+              className="w-50"
             />
           </div>
           <section className="grid grid-cols-2 gap-x-7">
@@ -450,7 +450,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
                 required
                 options={statusOptions}
                 selectSize="md"
-                className="w-[200px]"
+                className="w-50"
               />
             )}
             {formik.values.typeAdd === "Periferico" && (
