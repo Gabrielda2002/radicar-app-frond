@@ -5,7 +5,6 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
 import { Bounce, toast } from "react-toastify";
-import { useTickets } from "@/context/ticketContext";
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import { AnimatePresence } from "framer-motion";
@@ -27,8 +26,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useBlockScroll(showModal);
-
-  const { validateUserTicketStatus } = useTickets();
 
   const user = localStorage.getItem("user");
   const idUsuario = user ? JSON.parse(user).id : "";
@@ -71,7 +68,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
             transition: Bounce,
           });
 
-          await validateUserTicketStatus(idUsuario);
           onTicketClosed();
           setShowModal(false);
           formik.resetForm();
@@ -125,7 +121,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         onClose={() => setShowModal(false)}
         title="Cambiar Estado Ticket"
         onSubmit={formik.handleSubmit}
-        submitText={`${formik.values.status == "2" ? "Cerrar" : "En Espera"} Ticket`}
+        submitText={`${formik.values.status == "2" ? "Cerrar" : "En Espera"}`}
         isSubmitting={formik.isSubmitting}
         isValid={formik.isValid}
         size="lg"

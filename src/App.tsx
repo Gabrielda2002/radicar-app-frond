@@ -19,7 +19,6 @@ import { SidebarProvider } from "./context/sidebarContext";
 import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import { NotificationProvider } from "@/context/notificationContext.tsx";
-import { TicketProvider } from "./context/ticketContext.tsx";
 
 import "@pdfslick/react/dist/pdf_viewer.css";
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
@@ -65,7 +64,6 @@ export function App() {
       <AuthProvider>
         <UserProfileProvider>
           <NotificationProvider>
-            <TicketProvider>
               <SidebarProvider>
                 <CookieConsent />
                 <AppRoutes />
@@ -83,7 +81,6 @@ export function App() {
                   transition={Bounce}
                 />
               </SidebarProvider>
-            </TicketProvider>
           </NotificationProvider>
         </UserProfileProvider>
       </AuthProvider>

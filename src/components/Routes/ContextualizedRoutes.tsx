@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { UsersProvider } from "@/featuures/Usuarios/Context/UsersContext.tsx";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { TicketProvider } from "@/context/ticketContext.tsx";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 
 //*Lazy Components
@@ -68,13 +67,6 @@ const UsersPage = () => (
   </UsersProvider>
 );
 
-// Componente para rutas envueltas en el contexto de tickets
-const TicketsPage = () => (
-  <TicketProvider>
-    <GestionTickets />
-  </TicketProvider>
-);
-
 const ContextualizedRoutes: React.FC = () => {
   return (
     <Suspense
@@ -122,11 +114,11 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/cargo" element={<Position />} />
         <Route path="/permissions" element={<Permission />} />
         <Route path="/configuration-vacations" element={<TableBalancesVacations />} />
+        <Route path="/GestionTickets" element={<GestionTickets />} />
 
-
+        
         {/* Rutas con contextos específicos */}
         <Route path="/usuarios" element={<UsersPage />} />
-        <Route path="/GestionTickets" element={<TicketsPage />} />
 
         {/* Rutas de las tablas radicacion - asegurándose que no entre en conflicto */}
         <Route path="/tablas/*" element={<TableRoutes />} />

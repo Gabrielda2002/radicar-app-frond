@@ -5,17 +5,17 @@ import { Suspense } from "react";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { ITickets } from "@/models/ITickets";
 import CerrarModal from "../Components/ModalCerrarTicket";
-import { useTickets } from "@/context/ticketContext.tsx";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
 import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
+import { useFetchTickets } from "../Hooks/useFetchTickets";
 
 const ProcessHelpDesk = () => {
-  const { tickets, refetchTickets, error, loading } = useTickets();
+  const { tickets, refetchTickets, error, isLoading: loading } = useFetchTickets();
 
   const tableState = useTableState({
-    data: tickets,
+    data: tickets || [],
     searchFields: ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"],
     initialItemsPerPage: 10
   });

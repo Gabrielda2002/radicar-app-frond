@@ -7,8 +7,6 @@ import { useLazyFetchCategory } from "../Hooks/useLazyFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
 import { Bounce, toast } from "react-toastify";
-import { useValidateTicketUser } from "../Hooks/useValidateTicketUser";
-import { useTickets } from "@/context/ticketContext.tsx";
 import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
 import { MdSupportAgent } from "react-icons/md";
 import FormModal from "@/components/common/Ui/FormModal";
@@ -38,8 +36,6 @@ interface TicketFormValues {
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { refetchTickets } = useTickets();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,10 +45,6 @@ const HelpDesk = () => {
   const user = localStorage.getItem("user");
 
   const idUsuario = user ? JSON.parse(user).id : "";
-
-  // validar si el usuario ya tiene un ticket
-  const { hasTicket, validatingTicket, revalidate } =
-    useValidateTicketUser(idUsuario);
 
   const schemaValidation = Yup.object({
     title: Yup.string().required("El titulo es requerido"),
@@ -91,8 +83,6 @@ const HelpDesk = () => {
             theme: "light",
             transition: Bounce,
           });
-          await refetchTickets();
-          await revalidate();
           formik.resetForm();
           setIsModalOpen(false);
         } else {
@@ -106,7 +96,7 @@ const HelpDesk = () => {
         setLoading(false);
       }
     },
-    [idUsuario, revalidate]
+    [idUsuario]
   );
 
   const formik = useFormik({
@@ -139,7 +129,7 @@ const HelpDesk = () => {
     await Promise.all([fetchCategory(), fetchPriority()]);
   };
 
-  if (loading || validatingTicket) return <LoadingSpinner />;
+  if (loading) return <LoadingSpinner />;
   return (
     <>
       <Button
@@ -158,7 +148,7 @@ const HelpDesk = () => {
         title="Formulario de Mesa de Ayuda"
         onSubmit={formik.handleSubmit}
         isSubmitting={loading}
-        isValid={formik.isValid && !hasTicket}
+        isValid={formik.isValid && formik.dirty}
         submitText="Enviar"
         size="md"
       >
@@ -174,12 +164,6 @@ const HelpDesk = () => {
           </p>
           <div>
             <div>
-              {hasTicket ? (
-                <div className="text-red-400">
-                  Ya tienes un ticket en proceso, por favor espera a que sea
-                  resuelto.
-                </div>
-              ) : (
                 <div>
                   <div>
                     <Select
@@ -266,7 +250,6 @@ const HelpDesk = () => {
                     />
                   </div>
                 </div>
-              )}
 
               {error && <div className="text-red-400">{error}</div>}
             </div>
