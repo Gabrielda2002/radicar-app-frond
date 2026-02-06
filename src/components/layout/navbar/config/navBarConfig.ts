@@ -30,5 +30,9 @@ export const SUPPORT_LINKS = [
       {
         name: "Apoyo de Comunicaciones",
         href: "https://docs.google.com/forms/d/1zDDrAAwFuTGLrQLb7PRbuqf08kSA9XzWY49ACfaQ0ew/edit#responses"
+      }, 
+      {
+        name: "Reporte COPASST",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSfqMguT3cktu4tqlF_mkdpyCoovTzD4vQnwOEfHvfy0J3_dmA/viewform"
       }
 ]
