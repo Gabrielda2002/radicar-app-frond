@@ -1,18 +1,19 @@
 import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
-import { CreateTicket } from "../Services/CreateTickets";
 // Lazy data hooks to avoid fetching until modal opens
 import { useLazyFetchCategory } from "../Hooks/useLazyFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
 import { MdSupportAgent } from "react-icons/md";
 import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
+import { AnimatePresence } from "framer-motion";
+import { useCreateTicket } from "../Hooks/useCreateTicket";
 
 interface TitlesHDOptions {
   Software: string[];
@@ -27,6 +28,7 @@ interface TitlesHDOptions {
 const typedTitlesHDOptions = titlesHDOptions as TitlesHDOptions;
 
 interface TicketFormValues {
+  type: string;
   title: string;
   description: string;
   category: string;
@@ -36,8 +38,7 @@ interface TicketFormValues {
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { createTicket, error, isLoading } = useCreateTicket();
 
   const { dataCategory, fetchCategory } = useLazyFetchCategory();
   const { dataPriority, fetchPriority } = useLazyFetchPriority();
@@ -47,6 +48,7 @@ const HelpDesk = () => {
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const schemaValidation = Yup.object({
+    type: Yup.string().required("El tipo es requerido"),
     title: Yup.string().required("El titulo es requerido"),
     description: Yup.string()
       .required("La descripcion es requerida")
@@ -58,43 +60,22 @@ const HelpDesk = () => {
 
   const handleSubmit = useCallback(
     async (values: TicketFormValues) => {
-      try {
-        setLoading(true);
+      const formData = new FormData();
 
-        const formData = new FormData();
+      formData.append("type", values.type);
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("userId", idUsuario);
+      formData.append("categoryId", values.category);
+      formData.append("priorityId", values.priority);
 
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("userId", idUsuario);
-        formData.append("categoryId", values.category);
-        formData.append("priorityId", values.priority);
+      await createTicket(formData, () => {
+        toast.success("Ticket creado exitosamente.");
+        formik.resetForm();
+        setIsModalOpen(false);
+      });
 
-        const response = await CreateTicket(formData);
 
-        if (response?.status === 201 || response?.status === 200) {
-          toast.success("Ticket creado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          formik.resetForm();
-          setIsModalOpen(false);
-        } else {
-          setError("Error al crear el ticket, por favor intentelo de nuevo.");
-        }
-      } catch (error) {
-        setError(
-          "Error al crear el ticket, por favor intentelo de nuevo. " + error
-        );
-      } finally {
-        setLoading(false);
-      }
     },
     [idUsuario]
   );
@@ -102,6 +83,7 @@ const HelpDesk = () => {
   const formik = useFormik({
     initialValues: {
       title: "",
+      type: "",
       description: "",
       category: "",
       priority: "",
@@ -129,7 +111,7 @@ const HelpDesk = () => {
     await Promise.all([fetchCategory(), fetchPriority()]);
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
       <Button
@@ -147,7 +129,7 @@ const HelpDesk = () => {
         onClose={() => setIsModalOpen(false)}
         title="Formulario de Mesa de Ayuda"
         onSubmit={formik.handleSubmit}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         isValid={formik.isValid && formik.dirty}
         submitText="Enviar"
         size="md"
@@ -164,94 +146,116 @@ const HelpDesk = () => {
           </p>
           <div>
             <div>
-                <div>
+              <div>
+                <Select
+                  options={[
+                    { value: "Solcitud", label: "Solicitud" },
+                    { value: "Incidente", label: "Incidente" },
+                    { value: "Problema", label: "Problema" },
+                    { value: "Cambio", label: "Cambio" },
+                    { value: "Otro", label: "Otros" },
+                  ]}
+                  label="Tipo"
+                  id="type"
+                  name="type"
+                  value={formik.values.type}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  variant="default"
+                  error={
+                    formik.touched.type && formik.errors.type
+                      ? formik.errors.type
+                      : undefined
+                  }
+                  touched={formik.touched.type}
+                  required
+                />
+                <Select
+                  options={Object.keys(typedTitlesHDOptions).map((cat) => ({
+                    value: cat,
+                    label: cat,
+                  }))}
+                  label="Categoria"
+                  name="category"
+                  id="categoria"
+                  variant="default"
+                  value={selectedCategoryName}
+                  onChange={handleCategoryChange}
+                  onBlur={formik.handleBlur}
+                  required
+                  error={
+                    formik.touched.category && formik.errors.category
+                      ? formik.errors.category
+                      : undefined
+                  }
+                  touched={formik.touched.category}
+                />
+                <Select
+                  label="Titulo"
+                  options={opcionesTitulo.map((title) => ({
+                    value: title,
+                    label: title,
+                  }))}
+                  id="title"
+                  name="title"
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  variant="default"
+                  error={
+                    formik.touched.title && formik.errors.title
+                      ? formik.errors.title
+                      : undefined
+                  }
+                  touched={formik.touched.title}
+                  required
+                />
+                <Input
+                  label="Descripcion"
+                  id="description"
+                  name="description"
+                  onChange={formik.handleChange}
+                  value={formik.values.description}
+                  onBlur={formik.handleBlur}
+                  placeholder="Descripcion de la solicitud"
+                  error={
+                    formik.touched.description && formik.errors.description
+                      ? formik.errors.description
+                      : undefined
+                  }
+                  touched={formik.touched.description}
+                  required
+                />
+                <Select
+                  label="Prioridad"
+                  options={dataPriority.map((pri) => ({
+                    value: pri.id,
+                    label: pri.name,
+                  }))}
+                  name="priority"
+                  id="prioridad"
+                  value={formik.values.priority}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.priority && formik.errors.priority
+                      ? formik.errors.priority
+                      : undefined
+                  }
+                  touched={formik.touched.priority}
+                  variant="default"
+                  required
+                />
+              </div>
+              <AnimatePresence>
+                {error && (
                   <div>
-                    <Select
-                      options={Object.keys(typedTitlesHDOptions).map((cat) => ({
-                        value: cat,
-                        label: cat,
-                      }))}
-                      label="Categoria"
-                      name="category"
-                      id="categoria"
-                      variant="default"
-                      value={selectedCategoryName}
-                      onChange={handleCategoryChange}
-                      onBlur={formik.handleBlur}
-                      required
-                      error={
-                        formik.touched.category && formik.errors.category
-                          ? formik.errors.category
-                          : undefined
-                      }
-                      touched={formik.touched.category}
-                    />
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
+                    </div>
                   </div>
-                  <div>
-                    <Select
-                      label="Titulo"
-                      options={opcionesTitulo.map((title) => ({
-                        value: title,
-                        label: title,
-                      }))}
-                      id="title"
-                      name="title"
-                      value={formik.values.title}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      variant="default"
-                      error={
-                        formik.touched.title && formik.errors.title
-                          ? formik.errors.title
-                          : undefined
-                      }
-                      touched={formik.touched.title}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      label="Descripcion"
-                      id="description"
-                      name="description"
-                      onChange={formik.handleChange}
-                      value={formik.values.description}
-                      onBlur={formik.handleBlur}
-                      placeholder="Descripcion de la solicitud"
-                      error={
-                        formik.touched.description && formik.errors.description
-                          ? formik.errors.description
-                          : undefined
-                      }
-                      touched={formik.touched.description}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Select
-                      label="Prioridad"
-                      options={dataPriority.map((pri) => ({
-                        value: pri.id,
-                        label: pri.name,
-                      }))}
-                      name="priority"
-                      id="prioridad"
-                      value={formik.values.priority}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.priority && formik.errors.priority
-                          ? formik.errors.priority
-                          : undefined
-                      }
-                      touched={formik.touched.priority}
-                      variant="default"
-                      required
-                    />
-                  </div>
-                </div>
-
-              {error && <div className="text-red-400">{error}</div>}
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

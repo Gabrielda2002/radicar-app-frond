@@ -227,6 +227,11 @@ src/
 
 ---
 
+#### Configuración por defecto
+- **ClickUp list ID:** 901325027947 (lista "Desarrollos").
+- **Notion data source ID:** 1c2e88ee-9bde-80de-a6ea-000b7171a4ba (base "Seguimiento de tareas").
+- Cuando se solicite "crear las tareas en base a los commits", analiza los commits recientes y usa los datos anteriores por defecto.
+
 ## Gestión de Tareas
 - **Sistema de tareas:** Todas las tareas del proyecto se gestionan en Notion
 - **Base de datos:** "Seguimiento de tareas" (https://www.notion.so/1c2e88ee9bde80c4aa11f50a91f3a858)
@@ -239,17 +244,21 @@ src/
   - `maintenance:` para Maintenance
   - `document:` para Documentation
   - Ejemplo: "refactor: mejorar lógica de autenticación"
-- **Estructura de tareas:**
-  - Nombre de tarea (título con prefijo según tipo)
-  - Descripción (detallada)
-  - Estado: Sin empezar | En curso | Retrasada | Listo
-  - Prioridad: Alta | Media | Baja
-  - Nivel de esfuerzo: Pequeño | Media | Grande
-  - Tipo Tarea: Feature | Bug | Refactor | Maintenance | Documentation
-  - Módulo: Backend | Frontend | database | servidor (multi-select)
-  - Tiempo Estimado (horas)
-  - Responsable (persona)
-  - Fecha límite (date)
+- **Campos obligatorios:**
+ - Estos campos deben estar presentes en cada tarea creada para asegurar una gestión adecuada si no es posible integrarlos en la solicitud decirlo.
+- **Nombre de tarea:** Título con prefijo según tipo (feat:, fix:, refactor:, etc.)
+- **Descripción:** Descripción clara del objetivo y alcance de la tarea minimo 10 lineas y maximo 50 lineas.
+- **Estado:** 
+  - Notion: Sin empezar | En curso | Retrasada | Listo
+  - ClickUp: EN ESPERA | PENDIENTE | EN PROCESO | COMPLETADO | EN REVISION | ACEPTADO
+- **Prioridad:**
+  - Notion: Alta | Media | Baja
+  - ClickUp: Baja | Normal | Alta | Urgente
+- **Responsable:** Gabriel Duarte (por defecto)
+- **Fecha límite:** Fecha en formato YYYY-MM-DD
+- **Tiempo Estimado:** Duración en horas
+- **Tags/Etiquetas:** Tags relevantes para la tarea
+- **Fecha de inicio:** Fecha en formato YYYY-MM-DD
 
 ### Separación de Tareas
 - **Principio de Responsabilidad Única:** Cada tarea debe tener UN solo propósito claro

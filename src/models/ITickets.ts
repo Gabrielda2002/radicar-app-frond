@@ -1,5 +1,6 @@
 export interface ITickets {
     id:                number;
+    type:              string;
     title:             string;
     description:       string;
     nameRequester:     string;

@@ -34,6 +34,12 @@ const ProcessHelpDesk = () => {
       accessor: (item: ITickets) => item.title,
     },
     {
+      key: "tipo",
+      header: "Tipo",
+      width: "15%",
+      render: (item: ITickets) => item.type
+    },
+    {
       key: "description",
       header: "Descripcion",
       width: "30%",
