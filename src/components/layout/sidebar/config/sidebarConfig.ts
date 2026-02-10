@@ -213,14 +213,29 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
   {
     id: 'help-desk',
     title: 'Mesa de Ayuda',
-    roles: [1, 17],
     items: [
       {
         id: 'ticket-management',
-        title: 'Gestión de Tickets',
+        title: 'Mesa de Ayuda',
         icon: ticket,
-        path: '/GestionTickets',
-        type: 'item'
+        type: 'category',
+        children: [
+          {
+            id: 'ticket-management',
+            title: 'Gestión de Tickets',
+            icon: ticket,
+            type: 'subcategory',
+            path: '/gestion-tickets',
+            roles: [1, 17]
+          },
+          {
+            id: 'my-tickets',
+            title: 'Mis Tickets',
+            icon: ticket,
+            path: '/mis-tickets',
+            type: 'subcategory',
+          }
+        ]
       }
     ]
   },

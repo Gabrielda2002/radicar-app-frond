@@ -1,16 +1,40 @@
-export interface ITickets {
-    id:                number;
-    type:              string;
-    title:             string;
-    description:       string;
-    nameRequester:     string;
+export interface ITickets extends ITicketsUser {
+    nameRequester: string;
     lastNameRequester: string;
-    category:          string;
-    priority:          string;
-    status:            string;
-    headquarter:       string;
-    municipio:         string;
-    phone:             number;
-    createdAt:         Date;
-    updatedAt:         Date;
+    headquarter: string;
+    municipio: string;
+    phone: number;
+}
+
+enum Priority {
+    Alta = "Alta",
+    Baja = "Baja",
+    Media = "Media",
+}
+
+enum Status {
+    Abierto = "Abierto",
+    Cerrado = "Cerrado",
+    Pendiente = "Pendiente",
+}
+
+enum TypeTicket {
+    Solicitud = "Solicitud",
+    Incidente = "Incidente",
+    Problema = "Problema",
+    Cambio = "Cambio",
+    Otro = "Otro"
+}
+
+
+export type ITicketsUser = {
+    id: number;
+    title: string;
+    description: string;
+    type: TypeTicket;
+    createdAt: Date;
+    updatedAt: Date;
+    status: Status;
+    priority: Priority;
+    category: string;
 }
