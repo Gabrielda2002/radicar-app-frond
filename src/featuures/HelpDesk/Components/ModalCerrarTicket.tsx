@@ -12,6 +12,7 @@ import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
+import { BookCheck } from "lucide-react";
 
 interface CerrarModalProps {
   ticket: ITickets;
@@ -111,10 +112,9 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         variant="any"
         onClick={() => setShowModal(true)}
         title="Cambiar estado"
-        className="p-2 mr-4 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
-      >
-      O
-      </Button>
+        className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
+        icon={<BookCheck className="w-4 h-4" />}
+      />  
 
       <FormModal
         isOpen={showModal}

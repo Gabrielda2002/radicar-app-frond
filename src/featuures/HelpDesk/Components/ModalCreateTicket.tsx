@@ -15,14 +15,19 @@ import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
 import { useCreateTicket } from "../Hooks/useCreateTicket";
 
+interface CategoryData {
+  description: string;
+  options: string[];
+}
+
 interface TitlesHDOptions {
-  Software: string[];
-  Hardware: string[];
-  Redes: string[];
-  Administrativo: string[];
-  Infraestructura: string[];
-  "Otros Soportes": string[];
-  [key: string]: string[];
+  Software: CategoryData;
+  Hardware: CategoryData;
+  Redes: CategoryData;
+  Administrativo: CategoryData;
+  Infraestructura: CategoryData;
+  "Otros Soportes": CategoryData;
+  [key: string]: CategoryData;
 }
 
 const typedTitlesHDOptions = titlesHDOptions as TitlesHDOptions;
@@ -94,6 +99,7 @@ const HelpDesk = () => {
 
   const [opcionesTitulo, setOpcionesTitulo] = useState<string[]>([]);
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
+  const [categoryDescription, setCategoryDescription] = useState("");
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value;
@@ -103,7 +109,15 @@ const HelpDesk = () => {
     const category = dataCategory.find((cat) => cat.name === selectedCategory);
     const formatCategory = category ? category.id : "";
     formik.setFieldValue("category", formatCategory);
-    setOpcionesTitulo(typedTitlesHDOptions[selectedCategory] || []);
+    
+    const categoryData = typedTitlesHDOptions[selectedCategory];
+    if (categoryData) {
+      setOpcionesTitulo(categoryData.options || []);
+      setCategoryDescription(categoryData.description || "");
+    } else {
+      setOpcionesTitulo([]);
+      setCategoryDescription("");
+    }
   };
 
   const handleOpenModal = async () => {
@@ -132,9 +146,9 @@ const HelpDesk = () => {
         isSubmitting={isLoading}
         isValid={formik.isValid && formik.dirty}
         submitText="Enviar"
-        size="md"
+        size="lg"
       >
-        <div className="p-4 space-y-3">
+        <div className="p-4 space-y-4">
           <h3 className="text-4xl font-bold text-color dark:text-gray-200">
             Formulario de Mesa de Ayuda
           </h3>
@@ -146,7 +160,7 @@ const HelpDesk = () => {
           </p>
           <div>
             <div>
-              <div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Select
                   options={[
                     { value: "Solcitud", label: "Solicitud" },
@@ -180,6 +194,7 @@ const HelpDesk = () => {
                   id="categoria"
                   variant="default"
                   value={selectedCategoryName}
+                  helpText={categoryDescription}
                   onChange={handleCategoryChange}
                   onBlur={formik.handleBlur}
                   required

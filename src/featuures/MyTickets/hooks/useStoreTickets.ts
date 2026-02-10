@@ -14,7 +14,7 @@ const useStoreTickets =  create<UseStoreTickets>((set, get) => ({
     error: null,
     isLoading: false,
     
-    fetchTicketsUser: async (id: number) => {
+    fetchTicketsUser: async (id: number) => {   
         try {
             
             set({ isLoading: true, error: null });
