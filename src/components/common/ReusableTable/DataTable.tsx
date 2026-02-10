@@ -120,7 +120,7 @@ export function DataTable<T>({
                 {columns.map((column) => (
                   <td
                     key={`${getRowKey(item)}-${column.key}`}
-                    className={`p-3 border-b dark:border-gray-700 ${
+                    className={`p-3 border-b dark:border-gray-700 border border-gray-200 ${
                       column.cellClassName || ""
                     }`}
                   >
