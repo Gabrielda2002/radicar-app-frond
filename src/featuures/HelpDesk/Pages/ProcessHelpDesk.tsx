@@ -10,6 +10,7 @@ import { DataTable, DataTableContainer, useTableState } from "@/components/commo
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
 import { useFetchTickets } from "../Hooks/useFetchTickets";
+import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
 
 const ProcessHelpDesk = () => {
   const { tickets, refetchTickets, error, isLoading: loading } = useFetchTickets();
@@ -124,33 +125,6 @@ const ProcessHelpDesk = () => {
       )
     }
   ]
-  // Función para obtener el color de fondo según el estado del ticket
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case "Cerrado":
-        return "text-red-500";
-      case "Abierto":
-        return "text-green-500";
-      case "Pendiente":
-        return "text-blue-500";
-      default:
-        return "";
-    }
-  };
-
-  // Función para obtener el color de fondo según la prioridad del ticket
-  const getPriorityColor = (priority: string): string => {
-    switch (priority) {
-      case "Baja":
-        return "text-yellow-400";
-      case "Media":
-        return "text-orange-400";
-      case "Alta":
-        return "text-red-400";
-      default:
-        return "";
-    }
-  };
 
   return (
     <>

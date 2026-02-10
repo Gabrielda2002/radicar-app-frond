@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
 import { ITicketsUser } from '@/models/ITickets';
 import { FormatDate } from '@/utils/FormatDate';
+import { getPriorityColor, getStatusColor } from '@/featuures/MyRequestsPermissions/utils/getColorTicketColumn';
 
 const MyTickets = () => {
 
@@ -55,13 +56,21 @@ const MyTickets = () => {
             key: "status",
             header: "Estado",
             width: "15%",
-            accessor: (item: ITicketsUser) => item.status,
+            render: (item: ITicketsUser) => (
+                <span className={getStatusColor(item.status)}>
+                    {item.status}
+                </span>
+            ),
         },
         {
             key: "priority",
             header: "Prioridad",
             width: "15%",
-            accessor: (item: ITicketsUser) => item.priority,
+            accessor: (item: ITicketsUser) => (
+                <span className={getPriorityColor(item.priority)}>
+                    {item.priority}
+                </span>
+            ),
         },
         {
             key: "category",
