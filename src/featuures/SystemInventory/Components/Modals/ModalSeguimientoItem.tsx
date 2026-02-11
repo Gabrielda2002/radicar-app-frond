@@ -9,6 +9,8 @@ import { createPortal } from "react-dom";
 import { useTheme } from "@/context/blackWhiteContext";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { AnimatePresence } from "framer-motion";
+import { MAINTENANCE_CHECKLIST } from "@/featuures/SystemInventory/data/maintenanceChecklist";
 
 interface ModalSeguimientoItemProps {
   id: number;
@@ -38,13 +40,26 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
       .required("La descripción es requerida")
       .min(10, "La descripción debe tener al menos 10 caracteres")
       .max(600, "La descripción debe tener como máximo 600 caracteres"),
+    checklist: Yup.array()
+      .of(Yup.string())
+      .when(["typeEvent"], {
+        is: (typeEvent: string) => typeEvent === "MANTENIMIENTO PREVENTIVO" && tipoItem === "equipos",
+        then: (schema) => schema.min(1, "Debes seleccionar al menos un ítem del checklist"),
+        otherwise: (schema) => schema,
+      }),
   });
 
-  const formik = useFormik({
+  const formik = useFormik<{
+    dateEvent: string;
+    typeEvent: string;
+    description: string;
+    checklist: string[];
+  }>({
     initialValues: {
       dateEvent: "",
       typeEvent: "",
       description: "",
+      checklist: [],
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -57,6 +72,11 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
         formData.append("typeEvent", values.typeEvent);
         formData.append("description", values.description);
         formData.append("responsable", idUsuario);
+
+        // Enviar checklist si existe y tiene elementos
+        if (values.checklist && values.checklist.length > 0) {
+          formData.append("checklist", JSON.stringify(values.checklist));
+        }
 
         const response = await createMonitoringItem(
           formData,
@@ -129,13 +149,13 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
 
       {stadopen &&
         createPortal(
-          <div className={`fixed inset-0 z-[100] flex items-center justify-center ${theme === 'dark' ? 'dark' : ''}`}>
+          <div className={`fixed inset-0 z-100 flex items-center justify-center ${theme === 'dark' ? 'dark' : ''}`}>
             <FormModal
               isOpen={stadopen}
               onClose={() => setStadopen(false)}
               onSubmit={formik.handleSubmit}
               title="Nuevo Seguimiento"
-              size="sm"
+              size="lg"
               className="max-w-2xl dark:bg-gray-800 dark:text-gray-200"
               isSubmitting={submitting}
               isValid={formik.isValid}
@@ -167,9 +187,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                       error={formik.errors.typeEvent}
                       required
                       options={[
-                        { value: "", label: "- SELECT -" },
                         { value: "MANTENIMIENTO PREVENTIVO", label: "Mantenimiento Preventivo" },
-                        { value: "MANTENIMIENTO CORRECTIVO", label: "Mantenimiento Correctivo" },
                         { value: "CAMBIO DE DISPOSITIVO", label: "Cambio de Dispositivo" },
                         { value: "ENTREGA EQUIPO", label: "Entrega Equipo" },
                         { value: "RETIRO EQUIPO", label: "Retiro Equipo" },
@@ -179,6 +197,44 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                     />
                   </div>
                 </section>
+
+                {/* Checklist de Mantenimiento Preventivo */}
+                {formik.values.typeEvent === "MANTENIMIENTO PREVENTIVO" && tipoItem === "equipos" && (
+                  <div className="mt-4 p-4 border rounded-lg dark:border-gray-700">
+                    <label className="block mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Checklist de Mantenimiento <span className="text-red-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {MAINTENANCE_CHECKLIST.map((item) => (
+                        <label
+                          key={item.id}
+                          className="flex items-start space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formik.values.checklist.includes(item.id)}
+                            onChange={(e) => {
+                              const newChecklist = e.target.checked
+                                ? [...formik.values.checklist, item.id]
+                                : formik.values.checklist.filter((id) => id !== item.id);
+                              formik.setFieldValue("checklist", newChecklist);
+                            }}
+                            className="mt-0.5 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300 leading-tight">
+                            {item.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {formik.touched.checklist && formik.errors.checklist && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                        {formik.errors.checklist}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <div className="w-full h-full">
                   <Input
                     type="text"
@@ -194,11 +250,15 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                 </div>
               </div>
 
-              {error && (
-                <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
-                  {error}
-                </div>
-              )}
+              <AnimatePresence>
+                {error && (
+                  <div>
+                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                      {error}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
             </FormModal>
           </div>,
           document.body

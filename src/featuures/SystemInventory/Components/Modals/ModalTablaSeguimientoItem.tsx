@@ -4,6 +4,7 @@ import ModalSeguimientoItem from "./ModalSeguimientoItem";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
 import { IItemsTv } from "../../Models/IItemsTv";
+import { MAINTENANCE_CHECKLIST } from "@/featuures/SystemInventory/data/maintenanceChecklist";
 //*Icons
 import {
   ClockIcon,
@@ -35,6 +36,14 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
+
+  // Función helper para obtener las etiquetas legibles del checklist
+  const getChecklistLabels = (checklistIds?: string[]) => {
+    if (!checklistIds || checklistIds.length === 0) return [];
+    return checklistIds
+      .map((id) => MAINTENANCE_CHECKLIST.find((item) => item.id === id)?.label)
+      .filter((label): label is string => label !== undefined);
+  };
 
   // Método para obtener los datos de seguimiento según el tipo de item
   const getSeguimientoData = useMemo(() => {
@@ -105,10 +114,24 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                   {s.typeEvent}
                 </td>
                 <td
-                  className="p-3 overflow-hidden text-gray-700 whitespace-normal dark:text-white max-h-12 text-ellipsis max-w-md"
-                  title={s.description}
+                  className="p-3 overflow-hidden text-gray-700 dark:text-white"
                 >
-                  {s.description}
+                  <div className="mb-1 whitespace-normal max-w-md" title={s.description}>
+                    {s.description}
+                  </div>
+                  {/* Mostrar checklist si existe y el tipo es Mantenimiento Preventivo */}
+                  {s.typeEvent === "MANTENIMIENTO PREVENTIVO" && s.checklist && s.checklist.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {getChecklistLabels(s.checklist).map((label, idx) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200"
+                        >
+                          ✓ {label}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </td>
 
                 <td className="p-3 text-gray-500 dark:text-white">
@@ -135,7 +158,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
         <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           Seguimientos
           {/* Flechita indicativa */}
-          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+          <div className="absolute z-0 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-5.5 left-1/2 dark:bg-gray-900"></div>
         </div>
       </div>
 
@@ -150,7 +173,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
         funtionClick={() => setStadopen(false)}
       >
         <div className="flex flex-col max-h-[calc(90vh-120px)]">
-          <div className="px-2 py-3 flex-shrink-0">
+           <div className="px-2 py-3 shrink-0">
             <ModalSeguimientoItem
               id={itemId}
               tipoItem={tipoItem}

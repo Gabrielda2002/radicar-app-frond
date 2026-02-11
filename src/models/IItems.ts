@@ -59,6 +59,7 @@ export interface ProcessEquipment {
     description:         string;
     responsableName:     string;
     responsableLastName: string;
+    checklist?:          string[];
 }
 
 export interface Software {
