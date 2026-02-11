@@ -31,10 +31,10 @@ export interface IItemsGeneral {
   areaType: string;
   assetType: string;
   dependencyArea: string;
-  seguimiento: Seguimiento[];
+  monitoring: Monitoring[];
 }
 
-interface Seguimiento {
+interface Monitoring {
   id: number;
   eventDate: Date;
   typeEvent: string;

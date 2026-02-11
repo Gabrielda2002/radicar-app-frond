@@ -1,32 +1,26 @@
-import React, { useState, useMemo } from "react";
-import { IItems } from "@/models/IItems";
+import React, { useState } from "react";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
-import { IItemsNetworking } from "@/models/IItemsNetworking";
-import { IItemsGeneral } from "../../Models/IItemsGeneral";
-import { IItemsTv } from "../../Models/IItemsTv";
 import { MAINTENANCE_CHECKLIST } from "@/featuures/SystemInventory/data/maintenanceChecklist";
-//*Icons
-import {
-  ClockIcon,
-  UserIcon,
-  DocumentTextIcon,
-  WrenchScrewdriverIcon,
-} from "@heroicons/react/24/outline";
 import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem } from "../../strategies/ItemStrategy";
-import { IItemsPhone } from "../../Models/IItemsPhone";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
-import { Text } from "lucide-react";
+import {
+  useTableState,
+  DataTable,
+  DataTableContainer,
+  type ColumnConfig
+} from "@/components/common/ReusableTable";
+import { WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
   tipoItem:
-    | "equipos"
-    | "dispositivos-red"
-    | "inventario/general"
-    | "inventario/televisores"
-    | "inventario/celulares"
-    | null;
+  | "equipos"
+  | "dispositivos-red"
+  | "inventario/general"
+  | "inventario/televisores"
+  | "inventario/celulares"
+  | null;
   refreshItems: () => void;
 }
 
@@ -45,109 +39,71 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
       .filter((label): label is string => label !== undefined);
   };
 
-  // Método para obtener los datos de seguimiento según el tipo de item
-  const getSeguimientoData = useMemo(() => {
-    if (!Items) return [];
+  // Obtener datos de seguimiento (ahora todos usan la misma propiedad 'monitoring')
+  const monitoringData = Items?.monitoring || [];
 
-    switch (tipoItem) {
-      case "equipos":
-        return (Items as IItems).processEquipment || [];
-      case "dispositivos-red":
-        return (Items as IItemsNetworking).seguimiento || [];
-      case "inventario/general":
-        return (Items as IItemsGeneral).seguimiento || [];
-      case "inventario/televisores":
-        return (Items as IItemsTv).seguimiento || [];
-      case "inventario/celulares":
-        return (Items as IItemsPhone).seguimientoRelation || [];
-      default:
-        return [];
-    }
-  }, [Items, tipoItem]);
+  // Hook de tabla con búsqueda y paginación
+  const tableState = useTableState({
+    data: monitoringData as any[],
+    searchFields: ["typeEvent", "TypeEvent", "description", "observation", "responsableName", "responsableLastName"] as any,
+    initialItemsPerPage: 10,
+  });
 
-  // ID del item
-  const itemId = useMemo(() => {
-    if (!Items) return 0;
-    return Items.id;
-  }, [Items]);
+  // Configuración de columnas para la tabla
+  const columns: ColumnConfig<any>[] = [
+    {
+      key: "eventDate",
+      header: "Fecha",
+      render: (item) => FormatDate(item.eventDate, false),
+      cellClassName: "text-gray-600 dark:text-white",
+    },
+    {
+      key: "typeEvent",
+      header: "Tipo de Evento",
+      render: (item) => item.typeEvent || item.TypeEvent || "N/A",
+      cellClassName: "font-medium dark:text-white",
+    },
+    {
+      key: "description",
+      header: "Descripción",
+      render: (item) => {
+        const description = item.description || item.observation || "";
+        const typeEvent = item.typeEvent || item.TypeEvent || "";
+        const hasChecklist = typeEvent === "MANTENIMIENTO PREVENTIVO" && item.checklist && item.checklist.length > 0;
 
-  const renderTrackingTable = (trackingData: any[]) => {
-    if (trackingData.length === 0) {
-      return (
-        <div className="flex items-center justify-center p-4 text-xl text-gray-900 dark:text-gray-300">
-          No hay seguimientos para asignar o no hay asignados.
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex items-center justify-center p-4">
-        <table className="w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md">
-          <thead className="bg-gray-100 dark:bg-gray-900 dark:text-white">
-            <tr>
-              <th className="flex items-center p-3 text-left">
-                <ClockIcon className="w-8 h-8 mr-2" /> Fecha
-              </th>
-              <th className="p-3 text-left">
-                <DocumentTextIcon className="inline-block w-8 h-8 mr-2" /> Tipo
-                de Evento
-              </th>
-              <th className="p-3 text-left">
-                <Text className="inline-block w-8 h-8 mr-2"/>
-                Descripción
-              </th>
-              <th className="p-3 text-left">
-                <UserIcon className="inline-block w-8 h-8 mr-2" /> Usuario
-              </th>
-            </tr>
-          </thead>
-          <tbody className="dark:bg-gray-800">
-            {trackingData.map((s, key) => (
-              <tr
-                key={key}
-                className="truncate transition-colors border-b last:border-b-0 hover:bg-gray-50 dark:text-white dark:bg-gray-800"
-              >
-                <td className="p-3 text-gray-600 dark:text-white">
-                  {FormatDate(s.eventDate, false)}
-                </td>
-                <td className="p-3 font-medium dark:text-white">
-                  {s.typeEvent}
-                </td>
-                <td
-                  className="p-3 overflow-hidden text-gray-700 dark:text-white"
-                >
-                  <div className="mb-1 whitespace-normal max-w-md" title={s.description}>
-                    {s.description}
-                  </div>
-                  {/* Mostrar checklist si existe y el tipo es Mantenimiento Preventivo */}
-                  {s.typeEvent === "MANTENIMIENTO PREVENTIVO" && s.checklist && s.checklist.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {getChecklistLabels(s.checklist).map((label, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200"
-                        >
-                          ✓ {label}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </td>
-
-                <td className="p-3 text-gray-500 dark:text-white">
-                  {s.responsableName} {s.responsableLastName}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
+        return (
+          <div>
+            <div className="mb-1 whitespace-normal max-w-md" title={description}>
+              {description}
+            </div>
+            {hasChecklist && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {getChecklistLabels(item.checklist).map((label, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200"
+                  >
+                    ✓ {label}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      },
+      cellClassName: "text-gray-700 dark:text-white",
+    },
+    {
+      key: "responsable",
+      header: "Usuario",
+      render: (item) => `${item.responsableName} ${item.responsableLastName}`,
+      cellClassName: "text-gray-500 dark:text-white",
+    },
+  ];
 
   return (
     <>
-       <div className="relative group">
+      <div className="relative group">
         <button
           className="p-2 duration-200 border rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
           onClick={() => setStadopen(true)}
@@ -172,17 +128,36 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
         cancelText="Cerrar"
         funtionClick={() => setStadopen(false)}
       >
-        <div className="flex flex-col max-h-[calc(90vh-120px)]">
-           <div className="px-2 py-3 shrink-0">
+        <div className="flex flex-col max-h-[calc(90vh-120px)] gap-4">
+          <div className="px-2 py-3 shrink-0">
             <ModalSeguimientoItem
-              id={itemId}
+              id={Items?.id || 0}
               tipoItem={tipoItem}
               refreshItems={refreshItems}
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto">
-            {renderTrackingTable(getSeguimientoData)}
+          <div className="flex-1 overflow-y-auto px-2">
+            <DataTableContainer
+              searchValue={tableState.searchQuery}
+              onSearchChange={tableState.setSearchQuery}
+              searchPlaceholder="Buscar seguimientos..."
+              itemsPerPage={tableState.itemsPerPage}
+              onItemsPerPageChange={tableState.setItemsPerPage}
+              currentPage={tableState.currentPage}
+              totalPages={tableState.totalPages}
+              onPageChange={tableState.paginate}
+              showPagination={tableState.totalPages > 1}
+              className="shadow-none bg-transparent dark:bg-transparent"
+            >
+              <DataTable
+                data={tableState.currentData()}
+                columns={columns}
+                getRowKey={(item) => item.id}
+                emptyMessage="No hay seguimientos registrados para este ítem."
+                tableClassName="border-collapse"
+              />
+            </DataTableContainer>
           </div>
         </div>
       </ModalDefault>

@@ -27,7 +27,7 @@ export interface IItemsPhone {
     createdAt:            Date;
     updatedAt:            Date;
     sedeId:               number;
-    seguimientoRelation:  SeguimientoRelation[];
+    monitoring:           Monitoring[];
     responsableId:        number;
     responsableName:      string;
     responsableLastName: string;
@@ -36,7 +36,7 @@ export interface IItemsPhone {
     inventoryNumber:      string;
 }
 
-interface SeguimientoRelation {
+interface Monitoring {
     id: number;
     description: string;
     responsableName: string;

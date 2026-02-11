@@ -25,7 +25,7 @@ export interface IItems {
     lastNameUser:             string;
     nameDocument:             string;
     documentId:               number;
-    processEquipment:         ProcessEquipment[];
+    monitoring:         Monitoring[];
     accessories:              Accessory[];
     components:               Component[];
     software:                 Software[];
@@ -52,7 +52,7 @@ export interface Component {
     model:     string;
     serial:    string;
 }
-export interface ProcessEquipment {
+export interface Monitoring {
     id:                  number;
     eventDate:           Date;
     TypeEvent:           string;

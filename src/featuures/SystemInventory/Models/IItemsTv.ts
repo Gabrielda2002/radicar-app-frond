@@ -29,10 +29,10 @@ export interface IItemsTv {
     acquisitionValue: string;
     controlRemote:    boolean;
     utility:          string;
-    seguimiento:      Seguimiento[];
+    monitoring:      Monitoring[];
 }
 
-interface Seguimiento {
+interface Monitoring {
     id:              number;
     eventDate:       Date;
     observation:     string;

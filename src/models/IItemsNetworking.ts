@@ -10,10 +10,10 @@ export interface IItemsNetworking {
     otherData:                          string;
     status:                             string;
     inventoryNumber:                    string;
-    seguimiento:                        seguimiento[];
+    monitoring:                        Monitoring[];
 }
 
-export interface seguimiento {
+export interface Monitoring {
     id:                  number;
     eventDate:           Date | null;
     typeEvent:           string;
