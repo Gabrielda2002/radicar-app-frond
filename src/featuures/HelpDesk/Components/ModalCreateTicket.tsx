@@ -40,6 +40,7 @@ interface TicketFormValues {
   category: string;
   priority: string;
   file: File | null;
+  attachmentType?: string;
 }
 
 const HelpDesk = () => {
@@ -75,7 +76,12 @@ const HelpDesk = () => {
           }
           return true;
         }
-      )
+      ),
+    attachmentType: Yup.string().when("file", {
+      is: (file: File | null) => file !== null,
+      then: (schema) => schema.required("El tipo de archivo es requerido cuando se adjunta un archivo"),
+      otherwise: (schema) =>  schema.notRequired(),
+    })
   });
 
   const handleSubmit = useCallback(
@@ -90,6 +96,7 @@ const HelpDesk = () => {
       formData.append("priorityId", values.priority);
       if (values.file) {
         formData.append("file", values.file);
+        formData.append("attachmentType", values.attachmentType || "");
       }
 
       await createTicket(formData, () => {
@@ -109,6 +116,7 @@ const HelpDesk = () => {
       category: "",
       priority: "",
       file: null,
+      attachmentType: "",
     },
     validationSchema: schemaValidation,
     onSubmit: handleSubmit,
@@ -294,6 +302,29 @@ const HelpDesk = () => {
                   touched={formik.touched.file}
                   error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
                   icon={<IoDocumentTextOutline className="w-4 h-4"/>}
+                />
+                <Select
+                  label="Tipo de Archivo"
+                  options={[
+                    { value: "document", label: "Documento" },
+                    { value: "screenshot", label: "Imagen" },
+                    { value: "Video", label: "Video" },
+                    { value: "log", label: "Logs" },
+                    { value: "pdf", label: "PDF" },
+                    { value: "other", label: "Otro" },
+                  ]}
+                  id="attachmentType"
+                  name="attachmentType"
+                  value={formik.values.attachmentType}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  variant="default"
+                  error={
+                    formik.touched.attachmentType && formik.errors.attachmentType
+                      ? formik.errors.attachmentType
+                      : undefined
+                  }
+                  touched={formik.touched.attachmentType}
                 />
 
               </div>
