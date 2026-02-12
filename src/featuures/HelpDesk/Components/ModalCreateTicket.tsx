@@ -14,6 +14,7 @@ import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
 import { useCreateTicket } from "../Hooks/useCreateTicket";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 interface CategoryData {
   description: string;
@@ -38,6 +39,7 @@ interface TicketFormValues {
   description: string;
   category: string;
   priority: string;
+  file: File | null;
 }
 
 const HelpDesk = () => {
@@ -61,6 +63,19 @@ const HelpDesk = () => {
       .max(500, "La descripcion debe tener maximo 100 caracteres"),
     category: Yup.number().required("La categoria es requerida"),
     priority: Yup.number().required("La prioridad es requerida"),
+    file: Yup.mixed()
+      .nullable()
+      .optional()
+      .test(
+        "fileSize",
+        "El archivo es demasiado grande. El tamaño máximo es 5MB.",
+        (value: any) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024; // 5MB
+          }
+          return true;
+        }
+      )
   });
 
   const handleSubmit = useCallback(
@@ -73,14 +88,15 @@ const HelpDesk = () => {
       formData.append("userId", idUsuario);
       formData.append("categoryId", values.category);
       formData.append("priorityId", values.priority);
+      if (values.file) {
+        formData.append("file", values.file);
+      }
 
       await createTicket(formData, () => {
         toast.success("Ticket creado exitosamente.");
         formik.resetForm();
         setIsModalOpen(false);
       });
-
-
     },
     [idUsuario]
   );
@@ -92,6 +108,7 @@ const HelpDesk = () => {
       description: "",
       category: "",
       priority: "",
+      file: null,
     },
     validationSchema: schemaValidation,
     onSubmit: handleSubmit,
@@ -261,6 +278,24 @@ const HelpDesk = () => {
                   variant="default"
                   required
                 />
+
+                <Input
+                  type="file"
+                  label="Adjuntar Archivo"
+                  id="file"
+                  name="file"
+                  onChange={(event) => {
+                    const file = event.target.files 
+                    ? event.target.files[0]
+                    : null;
+                    formik.setFieldValue("file", file);
+                  }}
+                  onBlur={formik.handleBlur}
+                  touched={formik.touched.file}
+                  error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
+                  icon={<IoDocumentTextOutline className="w-4 h-4"/>}
+                />
+
               </div>
               <AnimatePresence>
                 {error && (

@@ -15,7 +15,13 @@ export const useCreateTicket = (): UseCreateTicketReturn => {
         setIsLoading(true);
         try {
             
-            const response  = await api.post('/tickets', data)
+            const response  = await api.post('/tickets', data,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            )
 
             if (response.status === 201 || response.status === 200) {
                 onSuccess?.();
