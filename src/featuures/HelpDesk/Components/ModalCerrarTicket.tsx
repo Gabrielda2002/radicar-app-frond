@@ -13,6 +13,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
 import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
 import useCommentStore from "../Store/useCommentStore";
+import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
 
 interface CerrarModalProps {
   ticket: ITickets;
@@ -60,33 +61,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
       )
     },
   });
-
-  // UI helpers
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case "Cerrado":
-        return "text-red-500";
-      case "Abierto":
-        return "text-green-500";
-      case "Pendiente":
-        return "text-blue-500";
-      default:
-        return "text-gray-500";
-    }
-  };
-
-  const getPriorityColor = (priority: string): string => {
-    switch (priority) {
-      case "Baja":
-        return "text-yellow-400";
-      case "Media":
-        return "text-orange-400";
-      case "Alta":
-        return "text-red-400";
-      default:
-        return "text-gray-500";
-    }
-  };
 
   const handleOpenModal = async () => {
     setShowModal(true);
