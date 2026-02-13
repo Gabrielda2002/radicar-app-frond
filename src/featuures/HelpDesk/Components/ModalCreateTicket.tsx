@@ -4,7 +4,6 @@ import * as Yup from "yup";
 // Lazy data hooks to avoid fetching until modal opens
 import { useLazyFetchCategory } from "../Hooks/useLazyFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
 import { toast } from "react-toastify";
 import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
 import { MdSupportAgent } from "react-icons/md";
@@ -49,7 +48,6 @@ const HelpDesk = () => {
   const { createTicket, error, isLoading } = useCreateTicket();
 
   const { dataCategory, fetchCategory } = useLazyFetchCategory();
-  const { dataPriority, fetchPriority } = useLazyFetchPriority();
 
   const user = localStorage.getItem("user");
 
@@ -147,7 +145,7 @@ const HelpDesk = () => {
 
   const handleOpenModal = async () => {
     setIsModalOpen(true);
-    await Promise.all([fetchCategory(), fetchPriority()]);
+    await Promise.all([fetchCategory()]);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -189,10 +187,7 @@ const HelpDesk = () => {
                 <Select
                   options={[
                     { value: "Solcitud", label: "Solicitud" },
-                    { value: "Incidente", label: "Incidente" },
-                    { value: "Problema", label: "Problema" },
-                    { value: "Cambio", label: "Cambio" },
-                    { value: "Otro", label: "Otros" },
+                    { value: "Incidente", label: "Incidente" }
                   ]}
                   label="Tipo"
                   id="type"
@@ -264,26 +259,6 @@ const HelpDesk = () => {
                       : undefined
                   }
                   touched={formik.touched.description}
-                  required
-                />
-                <Select
-                  label="Prioridad"
-                  options={dataPriority.map((pri) => ({
-                    value: pri.id,
-                    label: pri.name,
-                  }))}
-                  name="priority"
-                  id="prioridad"
-                  value={formik.values.priority}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.priority && formik.errors.priority
-                      ? formik.errors.priority
-                      : undefined
-                  }
-                  touched={formik.touched.priority}
-                  variant="default"
                   required
                 />
 

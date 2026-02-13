@@ -1,10 +1,8 @@
-import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { useFormik } from "formik";
 import React from "react";
 import { useState } from "react";
 import * as Yup from "yup";
-import { UpdateStatusTicketEp } from "../Services/UpdateStatusTicketEp";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Button from "@/components/common/Ui/Button";
 import FormModal from "@/components/common/Ui/FormModal";
 import { AnimatePresence } from "framer-motion";
@@ -13,6 +11,8 @@ import Input from "@/components/common/Ui/Input";
 import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
+import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
+import useCommentStore from "../Store/useCommentStore";
 
 interface CerrarModalProps {
   ticket: ITickets;
@@ -24,58 +24,40 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
   onTicketClosed,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useBlockScroll(showModal);
+  const { addComment, isLoading, error  } = useCommentStore();
+
+    const { dataPriority, fetchPriority } = useLazyFetchPriority();
 
   const user = localStorage.getItem("user");
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const validationSchema = Yup.object({
-    observation: Yup.string().required("Este campo es obligatorio"),
+    comment: Yup.string().required("Este campo es obligatorio"),
     status: Yup.string().required("Este campo es obligatorio"),
+    priority: Yup.string().required("Este campo es obligatorio"),
     remote: Yup.boolean().required("Este campo es obligatorio"),
   });
 
   const formik = useFormik({
     initialValues: {
-      observation: "",
+      comment: "",
       status: "",
+      priority: "",
       remote: false,
+      ticketId: ticket.id,
+      userId: idUsuario,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-
-        formData.append("ticketId", ticket.id.toString());
-        formData.append("usuarioId", idUsuario);
-        formData.append("coment", values.observation);
-        formData.append("status", values.status);
-        formData.append("remote", values.remote.toString());
-
-        const reponse = await UpdateStatusTicketEp(formData);
-
-        if (reponse.status === 200 || reponse.status === 201) {
-          toast.success("Estado actualizado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-
+      await addComment(
+        values,
+        () => {
+          toast.success("Ticket actualizado correctamente");
           onTicketClosed();
           setShowModal(false);
-          formik.resetForm();
         }
-      } catch (errors) {
-        setError(`Error al cerrar el ticket ${errors}`);
-      }
+      )
     },
   });
 
@@ -106,11 +88,16 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     }
   };
 
+  const handleOpenModal = async () => {
+    setShowModal(true);
+    await Promise.all([fetchPriority()]);
+  }
+
   return (
     <>
       <Button
         variant="any"
-        onClick={() => setShowModal(true)}
+        onClick={handleOpenModal}
         title="Cambiar estado"
         className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
         icon={<BookCheck className="w-4 h-4" />}
@@ -122,7 +109,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         title="Cambiar Estado Ticket"
         onSubmit={formik.handleSubmit}
         submitText={`${formik.values.status == "2" ? "Cerrar" : "En Espera"}`}
-        isSubmitting={formik.isSubmitting}
+        isSubmitting={formik.isSubmitting || isLoading}
         isValid={formik.isValid}
         size="lg"
       >
@@ -201,6 +188,26 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
               touched={formik.touched.status}
               required
             />
+            <Select
+                  label="Prioridad"
+                  options={dataPriority.map((pri) => ({
+                    value: pri.id,
+                    label: pri.name,
+                  }))}
+                  name="priority"
+                  id="prioridad"
+                  value={formik.values.priority}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.priority && formik.errors.priority
+                      ? formik.errors.priority
+                      : undefined
+                  }
+                  touched={formik.touched.priority}
+                  variant="default"
+                  required
+                />
           </div>
 
           <div className="mb-4">
@@ -220,14 +227,14 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
           <div className="mb-4">
             <Input
               label="Observación (Motivo de cierre)"
-              id="observation"
-              name="observation"
-              value={formik.values.observation}
+              id="comment"
+              name="comment"
+              value={formik.values.comment}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Escriba el motivo por el cual está cerrando este ticket..."
-              error={formik.errors.observation && formik.touched.observation ? formik.errors.observation : undefined}
-              touched={formik.touched.observation}
+              error={formik.errors.comment && formik.touched.comment ? formik.errors.comment : undefined}
+              touched={formik.touched.comment}
               required
             />
           </div>
