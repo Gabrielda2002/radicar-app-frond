@@ -31,6 +31,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   // Paso 2: Definir valores iniciales como una variable separada para poder compararlos
   const initialValues = useMemo(() => ({
     id: item.id,
+    code: item.code,
     status: modulo === "cups" ? ((item as ICups).status ? 1 : 0) : undefined,
     description: modulo === "cups"
       ? (item as ICups).name
@@ -39,6 +40,7 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   }), [item, modulo]);
 
   const validationSchema = Yup.object({
+    code: Yup.string().optional().max(10, "Máximo 10 caracteres"),
     description: Yup.string()
       .min(3, "Mínimo 3 caracteres")
       .required("El nombre del cups es requerido")
@@ -76,10 +78,10 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
   // Paso 4: Función para detectar si hay cambios reales en los datos
   const hasChanges = useMemo(() => {
     // Comparar solo los campos editables (excluyendo id y modulo)
-    const editableFields = modulo === "cups" 
-      ? ['description', 'status'] 
-      : ['description'];
-    
+    const editableFields = modulo === "cups"
+      ? ['description', 'status', 'code']
+      : ['description', 'code'];
+
     return editableFields.some(field => {
       const currentValue = formik.values[field as keyof typeof formik.values];
       const initialValue = initialValues[field as keyof typeof initialValues];
@@ -101,79 +103,93 @@ const ModalUpdateCupsDiagnostico: React.FC<ModalUpdateCupsDiagnosticoProps> = ({
       <FormModal
         isOpen={stadopen}
         onClose={() => setStadopen(false)}
-        title={`${
-          modulo === "cups" ? "Modificar CUPS" : "Modificar Diagnóstico"
-        }`}
+        title={`${modulo === "cups" ? "Modificar CUPS" : "Modificar Diagnóstico"
+          }`}
         onSubmit={formik.handleSubmit}
         isSubmitting={formik.isSubmitting || loading}
         isValid={canSubmit}
         size="lg"
         submitText="Guardar"
       >
-        <section className="grid grid-cols-1 md:grid-cols-3 py-3 px-5 gap-4">
-          <Input
-            label={`${modulo === "cups" ? "ID CUPS" : "ID Diagnóstico"}`}
-            type="text"
-            id="id"
-            name="id"
-            value={formik.values.id}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched && formik.errors.id ? formik.errors.id : undefined
-            }
-            touched={formik.touched.id}
-            disabled
-            required
-          />
-          {modulo === "cups" && (
-            <Select
-              label="Estado"
-              options={[
-                { value: 1, label: "Activo" },
-                { value: 0, label: "Inactivo" },
-              ]}
-              id="status"
-              name="status"
-              value={formik.values.status}
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 py-3 px-5 gap-4">
+            <Input
+              label={`${modulo === "cups" ? "ID CUPS" : "ID Diagnóstico"}`}
+              type="text"
+              id="id"
+              name="id"
+              value={formik.values.id}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                formik.touched.status && formik.errors.status
-                  ? formik.errors.status
+                formik.touched && formik.errors.id ? formik.errors.id : undefined
+              }
+              touched={formik.touched.id}
+              disabled
+              required
+            />
+
+            <Input
+              label="Código"
+              type="text"
+              id="code"
+              name="code"
+              value={formik.values.code}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.code && formik.errors.code ? formik.errors.code : undefined
+              }
+              touched={formik.touched.code}
+            />
+            <Input
+              label={`${modulo === "cups" ? "Descripción Cups" : "Descripción Diagnóstico"
+                }`}
+              type="text"
+              id="description"
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.description && formik.errors.description
+                  ? formik.errors.description
                   : undefined
               }
-              touched={formik.touched.status}
+              touched={formik.touched.description}
+              required
             />
-          )}
-          <Input
-            label={`${
-              modulo === "cups" ? "Descripción Cups" : "Descripción Diagnóstico"
-            }`}
-            type="text"
-            id="description"
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.description && formik.errors.description
-                ? formik.errors.description
-                : undefined
-            }
-            touched={formik.touched.description}
-            required
-          />
+            {modulo === "cups" && (
+              <Select
+                label="Estado"
+                options={[
+                  { value: 1, label: "Activo" },
+                  { value: 0, label: "Inactivo" },
+                ]}
+                id="status"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.status && formik.errors.status
+                    ? formik.errors.status
+                    : undefined
+                }
+                touched={formik.touched.status}
+              />
+            )}
+          </div>
           <AnimatePresence>
             {error && (
               <div>
                 <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                  {error}
+                  {error} Error test
                 </div>
               </div>
             )}
           </AnimatePresence>
-        </section>
+        </div>
       </FormModal>
     </>
   );
