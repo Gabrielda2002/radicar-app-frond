@@ -2,7 +2,6 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { createMonitoringItem } from "@/featuures/SystemInventory/Services/CreateMonitoringItem";
 import { toast } from "react-toastify";
 import FormModal from "@/components/common/Ui/FormModal";
 import { createPortal } from "react-dom";
@@ -10,7 +9,7 @@ import { useTheme } from "@/context/blackWhiteContext";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { AnimatePresence } from "framer-motion";
-import { MAINTENANCE_CHECKLIST } from "@/featuures/SystemInventory/data/maintenanceChecklist";
+import useStoreMonitoringItem from "../../Store/useStoreMonitoringItem";
 
 interface ModalSeguimientoItemProps {
   id: number;
@@ -24,117 +23,60 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
   refreshItems,
 }) => {
   const [stadopen, setStadopen] = useState(false);
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const { theme} = useTheme();
+  const { isLoading, error, addMonitoring } = useStoreMonitoringItem();
+
+  const { theme } = useTheme();
 
   const user = localStorage.getItem("user");
 
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const validationSchema = Yup.object({
-    dateEvent: Yup.date().required("La fecha es requerida"),
+    eventDate: Yup.date().required("La fecha es requerida"),
     typeEvent: Yup.string().required("El tipo de evento es requerido"),
     description: Yup.string()
       .required("La descripción es requerida")
       .min(10, "La descripción debe tener al menos 10 caracteres")
       .max(600, "La descripción debe tener como máximo 600 caracteres"),
-    checklist: Yup.array()
-      .of(Yup.string())
-      .when(["typeEvent"], {
-        is: (typeEvent: string) => typeEvent === "MANTENIMIENTO PREVENTIVO" && tipoItem === "equipos",
-        then: (schema) => schema.min(1, "Debes seleccionar al menos un ítem del checklist"),
-        otherwise: (schema) => schema,
-      }),
   });
 
   const formik = useFormik<{
-    dateEvent: string;
+    eventDate: string;
     typeEvent: string;
     description: string;
-    checklist: string[];
+    itemId: string;
+    managerId: string;
   }>({
     initialValues: {
-      dateEvent: "",
+      eventDate: "",
       typeEvent: "",
       description: "",
-      checklist: [],
+      itemId: id.toString(),
+      managerId: idUsuario.toString(),
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      try {
-        setSubmitting(true);
 
-        const formData = new FormData();
-        formData.append("itemId", id.toString());
-        formData.append("eventDate", values.dateEvent);
-        formData.append("typeEvent", values.typeEvent);
-        formData.append("description", values.description);
-        formData.append("responsable", idUsuario);
-
-        // Enviar checklist si existe y tiene elementos
-        if (values.checklist && values.checklist.length > 0) {
-          formData.append("checklist", JSON.stringify(values.checklist));
-        }
-
-        const response = await createMonitoringItem(
-          formData,
-          tipoItem == "equipos"
-            ? "seguimiento-equipos"
-            : tipoItem === "dispositivos-red"
-            ? "seguimiento-dispositivos-red"
-            : tipoItem === "inventario/general"
+      const endPoint = tipoItem == "equipos"
+        ? "seguimiento-equipos"
+        : tipoItem === "dispositivos-red"
+          ? "seguimiento-dispositivos-red"
+          : tipoItem === "inventario/general"
             ? "seguimiento/inventario-general"
             : tipoItem === "inventario/televisores"
-            ? "seguimiento/televisor"
-            : "seguimiento/celulares"
-        );
+              ? "seguimiento/televisor"
+              : "seguimiento/celulares"
 
-        if (response?.status === 201 || response?.status === 200) {
-          setSubmitting(false);
-          setError(null);
-          toast.success("Datos enviados con éxito", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          formik.resetForm();
-          if (refreshItems) {
-            refreshItems();
-          }
-        } else {
-          setError("Ocurrio un error al intentar crear el seguimiento");
-          toast.error("Ocurrio un error al intentar crear el seguimiento", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+      await addMonitoring(
+        values,
+        endPoint,
+        () => {
+          refreshItems();
+          setStadopen(false);
+          toast.success("Seguimiento agregado correctamente");
         }
-      } catch (error) {
-        setError(`Ocurrio un error al intentar crear el seguimiento ${error}`);
-        toast.error(`Error al enviar los datos: ${error}`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-      setSubmitting(false);
+      );
     },
   });
 
@@ -157,7 +99,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
               title="Nuevo Seguimiento"
               size="lg"
               className="max-w-2xl dark:bg-gray-800 dark:text-gray-200"
-              isSubmitting={submitting}
+              isSubmitting={isLoading}
               isValid={formik.isValid}
               submitText="Guardar"
             >
@@ -166,13 +108,13 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                   <div className="flex">
                     <Input
                       type="date"
-                      name="dateEvent"
+                      name="eventDate"
                       label="Fecha de Evento"
-                      value={formik.values.dateEvent}
+                      value={formik.values.eventDate}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      touched={formik.touched.dateEvent}
-                      error={formik.errors.dateEvent}
+                      touched={formik.touched.eventDate}
+                      error={formik.errors.eventDate}
                       required
                     />
                   </div>
@@ -197,43 +139,6 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
                     />
                   </div>
                 </section>
-
-                {/* Checklist de Mantenimiento Preventivo */}
-                {formik.values.typeEvent === "MANTENIMIENTO PREVENTIVO" && tipoItem === "equipos" && (
-                  <div className="mt-4 p-4 border rounded-lg dark:border-gray-700">
-                    <label className="block mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      Checklist de Mantenimiento <span className="text-red-500">*</span>
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {MAINTENANCE_CHECKLIST.map((item) => (
-                        <label
-                          key={item.id}
-                          className="flex items-start space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={formik.values.checklist.includes(item.id)}
-                            onChange={(e) => {
-                              const newChecklist = e.target.checked
-                                ? [...formik.values.checklist, item.id]
-                                : formik.values.checklist.filter((id) => id !== item.id);
-                              formik.setFieldValue("checklist", newChecklist);
-                            }}
-                            className="mt-0.5 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
-                          />
-                          <span className="text-sm text-gray-700 dark:text-gray-300 leading-tight">
-                            {item.label}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    {formik.touched.checklist && formik.errors.checklist && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-                        {formik.errors.checklist}
-                      </p>
-                    )}
-                  </div>
-                )}
 
                 <div className="w-full h-full">
                   <Input
