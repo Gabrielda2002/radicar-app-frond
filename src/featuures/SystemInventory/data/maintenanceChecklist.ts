@@ -1,9 +1,27 @@
 export interface MaintenanceChecklistItem {
-  id: string;
-  label: string;
+    id:                    number;
+    seguimientoEquipoId:   number;
+    checklistItemId:       number;
+    isChecked:             boolean;
+    checkedAt:             null;
+    createdAt:             Date;
+    updatedAt:             Date;
+    checklistItemRelation: ChecklistItemRelation;
 }
 
-  export const MAINTENANCE_CHECKLIST: MaintenanceChecklistItem[] = [
+export interface ChecklistItemRelation {
+    id:           number;
+    itemKey:      string;
+    label:        string;
+    displayOrder: number;
+    isActive:     boolean;
+    createdAt:    Date;
+    updatedAt:    Date;
+}
+
+
+
+  export const MAINTENANCE_CHECKLIST = [
     {
       id: "limpieza-interna",
       label: "Limpieza interna del equipo",

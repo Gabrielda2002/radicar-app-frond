@@ -8,7 +8,7 @@ interface UseStoreMonitoringItemProps {
     error: string | null;
     checklistData: MaintenanceChecklistItem[];
     addMonitoring: (data: Object, ep: string, onSuccess?: () => void) => Promise<void>;
-    getChecklistsByMonitoringId: (monitoringId: string) => MaintenanceChecklistItem[];
+    getChecklistsByMonitoringId: (monitoringId: string) => Promise<void>;
 }
 
 const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) => ({
@@ -40,12 +40,24 @@ const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) =>
         }
     },
 
-    getChecklistsByMonitoringId: (monitoringId: string) => {
-        const { monitoringData, checklistData } = get();
-        const monitoringItem = monitoringData.find((item) => item.id === monitoringId);
-        if (!monitoringItem) return [];
-        const checklistIds: string[] = monitoringItem.checklist || [];
-        return checklistData.filter((checklist) => checklistIds.includes(checklist.id));
+    getChecklistsByMonitoringId: async (monitoringId: string) => {
+        try {
+            set({ isLoading: true, error: null });
+
+            const response = await api.get(`/maintenance-checklist/seguimiento/${monitoringId}`);
+
+            set({ checklistData: response.data });
+
+        } catch (error: any) {
+            if (error.response.status === 500) {
+                set({ error: "Error del servidor. Por favor, intenta nuevamente más tarde." });
+            }else {
+                set({ error: error?.response?.data?.message || "Error al obtener los checklists del seguimiento. Por favor, intenta nuevamente." });
+            }
+            set({ checklistData: [] });
+        }finally{
+            set({ isLoading: false });
+        }
     }
 
     

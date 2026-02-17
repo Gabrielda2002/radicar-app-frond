@@ -11,6 +11,7 @@ import {
   type ColumnConfig
 } from "@/components/common/ReusableTable";
 import { WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
+import ModalCheckList from "./ModalCheckList";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
@@ -95,10 +96,17 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
     },
     {
       key: "responsable",
-      header: "Usuario",
+      header: "Reponsable",
       render: (item) => `${item.responsableName} ${item.responsableLastName}`,
       cellClassName: "text-gray-500 dark:text-white",
     },
+    {
+      key: "checklist",
+      header: "Checklist",
+      render: (item) => (
+        <ModalCheckList monitoringId={item.id} />
+      )
+    }
   ];
 
   return (
@@ -140,7 +148,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
           <div className="flex-1 overflow-y-auto px-2">
             <DataTableContainer
               searchValue={tableState.searchQuery}
-              onSearchChange={tableState.setSearchQuery}
+              onSearchChange={tableState.setSearchQuery}  
               searchPlaceholder="Buscar seguimientos..."
               itemsPerPage={tableState.itemsPerPage}
               onItemsPerPageChange={tableState.setItemsPerPage}
