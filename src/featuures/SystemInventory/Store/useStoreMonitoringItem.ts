@@ -9,6 +9,7 @@ interface UseStoreMonitoringItemProps {
     checklistData: MaintenanceChecklistItem[];
     addMonitoring: (data: Object, ep: string, onSuccess?: () => void) => Promise<void>;
     getChecklistsByMonitoringId: (monitoringId: string) => Promise<void>;
+    updateChecklistItem: (id: string, checklistData: Object, onSuccess?: () => void) => Promise<void>;
 }
 
 const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) => ({
@@ -55,6 +56,25 @@ const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) =>
                 set({ error: error?.response?.data?.message || "Error al obtener los checklists del seguimiento. Por favor, intenta nuevamente." });
             }
             set({ checklistData: [] });
+        }finally{
+            set({ isLoading: false });
+        }
+    },
+    
+    updateChecklistItem: async (id: string, checklistData: Object, onSuccess?: () => void) => {
+        try {
+            set({ isLoading: true, error: null });
+
+            await api.put(`/maintenance-checklist/seguimiento/${id}`, checklistData ); 
+
+            onSuccess?.();
+
+        } catch (error: any) {
+            if (error.response.status === 500) {
+                set({ error: "Error del servidor. Por favor, intenta nuevamente más tarde." });
+            }else {
+                set({ error: error?.response?.data?.message || "Error al actualizar el checklist del seguimiento. Por favor, intenta nuevamente." });
+            }
         }finally{
             set({ isLoading: false });
         }
