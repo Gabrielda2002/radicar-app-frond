@@ -20,13 +20,6 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [documento, setDocumento] = useState<string>("");
 
-  const programsValidation = [
-    124, 34, 22, 43, 27, 54, 41, 7, 33, 3, 21, 23, 48, 49, 56, 57, 59, 60, 61,
-    67, 68, 69, 70, 72, 74, 75, 78, 79, 80, 81, 82, 83, 88, 89, 90, 91, 92, 93,
-    95, 97, 99, 101, 102, 103, 104, 114, 116, 119, 11, 78, 120, 121, 122, 123,
-    124, 125, 126, 129, 133, 134, 139, 147, 148,
-  ];
-
   const { data, error, getData } = useFetchPatient();
 
   const user = localStorage.getItem("user");
@@ -167,11 +160,10 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       "El área de la persona que procesa es obligatoria"
     ),
     programPerson: Yup.string().required("El programa es obligatorio"),
-    assignmentDate: Yup.string().when(["classification", "programPerson"], {
-      is: (classification: boolean, programPerson: string) => {
+    assignmentDate: Yup.string().when(["classification"], {
+      is: (classification: boolean) => {
         return (
-          classification === true ||
-          programsValidation.includes(parseInt(programPerson))
+          classification === true
         );
       },
       then: (schema) =>
@@ -853,7 +845,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 name="assignmentDate"
                 touched={formik.touched.assignmentDate}
                 error={formik.errors.assignmentDate}
-                required={formik.values.classification === true || programsValidation.includes(parseInt(formik.values.programPerson))  ? true : false}
+                required={formik.values.classification === true ? true : false}
               />
             </div>
             <div>
