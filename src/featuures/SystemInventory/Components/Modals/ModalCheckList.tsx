@@ -39,8 +39,8 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
             Yup.object().shape({
                 id: Yup.number().required(),
                 name: Yup.string().required(),
-                status: Yup.string(),
-                observation: Yup.string(),
+                status: Yup.string().optional(),
+                observation: Yup.string().max(500, "La observación no puede exceder los 500 caracteres").optional(),
             })
         )
     })
@@ -64,7 +64,16 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            await updateChecklistItem(monitoringId, values, () => {
+            const accessoriesWithData = values.accessories.filter(
+                (acc: any) => acc.status.trim() !== '' || acc.observation.trim() !== ''
+            );
+
+            const dataToSend = {
+                checklist: values.checklist,
+                ...(accessoriesWithData.length > 0 && { accessories: accessoriesWithData })
+            };
+
+            await updateChecklistItem(monitoringId, dataToSend, () => {
                 toast.success("Checklist actualizado correctamente");
                 setIsOpen(false);
             })
