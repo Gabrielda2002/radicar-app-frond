@@ -1,20 +1,20 @@
 import { create } from "zustand";
-import { MaintenanceChecklistItem } from "../data/maintenanceChecklist";
+import { MaintenanceData } from "../data/maintenanceChecklist";
 import { api } from "@/utils/api-config";
 
 interface UseStoreMonitoringItemProps {
     monitoringData: any[]; 
     isLoading: boolean;
     error: string | null;
-    checklistData: MaintenanceChecklistItem[];
+    checklistData: MaintenanceData;
     addMonitoring: (data: Object, ep: string, onSuccess?: () => void) => Promise<void>;
     getChecklistsByMonitoringId: (monitoringId: string) => Promise<void>;
     updateChecklistItem: (id: string, checklistData: Object, onSuccess?: () => void) => Promise<void>;
 }
 
-const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) => ({
+const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set) => ({
     monitoringData: [],
-    checklistData: [],
+    checklistData: { checklist: [], accessories: [] },
     isLoading: false,
     error: null,
 
@@ -55,7 +55,7 @@ const useStoreMonitoringItem = create<UseStoreMonitoringItemProps>((set, get) =>
             }else {
                 set({ error: error?.response?.data?.message || "Error al obtener los checklists del seguimiento. Por favor, intenta nuevamente." });
             }
-            set({ checklistData: [] });
+            set({ checklistData: { checklist: [], accessories: [] } });
         }finally{
             set({ isLoading: false });
         }

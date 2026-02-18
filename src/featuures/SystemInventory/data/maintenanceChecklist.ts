@@ -1,3 +1,12 @@
+export interface MaintenanceData {
+  checklist: MaintenanceChecklistItem[];
+  accessories: Accessory[];
+}
+
+interface Accessory {
+  id: number;
+  name: string;
+}
 export interface MaintenanceChecklistItem {
     id:                    number;
     seguimientoEquipoId:   number;
