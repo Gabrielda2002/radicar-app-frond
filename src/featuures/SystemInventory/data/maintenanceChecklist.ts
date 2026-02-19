@@ -6,6 +6,8 @@ export interface MaintenanceData {
 interface Accessory {
   id: number;
   name: string;
+  observation: string;
+  statusMaintenance: string;
 }
 export interface MaintenanceChecklistItem {
     id:                    number;

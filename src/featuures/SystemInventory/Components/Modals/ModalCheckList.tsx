@@ -39,8 +39,8 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
             Yup.object().shape({
                 id: Yup.number().required(),
                 name: Yup.string().required(),
-                status: Yup.string().optional(),
-                observation: Yup.string().max(500, "La observación no puede exceder los 500 caracteres").optional(),
+                status: Yup.string().max(100, "El estado no puede exceder los 100 caracteres"),
+                observation: Yup.string().max(500, "La observación no puede exceder los 500 caracteres"),
             })
         )
     })
@@ -48,24 +48,35 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            checklist: checklistData?.checklist?.map((i: any) => ({
+            checklist: checklistData?.checklist?.map((i) => ({
                 id: i.id,
                 monitoringId: i.seguimientoEquipoId,
                 checklistItemId: i.checklistItemId,
                 isChecked: i.isChecked,
                 label: i.checklistItemRelation.label,
             })) || [],
-            accessories: checklistData?.accessories?.map((a: any) => ({
+            accessories: checklistData?.accessories?.map((a) => ({
                 id: a.id,
                 name: a.name,
-                status: '',
-                observation: '',
+                status: a.statusMaintenance || '',
+                observation: a.observation || '',
             })) || []
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            // Filtrar solo los accesorios que fueron modificados en esta sesión
+            // Comparamos con los valores iniciales para evitar enviar duplicados
             const accessoriesWithData = values.accessories.filter(
-                (acc: any) => acc.status.trim() !== '' || acc.observation.trim() !== ''
+                (acc: any, idx: number) => {
+                    const initialAcc = formik.initialValues.accessories[idx];
+
+                    const hasNewStatus = acc.status.trim() !== '' && acc.status !== initialAcc.status;
+
+                    const hasNewObservation = acc.observation.trim() !== '' && acc.observation !== initialAcc.observation;
+
+                    // Solo incluir si hay cambios respecto a los valores iniciales
+                    return hasNewStatus || hasNewObservation;
+                }
             );
 
             const dataToSend = {
@@ -79,6 +90,11 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
             })
         }
     })
+    // validar si initialValues viene con valores si es asi deshabilitar el input del estado y la observacion para ese accesorio, si no tiene valores habilitarlo para que se pueda diligenciar
+    const isDisabled = (idx: number) => {
+        const initialAcc = formik.initialValues.accessories[idx];
+        return initialAcc.status !== '' || initialAcc.observation !== '';
+    }
 
     return (
         <>
@@ -109,7 +125,7 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
                                     {/* Grid de 4 columnas para los items del checklist */}
                                     <div className='grid grid-cols-4 gap-x-4 gap-y-3'>
                                         {formik.values.checklist.map((item: any, idx: number) => (
-                                            <div key={item.id} className='flex items-center gap-2'>
+                                            <div key={item.id} className={`flex items-center gap-2 p-1 hover:bg-teal-500/90 hover:scale-105 ease-in-out duration-300  ${item.isChecked ? 'bg-teal-500/70 rounded-lg' : ''}`}>
                                                 <Input
                                                     id={`checklist-${idx}`}
                                                     type='checkbox'
@@ -139,7 +155,7 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
                                         <div>Estado</div>
                                         <div>Observación</div>
                                     </div>
-                                    
+
                                     {/* Items de accesorios: cada fila tiene 4 columnas */}
                                     {formik.values.accessories.map((accessory: any, idx: number) => (
                                         <div key={accessory.id} className='grid grid-cols-[2fr_1.5fr_2fr] gap-3 items-start'>
@@ -154,6 +170,15 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
                                                     value={formik.values.accessories[idx].status}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
+                                                    error={
+                                                        formik.touched.accessories?.[idx]?.status &&
+                                                            typeof formik.errors.accessories?.[idx] === 'object' &&
+                                                            formik.errors.accessories?.[idx]?.status
+                                                            ? formik.errors.accessories[idx].status
+                                                            : undefined
+                                                    }
+                                                    touched={formik.touched.accessories?.[idx]?.status}
+                                                    disabled={isDisabled(idx)}
                                                 />
                                             </div>
                                             <div>
@@ -163,6 +188,15 @@ const ModalCheckList: React.FC<ModalCheckListProps> = ({ monitoringId }) => {
                                                     value={formik.values.accessories[idx].observation}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
+                                                    error={
+                                                        formik.touched.accessories?.[idx]?.observation &&
+                                                            typeof formik.errors.accessories?.[idx] === 'object' &&
+                                                            formik.errors.accessories?.[idx]?.observation
+                                                            ? formik.errors.accessories[idx].observation
+                                                            : undefined
+                                                    }
+                                                    touched={formik.touched.accessories?.[idx]?.observation}
+                                                    disabled={isDisabled(idx)}
                                                 />
                                             </div>
                                         </div>
