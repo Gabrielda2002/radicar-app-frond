@@ -13,6 +13,13 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
   idHeadquartersSelected
 }) => {
   const { ageStatics, loading, error } = useFetchAgeStatics(typeItem, idHeadquartersSelected);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    // Asegurar que el DOM esté listo antes de renderizar el gráfico
+    const timer = setTimeout(() => setIsMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Formateador para los valores en el tooltip
   const formatTooltipValue = (value: number | undefined) => {
@@ -50,7 +57,8 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
             {/* Gráfico de barras */}
             <div className='col-span-1 h-80 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
               <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">Distribución por Edad</h2>
-              <ResponsiveContainer width="100%" height="90%">
+              {isMounted && (
+                <ResponsiveContainer width="100%" height="90%" minHeight={250} minWidth={300}>
                 <BarChart
                   data={ageStatics.distribution}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -63,6 +71,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                   <Bar dataKey="value" name="Cantidad" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
+              )}
             </div>
 
             {/* Tarjeta con edad promedio */}

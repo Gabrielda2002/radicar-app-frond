@@ -12,6 +12,14 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
   typeItem,
   idHeadquartersSelected
 }) => {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    // Asegurar que el DOM esté listo antes de renderizar el gráfico
+    const timer = setTimeout(() => setIsMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const COLORS = [
     "#F1BB87",
     "#F78E69",
@@ -50,14 +58,15 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
           </div>
         ) : quantity ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-1">
-          <div className="p-4 rounded-lg shadow-sm h-[295px] md:h-64 bg-gray-50 dark:bg-gray-700">
+          <div className="p-4 rounded-lg shadow-sm h-74 md:h-64 bg-gray-50 dark:bg-gray-700">
               <h2 className="mb-3 text-lg font-medium text-gray-700 dark:text-gray-300">
                 Distribución de Cantidad de {typeItem}
               </h2>
+              {isMounted && (
               <ResponsiveContainer
                 width={"100%"}
-                height={"85%"}
-                maxHeight={215}
+                height={"90%"}
+                minWidth={300}
                 minHeight={200}
               >
                 <PieChart>
@@ -89,6 +98,7 @@ const QuantityItemsStatics: React.FC<QuantityItemsStaticsProps> = ({
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
+              )}
             </div>
           </div>
         ) : (

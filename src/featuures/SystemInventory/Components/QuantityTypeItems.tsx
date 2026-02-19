@@ -14,6 +14,13 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
     idHeadquartersSelected
 }) => {
     const { quantity, loading, error } = useFetchQuantityTypeItems(typeItem, idHeadquartersSelected);
+    const [isMounted, setIsMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        // Asegurar que el DOM esté listo antes de renderizar el gráfico
+        const timer = setTimeout(() => setIsMounted(true), 100);
+        return () => clearTimeout(timer);
+    }, []);
 
     // Colores para el gráfico circular
     const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28'];
@@ -81,7 +88,8 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
                         {/* Gráfico circular */}
                         <div className='h-64 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
                             <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">Distribución de Items</h2>
-                            <ResponsiveContainer width="100%" height="90%">
+                            {isMounted && (
+                            <ResponsiveContainer width="100%" height="90%" minHeight={200} minWidth={300}>
                                 <PieChart>
                                     <Pie
                                         data={chartData}
@@ -101,6 +109,7 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
                                     <Legend />
                                 </PieChart>
                             </ResponsiveContainer>
+                            )}
                         </div>
 
                         {/* Tarjetas con información detallada */}

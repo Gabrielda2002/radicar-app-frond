@@ -13,6 +13,13 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
     idHeadquartersSelected
 }) => {
     const { withLock, loading, error } = useFetchItemsWithLock(typeItem, idHeadquartersSelected);
+    const [isMounted, setIsMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        // Asegurar que el DOM esté listo antes de renderizar el gráfico
+        const timer = setTimeout(() => setIsMounted(true), 100);
+        return () => clearTimeout(timer);
+    }, []);
     
     // Colores para el gráfico circular
     const COLORS = ['#FF8042', '#0088FE']; // Naranja para bloqueados, Azul para desbloqueados
@@ -98,7 +105,8 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                             <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">
                                 Distribución de Candado
                             </h2>
-                            <ResponsiveContainer width="100%" height="90%">
+                            {isMounted && (
+                            <ResponsiveContainer width="100%" height="90%" minHeight={200} minWidth={300}>
                                 <PieChart>
                                     <Pie
                                         data={chartData}
@@ -120,6 +128,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                                     <Legend />
                                 </PieChart>
                             </ResponsiveContainer>
+                            )}
                         </div>
                         
                         {/* Tarjetas con información detallada */}
