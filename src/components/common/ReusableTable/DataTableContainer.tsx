@@ -2,6 +2,9 @@ import React, { ReactNode } from "react";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import FilterPanel from "./components/FilterPanel";
+import FilterChips from "./components/FilterChips";
+import type { TableFilterState } from "./types/filterTypes";
 
 export interface DataTableContainerProps {
   /** Valor del input de búsqueda */
@@ -36,6 +39,12 @@ export interface DataTableContainerProps {
   children: ReactNode;
   /** Clases CSS adicionales para el contenedor */
   className?: string;
+  /**
+   * Estado completo del sistema de filtros avanzados.
+   * Se obtiene de `useTableState` cuando se pasa `filterConfig`.
+   * Si se omite, no se muestran los controles de filtros (backwards compatible).
+   */
+  filterState?: TableFilterState;
 }
 
 export const DataTableContainer: React.FC<DataTableContainerProps> = ({
@@ -55,6 +64,7 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
   showPagination = true,
   children,
   className = "",
+  filterState,
 }) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearchChange) {
@@ -104,10 +114,67 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
               />
             )}
 
+            {/* Botón Filtros (solo si se configuró filterState) */}
+            {filterState && (
+              <button
+                type="button"
+                onClick={filterState.onToggle}
+                className={`relative inline-flex items-center gap-1.5 px-3 h-[40px] text-sm font-medium rounded-md border-2 transition-colors duration-200
+                  ${
+                    filterState.isOpen
+                      ? "bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700"
+                      : "border-gray-400 text-gray-600 hover:border-indigo-500 hover:text-indigo-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
+                  }`}
+                title="Filtros avanzados"
+              >
+                <svg
+                  className="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+                  />
+                </svg>
+                <span>Filtros</span>
+                {/* Badge con número de filtros activos */}
+                {filterState.activeCount > 0 && (
+                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                    {filterState.activeCount > 9 ? "9+" : filterState.activeCount}
+                  </span>
+                )}
+              </button>
+            )}
+
             {/* Acciones adicionales (botones, modales, etc) */}
             {headerActions}
           </div>
         </section>
+
+        {/* Panel de filtros avanzados (dropdown) */}
+        {filterState && (
+          <FilterPanel
+            config={filterState.config}
+            values={filterState.values}
+            isOpen={filterState.isOpen}
+            onChange={filterState.onChange}
+            onClearAll={filterState.onClearAll}
+            getOptions={filterState.getOptions}
+          />
+        )}
+
+        {/* Chips de filtros activos */}
+        {filterState && filterState.activeChips.length > 0 && (
+          <FilterChips
+            chips={filterState.activeChips}
+            onRemove={filterState.onRemove}
+            onClearAll={filterState.onClearAll}
+          />
+        )}
 
         {/* Contenido de la tabla */}
         {children}
