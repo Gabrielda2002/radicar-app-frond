@@ -6,11 +6,67 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { ITickets } from "@/models/ITickets";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
-import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
+import {
+  DataTable,
+  DataTableContainer,
+  useTableState,
+  type FilterFieldConfig,
+} from "@/components/common/ReusableTable";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
 import { useFetchTickets } from "../Hooks/useFetchTickets";
 import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
+
+/** Configuración de filtros para la tabla de tickets */
+const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
+  {
+    key: "status",
+    label: "Estado",
+    type: "multi-select",
+    options: [
+      { value: "Abierto", label: "Abierto" },
+      { value: "Pendiente", label: "Pendiente" },
+      { value: "Cerrado", label: "Cerrado" },
+    ],
+  },
+  {
+    key: "priority",
+    label: "Prioridad",
+    type: "multi-select",
+    options: [
+      { value: "Alta", label: "Alta" },
+      { value: "Media", label: "Media" },
+      { value: "Baja", label: "Baja" },
+      { value: "Urgente", label: "Urgente" },
+    ],
+  },
+  {
+    key: "type",
+    label: "Tipo",
+    type: "multi-select",
+    options: [
+      { value: "Solicitud", label: "Solicitud" },
+      { value: "Incidente", label: "Incidente" }
+    ],
+  },
+  {
+    key: "category",
+    label: "Categoría",
+    type: "multi-select",
+    getOptionsFromData: true,
+  },
+  {
+    key: "headquarter",
+    label: "Sede",
+    type: "multi-select",
+    getOptionsFromData: true,
+  },
+  {
+    key: "createdAt",
+    label: "Fecha creación",
+    type: "date-range",
+  },
+];
 
 const ProcessHelpDesk = () => {
   const { tickets, refetchTickets, error, isLoading: loading } = useFetchTickets();
@@ -18,7 +74,8 @@ const ProcessHelpDesk = () => {
   const tableState = useTableState({
     data: tickets || [],
     searchFields: ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"],
-    initialItemsPerPage: 10
+    initialItemsPerPage: 10,
+    filterConfig: TICKET_FILTER_CONFIG,
   });
 
   const columns = [
@@ -143,6 +200,7 @@ const ProcessHelpDesk = () => {
         currentPage={tableState.currentPage}
         totalPages={tableState.totalPages}
         onPageChange={tableState.paginate}
+        filterState={tableState.filterState}
       >
         <DataTable
           data={tableState.currentData()}
