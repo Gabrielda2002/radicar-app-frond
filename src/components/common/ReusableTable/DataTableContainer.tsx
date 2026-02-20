@@ -5,6 +5,8 @@ import Select from "@/components/common/Ui/Select";
 import FilterPanel from "./components/FilterPanel";
 import FilterChips from "./components/FilterChips";
 import type { TableFilterState } from "./types/filterTypes";
+import Button from "../Ui/Button";
+import { Funnel } from "lucide-react";
 
 export interface DataTableContainerProps {
   /** Valor del input de búsqueda */
@@ -94,7 +96,7 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
                 value={searchValue}
                 onChange={handleSearchChange}
                 placeholder={searchPlaceholder}
-                className="block ps-2 w-[280px] h-10 pl-1 border-[1px] border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="block ps-2 w-70 h-10 pl-1 border border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               />
             </div>
           )}
@@ -110,44 +112,31 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
                 }))}
                 value={itemsPerPage}
                 onChange={handleItemsPerPageChange}
-                className="border-2 h-[40px] w-[120px] rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="border-2 h-10 w-30 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             )}
 
             {/* Botón Filtros (solo si se configuró filterState) */}
             {filterState && (
-              <button
+              <Button
                 type="button"
                 onClick={filterState.onToggle}
-                className={`relative inline-flex items-center gap-1.5 px-3 h-[40px] text-sm font-medium rounded-md border-2 transition-colors duration-200
-                  ${
-                    filterState.isOpen
-                      ? "bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700"
-                      : "border-gray-400 text-gray-600 hover:border-indigo-500 hover:text-indigo-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-indigo-400 dark:hover:text-indigo-400"
+                className={`relative inline-flex items-center gap-1.5 px-3 h-10 text-sm font-medium rounded-md border-2 transition-colors duration-200
+                  ${filterState.isOpen
+                    ? "bg-color border-indigo-600 text-white hover:bg-color/90"
+                    : "border-gray-400 text-gray-600 hover:border-color hover:text-color-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-color dark:hover:text-indigo-400"
                   }`}
+                variant="any"
                 title="Filtros avanzados"
+                icon={<Funnel className="w-4 h-4" />}
               >
-                <svg
-                  className="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
-                  />
-                </svg>
                 <span>Filtros</span>
-                {/* Badge con número de filtros activos */}
                 {filterState.activeCount > 0 && (
                   <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
                     {filterState.activeCount > 9 ? "9+" : filterState.activeCount}
                   </span>
                 )}
-              </button>
+              </Button>
             )}
 
             {/* Acciones adicionales (botones, modales, etc) */}
@@ -186,7 +175,7 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={onPageChange || (() => {})}
+              onPageChange={onPageChange || (() => { })}
             />
           </>
         )}
