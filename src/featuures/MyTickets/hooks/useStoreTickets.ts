@@ -9,7 +9,7 @@ interface UseStoreTickets {
     fetchTicketsUser: (id: number) => Promise<void>;
 }
 
-const useStoreTickets =  create<UseStoreTickets>((set, get) => ({
+const useStoreTickets =  create<UseStoreTickets>((set) => ({
     tickets: null,
     error: null,
     isLoading: false,
