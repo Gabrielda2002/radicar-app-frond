@@ -8,7 +8,31 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
-type FileType = "files" | "soporte" | "attachments" | null;
+type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | null;
+
+const customEndPoint = [
+    {
+        type: "files",
+        epGenerateToken: "files",
+        epSecureAccess: "secure-file"
+    },
+    {
+        type: "soporte",
+        epGenerateToken: "soportes",
+        epSecureAccess: "secure-soporte"
+    },
+    {
+        type: "attachments-inventory",
+        epGenerateToken: "attachments",
+        epSecureAccess: "secure-attachments"
+    },
+    {
+        type: "attachments-tickets",
+        epGenerateToken: "attachments/tickets",
+        epSecureAccess: "secure-download"
+    }
+
+]
 
 interface UseSecureFileAccessReturn {
     isLoading: boolean;
@@ -27,7 +51,7 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
         try {
 
-            const endPoint = type === "files" ? "files" : type === "attachments" ? 'attachments' : "soportes";
+            const endPoint = customEndPoint.find(ep => ep.type === type)?.epGenerateToken
 
             const response = await api.post(`/${endPoint}/${fileId}/access-token?action=${action}`)
 
@@ -50,7 +74,7 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
             const tokenData = await requestAccessToken(Number(fileId), action, type);
 
-            const endPoint = type === "files" ? "secure-file" : type === "attachments" ? "secure-attachments" : "secure-soporte";
+            const endPoint = customEndPoint.find(ep => ep.type === type)?.epSecureAccess
 
             const secureUrl = `${import.meta.env.VITE_URL_BACKEND}/api/v1/${endPoint}/${tokenData.token}`;
 

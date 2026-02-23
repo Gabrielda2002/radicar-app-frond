@@ -16,6 +16,8 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
 import { useFetchTickets } from "../Hooks/useFetchTickets";
 import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
+import Button from "@/components/common/Ui/Button";
+import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -70,6 +72,8 @@ const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
 
 const ProcessHelpDesk = () => {
   const { tickets, refetchTickets, error, isLoading: loading } = useFetchTickets();
+
+  const  { downloadSecureFile } = useSecureFileAccess();
 
   const tableState = useTableState({
     data: tickets || [],
@@ -180,6 +184,24 @@ const ProcessHelpDesk = () => {
           <ModalCommetsTicket idTicket={item.id} />
         </Suspense>
       )
+    },
+    {
+      key: "attachment",
+      header: "Adjuntos",
+      width: "10%",
+      render: (item: ITickets) => {
+        return item.attachments.length > 0 ? (
+          item.attachments.map(a => (
+            <Button
+              key={a.id}
+              variant="secondary"
+              onClick={() => downloadSecureFile(a.id.toString(), "attachments-tickets")}
+            />
+          ))
+        ) : (
+          <span className="text-gray-400">-</span>
+        ) 
+      }
     }
   ]
 

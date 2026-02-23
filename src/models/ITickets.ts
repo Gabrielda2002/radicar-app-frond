@@ -4,6 +4,13 @@ export interface ITickets extends ITicketsUser {
     headquarter: string;
     municipio: string;
     phone: number;
+    attachments: attachments[];
+}
+
+interface attachments {
+    id: number;
+    fileName: string;
+    fileUrl: string;
 }
 
 enum Priority {
