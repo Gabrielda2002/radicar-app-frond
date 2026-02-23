@@ -1,11 +1,13 @@
 import HeaderPage from '@/components/common/HeaderPage/HeaderPage'
 import { DataTable, DataTableContainer, useTableState } from '@/components/common/ReusableTable'
 import useStoreTickets from '../hooks/useStoreTickets';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
 import { ITicketsUser } from '@/models/ITickets';
 import { FormatDate } from '@/utils/FormatDate';
 import { getPriorityColor, getStatusColor } from '@/featuures/MyRequestsPermissions/utils/getColorTicketColumn';
+import ModalCommetsTicket from '@/featuures/HelpDesk/Components/ModalCommetsTicket';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 const MyTickets = () => {
 
@@ -89,7 +91,17 @@ const MyTickets = () => {
             header: "Ultima Actualizacion",
             width: "20%",
             accessor: (item: ITicketsUser) => FormatDate(item.updatedAt),
-        }
+        },
+        {
+            key: "comments",
+            header: "Comentarios",
+            width: "20%",
+            render: (item: ITicketsUser) => (
+                <Suspense fallback={<LoadingSpinner/>}>
+                    <ModalCommetsTicket idTicket={item.id}/>
+                </Suspense>
+            )
+        },
     ]
 
     return (

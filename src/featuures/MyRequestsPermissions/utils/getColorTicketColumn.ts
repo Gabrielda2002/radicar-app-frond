@@ -20,6 +20,10 @@ export const getPriorityColor = (priority: string): string => {
             return " p-1 bg-orange-500/60 rounded-lg dark:text-gray-300 text-gray-700";
         case "Alta":
             return " p-1 bg-red-800/60 rounded-lg dark:text-gray-300 text-gray-700";
+        case "Urgente":
+            return " p-1 bg-red-900/80 rounded-lg dark:text-gray-300 text-gray-700";
+        case "Pendiente":
+            return " p-1 bg-blue-500/60 rounded-lg dark:text-gray-300 text-gray-700";
         default:
             return "";
     }
