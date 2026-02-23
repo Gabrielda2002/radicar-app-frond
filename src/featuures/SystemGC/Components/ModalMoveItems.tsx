@@ -83,7 +83,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
       await moveItem(
         Number(itemId),
         selectedFolderId || "",
-        itemType === "carpetas" ? "carpetas" : "archivo",
+        itemType === "carpetas" ? "carpetas" : "archivos",
         activeSection,
         () => {
           onClose();
@@ -118,9 +118,9 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
         size="lg"
       >
         {/* Encabezado personalizado con info del item */}
-        <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+        <div className="mb-6 p-4 bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 shadow-lg">
               {itemType === "carpetas" ? (
                 <FolderIcon className="w-6 h-6 text-white" />
               ) : (
@@ -159,7 +159,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
               {navigationPath.map((item, index) => (
                 <React.Fragment key={index}>
                   {index > 0 && (
-                    <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                    <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                   )}
                   <button
                     onClick={() => {
@@ -195,7 +195,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
 
         {/* Área de contenido mejorada */}
         <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900">
-          <div className="sticky top-0 z-10 px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-b border-gray-200 dark:border-gray-700">
+          <div className="sticky top-0 z-10 px-4 py-3 bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FolderOpenIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -336,7 +336,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
               className="mt-4"
             >
               <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                <div className="flex-shrink-0 w-5 h-5 mt-0.5">
+                <div className="shrink-0 w-5 h-5 mt-0.5">
                   <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
@@ -362,7 +362,7 @@ const ModalMoveItems: React.FC<ModalMoveItemsProps> = ({
             className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg"
           >
             <div className="flex items-start gap-2">
-              <svg className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
               <p className="text-sm text-blue-700 dark:text-blue-300">
