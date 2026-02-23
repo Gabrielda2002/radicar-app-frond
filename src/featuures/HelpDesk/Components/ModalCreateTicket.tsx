@@ -61,7 +61,6 @@ const HelpDesk = () => {
       .min(10, "La descripcion debe tener al menos 10 caracteres")
       .max(500, "La descripcion debe tener maximo 100 caracteres"),
     category: Yup.number().required("La categoria es requerida"),
-    priority: Yup.number().required("La prioridad es requerida"),
     file: Yup.mixed()
       .nullable()
       .optional()
@@ -186,7 +185,7 @@ const HelpDesk = () => {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Select
                   options={[
-                    { value: "Solcitud", label: "Solicitud" },
+                    { value: "Solicitud", label: "Solicitud" },
                     { value: "Incidente", label: "Incidente" }
                   ]}
                   label="Tipo"
