@@ -190,7 +190,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const renderPerifericosTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full bg-white border-collapse rounded-lg shadow-md min-w-[600px]">
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md min-w-150">
           <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
               <th className="p-2">Nombre:</th>
@@ -408,7 +408,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const renderComponentesTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full overflow-auto bg-white border-collapse rounded-lg shadow-md min-w-[600px]">
+        <table className="w-full overflow-auto bg-white border-collapse rounded-lg shadow-md min-w-150">
           <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
               <th className="p-2">Nombre:</th>
@@ -620,7 +620,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
   const renderSoftwareTable = () => {
     return (
       <TableWrapper>
-        <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto min-w-[600px]">
+        <table className="w-full bg-white border-collapse rounded-lg shadow-md overscroll-auto min-w-150">
           <thead className="sticky top-0 bg-gray-100 dark:bg-gray-900 dark:text-white">
             <tr>
               <th className="p-2">Nombre:</th>
