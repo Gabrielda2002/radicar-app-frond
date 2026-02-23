@@ -1047,7 +1047,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
         isOpen={openComfirmPop}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
-        iteamName={itemToDelete?.name || ""}
+        itemName={itemToDelete?.name || ""}
       />
     </>
   );
