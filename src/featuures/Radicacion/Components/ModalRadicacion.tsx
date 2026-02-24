@@ -55,139 +55,99 @@ const ModalRadicacion = () => {
   const [identificacion, setIdentificacion] = useState<string>("");
   const [diagnosicoValue, setDiagnosticoValue] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [quantityInputs, setCantidadInputs] = useState<string>("1");
-  const [servicios, setServicios] = useState<string[]>([]);
-
-  const [quantityServices, setQuantityServices] = useState<string[]>([]);
-  const [descripciones, setDescripciones] = useState<string[]>([]);
-  const [serviceIds, setServiceIds] = useState<string[]>([]);
-
-  const items = Array.from({ length: parseInt(quantityInputs || "0") || 0 }, (_, index) => ({
-    id: serviceIds[index],
-    code: servicios[index],
-    description: descripciones[index],
-    quantity: quantityServices[index],
-  }));
 
   // * usar formik y yup para validar los campos
   const validationSchema = Yup.object({
-    telefonoFijo: Yup.string()
+    landline: Yup.string()
       .optional()
       .min(1, "El número debe tener al menos 1 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
-    numeroCelular: Yup.string()
+    phoneNumber: Yup.string()
       .required("Campo requerido")
       .min(1, "El número debe tener al menos 10 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
-    numeroCelular2: Yup.string()
+    phoneNumber2: Yup.string()
       .optional()
       .min(1, "El número debe tener al menos 10 caracteres.")
       .max(10, "El número debe tener máximo 10 caracteres."),
-    direccion: Yup.string().required("Campo requerido"),
+    address: Yup.string().required("Campo requerido"),
     email: Yup.string().email("Email inválido").required("Campo requerido"),
-    idIpsRemite: Yup.string().required("Campo requerido"),
-    idEspecialidad: Yup.string().required("Campo requerido"),
-    idGrupoServicios: Yup.string().required("Campo requerido"),
-    idLugarRadicacion: Yup.string().required("Campo requerido"),
-    idTipoServicios: Yup.string().required("Campo requerido"),
-    nombreProfesional: Yup.string().required("Campo requerido"),
-    dateOrden: Yup.string().required("Campo requerido"),
-    soporte: Yup.mixed().required("Campo requerido"),
+    ipsRemiteId: Yup.string().required("Campo requerido"),
+    specialty: Yup.string().required("Campo requerido"),
+    groupService: Yup.string().required("Campo requerido"),
+    placeId: Yup.string().required("Campo requerido"),
+    typeService: Yup.string().required("Campo requerido"),
+    professional: Yup.string().required("Campo requerido"),
+    orderDate: Yup.string().required("Campo requerido"),
+    file: Yup.mixed().required("Campo requerido"),
+    numberOfCups: Yup.string()      .required("Campo requerido"),
+    cupsData: Yup.array().of(
+      Yup.object().shape({
+        code: Yup.string().required("Código CUPS requerido"),
+        description: Yup.string().required("Descripción CUPS requerida"),
+        quantity: Yup.string().required("Cantidad CUPS requerida"),
+        id: Yup.string().required("ID CUPS requerido"),
+      })
+    )
   });
 
   const formik = useFormik({
     initialValues: {
-      telefonoFijo: "",
-      numeroCelular: "",
-      numeroCelular2: "",
-      direccion: "",
+      landline: "",
+      phoneNumber: "",
+      phoneNumber2: "",
+      address: "",
       email: "",
-      idIpsRemite: "",
-      idEspecialidad: "",
-      idGrupoServicios: "",
-      idLugarRadicacion: "",
-      idTipoServicios: "",
-      nombreProfesional: "",
-      dateOrden: "",
-      idDiagnostico: "",
+      ipsRemiteId: "",
+      specialty: "",
+      groupService: "",
+      placeId: "",
+      typeService: "",
+      professional: "",
+      orderDate: "",
+      diagnosisId: "",
       descripcionDiagnostico: "",
       codigoDiagnostico: "",
-      idPaciente: "",
-      soporte: null,
+      patientId: "",
+      file: null,
+      assistantId: idUsuario,
+      numberOfCups: 1,
+      cupsData: [{
+        code: "",
+        description: "",
+        quantity: "",
+        id: "",
+      }]
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-
-      // ? validar que cantidad no este vacia y sea mayor a 0
-      if (!quantityInputs || parseInt(quantityInputs) <= 0) {
-        setErrorCups(
-          "La cantidad de servicios solicitados no puede estar vacía."
-        );
-        return;
-      }
-
-      // ! validar si la cantidad de cups ingresados es igual a la cantidad de pares de inputs que solicito el usuario
-      // ! tambien se valida que no haya campos vacios
-      let errorCups = "";
-      if (servicios.length !== parseInt(quantityInputs)) {
-        errorCups =
-          "La cantidad de códigos de CUPS no coincide con la cantidad especificada.";
-      } else if (descripciones.length !== parseInt(quantityInputs)) {
-        errorCups =
-          "La cantidad de descripciones de CUPS no coincide con la cantidad especificada.";
-      } else if (quantityServices.length !== parseInt(quantityInputs)) {
-        errorCups =
-          "El número de cantidades de CUPS no coincide con la cantidad especificada.";
-      } else if (serviceIds.length !== parseInt(quantityInputs)) {
-        errorCups =
-          "La cantidad de IDs de CUPS no coincide con la cantidad especificada.";
-      } else {
-        for (let i = 0; i < parseInt(quantityInputs); i++) {
-          if (!servicios[i]) {
-            errorCups = `Falta el código del CUPS N° ${i + 1}.`;
-            break;
-          }
-          if (!descripciones[i]) {
-            errorCups = `Falta la descripción del CUPS N° ${i + 1}.`;
-            break;
-          }
-          if (!quantityServices[i]) {
-            errorCups = `Falta la cantidad del CUPS N° ${i + 1}.`;
-            break;
-          }
-          if (!serviceIds[i]) {
-            errorCups = `Falta el ID del CUPS N° ${i + 1}.`;
-            break;
-          }
-        }
-      }
 
       if (errorCups) {
         setErrorCups(errorCups);
         return;
       }
-      const formData = new FormData();
-      formData.append("landline", values.telefonoFijo);
-      formData.append("phoneNumber", values.numeroCelular);
-      formData.append("phoneNumber2", values.numeroCelular2);
-      formData.append("address", values.direccion);
-      formData.append("email", values.email);
-      formData.append("ipsRemitente", values.idIpsRemite);
-      formData.append("specialty", values.idEspecialidad);
-      formData.append("groupServices", values.idGrupoServicios);
-      formData.append("place", values.idLugarRadicacion);
-      formData.append("typeServices", values.idTipoServicios);
-      formData.append("radicador", idUsuario);
-      formData.append("profetional", values.nombreProfesional);
-      formData.append("orderDate", values.dateOrden);
-      if (values.soporte) {
-        formData.append("file", values.soporte);
-      }
-      formData.append("idDiagnostico", values.idDiagnostico);
-      formData.append("items", JSON.stringify(items));
-      formData.append("idPatient", values.idPaciente);
+      // const formData = new FormData();
+      // formData.append("landline", values.landline);
+      // formData.append("phoneNumber", values.phoneNumber);
+      // formData.append("phoneNumber2", values.phoneNumber2);
+      // formData.append("address", values.address);
+      // formData.append("email", values.email);
+      // formData.append("ipsRemitente", values.ipsRemiteId);
+      // formData.append("specialty", values.specialty);
+      // formData.append("groupServices", values.groupService);
+      // formData.append("place", values.placeId);
+      // formData.append("typeServices", values.typeService);
+      // formData.append("radicador", idUsuario);
+      // formData.append("profetional", values.professional);
+      // formData.append("orderDate", values.orderDate);
+      // if (values.file) {
+      //   formData.append("file", values.file);
+      // }
+      // formData.append("diagnosisId", values.diagnosisId);
+      // formData.append("items", JSON.stringify(items));
+      // formData.append("idPatient", values.patientId);
 
-      const response = await createRequestService(formData);
+      const response = await createRequestService(values);
 
       if (response?.status === 201 || response?.status === 200) {
         setErrorCups(null);
@@ -199,13 +159,34 @@ const ModalRadicacion = () => {
     },
   });
 
+  useEffect(() => {
+    const numberOfCups = formik.values.numberOfCups;
+    const currentCupsLength = formik.values.cupsData.length;
+
+    if(numberOfCups > currentCupsLength) {
+      const newCups = [...formik.values.cupsData];
+      for(let i = currentCupsLength; i < numberOfCups; i++) {
+        newCups.push({
+          code: "",
+          description: "",
+          quantity: "",
+          id: ""
+        });
+      }
+      formik.setFieldValue("cupsData", newCups);
+    }else {
+      formik.setFieldValue("cupsData", formik.values.cupsData.slice(0, numberOfCups));
+    }
+
+  }, [formik.values.numberOfCups]);
+
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
     if (data) {
-      formik.setFieldValue("telefonoFijo", data.landline);
-      formik.setFieldValue("numeroCelular", data.phoneNumber);
-      formik.setFieldValue("numeroCelular2", data.phoneNumber2 || "");
-      formik.setFieldValue("direccion", data.address);
+      formik.setFieldValue("landline", data.landline);
+      formik.setFieldValue("phoneNumber", data.phoneNumber);
+      formik.setFieldValue("phoneNumber2", data.phoneNumber2 || "");
+      formik.setFieldValue("address", data.address);
       formik.setFieldValue("email", data.email);
     }
   }, [data]);
@@ -213,7 +194,7 @@ const ModalRadicacion = () => {
   useEffect(() => {
     if (diagnostico) {
       formik.setFieldValue(
-        "idDiagnostico",
+        "diagnosisId",
         diagnostico.map((item) => item.id).join(", ")
       );
       setDescription(diagnostico.map((item) => item.description).join(", "));
@@ -223,7 +204,7 @@ const ModalRadicacion = () => {
 
   useEffect(() => {
     if (data) {
-      formik.setFieldValue("idPaciente", data.id.toString());
+      formik.setFieldValue("patientId", data.id.toString());
       // setIdPaciente(data.id.toString());
     }
   }, [data]);
@@ -257,48 +238,13 @@ const ModalRadicacion = () => {
     navigate("/tabla-pacientes", { state: { openModal: true } });
   };
 
-  // ? validar que la cantidad de servicios sea un número entero mayor a 0
-  const HandleQuantityInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^[1-9]\d*$/.test(value) || value === "") {
-      setCantidadInputs(value);
-    }
-    // reiniciar arrays de servicios y descripciones
-    setServicios(Array(Number(value)).fill(""));
-    setDescripciones(Array(Number(value)).fill(""));
-    setQuantityServices(Array(Number(value)).fill(""));
-    setServiceIds(Array(Number(value)).fill(""));
-  };
-
-  const handleServicioChange = (index: number, value: string) => {
-    const newServicios = [...servicios];
-    newServicios[index] = value;
-    setServicios(newServicios);
-  };
-
-  const handleDescripcionChange = (index: number, value: string) => {
-    const newDescripciones = [...descripciones];
-    newDescripciones[index] = value;
-    setDescripciones(newDescripciones);
-  };
-
-  const handleCantidadInputChange = (index: number, value: string) => {
-    const newCantidadInput = [...quantityServices];
-    newCantidadInput[index] = value;
-    setQuantityServices(newCantidadInput);
-  };
-
-  const handleIdServicioChange = (index: number, value: string) => {
-    const newIds = [...serviceIds];
-    newIds[index] = value;
-    setServiceIds(newIds);
-  };
-
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
     }
   };
+
+  console.log(formik.values)
 
   return (
     <>
@@ -386,8 +332,7 @@ const ModalRadicacion = () => {
                     <Input
                       type="text"
                       value={data.convenioRelation.name}
-                      label="Convevio"
-                      disabled={true}
+                      label="Convenio"
                     />
                   </div>
                   <div>
@@ -403,7 +348,7 @@ const ModalRadicacion = () => {
               <div>
                 <input
                   type="text"
-                  value={formik.values.idPaciente}
+                  value={formik.values.patientId}
                   className="hidden"
                 />
               </div>
@@ -419,16 +364,16 @@ const ModalRadicacion = () => {
               <div className="mb-4">
                 <Input
                   type="number"
-                  name="telefonoFijo"
+                  name="landline"
                   placeholder="Ingrese teléfono..."
                   onChange={formik.handleChange}
-                  value={formik.values.telefonoFijo}
+                  value={formik.values.landline}
                   onBlur={formik.handleBlur}
                   label="Telefono Fijo"
                   icon={<Phone className="w-5 h-5" />}
                   iconPosition="left"
-                  touched={formik.touched.telefonoFijo}
-                  error={formik.errors.telefonoFijo}
+                  touched={formik.touched.landline}
+                  error={formik.errors.landline}
                 />
               </div>
               <div>
@@ -436,15 +381,15 @@ const ModalRadicacion = () => {
                   type="number"
                   placeholder="Ingrese número de celular..."
                   onChange={formik.handleChange}
-                  value={formik.values.numeroCelular}
-                  name="numeroCelular"
+                  value={formik.values.phoneNumber}
+                  name="phoneNumber"
                   onBlur={formik.handleBlur}
                   label="N° Celular"
                   required={true}
                   icon={<Smartphone className="w-5 h-5" />}
                   iconPosition="left"
-                  touched={formik.touched.numeroCelular}
-                  error={formik.errors.numeroCelular}
+                  touched={formik.touched.phoneNumber}
+                  error={formik.errors.phoneNumber}
                 />
               </div>
               <div>
@@ -452,30 +397,30 @@ const ModalRadicacion = () => {
                   type="number"
                   placeholder="Ej: 3001234567"
                   onChange={formik.handleChange}
-                  value={formik.values.numeroCelular2}
-                  name="numeroCelular2"
+                  value={formik.values.phoneNumber2}
+                  name="phoneNumber2"
                   onBlur={formik.handleBlur}
                   label="N° Celular 2"
                   icon={<Smartphone className="w-5 h-5" />}
                   iconPosition="left"
-                  touched={formik.touched.numeroCelular2}
-                  error={formik.errors.numeroCelular2}
+                  touched={formik.touched.phoneNumber2}
+                  error={formik.errors.phoneNumber2}
                 />
               </div>
               <div>
                 <Input
                   type="text"
                   placeholder="Ingrese dirección..."
-                  name="direccion"
+                  name="address"
                   onChange={formik.handleChange}
-                  value={formik.values.direccion}
+                  value={formik.values.address}
                   onBlur={formik.handleBlur}
                   label="Dirección"
                   required={true}
                   icon={<MapPinHouse className="w-5 h-5" />}
                   iconPosition="left"
-                  touched={formik.touched.direccion}
-                  error={formik.errors.direccion}
+                  touched={formik.touched.address}
+                  error={formik.errors.address}
                 />
               </div>
               <div>
@@ -506,11 +451,12 @@ const ModalRadicacion = () => {
               <div className="mb-3">
                 <Input
                   type="text"
-                  id="cantidad"
-                  name="cantidad"
+                  id="numberOfCups"
+                  name="numberOfCups"
                   maxLength={1}
-                  value={quantityInputs}
-                  onChange={HandleQuantityInputs}
+                  value={formik.values.numberOfCups}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   onKeyDown={EventEnter}
                   placeholder="Digite número . . . ."
                   label="Cantidad de Servicios Solicitados"
@@ -520,15 +466,7 @@ const ModalRadicacion = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-[24%_24%_46%] gap-5">
                 <ServicioForm
-                  quantityInputs={quantityInputs}
-                  servicios={servicios}
-                  quantityServices={quantityServices}
-                  descripciones={descripciones}
-                  onServicioChange={handleServicioChange}
-                  onDescripcionChange={handleDescripcionChange}
-                  onCantidadInputChange={handleCantidadInputChange}
-                  idsServicios={serviceIds}
-                  onIdServicioChange={handleIdServicioChange}
+                  formik={formik}
                 />
               </div>
             </section>
@@ -544,17 +482,17 @@ const ModalRadicacion = () => {
                 <InputAutocompletado
                   label="IPS Remite"
                   onInputChanged={(value) =>
-                    formik.setFieldValue("idIpsRemite", value)
+                    formik.setFieldValue("ipsRemiteId", value)
                   }
                   apiRoute="ips-remite-name"
-                  error={formik.errors.idIpsRemite}
-                  touched={formik.touched.idIpsRemite}
+                  error={formik.errors.ipsRemiteId}
+                  touched={formik.touched.ipsRemiteId}
                   placeholder="Ej: IPS San Juan"
                   required={true}
                 />
                 <AnimatePresence>
-                  {formik.touched.idIpsRemite && formik.errors.idIpsRemite ? (
-                    <ErrorMessage>{formik.errors.idIpsRemite}</ErrorMessage>
+                  {formik.touched.ipsRemiteId && formik.errors.ipsRemiteId ? (
+                    <ErrorMessage>{formik.errors.ipsRemiteId}</ErrorMessage>
                   ) : null}
                 </AnimatePresence>
               </div>
@@ -562,18 +500,18 @@ const ModalRadicacion = () => {
                 <InputAutocompletado
                   label="Especialidad"
                   onInputChanged={(value) =>
-                    formik.setFieldValue("idEspecialidad", value)
+                    formik.setFieldValue("specialty", value)
                   }
                   apiRoute="especialidades-name"
-                  error={formik.errors.idEspecialidad}
-                  touched={formik.touched.idEspecialidad}
+                  error={formik.errors.specialty}
+                  touched={formik.touched.specialty}
                   placeholder="Ej: Endodoncia"
                   required={true}
                 />
-                {formik.touched.idEspecialidad &&
-                formik.errors.idEspecialidad ? (
+                {formik.touched.specialty &&
+                formik.errors.specialty ? (
                   <div className="mt-2 text-red-500 dark:text-red-300">
-                    {formik.errors.idEspecialidad}
+                    {formik.errors.specialty}
                   </div>
                 ) : null}
               </div>
@@ -582,14 +520,14 @@ const ModalRadicacion = () => {
                   label="Profesional remite"
                   apiRoute="profesionales/buscar"
                   error={
-                    formik.touched.nombreProfesional
-                      ? formik.errors.nombreProfesional
+                    formik.touched.professional
+                      ? formik.errors.professional
                       : undefined
                   }
                   onInputChanged={(value) =>
-                    formik.setFieldValue("nombreProfesional", value)
+                    formik.setFieldValue("professional", value)
                   }
-                  touched={formik.touched.nombreProfesional}
+                  touched={formik.touched.professional}
                   required={true}
                   placeholder="Digite nombre del profesional..."
                   helpText={`¿No encuentras el profesional?`}
@@ -599,33 +537,33 @@ const ModalRadicacion = () => {
               <div>
                 <Input
                   type="date"
-                  name="dateOrden"
+                  name="orderDate"
                   onChange={formik.handleChange}
-                  value={formik.values.dateOrden}
+                  value={formik.values.orderDate}
                   onBlur={formik.handleBlur}
                   label="Fecha Orden"
                   required={true}
-                  touched={formik.touched.dateOrden}
-                  error={formik.errors.dateOrden}
+                  touched={formik.touched.orderDate}
+                  error={formik.errors.orderDate}
                 />
               </div>
               <div>
                 <InputAutocompletado
                   label="Grupo Servicios"
                   onInputChanged={(value) =>
-                    formik.setFieldValue("idGrupoServicios", value)
+                    formik.setFieldValue("groupService", value)
                   }
                   apiRoute="grupo-servicios-name"
-                  error={formik.errors.idGrupoServicios}
-                  touched={formik.touched.idGrupoServicios}
+                  error={formik.errors.groupService}
+                  touched={formik.touched.groupService}
                   placeholder="Ej: Cirugía General"
                   required={true}
                 />
                 <AnimatePresence>
-                  {formik.touched.idGrupoServicios &&
-                  formik.errors.idGrupoServicios ? (
+                  {formik.touched.groupService &&
+                  formik.errors.groupService ? (
                     <ErrorMessage>
-                      {formik.errors.idGrupoServicios}
+                      {formik.errors.groupService}
                     </ErrorMessage>
                   ) : null}
                 </AnimatePresence>
@@ -634,18 +572,18 @@ const ModalRadicacion = () => {
                 <InputAutocompletado
                   label="Tipo Servicios"
                   onInputChanged={(value) =>
-                    formik.setFieldValue("idTipoServicios", value)
+                    formik.setFieldValue("typeService", value)
                   }
                   apiRoute="servicios-name"
-                  error={formik.errors.idTipoServicios}
-                  touched={formik.touched.idTipoServicios}
+                  error={formik.errors.typeService}
+                  touched={formik.touched.typeService}
                   placeholder="Ej: PGP"
                   required={true}
                 />
                 <AnimatePresence>
-                  {formik.touched.idTipoServicios &&
-                  formik.errors.idTipoServicios ? (
-                    <ErrorMessage>{formik.errors.idTipoServicios}</ErrorMessage>
+                  {formik.touched.typeService &&
+                  formik.errors.typeService ? (
+                    <ErrorMessage>{formik.errors.typeService}</ErrorMessage>
                   ) : null}
                 </AnimatePresence>
               </div>
@@ -653,19 +591,19 @@ const ModalRadicacion = () => {
                 <InputAutocompletado
                   label="Lugar Radicación"
                   onInputChanged={(value) =>
-                    formik.setFieldValue("idLugarRadicacion", value)
+                    formik.setFieldValue("placeId", value)
                   }
                   apiRoute="lugares-radicacion-name"
-                  error={formik.errors.idLugarRadicacion}
-                  touched={formik.touched.idLugarRadicacion}
+                  error={formik.errors.placeId}
+                  touched={formik.touched.placeId}
                   placeholder="Ej: Calle 15"
                   required={true}
                 />
                 <AnimatePresence>
-                  {formik.touched.idLugarRadicacion &&
-                  formik.errors.idLugarRadicacion ? (
+                  {formik.touched.placeId &&
+                  formik.errors.placeId ? (
                     <ErrorMessage>
-                      {formik.errors.idLugarRadicacion}
+                      {formik.errors.placeId}
                     </ErrorMessage>
                   ) : null}
                 </AnimatePresence>
@@ -716,27 +654,20 @@ const ModalRadicacion = () => {
               <div className="mt-4 mb-4 md:mt-0">
                 <Input
                   type="file"
-                  name="soporte"
+                  name="file"
                   accept=".pdf"
                   onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
-                      formik.setFieldValue("soporte", e.target.files[0]);
+                      formik.setFieldValue("file", e.target.files[0]);
                     }
                   }}
                   label="Soporte"
                   required={true}
-                  touched={formik.touched.soporte}
-                  error={formik.errors.soporte}
+                  touched={formik.touched.file}
+                  error={formik.errors.file}
                 />
               </div>
             </section>
-            <div>
-              <input
-                type="text"
-                value={formik.values.idDiagnostico}
-                className="hidden"
-              />
-            </div>
           </div>
 
           <AnimatePresence>

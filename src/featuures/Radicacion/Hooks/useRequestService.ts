@@ -6,7 +6,7 @@ export const useRequestService = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const createRequestService = async (data: FormData) => {
+  const createRequestService = async (data: Object) => {
     try {
       setLoading(true);
       const response = await api.post("/request/service", data, {
