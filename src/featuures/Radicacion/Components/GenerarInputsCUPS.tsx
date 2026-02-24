@@ -1,98 +1,119 @@
 import React, { useEffect, useRef } from "react";
 import useFetchCups from "@/hooks/useFetchCups";
 import Input from "@/components/common/Ui/Input";
+import { FormikProps } from "formik";
 
-interface ServicioFormProps {
-  quantityInputs: string;
-  servicios: string[];
-  quantityServices: string[];
-  descripciones: string[];
-  idsServicios: string[];
-  onServicioChange: (index: number, value: string) => void;
-  onDescripcionChange: (index: number, value: string) => void;
-  onCantidadInputChange: (index: number, value: string) => void;
-  onIdServicioChange: (index: number, value: string) => void;
+interface CupsItem {
+  code: string;
+  description: string;
+  quantity: string;
+  id: string;
 }
 
-const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({
-  quantityInputs,
-  servicios,
-  quantityServices,
-  descripciones,
-  idsServicios,
-  onServicioChange,
-  onDescripcionChange,
-  onCantidadInputChange,
-  onIdServicioChange,
-}) => {
+interface ServicioFormProps {
+  formik: FormikProps<any>; // Recibe el objeto formik completo
+}
+
+const GenerarInputsCUPS: React.FC<ServicioFormProps> = ({ formik }) => {
   const { data, fetchCups, error, loading } = useFetchCups();
   const lastIndexRef = useRef<number | null>(null);
+
+  // Cuando lleguen los datos del API, actualizar el campo correspondiente
   useEffect(() => {
-    if (data && data.name) {
+    if (data && data.name && lastIndexRef.current !== null) {
       const index = lastIndexRef.current;
-      if (index !== null && index !== undefined) {
-        // Actualiza descripción si cambió
-        if (descripciones[index] !== data.name) {
-          onDescripcionChange(index, data.name);
-        }
-        // Actualiza ID si cambió
-        const idAsString = String(data.id ?? "");
-        if (idsServicios[index] !== idAsString) {
-          onIdServicioChange(index, idAsString);
-        }
+      const currentCup = formik.values.cupsData[index];
+
+      // Solo actualizar si cambió
+      if (currentCup.description !== data.name || currentCup.id !== String(data.id ?? "")) {
+        formik.setFieldValue(`cupsData[${index}].description`, data.name);
+        formik.setFieldValue(`cupsData[${index}].id`, String(data.id ?? ""));
       }
     }
-  }, [data, servicios, descripciones, idsServicios, onDescripcionChange, onIdServicioChange]);
+  }, [data]);
 
   const handleServicioBlur = async (index: number) => {
-    const codigoServicio = servicios[index];
+    const codigoServicio = formik.values.cupsData[index]?.code;
     if (codigoServicio) {
       lastIndexRef.current = index;
-      await fetchCups(codigoServicio); // Llamada al API
+      await fetchCups(codigoServicio);
     }
   };
 
-  const bloques = Array.from({ length: Number(quantityInputs) }, (_, index) => (
-    <React.Fragment key={index}>
-      <div>
-        <Input
-          label={`Código Servicio N° ${index + 1}`}
-          id={`servicio-${index}`}
-          name={`servicio-${index}`}
-          value={servicios[index]}
-          onChange={(e) => onServicioChange(index, e.target.value)}
-          onBlur={() => handleServicioBlur(index)} // Ejecuta la búsqueda al perder el foco
-          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-          placeholder="Código"
-        />
-      </div>
-      <div>
-        <Input
-          label={`Cantidad Servicio N° ${index + 1}`}
-          id={`quantityServices-${index}`}
-          name={`quantityServices-${index}`}
-          maxLength={2}
-          value={quantityServices[index]}
-          onChange={(e) => onCantidadInputChange(index, e.target.value)}
-          className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
-          placeholder="Cantidad"
-        />
-      </div>
-      <div>
-        <Input
-          label={`Descripción Servicio N° ${index + 1}`}
-          id={`descripcion-${index}`}
-          name={`descripcion-${index}`}
-          value={
-            descripciones[index] || (loading ? "Esperando..." : error || "")
-          }
-          className="w-full px-3 py-2 text-gray-400 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-800"
-          placeholder="Descripción"
-          readOnly
-        />
-      </div>
-    </React.Fragment>
-  ));
+  const bloques = formik.values.cupsData.map((_: CupsItem, index: number) => {
+    // Type guards para evitar errores de TypeScript
+    const touchedCup = Array.isArray(formik.touched.cupsData) ? formik.touched.cupsData[index] : undefined;
+    const errorCup = Array.isArray(formik.errors.cupsData) ? formik.errors.cupsData[index] : undefined;
+    
+    // Type assertions para los errores específicos
+    const codeError = touchedCup?.code && errorCup && typeof errorCup === 'object' ? (errorCup as any).code : undefined;
+    const quantityError = touchedCup?.quantity && errorCup && typeof errorCup === 'object' ? (errorCup as any).quantity : undefined;
+    const descriptionError = touchedCup?.description && errorCup && typeof errorCup === 'object' ? (errorCup as any).description : undefined;
+
+    return (
+      <React.Fragment key={index}>
+        <div>
+          <Input
+            label={`Código Servicio N° ${index + 1}`}
+            id={`cupsData[${index}].code`}
+            name={`cupsData[${index}].code`}
+            value={formik.values.cupsData[index]?.code || ""}
+            onChange={formik.handleChange}
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              handleServicioBlur(index);
+            }}
+            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+            placeholder="Código"
+          />
+          {codeError && (
+            <div className="text-red-500 text-sm mt-1">
+              {codeError}
+            </div>
+          )}
+        </div>
+        <div>
+          <Input
+            label={`Cantidad Servicio N° ${index + 1}`}
+            id={`cupsData[${index}].quantity`}
+            name={`cupsData[${index}].quantity`}
+            maxLength={2}
+            value={formik.values.cupsData[index]?.quantity || ""}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-full px-3 py-2 border border-gray-200 rounded dark:border-gray-600 text-stone-700 dark:text-white dark:bg-gray-800"
+            placeholder="Cantidad"
+            error={quantityError}
+          />
+          {quantityError && (
+            <div className="text-red-500 text-sm mt-1">
+              {quantityError}
+            </div>
+          )}
+        </div>
+        <div>
+          <Input
+            label={`Descripción Servicio N° ${index + 1}`}
+            id={`cupsData[${index}].description`}
+            name={`cupsData[${index}].description`}
+            value={
+              formik.values.cupsData[index]?.description || 
+              (loading && lastIndexRef.current === index ? "Cargando..." : error || "")
+            }
+            className="w-full px-3 py-2 text-gray-400 border border-gray-200 rounded dark:border-gray-600 dark:bg-gray-800"
+            placeholder="Descripción"
+            readOnly
+            error={descriptionError}
+          />
+          {descriptionError && (
+            <div className="text-red-500 text-sm mt-1">
+              {descriptionError}
+            </div>
+          )}
+        </div>
+      </React.Fragment>
+    );
+  });
 
   return <>{bloques}</>;
 };
