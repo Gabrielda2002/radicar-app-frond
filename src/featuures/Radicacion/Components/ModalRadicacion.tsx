@@ -24,6 +24,8 @@ import {
 import Button from "@/components/common/Ui/Button";
 import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
 import { useRequestService } from "../Hooks/useRequestService";
+import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
+import Select from "@/components/common/Ui/Select";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -39,6 +41,13 @@ const ModalRadicacion = () => {
     error: errorRequestService,
     loading: creatingRequestService,
   } = useRequestService();
+
+  const { dataConvenios, fetchConvenios } = useLazyFetchConvenio();
+
+  const handleOpenModal = async () => {
+    setStadopen(true);
+    await Promise.all([fetchConvenios()]);
+  }
 
   const [errorCups, setErrorCups] = useState<string | null>(null);
 
@@ -58,6 +67,7 @@ const ModalRadicacion = () => {
 
   // * usar formik y yup para validar los campos
   const validationSchema = Yup.object({
+    agreement: Yup.string().required("Campo requerido"),
     landline: Yup.string()
       .optional()
       .min(1, "El número debe tener al menos 1 caracteres.")
@@ -80,7 +90,7 @@ const ModalRadicacion = () => {
     professional: Yup.string().required("Campo requerido"),
     orderDate: Yup.string().required("Campo requerido"),
     file: Yup.mixed().required("Campo requerido"),
-    numberOfCups: Yup.string()      .required("Campo requerido"),
+    numberOfCups: Yup.string().required("Campo requerido"),
     cupsData: Yup.array().of(
       Yup.object().shape({
         code: Yup.string().required("Código CUPS requerido"),
@@ -93,6 +103,7 @@ const ModalRadicacion = () => {
 
   const formik = useFormik({
     initialValues: {
+      agreement: "",
       landline: "",
       phoneNumber: "",
       phoneNumber2: "",
@@ -126,26 +137,6 @@ const ModalRadicacion = () => {
         setErrorCups(errorCups);
         return;
       }
-      // const formData = new FormData();
-      // formData.append("landline", values.landline);
-      // formData.append("phoneNumber", values.phoneNumber);
-      // formData.append("phoneNumber2", values.phoneNumber2);
-      // formData.append("address", values.address);
-      // formData.append("email", values.email);
-      // formData.append("ipsRemitente", values.ipsRemiteId);
-      // formData.append("specialty", values.specialty);
-      // formData.append("groupServices", values.groupService);
-      // formData.append("place", values.placeId);
-      // formData.append("typeServices", values.typeService);
-      // formData.append("radicador", idUsuario);
-      // formData.append("profetional", values.professional);
-      // formData.append("orderDate", values.orderDate);
-      // if (values.file) {
-      //   formData.append("file", values.file);
-      // }
-      // formData.append("diagnosisId", values.diagnosisId);
-      // formData.append("items", JSON.stringify(items));
-      // formData.append("idPatient", values.patientId);
 
       const response = await createRequestService(values);
 
@@ -188,6 +179,7 @@ const ModalRadicacion = () => {
       formik.setFieldValue("phoneNumber2", data.phoneNumber2 || "");
       formik.setFieldValue("address", data.address);
       formik.setFieldValue("email", data.email);
+      formik.setFieldValue("agreement", data.convenio);
     }
   }, [data]);
 
@@ -244,13 +236,11 @@ const ModalRadicacion = () => {
     }
   };
 
-  console.log(formik.values)
-
   return (
     <>
       <Button
         type="button"
-        onClick={() => setStadopen(true)}
+        onClick={handleOpenModal}
         icon={<PlusCircleIcon className="w-5 h-5" />}
         iconPosition="left"
         variant="primary"
@@ -312,37 +302,35 @@ const ModalRadicacion = () => {
 
               {data && (
                 <>
-                  <div>
                     <Input
                       type="text"
                       value={data.documentRelation.name}
                       label="Tipo Documento"
                       disabled={true}
                     />
-                  </div>
-                  <div>
                     <Input
                       type="text"
                       value={data.name}
                       label="Nombre Completo"
                       disabled={true}
                     />
-                  </div>
-                  <div>
-                    <Input
-                      type="text"
-                      value={data.convenioRelation.name}
+                    <Select
+                      options={dataConvenios.map(c => ({ value: c.id, label: c.name }))}
+                      value={formik.values.agreement}
                       label="Convenio"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      name="agreement"
+                      touched={formik.touched.agreement}
+                      error={formik.errors.agreement}
+                      required
                     />
-                  </div>
-                  <div>
                     <Input
                       type="text"
                       value={data.ipsPrimariaRelation.name}
                       label="IPS Primaria"
                       disabled={true}
                     />
-                  </div>
                 </>
               )}
               <div>
