@@ -238,7 +238,7 @@ const ModalProgramGoals = () => {
         isOpen={openComfirmation}
         onClose={handleCancelDelete}
         onConfirm={handleComfirmationDelete}
-        iteamName="Meta Programa"
+        itemName="Meta Programa"
       />
     </>
   );

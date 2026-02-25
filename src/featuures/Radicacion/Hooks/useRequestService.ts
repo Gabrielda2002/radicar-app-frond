@@ -1,12 +1,17 @@
 import { api } from "@/utils/api-config";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
-export const useRequestService = () => {
+interface UseRequestServiceReturn {
+  createRequestService: (data: Object, onSuccess?: () => void) => Promise<any>;
+  error: string | null;
+  loading: boolean;
+}
+
+export const useRequestService = (): UseRequestServiceReturn => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const createRequestService = async (data: Object) => {
+  const createRequestService = async (data: Object, onSuccess?: () => void) => {
     try {
       setLoading(true);
       const response = await api.post("/request/service", data, {
@@ -17,8 +22,7 @@ export const useRequestService = () => {
 
       if (response.status === 200) {
         setError(null);
-        toast.success("Radicacion creada exitosamente");
-        return response;
+        onSuccess?.();
       }
     } catch (error: any) {
       if (error.response.status === 500) {

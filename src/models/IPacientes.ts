@@ -8,8 +8,8 @@ export interface IPacientes {
     landline:            string;
     email:               string;
     address:             string;
-    convenio:            number;
-    ipsPrimaria:         number;
+    agreement:            number;
+    ipsPrimary:         number;
     status:              boolean;
     updatedAt:           Date;
     createdAt:           Date;
