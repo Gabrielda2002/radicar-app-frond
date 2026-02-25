@@ -85,7 +85,10 @@ const ModalRadicacion = () => {
     professional: Yup.string().required("Campo requerido"),
     orderDate: Yup.string().required("Campo requerido"),
     file: Yup.mixed().required("Campo requerido"),
-    numberOfCups: Yup.string().required("Campo requerido"),
+    numberOfCups: Yup.number()
+      .required("Campo requerido")
+      .min(1, "Debe solicitar al menos 1 servicio")
+      .max(15, "El máximo de servicios permitidos es 15"),
     cupsData: Yup.array().of(
       Yup.object().shape({
         code: Yup.string().required("Código CUPS requerido"),
@@ -216,6 +219,20 @@ const ModalRadicacion = () => {
   const EventEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
+    }
+  };
+
+  const handleNumberOfCupsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Permitir campo vacío para que el usuario pueda borrar
+    if (value === "") {
+      formik.setFieldValue("numberOfCups", "");
+      return;
+    }
+    // Convertir a número y validar
+    const numValue = parseInt(value, 10);
+    if (!isNaN(numValue) && numValue >= 1 && numValue <= 15) {
+      formik.setFieldValue("numberOfCups", numValue);
     }
   };
 
@@ -402,18 +419,21 @@ const ModalRadicacion = () => {
             {/* el usuario ingresa la cantidad de servicios que desea ingresar */}
             <section className="grid grid-cols-1 mb-6 text-sm border-2 border-transparent gap-x-10 gap-y-3 ps-2">
               <Input
-                type="text"
+                type="number"
                 id="numberOfCups"
                 name="numberOfCups"
-                maxLength={1}
+                min={1}
+                max={15}
                 value={formik.values.numberOfCups}
-                onChange={formik.handleChange}
+                onChange={handleNumberOfCupsChange}
                 onBlur={formik.handleBlur}
                 onKeyDown={EventEnter}
-                placeholder="Digite número . . . ."
+                placeholder="Digite número (máx. 15)"
                 label="Cantidad de Servicios Solicitados"
                 required={true}
                 className="w-24 md:w-auto"
+                touched={formik.touched.numberOfCups}
+                error={formik.errors.numberOfCups && formik.touched.numberOfCups ? formik.errors.numberOfCups : undefined}
               />
               <div className="grid grid-cols-1 md:grid-cols-[24%_24%_46%] gap-5">
                 <ServicioForm
