@@ -84,7 +84,16 @@ const ModalRadicacion = () => {
     typeService: Yup.string().required("Campo requerido"),
     professional: Yup.string().required("Campo requerido"),
     orderDate: Yup.string().required("Campo requerido"),
-    file: Yup.mixed().required("Campo requerido"),
+    file: Yup.mixed().required("Campo requerido").test("fileSize", "el soporte no puede ser mayor a 5MB", (value: any) => {
+      if (value) {
+        return value.size <= 5 * 1024 * 1024; // 5MB en bytes
+      }
+      return true;
+    }).test("fileType", "El soporte debe ser un archivo PDF", (value: any) => {
+      if (value) {
+        return value.type === "application/pdf";
+      } return true;
+    }),
     numberOfCups: Yup.number()
       .required("Campo requerido")
       .min(1, "Debe solicitar al menos 1 servicio")
@@ -582,14 +591,16 @@ const ModalRadicacion = () => {
                   name="file"
                   accept=".pdf"
                   onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      formik.setFieldValue("file", e.target.files[0]);
-                    }
+                    const file = e.currentTarget.files
+                      ? e.currentTarget.files[0]
+                      : null;
+                    formik.setFieldValue("file", file);
                   }}
+                  onBlur={formik.handleBlur}
                   label="Soporte"
                   required={true}
                   touched={formik.touched.file}
-                  error={formik.errors.file}
+                  error={formik.errors.file && formik.touched.file ? formik.errors.file : undefined}
                 />
               </div>
             </section>
