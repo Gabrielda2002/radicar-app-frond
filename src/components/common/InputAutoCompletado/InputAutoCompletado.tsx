@@ -14,6 +14,7 @@ interface InputAutocompletadoProps {
   value?: string;
   initialId?: string; // ID del valor seleccionado para modo edición
   initialName?: string; // Nombre del valor seleccionado para modo edición
+  disabled?: boolean; // Deshabilitar el input
 }
 
 const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
@@ -28,6 +29,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
   value = "",
   initialId = "",
   initialName = "",
+  disabled = false,
 }) => {
   const [inputValue, setInputValue] = useState(initialName || value);
   const [selectedId, setSelectedId] = useState<string>(initialId);
@@ -55,7 +57,10 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
-      if (inputValue.trim() !== "") {
+      // Validar que la ruta no contenga parámetros indefinidos o vacíos
+      const hasEmptyParams = apiRoute.includes('undefined') || apiRoute.endsWith('/');
+      
+      if (inputValue.trim() !== "" && !hasEmptyParams && !disabled) {
         fetchInputAtcp(inputValue, apiRoute);
         setShowSuggestions(true);
         setSelectedIndex(-1);
@@ -66,7 +71,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
     }, 500);
 
     return () => clearTimeout(debounceTimer);
-  }, [inputValue, apiRoute]);
+  }, [inputValue, apiRoute, disabled]);
 
   useEffect(() => {
     if (selectedIndex >= 0 && showSuggestions) {
@@ -171,6 +176,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
         label={label}
         helpText={helpText}
         onKeyDown={handleKeyDown}
+        disabled={disabled}
       />
 
       {fetchError && (
@@ -178,7 +184,7 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
       )}
 
       {/* Mostrar sugerencias */}
-      {showSuggestions && data && (
+      {showSuggestions && data && !disabled && (
         <ul ref={suggestionsRef} className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 rounded shadow-md dark:bg-gray-800 dark:border-gray-600 max-h-40">
           {data.map((item, index) => (
             <li

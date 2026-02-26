@@ -2,10 +2,8 @@ import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
 // Lazy data hooks to avoid fetching until modal opens
-import { useLazyFetchCategory } from "../Hooks/useLazyFetchCategory";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { toast } from "react-toastify";
-import titlesHDOptions from "@/data-dynamic/titlesHDOptions.json";
 import { MdSupportAgent } from "react-icons/md";
 import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
@@ -14,30 +12,13 @@ import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
 import { useCreateTicket } from "../Hooks/useCreateTicket";
 import { IoDocumentTextOutline } from "react-icons/io5";
-
-interface CategoryData {
-  description: string;
-  options: string[];
-}
-
-interface TitlesHDOptions {
-  Software: CategoryData;
-  Hardware: CategoryData;
-  Redes: CategoryData;
-  Administrativo: CategoryData;
-  Infraestructura: CategoryData;
-  "Otros Soportes": CategoryData;
-  [key: string]: CategoryData;
-}
-
-const typedTitlesHDOptions = titlesHDOptions as TitlesHDOptions;
+import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 
 interface TicketFormValues {
   type: string;
   title: string;
   description: string;
   category: string;
-  priority: string;
   file: File | null;
   attachmentType?: string;
 }
@@ -46,8 +27,6 @@ const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { createTicket, error, isLoading } = useCreateTicket();
-
-  const { dataCategory, fetchCategory } = useLazyFetchCategory();
 
   const user = localStorage.getItem("user");
 
@@ -90,7 +69,6 @@ const HelpDesk = () => {
       formData.append("description", values.description);
       formData.append("userId", idUsuario);
       formData.append("categoryId", values.category);
-      formData.append("priorityId", values.priority);
       if (values.file) {
         formData.append("file", values.file);
         formData.append("attachmentType", values.attachmentType || "");
@@ -111,7 +89,6 @@ const HelpDesk = () => {
       type: "",
       description: "",
       category: "",
-      priority: "",
       file: null,
       attachmentType: "",
     },
@@ -119,32 +96,9 @@ const HelpDesk = () => {
     onSubmit: handleSubmit,
   });
 
-  const [opcionesTitulo, setOpcionesTitulo] = useState<string[]>([]);
-  const [selectedCategoryName, setSelectedCategoryName] = useState("");
-  const [categoryDescription, setCategoryDescription] = useState("");
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCategory = e.target.value;
-    setSelectedCategoryName(selectedCategory);
-
-    // validar si selectedCategory es igual a algun valor de dataCategory.name y si es igual a ese valor entonces setear el valor de selectedCategory a dataCategory.id
-    const category = dataCategory.find((cat) => cat.name === selectedCategory);
-    const formatCategory = category ? category.id : "";
-    formik.setFieldValue("category", formatCategory);
-    
-    const categoryData = typedTitlesHDOptions[selectedCategory];
-    if (categoryData) {
-      setOpcionesTitulo(categoryData.options || []);
-      setCategoryDescription(categoryData.description || "");
-    } else {
-      setOpcionesTitulo([]);
-      setCategoryDescription("");
-    }
-  };
-
   const handleOpenModal = async () => {
     setIsModalOpen(true);
-    await Promise.all([fetchCategory()]);
+    // await Promise.all([fetchCategory()]);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -203,39 +157,33 @@ const HelpDesk = () => {
                   touched={formik.touched.type}
                   required
                 />
-                <Select
-                  options={Object.keys(typedTitlesHDOptions).map((cat) => ({
-                    value: cat,
-                    label: cat,
-                  }))}
+                <InputAutocompletado
                   label="Categoria"
-                  name="category"
-                  id="categoria"
-                  variant="default"
-                  value={selectedCategoryName}
-                  helpText={categoryDescription}
-                  onChange={handleCategoryChange}
-                  onBlur={formik.handleBlur}
                   required
+                  apiRoute={`categories/${formik.values.type}`}
+                  onInputChanged={(value: string) => {
+                    formik.setFieldValue("category", value);
+                  }}
+                  placeholder={
+                    !formik.values.type 
+                      ? "Primero selecciona un tipo" 
+                      : "Buscar categoría..."
+                  }
                   error={
                     formik.touched.category && formik.errors.category
                       ? formik.errors.category
                       : undefined
                   }
                   touched={formik.touched.category}
+                  disabled={!formik.values.type}
                 />
-                <Select
+                <Input
                   label="Titulo"
-                  options={opcionesTitulo.map((title) => ({
-                    value: title,
-                    label: title,
-                  }))}
                   id="title"
                   name="title"
                   value={formik.values.title}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  variant="default"
                   error={
                     formik.touched.title && formik.errors.title
                       ? formik.errors.title
