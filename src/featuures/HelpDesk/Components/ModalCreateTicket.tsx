@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { useCreateTicket } from "../Hooks/useCreateTicket";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
+import Textarea from "@/components/common/Ui/Textarea";
 
 interface TicketFormValues {
   type: string;
@@ -56,7 +57,7 @@ const HelpDesk = () => {
     attachmentType: Yup.string().when("file", {
       is: (file: File | null) => file !== null,
       then: (schema) => schema.required("El tipo de archivo es requerido cuando se adjunta un archivo"),
-      otherwise: (schema) =>  schema.notRequired(),
+      otherwise: (schema) => schema.notRequired(),
     })
   });
 
@@ -165,8 +166,8 @@ const HelpDesk = () => {
                     formik.setFieldValue("category", value);
                   }}
                   placeholder={
-                    !formik.values.type 
-                      ? "Primero selecciona un tipo" 
+                    !formik.values.type
+                      ? "Primero selecciona un tipo"
                       : "Buscar categoría..."
                   }
                   error={
@@ -192,39 +193,7 @@ const HelpDesk = () => {
                   touched={formik.touched.title}
                   required
                 />
-                <Input
-                  label="Descripcion"
-                  id="description"
-                  name="description"
-                  onChange={formik.handleChange}
-                  value={formik.values.description}
-                  onBlur={formik.handleBlur}
-                  placeholder="Descripcion de la solicitud"
-                  error={
-                    formik.touched.description && formik.errors.description
-                      ? formik.errors.description
-                      : undefined
-                  }
-                  touched={formik.touched.description}
-                  required
-                />
-
-                <Input
-                  type="file"
-                  label="Adjuntar Archivo"
-                  id="file"
-                  name="file"
-                  onChange={(event) => {
-                    const file = event.target.files 
-                    ? event.target.files[0]
-                    : null;
-                    formik.setFieldValue("file", file);
-                  }}
-                  onBlur={formik.handleBlur}
-                  touched={formik.touched.file}
-                  error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
-                  icon={<IoDocumentTextOutline className="w-4 h-4"/>}
-                />
+                
                 <Select
                   label="Tipo de Archivo"
                   options={[
@@ -248,6 +217,47 @@ const HelpDesk = () => {
                   }
                   touched={formik.touched.attachmentType}
                 />
+                <Input
+                  type="file"
+                  label="Adjuntar Archivo"
+                  id="file"
+                  name="file"
+                  onChange={(event) => {
+                    const file = event.target.files
+                      ? event.target.files[0]
+                      : null;
+                    formik.setFieldValue("file", file);
+                  }}
+                  onBlur={formik.handleBlur}
+                  touched={formik.touched.file}
+                  error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
+                  icon={<IoDocumentTextOutline className="w-4 h-4" />}
+                />
+
+                {/* reemplazar input descripcion por un textarea que se expande dos columnas en md: */}
+                <div className="col-span-1 w-full sm:col-span-2">
+                  <Textarea
+                    label="Descripcion"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    id="description"
+                    name="description"
+                    onChange={formik.handleChange}
+                    value={formik.values.description}
+                    onBlur={formik.handleBlur}
+                    placeholder="Descripcion de la solicitud"
+                    required
+                    error={
+                      formik.touched.description && formik.errors.description
+                        ? formik.errors.description
+                        : undefined
+                    }
+                    touched={formik.touched.description}
+                    maxLength={500}
+                    showCharCount
+                    autoResize
+                  />
+                </div>
+
 
               </div>
               <AnimatePresence>
