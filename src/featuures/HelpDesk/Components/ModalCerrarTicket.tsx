@@ -17,7 +17,7 @@ import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissi
 
 interface CerrarModalProps {
   ticket: ITickets;
-  onTicketClosed: () => void;
+  onTicketClosed?: () => void;
 }
 
 const CerrarModal: React.FC<CerrarModalProps> = ({
@@ -55,7 +55,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         values,
         () => {
           toast.success("Ticket actualizado correctamente");
-          onTicketClosed();
+          onTicketClosed?.();
           setShowModal(false);
         }
       )

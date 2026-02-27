@@ -1,5 +1,5 @@
 //*Funciones y Hooks
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
@@ -14,10 +14,11 @@ import {
 } from "@/components/common/ReusableTable";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
-import { useFetchTickets } from "../Hooks/useFetchTickets";
 import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
 import Button from "@/components/common/Ui/Button";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
+import useTicketsStore from "../Store/useTicketsStore";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -71,7 +72,12 @@ const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
 ];
 
 const ProcessHelpDesk = () => {
-  const { tickets, refetchTickets, error, isLoading: loading } = useFetchTickets();
+
+  const { tickets, fetchTickets, error, isLoading } = useTicketsStore();
+
+  useEffect(() => {
+    fetchTickets();
+  }, [])
 
   const  { downloadSecureFile } = useSecureFileAccess();
 
@@ -194,7 +200,9 @@ const ProcessHelpDesk = () => {
           item.attachments.map(a => (
             <Button
               key={a.id}
-              variant="secondary"
+              variant="any"
+              icon={<IoDocumentTextOutline className="w-4 h-4"/>}
+              className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
               onClick={() => downloadSecureFile(a.id.toString(), "attachments-tickets")}
             />
           ))
@@ -228,12 +236,12 @@ const ProcessHelpDesk = () => {
           data={tableState.currentData()}
           columns={columns}
           getRowKey={(item) => item.id.toString()}
-          loading={loading}
+          loading={isLoading}
           error={error}
           renderActions={(item) => (
             item.status != "Cerrado" ? (
               <Suspense fallback={<LoadingSpinner />}>
-                <CerrarModal ticket={item} onTicketClosed={refetchTickets} />
+                <CerrarModal ticket={item} />
               </Suspense>
             ) : (
               <button

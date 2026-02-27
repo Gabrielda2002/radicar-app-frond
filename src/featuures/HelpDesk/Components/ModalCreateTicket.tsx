@@ -10,16 +10,16 @@ import Button from "@/components/common/Ui/Button";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
-import { useCreateTicket } from "../Hooks/useCreateTicket";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import Textarea from "@/components/common/Ui/Textarea";
+import useTicketsStore from "../Store/useTicketsStore";
 
 interface TicketFormValues {
   type: string;
   title: string;
   description: string;
-  category: string;
+  categoryId: string;
   file: File | null;
   attachmentType?: string;
 }
@@ -27,7 +27,7 @@ interface TicketFormValues {
 const HelpDesk = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { createTicket, error, isLoading } = useCreateTicket();
+  const { createTicket, error, isLoading } = useTicketsStore();
 
   const user = localStorage.getItem("user");
 
@@ -40,7 +40,7 @@ const HelpDesk = () => {
       .required("La descripcion es requerida")
       .min(10, "La descripcion debe tener al menos 10 caracteres")
       .max(500, "La descripcion debe tener maximo 100 caracteres"),
-    category: Yup.number().required("La categoria es requerida"),
+    categoryId: Yup.number().required("La categoria es requerida"),
     file: Yup.mixed()
       .nullable()
       .optional()
@@ -63,19 +63,19 @@ const HelpDesk = () => {
 
   const handleSubmit = useCallback(
     async (values: TicketFormValues) => {
-      const formData = new FormData();
+      // const formData = new FormData();
 
-      formData.append("type", values.type);
-      formData.append("title", values.title);
-      formData.append("description", values.description);
-      formData.append("userId", idUsuario);
-      formData.append("categoryId", values.category);
-      if (values.file) {
-        formData.append("file", values.file);
-        formData.append("attachmentType", values.attachmentType || "");
-      }
+      // formData.append("type", values.type);
+      // formData.append("title", values.title);
+      // formData.append("description", values.description);
+      // formData.append("userId", idUsuario);
+      // formData.append("categoryId", values.categoryId);
+      // if (values.file) {
+      //   formData.append("file", values.file);
+      //   formData.append("attachmentType", values.attachmentType || "");
+      // }
 
-      await createTicket(formData, () => {
+      await createTicket(values, () => {
         toast.success("Ticket creado exitosamente.");
         formik.resetForm();
         setIsModalOpen(false);
@@ -89,9 +89,10 @@ const HelpDesk = () => {
       title: "",
       type: "",
       description: "",
-      category: "",
+      categoryId: "",
       file: null,
       attachmentType: "",
+      userId: idUsuario,
     },
     validationSchema: schemaValidation,
     onSubmit: handleSubmit,
@@ -163,7 +164,7 @@ const HelpDesk = () => {
                   required
                   apiRoute={`categories/${formik.values.type}`}
                   onInputChanged={(value: string) => {
-                    formik.setFieldValue("category", value);
+                    formik.setFieldValue("categoryId", value);
                   }}
                   placeholder={
                     !formik.values.type
@@ -171,11 +172,11 @@ const HelpDesk = () => {
                       : "Buscar categoría..."
                   }
                   error={
-                    formik.touched.category && formik.errors.category
-                      ? formik.errors.category
+                    formik.touched.categoryId && formik.errors.categoryId
+                      ? formik.errors.categoryId
                       : undefined
                   }
-                  touched={formik.touched.category}
+                  touched={formik.touched.categoryId}
                   disabled={!formik.values.type}
                 />
                 <Input
