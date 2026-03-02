@@ -2,7 +2,14 @@ import { useState } from "react";
 import { api } from "../utils/api-config";
 import { IInputAutocompletado } from "../models/IInputAutocompletado";
 
-const useFetchEspecialidadAtcp = () => {
+interface UseFetchInputAtcpReturn {
+    data: IInputAutocompletado[] | null;
+    loading: boolean;
+    error: string | null;
+    fetchInputAtcp: (name: string, url: string) => Promise<void>;
+}
+
+const useFetchEspecialidadAtcp = (): UseFetchInputAtcpReturn => {
 
     const [data , setData] = useState<IInputAutocompletado[] | null>([]);
     const [loading , setLoading] = useState<boolean>(true);

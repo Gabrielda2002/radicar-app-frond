@@ -187,19 +187,27 @@ const InputAutocompletado: React.FC<InputAutocompletadoProps> = ({
       {showSuggestions && data && !disabled && (
         <ul ref={suggestionsRef} className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 rounded shadow-md dark:bg-gray-800 dark:border-gray-600 max-h-40">
           {data.map((item, index) => (
+            // <div className="group">
             <li
               key={item.id}
               data-suggestion-index={index}
               className={`px-3 py-2 cursor-pointer dark:text-gray-200 ${
                 index === selectedIndex
                   ? "bg-blue-100 text-teal-500 dark:bg-teal-600 dark:text-white"
-                  : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "text-gray-500 group-hover:bg-gray-100 dark:hover:bg-gray-700"
               }`}
               onClick={() => handleSuggestionClick(item.name, item?.id)}
               onMouseEnter={() => setSelectedIndex(index)}
             >
               {item.name}
+              {item.description && (
+                <p className={`text-xs text-gray-400 dark:text-gray-500 ${index === selectedIndex ?
+                  'bg-blue-100 text-teal-500 dark:bg-teal-600 dark:text-white'
+                  : 'text-gray-400 dark:text-gray-500'
+                }`}>{item.description}</p>
+              )}
             </li>
+            // </div>
           ))}
         </ul>
       )}

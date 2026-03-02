@@ -63,18 +63,6 @@ const HelpDesk = () => {
 
   const handleSubmit = useCallback(
     async (values: TicketFormValues) => {
-      // const formData = new FormData();
-
-      // formData.append("type", values.type);
-      // formData.append("title", values.title);
-      // formData.append("description", values.description);
-      // formData.append("userId", idUsuario);
-      // formData.append("categoryId", values.categoryId);
-      // if (values.file) {
-      //   formData.append("file", values.file);
-      //   formData.append("attachmentType", values.attachmentType || "");
-      // }
-
       await createTicket(values, () => {
         toast.success("Ticket creado exitosamente.");
         formik.resetForm();
