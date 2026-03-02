@@ -11,7 +11,6 @@ import Input from "@/components/common/Ui/Input";
 import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
-import { useLazyFetchPriority } from "../Hooks/useLazyFetchPriority";
 import useCommentStore from "../Store/useCommentStore";
 import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
 
@@ -28,15 +27,12 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
 
   const { addComment, isLoading, error  } = useCommentStore();
 
-    const { dataPriority, fetchPriority } = useLazyFetchPriority();
-
   const user = localStorage.getItem("user");
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const validationSchema = Yup.object({
     comment: Yup.string().required("Este campo es obligatorio"),
     status: Yup.string().required("Este campo es obligatorio"),
-    priority: Yup.string().required("Este campo es obligatorio"),
     remote: Yup.boolean().required("Este campo es obligatorio"),
   });
 
@@ -44,7 +40,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     initialValues: {
       comment: "",
       status: "",
-      priority: "",
       remote: false,
       ticketId: ticket.id,
       userId: idUsuario,
@@ -62,16 +57,11 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
     },
   });
 
-  const handleOpenModal = async () => {
-    setShowModal(true);
-    await Promise.all([fetchPriority()]);
-  }
-
   return (
     <>
       <Button
         variant="any"
-        onClick={handleOpenModal}
+        onClick={() => setShowModal(true)}
         title="Cambiar estado"
         className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
         icon={<BookCheck className="w-4 h-4" />}
@@ -162,26 +152,6 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
               touched={formik.touched.status}
               required
             />
-            <Select
-                  label="Prioridad"
-                  options={dataPriority.map((pri) => ({
-                    value: pri.id,
-                    label: pri.name,
-                  }))}
-                  name="priority"
-                  id="prioridad"
-                  value={formik.values.priority}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.priority && formik.errors.priority
-                      ? formik.errors.priority
-                      : undefined
-                  }
-                  touched={formik.touched.priority}
-                  variant="default"
-                  required
-                />
           </div>
 
           <div className="mb-4">
