@@ -24,10 +24,12 @@ export enum Convenio {
 }
 
 export interface IStatusCup {
+    id:              number;
     code:            number;
     description:     string;
     observation:     string;
     status:          string;
     unidadFuncional: string;
     idRadicado:      number;
+    cantidad:         number;
 }

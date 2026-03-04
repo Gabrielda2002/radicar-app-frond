@@ -77,7 +77,7 @@ const AuthorizeServices = () => {
         observacionCups: "",
         unidadFuncional: "",
         estadoCups: "",
-        cantidad: 0,
+        cantidad: cups.cantidad,
       })),
     },
     validationSchema,

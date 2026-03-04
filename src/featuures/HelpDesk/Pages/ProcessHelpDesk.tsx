@@ -108,10 +108,36 @@ const ProcessHelpDesk = () => {
       render: (item: ITickets) => item.type
     },
     {
+      key: "category",
+      header: "Categoria",
+      width: "20%",
+      accessor: (item: ITickets) => item.category,
+    },
+    {
       key: "description",
       header: "Descripcion",
       width: "30%",
       accessor: (item: ITickets) => item.description,
+    },
+    {
+      key: "status",
+      header: "Estado",
+      width: "15%",
+      render: (item: ITickets) => (
+        <span className={getStatusColor(item.status)}>
+          {item.status}
+        </span>
+      )
+    },
+    {
+      key: "priority",
+      header: "Prioridad",
+      width: "15%",
+      render: (item: ITickets) => (
+        <span className={getPriorityColor(item.priority)}>
+          {item.priority}
+        </span>
+      )
     },
     {
       key: "nameRequester",
@@ -126,36 +152,10 @@ const ProcessHelpDesk = () => {
       accessor: (item: ITickets) => item.lastNameRequester,
     },
     {
-      key: "status",
-      header: "Estado",
-      width: "15%",
-      render: (item: ITickets) => (
-        <span className={getStatusColor(item.status)}>
-          {item.status}
-        </span>
-      )
-    },
-    {
       key: "phoneNumber",
       header: "Celular",
       width: "15%",
       accessor: (item: ITickets) => item.phone,
-    },
-    {
-      key: "priority",
-      header: "Prioridad",
-      width: "15%",
-      render: (item: ITickets) => (
-        <span className={getPriorityColor(item.priority)}>
-          {item.priority}
-        </span>
-      )
-    },
-    {
-      key: "category",
-      header: "Categoria",
-      width: "20%",
-      accessor: (item: ITickets) => item.category,
     },
     {
       key: "headquarter",

@@ -48,6 +48,11 @@ const TableAuthorized = () => {
 
   const columns: ColumnConfig<IAuditar>[] = [
     {
+      key: "id",
+      header: "ID",
+      accessor: (item) => item.id,
+    },
+    {
       key: "radicadoDate",
       header: "Fecha",
       accessor: (item) => FormatDate(item.radicadoDate),
