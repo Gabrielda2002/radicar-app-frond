@@ -28,6 +28,7 @@ import Button from "@/components/common/Ui/Button.tsx";
 import Input from "@/components/common/Ui/Input.tsx";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess.ts";
 import { useTableState, ColumnConfig, DataTable } from "@/components/common/ReusableTable/index.ts";
+import { getColorStatus, getLastManagementStatusColor } from "../utils/getColorStatus.ts";
 
 const TablaRadicacion = () => {
   // estado para el numero de documento del paciente
@@ -66,27 +67,6 @@ const TablaRadicacion = () => {
 
   if (loading) return <LoadingSpinner duration={100000} />;
 
-  const handleLastManagementStatusColor = (status: string) => {
-    switch (status) {
-      case "Asignado":
-        return "text-green-500 font-semibold";
-      case "Cancelado":
-        return "text-red-500 font-semibold";
-      case "Pendiente":
-        return "text-yellow-600 font-semibold";
-      case "Cerrado":
-        return "text-blue-500 font-semibold";
-      case "Programado":
-        return "text-purple-500 font-semibold";
-      case "Cumplido":
-        return "text-teal-500 font-semibold";
-      case "Reprogramado":
-        return "text-orange-500 font-semibold";
-      default:
-        return "text-gray-600 font-semibold";
-    }
-  };
-
   const culumnsSubTable: ColumnConfig<Cup>[] = [
     {
       key: "code",
@@ -99,7 +79,7 @@ const TablaRadicacion = () => {
       render: (item: Cup) => (
 
         <span
-          className="block max-w-[200px] truncate cursor-pointer"
+          className="block max-w-50 truncate cursor-pointer"
           title={item.description}
         >
           {item.description}
@@ -109,7 +89,11 @@ const TablaRadicacion = () => {
     {
       key: "status",
       header: "Auditoría",
-      render: (item: Cup) => (item.status),
+      render: (item: Cup) => (
+        <span className={getColorStatus(item.status)}>
+          {item.status}
+        </span>
+      ),
     },
     {
       key: "lastManagementStatus",
@@ -120,7 +104,7 @@ const TablaRadicacion = () => {
           ? item.seguimiento[0].estado
           : "N/A"
         return (
-          <span className={handleLastManagementStatusColor(lastManagement)}>
+          <span className={getLastManagementStatusColor(lastManagement)}>
             {lastManagement}
           </span>
         )
