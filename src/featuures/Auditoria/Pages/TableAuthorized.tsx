@@ -16,8 +16,51 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { FormatDate } from "@/utils/FormatDate";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import Button from "@/components/common/Ui/Button";
-import { ColumnConfig, DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
+import { ColumnConfig, DataTable, DataTableContainer, FilterFieldConfig, useTableState } from "@/components/common/ReusableTable";
 
+const AUTORIZED_SERVICES_FILTER_CONFIG: FilterFieldConfig[] = [
+  {
+    key: "createdAt",
+    label: "Fecha de Creación",
+    type: "date-range"
+  },
+  {
+    key: "ipsPrimary",
+    label: "IPS Primaria",
+    type: "multi-select",
+    getOptionsFromData: true
+  },
+  {
+    key: "agreementName",
+    label: "Convenio",
+    type: "multi-select",
+    getOptionsFromData: true
+  },
+  {
+    key: "place",
+    label: "Lugar de Radicación",
+    type: "multi-select",
+    getOptionsFromData: true
+  },
+  {
+    key: "ipsRemitente",
+    label: "IPS Remitente",
+    type: "multi-select",
+    getOptionsFromData: true
+  },
+  {
+    key: "speciality",
+    label: "Especialidad",
+    type: "multi-select",
+    getOptionsFromData: true
+  },
+  {
+    key: "assistant",
+    label: "Radicador",
+    type: "multi-select",
+    getOptionsFromData: true
+  }
+];
 
 const ModalMostrarDatosCUPS = lazy(
   () => import("@/components/common/Modals/MostrarCUPS/ModalMostrarDatos.tsx")
@@ -45,7 +88,8 @@ const TableAuthorized = () => {
       "assistant",
       "createdAt"
     ],
-    initialItemsPerPage: 10
+    initialItemsPerPage: 10,
+    filterConfig: AUTORIZED_SERVICES_FILTER_CONFIG,
   });
 
   const columns: ColumnConfig<IAuditar>[] = [
@@ -146,6 +190,7 @@ const TableAuthorized = () => {
         currentPage={tableState.currentPage}
         totalPages={tableState.totalPages}
         onPageChange={tableState.paginate}
+        filterState={tableState.filterState}
         headerActions={
           <>
             <Link to={"/tabla-registros-auditados"}>
