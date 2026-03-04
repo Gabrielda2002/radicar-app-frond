@@ -3,7 +3,7 @@ import { useState, lazy, Suspense } from "react";
 
 import { Link } from "react-router-dom";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
-import { IAuditar, IStatusCup } from "@/models/IAuditar.ts";
+import { IAuditar, auditCups } from "@/models/IAuditar.ts";
 import { useFetchAuditoria } from "../Hooks/UseFetchAuditar";
 
 //*Icons
@@ -25,23 +25,25 @@ const ModalMostrarDatosCUPS = lazy(
 
 const TableAuthorized = () => {
   const { data, loading, error } = useFetchAuditoria();
-  const [selectedCups, setSelectedCups] = useState<IStatusCup[] | null>(null);
+  const [selectedCups, setSelectedCups] = useState<auditCups[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const tableState = useTableState({
     data: data || [],
     searchFields: [
+      "id",
       "documentNumber",
       "namePatient",
-      "convenio",
+      "agreementName",
       "ipsPrimary",
       "documentType",
       "place",
       "ipsRemitente",
-      "profetional",
+      "professional",
       "speciality",
-      "typeServices",
-      "radicador",
+      "typeService",
+      "assistant",
+      "createdAt"
     ],
     initialItemsPerPage: 10
   });
@@ -53,9 +55,9 @@ const TableAuthorized = () => {
       accessor: (item) => item.id,
     },
     {
-      key: "radicadoDate",
+      key: "createdAt",
       header: "Fecha",
-      accessor: (item) => FormatDate(item.radicadoDate),
+      accessor: (item) => FormatDate(item.createdAt),
     },
     {
       key: "documentNumber",
@@ -68,9 +70,9 @@ const TableAuthorized = () => {
       accessor: (item) => item.namePatient,
     },
     {
-      key: "convenio",
+      key: "agreementName",
       header: "Convenio",
-      accessor: (item) => item.convenio,
+      accessor: (item) => item.agreementName,
     },
     {
       key: "ipsPrimary",
@@ -93,9 +95,9 @@ const TableAuthorized = () => {
       accessor: (item) => item.ipsRemitente,
     },
     {
-      key: "profetional",
+      key: "professional",
       header: "Profesional",
-      accessor: (item) => item.profetional,
+      accessor: (item) => item.professional,
     },
     {
       key: "speciality",
@@ -103,14 +105,14 @@ const TableAuthorized = () => {
       accessor: (item) => item.speciality,
     },
     {
-      key: "typeServices",
+      key: "typeService",
       header: "Servicio",
-      accessor: (item) => item.typeServices,
+      accessor: (item) => item.typeService,
     },
     {
-      key: "radicador",
+      key: "assistant",
       header: "Radicador",
-      accessor: (item) => item.radicador,
+      accessor: (item) => item.assistant,
     }
   ];
 
@@ -120,7 +122,7 @@ const TableAuthorized = () => {
   if (error)
     return <h2 className="flex justify-center dark:text-white">{error}</h2>;
 
-  const handleShowServicios = (statusCups: IStatusCup[]) => {
+  const handleShowServicios = (statusCups: auditCups[]) => {
     setSelectedCups(statusCups);
     setIsOpen(true);
   };
@@ -189,7 +191,7 @@ const TableAuthorized = () => {
               <Button
                 variant="secondary"
                 onClick={() =>
-                  handleShowServicios(item.statusCups)
+                  handleShowServicios(item.cups)
                 }
                 title="Mostrar Servicios"
                 icon={<img src={mostrar} alt="mostrar-icon" className="w-7 h-7 dark:invert" />}
@@ -198,10 +200,10 @@ const TableAuthorized = () => {
               <Link
                 to="/tabla-autorizar-servicios"
                 state={{
-                  CUPS: item.statusCups,
+                  CUPS: item.cups,
                   id: item.id,
                 }}
-                title="Autorizar Servicios"
+                title="Autorizar Servicios" 
               >
                 <Button
                   variant="secondary"

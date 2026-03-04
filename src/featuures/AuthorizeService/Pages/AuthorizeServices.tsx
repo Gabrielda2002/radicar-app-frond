@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";
-import { CupsDetail, FormikErrors, FormikValues } from "@/models/IFotmikValues";
+import { FormikErrors, FormikValues } from "@/models/IFotmikValues";
 import { useFetchFuntionalUnit } from "../Hooks/UseFetchFuntionalUnit";
 
 //*Properties
@@ -16,6 +16,7 @@ import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import { toast } from "react-toastify";
 import { useAuthorizeServices } from "../Hooks/useAuthorizeServices";
 import { AnimatePresence } from "framer-motion";
+import { auditCups } from "@/models/IAuditar";
 
 const AuthorizeServices = () => {
   const {
@@ -27,7 +28,7 @@ const AuthorizeServices = () => {
   const loadEstados = true;
 
   const location = useLocation();
-  const memoizedCUPS = useMemo(
+  const memoizedCUPS: auditCups[] = useMemo(
     () => location.state.CUPS || [],
     [location.state]
   );
@@ -48,17 +49,17 @@ const AuthorizeServices = () => {
       .max(500, "La justificación no debe exceder los 500 caracteres."),
     cupsDetails: Yup.array().of(
       Yup.object().shape({
-        idCupsRadicado: Yup.string().required("ID CUPS radicado es requerido."),
+        id: Yup.string().required("ID CUPS radicado es requerido."),
         idRadicado: Yup.string().required("ID radicado es requerido."),
-        observacionCups: Yup.string()
+        observation: Yup.string()
           .required("La observación CUPS es requerida.")
           .min(1, "La observación debe tener al menos 1 carácter.")
           .max(500, "La observación no debe exceder los 500 caracteres."),
-        unidadFuncional: Yup.string().required(
+        funtionalUnit: Yup.string().required(
           "La unidad funcional es requerida."
         ),
-        estadoCups: Yup.string().required("El estado CUPS es requerido."),
-        cantidad: Yup.number().required("La cantidad es requerida."),
+        status: Yup.string().required("El estado CUPS es requerido."),
+        quantity: Yup.number().required("La quantity es requerida."),
       })
     ),
   });
@@ -69,15 +70,15 @@ const AuthorizeServices = () => {
       auditora: "",
       fechaAuditoria: "",
       justificacion: "",
-      cupsDetails: memoizedCUPS.map((cups: CupsDetail) => ({
+      cupsDetails: memoizedCUPS.map((cups) => ({
         code: cups.code,
         description: cups.description,
-        idCupsRadicado: cups.id,
+        id: cups.id,
         idRadicado: cups.idRadicado,
-        observacionCups: "",
-        unidadFuncional: "",
-        estadoCups: "",
-        cantidad: cups.cantidad,
+        observation: "",
+        funtionalUnit: "",
+        status: "",
+        quantity: cups.quantity,
       })),
     },
     validationSchema,
@@ -228,25 +229,25 @@ const AuthorizeServices = () => {
                   {/* Observación CUPS */}
                   <div className="flex flex-col mb-6">
                     <Input
-                      id={`cupsDetails[${index}].observacionCups`}
+                      id={`cupsDetails[${index}].observation`}
                       type="text"
-                      name={`cupsDetails[${index}].observacionCups`}
+                      name={`cupsDetails[${index}].observation`}
                       label="Observación CUPS:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].observacionCups}
+                      value={formik.values.cupsDetails[index].observation}
                       error={
-                        formik.touched.cupsDetails?.[index]?.observacionCups &&
+                        formik.touched.cupsDetails?.[index]?.observation &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.observacionCups
+                        ]?.observation
                           ? "Requerido, máximo 500 caracteres."
                           : undefined
                       }
                       touched={
-                        formik.touched.cupsDetails?.[index]?.observacionCups
+                        formik.touched.cupsDetails?.[index]?.observation
                       }
                       placeholder="Observación CUPS"
                     />
@@ -255,28 +256,28 @@ const AuthorizeServices = () => {
                   {/* Unidad Funcional */}
                   <div className="flex flex-col mb-4">
                     <Select
-                      id={`cupsDetails[${index}].unidadFuncional`}
-                      name={`cupsDetails[${index}].unidadFuncional`}
+                      id={`cupsDetails[${index}].funtionalUnit`}
+                      name={`cupsDetails[${index}].funtionalUnit`}
                       label="Unidad Funcional:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].unidadFuncional}
+                      value={formik.values.cupsDetails[index].funtionalUnit}
                       options={data.map((unidad) => ({
                         value: unidad.id,
                         label: unidad.name,
                       }))}
                       error={
-                        formik.touched.cupsDetails?.[index]?.unidadFuncional &&
+                        formik.touched.cupsDetails?.[index]?.funtionalUnit &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.unidadFuncional
+                        ]?.funtionalUnit
                           ? "Requerido."
                           : undefined
                       }
                       touched={
-                        formik.touched.cupsDetails?.[index]?.unidadFuncional
+                        formik.touched.cupsDetails?.[index]?.funtionalUnit
                       }
                     />
                   </div>
@@ -284,50 +285,50 @@ const AuthorizeServices = () => {
                   {/* Estado CUPS 2*/}
                   <div className="flex flex-col mb-4">
                     <Select
-                      id={`cupsDetails[${index}].estadoCups`}
-                      name={`cupsDetails[${index}].estadoCups`}
+                      id={`cupsDetails[${index}].status`}
+                      name={`cupsDetails[${index}].status`}
                       label="Estado CUPS:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].estadoCups}
+                      value={formik.values.cupsDetails[index].status}
                       options={dataEstados.map((estado) => ({
                         value: estado.id,
                         label: estado.name,
                       }))}
                       error={
-                        formik.touched.cupsDetails?.[index]?.estadoCups &&
+                        formik.touched.cupsDetails?.[index]?.status &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.estadoCups
+                        ]?.status
                           ? "Requerido."
                           : undefined
                       }
-                      touched={formik.touched.cupsDetails?.[index]?.estadoCups}
+                      touched={formik.touched.cupsDetails?.[index]?.status}
                     />
                   </div>
 
                   <div className="flex flex-col mb-4">
                     <Input
-                      id={`cupsDetails[${index}].cantidad`}
+                      id={`cupsDetails[${index}].quantity`}
                       type="number"
-                      name={`cupsDetails[${index}].cantidad`}
+                      name={`cupsDetails[${index}].quantity`}
                       label="Cantidad:"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].cantidad}
+                      value={formik.values.cupsDetails[index].quantity}
                       error={
-                        formik.touched.cupsDetails?.[index]?.cantidad &&
+                        formik.touched.cupsDetails?.[index]?.quantity &&
                         formik.errors.cupsDetails &&
                         typeof formik.errors.cupsDetails !== "string" &&
                         (formik.errors.cupsDetails as Array<FormikErrors>)[
                           index
-                        ]?.cantidad
+                        ]?.quantity
                           ? "Requerido."
                           : undefined
                       }
-                      touched={formik.touched.cupsDetails?.[index]?.cantidad}
+                      touched={formik.touched.cupsDetails?.[index]?.quantity}
                     />
                   </div>
                 </div>

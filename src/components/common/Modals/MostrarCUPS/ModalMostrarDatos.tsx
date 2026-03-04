@@ -1,11 +1,11 @@
-import { IStatusCup } from "@/models/IAuditar";
+import { auditCups } from "@/models/IAuditar";
 import { programacion } from "@/models/ICirugias";
 import { FormatDate } from "@/utils/FormatDate";
 import ModalDefault from "../../Ui/ModalDefault";
 interface ModalMostrarDatosProps {
   isOpen: boolean;
   onClose: () => void;
-  data: IStatusCup[] | null;
+  data: auditCups[] | null;
   cirugias: programacion | null;
   dateOrder: Date | null;
 }
@@ -65,7 +65,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
           {/* Contenedor para las dos tablas en columnas */}
           {data && data.length > 0 ? (
             <div className="max-h-[78vh] overflow-auto p-2 mt-3">
-              <table className="w-[800px] text-sm mb-4 hidden md:table">
+              <table className="w-200 text-sm mb-4 hidden md:table">
                 <thead className="">
                   <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-300 ">
                     <th className="">Código</th>
@@ -85,7 +85,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                         <td className="">{cups.code}</td>
                         <td className="">{cups.description}</td>
                         <td className="">{cups.status}</td>
-                        <td className="">{cups.unidadFuncional}</td>
+                        <td className="">{cups.funtionalUnit}</td>
                       </tr>
                     </tbody>
                   ))}
@@ -95,7 +95,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
               {data &&
                 data.map((cups) => (
                   <div
-                    className="grid grid-cols-[38%_59%] w-[400px] text-sm justify-between md:hidden dark:text-gray-200"
+                    className="grid grid-cols-[38%_59%] w-100 text-sm justify-between md:hidden dark:text-gray-200"
                     key={cups.idRadicado}
                   >
                     <div className="font-semibold text-gray-600 dark:text-gray-400/90">
@@ -120,7 +120,7 @@ const ModalMostrarDatosCUPS: React.FC<ModalMostrarDatosProps> = ({
                       Unidad Funcional CUPS
                     </div>
                     <div className="mt-4 text-gray-800 dark:text-gray-100">
-                      {cups.unidadFuncional}
+                      {cups.funtionalUnit}
                     </div>
                   </div>
                 ))}

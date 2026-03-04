@@ -1,35 +1,30 @@
 export interface IAuditar {
     id:            number;
-    radicadoDate:   Date;
+    createdAt:   Date;
     documentType:   string;
     documentNumber: number;
     namePatient:    string;
-    convenio:       string;
+    agreementName:       string;
     ipsPrimary:     number;
     orderDate:      Date;
     place:          string;
     ipsRemitente:   string;
-    profetional:    string;
+    professional:    string;
     speciality:     string;
-    typeServices:   string;
-    radicador:      string;
-    statusCups:     IStatusCup[];
+    typeService:   string;
+    assistant:      string;
+    cups:       auditCups[];
     supportName:    string;
     supportId:      number;
 }
 
-export enum Convenio {
-    CompensarEPS = "Compensar EPS",
-    NuevaEPS = "Nueva EPS",
-}
-
-export interface IStatusCup {
+export interface auditCups {
     id:              number;
     code:            number;
     description:     string;
     observation:     string;
     status:          string;
-    unidadFuncional: string;
+    funtionalUnit: string;
     idRadicado:      number;
-    cantidad:         number;
+    quantity:         number;
 }

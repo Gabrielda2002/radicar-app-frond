@@ -27,7 +27,7 @@ export const fetchAuditoria = async (): Promise<IAuditar[]> => {
     const response = await api.get('/auditoria-table');
     const auditorias = response.data.map((auditoria: IAuditar) => ({
         ...auditoria,
-        radicadoDate: new Date(auditoria.radicadoDate),
+        radicadoDate: new Date(auditoria.createdAt),
     }));
     return auditorias;
 }

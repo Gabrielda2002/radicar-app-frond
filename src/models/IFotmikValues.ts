@@ -1,21 +1,11 @@
-export interface CupsDetail {
-    idCupsRadicado: string;
-    idRadicado: string;
-    id: string;
-    observacionCups: string;
-    unidadFuncional: string;
-    estadoCups: string;
-    code: string;
-    description: string;
-    cantidad:     number;
-  }
+import { auditCups } from "./IAuditar";
   
   export interface FormikValues {
     auditora: string;
     id: number;
     fechaAuditoria: string;
     justificacion: string;
-    cupsDetails: CupsDetail[];
+    cupsDetails: auditCups[];
   }
   
   export interface FormikTouched {
@@ -36,14 +26,9 @@ export interface CupsDetail {
     auditora?: string;
     fechaAuditoria?: string;
     justificacion?: string;
-    observacionCups?: string;
-    unidadFuncional?: string;
-    estadoCups?: string;
-    cantidad?: number;
-    cupsDetails?: Array<{
-      observacionCups?: string;
-      unidadFuncional?: string;
-      estadoCups?: string;
-    }>;
+    observation?: string;
+    funtionalUnit?: string;
+    status?: string;
+    quantity?: number;
   }
   
