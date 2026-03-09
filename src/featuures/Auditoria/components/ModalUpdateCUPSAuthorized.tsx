@@ -11,19 +11,18 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { toast } from "react-toastify";
 import Button from "@/components/common/Ui/Button";
-import { useMutationCUPSAuth } from "../Hooks/useMutationCUPSAuth";
+import useStoreAuthService from "../store/useStoreAuthService";
 
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
-  onSuccess?: () => void;
 }
 
 const ModalActualizarCupsAuditoria: React.FC<
   ModalActualizarCupsAuditadosProps
-> = ({ cup, onSuccess }) => {
+> = ({ cup }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { UpdateCupsAuthorized, loading, error } = useMutationCUPSAuth();
+  const { updateCupsAuthorized, isLoading, error } = useStoreAuthService();
 
   // * se agreaga estado para el control de la carga de los estados
   const [loadEstados, setLoadEstados] = useState(false);
@@ -62,10 +61,10 @@ const ModalActualizarCupsAuditoria: React.FC<
     validationSchema,
     onSubmit: async (values) => {
 
-      await UpdateCupsAuthorized(cup.id, values, () => {
+      await updateCupsAuthorized(cup.id, values, () => {
         toast.success("CUPS actualizado con éxito.");
         setStadopen(false);
-        onSuccess?.();
+        // onSuccess?.();
       });
 
     }
@@ -85,7 +84,7 @@ const ModalActualizarCupsAuditoria: React.FC<
         size="lg"
         onSubmit={formik.handleSubmit}
         isValid={formik.isValid}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         submitText="Actualizar"
       >
         <div className="max-h-[70Vh] overflow-y-auto dark:bg-gray-800">

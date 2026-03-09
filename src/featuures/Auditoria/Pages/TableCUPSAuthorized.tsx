@@ -1,9 +1,8 @@
 //*Fuctions and Hooks
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { Cup, IAuditados } from "@/models/IAuditados";
-import { useFetchCUPSAuthorized } from "../Hooks/UseFetchCUPSAuthorized";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 //*Properties
@@ -11,16 +10,19 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
 import Button from "@/components/common/Ui/Button";
 import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
-const ModalActualizarCupsAuditoria = lazy(
-  () => import("../Components/ModalUpdateCUPSAuthorized")
-);
+import useStoreAuthService from "../store/useStoreAuthService";
+import ModalActualizarCupsAuditoria from "../components/ModalUpdateCUPSAuthorized";
 
 const TableCUPSAuthorized: React.FC = () => {
-  const { data, loading, error, refetch } = useFetchCUPSAuthorized();
+  const { services, isLoading, error, getAllServices } = useStoreAuthService();
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
+  useEffect(() => {
+    getAllServices();
+  }, [getAllServices]);
+
   const tableState = useTableState({
-    data: data,
+    data: services,
     searchFields: ["id", "document", "patientName"],
     initialItemsPerPage: 10
   });
@@ -97,10 +99,9 @@ const TableCUPSAuthorized: React.FC = () => {
         <TableWithAccordion
           data={tableState.currentData()}
           columns={columns}
-          loading={loading}
+          loading={isLoading}
           error={error}
           expandedRow={expandedRow}
-          onSuccess={refetch}
         />
       </DataTableContainer>
     </>
@@ -113,7 +114,6 @@ interface TableWithAccordionProps {
   loading: boolean;
   error: string | null;
   expandedRow: number | null;
-  onSuccess: () => void;
 }
 
 const TableWithAccordion: React.FC<TableWithAccordionProps> = ({
@@ -122,7 +122,6 @@ const TableWithAccordion: React.FC<TableWithAccordionProps> = ({
   loading,
   error,
   expandedRow,
-  onSuccess,
 }) => {
   if (loading) return <LoadingSpinner duration={100000} />;
 
@@ -182,7 +181,7 @@ const TableWithAccordion: React.FC<TableWithAccordionProps> = ({
                     className="overflow-hidden bg-gray-100 dark:bg-gray-900"
                   >
                     <td colSpan={columns.length} className="w-full p-1.5 md:p-3">
-                      <CupsTable cups={auditado.CUPS} onSuccess={onSuccess} />
+                      <CupsTable cups={auditado.CUPS} />
                     </td>
                   </motion.tr>
                 )}
@@ -197,10 +196,9 @@ const TableWithAccordion: React.FC<TableWithAccordionProps> = ({
 
 interface CupsTableProps {
   cups: Cup[];
-  onSuccess: () => void;
 }
 
-const CupsTable: React.FC<CupsTableProps> = ({ cups, onSuccess }) => {
+const CupsTable: React.FC<CupsTableProps> = ({ cups }) => {
 
   const columns = [
     {
@@ -250,7 +248,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups, onSuccess }) => {
       getRowKey={(item: Cup) => item.id.toString()}
       renderActions={(item: Cup) => (
         <Suspense fallback={<LoadingSpinner />}>
-          <ModalActualizarCupsAuditoria cup={item} onSuccess={onSuccess} />
+          <ModalActualizarCupsAuditoria cup={item} />
         </Suspense>
       )}
     />

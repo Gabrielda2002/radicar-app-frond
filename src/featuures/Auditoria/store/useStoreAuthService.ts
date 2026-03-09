@@ -7,9 +7,11 @@ interface UseAuthService {
     error: string | null;
     getAuthorizedServices: () => Promise<void>;
     authorizeService: (data: Object, radicadoId: number, onSuccess: () => void) => void;
+    getAllServices: () => Promise<void>;
+    updateCupsAuthorized: (id: number, data: Object, onSuccess?: () => void) => Promise<void>;
 }
 
-const useStoreAuthService = create<UseAuthService>((set) => ({
+const useStoreAuthService = create<UseAuthService>((set, get) => ({
     services: [],
     isLoading: false,
     error: null,
@@ -55,7 +57,53 @@ const useStoreAuthService = create<UseAuthService>((set) => ({
         }finally {
             set({ isLoading: false });
         }
+    },
+
+    getAllServices: async () => {
+        try {
+            
+            set({ isLoading: true, error: null });
+
+            const response = await api.get('/auditoria-auditados');
+
+            if (response.status === 200) {
+                set({ services: response.data });
+            }
+            
+        } catch (error: any) {
+            if (error.response.status === 500) {
+                set({ error: "Error del servidor. Por favor, inténtalo de nuevo más tarde." });
+            } else {
+                set({ error: error?.response?.data?.message || "Error al obtener los servicios." });
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    updateCupsAuthorized: async (id: number, data: Object, onSuccess?: () => void) => {
+        try {
+            
+            set({ isLoading: true, error: null });
+
+            const response = await api.put(`/actualizar-cups/${id}`, data);
+
+            if (response.status === 200) {
+                onSuccess?.();
+                await get().getAllServices();
+            }
+
+        } catch (error: any) {
+            if (error.response.status === 500) {
+                set({ error: "Error del servidor. Por favor, inténtalo de nuevo más tarde." });
+            } else {
+                set({ error: error?.response?.data?.message || "Error al actualizar el CUPS autorizado." });
+            }
+        } finally {
+            set({ isLoading: false });
+        }
     }
+
 }));
 
 export default useStoreAuthService;
