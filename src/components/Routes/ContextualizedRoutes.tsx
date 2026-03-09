@@ -46,7 +46,7 @@ const TablaRadicacion = lazy(
   () => import("@/featuures/Radicacion/Page/TableServiceRequestSubmission")
 );
 const TablaAutorizarServicios = lazy(
-  () => import("@/featuures/Auditoria/Pages/AuthorizeServices")
+  () => import("@/featuures/Auditoria/components/ModalAuthorizedService")
 );
 const FileManager = lazy(
   () => import("@/featuures/SystemGC/Page/SistemaArchivosSGC.tsx")
