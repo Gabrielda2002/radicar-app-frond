@@ -1,6 +1,6 @@
 export interface IAuditados {
     id: number;
-    radicadoDate: Date;
+    createdAt: Date;
     document: number;
     patientName: string;
     CUPS: Cup[];
@@ -8,12 +8,12 @@ export interface IAuditados {
 
 export interface Cup {
     id: number;
-    idCups: number;
+    cupsId: number;
     code: number;
     description: string;
     statusId: number;
     status: string;
     observation: string;
-    modifyDate: Date;
+    updatedAt: Date;
     quantity: number;
 }

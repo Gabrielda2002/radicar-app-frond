@@ -1,8 +1,11 @@
+import { IAuditados } from "@/models/IAuditados";
+import { IAuditar } from "@/models/IAuditar";
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
 
 interface UseAuthService {
-    services: any[];
+    services: IAuditar[];
+    servucesAuthorized: IAuditados[];
     isLoading: boolean;
     error: string | null;
     getAuthorizedServices: () => Promise<void>;
@@ -15,6 +18,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
     services: [],
     isLoading: false,
     error: null,
+    servucesAuthorized: [],
 
     getAuthorizedServices: async () => {
         try {
@@ -67,7 +71,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
             const response = await api.get('/auditoria-auditados');
 
             if (response.status === 200) {
-                set({ services: response.data });
+                set({ servucesAuthorized: response.data });
             }
             
         } catch (error: any) {

@@ -14,7 +14,7 @@ import useStoreAuthService from "../store/useStoreAuthService";
 import ModalActualizarCupsAuditoria from "../components/ModalUpdateCUPSAuthorized";
 
 const TableCUPSAuthorized: React.FC = () => {
-  const { services, isLoading, error, getAllServices } = useStoreAuthService();
+  const { servucesAuthorized: services, isLoading, error, getAllServices } = useStoreAuthService();
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const TableCUPSAuthorized: React.FC = () => {
       key: "radicadoDate",
       header: "Fecha Radicado",
       width: "20%",
-      accessor: (item: IAuditados) => FormatDate(item.radicadoDate),
+      accessor: (item: IAuditados) => FormatDate(item.createdAt),
     },
     {
       key: "document",
@@ -235,7 +235,7 @@ const CupsTable: React.FC<CupsTableProps> = ({ cups }) => {
       key: "modifyDate",
       header: "Última modificación",
       width: "20%",
-      accessor: (item: Cup) => FormatDate(item.modifyDate),
+      accessor: (item: Cup) => FormatDate(item.updatedAt),
     }
   ]
 
