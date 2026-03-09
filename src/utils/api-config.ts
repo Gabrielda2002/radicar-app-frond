@@ -203,11 +203,6 @@ export const updatePatientData = async (data: FormData, id: string) => {
   return api.put(`/pacientes/${id}`, data);
 };
 
-// guardar datos a radicar
-export const saveRadicar = async (data: FormData) => {
-  return api.post(`/radicacion`, data);
-};
-
 // guardar el archivo soporte de radicar
 export const saveFileRadicar = async (file: FormData) => {
   return api.post(`/soportes`, file, {

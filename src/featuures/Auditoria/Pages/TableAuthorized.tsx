@@ -1,10 +1,9 @@
 //*Funciones y Hooks
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 import { IAuditar, auditCups } from "@/models/IAuditar.ts";
-import { useFetchAuditoria } from "../Hooks/UseFetchAuditar";
 
 //*Icons
 import mostrar from "/assets/mostrar.svg";
@@ -17,6 +16,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import Button from "@/components/common/Ui/Button";
 import { ColumnConfig, DataTable, DataTableContainer, FilterFieldConfig, useTableState } from "@/components/common/ReusableTable";
+import useStoreAuthService from "../store/useStoreAuthService";
 
 const AUTORIZED_SERVICES_FILTER_CONFIG: FilterFieldConfig[] = [
   {
@@ -67,9 +67,13 @@ const ModalMostrarDatosCUPS = lazy(
 );
 
 const TableAuthorized = () => {
-  const { data, loading, error } = useFetchAuditoria();
+  const { services: data, isLoading: loading, error, getAuthorizedServices } = useStoreAuthService();
   const [selectedCups, setSelectedCups] = useState<auditCups[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    getAuthorizedServices();
+  }, [getAuthorizedServices]);
 
   const tableState = useTableState({
     data: data || [],
@@ -100,7 +104,7 @@ const TableAuthorized = () => {
     },
     {
       key: "createdAt",
-      header: "Fecha",
+      header: "Fecha Creación",
       accessor: (item) => FormatDate(item.createdAt),
     },
     {

@@ -14,16 +14,16 @@ import { useFetchFuntionalUnit } from "../Hooks/UseFetchFuntionalUnit";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import { toast } from "react-toastify";
-import { useAuthorizeServices } from "../Hooks/useAuthorizeServices";
 import { AnimatePresence } from "framer-motion";
 import { auditCups } from "@/models/IAuditar";
+import useStoreAuthService from "../store/useStoreAuthService";
 
 const AuthorizeServices = () => {
   const {
     authorizeService,
     error: authorizeError,
     isLoading,
-  } = useAuthorizeServices();
+  } = useStoreAuthService();
 
   const loadEstados = true;
 

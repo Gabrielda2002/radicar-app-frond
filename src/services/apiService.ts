@@ -1,9 +1,7 @@
 import { ICups } from "../models/ICups";
-import { IRadicados } from "../models/IRadicados";
 import { IRadicador } from "../models/IRadicador";
 import { IUsuarios } from "../models/IUsuarios";
 import { api } from "../utils/api-config";
-import { IAuditar } from "../models/IAuditar";
 import { IUnidadFuncional } from "../models/IUnidadFuncional";
 import { IEstados } from "../models/IEstados";
 import { IRol } from "../models/IRol";
@@ -11,26 +9,6 @@ import { ICirugias } from "../models/ICirugias";
 import { IDiagnostico } from "../models/IDiagnostico";
 import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
-
-export const fetchUsers = async (): Promise<IRadicados[]> => {
-    const response = await api.get('/radicacion');
-    const radicaciones = response.data.map((radicacion: IRadicados) => ({
-        ...radicacion,
-        createdAt: new Date(radicacion.createdAt),
-        auditDate: radicacion.auditDate ? new Date(radicacion.auditDate) : null
-        
-    }));
-    return radicaciones;
-}
-
-export const fetchAuditoria = async (): Promise<IAuditar[]> => {
-    const response = await api.get('/auditoria-table');
-    const auditorias = response.data.map((auditoria: IAuditar) => ({
-        ...auditoria,
-        radicadoDate: new Date(auditoria.createdAt),
-    }));
-    return auditorias;
-}
 
 export const fetchCups = async (): Promise<ICups[]> => {
     const response = await api.get('/servicio-solicitado');

@@ -11,7 +11,7 @@ const Usuarios = lazy(
 );
 import RecoverLetterPage from "@/featuures/RecoverLetter/Pages/RecoverLetterPage.tsx";
 import RecoverLastPage from "@/featuures/AuditRecoveryLetter/Pages/AuditRecoveryLetterPage.tsx";
-import TablaRegistrosAuditados from "@/featuures/Auditados/Pages/TableCUPSAuthorized";
+import TablaRegistrosAuditados from "@/featuures/Auditoria/Pages/TableCUPSAuthorized";
 import TablaCups from "@/featuures/CUPS/Pages/TablaCups";
 import TablaPacientes from "@/featuures/Patient/Pages/TablePatient";
 import TablaDiagnostico from "@/featuures/Diagnostico/Pages/TablaDiagnostico";
@@ -46,7 +46,7 @@ const TablaRadicacion = lazy(
   () => import("@/featuures/Radicacion/Page/TableServiceRequestSubmission")
 );
 const TablaAutorizarServicios = lazy(
-  () => import("@/featuures/AuthorizeService/Pages/AuthorizeServices")
+  () => import("@/featuures/Auditoria/Pages/AuthorizeServices")
 );
 const FileManager = lazy(
   () => import("@/featuures/SystemGC/Page/SistemaArchivosSGC.tsx")
