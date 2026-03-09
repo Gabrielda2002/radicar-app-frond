@@ -45,9 +45,6 @@ const TablaAuditoria = lazy(
 const TablaRadicacion = lazy(
   () => import("@/featuures/Radicacion/Page/TableServiceRequestSubmission")
 );
-const TablaAutorizarServicios = lazy(
-  () => import("@/featuures/Auditoria/components/ModalAuthorizedService")
-);
 const FileManager = lazy(
   () => import("@/featuures/SystemGC/Page/SistemaArchivosSGC.tsx")
 );
@@ -97,10 +94,6 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/registrar-usuarios" element={<RegistrarUsuarios />} />
-        <Route
-          path="/tabla-autorizar-servicios"
-          element={<TablaAutorizarServicios />}
-        />
         <Route
           path="/tabla-registros-auditados"
           element={<TablaRegistrosAuditados />}

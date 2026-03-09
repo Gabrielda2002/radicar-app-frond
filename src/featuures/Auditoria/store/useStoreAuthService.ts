@@ -50,6 +50,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
 
             if (response.status === 200) {
                 onSuccess();
+                await get().getAuthorizedServices();
             }
 
         } catch (error: any) {

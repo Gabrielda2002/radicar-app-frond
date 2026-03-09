@@ -29,9 +29,6 @@ const TablaTipoDocumento = lazy(
 const TablaLugarRadicacion = lazy(
   () => import("@/featuures/Sede/Pages/TablaLugarRadicacion")
 );
-const TablaAutorizarServicios = lazy(
-  () => import("../../featuures/Auditoria/components/ModalAuthorizedService")
-);
 const TablaRegistrosAuditados = lazy(
   () => import("@/featuures/Auditoria/Pages/TableCUPSAuthorized")
 );
@@ -56,10 +53,6 @@ export default function TablaRoutes() {
         <Route
           path="/tabla-lugar-radicacion"
           element={<TablaLugarRadicacion />}
-        />
-        <Route
-          path="/tabla-autorizar-servicios"
-          element={<TablaAutorizarServicios />}
         />
         <Route path="/tabla-ips-remite" element={<TablaIpsRemite />} />
         <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />

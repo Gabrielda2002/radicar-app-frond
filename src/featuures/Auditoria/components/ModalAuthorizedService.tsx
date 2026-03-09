@@ -90,7 +90,7 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
       await authorizeService(values, serviceId, () => {
         toast.success("Servicio autorizado correctamente");
         formik.resetForm();
-        window.location.href = "/tabla-auditoria";
+        setIsOpen(false);
       });
     },
   });
