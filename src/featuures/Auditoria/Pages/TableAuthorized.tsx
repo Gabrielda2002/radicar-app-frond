@@ -5,11 +5,6 @@ import { Link } from "react-router-dom";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 import { IAuditar, auditCups } from "@/models/IAuditar.ts";
 
-//*Icons
-import mostrar from "/assets/mostrar.svg";
-import soporte from "/assets/soporte.svg";
-import autorizar from "/assets/autorizar.svg";
-
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
 import { FormatDate } from "@/utils/FormatDate";
@@ -17,6 +12,8 @@ import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAcc
 import Button from "@/components/common/Ui/Button";
 import { ColumnConfig, DataTable, DataTableContainer, FilterFieldConfig, useTableState } from "@/components/common/ReusableTable";
 import useStoreAuthService from "../store/useStoreAuthService";
+import ModalAuthorizedServices from "../components/ModalAuthorizedService";
+import { Eye, File } from "lucide-react";
 
 const AUTORIZED_SERVICES_FILTER_CONFIG: FilterFieldConfig[] = [
   {
@@ -228,38 +225,28 @@ const TableAuthorized = () => {
           renderActions={(item: IAuditar) => (
             <>
               <Button
-                variant="secondary"
+                variant="action"
                 onClick={() =>
                   openSecureFile(item.supportId.toString(), "VIEW", "soporte")
                 }
                 title="Ver Soporte"
-                icon={<img src={soporte} alt="soporte-icon" className="w-7 h-7 dark:invert" />}
+                icon={<File className="w-3 h-3" />}
               />
 
               {/* Botón Mostrar Servicios */}
               <Button
-                variant="secondary"
+                variant="action"
                 onClick={() =>
                   handleShowServicios(item.cups)
                 }
                 title="Mostrar Servicios"
-                icon={<img src={mostrar} alt="mostrar-icon" className="w-7 h-7 dark:invert" />}
+                icon={<Eye className="w-3 h-3" />}
               />
 
-              <Link
-                to="/tabla-autorizar-servicios"
-                state={{
-                  CUPS: item.cups,
-                  id: item.id,
-                }}
-                title="Autorizar Servicios" 
-              >
-                <Button
-                  variant="secondary"
-                  title="Autorizar Servicios"
-                  icon={<img src={autorizar} alt="autorizar-icon" className="w-7 h-7 dark:invert" />}
-                />
-              </Link>
+              <ModalAuthorizedServices 
+                serviceId={item.id}
+                cups={item.cups}
+              />
             </>
           )}
         />
