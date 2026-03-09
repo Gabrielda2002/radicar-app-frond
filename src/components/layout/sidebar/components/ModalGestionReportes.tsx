@@ -1,13 +1,13 @@
 //*Funciones y Hooks
 import React, { useEffect, useMemo, useState } from "react";
 import { useDownloadReport } from "../hooks/UseDownloadReport";
-import { useFetchStatus } from "@/hooks/UseFetchStatus";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { useAuth } from "@/context/authContext";
 import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
+import { useStoreServicesStatus } from "@/store/useStoreServicesStatus";
 interface ModalReporteRadicadoProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,8 +23,7 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
 
   const headquarterCurrentUser = user ? JSON.parse(user).headquartersId : "";
 
-  const loadEstados = true;
-  const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
+  const { status, error: errorEstados } = useStoreServicesStatus();
 
   // const [showSecondModal, setShowSecondModal] = useState(false);
   const [dateStartRadicado, setDateStartRadicado] = useState("");
@@ -187,9 +186,9 @@ const ModalGestionReportes: React.FC<ModalReporteRadicadoProps> = ({
             <div className="mb-6">
               <Select
                 label="Estado CUPS"
-                options={dataEstados?.map((estado) => ({
-                  value: estado.id,
-                  label: estado.name,
+                options={status?.map((s) => ({
+                  value: s.id,
+                  label: s.name,
                 }))}
                 name="estadoCups"
                 onChange={(e) => {

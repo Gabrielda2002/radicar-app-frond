@@ -2,8 +2,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Cup } from "@/models/IAuditados";
-import React, { useEffect, useState, useMemo } from "react";
-import { useFetchStatus } from "@/hooks/UseFetchStatus";
+import React, { useState, useMemo } from "react";
 //*Icons
 import editar from "/assets/editar.svg";
 import FormModal from "@/components/common/Ui/FormModal";
@@ -12,6 +11,7 @@ import Select from "@/components/common/Ui/Select";
 import { toast } from "react-toastify";
 import Button from "@/components/common/Ui/Button";
 import useStoreAuthService from "../store/useStoreAuthService";
+import { useStoreServicesStatus } from "@/store/useStoreServicesStatus";
 
 interface ModalActualizarCupsAuditadosProps {
   cup: Cup;
@@ -24,17 +24,13 @@ const ModalActualizarCupsAuditoria: React.FC<
 
   const { updateCupsAuthorized, isLoading, error } = useStoreAuthService();
 
-  // * se agreaga estado para el control de la carga de los estados
-  const [loadEstados, setLoadEstados] = useState(false);
   // * el hook espera el loadEstados para cargar los estados, si es true carga los estados
-  const { dataEstados, errorEstados } = useFetchStatus(loadEstados);
+  const { status, error:errorEstados, getStatus } = useStoreServicesStatus();
 
-  // * se agrega un efecto para cargar los estados cuando stadopen sea true, es decir cuando el modal se abra
-  useEffect(() => {
-    if (stadopen) {
-      setLoadEstados(true);
-    }
-  }, [stadopen]);
+  const handleOpenModal = async () => {
+    setStadopen(true);
+    await Promise.all([getStatus()]);
+  }
 
   const validationSchema = useMemo(
     () =>
@@ -74,7 +70,7 @@ const ModalActualizarCupsAuditoria: React.FC<
 
   return (
     <>
-      <Button variant="secondary" onClick={() => setStadopen(true)} size="sm">
+      <Button variant="secondary" onClick={handleOpenModal} size="sm">
         <img className="dark:invert" src={editar} alt="icon-editar" />
       </Button>
       <FormModal
@@ -107,9 +103,9 @@ const ModalActualizarCupsAuditoria: React.FC<
                     <div className="">
                       <Select
                         options={[
-                          ...dataEstados.map((status) => ({
-                            value: status.id,
-                            label: status.name,
+                          ...status.map((s) => ({
+                            value: s.id,
+                            label: s.name,
                           })),
                         ]}
                         label="Estado CUPS"

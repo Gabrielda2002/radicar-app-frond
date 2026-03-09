@@ -2,8 +2,6 @@ import { ICups } from "../models/ICups";
 import { IRadicador } from "../models/IRadicador";
 import { IUsuarios } from "../models/IUsuarios";
 import { api } from "../utils/api-config";
-import { IUnidadFuncional } from "../models/IUnidadFuncional";
-import { IEstados } from "../models/IEstados";
 import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDiagnostico } from "../models/IDiagnostico";
@@ -41,27 +39,6 @@ export const fetchUsuario = async (): Promise<IUsuarios[]> => {
     }));
     return usuarios;
 
-}
-
-export const fetchUnidadFuncional = async (): Promise<IUnidadFuncional[]> => {
-    const response = await api.get('/unidad-funcional');
-    const unidadFuncional = response.data.map((unidad: IUnidadFuncional) => ({
-        ...unidad,
-        updatedAt: new Date(unidad.updatedAt),
-        createdAt: new Date(unidad.createdAt)
-    }));
-    return unidadFuncional;
-} 
-
-export const fetchEstados = async (): Promise<IEstados[]> => {
-
-    const response = await api.get('/estados');
-    const estados = response.data.map((estado: IEstados) => ({
-        ...estado,
-        updatedAt: new Date(estado.updatedAt),
-        createdAt: new Date(estado.createdAt)
-    }));
-    return estados;
 }
 
 export const fetchRoles = async (): Promise<IRol[]> => {
