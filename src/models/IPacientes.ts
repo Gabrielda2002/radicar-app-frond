@@ -1,6 +1,6 @@
 export interface IPacientes {
     id:                  number;
-    documentType:        number;
+    documentTypeId:        number;
     documentNumber:      number;
     name:                string;
     phoneNumber:         string;
@@ -8,8 +8,8 @@ export interface IPacientes {
     landline:            string;
     email:               string;
     address:             string;
-    agreement:            number;
-    ipsPrimary:         number;
+    agreementId:            number;
+    ipsPrimaryId:         number;
     status:              boolean;
     updatedAt:           Date;
     createdAt:           Date;

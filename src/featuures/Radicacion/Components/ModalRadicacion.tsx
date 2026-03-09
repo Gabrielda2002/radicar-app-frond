@@ -180,7 +180,7 @@ const ModalRadicacion = () => {
       formik.setFieldValue("phoneNumber2", data.phoneNumber2 || "");
       formik.setFieldValue("address", data.address);
       formik.setFieldValue("email", data.email);
-      formik.setFieldValue("agreement", data.agreement);
+      formik.setFieldValue("agreement", data.agreementId);
       formik.setFieldValue("patientId", data.id.toString());
     }
   }, [data]);
