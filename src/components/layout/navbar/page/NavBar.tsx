@@ -24,17 +24,20 @@ import ThemeToggle from "../components/ThemeToggle";
 import MobileMenuItem from "../components/MobileMenuItem";
 import ModalRequestPermission from "@/featuures/Permission/components/ModalRequestPermission";
 import type { UserNavigationItem } from "../types/navigation.types";
-import MyRequestsPermissions from "@/featuures/MyRequestsPermissions/page/MyRequestsPermissions";
+import MyRequestsPermissions from "@/featuures/Permission/components/ModalMyRequestsPermissions";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import { BookOpen } from "lucide-react";
 import { api } from "@/utils/api-config";
+import { useStorePermissions } from "@/featuures/Permission/store/useStorePermissions";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
   const { isCollapsed, toggleSideBar } = useSidebar();
   const { userProfile } = useUserProfile();
   const { theme, toggleTheme } = useTheme();
+
+  const { getMyRequests } = useStorePermissions();
 
   const [imageUrl, setImageUrl] = useState<string>(defaultUserPicture);
   const [isPermissionModalOpen, setIsPermissionModalOpen] =
@@ -82,6 +85,7 @@ const Navbar: React.FC = React.memo(() => {
 
   const handleOpenMyPermissions = useCallback(() => {
     setIsMyPermissionsOpen(true);
+    getMyRequests();
   }, []);
 
   const handleCloseMyPermissions = useCallback(() => {

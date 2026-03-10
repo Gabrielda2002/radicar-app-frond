@@ -12,7 +12,7 @@ import { ITickets } from "@/models/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
 import useCommentStore from "../Store/useCommentStore";
-import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
+import { getPriorityColor, getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 
 interface CerrarModalProps {
   ticket: ITickets;

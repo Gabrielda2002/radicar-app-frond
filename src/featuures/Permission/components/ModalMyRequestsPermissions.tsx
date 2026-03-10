@@ -3,8 +3,7 @@ import React, { JSX, useState } from "react";
 import {
   IMyRequestsPermissions,
   MyRequestsPermissionsProps,
-} from "../types/MyRquestsPermissions,.type";
-import { useFetchMyRequests } from "../hook/useFetctMyRequests";
+} from "../type/MyRquestsPermissions,.type";
 import { FormatDate } from "@/utils/FormatDate";
 import { BadgeCheck, BadgeAlert, Badge, File, ChevronDown, ChevronUp } from "lucide-react";
 import useSearch from "@/hooks/useSearch";
@@ -14,6 +13,7 @@ import Select from "@/components/common/Ui/Select";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import Button from "@/components/common/Ui/Button";
+import { useStorePermissions } from "../store/useStorePermissions";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -23,7 +23,10 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
 }) => {
   const [itemsPerPage] = useState(ITEMS_PER_PAGE);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
-  const { data } = useFetchMyRequests();
+  const { permissionsUser: data,
+    //  error, 
+    //  isLoading
+   } = useStorePermissions();
 
   const { openSecureFile } = useSecureFileAccess();
 

@@ -5,7 +5,7 @@ import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
 import { ITicketsUser } from '@/models/ITickets';
 import { FormatDate } from '@/utils/FormatDate';
-import { getPriorityColor, getStatusColor } from '@/featuures/MyRequestsPermissions/utils/getColorTicketColumn';
+import { getPriorityColor, getStatusColor } from '@/featuures/Permission/utils/getColorTicketColumn';
 import ModalCommetsTicket from '@/featuures/HelpDesk/Components/ModalCommetsTicket';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 

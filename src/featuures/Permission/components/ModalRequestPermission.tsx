@@ -3,9 +3,9 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { AnimatePresence } from "framer-motion";
 import { CheckFilesFormat, CheckFilesSize } from "../services/CheckFiles";
+import { useStorePermissions } from "../store/useStorePermissions";
 
 interface ModalRequestPermissionProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ interface ModalRequestPermissionProps {
 
 const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps) => {
 
-  const {create, error, isLoading} = UseMutationsPermission();
+  const {createRequest, error, isLoading} = useStorePermissions();
 
   const validationSchema = Yup.object({
     category: Yup.string().required("Se requiere la categoría"),
@@ -69,7 +69,7 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
     },
     validationSchema,
     onSubmit: async (values) => {
-      await create(values, () => {
+      await createRequest(values, () => {
         formik.resetForm();
         onClose();
       });

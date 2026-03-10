@@ -14,7 +14,7 @@ import {
 } from "@/components/common/ReusableTable";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { FormatDate } from "@/utils/FormatDate";
-import { getPriorityColor, getStatusColor } from "@/featuures/MyRequestsPermissions/utils/getColorTicketColumn";
+import { getPriorityColor, getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 import Button from "@/components/common/Ui/Button";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import useTicketsStore from "../Store/useTicketsStore";

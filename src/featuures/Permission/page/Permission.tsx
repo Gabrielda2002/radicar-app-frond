@@ -2,7 +2,6 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { FormatDate } from "@/utils/FormatDate";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalPermissionsActions from "../components/ModalPermissionsActions";
-import { useFetchRequestPermissions } from "../hook/useFetchRequestPermissions";
 import useSearch from "@/hooks/useSearch";
 import { IRequestsPermissions } from "../type/IRequestsPermissions";
 import usePagination from "@/hooks/usePagination";
@@ -10,10 +9,11 @@ import { useState } from "react";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
+import { useStorePermissions } from "../store/useStorePermissions";
 const ITENS_PER_PAGE = 10;
 
 const Permission = () => {
-  const { data, error, isLoading, refetch } = useFetchRequestPermissions();
+  const { requestPermissions:data, error, isLoading } = useStorePermissions();
 
   const [itemsPerPage] = useState(ITENS_PER_PAGE);
 
@@ -107,7 +107,6 @@ const Permission = () => {
                         <td className="text-center p-0 bg-gray-50  dark:bg-gray-800">
                           <ModalPermissionsActions
                             permission={p}
-                            onSuccess={refetch}
                           />
                         </td>
                       </tr>

@@ -12,20 +12,19 @@ import {
   getCommentLabel,
   isCommentRequired,
 } from "../constants/stepActionsConfig";
-import { UseMutationsPermission } from "../hook/useMutationsPermission";
 import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import { File } from "lucide-react";
 import { useAuth } from "@/context/authContext";
+import { useStorePermissions } from "../store/useStorePermissions";
 
 const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   permission,
-  onSuccess,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { cancelRequest, update, error, isLoading } = UseMutationsPermission();
+  const { cancelRequest, updateRequest: update, error, isLoading } = useStorePermissions();
 
   const { openSecureFile } = useSecureFileAccess();
 
@@ -42,7 +41,6 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
   const handleCancelRequest = () => {
     cancelRequest(permission.id, () => {
       setIsOpen(false);
-      onSuccess?.();
     });
   };
 
@@ -84,7 +82,6 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
           setIsOpen(false);
           formik.resetForm();
           toast.success("Acción realizada con éxito");
-          onSuccess?.();
         });
       } catch (error) {}
     },
