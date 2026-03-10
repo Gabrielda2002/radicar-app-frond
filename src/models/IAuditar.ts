@@ -27,4 +27,5 @@ export interface auditCups {
     funtionalUnit: string;
     idRadicado:      number;
     quantity:         number;
+    serviceId:         number;
 }
