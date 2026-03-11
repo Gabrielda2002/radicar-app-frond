@@ -2,7 +2,6 @@
 import { useState, lazy, Suspense, useCallback } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner.tsx";
 import { Cup, IRadicados } from "@/models/IRadicados.ts";
-import { useFetchDocumentoRadicado } from "../Hooks/UseFetchDocumentRadicado.ts";
 
 //? Using lazy load functions for modals
 const ModalGestionAuxiliar = lazy(
@@ -29,6 +28,7 @@ import Input from "@/components/common/Ui/Input.tsx";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess.ts";
 import { useTableState, ColumnConfig, DataTable } from "@/components/common/ReusableTable/index.ts";
 import { getColorStatus, getLastManagementStatusColor } from "../utils/getColorStatus.ts";
+import { useStoreRadicacion } from "../store/useStoreRadicacion.ts";
 
 const TablaRadicacion = () => {
   // estado para el numero de documento del paciente
@@ -36,11 +36,11 @@ const TablaRadicacion = () => {
 
 
   // hook para buscar radicado por numero documento paciente
-  const { radicados, loading, errorRadicados, getData } =
-    useFetchDocumentoRadicado();
+  const { radicacion, isLoading, error: errorRadicacion, getRadicacionByDocument } =
+    useStoreRadicacion();
 
   const tableState = useTableState({
-    data: radicados || [],
+    data: radicacion || [],
     searchFields: ["documentNumber", "namePatient", "convenioName"],
     initialItemsPerPage: 10,
   });
@@ -65,7 +65,7 @@ const TablaRadicacion = () => {
   }, []);
 
 
-  if (loading) return <LoadingSpinner duration={100000} />;
+  if (isLoading) return <LoadingSpinner duration={100000} />;
 
   const culumnsSubTable: ColumnConfig<Cup>[] = [
     {
@@ -224,15 +224,15 @@ const TablaRadicacion = () => {
               onChange={(e) => setDocumento(e.target.value)}
               placeholder="Documento Paciente"
               className="w-64 h-10 pl-3 border rounded-md border-stone-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-              error={errorRadicados ? errorRadicados : undefined}
-              touched={!!errorRadicados}
+              error={errorRadicacion ? errorRadicacion : undefined}
+              touched={!!errorRadicacion}
               required={true}
               helpText="Ingrese el número de documento del paciente para buscar su radicado."
             />
             <Button
               variant="secondary"
               type="button"
-              onClick={() => getData(documento)}
+              onClick={() => getRadicacionByDocument(documento)}
             >
               Buscar
             </Button>
@@ -242,13 +242,13 @@ const TablaRadicacion = () => {
             <ModalRadicacion />
           </Suspense>
         </section>
-        {radicados && radicados.length !== 0 && (
+        {radicacion && radicacion.length !== 0 && (
           <DataTable
             columns={columns}
             data={tableState.currentData()}
             getRowKey={(item) => item.id.toString()}
-            loading={loading}
-            error={errorRadicados}
+            loading={isLoading}
+            error={errorRadicacion}
           />
         )}
 

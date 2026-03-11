@@ -22,10 +22,10 @@ import {
 } from "lucide-react";
 import Button from "@/components/common/Ui/Button";
 import ModalProfessional from "@/components/common/Modals/ModalProfessinal/ModalProfessional";
-import { useRequestService } from "../Hooks/useRequestService";
 import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
 import Select from "@/components/common/Ui/Select";
 import { toast } from "react-toastify";
+import { useStoreRadicacion } from "../store/useStoreRadicacion";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
@@ -34,10 +34,10 @@ const ModalRadicacion = () => {
   const { data, error: errorDataPatient, getData } = useFetchPatient();
 
   const {
-    createRequestService,
+    createRadicacion,
     error: errorRequestService,
-    loading: creatingRequestService,
-  } = useRequestService();
+    isLoading: creatingRequestService,
+  } = useStoreRadicacion();
 
   const { dataConvenios, fetchConvenios } = useLazyFetchConvenio();
 
@@ -141,7 +141,7 @@ const ModalRadicacion = () => {
     enableReinitialize: true,
     onSubmit: async (values) => {
 
-      await createRequestService(values, () => {
+      await createRadicacion(values, () => {
         formik.resetForm();
         toast.success("Radicación creada exitosamente");
         setTimeout(() => {
