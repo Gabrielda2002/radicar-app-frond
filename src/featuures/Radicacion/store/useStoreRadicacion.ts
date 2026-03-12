@@ -20,7 +20,7 @@ export const useStoreRadicacion = create<UseStoreRadicacion>((set) => ({
 
             set({ isLoading: true, error: null });
 
-            const response = await api.post("/radicado-doc-patient", {
+            const response = await api.post("/radicaciones/doc-patient", {
                 documento: documento,
             });
 
@@ -44,7 +44,7 @@ export const useStoreRadicacion = create<UseStoreRadicacion>((set) => ({
 
             set({ isLoading: true, error: null });
 
-            const response = await api.post("/request/service", data, {
+            const response = await api.post("/radicaciones", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

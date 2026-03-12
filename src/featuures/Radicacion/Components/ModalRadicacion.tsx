@@ -515,7 +515,7 @@ const ModalRadicacion = () => {
                 onInputChanged={(value) =>
                   formik.setFieldValue("groupService", value)
                 }
-                apiRoute="grupo-servicios-name"
+                apiRoute="group-services/name"
                 error={formik.errors.groupService && formik.touched.groupService ? formik.errors.groupService : undefined}
                 touched={formik.touched.groupService}
                 placeholder="Ej: Cirugía General"

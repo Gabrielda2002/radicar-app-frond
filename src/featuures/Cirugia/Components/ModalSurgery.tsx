@@ -131,7 +131,7 @@ const ModalCirugias: React.FC<ModalCirugiasProps> = ({ data, idRadicado, onSucce
               <InputAutocompletado
                 label="Grupo Servicios"
                 onInputChanged={(id) => setGroupServiceId(Number(id))}
-                apiRoute="grupo-servicios-name"
+                apiRoute="group-services/name"
                 placeholder="Ej: Cirugía Ambulatoria"
                 helpText="Cambia el grupo de servicios si es necesario. No es obligatorio llenar este campo para programar la cirugía."
               />

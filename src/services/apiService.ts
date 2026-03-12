@@ -5,12 +5,11 @@ import { api } from "../utils/api-config";
 import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDiagnostico } from "../models/IDiagnostico";
-import { IEstadisticaCups } from "../models/IMonthDataRadicacion";
 import { IEventos } from "../models/IEventos";
 
 export const fetchCups = async (): Promise<ICups[]> => {
     const response = await api.get('/servicio-solicitado');
-    const cups = response.data.map((cup: ICups) => ({
+const cups = response.data.map((cup: ICups) => ({
         ...cup,
         updatedAt: new Date(cup.updatedAt),
         createdAt: new Date(cup.createdAt)
@@ -53,7 +52,7 @@ export const fetchRoles = async (): Promise<IRol[]> => {
 
 // tabla cirugias
 export const fetchCirugias = async (): Promise<ICirugias[]> => {
-    const response = await api.get('/tabla-cirugias');
+    const response = await api.get('/radicaciones/surgeries');
     const cirugias = response.data.map((cirugia: ICirugias) => ({
         ...cirugia,
         fechaRadicado: new Date(cirugia.fechaRadicado),
@@ -83,12 +82,6 @@ export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
         createdAt: new Date(diagnostico.createdAt)
     }));
     return diagnosticos;
-}
-
-export const fetchMonthRadicacionEp = async (): Promise<IEstadisticaCups[]> => {
-    const response = await api.get('/estadistica-cups-estado');
-    
-    return response.data;
 }
 
 export const fetchEventosEp = async (): Promise<IEventos[]> => {

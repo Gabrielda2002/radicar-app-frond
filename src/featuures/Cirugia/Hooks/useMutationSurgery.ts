@@ -16,7 +16,7 @@ export const useMutationSurgery = (): UseUpdateGroupServiceReturn => {
   const updateGroupService = async (groupId: number, radicadoId: number, onSuccess: () => void) => {
     setIsLoading(true);
     try {
-      const response = await api.put(`/update-group-services/${radicadoId}`, {
+      const response = await api.put(`/group-services/${radicadoId}/radicacion`, {
         groupServices: groupId
       })
 

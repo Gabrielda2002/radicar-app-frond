@@ -24,7 +24,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
         try {
             set({ isLoading: true, error: null });
 
-            const response = await api.get('/auditoria-table');
+            const response = await api.get('/radicaciones/audit');
             
             if (response.status === 200) {
                 set({ services: response.data });
@@ -46,7 +46,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
             
             set({ isLoading: true, error: null });
 
-            const response = await api.put(`/autorizar-radicado/${radicadoId}`, data);
+            const response = await api.put(`/radicaciones/${radicadoId}`, data);
 
             if (response.status === 200) {
                 onSuccess();
@@ -69,7 +69,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
             
             set({ isLoading: true, error: null });
 
-            const response = await api.get('/auditoria-auditados');
+            const response = await api.get('/radicaciones/all');
 
             if (response.status === 200) {
                 set({ servucesAuthorized: response.data });
