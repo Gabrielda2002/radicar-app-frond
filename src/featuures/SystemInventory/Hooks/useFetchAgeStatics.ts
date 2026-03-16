@@ -22,11 +22,11 @@ export const useFetchAgeStatics = (typeItem: string, idHeadquartersSelected?: nu
 
                 const endPoint = typeItem === "equipos" 
                 ? "equipments/statics/age" 
-                : typeItem === 'inventario/general'
-                ? "inventario/general/statistics/age"
-                : typeItem === 'inventario/televisores' 
-                ? 'tv/statics/age'
-                : 'celular/statics/age'
+                : typeItem === 'general/inventory'
+                ? 'general/inventory/statistics/age'
+                : typeItem === 'tv/inventory' 
+                ? 'tv/inventory/statics/age'
+                : 'phones/inventory/statics/age'
 
                 const response = await api.get(`${endPoint}/${idHeadquartersSelected}`);
 

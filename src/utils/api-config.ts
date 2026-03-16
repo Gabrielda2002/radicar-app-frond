@@ -251,7 +251,7 @@ export const updatePasswordUsuarioEp = async (data: FormData, id: number) => {
 // crear item sistema inventario
 export const createItemEp = async (data: FormData, ep: string) => {
   const configHeader =
-    ep !== "dispositivos-red"
+    ep !== "devices-red"
       ? {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -265,7 +265,7 @@ export const createItemEp = async (data: FormData, ep: string) => {
 // actualizar item sistema inventario
 export const updateItemEp = async (data: FormData, id: number, ep: string) => {
   const configHeader =
-    ep !== "dispositivos-red"
+    ep !== "devices-red"
       ? {
           headers: {
             "Content-Type": "multipart/form-data",

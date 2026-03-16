@@ -46,15 +46,15 @@ export type AnyItem =
 export const ItemStrategyFactory = {
   getStrategy(tipoItem: string): ItemStrategy<any> {
     switch (tipoItem) {
-      case "equipos":
+      case "equipments":
         return new EquiposStrategy();
-      case "dispositivos-red":
+      case "devices-red":
         return new DispositivosRedStrategy();
-      case "inventario/general":
+      case "general/inventory":
         return new GeneralInventoryStrategy();
-      case "inventario/televisores":
+      case "tv/inventory":
         return new TelevisoresStrategy();
-      case "inventario/celulares":
+      case "phones/inventory":
         return new PhoneStrategy();
       default:
         throw new Error(`No hay estrategia definida para ${tipoItem}`);

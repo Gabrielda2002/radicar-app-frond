@@ -32,7 +32,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
       <>
         <ModalFormGeneralItems
           idSede={null}
-          tipoItem="inventario/general"
+          tipoItem="general/inventory"
           isUpdate={true}
           items={item}
           refreshItems={refreshItems}

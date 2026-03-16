@@ -5,7 +5,9 @@ import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
 import { IItemsTv } from "../Models/IItemsTv";
 
-const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-red" | "inventario/general" | 'inventario/televisores' | 'inventario/celulares' | null) => {
+type typeItems = "equipments" | "devices-red" | "general/inventory" | 'tv/inventory' | 'phones/inventory' | null
+
+const useFetchItems = (id: number | null, tipoItem: typeItems) => {
   const [items, setItems] = useState<IItems[] | IItemsNetworking[] | IItemsGeneral[]| IItemsTv[] | null>(null);
   const [loadingItems, setLoading] = useState<boolean>(true);
   const [errorItems, setError] = useState<string | null>(null);
@@ -14,7 +16,7 @@ const useFetchItems = (id: number | null, tipoItem: "equipos" | "dispositivos-re
     if (!id || !tipoItem) return;
 
     try {
-      const response = await api.get(`/${tipoItem}-sede/${id}`);
+      const response = await api.get(`/${tipoItem}/sede/${id}`);
       if (response.data.length === 0) {
         setError("No se encontraron resultados");
         setItems(null);

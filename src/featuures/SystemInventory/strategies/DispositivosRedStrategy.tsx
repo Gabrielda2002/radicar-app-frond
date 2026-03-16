@@ -31,7 +31,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
       <>
         <ModalItemsForm
           idSede={null}
-          tipoItem="dispositivos-red"
+          tipoItem="devices-red"
           items={item}
           idItem={item.id}
           onSuccess={refreshItems}

@@ -92,7 +92,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       sedeId: Yup.string().optional(),
     };
 
-    if (typeItem === "equipos") {
+    if (typeItem === "equipments") {
       return {
         ...validationSchema,
         candado: Yup.boolean().optional(),
@@ -154,7 +154,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       };
     }
 
-    if (typeItem === "dispositivos-red") {
+    if (typeItem === "devices-red") {
       return {
         ...validationSchema,
         otherData: Yup.string()
@@ -209,7 +209,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         formData.append("dhcp", values.dhcp.toString());
         formData.append("inventoryNumber", values.inventoryNumber);
 
-        if (tipoItem === "equipos") {
+        if (tipoItem === "equipments") {
           formData.append("typeEquipment", values.typeEquipment);
           formData.append("operationalSystem", values.operationalSystem);
           formData.append("purchaseDate", values.purchaseDate);
@@ -229,13 +229,13 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         if (!idItem) {
           response = await createItem(
             formData,
-            tipoItem == "equipos" ? "equipos" : "dispositivos-red"
+            tipoItem == "equipments" ? "equipments" : "devices-red"
           );
         } else {
           response = await updateItem(
             idItem,
             formData,
-            tipoItem == "equipos" ? "equipos" : "dispositivos-red"
+            tipoItem == "equipments" ? "equipments" : "devices-red"
           );
         }
 
@@ -374,7 +374,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               />
             </div>
 
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <div>
                 <Select
                   options={["TODO EN 1", "LAPTOP", "PC MESA"].map((option) => ({
@@ -439,7 +439,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               />
             </div>
             {/* RESPONSABLE */}
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <InputAutocompletado
                 label="Responsable"
                 onInputChanged={(value) =>
@@ -457,7 +457,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               />
             )}
             {/* SISTEMA OPERATIVO */}
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <div>
                 <Select
                   options={[
@@ -518,7 +518,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             </div>
           </div>
           <div className="grid grid-cols-2 mt-2 mb-10 gap-x-6 gap-y-2">
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <div>
                 <Input
                   type="date"
@@ -536,7 +536,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               </div>
             )}
 
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <div>
                 <Input
                   type="date"
@@ -554,7 +554,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               </div>
             )}
 
-            {tipoItem === "equipos" && (
+            {tipoItem === "equipments" && (
               <div>
                 <Input
                   type="file"
@@ -611,7 +611,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               </div>
             )}
           </div>
-          {tipoItem === "dispositivos-red" && (
+          {tipoItem === "devices-red" && (
             <div>
               <Input
                 type="text"
@@ -628,7 +628,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               />
             </div>
           )}
-          {tipoItem === "dispositivos-red" && (
+          {tipoItem === "devices-red" && (
             <div className="mb-2">
               <label
                 htmlFor="status"
@@ -659,7 +659,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               </AnimatePresence>
             </div>
           )}
-          {tipoItem === "dispositivos-red" && (
+          {tipoItem === "devices-red" && (
             <>
               {!formik.values.dhcp && (
                 <div>
@@ -684,7 +684,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {/* ? garantia */}
             <div>
-              {tipoItem === "equipos" && (
+              {tipoItem === "equipments" && (
                 <div className="flex items-center">
                   <Input
                     type="checkbox"
@@ -707,7 +707,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                 </div>
               )}
 
-              {tipoItem === "equipos" && formik.values.warranty && (
+              {tipoItem === "equipments" && formik.values.warranty && (
                 <div>
                   <Input
                     type="text"
@@ -727,7 +727,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             </div>
 
             <div>
-              {tipoItem === "equipos" && (
+              {tipoItem === "equipments" && (
                 <div className="flex items-center">
                   <Input
                     type="checkbox"
@@ -748,7 +748,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   />
                 </div>
               )}
-              {tipoItem === "equipos" && !formik.values.dhcp && (
+              {tipoItem === "equipments" && !formik.values.dhcp && (
                 <div className="mt-2 md:mt-0">
                   <Input
                     type="text"
@@ -768,7 +768,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             </div>
 
             <div>
-              {tipoItem === "equipos" && (
+              {tipoItem === "equipments" && (
                 <div>
                   <Input
                     type="checkbox"

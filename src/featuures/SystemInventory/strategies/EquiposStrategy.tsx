@@ -45,7 +45,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
       <>
         <ModalItemsForm
           idSede={null}
-          tipoItem="equipos"
+          tipoItem="equipments"
           items={item}
           idItem={item.id}
           onSuccess={refreshItems}
@@ -65,7 +65,6 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           >
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
           </button>
-          {/* Tooltip */}
         </div>
       </>
     );

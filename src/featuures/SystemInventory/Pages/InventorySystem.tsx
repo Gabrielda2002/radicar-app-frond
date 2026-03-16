@@ -74,11 +74,11 @@ const SistemaInventario: React.FC = () => {
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
   const [tipoItem, setTipoItem] = useState<
-    | "equipos"
-    | "dispositivos-red"
-    | "inventario/general"
-    | "inventario/televisores"
-    | "inventario/celulares"
+    | "equipments"
+    | "devices-red"
+    | "general/inventory"
+    | "tv/inventory"
+    | "phones/inventory"
     | null
   >(null);
 
@@ -211,7 +211,7 @@ const SistemaInventario: React.FC = () => {
                           <ComputerDesktopIcon className="w-8 h-8 text-gray-200" />
                         }
                         onClick={() => {
-                          setTipoItem("equipos");
+                          setTipoItem("equipments");
                           setScreen("items");
                         }}
                       />
@@ -221,7 +221,7 @@ const SistemaInventario: React.FC = () => {
                         image={TELECO}
                         icon={<SignalIcon className="w-8 h-8 text-gray-200" />}
                         onClick={() => {
-                          setTipoItem("dispositivos-red");
+                          setTipoItem("devices-red");
                           setScreen("items");
                         }}
                       />
@@ -231,7 +231,7 @@ const SistemaInventario: React.FC = () => {
                         image={TELECO}
                         icon={<Hammer className="w-8 h-8 text-gray-200" />}
                         onClick={() => {
-                          setTipoItem("inventario/general");
+                          setTipoItem("general/inventory");
                           setScreen("items");
                         }}
                       />
@@ -241,7 +241,7 @@ const SistemaInventario: React.FC = () => {
                         image={TELECO}
                         icon={<Tv className="w-8 h-8 text-gray-200" />}
                         onClick={() => {
-                          setTipoItem("inventario/televisores");
+                          setTipoItem("tv/inventory");
                           setScreen("items");
                         }}
                       />
@@ -251,7 +251,7 @@ const SistemaInventario: React.FC = () => {
                         image={TELECO}
                         icon={<Smartphone className="w-8 h-8 text-gray-200" />}
                         onClick={() => {
-                          setTipoItem("inventario/celulares");
+                          setTipoItem("phones/inventory");
                           setScreen("items");
                         }}
                       />

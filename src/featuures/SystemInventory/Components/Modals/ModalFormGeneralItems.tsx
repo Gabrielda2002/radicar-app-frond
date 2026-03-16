@@ -23,7 +23,7 @@ import Select from "@/components/common/Ui/Select";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
-  tipoItem?: "inventario/general";
+  tipoItem?: string;
   isUpdate?: boolean;
   refreshItems: () => void;
   items: IItemsGeneral | null;

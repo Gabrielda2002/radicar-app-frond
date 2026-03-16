@@ -20,12 +20,12 @@ export const useFetchQuantity = (typeItem: string, idHeadquartersSelected?: numb
 
                 const endPoint = typeItem === "equipos" 
                 ? "equipments/statics/headquarters" 
-                : typeItem === "dispositivos-red" 
-                ? "dispositivos-red/statistics/headquarters" 
+                : typeItem === "devices-red" 
+                ? "devices-red/statistics/headquarters" 
                 : typeItem === 'inventario/general'
-                ? "inventario/general/statistics/headquarters"
+                ? "general/inventory/statistics/headquarters"
                 : typeItem === 'inventario/televisores'
-                ? 'tv/statics/headquarters'
+                ? 'tv/inventory/statistics/headquarters'
                 : 'celular/statics/headquarters';
 
                 const response = await api.get(`${endPoint}/${idHeadquartersSelected}`);

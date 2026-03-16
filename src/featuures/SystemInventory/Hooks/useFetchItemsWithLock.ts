@@ -15,7 +15,7 @@ export const useFetchItemsWithLock = (typeItem: string, idHeadquartersSelected?:
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
+            try {[]
                 
                 setLoading(true);
 

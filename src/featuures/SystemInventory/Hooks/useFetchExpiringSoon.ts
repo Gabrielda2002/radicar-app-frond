@@ -15,11 +15,11 @@ export const useFetchExpiringSoon = (typeItem: string, idHeadquarters?: number) 
                 // cambio endpoitn dependiendo del tipo de item
                 const endPoint = typeItem === "equipos" 
                 ? 'equipments/statics/warrantyExpiration' 
-                : typeItem ==='inventario/general'
-                ? 'inventario/general/statistics/warrantyExpiration'
-                : typeItem === 'inventario/televisores' 
-                ? 'tv/statics/warrantyExpiration'
-                : 'celular/statics/warrantyExpiration';
+                : typeItem ==='general/inventory'
+                ? 'general/inventory/statistics/warrantyExpiration'
+                : typeItem === 'tv/inventory' 
+                ? 'tv/inventory/statics/warrantyExpiration'
+                : 'phones/inventory/statics/warrantyExpiration';
                 
                 const response = await api.get(`/${endPoint}/${idHeadquarters}`);
     

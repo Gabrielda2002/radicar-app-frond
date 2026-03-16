@@ -26,11 +26,11 @@ export const useGlobalSearch = (): UseGlobalSearchReturn => {
     const [searchError, setSearchError] = useState<string | null>(null);
 
     const itemTypes = useMemo(() => [
-        'equipos',
-        'dispositivos-red',
-        'inventario/general',
-        'inventario/televisores',
-        'inventario/celulares'
+        'equipments',
+        'devices-red',
+        'general/inventory',
+        'tv/inventory',
+        'phones/inventory'
     ], []);
 
     const performGlobalSearch = useCallback(async (query: string) => {
@@ -46,7 +46,7 @@ export const useGlobalSearch = (): UseGlobalSearchReturn => {
             const searchPromises = itemTypes.map(async (tipoItem) => {
                 try {
                     
-                    const response = await api.get(`/search/${tipoItem}`, {
+                    const response = await api.get(`/${tipoItem}/search`, {
                         params: { query: query.trim() }
                     });
 

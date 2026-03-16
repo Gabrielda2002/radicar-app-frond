@@ -67,19 +67,19 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <ExpiringSoonStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected} />
-              <AgeStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected}  />
+              <ExpiringSoonStatics typeItem="general/inventory" idHeadquartersSelected={idHeadquartersSelected} />
+              <AgeStatics typeItem="general/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
               {/* <QuantityItemsStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected}  /> */}
             </div>
           ) : activeSection === 2 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <QuantityItemsStatics typeItem="dispositivos-red" idHeadquartersSelected={idHeadquartersSelected}  />
+              <QuantityItemsStatics typeItem="devices-red" idHeadquartersSelected={idHeadquartersSelected}  />
             </div>
           ) :  activeSection === 4 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* <QuantityItemsStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected}  /> */}
-              <AgeStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected}  />
-              <ExpiringSoonStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected} />
+              <AgeStatics typeItem="tv/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
+              <ExpiringSoonStatics typeItem="tv/inventory" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ): activeSection === 5 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
