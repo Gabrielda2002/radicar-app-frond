@@ -17,10 +17,11 @@ export const useCreateDI = () => {
         return response;
       }
     } catch (error: any) {
-      setError(
-        "Error al crear la demanda inducida: " + error.response?.data?.message
-      );
-      console.log("Error al crear la demanda inducida:", error);
+      if (error.response.status === 500) {
+        setError("Error del servidor. Por favor, inténtalo de nuevo más tarde.");
+      }else {
+        setError(error?.response?.data?.message);
+      }
     } finally {
       setLoading(false);
     }
