@@ -1,7 +1,7 @@
-import React from "react";
-import { useFetchAgeStatics } from "../Hooks/useFetchAgeStatics";
+import React, { useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
+import { useStoreStatistics } from "../Store/useStoreStatistics";
 
 interface AgeStaticsProps {
   typeItem: string;
@@ -12,7 +12,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
   typeItem,
   idHeadquartersSelected
 }) => {
-  const { ageStatics, loading, error } = useFetchAgeStatics(typeItem, idHeadquartersSelected);
+  const { age, isLoading, error, getAge } = useStoreStatistics();
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -20,6 +20,10 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
     const timer = setTimeout(() => setIsMounted(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    getAge(typeItem, idHeadquartersSelected);
+  }, [typeItem, idHeadquartersSelected]);
 
   // Formateador para los valores en el tooltip
   const formatTooltipValue = (value: number | undefined) => {
@@ -29,9 +33,9 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
 
   // Formateador para mostrar la edad promedio en texto legible
   const formatAverageAge = () => {
-    if (!ageStatics?.averageAge) return "N/A";
+    if (!age?.averageAge) return "N/A";
     
-    const { years, months, days } = ageStatics.averageAge;
+    const { years, months, days } = age.averageAge;
     const parts = [];
     
     if (years > 0) parts.push(`${Number(years).toFixed(1)} ${years === 1 ? "año" : "años"}`);
@@ -44,7 +48,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
   return (
     <>
       <div className='flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800'>
-        {loading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center h-64">
             <LoadingSpinner />
           </div>
@@ -52,7 +56,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
           <div className="p-4 text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-md">
             {error}
           </div>
-        ) : ageStatics ? (
+        ) : age ? (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             {/* Gráfico de barras */}
             <div className='col-span-1 h-80 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
@@ -60,7 +64,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
               {isMounted && (
                 <ResponsiveContainer width="100%" height="90%" minHeight={250} minWidth={300}>
                 <BarChart
-                  data={ageStatics.distribution}
+                  data={age.distribution}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -90,7 +94,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Total Registros</h3>
                 <div className='flex flex-col items-center justify-center h-full'>
                   <p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
-                    {ageStatics.total}
+                    {age.total}
                   </p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
                     {typeItem === "equipos" ? "Equipos registrados" : "Items registrados"}

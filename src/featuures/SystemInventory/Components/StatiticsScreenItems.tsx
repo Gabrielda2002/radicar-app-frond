@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AgeStatics from "./AgeStatics";
 import ExpiringSoonStatics from "./ExpiringSoonStatics";
-import QuantityItemsStatics from "./QuantityItemsStatics";
 import ItemsWithLockStatics from "./ItemsWithLockStatics";
 import QuantityTypeItens from "./QuantityTypeItems";
 import { useAuth } from "@/context/authContext";
@@ -18,7 +17,7 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
 
   const SECTIONS = [
     { id: 1, name: "Computadoras" },
-    { id: 2, name: "Dispositivos Red" },
+    // { id: 2, name: "Dispositivos Red" },
     { id: 3, name: "Inventario General" },
     { id: 4, name: "Televisores"},
     { id: 5, name: "Celulares"}
@@ -71,11 +70,7 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
               <AgeStatics typeItem="general/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
               {/* <QuantityItemsStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected}  /> */}
             </div>
-          ) : activeSection === 2 && [1].includes(Number(rol)) ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <QuantityItemsStatics typeItem="devices-red" idHeadquartersSelected={idHeadquartersSelected}  />
-            </div>
-          ) :  activeSection === 4 && [1].includes(Number(rol)) ? (
+          ) : activeSection === 4 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* <QuantityItemsStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected}  /> */}
               <AgeStatics typeItem="tv/inventory" idHeadquartersSelected={idHeadquartersSelected}  />

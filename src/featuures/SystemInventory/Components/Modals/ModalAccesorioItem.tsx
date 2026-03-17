@@ -24,7 +24,7 @@ import FormModal from "@/components/common/Ui/FormModal";
 import Input from "@/components/common/Ui/Input";
 import Select, { SelectOption } from "@/components/common/Ui/Select";
 import InputAutoCompleteJson from "@/components/common/Ui/InputAutoCompleteJson";
-import { useCreateAcceosry } from "../../Hooks/useCreateAccesory";
+import { useStoreEquipments } from "../../Store/useStoreEquipments";
 
 interface ModalAccesorioItemProps {
   id: number;
@@ -37,7 +37,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  const { createAccesory, error, loading } = useCreateAcceosry();
+  const { createEquipmentAccessory, error, isLoading } = useStoreEquipments();
 
   // estado para controlar que se va a agregar al equipo
   const baseValidationSchema = {
@@ -150,59 +150,23 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
     },
     validationSchema: Yup.object(baseValidationSchema),
     onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("otherData", values.othersData);
-        formData.append("equipmentId", id.toString());
+      if (!values.typeAdd) {
+        return;
+      }
 
-        let ep: string = "";
-
-        if (values.typeAdd === "Periferico" || values.typeAdd === "hardware") {
-          formData.append("brand", values.brand);
-          formData.append("serial", values.serial);
-          formData.append("model", values.model);
-        }
-        if (values.typeAdd === "software") {
-          ep = "software";
-          formData.append("version", values.version);
-          formData.append("license", values.license);
-          formData.append("dateInstallation", values.dateInstallation);
-          formData.append("status", values.status);
-        }
-        if (values.typeAdd === "hardware") {
-          ep = "componentes";
-          formData.append("capacity", values.capacity);
-          formData.append("speed", values.speed);
-        }
-        if (values.typeAdd === "Periferico") {
-          ep = "accesorios-equipos";
-          formData.append("status", values.status);
-          formData.append("inventoryNumber", values.inventoryNumber);
-        }
-
-        const response = await createAccesory(formData, ep);
-
-        if (response?.status === 200 || response?.status === 201) {
+      await createEquipmentAccessory(
+        {
+          ...values,
+          typeAdd: values.typeAdd as "Periferico" | "hardware" | "software",
+          equipmentId: id,
+        },
+        () => {
           formik.resetForm();
           refreshItems();
-          toast.success("Datos enviados con éxito", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          setTimeout(() => {
-            setStadopen(false);
-          }, 3000);
+          toast.success("Datos enviados con éxito");
+          setStadopen(false);
         }
-      } catch (error) {
-        console.log("Error al crear el accesorio:", error);
-      }
+      );
     },
   });
 
@@ -242,7 +206,7 @@ const ModalAccesorioItem: React.FC<ModalAccesorioItemProps> = ({
         onClose={() => setStadopen(false)}
         title="Agregar Accesorio"
         onSubmit={formik.handleSubmit}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         showCancelButton
         submitText="Guardar"
         isValid={formik.isValid && formik.dirty}

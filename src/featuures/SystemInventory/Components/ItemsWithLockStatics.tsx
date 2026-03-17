@@ -1,7 +1,7 @@
 import React from 'react'
-import { useFetchItemsWithLock } from '../Hooks/useFetchItemsWithLock'
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { useStoreStatistics } from '../Store/useStoreStatistics';
 
 interface ItemsWithLockStaticsProps {
     typeItem: "equipos" | "dispositivos-red" | "inventario/general";
@@ -12,7 +12,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
     typeItem,
     idHeadquartersSelected
 }) => {
-    const { withLock, loading, error } = useFetchItemsWithLock(typeItem, idHeadquartersSelected);
+    const { withLock, isLoading, error, getItemsWithLock } = useStoreStatistics();
     const [isMounted, setIsMounted] = React.useState(false);
 
     React.useEffect(() => {
@@ -21,6 +21,10 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
         return () => clearTimeout(timer);
     }, []);
     
+    React.useEffect(() => {
+        getItemsWithLock(typeItem, idHeadquartersSelected);
+    }, [typeItem, idHeadquartersSelected]);
+
     // Colores para el gráfico circular
     const COLORS = ['#FF8042', '#0088FE']; // Naranja para bloqueados, Azul para desbloqueados
     
@@ -90,7 +94,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
         <>
             <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 
-                {loading ? (
+                {isLoading ? (
                     <div className="flex justify-center items-center h-64">
                         <LoadingSpinner />
                     </div>

@@ -2,7 +2,7 @@ import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { ItemStrategy } from "./ItemStrategy";
 import { ReactNode } from "react";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
-import ModalItemsForm from "../Components/Modals/ModalItemsForm";
+import ModalDevicesRedForm from "../Components/Modals/ModalDevicesRedForm";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 import ModalItemsDetails from "../Components/Modals/ModalItemsDetails";
 
@@ -29,9 +29,8 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
   ): ReactNode {
     return (
       <>
-        <ModalItemsForm
+        <ModalDevicesRedForm
           idSede={null}
-          tipoItem="devices-red"
           items={item}
           idItem={item.id}
           onSuccess={refreshItems}
@@ -107,13 +106,12 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     items: IItemsNetworking,
     refreshItems: () => void,
     idItems: number,
-    tipoTtem?: string
+    _tipoTtem?: string
     // isUpdate?: boolean
   ): ReactNode {
     return (
-      <ModalItemsForm
+      <ModalDevicesRedForm
         idSede={idSede}
-        tipoItem={tipoTtem || "dispositivos-red"}
         items={items}
         idItem={idItems}
         onSuccess={refreshItems}

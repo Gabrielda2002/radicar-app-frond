@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
-import { useFetchQuantityTypeItems } from '../Hooks/useFetchQuantityTypeItems';
 import { IQuantityTypeItems } from '../Models/IQuantityTypeItems';
+import { useStoreStatistics } from '../Store/useStoreStatistics';
 
 interface QuantityTypeItensProps {
     typeItem: string;
@@ -13,7 +13,7 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
     typeItem,
     idHeadquartersSelected
 }) => {
-    const { quantity, loading, error } = useFetchQuantityTypeItems(typeItem, idHeadquartersSelected);
+    const { quantity, isLoading, error, getQuantityItems } = useStoreStatistics();
     const [isMounted, setIsMounted] = React.useState(false);
 
     React.useEffect(() => {
@@ -21,6 +21,10 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
         const timer = setTimeout(() => setIsMounted(true), 100);
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        getQuantityItems(typeItem, idHeadquartersSelected);
+    }, [typeItem, idHeadquartersSelected]);
 
     // Colores para el gráfico circular
     const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28'];
@@ -75,7 +79,7 @@ const QuantityTypeItens: React.FC<QuantityTypeItensProps> = ({
     return (
         <>
             <div className='flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800'>
-                {loading ? (
+                {isLoading ? (
                     <div className="flex justify-center items-center h-64">
                         <LoadingSpinner />
                     </div>

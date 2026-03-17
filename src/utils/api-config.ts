@@ -276,10 +276,6 @@ export const updateItemEp = async (data: FormData, id: number, ep: string) => {
   return api.put(`/${ep}/${id}`, data, configHeader);
 };
 
-// crear accesorio item
-export const createAccesoryEquipmentEp = async (data: FormData, ep: string) => {
-  return api.post(`/${ep}`, data);
-};
 
 // crear observacion item
 export const createActiveBreakesEp = async (data: FormData) => {

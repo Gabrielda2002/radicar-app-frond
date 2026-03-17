@@ -1,7 +1,7 @@
-import { useFetchExpiringSoon } from '../Hooks/useFetchExpiringSoon'
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useStoreStatistics } from '../Store/useStoreStatistics';
 
 interface ExpiringSoonStaticsProps {
   typeItem: string;
@@ -12,14 +12,19 @@ const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({
   typeItem,
   idHeadquartersSelected
 }) => {
-  const { expiringSoon, loading, error } = useFetchExpiringSoon(typeItem, idHeadquartersSelected);
+  const { expiringSoon, isLoading, error, getExpiringSoon } = useStoreStatistics();
   const [isMounted, setIsMounted] = React.useState(false);
 
+  
   React.useEffect(() => {
     // Asegurar que el DOM esté listo antes de renderizar el gráfico
     const timer = setTimeout(() => setIsMounted(true), 100);
     return () => clearTimeout(timer);
   }, []);
+  
+  useEffect(() => {
+    getExpiringSoon(typeItem, idHeadquartersSelected);
+  }, [typeItem, idHeadquartersSelected]);
 
   // Colores para el gráfico circular
   const COLORS = ['#0088FE', '#FF8042']; // Azul para en garantía, Naranja para sin garantía
@@ -80,7 +85,7 @@ const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({
     <>
       <div className='flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800'>
         
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <LoadingSpinner />
           </div>
@@ -133,7 +138,7 @@ const ExpiringSoonStatics: React.FC<ExpiringSoonStaticsProps> = ({
               </div>
               <div className='bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg shadow-sm'>
                 <h3 className='text-sm font-medium text-gray-600 dark:text-gray-400'>Por expirar</h3>
-                <p className='text-2xl font-bold text-amber-600 dark:text-amber-400'>{expiringSoon.expiringSoon.count}</p>
+                <p className='text-2xl font-bold text-amber-600 dark:text-amber-400'>{expiringSoon?.expiringSoon?.count}</p>
               </div>
             </div>
           </div>

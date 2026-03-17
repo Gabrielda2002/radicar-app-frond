@@ -45,7 +45,6 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
       <>
         <ModalItemsForm
           idSede={null}
-          tipoItem="equipments"
           items={item}
           idItem={item.id}
           onSuccess={refreshItems}
@@ -168,13 +167,12 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
     items: IItems,
     refreshItems: () => void,
     idItems: number,
-    tipoTtem?: string,
+    _tipoTtem?: string,
     // isUpdate?: boolean
   ): ReactNode {
     return (
       <ModalItemsForm
         idSede={idSede}
-        tipoItem={tipoTtem || "equipos"}
         items={items}
         idItem={idItems}
         onSuccess={refreshItems}
