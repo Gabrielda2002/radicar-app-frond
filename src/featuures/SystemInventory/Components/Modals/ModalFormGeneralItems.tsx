@@ -127,10 +127,12 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           formik.resetForm();
           toast.success("Item creado con éxito");
           setIsOpen(false);
+          refreshItems();
         })
         : await updateGeneral(items?.id || 0, values, () => {
           toast.success("Item actualizado con éxito");
           setIsOpen(false);
+          refreshItems();
         });
     },
   });

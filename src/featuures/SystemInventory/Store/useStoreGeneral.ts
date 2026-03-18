@@ -1,8 +1,9 @@
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
+import { IItemsGeneral } from "../Models/IItemsGeneral";
 
 interface UseStoreGeneral {
-    general: any[];
+    general: IItemsGeneral[];
     error: string | null;
     isLoading: boolean;
     getGeneralByHeadquartersId: (headquartersId: number) => Promise<void>;
@@ -15,7 +16,28 @@ export const useStoreGeneral = create<UseStoreGeneral>((set) => ({
     error: null,
     isLoading: false,
 
-    getGeneralByHeadquartersId: async (_headquartersId: number) => { },
+    getGeneralByHeadquartersId: async (headquartersId: number) => {
+        try {
+            set({ isLoading: true, error: null });
+
+            const response = await api.get(`/general/inventory/sede/${headquartersId}`);
+
+            if (!response.data || response.data.length === 0) {
+                set({ general: [], error: "No se encontraron resultados" });
+                return;
+            }
+
+            set({ general: response.data, error: null });
+        } catch (error: any) {
+            if (error.response?.status === 500) {
+                set({ error: "Error interno del servidor" });
+            } else {
+                set({ error: error.response?.data?.message || "Ocurrió un error al obtener el inventario general." });
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
 
     createGeneral: async (data: Object, onSuccess?: () => void) => {
         try {

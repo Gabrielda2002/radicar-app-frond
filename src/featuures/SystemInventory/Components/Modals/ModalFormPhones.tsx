@@ -171,10 +171,12 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
           toast.success("Datos actualizados con éxito");
           setIsOpen(false);
           formik.resetForm();
+          refreshItems();
         })
         : await createPhone(values, () => {
           toast.success("Datos creados con éxito");
           setIsOpen(false);
+          refreshItems();
         });
 
     },

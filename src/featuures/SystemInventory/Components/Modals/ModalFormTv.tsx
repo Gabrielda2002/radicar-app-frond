@@ -139,10 +139,12 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
         ? await createTv(values, () => {
           formik.resetForm();
           setIsOpen(false);
+          refreshItems();
         })
         : await updateTv(items.id, values, () => {
           setIsOpen(false);
           toast.success("Item actualizado con éxito");
+          refreshItems();
         });
     },
   });

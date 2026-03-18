@@ -1,8 +1,9 @@
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
+import { IItemsTv } from "../Models/IItemsTv";
 
 interface UseStoreTv {
-    tvs: any[];
+    tvs: IItemsTv[];
     error: string | null;
     isLoading: boolean;
     getTvsByHeadquartersId: (headquartersId: number) => Promise<void>;
@@ -15,7 +16,28 @@ export const useStoreTv = create<UseStoreTv>((set) => ({
     error: null,
     isLoading: false,
 
-    getTvsByHeadquartersId: async (_headquartersId: number) => { },
+    getTvsByHeadquartersId: async (headquartersId: number) => {
+        try {
+            set({ isLoading: true, error: null });
+
+            const response = await api.get(`/tv/inventory/sede/${headquartersId}`);
+
+            if (!response.data || response.data.length === 0) {
+                set({ tvs: [], error: "No se encontraron resultados" });
+                return;
+            }
+
+            set({ tvs: response.data, error: null });
+        } catch (error: any) {
+            if (error.response?.status === 500) {
+                set({ error: "Error interno del servidor. Por favor, intenta más tarde." });
+            } else {
+                set({ error: error.response?.data?.message || "Ocurrió un error al obtener los televisores." });
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
 
     createTv: async (data: Object, onSuccess?: () => void) => {
         try {

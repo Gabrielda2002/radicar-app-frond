@@ -154,12 +154,14 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             toast.success("Equipo creado exitosamente");
             setStadopen(false);
             formik.resetForm();
+            onSuccess();
           });
         } else {
           await updateEquipment(idItem, values, () => {
             toast.success("Equipo actualizado exitosamente");
             setStadopen(false);
           });
+          onSuccess();
         }
     },
   });

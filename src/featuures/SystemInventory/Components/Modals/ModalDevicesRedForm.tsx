@@ -104,11 +104,13 @@ const ModalDevicesRedForm: React.FC<ModalDevicesRedFormProps> = ({
             toast.success("Dispositivo de Red creado exitosamente");
             setStadopen(false);
             formik.resetForm();
+            onSuccess();
           });
         } else {
           await updateDevice(idItem, values, () => {
             toast.success("Dispositivo de Red actualizado exitosamente");
             setStadopen(false);
+            onSuccess();
           });
         }
 

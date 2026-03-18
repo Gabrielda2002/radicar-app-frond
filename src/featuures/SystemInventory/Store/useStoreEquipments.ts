@@ -38,9 +38,24 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
 
     getEquipmentsByHeadquartersId: async (_headquartersId: number) => {
         try {
-            
-        } catch (error) {
-            
+            set({ isLoading: true, error: null });
+
+            const response = await api.get(`/equipments/sede/${_headquartersId}`);
+
+            if (!response.data || response.data.length === 0) {
+                set({ equipments: [], error: "No se encontraron resultados" });
+                return;
+            }
+
+            set({ equipments: response.data, error: null });
+        } catch (error: any) {
+            if (error.response?.status === 500) {
+                set({ error: "Error interno del servidor. Por favor, intenta más tarde." });
+            } else {
+                set({ error: error.response?.data?.message || "Ocurrió un error al obtener los equipos." });
+            }
+        } finally {
+            set({ isLoading: false });
         }
     },
 

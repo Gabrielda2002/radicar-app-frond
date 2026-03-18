@@ -225,7 +225,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               name="itemsPerPage"
               id=""
               onChange={handleItemsPerPageChange}
-              className="border-2 ml-2 border-stone-300 h-[45px] w-[100px] rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="border-2 ml-2 border-stone-300 h-11.25 w-25 rounded-md  focus:outline-none text-stone-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
 
