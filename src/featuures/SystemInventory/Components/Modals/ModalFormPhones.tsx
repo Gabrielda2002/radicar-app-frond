@@ -5,13 +5,13 @@ import { useFormik } from "formik";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import { useCreateItemPh } from "../../Hooks/useCreateItemPh";
 import { toast } from "react-toastify";
 import { FormatDate } from "@/utils/FormatDate";
 import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { useStorePhones } from "../../Store/useStorePhones";
 
 interface ModalFormPhoneProps {
   sedeId: number | null;
@@ -25,8 +25,8 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { handleCreateItem, handleUpdatePhone, error, loading } =
-    useCreateItemPh();
+  const { createPhone, updatePhone, error, isLoading } =
+    useStorePhones();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -166,34 +166,17 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
     },
     validationSchema,
     onSubmit: async (values) => {
-      try {
-        const response = items
-          ? await handleUpdatePhone(values, items.id)
-          : await handleCreateItem(values);
-
-        if (response && response.data) {
-          toast.success("Datos enviados con éxito", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+      items
+        ? await updatePhone(items.id, values, () => {
+          toast.success("Datos actualizados con éxito");
+          setIsOpen(false);
           formik.resetForm();
-          setTimeout(() => {
-            setIsOpen(false);
-          }, 3000);
+        })
+        : await createPhone(values, () => {
+          toast.success("Datos creados con éxito");
+          setIsOpen(false);
+        });
 
-          if (refreshItems) {
-            refreshItems();
-          }
-        }
-      } catch (error) {
-        console.log("error inesperado", error);
-      }
     },
   });
 
@@ -255,7 +238,7 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title={items ? "Actualizar Item" : "Crear Item"}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         isValid={formik.isValid}
         onSubmit={formik.handleSubmit}
         submitText={items ? "Actualizar" : "Crear"}

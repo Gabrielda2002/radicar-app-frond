@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { PlusCircleIcon } from "lucide-react";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import { useCreateTv } from "../../Hooks/useCreateTv";
 import { toast } from "react-toastify";
 import { IItemsTv } from "../../Models/IItemsTv";
 import { FormatDate } from "@/utils/FormatDate";
@@ -12,6 +11,7 @@ import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { useStoreTv } from "../../Store/useStoreTv";
 
 interface ModalFormTvProps {
   sedeId: number | null;
@@ -26,7 +26,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { createTv, updateTv, loading, error } = useCreateTv();
+  const { createTv, updateTv, isLoading, error } = useStoreTv();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -134,37 +134,16 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
     },
     validationSchema,
     onSubmit: async (values) => {
-      try {
-        const response =
-          items === null
-            ? await createTv(values)
-            : await updateTv(values, items.id);
 
-        if (response && response.data) {
-          toast.success("Datos enviados con éxito", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-
+      items === null
+        ? await createTv(values, () => {
           formik.resetForm();
-
-          setTimeout(() => {
-            setIsOpen(false);
-          }, 3000);
-
-          if (refreshItems) {
-            refreshItems();
-          }
-        }
-      } catch (error) {
-        console.error("Error al enviar los datos:", error);
-      }
+          setIsOpen(false);
+        })
+        : await updateTv(items.id, values, () => {
+          setIsOpen(false);
+          toast.success("Item actualizado con éxito");
+        });
     },
   });
 
@@ -226,7 +205,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title={items ? "Actualizar TV" : "Crear TV"}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         isValid={formik.isValid}
         size="lg"
         onSubmit={formik.handleSubmit}
@@ -651,24 +630,24 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
             />
           </div>
           {sedeId === null && (
-              <div>
-                <InputAutocompletado
-                  label="Sede"
-                  onInputChanged={(value) =>
-                    formik.setFieldValue("sedeId", value)
-                  }
-                  apiRoute="lugares-radicacion-name"
-                  placeholder="Ej: Sede 15"
-                  error={
-                    formik.touched.sedeId && formik.errors.sedeId
-                      ? formik.errors.sedeId
-                      : undefined
-                  }
-                  touched={formik.touched.sedeId}
-                  helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
-                />
-              </div>
-            )}
+            <div>
+              <InputAutocompletado
+                label="Sede"
+                onInputChanged={(value) =>
+                  formik.setFieldValue("sedeId", value)
+                }
+                apiRoute="lugares-radicacion-name"
+                placeholder="Ej: Sede 15"
+                error={
+                  formik.touched.sedeId && formik.errors.sedeId
+                    ? formik.errors.sedeId
+                    : undefined
+                }
+                touched={formik.touched.sedeId}
+                helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
+              />
+            </div>
+          )}
         </div>
 
         {error && (

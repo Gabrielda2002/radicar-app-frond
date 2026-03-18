@@ -11,7 +11,6 @@ import { useFetchStatusIvGeneral } from "../../Hooks/useFetchStatusIvGeneral";
 import { useTypeArea } from "../../Hooks/useTypeArea";
 import { useFetchAssetType } from "../../Hooks/useFetchAssetType";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
-import { useCreateItemIvGeneral } from "../../Hooks/useCreateItemIvGeneral";
 import { toast } from "react-toastify";
 import { useFetchAreaDependency } from "../../Hooks/useFetchAreaDependency";
 import { IItemsGeneral } from "../../Models/IItemsGeneral";
@@ -20,6 +19,7 @@ import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
+import { useStoreGeneral } from "../../Store/useStoreGeneral";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
@@ -52,23 +52,23 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
 
   const { areaDependency } = useFetchAreaDependency();
 
-  const { createItem, updateItem, error, loading } = useCreateItemIvGeneral();
+  const { createGeneral, updateGeneral, error, isLoading } = useStoreGeneral();
 
   const schemaValidation = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
-    classification: Yup.string().required("La clasificación es requerida"),
-    asset: Yup.string().required("El activo es requerido"),
+    classificationId: Yup.string().required("La clasificación es requerida"),
+    assetId: Yup.string().required("El activo es requerido"),
     brand: Yup.string().optional(),
     model: Yup.string().optional(),
-    material: Yup.string().required("El material es requerido"),
+    materialId: Yup.string().required("El material es requerido"),
     serialNumber: Yup.string().optional(),
-    status: Yup.string().required("El estado es requerido"),
-    areaType: Yup.string().required("El tipo de área es requerido"),
-    areaDependency: Yup.string().required("La dependencia es requerida"),
+    statusId: Yup.string().required("El estado es requerido"),
+    areaTypeId: Yup.string().required("El tipo de área es requerido"),
+    dependencyAreaId: Yup.string().required("La dependencia es requerida"),
     location: Yup.string().required("La ubicación es requerida"),
-    assetType: Yup.string().required("El tipo de activo es requerido"),
+    assetTypeId: Yup.string().required("El tipo de activo es requerido"),
     quantity: Yup.number().required("La cantidad es requerida"),
-    responsable: Yup.string().required("El responsable es requerido"),
+    responsableId: Yup.string().required("El responsable es requerido"),
     othersDetails: Yup.string().required(
       "Los detalles adicionales son requeridos"
     ),
@@ -93,88 +93,45 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         150,
         "El número de inventario debe tener como máximo 150 caracteres"
       ),
-      sedeId: Yup.string().optional(),
+    headquartersId: Yup.string().optional(),
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
-      classification: "",
-      asset: "",
+      classificationId: "",
+      assetId: "",
       brand: "",
       model: "",
-      material: "",
+      materialId: "",
       serialNumber: "",
-      status: "",
-      areaType: "",
-      areaDependency: "",
+      statusId: "",
+      areaTypeId: "",
+      dependencyAreaId: "",
       location: "",
-      assetType: "",
+      assetTypeId: "",
       quantity: 0,
-      responsable: "",
+      responsableId: "",
       othersDetails: "",
       acquisitionDate: "",
       purchaseValue: "",
       warranty: false,
       warrantyPeriod: "",
       inventoryNumber: "",
-      sedeId: idSede?.toString() || "",
+      headquartersId: idSede?.toString() || "",
     },
     validationSchema: schemaValidation,
     onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-
-        formData.append("name", values.name);
-        formData.append("brand", values.brand);
-        formData.append("model", values.model);
-        formData.append("serialNumber", values.serialNumber);
-        formData.append("location", values.location);
-        formData.append("quantity", values.quantity.toString());
-        formData.append("otherDetails", values.othersDetails);
-        formData.append("acquisitionDate", values.acquisitionDate);
-        formData.append("purchaseValue", values.purchaseValue.toString());
-        formData.append("warranty", values.warranty.toString());
-        formData.append("warrantyPeriod", values.warrantyPeriod);
-        formData.append("classificationId", values.classification);
-        formData.append("headquartersId", idSede?.toString() || values.sedeId);
-        formData.append("statusId", values.status);
-        formData.append("assetId", values.asset);
-        formData.append("materialId", values.material);
-        formData.append("areaTypeId", values.areaType);
-        formData.append("assetTypeId", values.assetType);
-        formData.append("responsableId", values.responsable);
-        formData.append("dependencyAreaId", values.areaDependency);
-        formData.append("inventoryNumber", values.inventoryNumber);
-
-        const response =
-          items === null
-            ? await createItem(formData)
-            : await updateItem(formData, items?.id || 0);
-
-        if (response && response.data) {
-          toast.success("Datos enviados con éxito", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          setTimeout(() => {
-            setIsOpen(false);
-            if (items === null) formik.resetForm();
-          }, 3000);
-
-          if (refreshItems) {
-            refreshItems();
-          }
-        }
-      } catch (error) {
-        console.log("Error inesperado", error);
-      }
+      items === null
+        ? await createGeneral(values, () => {
+          formik.resetForm();
+          toast.success("Item creado con éxito");
+          setIsOpen(false);
+        })
+        : await updateGeneral(items?.id || 0, values, () => {
+          toast.success("Item actualizado con éxito");
+          setIsOpen(false);
+        });
     },
   });
 
@@ -182,26 +139,26 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
     if (items && isUpdate) {
       formik.setValues({
         name: items.name,
-        classification: items.classificationId.toString(),
-        asset: items.assetId.toString(),
+        classificationId: items.classificationId.toString(),
+        assetId: items.assetId.toString(),
         brand: items.brand,
         model: items.model,
-        material: items.materialId.toString(),
+        materialId: items.materialId.toString(),
         serialNumber: items.serialNumber,
-        status: items.statusId.toString(),
-        areaType: items.areaTypeId.toString(),
-        areaDependency: items.dependencyAreaId.toString(),
+        statusId: items.statusId.toString(),
+        areaTypeId: items.areaTypeId.toString(),
+        dependencyAreaId: items.dependencyAreaId.toString(),
         location: items.location,
-        assetType: items.assetTypeId.toString(),
+        assetTypeId: items.assetTypeId.toString(),
         quantity: items.quantity,
-        responsable: items.assetTypeId.toString(),
+        responsableId: items.assetTypeId.toString(),
         othersDetails: items.otherDetails,
         acquisitionDate: FormatDate(items.acquisitionDate, false),
         purchaseValue: items.purchaseValue,
         warranty: !!items.warranty,
         warrantyPeriod: items.warrantyPeriod || "",
         inventoryNumber: items.inventoryNumber || "",
-        sedeId: items.headquartersId?.toString() || "",
+        headquartersId: items.headquartersId?.toString() || "",
       });
     }
   }, [items, isUpdate]);
@@ -224,7 +181,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         </Button>
         <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           {isUpdate ? "Actualizar Item" : "Crear Item"}
-          <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-[22px] left-1/2 dark:bg-gray-900"></div>
+          <div className="absolute z-10 w-3 h-3 transform rotate-45 -translate-x-1/2 bg-gray-800 bottom-5.5 left-1/2 dark:bg-gray-900"></div>
         </div>
       </div>
 
@@ -234,7 +191,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         onClose={() => setIsOpen(false)}
         title="Crear Item General"
         onSubmit={formik.handleSubmit}
-        isSubmitting={loading}
+        isSubmitting={isLoading}
         isValid={formik.isValid}
         size="lg"
         submitText={isUpdate ? "Actualizar" : "Crear"}
@@ -260,22 +217,22 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               options={
                 classification
                   ? classification.map((op) => ({
-                      value: op.id,
-                      label: op.name,
-                    }))
+                    value: op.id,
+                    label: op.name,
+                  }))
                   : []
               }
               label="Clasificación"
-              name="classification"
-              id="classification"
-              value={formik.values.classification}
+              name="classificationId"
+              id="classificationId"
+              value={formik.values.classificationId}
               onChange={(e) => {
-                formik.setFieldValue("classification", e.target.value);
+                formik.setFieldValue("classificationId", e.target.value);
                 fetchData(e.target.value);
               }}
               onBlur={formik.handleBlur}
-              touched={formik.touched.classification}
-              error={formik.errors.classification}
+              touched={formik.touched.classificationId}
+              error={formik.errors.classificationId}
               required
             />
           </div>
@@ -285,19 +242,19 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               options={
                 asset
                   ? asset.map((op) => ({
-                      value: op.id,
-                      label: op.name,
-                    }))
+                    value: op.id,
+                    label: op.name,
+                  }))
                   : []
               }
               label="Activo"
-              name="asset"
-              id="asset"
-              value={formik.values.asset}
+              name="assetId"
+              id="assetId"
+              value={formik.values.assetId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.asset}
-              error={formik.errors.asset}
+              touched={formik.touched.assetId}
+              error={formik.errors.assetId}
               required
             />
           </div>
@@ -334,25 +291,25 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
 
-          {/* material */}
+          {/* materialId */}
           <div>
             <Select
               options={
                 materials
                   ? materials.map((op) => ({
-                      value: op.id,
-                      label: op.name,
-                    }))
+                    value: op.id,
+                    label: op.name,
+                  }))
                   : []
               }
               label="Material"
-              name="material"
-              id="material"
-              value={formik.values.material}
+              name="materialId"
+              id="materialId"
+              value={formik.values.materialId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.material}
-              error={formik.errors.material}
+              touched={formik.touched.materialId}
+              error={formik.errors.materialId}
               required
             />
           </div>
@@ -373,7 +330,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
 
-          {/* status */}
+          {/* statusId */}
           <div>
             <Select
               options={
@@ -383,18 +340,18 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                 })) || []
               }
               label="Estado"
-              name="status"
-              id="status"
-              value={formik.values.status}
+              name="statusId"
+              id="statusId"
+              value={formik.values.statusId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.status}
-              error={formik.errors.status}
+              touched={formik.touched.statusId}
+              error={formik.errors.statusId}
               required
             />
           </div>
 
-          {/* areaType */}
+          {/* areaTypeId */}
           <div>
             <Select
               options={
@@ -404,36 +361,36 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                 })) || []
               }
               label="Tipo de área"
-              name="areaType"
-              id="areaType"
-              value={formik.values.areaType}
+              name="areaTypeId"
+              id="areaTypeId"
+              value={formik.values.areaTypeId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.areaType}
-              error={formik.errors.areaType}
+              touched={formik.touched.areaTypeId}
+              error={formik.errors.areaTypeId}
               required
             />
           </div>
 
-          {/* areaDependency */}
+          {/* dependencyAreaId */}
           <div>
             <Select
               options={
                 areaDependency
                   ? areaDependency.map((op) => ({
-                      value: op.id,
-                      label: op.name,
-                    }))
+                    value: op.id,
+                    label: op.name,
+                  }))
                   : []
               }
               label="Dependencia"
-              name="areaDependency"
-              id="areaDependency"
-              value={formik.values.areaDependency}
+              name="dependencyAreaId"
+              id="dependencyAreaId"
+              value={formik.values.dependencyAreaId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.errors.areaDependency}
-              touched={formik.touched.areaDependency}
+              error={formik.errors.dependencyAreaId}
+              touched={formik.touched.dependencyAreaId}
               required
             />
           </div>
@@ -454,25 +411,25 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
 
-          {/* assetType */}
+          {/* assetTypeId */}
           <div>
             <Select
               options={
                 assetType
                   ? assetType.map((op) => ({
-                      value: op.id,
-                      label: op.name,
-                    }))
+                    value: op.id,
+                    label: op.name,
+                  }))
                   : []
               }
               label="Tipo de activo"
-              name="assetType"
-              id="assetType"
-              value={formik.values.assetType}
+              name="assetTypeId"
+              id="assetTypeId"
+              value={formik.values.assetTypeId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.assetType}
-              error={formik.errors.assetType}
+              touched={formik.touched.assetTypeId}
+              error={formik.errors.assetTypeId}
               required
             />
           </div>
@@ -493,20 +450,20 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
 
-          {/* responsable */}
+          {/* responsableId */}
           <div>
             <InputAutocompletado
               label="Responsable"
               onInputChanged={(value) =>
-                formik.setFieldValue("responsable", value)
+                formik.setFieldValue("responsableId", value)
               }
               apiRoute="search-user-by-name"
               error={
-                formik.errors.responsable && formik.touched.responsable
-                  ? formik.errors.responsable
+                formik.errors.responsableId && formik.touched.responsableId
+                  ? formik.errors.responsableId
                   : undefined
               }
-              touched={formik.touched.responsable}
+              touched={formik.touched.responsableId}
               required={true}
               placeholder="Ej: Juan Perez"
             />
@@ -609,24 +566,24 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
           {idSede === null && (
-              <div>
-                <InputAutocompletado
-                  label="Sede"
-                  onInputChanged={(value) =>
-                    formik.setFieldValue("sedeId", value)
-                  }
-                  apiRoute="lugares-radicacion-name"
-                  placeholder="Ej: Sede 15"
-                  error={
-                    formik.touched.sedeId && formik.errors.sedeId
-                      ? formik.errors.sedeId
-                      : undefined
-                  }
-                  touched={formik.touched.sedeId}
-                  helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
-                />
-              </div>
-            )}
+            <div>
+              <InputAutocompletado
+                label="Sede"
+                onInputChanged={(value) =>
+                  formik.setFieldValue("headquartersId", value)
+                }
+                apiRoute="lugares-radicacion-name"
+                placeholder="Ej: Sede 15"
+                error={
+                  formik.touched.headquartersId && formik.errors.headquartersId
+                    ? formik.errors.headquartersId
+                    : undefined
+                }
+                touched={formik.touched.headquartersId}
+                helpText="Si actualiza este campo, se actualizará la sede donde se aloja el ítem, por lo tanto, se moverá a esa sede."
+              />
+            </div>
+          )}
         </div>
 
         {error && (
