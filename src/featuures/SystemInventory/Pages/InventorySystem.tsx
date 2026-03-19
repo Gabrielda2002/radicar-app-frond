@@ -6,8 +6,8 @@ import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
-import useFetchItems from "../Hooks/UseFetchItems";
-import { useFetchDepartment } from "../Hooks/UseFetchDeparment";
+import useFetchItems from "../Hooks/useFetchItems";
+import { useFetchDepartment } from "../Hooks/useFetchDeparment";
 import { Hammer, Tv, Smartphone } from "lucide-react";
 
 //*Icons and Images

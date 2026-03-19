@@ -7,7 +7,7 @@ import Input from "../../Ui/Input";
 import Button from "../../Ui/Button";
 import { useTableMutations } from "./Hook/useTablesMutations";
 import { AnimatePresence } from "framer-motion";
-import { useFetchDepartment } from "@/featuures/SystemInventory/Hooks/UseFetchDeparment";
+import { useFetchDepartment } from "@/featuures/SystemInventory/Hooks/useFetchDeparment";
 import Select from "../../Ui/Select";
 import { useFetchMunicipio } from "@/hooks/UseFetchMunicipio";
 

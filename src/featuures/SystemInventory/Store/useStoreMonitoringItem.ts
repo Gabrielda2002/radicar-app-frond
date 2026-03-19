@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { MaintenanceData } from "../data/maintenanceChecklist";
 import { api } from "@/utils/api-config";
+import { MaintenanceData } from "../Models/ICheckList";
 
 interface UseStoreMonitoringItemProps {
     monitoringData: any[]; 

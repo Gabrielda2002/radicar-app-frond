@@ -68,7 +68,7 @@ const SideBar
       <aside
         ref={sidebarRef}
         className={`
-          z-10 flex flex-col transition-all duration-500 ease-in-out 
+          z-100 flex flex-col transition-all duration-500 ease-in-out 
           overflow-y-auto border-r border-gray-200 rtl:border-r-0 rtl:border-l 
           bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg
           ${isCollapsed 

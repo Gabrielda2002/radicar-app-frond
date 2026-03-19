@@ -28,7 +28,7 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
   return (
     <div className="flex flex-col w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-900">
       {/* Tabs Header */}
-      <div className="sticky top-0 flex w-full overflow-x-auto bg-white rounded-t-lg shadow-md z-100 dark:bg-gray-800"> 
+      <div className="sticky top-0 flex w-full overflow-x-auto bg-white rounded-t-lg shadow-md z-40 dark:bg-gray-800"> 
         <div className="grid w-full grid-cols-1 md:flex place-self-center">
           {SECTIONS.map((s) => (
             <button

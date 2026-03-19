@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
-import { MAINTENANCE_CHECKLIST } from "@/featuures/SystemInventory/data/maintenanceChecklist";
 import { FormatDate } from "@/utils/FormatDate";
 import { AnyItem } from "../../strategies/ItemStrategy";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
@@ -32,13 +31,6 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
 }) => {
   const [stadopen, setStadopen] = useState(false);
 
-  // Función helper para obtener las etiquetas legibles del checklist
-  const getChecklistLabels = (checklistIds?: string[]) => {
-    if (!checklistIds || checklistIds.length === 0) return [];
-    return checklistIds
-      .map((id) => MAINTENANCE_CHECKLIST.find((item) => item.id === id)?.label)
-      .filter((label): label is string => label !== undefined);
-  };
 
   // Obtener datos de seguimiento (ahora todos usan la misma propiedad 'monitoring')
   const monitoringData = Items?.monitoring || [];
@@ -69,26 +61,11 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
       header: "Descripción",
       render: (item) => {
         const description = item.description || item.observation || "";
-        const typeEvent = item.typeEvent || item.TypeEvent || "";
-        const hasChecklist = typeEvent === "MANTENIMIENTO PREVENTIVO" && item.checklist && item.checklist.length > 0;
-
         return (
           <div>
             <div className="mb-1 whitespace-normal max-w-md" title={description}>
               {description}
             </div>
-            {hasChecklist && (
-              <div className="flex flex-wrap gap-1 mt-2">
-                {getChecklistLabels(item.checklist).map((label, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200"
-                  >
-                    ✓ {label}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         );
       },
