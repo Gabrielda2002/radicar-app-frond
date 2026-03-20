@@ -42,11 +42,6 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
   }
 
   const validationSchema = Yup.object({
-    auditora: Yup.string()
-      .required("El nombre de la auditora es requerido.")
-      .min(3, "El nombre de la auditora debe tener al menos 3 caracteres.")
-      .max(100, "El nombre de la auditora no debe exceder los 100 caracteres."),
-    fechaAuditoria: Yup.date().required("La fecha de auditoría es requerida."),
     justificacion: Yup.string()
       .required("La justificación es requerida.")
       .min(3, "La justificación debe tener al menos 3 caracteres.")
@@ -71,8 +66,6 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
   const formik = useFormik<FormikValues>({
     initialValues: {
       id: serviceId,
-      auditora: "",
-      fechaAuditoria: "",
       justificacion: "",
       cupsDetails: cups.map((cups) => ({
         code: cups.code,
@@ -125,29 +118,6 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
             className="grid grid-cols-1 gap-4 md:grid-cols-[25%_73%] sm:grid-cols-[40%_60%] md:gap-6 p-4"
           >
             <div className="flex flex-col w-full md:w-full space-y-3">
-              <Input
-                id="auditora"
-                type="text"
-                name="auditora"
-                label="Auditora:"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.auditora}
-                error={formik.errors.auditora}
-                touched={formik.touched.auditora}
-                placeholder="Nombre de la auditora"
-              />
-              <Input
-                id="fechaAuditoria"
-                type="date"
-                name="fechaAuditoria"
-                label="Fecha Auditoría:"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.fechaAuditoria}
-                error={formik.errors.fechaAuditoria}
-                touched={formik.touched.fechaAuditoria}
-              />
               <Input
                 id="justificacion"
                 type="text"

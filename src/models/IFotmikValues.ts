@@ -1,9 +1,7 @@
 import { auditCups } from "./IAuditar";
   
   export interface FormikValues {
-    auditora: string;
     id: number;
-    fechaAuditoria: string;
     justificacion: string;
     cupsDetails: auditCups[];
   }

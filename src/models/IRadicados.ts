@@ -2,7 +2,7 @@ export interface IRadicados {
     id:              number;
     createdAt:       Date;
     documentNumber:  number;
-    auditora:        string;
+    auditNotes:        string;
     address:         string;
     convenioName:    string;
     documentType:    string;
@@ -16,13 +16,13 @@ export interface IRadicados {
     supportName:      string;
     supportId:       number;
     radicacionPlace: string;
-    profetional:     string;
+    professionalName:     string;
     specialty:       string;
     orderDate:       Date;
     typeServices:    string;
     groupServices:   string;
     radicador:       string;
-    justify:         string;
+    justification:         string;
     surgery:         Surgery[];
     cups:            Cup[];
 }

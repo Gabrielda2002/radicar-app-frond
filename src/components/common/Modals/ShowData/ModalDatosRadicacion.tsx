@@ -55,7 +55,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
               </tr>
               <tr>
                 <td className="bg-gray-400 dark:bg-gray-600">Profesional</td>
-                <td className="">{radicacion.profetional}</td>
+                <td className="">{radicacion.professionalName}</td>
               </tr>
               <tr>
                 <td className="bg-gray-400 dark:bg-gray-600">Especialidad</td>
@@ -79,7 +79,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
               </tr>
               <tr>
                 <td className="bg-gray-400 dark:bg-gray-600">Auditora</td>
-                <td className="">{radicacion.auditora}</td>
+                <td className="">{radicacion.auditNotes}</td>
               </tr>
               <tr>
                 <td className="bg-gray-400 dark:bg-gray-600">
@@ -92,7 +92,7 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
                   <td className="bg-gray-400 dark:bg-gray-600">
                     Justificación
                   </td>
-                  <td className="">{radicacion.justify}</td>
+                  <td className="">{radicacion.justification}</td>
                 </tr>
               )}
             </tbody>
