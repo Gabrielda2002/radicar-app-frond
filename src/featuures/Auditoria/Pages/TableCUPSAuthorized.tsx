@@ -1,5 +1,5 @@
 //*Fuctions and Hooks
-import React, { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { Cup, IAuditados } from "@/models/IAuditados";
@@ -12,14 +12,18 @@ import Button from "@/components/common/Ui/Button";
 import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
 import useStoreAuthService from "../store/useStoreAuthService";
 import ModalActualizarCupsAuditoria from "../components/ModalUpdateCUPSAuthorized";
+import Input from "@/components/common/Ui/Input";
 
 const TableCUPSAuthorized: React.FC = () => {
   const { servucesAuthorized: services, isLoading, error, getAllServices } = useStoreAuthService();
+  const [searchDocument, setSearchDocument] = useState<string>("");
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
-  useEffect(() => {
-    getAllServices();
-  }, [getAllServices]);
+  const handleSearch = () => {
+    const documentNumber = searchDocument.trim();
+    if (!documentNumber) return;
+    getAllServices(documentNumber);
+  }
 
   const tableState = useTableState({
     data: services,
@@ -85,25 +89,59 @@ const TableCUPSAuthorized: React.FC = () => {
           { label: "/ Servicio Registros Auditados", path: "" },
         ]}
       />
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        searchPlaceholder="Consultar..."
-        searchLabel="Buscar registros Auditados:"
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-      >
-        <TableWithAccordion
-          data={tableState.currentData()}
-          columns={columns}
-          loading={isLoading}
-          error={error}
-          expandedRow={expandedRow}
-        />
-      </DataTableContainer>
+      {/* buscar servicio por numero de documento del paciente */}
+      <div className="flex flex-col p-5 gap-3 w-full mb-11 bg-white rounded-md shadow-lg shadow-indigo-500/40 dark:bg-gray-800">
+        <form
+          className="flex flex-col gap-3 w-full md:flex-row md:items-start"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearch();
+          }}
+        >
+          <div className="w-full md:flex-1">
+            <Input
+              type="text"
+              placeholder="Buscar por número de documento..."
+              value={searchDocument}
+              onChange={(e) => setSearchDocument(e.target.value)}
+              helpText="Ingresa el número de documento del paciente para buscar sus servicios auditados."
+            />
+          </div>
+          <Button
+            title="Buscar"
+            type="submit"
+            disabled={!searchDocument.trim() || isLoading}
+          >
+            {isLoading ? "Buscando..." : "Buscar"}
+          </Button>
+        </form>
+        {error && (
+          <span className="text-sm font-medium text-red-500 dark:text-red-300">
+            {error}
+          </span>
+        )}
+      </div>
+      {services.length > 0 && (
+        <DataTableContainer
+          searchValue={tableState.searchQuery}
+          onSearchChange={tableState.setSearchQuery}
+          searchPlaceholder="Consultar..."
+          searchLabel="Buscar registros Auditados:"
+          itemsPerPage={tableState.itemsPerPage}
+          onItemsPerPageChange={tableState.setItemsPerPage}
+          currentPage={tableState.currentPage}
+          totalPages={tableState.totalPages}
+          onPageChange={tableState.paginate}
+        >
+          <TableWithAccordion
+            data={tableState.currentData()}
+            columns={columns}
+            loading={isLoading}
+            error={error}
+            expandedRow={expandedRow}
+          />
+        </DataTableContainer>
+      )}
     </>
   );
 };

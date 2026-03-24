@@ -6,11 +6,12 @@ import { create } from "zustand";
 interface UseAuthService {
     services: IAuditar[];
     servucesAuthorized: IAuditados[];
+    lastDocumentNumber: string;
     isLoading: boolean;
     error: string | null;
     getAuthorizedServices: () => Promise<void>;
     authorizeService: (data: Object, radicadoId: number, onSuccess: () => void) => void;
-    getAllServices: () => Promise<void>;
+    getAllServices: (documentNumber: string) => Promise<void>;
     updateCupsAuthorized: (id: number, data: Object, onSuccess?: () => void) => Promise<void>;
 }
 
@@ -19,6 +20,7 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
     isLoading: false,
     error: null,
     servucesAuthorized: [],
+    lastDocumentNumber: "",
 
     getAuthorizedServices: async () => {
         try {
@@ -64,12 +66,17 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
         }
     },
 
-    getAllServices: async () => {
+    getAllServices: async (documentNumber: string) => {
         try {
             
-            set({ isLoading: true, error: null });
+            set({ isLoading: true, error: null, lastDocumentNumber: documentNumber });
 
-            const response = await api.get('/radicaciones/all');
+            // pasar documentNumber como query param para filtrar por número de documento
+            const response = await api.get('/radicaciones/all', {
+                params: {
+                    documentNumber
+                }
+            }); 
 
             if (response.status === 200) {
                 set({ servucesAuthorized: response.data });
@@ -95,7 +102,8 @@ const useStoreAuthService = create<UseAuthService>((set, get) => ({
 
             if (response.status === 200) {
                 onSuccess?.();
-                await get().getAllServices();
+                const currentDocumentNumber = get().lastDocumentNumber;
+                await get().getAllServices(currentDocumentNumber);
             }
 
         } catch (error: any) {
