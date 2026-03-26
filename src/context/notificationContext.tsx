@@ -16,8 +16,7 @@ export const NotificationContext = createContext<NotificationContextProps | unde
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [notifications, setNotifications] = useState<INotification[]>([]);
     const [isConnected, setIsConnected] = useState(false);
-    const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>(null);
-    console.log('estado actual notificaciones', pushSubscription);
+    const [ _pushSubscription, setPushSubscription] = useState<PushSubscription | null>(null);
     const socketRef = useRef<Socket | null>(null);
     const user = localStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : null;

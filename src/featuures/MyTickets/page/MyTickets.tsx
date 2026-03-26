@@ -8,6 +8,7 @@ import { FormatDate } from '@/utils/FormatDate';
 import { getPriorityColor, getStatusColor } from '@/featuures/Permission/utils/getColorTicketColumn';
 import ModalCommetsTicket from '@/featuures/HelpDesk/Components/ModalCommetsTicket';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
+import ModalServey from '@/featuures/HelpDesk/Components/ModalServey';
 
 const MyTickets = () => {
 
@@ -29,6 +30,7 @@ const MyTickets = () => {
         initialItemsPerPage: 10
     })
 
+    console.log(tickets)
     const columns = [
         {   
             key: "id",
@@ -82,26 +84,40 @@ const MyTickets = () => {
         },
         {
             key: "createdAt",
-            header: "Fecha de Creacion",
-            width: "20%",
+            header: "Creacion",
+            width: "30%",
             accessor: (item: ITicketsUser) => FormatDate(item.createdAt),
         },
         {
             key: "updatedAt",
-            header: "Ultima Actualizacion",
+            header: "Actualizacion",
             width: "20%",
             accessor: (item: ITicketsUser) => FormatDate(item.updatedAt),
         },
         {
             key: "comments",
             header: "Comentarios",
-            width: "20%",
+            width: "10%",
             render: (item: ITicketsUser) => (
                 <Suspense fallback={<LoadingSpinner/>}>
                     <ModalCommetsTicket idTicket={item.id}/>
                 </Suspense>
             )
         },
+        {
+            key: 'survey',
+            header: 'Encuesta',
+            width: '10%',
+            render: (item: ITicketsUser) => (
+                item.surveyId === null ? (
+                    <Suspense fallback={<LoadingSpinner/>}>
+                        <ModalServey idTicket={item.id} />
+                    </Suspense>
+                ) : (
+                    <span className="text-gray-500">Enviada</span>
+                )
+            )
+        }
     ]
 
     return (

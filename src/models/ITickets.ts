@@ -44,4 +44,5 @@ export type ITicketsUser = {
     status: Status;
     priority: Priority;
     category: string;
+    surveyId: number | null;
 }

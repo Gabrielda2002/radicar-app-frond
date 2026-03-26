@@ -88,8 +88,8 @@ const NotificationBell: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 p-2 z-50 mx-auto mt-4 -mr-32 overflow-hidden bg-white rounded-lg shadow-xl md:-mr-0 w-80 dark:bg-gray-800">
-          <div className="flex items-center justify-between p-2 border-b dark:border-gray-700">
+        <div className="absolute right-0 p-2 z-50 mx-auto mt-4 -mr-32 overflow-hidden bg-white rounded-lg shadow-xl md:mr-0 w-80 dark:bg-gray-800">
+          <div className="flex items-center justify-between p-2 bordsurveyIder-b dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
               Notificaciones
             </h3>
