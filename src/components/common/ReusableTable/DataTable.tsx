@@ -1,45 +1,47 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { ColumnSize, COLUMN_WEIGHTS } from "@/components/common/ReusableTable/utils/tableLayouts";
 
 export interface ColumnConfig<T> {
-  /** Clave única de la columna */
   key: string;
-  /** Título que se muestra en el header */
   header: string;
-  /** Ancho de la columna (opcional) */
+  /** 
+   * Tamaño de la columna (xs, sm, md, lg, xl)
+   * Se convierte automáticamente a porcentaje según el total de pesos
+   */
+  size?: ColumnSize;
+  /** 
+   * Peso personalizado para cálculo de ancho (alternativa a size)
+   * Si se proporciona size, este se ignora
+   */
+  weight?: number;
+  /** 
+   * Ancho explícito en px/rem (tiene prioridad sobre size/weight)
+   * Incluir unidad: "200px", "15rem", "30%"
+   */
   width?: string;
-  /** Función para renderizar el contenido de la celda */
   render?: (item: T) => ReactNode;
   /** Función para obtener el valor de la celda (si no se usa render) */
   accessor?: (item: T) => ReactNode;
-  /** Clases CSS adicionales para la celda */
   cellClassName?: string;
-  /** Clases CSS adicionales para el header */
   headerClassName?: string;
 }
 
 export interface DataTableProps<T> {
-  /** Datos a mostrar en la tabla */
   data: T[];
-  /** Configuración de las columnas */
   columns: ColumnConfig<T>[];
   /** Función para obtener la key única de cada fila */
   getRowKey: (item: T) => string | number;
   /** Contenido para la sección de acciones por fila (opcional) */
   renderActions?: (item: T) => ReactNode;
-  /** Indica si se está cargando */
   loading?: boolean;
-  /** Mensaje de error (opcional) */
   error?: string | null;
-  /** Mensaje cuando no hay datos */
   emptyMessage?: string;
   /** Clases CSS adicionales para el contenedor */
   className?: string;
   /** Clases CSS adicionales para la tabla */
   tableClassName?: string;
-  /** Mostrar responsive cards en mobile (default: true) */
   showMobileCards?: boolean;
-  /** Renderizar card mobile personalizada */
   renderMobileCard?: (item: T) => ReactNode;
 }
 export function DataTable<T>({
@@ -60,7 +62,6 @@ export function DataTable<T>({
     return <LoadingSpinner duration={100000} />;
   }
 
-  // Error state
   if (error) {
     return (
       <div className="text-center text-red-500 dark:text-red-300">
@@ -69,7 +70,6 @@ export function DataTable<T>({
     );
   }
 
-  // Empty state
   if (!data || data.length === 0) {
     return (
       <div className="text-center text-red-500 dark:text-red-300">
@@ -89,25 +89,57 @@ export function DataTable<T>({
     return null;
   };
 
+  // Calcular widths automáticamente basado en size/weight
+  const calculateColumnWidths = useMemo(() => {
+    return columns.map((column) => {
+      if (column.width) {
+        return column.width;
+      }
+
+      // Si no tiene size ni weight, usar default
+      let weight = column.weight;
+      if (!weight && column.size) {
+        weight = COLUMN_WEIGHTS[column.size];
+      }
+      if (!weight) {
+        weight = 1; // default
+      }
+
+      // Calcular el total de pesos
+      const totalWeights = columns.reduce((sum, col) => {
+        if (col.width) return sum; // Ignorar los que tienen width explícito
+        let w = col.weight;
+        if (!w && col.size) {
+          w = COLUMN_WEIGHTS[col.size];
+        }
+        return sum + (w || 1);
+      }, 0);
+
+      // Calcular porcentaje dejando 1 numero despues de la coma
+      return `${((weight / totalWeights) * 100).toFixed(1)}%`;
+    });
+  }, [columns]);
+
   return (
     <>
       {/* Vista Desktop - Tabla */}
       <div className={`hidden overflow-x-auto md:flex ${className}`}>
         <table
-          className={`min-w-full overflow-hidden text-sm rounded-lg shadow-lg ${tableClassName}`}
+          className={`w-full text-sm rounded-lg shadow-lg ${tableClassName}`}
+          style={{ tableLayout: "fixed" }}
         >
           <thead>
             <tr className="bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <th
                   key={column.key}
-                  className={column.width ? `w-[${column.width}]` : ""}
-                  style={column.width ? { width: column.width } : undefined}
+                  className={`${column.headerClassName || ""} overflow-hidden text-ellipsis`}
+                  style={{ width: calculateColumnWidths[index] }}
                 >
                   {column.header}
                 </th>
               ))}
-              {renderActions && <th>Acciones</th>}
+              {renderActions && <th className="w-24">Acciones</th>}
             </tr>
           </thead>
 
@@ -117,18 +149,21 @@ export function DataTable<T>({
                 key={getRowKey(item)}
                 className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
               >
-                {columns.map((column) => (
+                {columns.map((column, index) => (
                   <td
                     key={`${getRowKey(item)}-${column.key}`}
-                    className={`p-3 border-b dark:border-gray-700 border border-gray-200 ${
+                    className={`p-3 border-b dark:border-gray-700 border border-gray-200 overflow-hidden ${
                       column.cellClassName || ""
                     }`}
+                    style={{ width: calculateColumnWidths[index] }}
                   >
-                    {renderCellValue(column, item)}
+                    <div>
+                      {renderCellValue(column, item)}
+                    </div>
                   </td>
                 ))}
                 {renderActions && (
-                  <td className="p-3 border-b dark:border-gray-700">
+                  <td className="p-3 border-b dark:border-gray-700 border border-gray-200 w-24">
                     {renderActions(item)}
                   </td>
                 )}
