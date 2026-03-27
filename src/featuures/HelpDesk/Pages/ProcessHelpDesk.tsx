@@ -18,7 +18,7 @@ import { getPriorityColor, getStatusColor } from "@/featuures/Permission/utils/g
 import Button from "@/components/common/Ui/Button";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import useTicketsStore from "../Store/useTicketsStore";
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { Paperclip } from "lucide-react";
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -79,7 +79,7 @@ const ProcessHelpDesk = () => {
     fetchTickets();
   }, [])
 
-  const  { downloadSecureFile } = useSecureFileAccess();
+  const { downloadSecureFile } = useSecureFileAccess();
 
   const tableState = useTableState({
     data: tickets || [],
@@ -92,37 +92,41 @@ const ProcessHelpDesk = () => {
     {
       key: "id",
       header: "ID",
-      width: "10%",
+      size: "xs" as const,
       accessor: (item: ITickets) => item.id,
     },
     {
       key: "title",
       header: "Titulo",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.title,
     },
     {
       key: "tipo",
       header: "Tipo",
-      width: "15%",
+      size: "sm" as const,
       render: (item: ITickets) => item.type
     },
     {
       key: "category",
       header: "Categoria",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.category,
     },
     {
       key: "description",
       header: "Descripcion",
-      width: "30%",
-      accessor: (item: ITickets) => item.description,
+      size: "lg" as const,
+      accessor: (item: ITickets) => (
+        <span className="line-clamp-5" title={item.description}>
+          {item.description}
+        </span>
+      ),
     },
     {
       key: "status",
       header: "Estado",
-      width: "15%",
+      size: "sm" as const,
       render: (item: ITickets) => (
         <span className={getStatusColor(item.status)}>
           {item.status}
@@ -132,7 +136,7 @@ const ProcessHelpDesk = () => {
     {
       key: "priority",
       header: "Prioridad",
-      width: "15%",
+      size: "sm" as const,
       render: (item: ITickets) => (
         <span className={getPriorityColor(item.priority)}>
           {item.priority}
@@ -142,75 +146,71 @@ const ProcessHelpDesk = () => {
     {
       key: "nameRequester",
       header: "Nombre",
-      width: "15%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.nameRequester,
     },
     {
       key: "lastName",
       header: "Apellido",
-      width: "15%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.lastNameRequester,
     },
     {
       key: "phoneNumber",
       header: "Celular",
-      width: "15%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.phone,
     },
     {
       key: "headquarter",
       header: "Sede",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: ITickets) => item.headquarter,
     },
     {
       key: "municipio",
       header: "Municipio",
-      width: "20%",
+      size: "sm" as const,
       accessor: (item: ITickets) => item.municipio,
     },
     {
       key: "createdAt",
       header: "Creacion",
-      width: "25%",
+      size: "md" as const,
       accessor: (item: ITickets) => FormatDate(item.createdAt),
     },
     {
       key: "updatedAt",
       header: "Ultima modificacion",
-      width: "25%",
+      size: "md" as const,
       accessor: (item: ITickets) => FormatDate(item.updatedAt),
     },
     {
-      key: "comments",
-      header: "Comentarios",
-      width: "10%",
+      key: "attachment",
+      header: "Acciones",
+      size: "md" as const,
       render: (item: ITickets) => (
-        <Suspense fallback={<LoadingSpinner />}>
+        <div className="grid gap-2">
+          {item.attachments.length > 0 && (
+            item.attachments.map((a) => (
+              <Button
+                key={a.id}
+                variant="any"
+                icon={<Paperclip className="w-4 h-4" />}
+                className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
+                onClick={() => downloadSecureFile(a.id.toString(), "attachments-tickets")}
+              />
+            ))
+          )}
           <ModalCommetsTicket idTicket={item.id} />
-        </Suspense>
+          {item.status != "Cerrado" && (
+            <Suspense fallback={<LoadingSpinner />}>
+              <CerrarModal ticket={item} />
+            </Suspense>
+          )}
+        </div>
       )
     },
-    {
-      key: "attachment",
-      header: "Adjuntos",
-      width: "10%",
-      render: (item: ITickets) => {
-        return item.attachments.length > 0 ? (
-          item.attachments.map(a => (
-            <Button
-              key={a.id}
-              variant="any"
-              icon={<IoDocumentTextOutline className="w-4 h-4"/>}
-              className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
-              onClick={() => downloadSecureFile(a.id.toString(), "attachments-tickets")}
-            />
-          ))
-        ) : (
-          <span className="text-gray-400">-</span>
-        ) 
-      }
-    }
   ]
 
   return (
@@ -238,20 +238,6 @@ const ProcessHelpDesk = () => {
           getRowKey={(item) => item.id.toString()}
           loading={isLoading}
           error={error}
-          renderActions={(item) => (
-            item.status != "Cerrado" ? (
-              <Suspense fallback={<LoadingSpinner />}>
-                <CerrarModal ticket={item} />
-              </Suspense>
-            ) : (
-              <button
-                className="text-lg text-gray-400"
-                title="Ticket ya cerrado"
-              >
-                -
-              </button>
-            )
-          )}
         />
       </DataTableContainer>
     </>

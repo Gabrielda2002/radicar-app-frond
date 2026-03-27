@@ -35,30 +35,46 @@ const HelpDesk = () => {
 
   const schemaValidation = Yup.object({
     type: Yup.string().required("El tipo es requerido"),
-    title: Yup.string().required("El titulo es requerido"),
+    title: Yup.string().required("El titulo es requerido")
+        .min(5, "El titulo debe tener al menos 5 caracteres")
+        .max(50, "El titulo debe tener maximo 50 caracteres"),
     description: Yup.string()
       .required("La descripcion es requerida")
       .min(10, "La descripcion debe tener al menos 10 caracteres")
-      .max(500, "La descripcion debe tener maximo 100 caracteres"),
+      .max(500, "La descripcion debe tener maximo 500 caracteres"),
     categoryId: Yup.number().required("La categoria es requerida"),
-    file: Yup.mixed()
+    file: Yup.mixed<File>()
       .nullable()
-      .optional()
+      .test(
+        "fileRequiredWhenAttachmentType",
+        "El archivo es requerido cuando se selecciona un tipo de archivo",
+        function (value) {
+          const attachmentType = (this.parent?.attachmentType ?? "") as string;
+          const hasAttachmentType = attachmentType.trim().length > 0;
+          if (!hasAttachmentType) return true;
+          return value instanceof File;
+        }
+      )
       .test(
         "fileSize",
         "El archivo es demasiado grande. El tamaño máximo es 5MB.",
-        (value: any) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024; // 5MB
-          }
-          return true;
+        (value) => {
+          if (!(value instanceof File)) return true;
+          return value.size <= 5 * 1024 * 1024; // 5MB
         }
       ),
-    attachmentType: Yup.string().when("file", {
-      is: (file: File | null) => file !== null,
-      then: (schema) => schema.required("El tipo de archivo es requerido cuando se adjunta un archivo"),
-      otherwise: (schema) => schema.notRequired(),
-    })
+    attachmentType: Yup.string()
+      .nullable()
+      .test(
+        "attachmentTypeRequiredWhenFile",
+        "El tipo de archivo es requerido cuando se adjunta un archivo",
+        function (value) {
+          const file = this.parent?.file as File | null | undefined;
+          const hasFile = file instanceof File;
+          if (!hasFile) return true;
+          return typeof value === "string" && value.trim().length > 0;
+        }
+      ),
   });
 
   const handleSubmit = useCallback(

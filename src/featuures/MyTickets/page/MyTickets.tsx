@@ -30,36 +30,35 @@ const MyTickets = () => {
         initialItemsPerPage: 10
     })
 
-    console.log(tickets)
     const columns = [
         {   
             key: "id",
             header: "ID",
-            width: "10%",
+            size: "xs" as const,
             accessor: (item: ITicketsUser) => item.id,
         },
         {
             key: "title",
             header: "Titulo",
-            width: "20%",
+            size: "md" as const,
             accessor: (item: ITicketsUser) => item.title,
         },
         {
             key: "tipo",
             header: "Tipo",
-            width: "15%",
+            size: "sm" as const,
             render: (item: ITicketsUser) => item.type
         },
         {
             key: "description",
             header: "Descripcion",
-            width: "30%",
+            size: "lg" as const,
             accessor: (item: ITicketsUser) => item.description,
         },
         {
             key: "status",
             header: "Estado",
-            width: "15%",
+            size: "xs" as const,
             render: (item: ITicketsUser) => (
                 <span className={getStatusColor(item.status)}>
                     {item.status}
@@ -69,7 +68,7 @@ const MyTickets = () => {
         {
             key: "priority",
             header: "Prioridad",
-            width: "15%",
+            size: "sm" as const,
             accessor: (item: ITicketsUser) => (
                 <span className={getPriorityColor(item.priority)}>
                     {item.priority}
@@ -79,25 +78,25 @@ const MyTickets = () => {
         {
             key: "category",
             header: "Categoria",
-            width: "15%",
+            size: "md" as const,
             accessor: (item: ITicketsUser) => item.category,
         },
         {
             key: "createdAt",
             header: "Creacion",
-            width: "30%",
+            size: "sm" as const,
             accessor: (item: ITicketsUser) => FormatDate(item.createdAt),
         },
         {
             key: "updatedAt",
             header: "Actualizacion",
-            width: "20%",
+            size: "sm" as const,
             accessor: (item: ITicketsUser) => FormatDate(item.updatedAt),
         },
         {
             key: "comments",
             header: "Comentarios",
-            width: "10%",
+            size: "xs" as const,
             render: (item: ITicketsUser) => (
                 <Suspense fallback={<LoadingSpinner/>}>
                     <ModalCommetsTicket idTicket={item.id}/>
@@ -107,7 +106,7 @@ const MyTickets = () => {
         {
             key: 'survey',
             header: 'Encuesta',
-            width: '10%',
+            size: 'xs' as const,
             render: (item: ITicketsUser) => (
                 item.surveyId === null ? (
                     <Suspense fallback={<LoadingSpinner/>}>
