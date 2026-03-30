@@ -203,6 +203,13 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: report,
             type: 'subcategory',
             action: 'openReportsModal'
+          },
+          {
+            id: 'reports-page',
+            title: 'Página de reportes',
+            icon: report,
+            path: '/reports',
+            type: 'subcategory'
           }
         ]
       }

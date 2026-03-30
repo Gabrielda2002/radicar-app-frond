@@ -144,9 +144,11 @@ export function DataTable<T>({
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            {data.map((item) => (
+            {data.map((item, index) => (
               <tr
-                key={getRowKey(item)}
+                // `getRowKey(item)` a veces no es único (p.ej. IDs repetidos desde backend).
+                // Incluir el índice garantiza unicidad a nivel de siblings para React.
+                key={`${String(getRowKey(item))}-${index}`}
                 className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
               >
                 {columns.map((column, index) => (
@@ -176,10 +178,13 @@ export function DataTable<T>({
       {/* Vista Mobile - Cards */}
       {showMobileCards && (
         <div className="grid grid-cols-1 gap-4 md:hidden">
-          {data.map((item) => {
+          {data.map((item, index) => {
             if (renderMobileCard) {
               return (
-                <div key={getRowKey(item)} className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                <div
+                  key={`${String(getRowKey(item))}-${index}`}
+                  className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                >
                   {renderMobileCard(item)}
                 </div>
               );
@@ -188,7 +193,7 @@ export function DataTable<T>({
             // Card por defecto
             return (
               <div
-                key={getRowKey(item)}
+                key={`${String(getRowKey(item))}-${index}`}
                 className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
               >
                 <div className="grid grid-cols-[35%_65%] gap-2 text-sm">
