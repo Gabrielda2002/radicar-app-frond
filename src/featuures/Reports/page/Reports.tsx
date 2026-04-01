@@ -1,42 +1,80 @@
 import HeaderPage from '@/components/common/HeaderPage/HeaderPage'
 import Card from '../components/Card'
 import { REPORT_CONFIG } from '../config/reportConfig'
-import { useState } from 'react'
+import { Suspense, useState, useMemo } from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import Input from '@/components/common/Ui/Input';
-import { ArrowLeft } from 'lucide-react';
+import Select from '@/components/common/Ui/Select';
+import { ArrowDownToLine, ArrowLeft } from 'lucide-react';
 import Button from '@/components/common/Ui/Button';
 import { useGeneratePreview } from '../hook/useGeneratePreview';
 import TableReportPreview from '../components/TableReportPreview';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
+import { useDownloadReport } from '@/components/layout/sidebar/hooks/UseDownloadReport';
+import { AnimatePresence } from 'framer-motion';
+import { ReportStrategyFactory } from '../strategies/ReportStrategy';
 
 const Reports = () => {
 
     const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
-    const { dataPreview, generatePreview } = useGeneratePreview();
+    const { dataPreview, generatePreview, isLoading, error } = useGeneratePreview();
 
-    const validationSchema = Yup.object({
-        dateStart: Yup.date().required('La fecha de inicio es requerida'),
-        dateEnd: Yup.date().optional(),
-        cupsCode: Yup.string().optional(),
-        estadoCups: Yup.string().optional(),
-        headquarter: Yup.number().optional(),
-        convenio: Yup.number().optional(),
-    })
+    const { downloadReport, error: dError, loading: dLoading } = useDownloadReport();
 
-    const formik = useFormik({
-        initialValues: {
+    // Get the strategy for the selected report
+    const strategy = useMemo(() => {
+        if (!selectedReport) return null;
+        try {
+            return ReportStrategyFactory.getStrategy(selectedReport);
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }, [selectedReport]);
+
+    // Generate dynamic validation schema based on selected report
+    const validationSchema = useMemo(() => {
+        const baseSchema = Yup.object({
+            dateStart: Yup.date().required('La fecha de inicio es requerida'),
+            dateEnd: Yup.date().optional(),
+        });
+
+        if (!strategy) return baseSchema;
+
+        // Merge with strategy-specific validation
+        return baseSchema.concat(strategy.getValidationSchema());
+    }, [strategy]);
+
+    // Generate initial values dynamically based on selected report
+    const initialValues = useMemo(() => {
+        const baseValues: Record<string, any> = {
             dateStart: '',
             dateEnd: '',
-            cupsCode: '',
-            estadoCups: '',
-            headquarter: 0,
-            convenio: 0,
-        },
+        };
+
+        if (!strategy) return baseValues;
+
+        // Add extra filter fields from strategy
+        strategy.getFilterFields().forEach(field => {
+            baseValues[field.name] = field.type === 'number' ? 0 : '';
+        });
+
+        return baseValues;
+    }, [strategy]);
+
+    const formik = useFormik({
+        initialValues,
         validationSchema,
+        enableReinitialize: true, // Reset form when strategy changes
         onSubmit: async (values) => {
-            await generatePreview(values.dateStart, values.dateEnd, values.cupsCode, values.estadoCups);
+            if (!strategy) return;
+
+            const payload = strategy.buildPayload(values);
+            const previewEndpoint = strategy.getPreviewEndpoint();
+
+            await generatePreview(previewEndpoint, payload);
         }
     })
 
@@ -44,6 +82,31 @@ const Reports = () => {
         setSelectedReport(reportId);
     }
 
+    const handleDownloadReport = async () => {
+        if (!strategy) return;
+
+        try {
+            const downloadEndpoint = strategy.getDownloadEndpoint();
+            const payload = strategy.buildPayload(formik.values);
+
+            await downloadReport(
+                payload.dateStart,
+                payload.dateEnd,
+                payload.cupsCode || null,
+                downloadEndpoint,
+                payload.headquarter || 0,
+                payload.statusCups,
+                payload.convenio
+            );
+        } catch (error) {
+            console.error("Error al descargar reporte:", error);
+        }
+    };
+
+    const handleGoBack = () => {
+        setSelectedReport(null);
+        formik.resetForm();
+    }
     return (
         <>
             <HeaderPage
@@ -70,14 +133,21 @@ const Reports = () => {
                 ) : (
                     <div>
                         {/* arrow for come back */}
-                        <button type='button' onClick={() => setSelectedReport(null)} className=' flex items-center text-blue-500 hover:text-blue-700 font-medium mb-4'>
+                        <button type='button' onClick={handleGoBack} className=' flex items-center text-blue-500 hover:text-blue-700 font-medium mb-4'>
                             <ArrowLeft className='w-5 h-5' />
                             Atras
                         </button>
+
                         <div className='grid grid-cols-3 gap-4'>
                             {/* form fields */}
                             <form onSubmit={formik.handleSubmit}>
+                                <div className='mb-4 text-gray-800 dark:text-gray-100'>
+                                    <h3 className='text-xl font-bold my-4 text-gray-800 dark:text-gray-100'>
+                                        Filtros para el reporte de {REPORT_CONFIG.find(r => r.id === selectedReport)?.title}:
+                                    </h3>
+                                </div>
                                 <div className='grid grid-cols-1 gap-4 p-2 border'>
+                                    {/* Common filters: dateStart and dateEnd */}
                                     <Input
                                         type='date'
                                         label='Fecha de Inicio'
@@ -85,8 +155,8 @@ const Reports = () => {
                                         value={formik.values.dateStart}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        error={formik.touched.dateStart && formik.errors.dateStart ? formik.errors.dateStart : undefined}
-                                        touched={formik.touched.dateStart}
+                                        error={formik.touched.dateStart && formik.errors.dateStart ? String(formik.errors.dateStart) : undefined}
+                                        touched={!!formik.touched.dateStart}
                                     />
                                     <Input
                                         type='date'
@@ -95,47 +165,95 @@ const Reports = () => {
                                         value={formik.values.dateEnd}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        error={formik.touched.dateEnd && formik.errors.dateEnd ? formik.errors.dateEnd : undefined}
-                                        touched={formik.touched.dateEnd}
+                                        error={formik.touched.dateEnd && formik.errors.dateEnd ? String(formik.errors.dateEnd) : undefined}
+                                        touched={!!formik.touched.dateEnd}
                                     />
-                                    {selectedReport === 'radicacion' && (
-                                        <>
+
+                                    {/* Dynamic extra filters from strategy */}
+                                    {strategy?.getFilterFields().map((field) => {
+                                        if (field.type === 'select') {
+                                            return (
+                                                <Select
+                                                    key={field.name}
+                                                    label={field.label}
+                                                    name={field.name}
+                                                    value={formik.values[field.name]}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    error={formik.touched[field.name] && formik.errors[field.name] ? String(formik.errors[field.name]) : undefined}
+                                                    touched={!!formik.touched[field.name]}
+                                                    options={field.options || []}
+                                                />
+                                            );
+                                        }
+
+                                        return (
                                             <Input
-                                                type='text'
-                                                label='Código CUPS'
-                                                name='cupsCode'
-                                                value={formik.values.cupsCode}
+                                                key={field.name}
+                                                type={field.type}
+                                                label={field.label}
+                                                name={field.name}
+                                                value={formik.values[field.name]}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
-                                                error={formik.touched.cupsCode && formik.errors.cupsCode ? formik.errors.cupsCode : undefined}
-                                                touched={formik.touched.cupsCode}
+                                                error={formik.touched[field.name] && formik.errors[field.name] ? String(formik.errors[field.name]) : undefined}
+                                                touched={!!formik.touched[field.name]}
                                             />
-                                            {/* reeplazar por select*/}
-                                            <Input
-                                                type='text'
-                                                label='Estado CUPS'
-                                                name='estadoCups'
-                                                value={formik.values.estadoCups}
-                                                onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur}
-                                                error={formik.touched.estadoCups && formik.errors.estadoCups ? formik.errors.estadoCups : undefined}
-                                                touched={formik.touched.estadoCups}
-                                            />
-                                            <Button
-                                                type='submit'
-                                            >
-                                                Generar Reporte
-                                            </Button>
-                                        </>
-                                    )}
+                                        );
+                                    })}
+
+                                    <Button
+                                        type='submit'
+                                        disabled={!formik.isValid || formik.isSubmitting}
+                                    >
+                                        {isLoading ? 'Generando Preview...' : 'Generar Preview'}
+                                    </Button>
+
+                                    <AnimatePresence>
+                                        {error && (
+                                            <div>
+                                                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                                                    {error}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </form>
 
                             {/* information for the selected report */}
                             <div className='border col-span-2'>
-                                <TableReportPreview
-                                    data={dataPreview}
-                                />
+                                <div className='flex items-center justify-between p-4 mb-4 text-gray-800 dark:text-gray-100'>
+                                    <h3 className='text-xl font-bold'>Preview del Reporte</h3>
+                                    <Button
+                                        type='button'
+                                        disabled={dataPreview.total === 0}
+                                        icon={<ArrowDownToLine className='w-4 h-4' />}
+                                        onClick={handleDownloadReport}
+                                        isLoading={dLoading}
+                                    >
+                                        Descargar Reporte
+                                    </Button>
+                                </div>
+                                <AnimatePresence>
+                                    {dError && (
+                                        <div>
+                                            <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                                                {dError}
+                                            </div>
+                                        </div>
+                                    )}
+                                </AnimatePresence>
+                                <Suspense fallback={<LoadingSpinner />}>
+                                    {strategy && (
+                                        <TableReportPreview
+                                            data={dataPreview}
+                                            columns={strategy.getColumns()}
+                                            getRowKey={strategy.getRowKey}
+                                            searchFields={strategy.getSearchFields()}
+                                        />
+                                    )}
+                                </Suspense>
                             </div>
                         </div>
                     </div>

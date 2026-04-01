@@ -28,11 +28,9 @@ export const useDownloadReport = (): UseDownloadReporteReturn => {
       let fileName = 'reporte.xlsx';
 
       if (contentDisposition) {
-        console.log('entra priemra condicion');
         const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const matches = fileNameRegex.exec(contentDisposition);
         if (matches != null && matches[1]) {
-          console.log('entra segunda condicion');
           fileName = matches[1].replace(/['"]/g, '');
         }
       }

@@ -1,29 +1,24 @@
 import { api } from "@/utils/api-config";
 import { useState } from "react";
-import { ReportRadicacion } from "../types/Report.type";
+import { ReportPreviewData } from "../types/Report.type";
 
 interface UseGeneratePreviewProps {
-    dataPreview: ReportRadicacion;
+    dataPreview: ReportPreviewData;
     isLoading: boolean;
     error: string | null;
-    generatePreview: (dateStart: string, dateEnd: string, cupsCode?: string, statusCups?: string) => Promise<void>;
+    generatePreview: (previewEndpoint: string, payload: Record<string, any>) => Promise<void>;
 }
 
 export const useGeneratePreview = (): UseGeneratePreviewProps => {
-    const [dataPreview, setDataPreview] = useState<ReportRadicacion>({ total: 0, data: [] });
+    const [dataPreview, setDataPreview] = useState<ReportPreviewData>({ total: 0, data: [] });
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const generatePreview = async (dateStart: string, dateEnd: string, cupsCode?: string, statusCups?: string) => {
+    const generatePreview = async (previewEndpoint: string, payload: Record<string, any>) => {
         try {
             setIsLoading(true);
 
-            const response = await api.post('/report/excel/radicacion/preview', {
-                dateStart,
-                dateEnd,
-                cupsCode,
-                statusCups
-            })
+            const response = await api.post(previewEndpoint, payload);
 
             if (response.status === 200) {
                 setDataPreview(response.data);
@@ -31,12 +26,12 @@ export const useGeneratePreview = (): UseGeneratePreviewProps => {
             }
 
         } catch (error: any) {
-            if (error.response.status === 500) {
+            if (error.response?.status === 500) {
                 setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
-            }else {
-                setError(error.response?.data?.message);
+            } else {
+                setError(error.response?.data?.message || "Error desconocido");
             }
-        }finally {
+        } finally {
             setIsLoading(false);
         }
     }

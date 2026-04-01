@@ -1,58 +1,52 @@
-import {  DataTable, DataTableContainer, useTableState } from '@/components/common/ReusableTable'
+import { ColumnConfig, DataTable, DataTableContainer, useTableState } from '@/components/common/ReusableTable'
 import React from 'react'
-import { ReportRadicacion } from '../types/Report.type';
+import { ReportPreviewData } from '../types/Report.type';
 
 interface TableReportPreviewProps {
-    data: ReportRadicacion;
+    data: ReportPreviewData;
+    columns: ColumnConfig<any>[];
+    getRowKey: (item: any) => string;
+    searchFields: string[];
 }
 
-const TableReportPreview: React.FC<TableReportPreviewProps> = ({ data }) => {
+const TableReportPreview: React.FC<TableReportPreviewProps> = ({ 
+    data, 
+    columns, 
+    getRowKey, 
+    searchFields 
+}) => {
 
-     const tableState = useTableState({
+    const tableState = useTableState({
         data: data.data || [],
-        searchFields: [],
+        searchFields: searchFields,
         initialItemsPerPage: 10
-     })
+    })
 
-     const columns = [
-        // {
-        //     key: "id",
-        //     header: "ID",
-        //     size: "xs" as const,
-        //     accessor: (item: any) => item.id,
-        // },
-        {
-            key: "tipo_documento",
-            header: "Tipo de documento",
-            size: "md" as const,
-            accessor: (item: any) => item.Tipo_de_documento,
-        }
-     ]
-
-  return (
-    <>
-
-    <div className='p-4 mb-4 text-gray-800 dark:text-gray-100'>
-        <h3 className='text-xl font-bold'>Preview del Reporte</h3>
-    </div>
-
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-      >
-        <DataTable
-            data={tableState.currentData()}
-            columns={columns}
-            getRowKey={(item) => item.Id.toString()}
-        />
-      </DataTableContainer>
-    </>
-  )
+    return (
+        <>
+            {data.total > 0 ? (
+                <DataTableContainer
+                    searchValue={tableState.searchQuery}
+                    onSearchChange={tableState.setSearchQuery}
+                    itemsPerPage={tableState.itemsPerPage}
+                    onItemsPerPageChange={tableState.setItemsPerPage}
+                    currentPage={tableState.currentPage}
+                    totalPages={tableState.totalPages}
+                    onPageChange={tableState.paginate}
+                >
+                    <DataTable
+                        data={tableState.currentData()}
+                        columns={columns}
+                        getRowKey={getRowKey}
+                    />
+                </DataTableContainer>
+            ) : (
+                <div className='flex flex-col items-center justify-center text-gray-500 dark:text-gray-400'>
+                    <p>Selecciona un periodo o filtros deseados para ver el preview del reporte.</p>
+                </div>
+            )}
+        </>
+    )
 }
 
 export default TableReportPreview
