@@ -14,12 +14,26 @@ import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import { useDownloadReport } from '@/components/layout/sidebar/hooks/UseDownloadReport';
 import { AnimatePresence } from 'framer-motion';
 import { ReportStrategyFactory } from '../strategies/ReportStrategy';
+import { useAuth } from '@/context/authContext';
 
 const Reports = () => {
 
+    const { rol } = useAuth();
+
     const [selectedReport, setSelectedReport] = useState<string | null>(null);
+    const [filteredReports, setFilteredReports] = useState<typeof REPORT_CONFIG>([]);
 
     const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
+
+    // Filter reports based on user role with useEffect for proper reactivity
+    useEffect(() => {
+        if (rol) {
+            const filtered = REPORT_CONFIG.filter(r => r.roles.includes(String(rol)));
+            setFilteredReports(filtered);
+        } else {
+            setFilteredReports([]);
+        }
+    }, [rol]);
 
     const { downloadReport, error: dError, loading: dLoading } = useDownloadReport();
 
@@ -126,18 +140,31 @@ const Reports = () => {
             />
             <div className=' p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
                 {selectedReport === null ? (
-                    <div className='grid grid-cols-4 gap-4 p-5'>
-                        {REPORT_CONFIG.map((r) => (
-                            <div key={r.id}>
-                                <Card
-                                    title={r.title}
-                                    description={r.description}
-                                    icon={r.icon}
-                                    onClick={() => handleCardClick(r.id)}
-                                />
+                    <>
+                        {!rol ? (
+                            <div className='flex items-center justify-center p-10'>
+                                <LoadingSpinner />
                             </div>
-                        ))}
-                    </div>
+                        ) : filteredReports.length === 0 ? (
+                            <div className='flex flex-col items-center justify-center p-10 text-gray-500 dark:text-gray-400'>
+                                <p className='text-lg font-semibold'>No tienes acceso a ningún reporte</p>
+                                <p className='text-sm'>Contacta al administrador si crees que esto es un error</p>
+                            </div>
+                        ) : (
+                            <div className='grid grid-cols-4 gap-4 p-5'>
+                                {filteredReports.map((r) => (
+                                    <div key={r.id}>
+                                        <Card
+                                            title={r.title}
+                                            description={r.description}
+                                            icon={r.icon}
+                                            onClick={() => handleCardClick(r.id)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </>
                 ) : (
                     <div>
                         {/* arrow for come back */}
