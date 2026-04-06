@@ -100,7 +100,9 @@ export class SurgeriesReportStrategy implements ReportStrategy<ReportCirugias> {
   }
 
   getRowKey(item: ReportCirugias): string {
-    return item.Codigo_cups + item.Fecha_registro.toString();
+    const codigo = item?.Codigo_cups || 'no-code';
+    const fecha = item?.Fecha_registro?.toString() || 'no-date';
+    return `${codigo}-${fecha}`;
   }
 
   getSearchFields(): string[] {

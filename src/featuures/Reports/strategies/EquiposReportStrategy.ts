@@ -94,7 +94,7 @@ export class EquiposReportStrategy implements ReportStrategy<EquipmentReportData
   }
 
   getRowKey(item: EquipmentReportData): string {
-    return item.inventoryNumber;
+    return item?.inventoryNumber || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

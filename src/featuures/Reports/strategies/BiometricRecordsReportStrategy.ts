@@ -75,7 +75,10 @@ export class BiometricRecordsReportStrategy implements ReportStrategy<biometricR
   }
 
   getRowKey(item: biometricRecordData): string {
-    return item.numero_documento.toString() + item.fecha_registro.toString() + item.hora_registro;
+    const doc = item?.numero_documento?.toString() || 'no-doc';
+    const fecha = item?.fecha_registro?.toString() || 'no-date';
+    const hora = item?.hora_registro || 'no-time';
+    return `${doc}-${fecha}-${hora}`;
   }
 
   getSearchFields(): string[] {

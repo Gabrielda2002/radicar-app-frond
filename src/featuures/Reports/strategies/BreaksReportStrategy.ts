@@ -82,7 +82,7 @@ export class BreaksReportStrategy implements ReportStrategy<breaksRecordData> {
   }
 
   getRowKey(item: breaksRecordData): string {
-    return item.numero_documento.toString();
+    return item?.numero_documento?.toString() || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

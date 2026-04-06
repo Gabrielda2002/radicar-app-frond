@@ -93,7 +93,7 @@ export class NetworkDevicesReportStrategy implements ReportStrategy<deviceReport
   }
 
   getRowKey(item: deviceReportData): string {
-    return item.inventoryNumber;
+    return item?.inventoryNumber || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

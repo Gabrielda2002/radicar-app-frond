@@ -118,7 +118,7 @@ export class RadicacionReportStrategy implements ReportStrategy<Datum> {
   }
 
   getRowKey(item: Datum): string {
-    return item.Id.toString();
+    return item?.Id?.toString() || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

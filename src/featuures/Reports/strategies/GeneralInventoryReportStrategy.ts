@@ -111,7 +111,7 @@ export class GeneralInventoryReportStrategy implements ReportStrategy<generalInv
   }
 
   getRowKey(item: generalInventoryReportData): string {
-    return item.inventoryNumber;
+    return item?.inventoryNumber || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

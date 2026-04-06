@@ -111,7 +111,9 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
   }
 
   getRowKey(item: demandaInducidaData): string {
-    return item.numero_identificacion + item.fecha_actividad;
+    const numero = item?.numero_identificacion || 'no-id';
+    const fecha = item?.fecha_actividad || 'no-date';
+    return `${numero}-${fecha}`;
   }
 
   getSearchFields(): string[] {

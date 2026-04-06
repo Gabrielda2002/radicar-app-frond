@@ -105,7 +105,7 @@ export class TvReportStrategy implements ReportStrategy<tvReportData> {
   }
 
   getRowKey(item: tvReportData): string {
-    return item.inventoryNumber;
+    return item?.inventoryNumber || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

@@ -7,6 +7,7 @@ interface UseGeneratePreviewProps {
     isLoading: boolean;
     error: string | null;
     generatePreview: (previewEndpoint: string, payload: Record<string, any>) => Promise<void>;
+    clearPreview: () => void;
 }
 
 export const useGeneratePreview = (): UseGeneratePreviewProps => {
@@ -36,10 +37,16 @@ export const useGeneratePreview = (): UseGeneratePreviewProps => {
         }
     }
 
+    const clearPreview = () => {
+        setDataPreview({ total: 0, data: [] });
+        setError(null);
+    }
+
     return {
         dataPreview,
         isLoading,
         error,
-        generatePreview
+        generatePreview,
+        clearPreview
     }
 }

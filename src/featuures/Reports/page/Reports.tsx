@@ -1,7 +1,7 @@
 import HeaderPage from '@/components/common/HeaderPage/HeaderPage'
 import Card from '../components/Card'
 import { REPORT_CONFIG } from '../config/reportConfig'
-import { Suspense, useState, useMemo } from 'react'
+import { Suspense, useState, useMemo, useEffect } from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import Input from '@/components/common/Ui/Input';
@@ -19,7 +19,7 @@ const Reports = () => {
 
     const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
-    const { dataPreview, generatePreview, isLoading, error } = useGeneratePreview();
+    const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
 
     const { downloadReport, error: dError, loading: dLoading } = useDownloadReport();
 
@@ -78,6 +78,13 @@ const Reports = () => {
         }
     })
 
+    // Clear preview when report type changes
+    useEffect(() => {
+        if (selectedReport !== null) {
+            clearPreview();
+        }
+    }, [selectedReport]);
+
     const handleCardClick = (reportId: string) => {
         setSelectedReport(reportId);
     }
@@ -106,6 +113,7 @@ const Reports = () => {
     const handleGoBack = () => {
         setSelectedReport(null);
         formik.resetForm();
+        clearPreview();
     }
     return (
         <>
@@ -118,7 +126,7 @@ const Reports = () => {
             />
             <div className=' p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
                 {selectedReport === null ? (
-                    <div className='grid grid-cols-3 gap-4 p-5'>
+                    <div className='grid grid-cols-4 gap-4 p-5'>
                         {REPORT_CONFIG.map((r) => (
                             <div key={r.id}>
                                 <Card
@@ -133,20 +141,20 @@ const Reports = () => {
                 ) : (
                     <div>
                         {/* arrow for come back */}
-                        <button type='button' onClick={handleGoBack} className=' flex items-center text-blue-500 hover:text-blue-700 font-medium mb-4'>
+                        <button type='button' onClick={handleGoBack} className='cursor-pointer flex items-center text-blue-500 hover:text-blue-700 font-medium mb-4'>
                             <ArrowLeft className='w-5 h-5' />
                             Atras
                         </button>
 
                         <div className='grid grid-cols-3 gap-4'>
                             {/* form fields */}
-                            <form onSubmit={formik.handleSubmit}>
+                            <form onSubmit={formik.handleSubmit} className='col-span-1 p-4'>
                                 <div className='mb-4 text-gray-800 dark:text-gray-100'>
                                     <h3 className='text-xl font-bold my-4 text-gray-800 dark:text-gray-100'>
                                         Filtros para el reporte de {REPORT_CONFIG.find(r => r.id === selectedReport)?.title}:
                                     </h3>
                                 </div>
-                                <div className='grid grid-cols-1 gap-4 p-2 border'>
+                                <div className='grid grid-cols-1 gap-4'>
                                     {/* Common filters: dateStart and dateEnd */}
                                     <Input
                                         type='date'
@@ -157,6 +165,7 @@ const Reports = () => {
                                         onBlur={formik.handleBlur}
                                         error={formik.touched.dateStart && formik.errors.dateStart ? String(formik.errors.dateStart) : undefined}
                                         touched={!!formik.touched.dateStart}
+                                        required
                                     />
                                     <Input
                                         type='date'
@@ -167,6 +176,7 @@ const Reports = () => {
                                         onBlur={formik.handleBlur}
                                         error={formik.touched.dateEnd && formik.errors.dateEnd ? String(formik.errors.dateEnd) : undefined}
                                         touched={!!formik.touched.dateEnd}
+                                        required
                                     />
 
                                     {/* Dynamic extra filters from strategy */}
@@ -221,8 +231,8 @@ const Reports = () => {
                                 </div>
                             </form>
 
-                            {/* information for the selected report */}
-                            <div className='border col-span-2'>
+                            {/* preview report */}
+                            <div className='col-span-2'>
                                 <div className='flex items-center justify-between p-4 mb-4 text-gray-800 dark:text-gray-100'>
                                     <h3 className='text-xl font-bold'>Preview del Reporte</h3>
                                     <Button

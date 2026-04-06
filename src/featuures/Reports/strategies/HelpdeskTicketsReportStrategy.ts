@@ -87,7 +87,9 @@ export class HelpdeskTicketsReportStrategy implements ReportStrategy<helpdeskTic
   }
 
   getRowKey(item: helpdeskTicketData): string {
-    return item.fecha_registro.toString() + item.titulo;
+    const fecha = item?.fecha_registro?.toString() || 'no-date';
+    const titulo = item?.titulo || 'no-title';
+    return `${fecha}-${titulo}`;
   }
 
   getSearchFields(): string[] {

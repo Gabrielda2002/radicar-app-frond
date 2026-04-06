@@ -105,7 +105,7 @@ export class PhonesReportStrategy implements ReportStrategy<phoneReportData> {
   }
 
   getRowKey(item: phoneReportData): string {
-    return item.inventoryNumber;
+    return item?.inventoryNumber || `fallback-${Math.random()}`;
   }
 
   getSearchFields(): string[] {

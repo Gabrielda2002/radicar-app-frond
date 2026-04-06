@@ -93,7 +93,9 @@ export class AssistantsReportStrategy implements ReportStrategy<assistantReportD
   }
 
   getRowKey(item: assistantReportData): string {
-    return item.id_radicado.toString() + item.codigo_cups;
+    const id = item?.id_radicado?.toString() || 'no-id';
+    const codigo = item?.codigo_cups || 'no-code';
+    return `${id}-${codigo}`;
   }
 
   getSearchFields(): string[] {
