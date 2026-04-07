@@ -25,7 +25,6 @@ const Reports = () => {
 
     const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
 
-    // Filter reports based on user role with useEffect for proper reactivity
     useEffect(() => {
         if (rol) {
             const filtered = REPORT_CONFIG.filter(r => r.roles.includes(String(rol)));
@@ -81,7 +80,7 @@ const Reports = () => {
     const formik = useFormik({
         initialValues,
         validationSchema,
-        enableReinitialize: true, // Reset form when strategy changes
+        enableReinitialize: true,
         onSubmit: async (values) => {
             if (!strategy) return;
 
@@ -136,9 +135,10 @@ const Reports = () => {
                     { label: "Inicio", path: "/home" },
                     { label: "Reportes", path: "" },
                 ]}
-                title="Reportes"
+                title="Generación de Reportes"
+                description='Aquí tendrás acceso a los diferentes reportes disponibles en el sistema dependiendo de tu rol. Selecciona un reporte para configurar los filtros y generar una vista previa antes de descargarlo.'
             />
-            <div className=' p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
+            <div className='p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
                 {selectedReport === null ? (
                     <>
                         {!rol ? (
@@ -151,7 +151,7 @@ const Reports = () => {
                                 <p className='text-sm'>Contacta al administrador si crees que esto es un error</p>
                             </div>
                         ) : (
-                            <div className='grid grid-cols-4 gap-4 p-5'>
+                            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-4 p-5'>
                                 {filteredReports.map((r) => (
                                     <div key={r.id}>
                                         <Card
@@ -173,7 +173,7 @@ const Reports = () => {
                             Atras
                         </button>
 
-                        <div className='grid grid-cols-3 gap-4'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                             {/* form fields */}
                             <form onSubmit={formik.handleSubmit} className='col-span-1 p-4'>
                                 <div className='mb-4 text-gray-800 dark:text-gray-100'>

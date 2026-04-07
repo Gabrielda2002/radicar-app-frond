@@ -195,23 +195,8 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         id: 'report-management',
         title: 'Gestión de Reportes',
         icon: HiOutlineDocumentReport,
-        type: 'category',
-        children: [
-          {
-            id: 'modal-reports',
-            title: 'Modal de reportes',
-            icon: report,
-            type: 'subcategory',
-            action: 'openReportsModal'
-          },
-          {
-            id: 'reports-page',
-            title: 'Página de reportes',
-            icon: report,
-            path: '/reports',
-            type: 'subcategory'
-          }
-        ]
+        type: 'section',
+        path: '/reports',
       }
     ]
   },

@@ -14,7 +14,11 @@ const Card: React.FC<CardProps> = ({ icon, title, description, onClick }) => {
     const IconComponent = typeof icon !== 'string' ? icon : null;
     return (
         <>
-            <div className="relative flex flex-col items-start p-4 border border-gray-700 rounded-lg w-2xs space-y-2.5 hover:shadow-indigo-600 shadow-lg ease-in-out duration-500">
+            <div
+                role="button"
+                aria-label={`Generar reporte: ${title}`}
+                onKeyDown={(e) => e.key === "Enter" ? onClick?.() : null}
+                className="relative flex flex-col items-start p-4 border border-gray-700 rounded-lg w-2xs min-h-56 space-y-2.5 hover:shadow-indigo-600 shadow-lg ease-in-out duration-500 translate-y-1 hover:scale-105">
 
                 {/* large decorative background icon */}
                 <div className="absolute top-6 right-6 opacity-10 pointer-events-none">
@@ -42,9 +46,11 @@ const Card: React.FC<CardProps> = ({ icon, title, description, onClick }) => {
                         )}
                     </span>
                     <h3 className="font-medium text-lg dark:text-white text-gray-900">{title}</h3>
-                    <p className="text-gray-500 dark:text-gray-300 text-base text-justify hyphens-auto line-clamp-4">{description}</p>
+                    <p className="text-gray-500 dark:text-gray-300 text-base text-justify hyphens-auto line-clamp-4" title={description}>
+                        {description}
+                    </p>
                     {/* button action with a arrow to right */}
-                    <button onClick={onClick} className="flex group items-center text-sm cursor-pointer text-blue-500 font-medium">
+                    <button onClick={onClick} className="flex group items-end justify-start text-sm cursor-pointer text-blue-500 font-medium">
                         <span className="text-sm text-blue-500 group-hover:text-blue-400 font-medium">Generar Reporte</span>
                         <ArrowRight className="w-6 h-6 group-hover:text-blue-400" />
                     </button>

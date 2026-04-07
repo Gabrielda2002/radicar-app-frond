@@ -7,12 +7,14 @@ interface ModuleSectionProps {
   title: string;
   breadcrumb: { label: string; path: string }[];
   duration?: number;
+  description?: string;
 }
 
 const HeaderPage: React.FC<ModuleSectionProps> = ({
   title,
   breadcrumb,
   duration = 500,
+  description
 }) => {
   const location = useLocation();
 
@@ -66,6 +68,12 @@ const HeaderPage: React.FC<ModuleSectionProps> = ({
             </h1>
             {/* Línea decorativa debajo del título */}
             <div className="h-1 mt-1 bg-linear-to-r from-indigo-500 to-transparent rounded-full w-20 dark:from-indigo-400"></div>
+              {/* Descripción opcional debajo del título */}
+              {description && (
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-md">
+                  {description}
+                </p>
+              )}
           </div>
         </div>
 
