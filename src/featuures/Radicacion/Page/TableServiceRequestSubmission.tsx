@@ -133,41 +133,49 @@ const TablaRadicacion = () => {
     {
       key: "createdAt",
       header: "Fecha - Hora",
+      size: 'sm' as const,
       accessor: (item: IRadicados) => FormatDate(item.createdAt),
     },
     {
       key: "id",
       header: "N.º Radicado",
+      size: 'xs' as const,
       accessor: (item: IRadicados) => item.id,
     },
     {
       key: "documentType",
       header: "Documento",
+      size: 'xs' as const,
       accessor: (item: IRadicados) => item.documentType,
     },
     {
       key: "documentNumber",
       header: "N.º Documento",
+      size: 'sm' as const,
       accessor: (item: IRadicados) => item.documentNumber,
     },
     {
       key: "namePatient",
       header: "Paciente",
+      size: 'sm' as const,
       accessor: (item: IRadicados) => item.namePatient,
     },
     {
       key: "convenioName",
       header: "Convenio",
+      size: 'xs' as const,
       accessor: (item: IRadicados) => item.convenioName,
     },
     {
       key: "auditDate",
       header: "Fecha Auditoría",
+      size: 'sm' as const,
       accessor: (item: IRadicados) => FormatDate(item.auditDate, false),
     },
     {
       key: "cups",
       header: "Gestión del servicio",
+      width: '50%',
       render: (item: IRadicados) => (
         <div>
           <DataTable
@@ -193,7 +201,7 @@ const TablaRadicacion = () => {
     },
     {
       key: "details",
-      header: "Mostrar Datos",
+      header: "Mostrar",
       render: (item: IRadicados) => (
         <button onClick={() => handleShowData(item)}>
           <img className="dark:invert" src={mostrar} alt="" />
