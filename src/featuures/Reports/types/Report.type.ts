@@ -14,7 +14,8 @@ export interface ReportRadicacion {
 export interface FilterFieldConfig {
     name: string;
     label: string;
-    type: 'text' | 'date' | 'select' | 'number';
+    type: 'text' | 'date' | 'select' | 'number' | 'autocomplete';
+    endpoint?: string; // For autocomplete fields
     required?: boolean;
     options?: { value: string; label: string }[];
 }

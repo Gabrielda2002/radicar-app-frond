@@ -88,16 +88,17 @@ export class RadicacionReportStrategy implements ReportStrategy<Datum> {
       {
         name: 'estadoCups',
         label: 'Estado CUPS',
-        type: 'select',
+        type: 'autocomplete',
+        endpoint: 'status/name',
         required: false,
-        options: [
-          { value: '', label: 'Todos' },
-          { value: 'PENDIENTE', label: 'Pendiente' },
-          { value: 'AUTORIZADO', label: 'Autorizado' },
-          { value: 'NEGADO', label: 'Negado' },
-          { value: 'EN PROCESO', label: 'En Proceso' },
-        ],
       },
+      {
+        name: 'specialty',
+        label: 'Especialidad',
+        type: 'autocomplete',
+        endpoint: 'especialidades-name',
+        required: false,
+      }
     ];
   }
 
@@ -105,6 +106,7 @@ export class RadicacionReportStrategy implements ReportStrategy<Datum> {
     return Yup.object({
       cupsCode: Yup.string().optional(),
       estadoCups: Yup.string().optional(),
+      specialty: Yup.string().optional(),
     });
   }
 
@@ -114,6 +116,7 @@ export class RadicacionReportStrategy implements ReportStrategy<Datum> {
       dateEnd: values.dateEnd,
       cupsCode: values.cupsCode || undefined,
       statusCups: values.estadoCups || undefined,
+      specialty: values.specialty || undefined,
     };
   }
 

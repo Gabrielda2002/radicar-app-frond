@@ -11,10 +11,11 @@ import Button from '@/components/common/Ui/Button';
 import { useGeneratePreview } from '../hook/useGeneratePreview';
 import TableReportPreview from '../components/TableReportPreview';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
-import { useDownloadReport } from '@/components/layout/sidebar/hooks/UseDownloadReport';
+import { useDownloadReport } from '@/featuures/Reports/hook/UseDownloadReport';
 import { AnimatePresence } from 'framer-motion';
 import { ReportStrategyFactory } from '../strategies/ReportStrategy';
 import { useAuth } from '@/context/authContext';
+import InputAutocompletado from '@/components/common/InputAutoCompletado/InputAutoCompletado';
 
 const Reports = () => {
 
@@ -109,14 +110,16 @@ const Reports = () => {
             const downloadEndpoint = strategy.getDownloadEndpoint();
             const payload = strategy.buildPayload(formik.values);
 
-            await downloadReport(
-                payload.dateStart,
-                payload.dateEnd,
-                payload.cupsCode || null,
-                downloadEndpoint,
-                payload.headquarter || 0,
-                payload.statusCups,
-                payload.convenio
+            await downloadReport({
+                dateStart: payload.dateStart,
+                dateEnd: payload.dateEnd,
+                cupsCode: payload.cupsCode,
+                statusCups: payload.statusCups,
+                headquarter: payload.headquarter,
+                convenio: payload.convenio,
+                specialty: payload.specialty,
+            },
+                downloadEndpoint
             );
         } catch (error) {
             console.error("Error al descargar reporte:", error);
@@ -222,6 +225,18 @@ const Reports = () => {
                                                     options={field.options || []}
                                                 />
                                             );
+                                        }
+                                        if (field.type === 'autocomplete' && field.endpoint) {
+                                            return (
+                                                <InputAutocompletado
+                                                    label={field.label}
+                                                    onInputChanged={(value) => formik.setFieldValue(field.name, value)}
+                                                    apiRoute={field.endpoint}
+                                                    error={formik.touched[field.name] && formik.errors[field.name] ? String(formik.errors[field.name]) : undefined}
+                                                    touched={!!formik.touched[field.name]}
+                                                    placeholder='Ingrese para buscar...'
+                                                />
+                                            )
                                         }
 
                                         return (

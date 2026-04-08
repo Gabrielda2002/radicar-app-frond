@@ -1,13 +1,11 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useSidebar } from '@/context/sidebarContext';
 import { useAccordion } from '../hooks/useAccordion';
 import { useSidebarPermissions } from '../hooks/useSidebarPermissions';
-import { useSidebarActions } from '../hooks/useSidebarActions';
 import { SidebarProps } from '../types/sidebar.types';
 import { SIDEBAR_CONFIG } from '../config/sidebarConfig';
 import SidebarSection from '../components/SidebarSection';
-import ModalReporteRadicado from '../components/ModalGestionReportes';
 
 const SideBar
 : React.FC<SidebarProps> = ({ className = '' }) => {
@@ -15,24 +13,10 @@ const SideBar
   const { toggleAccordion, openAccordions } = useAccordion();
   const { filterSectionsByPermissions } = useSidebarPermissions();
   
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   // Filter sections based on user permissions
   const filteredSections = filterSectionsByPermissions(SIDEBAR_CONFIG);
-
-  // Modal handlers
-  const openModal = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
-  // Action handlers
-  const { handleAction } = useSidebarActions({
-    openReportsModal: openModal
-  });
 
   // Load sidebar state from cookies
   useEffect(() => {
@@ -91,7 +75,6 @@ const SideBar
                     section={section}
                     openAccordions={openAccordions}
                     onToggleAccordion={toggleAccordion}
-                    onAction={handleAction}
                   />
                   {index < filteredSections.length - 1 && (
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-2" />
@@ -103,10 +86,6 @@ const SideBar
         </div>
       </aside>
 
-      {/* Modal de reportes */}
-      {isModalOpen && (
-        <ModalReporteRadicado isOpen={isModalOpen} onClose={closeModal} />
-      )}
     </>
   );
 };

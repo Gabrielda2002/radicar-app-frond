@@ -1,24 +1,27 @@
 import { useState } from "react";
 import { api } from "@/utils/api-config";
-import { UseDownloadReporteReturn } from "../types/sidebar.types";
+import { Filters, UseDownloadReporteReturn } from "../types/Download.types";
+
+
 
 export const useDownloadReport = (): UseDownloadReporteReturn => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const downloadReport = async (dateStart: string, dateEnd: string, cupsCode: string | null, endPoint: string, headquarter: number, statusCups?: string, convenio?: number) => {
+  const downloadReport = async (filters: Filters, endPoint: string) => {
     try {
 
       setLoading(true);
 
       const response = await api.post(`/${endPoint}`, {
-        dateStart: dateStart,
-        dateEnd: dateEnd,
-        cupsCode: cupsCode,
-        statusCups: statusCups,
-        headquarter: headquarter,
-        convenio: convenio
+        dateStart: filters.dateStart,
+        dateEnd: filters.dateEnd,
+        cupsCode: filters.cupsCode,
+        statusCups: filters.statusCups,
+        headquarter: filters.headquarter,
+        convenio: filters.convenio,
+        specialty: filters.specialty
       }, {
         responseType: 'blob',
       });
