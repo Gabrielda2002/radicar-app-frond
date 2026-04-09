@@ -6,7 +6,6 @@ import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
 import useFetchSedes from "../Hooks/UseFetchSedes";
-import useFetchItems from "../Hooks/useFetchItems";
 import { useFetchDepartment } from "../Hooks/useFetchDeparment";
 import { Hammer, Tv, Smartphone } from "lucide-react";
 
@@ -23,6 +22,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import StatiticsScreemItems from "../Components/StatiticsScreenItems";
 import { GlobalSearchResult } from "../Hooks/useGlobalSearch";
 import GlobalSearch from "../Components/GlobalSearch";
+import useFetchItems from "../Hooks/UseFetchItems";
 
 const SistemaInventario: React.FC = () => {
   const {
