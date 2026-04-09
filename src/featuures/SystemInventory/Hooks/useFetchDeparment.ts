@@ -16,7 +16,7 @@ export const useFetchDepartment = (): UseFetchDepartmentResult => {
   const [errordepartment, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const getData = async () => {,
+    const getData = async () => {
       setLoading(true);
       try {
         const response = await api.get("/departamentos");
