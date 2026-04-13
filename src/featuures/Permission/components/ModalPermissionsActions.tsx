@@ -107,7 +107,7 @@ const ModalPermissionsActions: React.FC<ModalActionsProps> = ({
         onSubmit={formik.handleSubmit}
         isValid={formik.isValid && formik.dirty}
         isSubmitting={formik.isSubmitting || isLoading}
-        submitText="Guardar Cambios"
+        submitText="Enviar"
         size="lg"
       >
         {!currentStep ? (

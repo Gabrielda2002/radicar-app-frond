@@ -5,7 +5,7 @@ import ModalPermissionsActions from "../components/ModalPermissionsActions";
 import useSearch from "@/hooks/useSearch";
 import { IRequestsPermissions } from "../type/IRequestsPermissions";
 import usePagination from "@/hooks/usePagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
@@ -13,7 +13,7 @@ import { useStorePermissions } from "../store/useStorePermissions";
 const ITENS_PER_PAGE = 10;
 
 const Permission = () => {
-  const { requestPermissions:data, error, isLoading } = useStorePermissions();
+  const { requestPermissions:data, error, isLoading, getRequest } = useStorePermissions();
 
   const [itemsPerPage] = useState(ITENS_PER_PAGE);
 
@@ -27,6 +27,10 @@ const Permission = () => {
   const {currentPage, totalPages, paginate, currentData, setItemsPerPage } = usePagination<IRequestsPermissions>(
     filteredData, itemsPerPage 
   );
+
+  useEffect(() => {
+    getRequest();
+  }, []);
 
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(Number(e.target.value));

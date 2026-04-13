@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { AnimatePresence } from "framer-motion";
 import { CheckFilesFormat, CheckFilesSize } from "../services/CheckFiles";
 import { useStorePermissions } from "../store/useStorePermissions";
+import { toast } from "react-toastify";
+import Textarea from "@/components/common/Ui/Textarea";
 
 interface ModalRequestPermissionProps {
   isOpen: boolean;
@@ -14,23 +16,13 @@ interface ModalRequestPermissionProps {
 
 const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps) => {
 
-  const {createRequest, error, isLoading} = useStorePermissions();
+  const { createRequest, error, isLoading } = useStorePermissions();
 
   const validationSchema = Yup.object({
     category: Yup.string().required("Se requiere la categoría"),
     granularity: Yup.string().required("Se requiere la granularidad"),
-    startDate: Yup.date()
-      .when('granularity', {
-        is: (granularity: string) => granularity === 'MULTI_DAY' || granularity === 'DAILY',
-        then: (schema) => schema.required('Se requiere la fecha de inicio para permisos de varios días'),
-        otherwise: (schema) => schema.optional(),
-      }),
-    endDate: Yup.date()
-      .when('granularity', {
-        is: (granularity: string) => granularity === "MULTI_DAY" || granularity === 'DAILY',
-        then: (schema) => schema.required('Se requiere la fecha de fin para permisos de varios días'),
-        otherwise: (schema) => schema.optional()
-      }),
+    startDate: Yup.date().required('Se requiere la fecha de inicio para permisos de varios días'),
+    endDate: Yup.date().required('Se requiere la fecha de fin para permisos de varios días'),
     startTime: Yup.string().when('granularity', {
       is: (granularity: string) => granularity === 'HOURLY',
       then: (schema) => schema.required('Se requiere la hora de inicio para permisos por horas'),
@@ -54,6 +46,7 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       otherwise: (schema) => schema.nullable()
     }),
   });
+
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -72,6 +65,7 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
       await createRequest(values, () => {
         formik.resetForm();
         onClose();
+        toast.success("Permiso solicitado exitosamente")
       });
     },
   });
@@ -91,10 +85,10 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
         <div className="grid grid-cols-3 gap-4 py-3 px-5">
           <Select
             options={[
-                { value: "PERMISO", label: "Permiso" },
-                { value: "INCAPACIDAD", label: "Incapacidad" },
-                { value: "CALAMIDAD", label: "Calamidad" },
-                { value: "VACACIONES", label: "Vacaciones" }
+              { value: "PERMISO", label: "Permiso" },
+              { value: "INCAPACIDAD", label: "Incapacidad" },
+              { value: "CALAMIDAD", label: "Calamidad" },
+              { value: "VACACIONES", label: "Vacaciones" }
             ]}
             label="Categoría"
             name="category"
@@ -107,9 +101,9 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
           />
           <Select
             options={[
-                { value: "HOURLY", label: "Horas" },
-                { value: "DAILY", label: "Días" },
-                { value: "MULTI_DAY", label: "Varios Días" }
+              { value: "HOURLY", label: "Horas" },
+              { value: "DAILY", label: "Días" },
+              { value: "MULTI_DAY", label: "Varios Días" }
             ]}
             label="Granularidad"
             name="granularity"
@@ -185,21 +179,11 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             touched={formik.touched.nonRemunerated}
           />
           <Input
-            label="Notas"
-            name="notes"
-            type="textarea"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.notes && formik.errors.notes ? formik.errors.notes : undefined}
-            touched={formik.touched.notes}
-          />
-          <Input
             label="Adjuntar Archivo"
             name="file"
             type="file"
             onChange={(event) => {
-              const file  = event.currentTarget.files ? event.currentTarget.files[0] : null;
+              const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
               formik.setFieldValue("file", file);
             }}
             onBlur={formik.handleBlur}
@@ -207,16 +191,29 @@ const ModalRequestPermission = ({ isOpen, onClose }: ModalRequestPermissionProps
             touched={formik.touched.file}
             accept=".pdf"
           />
+          <div className="col-span-3">
+          <Textarea
+            label="Notas"
+            name="notes"
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.notes && formik.errors.notes ? formik.errors.notes : undefined}
+            touched={formik.touched.notes}
+            maxLength={1000}
+            showCharCount
+          />
+          </div>
         </div>
         <AnimatePresence>
-            {error && (
-              <div>
-                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                  {error}
-                </div>
+          {error && (
+            <div>
+              <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                {error}
               </div>
-            )}
-          </AnimatePresence>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </FormModal>
   );
