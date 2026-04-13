@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { IMyRequestsPermissions } from "../type/MyRquestsPermissions,.type";
+import { IMyRequestsPermissions } from "../type/MyRequestsPermissions,.type";
 import { api } from "@/utils/api-config";
 import { IRequestsPermissions } from "../type/IRequestsPermissions";
 

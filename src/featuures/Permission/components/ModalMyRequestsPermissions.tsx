@@ -3,7 +3,7 @@ import React, { JSX, useState } from "react";
 import {
   IMyRequestsPermissions,
   MyRequestsPermissionsProps,
-} from "../type/MyRquestsPermissions,.type";
+} from "../type/MyRequestsPermissions,.type";
 import { FormatDate } from "@/utils/FormatDate";
 import { BadgeCheck, BadgeAlert, Badge, File, ChevronDown, ChevronUp } from "lucide-react";
 import useSearch from "@/hooks/useSearch";
@@ -184,7 +184,7 @@ const MyRequestsPermissions: React.FC<MyRequestsPermissionsProps> = ({
                                 openSecureFile(
                                   r.attachmentsRelation[0].supportId.toString(),
                                   "VIEW",
-                                  "attachments"
+                                  "attachments-permissions"
                                 )
                               }
                               icon={<File className="w-4 h-4" />}

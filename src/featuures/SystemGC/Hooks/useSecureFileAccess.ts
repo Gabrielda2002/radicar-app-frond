@@ -8,7 +8,7 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
-type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | null;
+type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | "attachments-permissions" |  null;
 
 const customEndPoint = [
     {
@@ -30,6 +30,11 @@ const customEndPoint = [
         type: "attachments-tickets",
         epGenerateToken: "attachments/tickets",
         epSecureAccess: "secure-download"
+    },
+    {
+        type: "attachments-permissions",
+        epGenerateToken: "attachments/permissions",
+        epSecureAccess: "secure-attachments/permissions"
     }
 
 ]
