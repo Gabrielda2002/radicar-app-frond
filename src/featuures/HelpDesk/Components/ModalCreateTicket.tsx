@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
-// Lazy data hooks to avoid fetching until modal opens
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { toast } from "react-toastify";
 import { MdSupportAgent } from "react-icons/md";
@@ -14,14 +13,25 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import Textarea from "@/components/common/Ui/Textarea";
 import useTicketsStore from "../Store/useTicketsStore";
+import { DESK_CONFIG } from "../config/ConfigDesk";
+
+type DeskType = keyof typeof DESK_CONFIG;
+
+const DESK_OPTIONS = Object.entries(DESK_CONFIG).map(([value, cfg]) => ({
+  value,
+  label: cfg.label,
+}));
 
 interface TicketFormValues {
+  deskType: DeskType | "";
   type: string;
   title: string;
   description: string;
   categoryId: string;
+  locationDescription: string;
   file: File | null;
   attachmentType?: string;
+  headquartersId: string;
 }
 
 const HelpDesk = () => {
@@ -34,15 +44,31 @@ const HelpDesk = () => {
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const schemaValidation = Yup.object({
-    type: Yup.string().required("El tipo es requerido"),
+    deskType: Yup.string().required("La mesa de ayuda es requerida"),
+    type: Yup.string().when("deskType", {
+      is: "sistemas",
+      then: (schema) => schema.required("El tipo es requerido para la mesa de sistemas"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
     title: Yup.string().required("El titulo es requerido")
-        .min(5, "El titulo debe tener al menos 5 caracteres")
-        .max(50, "El titulo debe tener maximo 50 caracteres"),
+      .min(5, "El titulo debe tener al menos 5 caracteres")
+      .max(50, "El titulo debe tener maximo 50 caracteres"),
     description: Yup.string()
       .required("La descripcion es requerida")
       .min(10, "La descripcion debe tener al menos 10 caracteres")
       .max(500, "La descripcion debe tener maximo 500 caracteres"),
     categoryId: Yup.number().required("La categoria es requerida"),
+    locationDescription: Yup.string().when("deskType", {
+      is: "infraestructura",
+      then: (schema) => schema.required("La localización es requerida"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    headquartersId: Yup.string().when("deskType", {
+      is: "infraestructura",
+      then: (schema) => schema.required("La sede es requerida"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
     file: Yup.mixed<File>()
       .nullable()
       .test(
@@ -60,7 +86,7 @@ const HelpDesk = () => {
         "El archivo es demasiado grande. El tamaño máximo es 5MB.",
         (value) => {
           if (!(value instanceof File)) return true;
-          return value.size <= 5 * 1024 * 1024; // 5MB
+          return value.size <= 5 * 1024 * 1024;
         }
       ),
     attachmentType: Yup.string()
@@ -79,7 +105,8 @@ const HelpDesk = () => {
 
   const handleSubmit = useCallback(
     async (values: TicketFormValues) => {
-      await createTicket(values, () => {
+      const config = DESK_CONFIG[values.deskType as DeskType];
+      await createTicket(config.createEndpoint, values, () => {
         toast.success("Ticket creado exitosamente.");
         formik.resetForm();
         setIsModalOpen(false);
@@ -90,21 +117,33 @@ const HelpDesk = () => {
 
   const formik = useFormik({
     initialValues: {
+      deskType: "" as DeskType | "",
       title: "",
       type: "",
       description: "",
       categoryId: "",
+      locationDescription: "",
       file: null,
       attachmentType: "",
+      headquartersId: "",
       userId: idUsuario,
     },
     validationSchema: schemaValidation,
     onSubmit: handleSubmit,
   });
 
+  const activeConfig = formik.values.deskType
+    ? DESK_CONFIG[formik.values.deskType as DeskType]
+    : null;
+
+  const handleDeskTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    formik.handleChange(e);
+    formik.setFieldValue("categoryId", "");
+    formik.setFieldValue("type", "");
+  };
+
   const handleOpenModal = async () => {
     setIsModalOpen(true);
-    // await Promise.all([fetchCategory()]);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -135,45 +174,76 @@ const HelpDesk = () => {
             Formulario de Mesa de Ayuda
           </h3>
           <p className="text-xs text-black dark:text-gray-200">
-            {" "}
             Por favor rellene los siguientes campos con su respectiva
-            informacion para solicitar ayuda relacionada con el area de
-            sistemas.
+            informacion para solicitar ayuda relacionada con el area seleccionada.
           </p>
           <div>
             <div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Select
-                  options={[
-                    { value: "Solicitud", label: "Solicitud" },
-                    { value: "Incidente", label: "Incidente" }
-                  ]}
-                  label="Tipo"
-                  id="type"
-                  name="type"
-                  value={formik.values.type}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  variant="default"
-                  error={
-                    formik.touched.type && formik.errors.type
-                      ? formik.errors.type
-                      : undefined
-                  }
-                  touched={formik.touched.type}
-                  required
-                />
+                <div className="col-span-1 sm:col-span-2">
+                  <Select
+                    options={DESK_OPTIONS}
+                    label="Mesa de Ayuda"
+                    id="deskType"
+                    name="deskType"
+                    value={formik.values.deskType}
+                    onChange={handleDeskTypeChange}
+                    onBlur={formik.handleBlur}
+                    variant="default"
+                    error={
+                      formik.touched.deskType && formik.errors.deskType
+                        ? formik.errors.deskType
+                        : undefined
+                    }
+                    touched={formik.touched.deskType}
+                    required
+                  />
+                </div>
+
+                {formik.values.deskType === "sistemas" && (
+                  <Select
+                    options={[
+                      { value: "Solicitud", label: "Solicitud" },
+                      { value: "Incidente", label: "Incidente" }
+                    ]}
+                    label="Tipo"
+                    id="type"
+                    name="type"
+                    value={formik.values.type}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    variant="default"
+                    error={
+                      formik.touched.type && formik.errors.type
+                        ? formik.errors.type
+                        : undefined
+                    }
+                    touched={formik.touched.type}
+                    required
+                    disabled={!formik.values.deskType}
+                  />
+                )}
                 <InputAutocompletado
                   label="Categoria"
                   required
-                  apiRoute={`categories/${formik.values.type}`}
+                  apiRoute={
+                    activeConfig
+                      ? activeConfig.categoryRequiresType
+                        ? formik.values.type
+                          ? `${activeConfig.categoryRoute}/${formik.values.type}`
+                          : ""
+                        : activeConfig.categoryRoute
+                      : ""
+                  }
                   onInputChanged={(value: string) => {
                     formik.setFieldValue("categoryId", value);
                   }}
                   placeholder={
-                    !formik.values.type
-                      ? "Primero selecciona un tipo"
-                      : "Buscar categoría..."
+                    !formik.values.deskType
+                      ? "Primero selecciona una mesa"
+                      : activeConfig?.categoryRequiresType && !formik.values.type
+                        ? "Primero selecciona un tipo"
+                        : "Buscar categoría..."
                   }
                   error={
                     formik.touched.categoryId && formik.errors.categoryId
@@ -181,7 +251,10 @@ const HelpDesk = () => {
                       : undefined
                   }
                   touched={formik.touched.categoryId}
-                  disabled={!formik.values.type}
+                  disabled={
+                    !formik.values.deskType ||
+                    (!!activeConfig?.categoryRequiresType && !formik.values.type)
+                  }
                 />
                 <Input
                   label="Titulo"
@@ -198,17 +271,41 @@ const HelpDesk = () => {
                   touched={formik.touched.title}
                   required
                 />
-                
+
+                {activeConfig?.showLocation && (
+                  <Input
+                    label="Localización"
+                    id="locationDescription"
+                    name="locationDescription"
+                    value={formik.values.locationDescription}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Ej: Consultorio 3 - Piso 2"
+                    error={
+                      formik.touched.locationDescription && formik.errors.locationDescription
+                        ? formik.errors.locationDescription
+                        : undefined
+                    }
+                    touched={formik.touched.locationDescription}
+                    required
+                  />
+                )}
+
+                <InputAutocompletado
+                  label="Lugar Radicación"
+                  onInputChanged={(value) =>
+                    formik.setFieldValue("headquartersId", value)
+                  }
+                  apiRoute="lugares-radicacion-name"
+                  error={formik.errors.headquartersId}
+                  touched={formik.touched.headquartersId}
+                  placeholder="Ej: Calle 15"
+                  required={true}
+                />
+
                 <Select
                   label="Tipo de Archivo"
-                  options={[
-                    { value: "document", label: "Documento" },
-                    { value: "screenshot", label: "Imagen" },
-                    { value: "Video", label: "Video" },
-                    { value: "log", label: "Logs" },
-                    { value: "pdf", label: "PDF" },
-                    { value: "other", label: "Otro" },
-                  ]}
+                  options={[...activeConfig?.attachmentsOptions || []]}
                   id="attachmentType"
                   name="attachmentType"
                   value={formik.values.attachmentType}
@@ -239,7 +336,6 @@ const HelpDesk = () => {
                   icon={<IoDocumentTextOutline className="w-4 h-4" />}
                 />
 
-                {/* reemplazar input descripcion por un textarea que se expande dos columnas en md: */}
                 <div className="col-span-1 w-full sm:col-span-2">
                   <Textarea
                     label="Descripcion"
@@ -262,7 +358,6 @@ const HelpDesk = () => {
                     autoResize
                   />
                 </div>
-
 
               </div>
               <AnimatePresence>

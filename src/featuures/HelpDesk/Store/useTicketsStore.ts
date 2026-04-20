@@ -6,8 +6,8 @@ interface UseTicketsStoreReturn {
     tickets: ITickets[];
     error: string | null;
     isLoading: boolean;
-    fetchTickets: () => Promise<void>;
-    createTicket: (data: Object, onSuccess?: () => void) => Promise<void>;
+    fetchTickets: (endpoints?: string[]) => Promise<void>;
+    createTicket: (endpoint: string, data: Object, onSuccess?: () => void) => Promise<void>;
 }
 
 const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
@@ -17,17 +17,16 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
 
     fetchTickets: async () => {
         try {
-
             set({ isLoading: true, error: null });
 
-            const response = await api.get("/tickets-table");
+            const responses = await api.get("/tickets-table");
 
-            if (response.status === 200) {
-                set({ tickets: response.data, error: null });
+            if (responses.status === 200) {
+                set({ tickets: responses.data, error: null });
             }
 
         } catch (error: any) {
-            if (error.response.status === 500) {
+            if (error.response?.status === 500) {
                 set({ error: "Error del servidor. Por favor, inténtelo de nuevo más tarde." });
             } else {
                 set({ error: error.response?.data?.message || "Error desconocido. Por favor, inténtelo de nuevo." });
@@ -37,25 +36,22 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
         }
     },
 
-    createTicket: async (data, onSuccess) => {
+    createTicket: async (endpoint, data, onSuccess) => {
         try {
-
             set({ isLoading: true, error: null });
 
-            const response = await api.post('/tickets', data,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
+            const response = await api.post(endpoint, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
-            )
+            });
 
             if (response.status === 201 || response.status === 200) {
                 onSuccess?.();
             }
 
         } catch (error: any) {
-            if (error.response.status === 500) {
+            if (error.response?.status === 500) {
                 set({ error: "Error del servidor. Por favor, inténtelo de nuevo más tarde." });
             } else {
                 set({ error: error.response?.data?.message || "Error desconocido. Por favor, inténtelo de nuevo." });
