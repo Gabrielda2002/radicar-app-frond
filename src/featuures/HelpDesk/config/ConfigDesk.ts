@@ -32,3 +32,16 @@ export const DESK_CONFIG = {
     ]
   },
 } as const;
+
+
+export const DESK_VIEW_CONFIG: Record<string, string[]> = {
+  "1":  ["/tickets-table", "/infrastructure-tickets"],
+  "17": ["/tickets-table"],
+  "22": ["/infrastructure-tickets"],
+  "23": ["/infrastructure-tickets"],
+};
+
+export const ATTACHMENT_BUCKET: Record<string, "attachments-tickets" | "attachments-infra-tickets"> = {
+  sistemas: "attachments-tickets",
+  infraestructura: "attachments-infra-tickets",
+};

@@ -1,9 +1,15 @@
-import { ITickets } from "@/models/ITickets";
+import { DeskSource, ITickets, ITicketsWithSource } from "@/featuures/HelpDesk/types/ITickets";
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
 
+
+const ENDPOINT_SOURCE_MAP: Record<string, DeskSource> = {
+    "/tickets-table": "sistemas",
+    "/infrastructure-tickets": "infraestructura",
+};
+
 interface UseTicketsStoreReturn {
-    tickets: ITickets[];
+    tickets: ITicketsWithSource[];
     error: string | null;
     isLoading: boolean;
     fetchTickets: (endpoints?: string[]) => Promise<void>;
@@ -15,15 +21,19 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
     error: null,
     isLoading: false,
 
-    fetchTickets: async () => {
+    fetchTickets: async (endpoints = ["/tickets-table"]) => {
         try {
             set({ isLoading: true, error: null });
 
-            const responses = await api.get("/tickets-table");
+            const responses = await Promise.all(endpoints.map((ep) => api.get(ep)));
+            const combined: ITicketsWithSource[] = responses.flatMap((r, i) =>
+                r.data.map((ticket: ITickets) => ({
+                    ...ticket,
+                    _source: ENDPOINT_SOURCE_MAP[endpoints[i]] ?? "sistemas",
+                }))
+            );
 
-            if (responses.status === 200) {
-                set({ tickets: responses.data, error: null });
-            }
+            set({ tickets: combined, error: null });
 
         } catch (error: any) {
             if (error.response?.status === 500) {

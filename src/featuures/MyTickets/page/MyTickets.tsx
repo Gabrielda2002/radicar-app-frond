@@ -3,7 +3,7 @@ import { DataTable, DataTableContainer, useTableState } from '@/components/commo
 import useStoreTickets from '../hooks/useStoreTickets';
 import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
-import { ITicketsUser } from '@/models/ITickets';
+import { ITicketsUser } from '@/featuures/HelpDesk/types/ITickets';
 import { FormatDate } from '@/utils/FormatDate';
 import { getPriorityColor, getStatusColor } from '@/featuures/Permission/utils/getColorTicketColumn';
 import ModalCommetsTicket from '@/featuures/HelpDesk/Components/ModalCommetsTicket';

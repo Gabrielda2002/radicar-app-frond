@@ -3,7 +3,7 @@ import { Suspense, useEffect } from "react";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
-import { ITickets } from "@/models/ITickets";
+import { type ITicketsWithSource } from "../types/ITickets";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
 import {
@@ -19,6 +19,8 @@ import Button from "@/components/common/Ui/Button";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
 import useTicketsStore from "../Store/useTicketsStore";
 import { Paperclip } from "lucide-react";
+import { useAuth } from "@/context/authContext";
+import { ATTACHMENT_BUCKET, DESK_VIEW_CONFIG } from "../config/ConfigDesk";
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -75,9 +77,12 @@ const ProcessHelpDesk = () => {
 
   const { tickets, fetchTickets, error, isLoading } = useTicketsStore();
 
+  const { rol } = useAuth();
+
   useEffect(() => {
-    fetchTickets();
-  }, [])
+    const endpoints = DESK_VIEW_CONFIG[rol ?? ""] ?? ["/tickets-table"];
+    fetchTickets(endpoints);
+  }, [rol]);
 
   const { downloadSecureFile } = useSecureFileAccess();
 
@@ -93,31 +98,31 @@ const ProcessHelpDesk = () => {
       key: "id",
       header: "ID",
       size: "xs" as const,
-      accessor: (item: ITickets) => item.id,
+      accessor: (item: ITicketsWithSource) => item.id,
     },
     {
       key: "title",
       header: "Titulo",
       size: "md" as const,
-      accessor: (item: ITickets) => item.title,
+      accessor: (item: ITicketsWithSource) => item.title,
     },
     {
       key: "tipo",
       header: "Tipo",
       size: "sm" as const,
-      render: (item: ITickets) => item.type
+      render: (item: ITicketsWithSource) => item.type
     },
     {
       key: "category",
       header: "Categoria",
       size: "md" as const,
-      accessor: (item: ITickets) => item.category,
+      accessor: (item: ITicketsWithSource) => item.category,
     },
     {
       key: "description",
       header: "Descripcion",
       size: "lg" as const,
-      accessor: (item: ITickets) => (
+      accessor: (item: ITicketsWithSource) => (
         <span className="line-clamp-5" title={item.description}>
           {item.description}
         </span>
@@ -127,7 +132,7 @@ const ProcessHelpDesk = () => {
       key: "status",
       header: "Estado",
       size: "sm" as const,
-      render: (item: ITickets) => (
+      render: (item: ITicketsWithSource) => (
         <span className={getStatusColor(item.status)}>
           {item.status}
         </span>
@@ -137,7 +142,7 @@ const ProcessHelpDesk = () => {
       key: "priority",
       header: "Prioridad",
       size: "sm" as const,
-      render: (item: ITickets) => (
+      render: (item: ITicketsWithSource) => (
         <span className={getPriorityColor(item.priority)}>
           {item.priority}
         </span>
@@ -147,49 +152,55 @@ const ProcessHelpDesk = () => {
       key: "nameRequester",
       header: "Nombre",
       size: "md" as const,
-      accessor: (item: ITickets) => item.nameRequester,
+      accessor: (item: ITicketsWithSource) => item.nameRequester,
     },
     {
       key: "lastName",
       header: "Apellido",
       size: "md" as const,
-      accessor: (item: ITickets) => item.lastNameRequester,
+      accessor: (item: ITicketsWithSource) => item.lastNameRequester,
     },
     {
       key: "phoneNumber",
       header: "Celular",
       size: "md" as const,
-      accessor: (item: ITickets) => item.phone,
+      accessor: (item: ITicketsWithSource) => item.phone,
     },
     {
       key: "headquarter",
       header: "Sede",
       size: "md" as const,
-      accessor: (item: ITickets) => item.headquarter,
+      accessor: (item: ITicketsWithSource) => item.headquarter,
+    },
+    {
+      key: "locationDescription",
+      header: "Descripcion Ubicacion",
+      size: "md" as const,
+      accessor: (item: ITicketsWithSource) => item.locationDescription || "N/A",
     },
     {
       key: "municipio",
       header: "Municipio",
       size: "sm" as const,
-      accessor: (item: ITickets) => item.municipio,
+      accessor: (item: ITicketsWithSource) => item.municipio,
     },
     {
       key: "createdAt",
       header: "Creacion",
       size: "md" as const,
-      accessor: (item: ITickets) => FormatDate(item.createdAt),
+      accessor: (item: ITicketsWithSource) => FormatDate(item.createdAt),
     },
     {
       key: "updatedAt",
       header: "Ultima modificacion",
       size: "md" as const,
-      accessor: (item: ITickets) => FormatDate(item.updatedAt),
+      accessor: (item: ITicketsWithSource) => FormatDate(item.updatedAt),
     },
     {
       key: "attachment",
       header: "Acciones",
       size: "md" as const,
-      render: (item: ITickets) => (
+      render: (item: ITicketsWithSource) => (
         <div className="grid gap-2">
           {item.attachments.length > 0 && (
             item.attachments.map((a) => (
@@ -198,7 +209,10 @@ const ProcessHelpDesk = () => {
                 variant="any"
                 icon={<Paperclip className="w-4 h-4" />}
                 className="p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500"
-                onClick={() => downloadSecureFile(a.id.toString(), "attachments-tickets")}
+                onClick={() => downloadSecureFile(
+                  a.id.toString(),
+                  ATTACHMENT_BUCKET[item._source] ?? "attachments-tickets"
+                )}
               />
             ))
           )}

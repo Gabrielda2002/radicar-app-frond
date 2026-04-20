@@ -1,4 +1,4 @@
-import { ITicketsUser } from "@/models/ITickets";
+import { ITicketsUser } from "@/featuures/HelpDesk/types/ITickets";
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
 

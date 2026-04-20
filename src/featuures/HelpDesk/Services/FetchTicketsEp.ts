@@ -1,4 +1,4 @@
-import { ITickets } from "@/models/ITickets";
+import { ITickets } from "@/featuures/HelpDesk/types/ITickets";
 import { api } from "@/utils/api-config";
 
 export const FetchTicketsEp = async (): Promise<ITickets[]> => {

@@ -8,7 +8,7 @@ import FormModal from "@/components/common/Ui/FormModal";
 import { AnimatePresence } from "framer-motion";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
-import { ITickets } from "@/models/ITickets";
+import { ITickets } from "@/featuures/HelpDesk/types/ITickets";
 import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
 import useCommentStore from "../Store/useCommentStore";
