@@ -21,6 +21,7 @@ import useTicketsStore from "../Store/useTicketsStore";
 import { Paperclip } from "lucide-react";
 import { useAuth } from "@/context/authContext";
 import { ATTACHMENT_BUCKET, DESK_VIEW_CONFIG } from "../config/ConfigDesk";
+import Tabs, { type TabItem } from "@/components/common/Ui/Tabs";
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -86,12 +87,31 @@ const ProcessHelpDesk = () => {
 
   const { downloadSecureFile } = useSecureFileAccess();
 
-  const tableState = useTableState({
-    data: tickets || [],
-    searchFields: ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"],
+  const isMultiDesk = (DESK_VIEW_CONFIG[rol ?? ""] ?? []).length > 1;
+
+  const sistemasTickets = tickets.filter((t) => t._source === "sistemas");
+  const infraTickets = tickets.filter((t) => t._source === "infraestructura");
+
+  const SEARCH_FIELDS: (keyof ITicketsWithSource)[] = ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"];
+
+  const sistemasTableState = useTableState({
+    data: sistemasTickets,
+    searchFields: SEARCH_FIELDS,
     initialItemsPerPage: 10,
     filterConfig: TICKET_FILTER_CONFIG,
   });
+
+  const infraTableState = useTableState({
+    data: infraTickets,
+    searchFields: SEARCH_FIELDS,
+    initialItemsPerPage: 10,
+    filterConfig: TICKET_FILTER_CONFIG,
+  });
+
+  const singleTableState =
+    (DESK_VIEW_CONFIG[rol ?? ""]?.[0] ?? "/tickets-table") === "/tickets-table"
+      ? sistemasTableState
+      : infraTableState;
 
   const columns = [
     {
@@ -174,7 +194,7 @@ const ProcessHelpDesk = () => {
     },
     {
       key: "locationDescription",
-      header: "Descripcion Ubicacion",
+    header: "Descripcion Ubicacion",
       size: "md" as const,
       accessor: (item: ITicketsWithSource) => item.locationDescription || "N/A",
     },
@@ -227,6 +247,40 @@ const ProcessHelpDesk = () => {
     },
   ]
 
+  const renderTable = (state: typeof sistemasTableState) => (
+    <DataTableContainer
+      searchValue={state.searchQuery}
+      onSearchChange={state.setSearchQuery}
+      itemsPerPage={state.itemsPerPage}
+      onItemsPerPageChange={state.setItemsPerPage}
+      currentPage={state.currentPage}
+      totalPages={state.totalPages}
+      onPageChange={state.paginate}
+      filterState={state.filterState}
+    >
+      <DataTable
+        data={state.currentData()}
+        columns={columns}
+        getRowKey={(item) => item.id.toString()}
+        loading={isLoading}
+        error={error}
+      />
+    </DataTableContainer>
+  );
+
+  const tabs: TabItem[] = [
+    {
+      id: "sistemas",
+      label: "Sistemas",
+      content: renderTable(sistemasTableState),
+    },
+    {
+      id: "infraestructura",
+      label: "Infraestructura",
+      content: renderTable(infraTableState),
+    },
+  ];
+
   return (
     <>
       <ModalSection
@@ -236,24 +290,11 @@ const ProcessHelpDesk = () => {
           { label: "/ GestiónTickets", path: "" },
         ]}
       />
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-        filterState={tableState.filterState}
-      >
-        <DataTable
-          data={tableState.currentData()}
-          columns={columns}
-          getRowKey={(item) => item.id.toString()}
-          loading={isLoading}
-          error={error}
-        />
-      </DataTableContainer>
+      {isMultiDesk ? (
+        <Tabs tabs={tabs} variant="underline" />
+      ) : (
+        renderTable(singleTableState)
+      )}
     </>
   );
 };
