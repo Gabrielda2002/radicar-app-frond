@@ -3,10 +3,13 @@ export const DESK_CONFIG = {
   sistemas: {
     label: "Sistemas",
     createEndpoint: "/tickets",
+    closeEndpoint: "/comment-status",
     categoryRoute: "categories",
     categoryRequiresType: true,
     showLocation: false,
     showHeadquarter: false,
+    showRemote: true,
+    showMontoCotizado: false,
     attachmentsOptions: [
       { value: "document", label: "Documento" },
       { value: "screenshot", label: "Imagen" },
@@ -19,10 +22,13 @@ export const DESK_CONFIG = {
   infraestructura: {
     label: "Infraestructura",
     createEndpoint: "/infrastructure-tickets",
+    closeEndpoint: "/infrastructure-comments/change-status",
     categoryRoute: "infrastructure-categories",
     categoryRequiresType: false,
     showLocation: true,
     showHeadquarter: true,
+    showRemote: false,
+    showMontoCotizado: true,
     attachmentsOptions: [
       { value: "photo", label: "Foto" },
       { value: "document", label: "Documento" },

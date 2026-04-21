@@ -8,14 +8,15 @@ import FormModal from "@/components/common/Ui/FormModal";
 import { AnimatePresence } from "framer-motion";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
-import { ITickets } from "@/featuures/HelpDesk/types/ITickets";
+import { type ITicketsWithSource, type DeskSource } from "../types/ITickets";
+import { DESK_CONFIG } from "../config/ConfigDesk";
 import { FormatDate } from "@/utils/FormatDate";
 import { BookCheck } from "lucide-react";
 import useCommentStore from "../Store/useCommentStore";
 import { getPriorityColor, getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 
 interface CerrarModalProps {
-  ticket: ITickets;
+  ticket: ITicketsWithSource;
   onTicketClosed?: () => void;
 }
 
@@ -27,13 +28,22 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
 
   const { addComment, isLoading, error  } = useCommentStore();
 
+  const closeConfig = DESK_CONFIG[(ticket._source ?? "sistemas") as DeskSource];
+
   const user = localStorage.getItem("user");
   const idUsuario = user ? JSON.parse(user).id : "";
 
   const validationSchema = Yup.object({
     comment: Yup.string().required("Este campo es obligatorio"),
     status: Yup.string().required("Este campo es obligatorio"),
-    remote: Yup.boolean().required("Este campo es obligatorio"),
+    remote: closeConfig.showRemote
+      ? Yup.boolean().required("Este campo es obligatorio")
+      : Yup.boolean().notRequired(),
+    quotationAmount: closeConfig.showMontoCotizado
+      ? Yup.number()
+          .required("El monto cotizado es obligatorio")
+          .min(0, "El monto no puede ser negativo")
+      : Yup.number().notRequired(),
   });
 
   const formik = useFormik({
@@ -41,19 +51,21 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
       comment: "",
       status: "",
       remote: false,
+      quotationAmount: "",
       ticketId: ticket.id,
       userId: idUsuario,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       await addComment(
+        closeConfig.closeEndpoint,
         values,
         () => {
           toast.success("Ticket actualizado correctamente");
           onTicketClosed?.();
           setShowModal(false);
         }
-      )
+      );
     },
   });
 
@@ -155,17 +167,34 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
           </div>
 
           <div className="mb-4">
-            <Input
-              variant="checkbox"
-              label="¿El ticket fue cerrado de forma remota?"
-              type="checkbox"
-              id="remote"
-              name="remote"
-              checked={formik.values.remote}
-              onChange={(e) => formik.setFieldValue("remote", e.target.checked)}
-              error={formik.errors.remote && formik.touched.remote ? formik.errors.remote : undefined}
-              touched={formik.touched.remote}
-            />
+            {closeConfig.showRemote && (
+              <Input
+                variant="checkbox"
+                label="¿El ticket fue cerrado de forma remota?"
+                type="checkbox"
+                id="remote"
+                name="remote"
+                checked={formik.values.remote}
+                onChange={(e) => formik.setFieldValue("remote", e.target.checked)}
+                error={formik.errors.remote && formik.touched.remote ? formik.errors.remote : undefined}
+                touched={formik.touched.remote}
+              />
+            )}
+            {closeConfig.showMontoCotizado && (
+              <Input
+                label="Monto Cotizado"
+                type="number"
+                id="quotationAmount"
+                name="quotationAmount"
+                value={formik.values.quotationAmount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Ingrese el costo de lo realizado..."
+                error={formik.errors.quotationAmount && formik.touched.quotationAmount ? formik.errors.quotationAmount : undefined}
+                touched={formik.touched.quotationAmount}
+                required
+              />
+            )}
           </div>
 
           <div className="mb-4">

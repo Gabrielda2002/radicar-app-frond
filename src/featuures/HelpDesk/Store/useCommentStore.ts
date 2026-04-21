@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 interface UseCommentStore {
     comments: IComment[];
-    addComment: (data: Object, onSuccess?: () => void) => void;
+    addComment: (endpoint: string, data: Object, onSuccess?: () => void) => void;
     isLoading: boolean;
     error: string | null;
 }
@@ -14,11 +14,11 @@ const useCommentStore = create<UseCommentStore>((set) => ({
     isLoading: false,
     error: null,
 
-    addComment: async (data: Object, onSuccess?: () => void) => {
+    addComment: async (endpoint: string, data: Object, onSuccess?: () => void) => {
         try {
             set({ isLoading: true, error: null });
 
-            await api.post(`/comment-status`, data);
+            await api.post(endpoint, data);
 
             onSuccess?.();
 

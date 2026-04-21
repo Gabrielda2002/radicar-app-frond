@@ -290,18 +290,19 @@ const HelpDesk = () => {
                     required
                   />
                 )}
-
-                <InputAutocompletado
-                  label="Lugar Radicación"
-                  onInputChanged={(value) =>
-                    formik.setFieldValue("headquartersId", value)
-                  }
-                  apiRoute="lugares-radicacion-name"
-                  error={formik.errors.headquartersId}
-                  touched={formik.touched.headquartersId}
-                  placeholder="Ej: Calle 15"
-                  required={true}
-                />
+                {activeConfig?.showHeadquarter && (
+                  <InputAutocompletado
+                    label="Lugar Radicación"
+                    onInputChanged={(value) =>
+                      formik.setFieldValue("headquartersId", value)
+                    }
+                    apiRoute="lugares-radicacion-name"
+                    error={formik.errors.headquartersId}
+                    touched={formik.touched.headquartersId}
+                    placeholder="Ej: Calle 15"
+                    required={true}
+                  />
+                )}
 
                 <Select
                   label="Tipo de Archivo"
