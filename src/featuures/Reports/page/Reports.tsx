@@ -25,6 +25,7 @@ const Reports = () => {
     const [filteredReports, setFilteredReports] = useState<typeof REPORT_CONFIG>([]);
 
     const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
+    console.log('error generacion de preview', error)
 
     useEffect(() => {
         if (rol) {

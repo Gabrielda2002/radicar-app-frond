@@ -80,9 +80,10 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
   getFilterFields(): FilterFieldConfig[] {
     return [
       {
-        name: 'lugarRadicacion',
+        name: 'headquarter',
         label: 'Lugar de radicación',
-        type: 'text',
+        type: 'autocomplete',
+        endpoint: 'lugares-radicacion-name',
         required: false,
       },
       {
@@ -96,7 +97,7 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
 
   getValidationSchema(): Yup.ObjectSchema<any> {
     return Yup.object({
-      lugarRadicacion: Yup.string().optional(),
+      headquarter: Yup.string().optional(),
       convenio: Yup.string().optional()
     });
   }
@@ -105,7 +106,7 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
     return {
       dateStart: values.dateStart,
       dateEnd: values.dateEnd,
-      lugarRadicacion: values.lugarRadicacion || undefined,
+      headquarter: values.headquarter || undefined,
       convenio: values.convenio || undefined,
     };
   }
