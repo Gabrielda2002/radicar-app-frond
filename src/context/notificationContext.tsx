@@ -176,7 +176,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // Limpieza cuando el componente se desmonte realmente (no durante re-renders)
         return () => {
             // Solo cerramos al desmontar el componente completo
-            if (process.env.NODE_ENV === "production") {
+            if (import.meta.env.VITE_NODE_ENV === "production") {
                 console.log('Cerrando conexión de socket (producción)');
                 socketRef.current?.disconnect();
                 socketRef.current = null;

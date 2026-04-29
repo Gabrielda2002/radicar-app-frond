@@ -47,7 +47,7 @@ export type ITicketsUser = {
     surveyId: number | null;
 }
 
-export type DeskSource = "sistemas" | "infraestructura";
+export type DeskSource = "sistemas" | "infraestructura" | "sst";
 
 export interface ITicketsWithSource extends ITickets {
     _source: DeskSource;

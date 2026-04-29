@@ -6,6 +6,7 @@ import { create } from "zustand";
 const ENDPOINT_SOURCE_MAP: Record<string, DeskSource> = {
     "/tickets-table": "sistemas",
     "/infrastructure-tickets": "infraestructura",
+    "/sst-tickets/table": "sst"
 };
 
 interface UseTicketsStoreReturn {
@@ -32,6 +33,7 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
                     _source: ENDPOINT_SOURCE_MAP[endpoints[i]] ?? "sistemas",
                 }))
             );
+            console.log("Tickets combinados:", combined.filter(t => t._source === "sst"));
 
             set({ tickets: combined, error: null });
 

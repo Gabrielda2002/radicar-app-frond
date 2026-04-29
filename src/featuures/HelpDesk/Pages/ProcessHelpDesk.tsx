@@ -91,6 +91,7 @@ const ProcessHelpDesk = () => {
 
   const sistemasTickets = tickets.filter((t) => t._source === "sistemas");
   const infraTickets = tickets.filter((t) => t._source === "infraestructura");
+  const sstTickets = tickets.filter((t) => t._source === "sst");
 
   const SEARCH_FIELDS: (keyof ITicketsWithSource)[] = ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"];
 
@@ -103,6 +104,13 @@ const ProcessHelpDesk = () => {
 
   const infraTableState = useTableState({
     data: infraTickets,
+    searchFields: SEARCH_FIELDS,
+    initialItemsPerPage: 10,
+    filterConfig: TICKET_FILTER_CONFIG,
+  });
+
+  const sstTableState = useTableState({
+    data: sstTickets,
     searchFields: SEARCH_FIELDS,
     initialItemsPerPage: 10,
     filterConfig: TICKET_FILTER_CONFIG,
@@ -236,7 +244,7 @@ const ProcessHelpDesk = () => {
               />
             ))
           )}
-          <ModalCommetsTicket idTicket={item.id} />
+          <ModalCommetsTicket idTicket={item.id} source={item._source} />
           {item.status != "Cerrado" && (
             <Suspense fallback={<LoadingSpinner />}>
               <CerrarModal ticket={item} />
@@ -279,6 +287,11 @@ const ProcessHelpDesk = () => {
       label: "Infraestructura",
       content: renderTable(infraTableState),
     },
+    {
+      id: "sst",
+      label: "SST",
+      content: renderTable(sstTableState),
+    }
   ];
 
   return (

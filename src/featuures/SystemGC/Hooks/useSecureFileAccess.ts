@@ -8,7 +8,7 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
-type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | "attachments-infra-tickets" | "attachments-permissions" |  null;
+type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | "attachments-infra-tickets" | "attachments-permissions" | "attachments-sst-tickets" | "" |  null;
 
 const customEndPoint = [
     {
@@ -40,6 +40,11 @@ const customEndPoint = [
         type: "attachments-infra-tickets",
         epGenerateToken: "infrastructure-attachments/token",
         epSecureAccess: "infrastructure-attachments/download"
+    },
+    {
+        type: "attachments-sst-tickets",
+        epGenerateToken: "sst-attachments/token",
+        epSecureAccess: "sst-attachments/download"
     }
 
 ]
@@ -63,6 +68,7 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
 
             const endPoint = customEndPoint.find(ep => ep.type === type)?.epGenerateToken
 
+            console.log(`Solicitando token para archivo ${fileId} con acción ${action} y tipo ${type} en endpoint ${endPoint}`);
             const response = await api.post(`/${endPoint}/${fileId}/access-token?action=${action}`)
 
             if (response.status === 200) {
