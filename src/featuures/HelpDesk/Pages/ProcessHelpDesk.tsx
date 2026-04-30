@@ -116,10 +116,14 @@ const ProcessHelpDesk = () => {
     filterConfig: TICKET_FILTER_CONFIG,
   });
 
+  const firstEndpoint = DESK_VIEW_CONFIG[rol ?? ""]?.[0] ?? "/tickets-table";
+
   const singleTableState =
-    (DESK_VIEW_CONFIG[rol ?? ""]?.[0] ?? "/tickets-table") === "/tickets-table"
+    firstEndpoint === "/tickets-table"
       ? sistemasTableState
-      : infraTableState;
+      : firstEndpoint === "/infrastructure-tickets"
+      ? infraTableState
+      : sstTableState;
 
   const columns = [
     {

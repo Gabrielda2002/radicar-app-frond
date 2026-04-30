@@ -129,8 +129,8 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
                 <div className="text-sm text-gray-800 dark:text-gray-100">{ticket.phone}</div>
               </div>
               <div>
-                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400/90">Sede</div>
-                <div className="text-sm text-gray-800 dark:text-gray-100">{ticket.headquarter}</div>
+                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400/90">Sede (Usuario)</div>
+                <div className="text-sm text-gray-800 dark:text-gray-100">{ticket.userHeadquarters || ticket.headquarter}</div>
               </div>
               <div>
                 <div className="text-xs font-semibold text-gray-600 dark:text-gray-400/90">Municipio</div>

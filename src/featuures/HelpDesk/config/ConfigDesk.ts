@@ -63,10 +63,10 @@ export const DESK_CONFIG = {
 
 
 export const DESK_VIEW_CONFIG: Record<string, string[]> = {
-  "1":  ["/tickets-table", "/infrastructure-tickets", "/sst-tickets/table"],
+  "1":  ["/tickets-table", "/infrastructure-tickets/table", "/sst-tickets/table"],
   "17": ["/tickets-table"],
-  "22": ["/infrastructure-tickets"],
-  "23": ["/infrastructure-tickets"],
+  "22": ["/infrastructure-tickets/table"],
+  "23": ["/infrastructure-tickets/table"],
   "24": ["/sst-tickets/table"],
   "25": ["/sst-tickets/table"],
 };

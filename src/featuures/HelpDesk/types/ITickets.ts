@@ -52,4 +52,5 @@ export type DeskSource = "sistemas" | "infraestructura" | "sst";
 export interface ITicketsWithSource extends ITickets {
     _source: DeskSource;
     locationDescription?: string;
+    userHeadquarters?: string;
 }

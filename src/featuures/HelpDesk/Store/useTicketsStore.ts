@@ -5,7 +5,7 @@ import { create } from "zustand";
 
 const ENDPOINT_SOURCE_MAP: Record<string, DeskSource> = {
     "/tickets-table": "sistemas",
-    "/infrastructure-tickets": "infraestructura",
+    "/infrastructure-tickets/table": "infraestructura",
     "/sst-tickets/table": "sst"
 };
 

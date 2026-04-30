@@ -218,7 +218,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: ticket,
             type: 'subcategory',
             path: '/gestion-tickets',
-            roles: [1, 17, 22, 23]
+            roles: [1, 17, 22, 23, 24, 25]
           },
           {
             id: 'my-tickets',
