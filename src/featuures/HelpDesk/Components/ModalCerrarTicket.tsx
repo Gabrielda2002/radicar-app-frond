@@ -17,12 +17,10 @@ import { getPriorityColor, getStatusColor } from "@/featuures/Permission/utils/g
 
 interface CerrarModalProps {
   ticket: ITicketsWithSource;
-  onTicketClosed?: () => void;
 }
 
 const CerrarModal: React.FC<CerrarModalProps> = ({
   ticket,
-  onTicketClosed,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -62,7 +60,7 @@ const CerrarModal: React.FC<CerrarModalProps> = ({
         values,
         () => {
           toast.success("Ticket actualizado correctamente");
-          onTicketClosed?.();
+          formik.resetForm();
           setShowModal(false);
         }
       );

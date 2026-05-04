@@ -2,7 +2,8 @@ import { IComment } from "@/models/IComment";
 import { api } from "@/utils/api-config";
 import { create } from "zustand";
 import { DeskSource } from "../types/ITickets";
-import { getCommentsEndpoint } from "../config/ConfigDesk";
+import { DESK_VIEW_CONFIG, getCommentsEndpoint } from "../config/ConfigDesk";
+import useTicketsStore from "./useTicketsStore";
 
 interface UseCommentStore {
     comments: IComment[];
@@ -21,17 +22,27 @@ const useCommentStore = create<UseCommentStore>((set) => ({
         try {
             set({ isLoading: true, error: null });
 
-            await api.post(endpoint, data);
+            const response = await api.post(endpoint, data);
 
-            onSuccess?.();
+            const ticketsStore = useTicketsStore.getState()
+            const fetchTickets = ticketsStore.fetchTickets
+
+            const endPoints = DESK_VIEW_CONFIG[localStorage.getItem("rol") ?? ""] ?? ["/tickets-table"];
+        
+            console.log('endpoints seleccionados', endPoints)
+
+            if (response.status === 201 || response.status === 200) {
+                await fetchTickets(endPoints);
+                onSuccess?.();
+            }
 
         } catch (error: any) {
-            if (error.response.status === 500) {
+            if (error?.response?.status === 500) {
                 set({ error: "Error del servidor. Por favor, inténtalo de nuevo más tarde." });
-            }else {
+            } else {
                 set({ error: error?.response?.data?.message || "Error al agregar el comentario" });
             }
-        }finally {
+        } finally {
             set({ isLoading: false });
         }
     },
@@ -50,7 +61,7 @@ const useCommentStore = create<UseCommentStore>((set) => ({
 
             set({ comments: data, error: null });
         } catch (error: any) {
-            if (error.response?.status === 404) {
+            if (error?.response?.status === 404) {
                 set({ error: "No se encontraron comentarios para este ticket", comments: [] });
             } else {
                 set({ error: "Error al obtener los comentarios del ticket. " + error });
