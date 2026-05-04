@@ -9,12 +9,19 @@ const ENDPOINT_SOURCE_MAP: Record<string, DeskSource> = {
     "/sst-tickets/table": "sst"
 };
 
+const ENDPOINT_USER_MAP: Record<string, string> = {
+    "/tickets-table": "/tickets/user",
+    "/infrastructure-tickets/table": "/infrastructure-tickets/user",
+    "/sst-tickets/table": "/sst-tickets/user"
+};
+
 interface UseTicketsStoreReturn {
     tickets: ITicketsWithSource[];
     error: string | null;
     isLoading: boolean;
     fetchTickets: (endpoints?: string[]) => Promise<void>;
     createTicket: (endpoint: string, data: Object, onSuccess?: () => void) => Promise<void>;
+    fetchUserTicketsByEndpoint: (endpoint: string, userId: number) => Promise<void>;
 }
 
 const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
@@ -33,7 +40,6 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
                     _source: ENDPOINT_SOURCE_MAP[endpoints[i]] ?? "sistemas",
                 }))
             );
-            console.log("Tickets combinados:", combined.filter(t => t._source === "sst"));
 
             set({ tickets: combined, error: null });
 
@@ -67,6 +73,33 @@ const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
                 set({ error: "Error del servidor. Por favor, inténtelo de nuevo más tarde." });
             } else {
                 set({ error: error.response?.data?.message || "Error desconocido. Por favor, inténtelo de nuevo." });
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    fetchUserTicketsByEndpoint: async (endpoint: string, userId: number) => {
+        try {
+            set({ isLoading: true, error: null });
+
+            const userEndpoint = ENDPOINT_USER_MAP[endpoint] + `/${userId}`;
+            const response = await api.get(userEndpoint);
+
+            const ticketsWithSource: ITicketsWithSource[] = response.data.map((ticket: ITickets) => ({
+                ...ticket,
+                _source: ENDPOINT_SOURCE_MAP[endpoint] ?? "sistemas",
+            }));
+
+            set({ tickets: ticketsWithSource, error: null });
+
+        } catch (error: any) {
+            if (error?.response?.status === 404) {
+                set({ tickets: [], error: null });
+            } else if (error?.response?.status === 500) {
+                set({ error: "Error del servidor. Por favor, inténtalo de nuevo más tarde." });
+            } else {
+                set({ error: error.response?.data?.message || "Error al cargar los tickets" });
             }
         } finally {
             set({ isLoading: false });
