@@ -114,13 +114,10 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
           submitText="Autorizar"
           size="full"
         >
-          <div
-            className="grid grid-cols-1 gap-4 md:grid-cols-[25%_73%] sm:grid-cols-[40%_60%] md:gap-6 p-4"
-          >
-            <div className="flex flex-col w-full md:w-full space-y-3">
-              <Input
+          <div className="flex flex-col gap-6 p-4">
+            <div className="w-full space-y-3">
+              <Textarea
                 id="justificacion"
-                type="text"
                 name="justificacion"
                 label="Justificación:"
                 onChange={formik.handleChange}
@@ -129,6 +126,7 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
                 error={formik.errors.justificacion}
                 touched={formik.touched.justificacion}
                 placeholder="Justificación"
+                required
               />
               <AnimatePresence>
                 {authorizeError && (
@@ -141,32 +139,42 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
               </AnimatePresence>
             </div>
 
-            <div className="grid w-full grid-cols-1 gap-3 mt-5 md:mt-0 md:flex sm:grid-cols-1">
-              {/* CUPS Details */}
+            <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
               {formik.values.cupsDetails.map((detalle, index) => (
                 <div
                   key={index}
-                  className="w-full p-3 space-y-3 bg-gray-100 border border-gray-700 rounded-md shadow-md dark:bg-gray-900"
+                  className="flex flex-col border-l-4 border-blue-500 bg-gray-100 border rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700 overflow-hidden"
                 >
-                  <Input
-                    id={`cupsDetails[${index}].codigoCups`}
-                    type="text"
-                    label="Código CUPS:"
-                    value={detalle.code}
-                    readOnly
-                    placeholder="Código CUPS"
-                  />
+                  <div className="flex items-center justify-between gap-3 px-4 py-3 bg-blue-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase rounded bg-blue-600 text-white shrink-0">
+                        CUPS
+                      </span>
+                      <span className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">
+                        {detalle.code}
+                      </span>
+                    </div>
+                    <div className="shrink-0 flex items-center gap-1.5">
+                      <label className="text-xs font-medium text-gray-500 dark:text-gray-400" htmlFor={`cupsDetails[${index}].quantity`}>
+                        Cantidad:
+                      </label>
+                      <input
+                        id={`cupsDetails[${index}].quantity`}
+                        type="number"
+                        name={`cupsDetails[${index}].quantity`}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.cupsDetails[index].quantity}
+                        className="w-16 px-2 py-1 text-sm text-center border-2 border-gray-200 rounded bg-transparent focus:outline-none focus:ring-2 focus:ring-color2 dark:border-gray-600 dark:text-white"
+                      />
+                    </div>
+                  </div>
 
-                    <Textarea
-                      label="Descripción CUPS:"
-                      id={`cupsDetails[${index}].descripcionCups`}
-                      value={detalle.description} // Muestra la descripción CUPS correspondiente
-                      readOnly
-                      className="w-full p-1 text-sm bg-transparent border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                      rows={3}
-                      placeholder="Descripción CUPS"
-                    />
+                  <p className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 line-clamp-2" title={detalle.description}>
+                    {detalle.description}
+                  </p>
 
+                  <div className="flex flex-col gap-3 p-4">
                     <Input
                       id={`cupsDetails[${index}].observation`}
                       type="text"
@@ -188,79 +196,61 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
                       touched={
                         formik.touched.cupsDetails?.[index]?.observation
                       }
-                      placeholder="Observación CUPS"
+                      placeholder={`Observación para ${detalle.code}`}
                     />
 
-                    <Select
-                      id={`cupsDetails[${index}].funtionalUnit`}
-                      name={`cupsDetails[${index}].funtionalUnit`}
-                      label="Unidad Funcional:"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].funtionalUnit}
-                      options={units.map((unidad) => ({
-                        value: unidad.id,
-                        label: unidad.name,
-                      }))}
-                      error={
-                        formik.touched.cupsDetails?.[index]?.funtionalUnit &&
-                          formik.errors.cupsDetails &&
-                          typeof formik.errors.cupsDetails !== "string" &&
-                          (formik.errors.cupsDetails as Array<FormikErrors>)[
-                            index
-                          ]?.funtionalUnit
-                          ? "Requerido."
-                          : undefined
-                      }
-                      touched={
-                        formik.touched.cupsDetails?.[index]?.funtionalUnit
-                      }
-                    />
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <Select
+                        id={`cupsDetails[${index}].funtionalUnit`}
+                        name={`cupsDetails[${index}].funtionalUnit`}
+                        label="Unidad Funcional:"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.cupsDetails[index].funtionalUnit}
+                        options={units.map((unidad) => ({
+                          value: unidad.id,
+                          label: unidad.name,
+                        }))}
+                        error={
+                          formik.touched.cupsDetails?.[index]?.funtionalUnit &&
+                            formik.errors.cupsDetails &&
+                            typeof formik.errors.cupsDetails !== "string" &&
+                            (formik.errors.cupsDetails as Array<FormikErrors>)[
+                              index
+                            ]?.funtionalUnit
+                            ? "Requerido."
+                            : undefined
+                        }
+                        touched={
+                          formik.touched.cupsDetails?.[index]?.funtionalUnit
+                        }
+                      />
 
-                    <Select
-                      id={`cupsDetails[${index}].status`}
-                      name={`cupsDetails[${index}].status`}
-                      label="Estado CUPS:"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].status}
-                      options={status.map((s) => ({
-                        value: s.id,
-                        label: s.name,
-                      }))}
-                      error={
-                        formik.touched.cupsDetails?.[index]?.status &&
-                          formik.errors.cupsDetails &&
-                          typeof formik.errors.cupsDetails !== "string" &&
-                          (formik.errors.cupsDetails as Array<FormikErrors>)[
-                            index
-                          ]?.status
-                          ? "Requerido."
-                          : undefined
-                      }
-                      touched={formik.touched.cupsDetails?.[index]?.status}
-                    />
-
-                    <Input
-                      id={`cupsDetails[${index}].quantity`}
-                      type="number"
-                      name={`cupsDetails[${index}].quantity`}
-                      label="Cantidad:"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.cupsDetails[index].quantity}
-                      error={
-                        formik.touched.cupsDetails?.[index]?.quantity &&
-                          formik.errors.cupsDetails &&
-                          typeof formik.errors.cupsDetails !== "string" &&
-                          (formik.errors.cupsDetails as Array<FormikErrors>)[
-                            index
-                          ]?.quantity
-                          ? "Requerido."
-                          : undefined
-                      }
-                      touched={formik.touched.cupsDetails?.[index]?.quantity}
-                    />
+                      <Select
+                        id={`cupsDetails[${index}].status`}
+                        name={`cupsDetails[${index}].status`}
+                        label="Estado CUPS:"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.cupsDetails[index].status}
+                        options={status.map((s) => ({
+                          value: s.id,
+                          label: s.name,
+                        }))}
+                        error={
+                          formik.touched.cupsDetails?.[index]?.status &&
+                            formik.errors.cupsDetails &&
+                            typeof formik.errors.cupsDetails !== "string" &&
+                            (formik.errors.cupsDetails as Array<FormikErrors>)[
+                              index
+                            ]?.status
+                            ? "Requerido."
+                            : undefined
+                        }
+                        touched={formik.touched.cupsDetails?.[index]?.status}
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

@@ -26,12 +26,15 @@ import { useLazyFetchConvenio } from "@/hooks/useLazyFetchConvenio";
 import Select from "@/components/common/Ui/Select";
 import { toast } from "react-toastify";
 import { useStoreRadicacion } from "../store/useStoreRadicacion";
+import { useLazyFetchIpsPrimary } from "@/hooks/useLazyFetchIpsPrimary";
 
 const ModalRadicacion = () => {
   const [stadopen, setStadopen] = useState(false);
   const navigate = useNavigate();
 
   const { data, error: errorDataPatient, getData } = useFetchPatient();
+
+  const { dataIpsPrimaria, fetchIpsPrimaria } = useLazyFetchIpsPrimary();
 
   const {
     createRadicacion,
@@ -43,7 +46,7 @@ const ModalRadicacion = () => {
 
   const handleOpenModal = async () => {
     setStadopen(true);
-    await Promise.all([fetchConvenios()]);
+    await Promise.all([fetchConvenios(), fetchIpsPrimaria()]);
   }
 
   const { diagnostico, loading, errorDiagnostico, fetchDiagnostico } =
@@ -105,12 +108,14 @@ const ModalRadicacion = () => {
         quantity: Yup.string().required("Cantidad CUPS requerida"),
         id: Yup.string().required("ID CUPS requerido"),
       })
-    )
+    ),
+    ipsPrimary: Yup.string().required("Campo requerido"),
   });
 
   const formik = useFormik({
     initialValues: {
       agreement: "",
+      ipsPrimary: "",
       landline: "",
       phoneNumber: "",
       phoneNumber2: "",
@@ -182,6 +187,7 @@ const ModalRadicacion = () => {
       formik.setFieldValue("email", data.email);
       formik.setFieldValue("agreement", data.agreementId);
       formik.setFieldValue("patientId", data.id.toString());
+      formik.setFieldValue("ipsPrimary", data.ipsPrimaryId);
     }
   }, [data]);
 
@@ -333,11 +339,16 @@ const ModalRadicacion = () => {
                     error={formik.errors.agreement}
                     required
                   />
-                  <Input
-                    type="text"
-                    value={data.ipsPrimariaRelation.name}
+                  <Select
+                    options={dataIpsPrimaria.map(ips => ({ value: ips.id, label: ips.name }))}
+                    value={formik.values.ipsPrimary}
                     label="IPS Primaria"
-                    disabled={true}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="ipsPrimary"
+                    touched={formik.touched.ipsPrimary}
+                    error={formik.errors.ipsPrimary}
+                    required
                   />
                 </>
               )}

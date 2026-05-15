@@ -77,7 +77,6 @@ const TablaRadicacion = () => {
       key: "description",
       header: "Descripción",
       render: (item: Cup) => (
-
         <span
           className="block max-w-50 truncate cursor-pointer"
           title={item.description}
