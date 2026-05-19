@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { useNotification } from "@/context/notificationContext.tsx";
 import ModalServey from "@/featuures/HelpDesk/Components/ModalServey";
-import ModalCommetsTicket from "@/featuures/HelpDesk/Components/ModalCommetsTicket";
 import { Check } from "lucide-react";
 import { useAuth } from "@/context/authContext";
 import { FormatDate } from "@/utils/FormatDate";
@@ -159,15 +158,6 @@ const NotificationBell: React.FC = () => {
                         notification.referenceType || ""
                       ) && (
                         <>
-                          <div className="flex items-center">
-                            <ModalCommetsTicket
-                              idTicket={
-                                notification.referenceId
-                                  ? notification.referenceId
-                                  : 0
-                              }
-                            />
-                          </div>
                           <div className="flex items-center w-fit">
                             <ModalServey
                               idTicket={
