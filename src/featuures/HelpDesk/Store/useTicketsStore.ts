@@ -9,11 +9,23 @@ const ENDPOINT_SOURCE_MAP: Record<string, DeskSource> = {
     "/sst-tickets/table": "sst"
 };
 
+const SOURCE_ENDPOINT_MAP: Record<DeskSource, string> = {
+    "sistemas": "/tickets-table",
+    "infraestructura": "/infrastructure-tickets/table",
+    "sst": "/sst-tickets/table"
+};
+
 const ENDPOINT_USER_MAP: Record<string, string> = {
     "/tickets-table": "/tickets/user",
     "/infrastructure-tickets/table": "/infrastructure-tickets/user",
     "/sst-tickets/table": "/sst-tickets/user"
 };
+
+interface DeskState {
+    tickets: ITicketsWithSource[];
+    error: string | null;
+    isLoading: boolean;
+}
 
 interface UseTicketsStoreReturn {
     tickets: ITicketsWithSource[];
@@ -22,12 +34,77 @@ interface UseTicketsStoreReturn {
     fetchTickets: (endpoints?: string[]) => Promise<void>;
     createTicket: (endpoint: string, data: Object, onSuccess?: () => void) => Promise<void>;
     fetchUserTicketsByEndpoint: (endpoint: string, userId: number) => Promise<void>;
+    deskState: Record<DeskSource, DeskState>;
+    fetchDeskTickets: (source: DeskSource) => Promise<void>;
 }
+
+const initialDeskState: Record<DeskSource, DeskState> = {
+    sistemas: { tickets: [], error: null, isLoading: false },
+    infraestructura: { tickets: [], error: null, isLoading: false },
+    sst: { tickets: [], error: null, isLoading: false },
+};
 
 const useTicketsStore = create<UseTicketsStoreReturn>((set) => ({
     tickets: [],
     error: null,
     isLoading: false,
+    deskState: initialDeskState,
+
+    fetchDeskTickets: async (source: DeskSource) => {
+        const endpoint = SOURCE_ENDPOINT_MAP[source];
+        set((state) => ({
+            deskState: {
+                ...state.deskState,
+                [source]: { ...state.deskState[source], isLoading: true, error: null },
+            },
+        }));
+
+        try {
+            const response = await api.get(endpoint);
+            const ticketsWithSource: ITicketsWithSource[] = response.data.map((ticket: ITickets) => ({
+                ...ticket,
+                _source: source,
+            }));
+
+            set((state) => ({
+                deskState: {
+                    ...state.deskState,
+                    [source]: { tickets: ticketsWithSource, error: null, isLoading: false },
+                },
+            }));
+        } catch (error: any) {
+            if (error?.response?.status === 404) {
+                set((state) => ({
+                    deskState: {
+                        ...state.deskState,
+                        [source]: { tickets: [], error: null, isLoading: false },
+                    },
+                }));
+            } else if (error?.response?.status === 500) {
+                set((state) => ({
+                    deskState: {
+                        ...state.deskState,
+                        [source]: {
+                            tickets: [],
+                            error: "Error del servidor. Por favor, inténtalo de nuevo más tarde.",
+                            isLoading: false,
+                        },
+                    },
+                }));
+            } else {
+                set((state) => ({
+                    deskState: {
+                        ...state.deskState,
+                        [source]: {
+                            tickets: [],
+                            error: error.response?.data?.message || "Error al cargar los tickets",
+                            isLoading: false,
+                        },
+                    },
+                }));
+            }
+        }
+    },
 
     fetchTickets: async (endpoints = ["/tickets-table"]) => {
         try {

@@ -1,9 +1,9 @@
 //*Funciones y Hooks
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage.tsx";
-import { type ITicketsWithSource } from "../types/ITickets";
+import { type ITicketsWithSource, type DeskSource } from "../types/ITickets";
 import CerrarModal from "../Components/ModalCerrarTicket";
 import ModalCommetsTicket from "../Components/ModalCommetsTicket";
 import {
@@ -22,6 +22,17 @@ import { Paperclip } from "lucide-react";
 import { useAuth } from "@/context/authContext";
 import { ATTACHMENT_BUCKET, DESK_VIEW_CONFIG } from "../config/ConfigDesk";
 import Tabs, { type TabItem } from "@/components/common/Ui/Tabs";
+
+const DESK_SOURCE_MAP: Record<string, DeskSource> = {
+  "/tickets-table": "sistemas",
+  "/infrastructure-tickets/table": "infraestructura",
+  "/sst-tickets/table": "sst"
+};
+
+function getDesksForRole(rol: string | null | undefined): DeskSource[] {
+  const endpoints = DESK_VIEW_CONFIG[rol ?? ""] ?? ["/tickets-table"];
+  return endpoints.map((ep) => DESK_SOURCE_MAP[ep] ?? "sistemas");
+}
 
 /** Configuración de filtros para la tabla de tickets */
 const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
@@ -76,54 +87,38 @@ const TICKET_FILTER_CONFIG: FilterFieldConfig[] = [
 
 const ProcessHelpDesk = () => {
 
-  const { tickets, fetchTickets, error, isLoading } = useTicketsStore();
-
+  const [activeDesk, setActiveDesk] = useState<DeskSource>("sistemas");
+  const { deskState, fetchDeskTickets } = useTicketsStore();
   const { rol } = useAuth();
 
+  const allowedDesks = useMemo(() => getDesksForRole(rol), [rol]);
+  const isMultiDesk = allowedDesks.length > 1;
+
   useEffect(() => {
-    const endpoints = DESK_VIEW_CONFIG[rol ?? ""] ?? ["/tickets-table"];
-    fetchTickets(endpoints);
-  }, [rol]);
+    if (!allowedDesks.includes(activeDesk)) {
+      setActiveDesk(allowedDesks[0] ?? "sistemas");
+    }
+  }, [allowedDesks]);
+
+  useEffect(() => {
+    if (allowedDesks.includes(activeDesk)) {
+      fetchDeskTickets(activeDesk);
+    }
+  }, [activeDesk, fetchDeskTickets]);
 
   const { downloadSecureFile } = useSecureFileAccess();
 
-  const isMultiDesk = (DESK_VIEW_CONFIG[rol ?? ""] ?? []).length > 1;
-
-  const sistemasTickets = tickets.filter((t) => t._source === "sistemas");
-  const infraTickets = tickets.filter((t) => t._source === "infraestructura");
-  const sstTickets = tickets.filter((t) => t._source === "sst");
+  const currentDeskState = deskState[activeDesk] ?? { tickets: [], error: null, isLoading: false };
+  const currentTickets = currentDeskState.tickets;
 
   const SEARCH_FIELDS: (keyof ITicketsWithSource)[] = ["id", "title", "description", "nameRequester", "lastNameRequester", "category", "priority", "status"];
 
-  const sistemasTableState = useTableState({
-    data: sistemasTickets,
+  const tableState = useTableState({
+    data: currentTickets,
     searchFields: SEARCH_FIELDS,
     initialItemsPerPage: 10,
     filterConfig: TICKET_FILTER_CONFIG,
   });
-
-  const infraTableState = useTableState({
-    data: infraTickets,
-    searchFields: SEARCH_FIELDS,
-    initialItemsPerPage: 10,
-    filterConfig: TICKET_FILTER_CONFIG,
-  });
-
-  const sstTableState = useTableState({
-    data: sstTickets,
-    searchFields: SEARCH_FIELDS,
-    initialItemsPerPage: 10,
-    filterConfig: TICKET_FILTER_CONFIG,
-  });
-
-  const firstEndpoint = DESK_VIEW_CONFIG[rol ?? ""]?.[0] ?? "/tickets-table";
-
-  const singleTableState =
-    firstEndpoint === "/tickets-table"
-      ? sistemasTableState
-      : firstEndpoint === "/infrastructure-tickets"
-      ? infraTableState
-      : sstTableState;
 
   const columns = [
     {
@@ -259,44 +254,36 @@ const ProcessHelpDesk = () => {
     },
   ]
 
-  const renderTable = (state: typeof sistemasTableState) => (
+  const renderTable = () => (
     <DataTableContainer
-      searchValue={state.searchQuery}
-      onSearchChange={state.setSearchQuery}
-      itemsPerPage={state.itemsPerPage}
-      onItemsPerPageChange={state.setItemsPerPage}
-      currentPage={state.currentPage}
-      totalPages={state.totalPages}
-      onPageChange={state.paginate}
-      filterState={state.filterState}
+      searchValue={tableState.searchQuery}
+      onSearchChange={tableState.setSearchQuery}
+      itemsPerPage={tableState.itemsPerPage}
+      onItemsPerPageChange={tableState.setItemsPerPage}
+      currentPage={tableState.currentPage}
+      totalPages={tableState.totalPages}
+      onPageChange={tableState.paginate}
+      filterState={tableState.filterState}
     >
       <DataTable
-        data={state.currentData()}
+        data={tableState.currentData()}
         columns={columns}
         getRowKey={(item) => item.id.toString()}
-        loading={isLoading}
-        error={error}
+        loading={currentDeskState.isLoading}
+        error={currentDeskState.error}
       />
     </DataTableContainer>
   );
 
-  const tabs: TabItem[] = [
-    {
-      id: "sistemas",
-      label: "Sistemas",
-      content: renderTable(sistemasTableState),
-    },
-    {
-      id: "infraestructura",
-      label: "Infraestructura",
-      content: renderTable(infraTableState),
-    },
-    {
-      id: "sst",
-      label: "SST",
-      content: renderTable(sstTableState),
-    }
-  ];
+  const handleTabChange = (tabId: string) => {
+    setActiveDesk(tabId as DeskSource);
+  };
+
+  const tabs: TabItem[] = allowedDesks.map((desk) => ({
+    id: desk,
+    label: desk.charAt(0).toUpperCase() + desk.slice(1),
+    content: renderTable(),
+  }));
 
   return (
     <>
@@ -308,9 +295,9 @@ const ProcessHelpDesk = () => {
         ]}
       />
       {isMultiDesk ? (
-        <Tabs tabs={tabs} variant="underline" />
+        <Tabs tabs={tabs} variant="underline" onChange={handleTabChange} />
       ) : (
-        renderTable(singleTableState)
+        renderTable()
       )}
     </>
   );
