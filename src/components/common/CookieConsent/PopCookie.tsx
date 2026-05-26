@@ -10,7 +10,7 @@ const CookieConsent: React.FC = () => {
   });
 
   const handleAccept = () => {
-    Cookies.set("cookieConsent", "true", { expires: 30 }); // Cookie expira en 30 días
+    Cookies.set("cookieConsent", "true", { expires: 30, secure: true, sameSite: "Strict" });
     setConsent(true);
   };
 

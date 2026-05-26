@@ -12,7 +12,7 @@ interface ModalMostrarDatosProps {
 
 const infoRow = (label: string, value: React.ReactNode) => (
   <tr>
-    <td className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-300 dark:bg-gray-600 whitespace-nowrap">
+    <td className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-300 dark:bg-gray-600 dark:text-gray-300 whitespace-nowrap">
       {label}
     </td>
     <td className="px-3 py-2 text-sm text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-800">

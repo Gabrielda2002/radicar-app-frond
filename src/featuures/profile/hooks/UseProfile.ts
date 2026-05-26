@@ -37,7 +37,7 @@ export const usePerfil = () => {
         ? `${baseUrl}/${userData.photo}`
         : "/assets/icon-user.svg";
       // Guardar la imagen actual del usuario en cookies
-      Cookies.set(`profileImage_${userData.id}`, userData.photo || "");
+      Cookies.set(`profileImage_${userData.id}`, userData.photo || "", { expires: 30, secure: true, sameSite: "Lax" });
     }
   }, []);
 
@@ -64,7 +64,7 @@ export const usePerfil = () => {
         const updatedPhoto = response.data.photo;
         setProfile({ ...profile, photo: updatedPhoto });
 
-        Cookies.set(`profileImage_${profile.id}`, updatedPhoto);
+        Cookies.set(`profileImage_${profile.id}`, updatedPhoto, { expires: 30, secure: true, sameSite: "Lax" });
         const updatedData = { ...profile, photo: updatedPhoto };
         localStorage.setItem("user", JSON.stringify(updatedData));
       } catch (error) {

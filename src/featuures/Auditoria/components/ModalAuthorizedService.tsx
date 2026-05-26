@@ -17,7 +17,6 @@ import FormModal from "@/components/common/Ui/FormModal";
 import { BookCheck } from "lucide-react";
 import { useStoreFuntionalUnit } from "@/store/useStoreFuntionalUnit";
 import { useStoreServicesStatus } from "@/store/useStoreServicesStatus";
-import Textarea from "@/components/common/Ui/Textarea";
 
 interface ModalAuthorizedServiceProps {
   cups: auditCups[];
@@ -116,7 +115,11 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
         >
           <div className="flex flex-col gap-6 p-4">
             <div className="w-full space-y-3">
-              <Textarea
+              <Select
+              options={[
+                { value: "Contratado PFGP", label: "Contratado PFGP" },
+                { value: "Otro", label: "Otro" },
+              ]}
                 id="justificacion"
                 name="justificacion"
                 label="Justificación:"
@@ -125,7 +128,6 @@ const ModalAuthorizedServices: React.FC<ModalAuthorizedServiceProps> = ({ cups, 
                 value={formik.values.justificacion}
                 error={formik.errors.justificacion}
                 touched={formik.touched.justificacion}
-                placeholder="Justificación"
                 required
               />
               <AnimatePresence>

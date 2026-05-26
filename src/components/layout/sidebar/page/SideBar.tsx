@@ -28,7 +28,7 @@ const SideBar
 
   // Save sidebar state to cookies
   useEffect(() => {
-    Cookies.set('sidebarState', isCollapsed ? 'collapsed' : 'expanded');
+    Cookies.set('sidebarState', isCollapsed ? 'collapsed' : 'expanded', { expires: 365, secure: true, sameSite: "Lax" });
   }, [isCollapsed]);
 
   // Close sidebar when clicking outside

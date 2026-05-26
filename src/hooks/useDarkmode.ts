@@ -10,7 +10,7 @@ const useDarkMode = () => {
   const toggleTheme = () => {
     setTheme((prevTheme) => {
       const newTheme = prevTheme === "light" ? "dark" : "light";
-      Cookies.set("theme", newTheme, { expires: 7 }); // Guarda el tema en una cookie con una duración de 7 días
+      Cookies.set("theme", newTheme, { expires: 365, secure: true, sameSite: "Lax" });
       return newTheme;
     });
   };
