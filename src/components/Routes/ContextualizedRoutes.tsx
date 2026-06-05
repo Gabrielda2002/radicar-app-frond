@@ -99,11 +99,11 @@ const ContextualizedRoutes: React.FC = () => {
           path="/tabla-registros-auditados"
           element={<TablaRegistrosAuditados />}
         />
-        <Route path="/SistemGestionCalidad" element={<FileManager />} />
+        <Route path="/gestion-calidad" element={<FileManager />} />
         <Route path="/carta-recobro" element={<RecoverLetterPage />} />
         <Route path="/auditoria" element={<RecoverLastPage />} />
-        <Route path="/SistemaInventario" element={<SistemaInventario />} />
-        <Route path="/RegistroUsuarios" element={<RegistroUsuarios />} />
+        <Route path="/inventario" element={<SistemaInventario />} />
+        <Route path="/create-user" element={<RegistroUsuarios />} />
         <Route path="/demanda/inducida" element={<DemandInduce />}/>
         <Route path="/area" element={<Area />} />
         <Route path="/cargo" element={<Position />} />

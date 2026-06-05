@@ -55,7 +55,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             id: 'quality-ns',
             title: 'Documentación y Servicios',
             icon: FaRegFolder,
-            path: '/SistemGestionCalidad',
+            path: '/gestion-calidad',
             type: 'subcategory'
           }
         ]
@@ -71,7 +71,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             id: 'inventory-general',
             title: 'Inventario General',
             icon: Box,
-            path: '/SistemaInventario',
+            path: '/inventario',
             type: 'subcategory'
           }
         ]
@@ -144,7 +144,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             id: 'biometric-users',
             title: 'Biométricos Usuarios',
             icon: user,
-            path: '/RegistroUsuarios',
+            path: '/create-user',
             type: 'subcategory',
             roles: [1, 18, 2]
           },
@@ -351,7 +351,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             id: 'areas',
             title: 'Areas',
             icon: report,
-            path: '/Area',
+            path: '/area',
             type: 'subcategory',
             roles: [1]
           },
