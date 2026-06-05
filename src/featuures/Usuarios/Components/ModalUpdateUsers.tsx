@@ -21,6 +21,7 @@ import { useUsersMutations } from "../Hooks/useUsersMutations";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
 import { AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/authContext";
+import { SquarePen } from "lucide-react";
 
 interface ModalActionUsuarioProps {
   id: number;
@@ -167,7 +168,7 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
   return (
     <>
       <Button type="button" onClick={handleOpenModal} variant="outline">
-        Actualizar
+        <SquarePen className="w-4 h-4"/>
       </Button>
       <FormModal
         isOpen={isOpen}

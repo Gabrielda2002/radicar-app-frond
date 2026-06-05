@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
 import { toast } from "react-toastify"; // Asegúrate de tener react-toastify instalado
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
+import Input from "@/components/common/Ui/Input";
+import Button from "@/components/common/Ui/Button";
+import { AnimatePresence } from "framer-motion";
 
 const Login: React.FC = () => {
   const [dniNumber, setDniNumber] = useState("");
@@ -37,7 +40,7 @@ const Login: React.FC = () => {
 
       // Verificar si hay una ruta guardada para redireccionar
       const redirectPath = sessionStorage.getItem('redirectPath');
-      
+
       if (redirectPath) {
         // Si había una ruta guardada, ir ahí
         sessionStorage.removeItem('redirectPath');
@@ -49,7 +52,7 @@ const Login: React.FC = () => {
 
     } catch (error: any) {
       console.error("Error en login:", error);
-      
+
       // Manejo específico de errores
       if (error.response?.status === 401) {
         const errorMessage = error.response?.data?.message || "Credenciales incorrectas";
@@ -79,9 +82,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-slate-400 dark:bg-gray-800">
+    <div className="w-full bg-gray-200 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-600 dark:border-gray-400">
+        <div className="w-full bg-gray-300 rounded-lg shadow-lg shadow-gray-500/50 sm:max-w-md xl:p-0 dark:bg-gray-900">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div className="">
               <div className="flex justify-center mb-6">
@@ -99,28 +102,26 @@ const Login: React.FC = () => {
                 Accede a tu cuenta para continuar
               </p>
             </div>
-            
+
             {/* Mostrar error si existe */}
-            {error && (
-              <div className="p-3 text-sm text-red-700 bg-red-100 border border-red-300 rounded-lg dark:bg-red-900 dark:text-red-300 dark:border-red-600">
-                {error}
-              </div>
-            )}
-            
+            <AnimatePresence>
+              {error && (
+                <div>
+                  <div className="p-4 text-white bg-red-800 rounded-lg">
+                    {error}
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
+
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor="number-document"
-                  className="block mb-2 text-base font-medium text-zinc-600 dark:text-white"
-                >
-                  Número de Documento:
-                </label>
-                <input
+                <Input
+                  label="Número de Documento"
                   type="text"
                   name="dniNumber"
                   value={dniNumber}
                   onChange={(e) => setDniNumber(e.target.value)}
-                  className="bg-gray-300 dark:bg-gray-800 border border-gray-300 text-gray-600 rounded-lg focus:ring-primary-800 focus:border-primary-600 block w-full p-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Ingresa tú documento"
                   id="number-document"
                   required
@@ -128,13 +129,8 @@ const Login: React.FC = () => {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-base font-medium text-zinc-600 dark:text-white"
-                >
-                  Contraseña:
-                </label>
-                <input
+                <Input
+                  label="Contraseña"
                   type="password"
                   name="password"
                   value={password}
@@ -147,38 +143,15 @@ const Login: React.FC = () => {
                 />
               </div>
               <div>
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading || !dniNumber || !password}
-                  className="w-full text-white bg-color hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:-translate-y-1 hover:scale-100 hover:bg-emerald-900 duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-color"
+                  className=""
+                  variant="primary"
+                  isLoading={isLoading}
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <svg 
-                        className="w-5 h-5 mr-3 animate-spin" 
-                        viewBox="0 0 24 24"
-                      >
-                        <circle 
-                          className="opacity-25" 
-                          cx="12" 
-                          cy="12" 
-                          r="10" 
-                          stroke="currentColor" 
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <path 
-                          className="opacity-75" 
-                          fill="currentColor" 
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
-                      Iniciando sesión...
-                    </div>
-                  ) : (
-                    "Iniciar Sesión"
-                  )}
-                </button>
+                  {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+                </Button>
               </div>
             </form>
           </div>

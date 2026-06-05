@@ -116,7 +116,6 @@
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
   @apply dark:border-gray-600 dark:bg-gray-800;
 }
-wa
 /* ? mensaje agenda vacia*/
 .rbc-agenda-empty {
   @apply dark:text-white text-center;

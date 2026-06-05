@@ -33,41 +33,49 @@ const Usuarios = () => {
     {
       key: "id",
       header: "ID",
+      size: 'xs' as const,
       accessor: (item: IUsuarios) => item.id,
     },
     {
       key: "dniNumber",
       header: "N.º Documento",
+      size: 'sm' as const,
       accessor: (item: IUsuarios) => item.dniNumber,
     },
     {
       key: "documento",
       header: "Tipo Documento",
+      size: 'xs' as const,
       accessor: (item: IUsuarios) => item.documento,
     },
     {
       key: "name",
       header: "Nombres",
+      size: 'md' as const,
       accessor: (item: IUsuarios) => item.name,
     },
     {
       key: "lastName",
       header: "Apellidos",
+      size: 'md' as const,
       accessor: (item: IUsuarios) => item.lastName,
     },
     {
       key: "municipio",
       header: "Municipio",
+      size: 'xs' as const,
       accessor: (item: IUsuarios) => item.municipio,
     },
     {
       key: "email",
       header: "Mail",
+      size: 'md' as const,
       accessor: (item: IUsuarios) => item.email,
     },
     {
       key: "status",
       header: "Estado",
+      size: 'xs' as const,
       render: (item: IUsuarios) => (
         <span className={item.status ? "text-green-500 dark:text-green-600" : "text-red-500 dark:text-red-600"}>{item.status ? "Activo" : "Inactivo"}</span>
       ),
@@ -75,6 +83,7 @@ const Usuarios = () => {
     {
       key: "roles",
       header: "Rol",
+      size: 'xs' as const,
       accessor: (item: IUsuarios) => item.roles,
     },
   ]
