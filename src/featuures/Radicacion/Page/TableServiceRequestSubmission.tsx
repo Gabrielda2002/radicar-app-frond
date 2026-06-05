@@ -11,7 +11,7 @@ const ModalGestionAuxiliar = lazy(
     )
 );
 const ModalMostrarDatos = lazy(
-  () => import("@/components/common/Modals/ShowData/ModalDatosRadicacion.tsx")
+  () => import("@/components/common/Modals/ShowData/ShowMoreData.tsx")
 );
 const ModalRadicacion = lazy(() => import("../Components/ModalRadicacion.tsx"));
 

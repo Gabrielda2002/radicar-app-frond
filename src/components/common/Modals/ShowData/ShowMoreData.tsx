@@ -4,7 +4,7 @@ import { FormatDate } from "@/utils/FormatDate";
 import ModalDefault from "../../Ui/ModalDefault";
 import { getColorStatus } from "@/featuures/Radicacion/utils/getColorStatus";
 
-interface ModalMostrarDatosProps {
+interface ShowMoreDataProps {
   isOpen: boolean;
   onClose: () => void;
   radicacion: IRadicados | null;
@@ -21,7 +21,7 @@ const infoRow = (label: string, value: React.ReactNode) => (
   </tr>
 );
 
-const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
+const ShowMoreData: React.FC<ShowMoreDataProps> = ({
   isOpen,
   onClose,
   radicacion,
@@ -224,4 +224,4 @@ const ModalMostrarDatos: React.FC<ModalMostrarDatosProps> = ({
   );
 };
 
-export default ModalMostrarDatos;
+export default ShowMoreData;
