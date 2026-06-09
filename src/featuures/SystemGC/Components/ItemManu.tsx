@@ -8,8 +8,15 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMoveItems from "./ModalMoveItems";
-import { Move } from "lucide-react";
+import { Download, Move } from "lucide-react";
 
+type ItemOption = {
+    id: string;
+    name: string;
+    icon: React.ComponentType<{ className?: string }>;
+    onClick: () => void;
+    disabled?: boolean;
+  }[]
 interface ItemManuProps {
   onDelete: () => void;
   itemName: string;
@@ -31,7 +38,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
   itemId,
   nameItemOld,
 }) => {
-  const { section, path } = useFileManagerStore();
+  const { section, path, downloadFolderAsZip, isDownloading } = useFileManagerStore();
   const currentFolderId = path[path.length - 1].id;
 
   const [stadOpenRename, setStadOpenRename] = useState(false);
@@ -63,7 +70,7 @@ const ItemManu: React.FC<ItemManuProps> = ({
     stadOffDelete();
   };
 
-  const itemsOptions = [
+  const itemsOptions: ItemOption = [
     {
       id: "delete",
       name: "Eliminar",
@@ -81,6 +88,20 @@ const ItemManu: React.FC<ItemManuProps> = ({
       name: "Mover",
       icon: Move,
       onClick: handleModalOpenMove,
+    },
+    {
+      id: "download",
+      name: isDownloading ? "Descargando..." : "Descargar",
+      icon: Download,
+      disabled: isDownloading,
+      onClick: () => {
+        if (itemType === "carpetas") {
+          downloadFolderAsZip(Number(itemId), itemName);
+        } else {
+          // Lógica para descargar archivos individuales, si es necesario
+          alert("Funcionalidad de descarga de archivos individuales no implementada.");
+        }
+      }
     }
   ]
 
@@ -106,8 +127,9 @@ const ItemManu: React.FC<ItemManuProps> = ({
               <MenuItem key={op.id}>
                 <div className="flex text-sm text-gray-700 data-focus:bg-blue-100 data-focus:text-gray-900 w-full text-left dark:text-gray-100 dark:data-focus:bg-gray-600">
                   <button
-                    className="flex cursor-pointer justify-between items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-blue-100 data-focus:text-gray-900 w-full text-left dark:text-gray-100 dark:data-focus:bg-gray-600"
+                    className="flex cursor-pointer justify-between items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-blue-100 data-focus:text-gray-900 w-full text-left dark:text-gray-100 dark:data-focus:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={op.onClick}
+                    disabled={op.disabled}
                   >
                     {op.name}
                     <op.icon className="w-6 h-6 dark:text-white" />
@@ -134,11 +156,11 @@ const ItemManu: React.FC<ItemManuProps> = ({
           {/* Mensaje confirmacion DELETE */}
           {
             <ConfirmDeletePopupProps
-              isOpen={stadOpenDelete} //condicion true
-              onClose={stadOffDelete} //cerrar modal
-              onConfirm={confirmDeleteItem} //eliminacion acertiva y cerrar el modal
+              isOpen={stadOpenDelete}
+              onClose={stadOffDelete}
+              onConfirm={confirmDeleteItem}
               itemName={itemName}
-            ></ConfirmDeletePopupProps> // pasar prop "cambio de nombre y clases"
+            ></ConfirmDeletePopupProps>
           }
           {stadOpenMove && (
             <ModalMoveItems

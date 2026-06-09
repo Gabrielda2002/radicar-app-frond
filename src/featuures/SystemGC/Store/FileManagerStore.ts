@@ -10,6 +10,7 @@ interface FileManagerState {
     contents: FolderContents | null;
     contentsError: string | null;
     isLoading: boolean;
+    isDownloading: boolean;
     error: string | null;
     section: string | null;
     modalContents: FolderContents | null;
@@ -26,6 +27,7 @@ interface FileManagerState {
     navigateBackToFolder: (folderId: string) => void;
     renameItem: (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
     moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivos", targetSection: string, onSuccess?: () => void) => Promise<void>;
+    downloadFolderAsZip: (folderId: number, folderName?: string) => Promise<void>;
 }
 
 const useFileManagerStore = create<FileManagerState>((set, get) => ({
@@ -34,6 +36,7 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
     contents: null,
     contentsError: null,
     isLoading: false,
+    isDownloading: false,
     error: null,
     section: "sgc",
     modalContents: null,
@@ -208,6 +211,54 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
             throw error;
         }
     },
+
+    downloadFolderAsZip: async (folderId: number, folderName?: string) => {
+        try {
+            set({ isDownloading: true, error: null });
+
+            const response = await api.get(`/carpetas/${folderId}/download`, {
+                responseType: "blob"
+            });
+
+            const blob = new Blob([response.data], {
+                type: response.headers["content-type"] || "application/zip"
+            });
+
+            if (blob.type && !blob.type.includes("zip") && blob.size < 1024) {
+                const text = await blob.text();
+                toast.error(text || "Error al generar el ZIP");
+                return;
+            }
+
+            const contentDisposition = response.headers["content-disposition"];
+            let filename = `${folderName || `folder_${folderId}`}.zip`;
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename\*?=(?:UTF-8'')?["']?([^;"']+)/i);
+                if (match?.[1]) {
+                    filename = decodeURIComponent(match[1]);
+                }
+            }
+
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            toast.success("Carpeta descargada con éxito!");
+        } catch (error: any) {
+            const errorMsg = error.response?.status === 500
+                ? "Error del servidor. Por favor, intente nuevamente más tarde."
+                : error.response?.data?.message || "Error al descargar la carpeta";
+            set({ error: errorMsg });
+            toast.error(errorMsg);
+        } finally {
+            set({ isDownloading: false });
+        }
+    }
 
 }));
 
