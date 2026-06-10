@@ -1,6 +1,6 @@
 //*Fuctions and hooks
 import React, { useState, lazy, Suspense } from "react";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 //*Icons
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/outline";
@@ -11,12 +11,13 @@ import ModalMoveItems from "./ModalMoveItems";
 import { Download, Move } from "lucide-react";
 
 type ItemOption = {
-    id: string;
-    name: string;
-    icon: React.ComponentType<{ className?: string }>;
-    onClick: () => void;
-    disabled?: boolean;
-  }[]
+  id: string;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  onClick: () => void;
+  disabled?: boolean;
+}[]
+
 interface ItemManuProps {
   onDelete: () => void;
   itemName: string;
@@ -31,7 +32,7 @@ const ConfirmDeletePopupProps = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
 );
 
-const ItemManu: React.FC<ItemManuProps> = ({
+const ItemMenu: React.FC<ItemManuProps> = ({
   onDelete,
   itemName,
   itemType,
@@ -181,4 +182,4 @@ const ItemManu: React.FC<ItemManuProps> = ({
   );
 };
 
-export default ItemManu;
+export default ItemMenu;

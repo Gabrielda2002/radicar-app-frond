@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ItemManu from "./ItemManu";
+import ItemMenu from "./ItemMenu";
 import { useAuth } from "@/context/authContext";
 import PdfViewer from "@/components/common/PDFViewer/PdfViewer";
 import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
 import { FileItem } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 
 interface FileListProps {
   files: FileItem[];
@@ -63,7 +63,7 @@ const FileList: React.FC<FileListProps> = ({
               className="absolute top-2 right-2"
               onClick={(e) => e.stopPropagation()}
             >
-              <ItemManu
+              <ItemMenu
                 onDelete={() => deleteItemById(file.id, "archivo")}
                 itemName={file.name}
                 itemType="archivo"

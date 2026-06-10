@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Folder } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
-import ItemManu from "./ItemManu";
+import useFileManagerStore from "../Store/useFileManagerStore";
+import ItemMenu from "./ItemMenu";
 import { FolderIcon } from "@heroicons/react/24/outline";
 
 interface DepartmentSectionProps {
@@ -90,7 +90,7 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
                     className="absolute top-2 right-2"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <ItemManu
+                    <ItemMenu
                       onDelete={() => deleteItemById(folder.id.toString(), "carpetas")}
                       itemName={folder.name}
                       itemType="carpetas"

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { ModalRenombrarItemProps } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 

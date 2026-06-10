@@ -2,7 +2,7 @@ import Input from "@/components/common/Ui/Input";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import React, { useState, useCallback } from "react";
 import { ModalCrearCarpetaProps } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 import { AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 

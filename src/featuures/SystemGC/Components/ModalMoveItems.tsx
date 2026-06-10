@@ -5,7 +5,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { SECTIONS } from "../Page/SistemaArchivosSGC";
 import { toast } from "react-toastify";
 import { ModalMoveItemsProps } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 import { AnimatePresence, motion } from "framer-motion";
 import Select from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";

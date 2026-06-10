@@ -13,7 +13,7 @@ import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 //*Properties
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 
 export const SECTIONS = [
   { id: "suh", name: "Sistema Único de Habilitación" },

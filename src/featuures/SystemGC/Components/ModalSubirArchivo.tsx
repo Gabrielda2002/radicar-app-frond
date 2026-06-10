@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import Input from "@/components/common/Ui/Input";
 import { FileUploaderProps } from "../Types/IFileManager";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 import { AnimatePresence } from "framer-motion";
 import { useUploadFile } from "../Hooks/useUploadFile";
 

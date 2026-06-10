@@ -1,8 +1,8 @@
 //*Fuctions and Hooks
 import React, { useMemo, useState } from "react";
-import ItemManu from "./ItemManu";
+import ItemMenu from "./ItemMenu";
 import DepartmentSection from "./DepartmentSection";
-import useFileManagerStore from "../Store/FileManagerStore";
+import useFileManagerStore from "../Store/useFileManagerStore";
 
 //*Icons
 import { FolderIcon } from "@heroicons/react/24/outline";
@@ -147,7 +147,7 @@ const FolderList: React.FC<FolderListProps> = ({
                   className="absolute top-2 right-2"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <ItemManu
+                  <ItemMenu
                     onDelete={() => deleteItemById(folder.id.toString(), "carpetas")}
                     itemName={folder.name}
                     itemType="carpetas"
