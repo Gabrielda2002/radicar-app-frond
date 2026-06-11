@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { FolderContents } from "../Types/IFileManager";
-import { api, createFolder, deleteItem, downloadFile, getFolderContent, renameItems, uploadFile } from "@/utils/api-config";
+import { api, createFolder, deleteItem, downloadFile, getFolderContent, renameItems, updateFolderIcon as updateFolderIconRequest, uploadFile } from "@/utils/api-config";
 import { toast } from "react-toastify";
 
 
@@ -25,7 +25,8 @@ interface FileManagerState {
     downloadFileById: (id: string, fileName: string) => Promise<void>;
     navigateToFolder: (folderId: string, folderName: string) => void;
     navigateBackToFolder: (folderId: string) => void;
-    renameItem: (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
+    renameItem: (id: string, newName: string | undefined, type: "carpetas" | "archivo", onSuccess?: () => void) => Promise<void>;
+    updateFolderIcon: (id: string, icon: string | null, onSuccess?: () => void) => Promise<void>;
     moveItem: (itemId: number, newParentId: string, type: "carpetas" | "archivos", targetSection: string, onSuccess?: () => void) => Promise<void>;
     downloadFolderAsZip: (folderId: number, folderName?: string) => Promise<void>;
 }
@@ -178,16 +179,30 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
         });
         get().fetchContents(folderId);
     },
-    renameItem: async (id: string, newName: string, type: "carpetas" | "archivo", onSuccess?: () => void) => {
+    renameItem: async (id: string, newName: string | undefined, type: "carpetas" | "archivo", onSuccess?: () => void) => {
         try {
             set({ error: null });
             await renameItems(id, get().currentFolderId || null, newName, type);
             await get().fetchContents(get().currentFolderId || undefined);
             onSuccess?.();
         } catch (error: any) {
-            const errorMsg = error.response?.status === 500 
+            const errorMsg = error.response?.status === 500
             ? "Error del servidor. Por favor, intente nuevamente más tarde."
             : error.response?.data?.message || "Error al renombrar el elemento";
+            set({ error: errorMsg });
+        }
+    },
+
+    updateFolderIcon: async (id: string, icon: string | null, onSuccess?: () => void) => {
+        try {
+            set({ error: null });
+            await updateFolderIconRequest(id, icon);
+            await get().fetchContents(get().currentFolderId || undefined);
+            onSuccess?.();
+        } catch (error: any) {
+            const errorMsg = error.response?.status === 500
+            ? "Error del servidor. Por favor, intente nuevamente más tarde."
+            : error.response?.data?.message || "Error al actualizar el icono";
             set({ error: errorMsg });
         }
     },

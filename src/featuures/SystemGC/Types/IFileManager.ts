@@ -14,16 +14,17 @@ export interface Folder {
   path: string;
   parentId: string | number | null;
   idDepartment: string | number;
+  icon?: string | null;
   createdAt: string;
   updatedAt: string;
-  departamentoRelation: {
+  departmentRelation: {
     id: number;
     name: string;
     code: string | null;
     createdAt: string;
     updatedAt: string;
   }
-} 
+}
 
 export interface FolderContents {
   files: FileItem[];
@@ -69,6 +70,7 @@ export interface ItemManuProps {
   itemId: string;
   handleRefresh: () => void;
   nameItemOld: string;
+  currentIcon?: string | null;
 }
 
 
@@ -93,6 +95,14 @@ export interface ModalRenombrarItemProps {
   nameItemOld: string;
   itemId: string;
   typeItem: "carpetas" | "archivo";
+};
+
+export interface ModalCambiarIconoProps {
+  standOpen: boolean;
+  toggleModal: () => void;
+  itemId: string;
+  folderName: string;
+  currentIcon: string | null;
 };
 
 export interface FileUploaderProps {

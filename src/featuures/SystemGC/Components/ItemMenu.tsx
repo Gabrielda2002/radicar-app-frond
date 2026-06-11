@@ -5,6 +5,7 @@ import useFileManagerStore from "../Store/useFileManagerStore";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { PhotoIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMoveItems from "./ModalMoveItems";
@@ -24,10 +25,12 @@ interface ItemManuProps {
   itemType: "carpetas" | "archivo";
   itemId: string;
   nameItemOld: string;
+  currentIcon?: string | null;
 }
 
 //*Properties
 const ModalRenombrarItem = lazy(() => import("./ModalRenombrarItem"));
+const ModalCambiarIcono = lazy(() => import("./ModalCambiarIcono"));
 const ConfirmDeletePopupProps = lazy(
   () => import("@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp")
 );
@@ -38,6 +41,7 @@ const ItemMenu: React.FC<ItemManuProps> = ({
   itemType,
   itemId,
   nameItemOld,
+  currentIcon = null,
 }) => {
   const { section, path, downloadFolderAsZip, isDownloading } = useFileManagerStore();
   const currentFolderId = path[path.length - 1].id;
@@ -45,6 +49,7 @@ const ItemMenu: React.FC<ItemManuProps> = ({
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
   const [stadOpenMove, setStadOpenMove] = useState(false);
+  const [stadOpenChangeIcon, setStadOpenChangeIcon] = useState(false);
 
 
   const handleModalOpenRename = () => {
@@ -61,6 +66,16 @@ const ItemMenu: React.FC<ItemManuProps> = ({
     setStadOpenMove(true);
   }
 
+  const handleModalOpenChangeIcon = () => {
+    setStadOpenChangeIcon(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleCloseChangeIcon = () => {
+    setStadOpenChangeIcon(false);
+    document.body.style.overflow = "";
+  };
+
   const stadOffDelete = () => {
     setStadOpenDelete(false);
     document.body.style.overflow = "";
@@ -73,16 +88,16 @@ const ItemMenu: React.FC<ItemManuProps> = ({
 
   const itemsOptions: ItemOption = [
     {
-      id: "delete",
-      name: "Eliminar",
-      icon: TrashIcon,
-      onClick: handleModalOpenDelete,
-    },
-    {
       id: "rename",
       name: "Renombrar",
       icon: PencilIcon,
       onClick: handleModalOpenRename,
+    },
+    {
+      id: "change-icon",
+      name: "Cambiar icono",
+      icon: PhotoIcon,
+      onClick: handleModalOpenChangeIcon,
     },
     {
       id: "move",
@@ -99,10 +114,15 @@ const ItemMenu: React.FC<ItemManuProps> = ({
         if (itemType === "carpetas") {
           downloadFolderAsZip(Number(itemId), itemName);
         } else {
-          // Lógica para descargar archivos individuales, si es necesario
           alert("Funcionalidad de descarga de archivos individuales no implementada.");
         }
       }
+    },
+    {
+      id: "delete",
+      name: "Eliminar",
+      icon: TrashIcon,
+      onClick: handleModalOpenDelete,
     }
   ]
 
@@ -174,6 +194,16 @@ const ItemMenu: React.FC<ItemManuProps> = ({
               section={section || "sgc"}
               currentFolderId={currentFolderId}
               itemId={itemId}
+            />
+          )}
+
+          {stadOpenChangeIcon && itemType === "carpetas" && (
+            <ModalCambiarIcono
+              standOpen={stadOpenChangeIcon}
+              toggleModal={handleCloseChangeIcon}
+              itemId={itemId}
+              folderName={nameItemOld}
+              currentIcon={currentIcon}
             />
           )}
         </Suspense>

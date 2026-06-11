@@ -11,7 +11,7 @@ interface DepartmentSectionProps {
   folders: Folder[];
   defaultExpanded?: boolean;
   folderCount: number;
-  getIconForFolder: (folderName: string) => React.FC<React.SVGProps<SVGSVGElement>> | null;
+  getIconForFolder: (folder: Folder) => React.ComponentType<{ className?: string }> | null;
   rol: string | null;
 }
 
@@ -24,37 +24,31 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
   rol,
 }) => {
   const { navigateToFolder, deleteItemById } = useFileManagerStore();
-  
-  // Estado para controlar si la sección está expandida o colapsada
+
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
-  // Sincronizar con defaultExpanded cuando cambia
   useEffect(() => {
     setIsExpanded(defaultExpanded);
   }, [defaultExpanded]);
 
   return (
     <div className="mb-6">
-      {/* Header de la sección */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`w-full flex items-center justify-between dark:bg-gray-900 bg-gray-200 p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg group bg-gradient-to-r`}
       >
         <div className="flex items-center gap-3">
-          {/* Icono de colapsar/expandir */}
           {isExpanded ? (
             <ChevronDownIcon className="w-6 h-6 dark:text-colorIcon transition-transform duration-300" />
           ) : (
             <ChevronRightIcon className="w-6 h-6 dark:text-colorIcon transition-transform duration-300" />
           )}
 
-          {/* Nombre del departamento */}
           <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2">
             🏥 {departmentName}
           </h3>
         </div>
 
-        {/* Badge con contador de carpetas */}
         <div className="flex items-center gap-2">
           <span className="px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 dark:bg-white/20 bg-black/20 rounded-full backdrop-blur-sm">
             {folderCount} {folderCount === 1 ? "carpeta" : "carpetas"}
@@ -62,7 +56,6 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
         </div>
       </button>
 
-      {/* Contenido colapsable */}
       <div
         className={`transition-all duration-300 ease-in-out ${
           isExpanded ? "max-h-[5000px] opacity-100 mt-4" : "max-h-0 opacity-0 overflow-hidden"
@@ -70,7 +63,7 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
       >
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 px-2">
           {folders.map((folder) => {
-            const CustomIcon = getIconForFolder(folder.name);
+            const CustomIcon = getIconForFolder(folder);
 
             return (
               <div
@@ -84,7 +77,6 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
                   <FolderIcon className="w-16 h-16 dark:text-colorIcon" />
                 )}
 
-                {/* Menú en la esquina superior derecha */}
                 {[1, 4].includes(Number(rol)) && (
                   <div
                     className="absolute top-2 right-2"
@@ -96,11 +88,11 @@ const DepartmentSection: React.FC<DepartmentSectionProps> = ({
                       itemType="carpetas"
                       itemId={folder.id.toString()}
                       nameItemOld={folder.name}
+                      currentIcon={folder.icon ?? null}
                     />
                   </div>
                 )}
 
-                {/* Nombre de la carpeta */}
                 <p className="flex flex-wrap text-sm font-bold text-center text-gray-700 dark:text-stone-200">
                   {folder.name}
                 </p>

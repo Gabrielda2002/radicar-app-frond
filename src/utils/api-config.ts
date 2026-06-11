@@ -190,11 +190,20 @@ export const downloadFile = (id: string) => {
 export const renameItems = async (
   folderId: string,
   parentFolderId: string | null,
-  newName: string,
+  newName: string | undefined,
   type: "carpetas" | "archivo"
 ) => {
-  console.log(folderId, parentFolderId, newName, type);
-  return api.put(`/${type}/${folderId}`, { name: newName, parentFolderId });
+  return api.put(`/${type}/${folderId}`, {
+    ...(newName !== undefined && { name: newName }),
+    parentFolderId,
+  });
+};
+
+export const updateFolderIcon = async (
+  folderId: string,
+  icon: string | null
+) => {
+  return api.put(`/carpetas/${folderId}`, { icon });
 };
 
 // actualizar datos del paciente

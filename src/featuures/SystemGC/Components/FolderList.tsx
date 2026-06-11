@@ -21,11 +21,14 @@ import PamecIcon from "@/assets/sgc/suh/face-mask.svg?react";
 import { useAuth } from "@/context/authContext";
 import { Folder } from "../Types/IFileManager";
 import Button from "@/components/common/Ui/Button";
+import { getIconById } from "../constants/iconCatalog";
 
 interface FolderListProps {
   folders: Folder[];
   isInFolder: boolean;
 }
+
+type IconComponent = React.ComponentType<{ className?: string }>;
 
 const FolderList: React.FC<FolderListProps> = ({
   folders,
@@ -34,18 +37,16 @@ const FolderList: React.FC<FolderListProps> = ({
   const { rol } = useAuth();
   const { navigateToFolder, deleteItemById, section } = useFileManagerStore();
 
-  // Estado para controlar si todas las secciones están expandidas
   const [expandAll, setExpandAll] = useState<boolean>(true);
 
-  // Agrupar carpetas por departamento (solo cuando NO estamos en una carpeta)
   const foldersByDepartment = useMemo(() => {
     if (isInFolder) {
-      return null; // No agrupamos si estamos dentro de una carpeta
+      return null;
     }
 
     const grouped = folders.reduce((acc, folder) => {
       const deptId = folder.idDepartment.toString();
-      const deptName = folder.departamentoRelation.name;
+      const deptName = folder.departmentRelation.name;
 
       if (!acc[deptId]) {
         acc[deptId] = {
@@ -59,17 +60,10 @@ const FolderList: React.FC<FolderListProps> = ({
       return acc;
     }, {} as Record<string, { id: number; name: string; folders: Folder[] }>);
 
-    // Ordenar departamentos alfabéticamente
     return Object.values(grouped).sort((a, b) => a.name.localeCompare(b.name));
   }, [folders, isInFolder]);
 
-  // Función para determinar el icono según la sección y nombre de carpeta
-  const getIconForFolder = (folderName: string): React.FC<React.SVGProps<SVGSVGElement>> | null => {
-    if (isInFolder) {
-      // Si estamos dentro de una carpeta, no usamos iconos personalizados
-      return null;
-    }
-
+  const getIconForFolderByName = (folderName: string): IconComponent | null => {
     if (section === "suh") {
       switch (folderName) {
         case "TALENTO HUMANO":
@@ -92,7 +86,6 @@ const FolderList: React.FC<FolderListProps> = ({
     } else if (section === "sst") {
       return SstIcon;
     } else if (section === "ci") {
-
       switch (folderName) {
         case "PROCEDIMIENTOS OPERATIVOS ESTANDAR":
           return PrcsIcon;
@@ -123,12 +116,21 @@ const FolderList: React.FC<FolderListProps> = ({
     }
   };
 
-  // Si estamos dentro de una carpeta, mostramos el grid tradicional
+  const getIconForFolder = (folder: Folder): IconComponent | null => {
+    if (isInFolder) {
+      return null;
+    }
+    if (folder.icon) {
+      return getIconById(folder.icon);
+    }
+    return getIconForFolderByName(folder.name);
+  };
+
   if (isInFolder) {
     return (
       <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
         {folders.map((folder) => {
-          const CustomIcon = getIconForFolder(folder.name);
+          const CustomIcon = getIconForFolder(folder);
 
           return (
             <div
@@ -153,6 +155,7 @@ const FolderList: React.FC<FolderListProps> = ({
                     itemType="carpetas"
                     itemId={folder.id.toString()}
                     nameItemOld={folder.name}
+                    currentIcon={folder.icon ?? null}
                   />
                 </div>
               )}
@@ -167,12 +170,10 @@ const FolderList: React.FC<FolderListProps> = ({
     );
   }
 
-  // Si NO estamos dentro de una carpeta, mostramos las secciones por departamento
   return (
     <div className="space-y-6">
       {foldersByDepartment && foldersByDepartment.length > 0 ? (
         <>
-          {/* Botón para expandir/colapsar todas las secciones */}
           <div className="flex justify-end mb-4">
             <Button
               variant="secondary"
