@@ -11,21 +11,9 @@ import Input from "@/components/common/Ui/Input";
 import { ICON_CATALOG, ICON_GROUPS, IconGroupId } from "../constants/iconCatalog";
 import useFileManagerStore from "../Store/useFileManagerStore";
 import { ModalCambiarIconoProps } from "../Types/IFileManager";
+import IconPreview from "./IconPreview";
 
-const IconPreview: React.FC<{ iconId: string | null; className?: string }> = ({
-  iconId,
-  className,
-}) => {
-  const entry = ICON_CATALOG.find((e) => e.id === iconId);
-  if (!entry) {
-    return (
-      <span className="text-xs text-gray-400 dark:text-gray-500">
-        Por defecto
-      </span>
-    );
-  }
-  return React.createElement(entry.Component, { className });
-};
+
 
 const ModalCambiarIcono: React.FC<ModalCambiarIconoProps> = ({
   standOpen,
@@ -82,7 +70,7 @@ const ModalCambiarIcono: React.FC<ModalCambiarIconoProps> = ({
       cancelText="Cancelar"
       size="xl"
     >
-      <div className="space-y-4">
+      <div className="space-y-4 p-4">
         <div className="flex items-center gap-4 p-3 rounded-md bg-gray-50 dark:bg-gray-700/40">
           <div className="flex items-center justify-center w-16 h-16 border-2 border-gray-200 rounded-md dark:border-gray-600 bg-white dark:bg-gray-800">
             <IconPreview iconId={selectedIcon} className="w-10 h-10 text-gray-700 dark:text-gray-200" />
@@ -95,6 +83,18 @@ const ModalCambiarIcono: React.FC<ModalCambiarIconoProps> = ({
               {selectedLabel ?? "Sin icono personalizado (se usará el icono por defecto)"}
             </p>
           </div>
+          {showRemoveButton && (
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setSelectedIcon(null)}
+              size="sm"
+            >
+              Quitar icono personalizado
+            </Button>
+          </div>
+        )}
         </div>
 
         <Input
@@ -171,19 +171,6 @@ const ModalCambiarIcono: React.FC<ModalCambiarIconoProps> = ({
             </div>
           )}
         </div>
-
-        {showRemoveButton && (
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setSelectedIcon(null)}
-              size="sm"
-            >
-              Quitar icono personalizado
-            </Button>
-          </div>
-        )}
 
         <AnimatePresence>
           {error && (
