@@ -31,6 +31,7 @@ import NotFound from "@/featuures/NotFound/Page/NotFound";
 import TableBalancesVacations from "@/featuures/ConfigurationVacations/Page/TableBalancesVacations";
 import MyTickets from "@/featuures/MyTickets/page/MyTickets";
 import Reports from "@/featuures/Reports/page/Reports";
+import Configuration from "@/featuures/Configuration/page/Configuration";
 const RegistrarUsuarios = lazy(
   () => import("@/featuures/RegisterUser/Page/RegisterUser.tsx")
 );
@@ -112,6 +113,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/gestion-tickets" element={<GestionTickets />} />
         <Route path="/mis-tickets" element={<MyTickets />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/configuration" element={<Configuration />} />
         
         {/* Rutas con contextos específicos */}
         <Route path="/usuarios" element={<UsersPage />} />

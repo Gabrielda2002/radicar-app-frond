@@ -12,7 +12,11 @@ import { DataTable, DataTableContainer, useTableState } from "@/components/commo
 const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
 const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
 
-const TablaCups = () => {
+interface TablaCupsProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaCups = ({ hidePageHeader = false }: TablaCupsProps) => {
   const { data, loading, error, refetch } = useFetchCups();
 
   const tableState = useTableState({
@@ -56,13 +60,15 @@ const TablaCups = () => {
 
   return (
     <>
-      <ModalSection
-        title="Modulo Cups"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Cups", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Modulo Cups"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Cups", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}

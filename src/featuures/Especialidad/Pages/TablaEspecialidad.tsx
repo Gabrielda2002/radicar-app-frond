@@ -20,7 +20,11 @@ const ModalAgregarDato = lazy(
   () => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato")
 );
 
-const TablaEspecialidad = () => {
+interface TablaEspecialidadProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaEspecialidad = ({ hidePageHeader = false }: TablaEspecialidadProps) => {
   const { data, loading, error, refetch } = useFetchEspecialidad();
 
   const tableState = useTableState({
@@ -58,13 +62,15 @@ const TablaEspecialidad = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo Especialidad"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Especialidad", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo Especialidad"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Especialidad", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}

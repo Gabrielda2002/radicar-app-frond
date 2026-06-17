@@ -13,7 +13,11 @@ const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/M
 const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
 
 
-const TablaConvenios = () => {
+interface TablaConveniosProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaConvenios = ({ hidePageHeader = false }: TablaConveniosProps) => {
   const { dataConvenios, loading, errorConvenio, refetch } = useFetchConvenio();
 
   const tableState = useTableState({
@@ -53,13 +57,15 @@ const TablaConvenios = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo Convenio"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Convenios", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo Convenio"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Convenios", path: "" },
+          ]}
+        />
+      )}
 
         <DataTableContainer
           searchValue={tableState.searchQuery}

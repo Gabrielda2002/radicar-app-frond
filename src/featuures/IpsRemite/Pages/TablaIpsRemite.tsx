@@ -20,7 +20,11 @@ const ModalAgregarDato = lazy(
   () => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato")
 );
 
-const TablaIpsRemite = () => {
+interface TablaIpsRemiteProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaIpsRemite = ({ hidePageHeader = false }: TablaIpsRemiteProps) => {
   const { data, loading, error, refetch } = useFetchIpsRemite();
 
   const tableState = useTableState({
@@ -58,13 +62,15 @@ const TablaIpsRemite = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo IPS Remitente"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio IPS Remite", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo IPS Remitente"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio IPS Remite", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}

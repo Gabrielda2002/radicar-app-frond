@@ -13,7 +13,11 @@ const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/M
 const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
 
 
-const TablaIpsPrimaria = () => {
+interface TablaIpsPrimariaProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaIpsPrimaria = ({ hidePageHeader = false }: TablaIpsPrimariaProps) => {
   const load = true;
   const { dataIpsPrimaria, loading, errorIpsPrimaria, refetch } =
   useFetchIpsPrimaria(load);
@@ -56,13 +60,15 @@ const TablaIpsPrimaria = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo IPS Primaria"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio IPS Primaria", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo IPS Primaria"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio IPS Primaria", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}

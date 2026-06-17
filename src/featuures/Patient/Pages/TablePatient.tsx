@@ -11,7 +11,11 @@ import { DataTable } from "@/components/common/ReusableTable";
 import { IPacientes } from "@/models/IPacientes";
 const ModalPaciente = lazy(() => import("../Components/ModalPatient"));
 
-const TablaPatient = () => {
+interface TablaPatientProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
   const { data: patients, error, getData, refetch } = useFetchPatient();
 
   const [identificacion, setIdentificacion] = useState<string>("");
@@ -73,13 +77,15 @@ const TablaPatient = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo Pacientes"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Pacientes", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo Pacientes"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Pacientes", path: "" },
+          ]}
+        />
+      )}
 
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
         {/* header-table */}

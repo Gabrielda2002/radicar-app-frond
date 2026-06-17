@@ -12,7 +12,11 @@ import { DataTable, DataTableContainer, useTableState } from "@/components/commo
 const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
 const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
 
-const TablaDiagnostico = () => {
+interface TablaDiagnosticoProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaDiagnostico = ({ hidePageHeader = false }: TablaDiagnosticoProps) => {
   const { diagnostico, loading, errorDiagnostico, refetch } = useFetchDiagnostic();
 
   const tableState = useTableState({
@@ -50,13 +54,15 @@ const TablaDiagnostico = () => {
 
   return (
     <>
-      <ModalSection
-        title="Modulo Diagnosticos"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Cups", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Modulo Diagnosticos"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Cups", path: "" },
+          ]}
+        />
+      )}
       <DataTableContainer
         searchValue={tableState.searchQuery}
         onSearchChange={tableState.setSearchQuery}

@@ -19,7 +19,11 @@ const ModalAgregarDato = lazy(
   () => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato")
 );
 
-const TablaTipoServicio = () => {
+interface TablaTipoServicioProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaTipoServicio = ({ hidePageHeader = false }: TablaTipoServicioProps) => {
   const { data, loading, error, refetch } = useFetchService();
 
   const tableState = useTableState({
@@ -57,13 +61,15 @@ const TablaTipoServicio = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo Tipo Servicio"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Tipo Servicio", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo Tipo Servicio"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Tipo Servicio", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}

@@ -124,6 +124,7 @@ const Navbar: React.FC = React.memo(() => {
         ],
       },
       { name: "Plataforma de Capacitación", action: MoodleButtonAction },
+      { name: "Configuración", href: "/configuration" },
       { name: "Cerrar Sesión", action: handleLogout },
     ],
     [handleLogout, handleOpenPermissionModal]

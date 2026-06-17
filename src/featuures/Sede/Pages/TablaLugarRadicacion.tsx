@@ -19,7 +19,11 @@ const ModalAgregarDato = lazy(
   () => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato")
 );
 
-const TablaLugarRadicacion = () => {
+interface TablaLugarRadicacionProps {
+  hidePageHeader?: boolean;
+}
+
+const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionProps) => {
   const { data, loading, error, refetch } = useFetchSede();
 
   const tableState = useTableState({
@@ -75,13 +79,15 @@ const TablaLugarRadicacion = () => {
 
   return (
     <>
-      <ModalSection
-        title="Módulo Lugar Radicación"
-        breadcrumb={[
-          { label: "Inicio", path: "/home" },
-          { label: "/ Servicio Lugar Radicación", path: "" },
-        ]}
-      />
+      {!hidePageHeader && (
+        <ModalSection
+          title="Módulo Lugar Radicación"
+          breadcrumb={[
+            { label: "Inicio", path: "/home" },
+            { label: "/ Servicio Lugar Radicación", path: "" },
+          ]}
+        />
+      )}
 
       <DataTableContainer
         searchValue={tableState.searchQuery}
