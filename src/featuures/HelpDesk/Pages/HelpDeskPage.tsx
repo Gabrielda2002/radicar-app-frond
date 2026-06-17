@@ -1,6 +1,6 @@
 import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import { useSidebarPermissions } from "@/components/layout/sidebar/hooks/useSidebarPermissions";
-import Card from "@/featuures/Reports/components/Card";
+import Card from "@/components/common/Ui/Card";
 import { useNavigate } from "react-router-dom";
 import { HELP_DESK_CARDS } from "../config/HelpDeskCards";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";

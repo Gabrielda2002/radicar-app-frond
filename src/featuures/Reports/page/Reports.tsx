@@ -1,5 +1,5 @@
 import HeaderPage from '@/components/common/HeaderPage/HeaderPage'
-import Card from '../components/Card'
+import Card from '../../../components/common/Ui/Card'
 import { REPORT_CONFIG } from '../config/reportConfig'
 import { Suspense, useState, useMemo, useEffect } from 'react'
 import * as Yup from 'yup';
