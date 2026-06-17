@@ -140,7 +140,7 @@ const Reports = () => {
                     { label: "Reportes", path: "" },
                 ]}
                 title="Generación de Reportes"
-                description='Aquí tendrás acceso a los diferentes reportes disponibles en el sistema dependiendo de tu rol. Selecciona un reporte para configurar los filtros y generar una vista previa antes de descargarlo.'
+                description='Acceso a diferentes reportes filtros y creación vista previas.'
             />
             <div className='p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
                 {selectedReport === null ? (
