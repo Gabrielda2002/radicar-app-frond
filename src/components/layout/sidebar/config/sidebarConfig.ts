@@ -210,7 +210,11 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         id: 'ticket-management',
         title: 'Mesa de Ayuda',
         icon: ticket,
-        type: 'category',
+        type: 'section',
+        path: '/help-desk'
+
+
+        /*
         children: [
           {
             id: 'ticket-management',
@@ -228,6 +232,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             type: 'subcategory',
           }
         ]
+        */
       }
     ]
   },
