@@ -59,6 +59,10 @@ const GestionTickets = lazy(
   () => import("@/featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")
 );
 
+const HelpDesk = lazy(
+  () => import("@/featuures/HelpDesk/Pages/HelpDeskPage.tsx")
+);
+
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
   <UsersProvider>
@@ -111,6 +115,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/configuration-vacations" element={<TableBalancesVacations />} />
         <Route path="/gestion-tickets" element={<GestionTickets />} />
         <Route path="/mis-tickets" element={<MyTickets />} />
+        <Route path="/help-desk" element={<HelpDesk />} />
         <Route path="/reports" element={<Reports />} />
         
         {/* Rutas con contextos específicos */}
