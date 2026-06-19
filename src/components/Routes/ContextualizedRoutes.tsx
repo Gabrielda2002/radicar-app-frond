@@ -58,9 +58,11 @@ const RegistroUsuarios = lazy(
 const GestionTickets = lazy(
   () => import("@/featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")
 );
-
 const HelpDesk = lazy(
   () => import("@/featuures/HelpDesk/Pages/HelpDeskPage.tsx")
+);
+const RadicationTablesPage  = lazy(
+  () => import("@/featuures/Administrator/Page/RadicationPage")
 );
 
 // Componente para rutas envueltas en el contexto de usuarios
@@ -86,6 +88,8 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
         <Route path="/tabla-auditoria" element={<TablaAuditoria />} />
         <Route path="/tabla-cirugias" element={<TablaCirugias />} />
+
+        <Route path="/admin/tablas-radicacion" element={<RadicationTablesPage />} />
         <Route path="/tabla-cups" element={<TablaCups />} />
         <Route path="/tabla-pacientes" element={<TablaPacientes />}></Route>
         <Route path="/tabla-diagnostico" element={<TablaDiagnostico />} />
