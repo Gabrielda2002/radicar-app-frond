@@ -11,11 +11,8 @@ import { BiMailSend } from 'react-icons/bi';
 
 // Images
 import user from '/assets/user.svg';
-import user2 from '/assets/user2.svg';
-import user1 from '/assets/user1.svg';
 import audit from '/assets/audit.svg';
 import table from '/assets/table.svg';
-import report from '/assets/report.svg';
 import surgery from '/assets/surgery.svg';
 import userMain from '/assets/userMain.svg';
 import services from '/assets/services.svg';
@@ -212,27 +209,6 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         icon: ticket,
         type: 'section',
         path: '/help-desk'
-
-
-        /*
-        children: [
-          {
-            id: 'ticket-management',
-            title: 'Gestión de Tickets',
-            icon: ticket,
-            type: 'subcategory',
-            path: '/gestion-tickets',
-            roles: [1, 17, 22, 23, 24, 25]
-          },
-          {
-            id: 'my-tickets',
-            title: 'Mis Tickets',
-            icon: ticket,
-            path: '/mis-tickets',
-            type: 'subcategory',
-          }
-        ]
-        */
       }
     ]
   },
@@ -250,136 +226,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         type: 'section',
         roles: [1],
         path: '/admin/tablas-radicacion'
-      /*  
-        children: [
-          {
-            id: 'cups-table',
-            title: 'Cups',
-            icon: report,
-            path: '/tabla-cups',
-            type: 'subcategory'
-          },
-          {
-            id: 'patients-table',
-            title: 'Pacientes',
-            icon: report,
-            path: '/tabla-pacientes',
-            type: 'subcategory'
-          },
-          {
-            id: 'diagnosis-table',
-            title: 'Diagnostico',
-            icon: report,
-            path: '/tabla-diagnostico',
-            type: 'subcategory'
-          },
-          {
-            id: 'municipalities-table',
-            title: 'Municipios',
-            icon: report,
-            path: '/tabla-municipios',
-            type: 'subcategory'
-          },
-          {
-            id: 'agreements-table',
-            title: 'Convenios',
-            icon: report,
-            path: '/tabla-convenios',
-            type: 'subcategory'
-          },
-          {
-            id: 'document-type-table',
-            title: 'Tipo Documento',
-            icon: report,
-            path: '/tabla-tipo-documento',
-            type: 'subcategory'
-          },
-          {
-            id: 'primary-ips-table',
-            title: 'IPS Primaria',
-            icon: report,
-            path: '/tabla-ips-primaria',
-            type: 'subcategory'
-          },
-          {
-            id: 'radication-place-table',
-            title: 'Lugar Radicación',
-            icon: report,
-            path: '/tabla-lugar-radicacion',
-            type: 'subcategory'
-          },
-          {
-            id: 'sender-ips-table',
-            title: 'IPS Remitente',
-            icon: report,
-            path: '/tabla-ips-remite',
-            type: 'subcategory'
-          },
-          {
-            id: 'specialty-table',
-            title: 'Especialidad',
-            icon: report,
-            path: '/tabla-especialidad',
-            type: 'subcategory'
-          },
-          {
-            id: 'service-type-table',
-            title: 'Tipo Servicio',
-            icon: report,
-            path: '/tabla-tipo-servicio',
-            type: 'subcategory'
-          }
-        ]
-      */
       },
       {
         id: 'user-management',
         title: 'Gestión Usuarios',
         icon: userMain,
-        type: 'category',
+        type: 'section',
         roles: [1,18],
-        children: [
-          {
-            id: 'profile',
-            title: 'Mi Perfil',
-            icon: user,
-            path: '/Perfil',
-            type: 'subcategory',
-            roles: [1]
-          },
-          {
-            id: 'users',
-            title: 'Usuarios',
-            icon: user1,
-            path: '/Usuarios',
-            type: 'subcategory',
-            roles: [1,18]
-          },
-          {
-            id: 'areas',
-            title: 'Areas',
-            icon: report,
-            path: '/area',
-            type: 'subcategory',
-            roles: [1]
-          },
-          {
-            id: 'positions',
-            title: 'Cargos',
-            icon: report,
-            path: '/cargo',
-            type: 'subcategory',
-            roles: [1]
-          },
-          {
-            id: 'register-users',
-            title: 'Registrar Usuarios',
-            icon: user2,
-            path: '/registrar-usuarios',
-            type: 'subcategory',
-            roles: [1,18]
-          }
-        ]
+        path: '/admin/user-options'
       }
     ]
   }
