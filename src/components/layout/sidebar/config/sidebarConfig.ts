@@ -247,8 +247,10 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         id: 'radication-tables',
         title: 'Tablas Radicación',
         icon: table,
-        type: 'category',
+        type: 'section',
         roles: [1],
+        path: '/admin/tablas-radicacion'
+      /*  
         children: [
           {
             id: 'cups-table',
@@ -328,6 +330,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             type: 'subcategory'
           }
         ]
+      */
       },
       {
         id: 'user-management',
