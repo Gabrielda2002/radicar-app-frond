@@ -64,6 +64,9 @@ const HelpDesk = lazy(
 const RadicationTablesPage  = lazy(
   () => import("@/featuures/Administrator/Page/RadicationPage")
 );
+const UserCard  = lazy(
+  () => import("@/featuures/Administrator/Page/UserCard")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -101,6 +104,8 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-ips-remite" element={<TablaIpsRemite />} />
         <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />
         <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
+
+        <Route path="/admin/user-options" element={<UserCard />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/registrar-usuarios" element={<RegistrarUsuarios />} />
         <Route
