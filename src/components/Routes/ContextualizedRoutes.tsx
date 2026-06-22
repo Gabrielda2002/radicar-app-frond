@@ -59,6 +59,15 @@ const RegistroUsuarios = lazy(
 const GestionTickets = lazy(
   () => import("@/featuures/HelpDesk/Pages/ProcessHelpDesk.tsx")
 );
+const HelpDesk = lazy(
+  () => import("@/featuures/HelpDesk/Pages/HelpDeskPage.tsx")
+);
+const RadicationTablesPage  = lazy(
+  () => import("@/featuures/Administrator/Page/RadicationPage")
+);
+const UserCard  = lazy(
+  () => import("@/featuures/Administrator/Page/UserCard")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -83,6 +92,8 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
         <Route path="/tabla-auditoria" element={<TablaAuditoria />} />
         <Route path="/tabla-cirugias" element={<TablaCirugias />} />
+
+        <Route path="/admin/tablas-radicacion" element={<RadicationTablesPage />} />
         <Route path="/tabla-cups" element={<TablaCups />} />
         <Route path="/tabla-pacientes" element={<TablaPacientes />}></Route>
         <Route path="/tabla-diagnostico" element={<TablaDiagnostico />} />
@@ -94,6 +105,8 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/tabla-ips-remite" element={<TablaIpsRemite />} />
         <Route path="/tabla-especialidad" element={<TablaEspecialidad />} />
         <Route path="/tabla-tipo-servicio" element={<TablaTipoServicio />} />
+
+        <Route path="/admin/user-options" element={<UserCard />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/registrar-usuarios" element={<RegistrarUsuarios />} />
         <Route
@@ -112,6 +125,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/configuration-vacations" element={<TableBalancesVacations />} />
         <Route path="/gestion-tickets" element={<GestionTickets />} />
         <Route path="/mis-tickets" element={<MyTickets />} />
+        <Route path="/help-desk" element={<HelpDesk />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/configuration" element={<Configuration />} />
         
