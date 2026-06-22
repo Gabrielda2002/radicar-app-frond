@@ -13,6 +13,7 @@ import {
   ArrowRightFromLine,
   Stethoscope,
   Tags,
+  User,
 } from "lucide-react";
 
 export interface ConfigTable {
@@ -41,20 +42,14 @@ const TablaLugarRadicacion = lazy(() => import("@/featuures/Sede/Pages/TablaLuga
 const TablaIpsRemite = lazy(() => import("@/featuures/IpsRemite/Pages/TablaIpsRemite"));
 const TablaEspecialidad = lazy(() => import("@/featuures/Especialidad/Pages/TablaEspecialidad"));
 const TablaTipoServicio = lazy(() => import("@/featuures/TypeService/Pages/TablaTipoServicio"));
+const TableProfessional = lazy(() => import("@/featuures/Professional/page/Professional"));
 
 export const configModules: ConfigModule[] = [
   {
-    id: "catalogos",
-    label: "Radicacion",
+    id: 'General',
+    label: "General",
     icon: BookOpen,
     tables: [
-      {
-        id: "municipios",
-        label: "Municipios",
-        description: "Gestión de municipios del sistema",
-        icon: MapPin,
-        component: TablaMunicipios,
-      },
       {
         id: "tipo-documento",
         label: "Tipo Documento",
@@ -63,11 +58,11 @@ export const configModules: ConfigModule[] = [
         component: TablaTipoDocumento,
       },
       {
-        id: "especialidad",
-        label: "Especialidad",
-        description: "Especialidades médicas",
-        icon: Stethoscope,
-        component: TablaEspecialidad,
+        id: "lugar-radicacion",
+        label: "Sedes",
+        description: "Lugares de radicación",
+        icon: MapPinned,
+        component: TablaLugarRadicacion,
       },
       {
         id: "pacientes",
@@ -75,6 +70,27 @@ export const configModules: ConfigModule[] = [
         description: "Gestión de pacientes del sistema",
         icon: Users,
         component: TablaPatient,
+      },
+      {
+        id: "municipios",
+        label: "Municipios",
+        description: "Gestión de municipios del sistema",
+        icon: MapPin,
+        component: TablaMunicipios,
+      },
+    ]
+  },
+  {
+    id: "catalogos",
+    label: "Radicacion",
+    icon: BookOpen,
+    tables: [
+      {
+        id: "especialidad",
+        label: "Especialidad",
+        description: "Especialidades médicas",
+        icon: Stethoscope,
+        component: TablaEspecialidad,
       },
       {
         id: "cups",
@@ -105,13 +121,6 @@ export const configModules: ConfigModule[] = [
         component: TablaIpsPrimaria,
       },
       {
-        id: "lugar-radicacion",
-        label: "Lugar Radicación",
-        description: "Lugares de radicación",
-        icon: MapPinned,
-        component: TablaLugarRadicacion,
-      },
-      {
         id: "ips-remite",
         label: "IPS Remitente",
         description: "IPS que remiten pacientes",
@@ -125,6 +134,13 @@ export const configModules: ConfigModule[] = [
         icon: Tags,
         component: TablaTipoServicio,
       },
+      {
+        id: "professional",
+        label: "Profesional",
+        description: "Profesionales que prestaran el servicio solicitado",
+        icon: User,
+        component: TableProfessional
+      }
     ],
   },
 ];

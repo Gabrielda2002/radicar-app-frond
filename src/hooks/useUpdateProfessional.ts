@@ -9,7 +9,7 @@ export const useUpdateProfessional = () => {
 
   const handleUpdateProfessional = async () => {
     try {
-      const response = await api.post<{ status: number }>("/profesionales", {
+      const response = await api.post<{ status: number }>("/professional", {
         name: newMedic,
       });
 
