@@ -148,9 +148,9 @@ const Navbar: React.FC = React.memo(() => {
             >
               <div className="relative w-6 h-6 md:w-8 md:h-8">
                 {isCollapsed ? (
-                  <PanelRightClose className="w-6 h-6 md:w-8 md:h-8" />
-                ) : (
                   <PanelRightOpen className="w-6 h-6 md:w-8 md:h-8" />
+                ) : (
+                  <PanelRightClose className="w-6 h-6 md:w-8 md:h-8" />
                 )}
               </div>
             </button>

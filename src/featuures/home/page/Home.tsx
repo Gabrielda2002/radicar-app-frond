@@ -4,7 +4,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
-import FormPacientesCS from "../components/ConsultarPacientesCS";
+// import FormPacientesCS from "../components/ConsultarPacientesCS";
 import ConsultarSvContratados from "../components/ConsultarSvContratados";
 import icon from "@/featuures/home/images/ico.png";
 
@@ -106,23 +106,11 @@ const Home = () => {
                       >
                         Servicios Contratados
                       </button>
-                      <button
-                        onClick={() => handleOptionChange("pacientes")}
-                        className={`px-10 py-0 md:py-2 ${
-                          selectedOption === "pacientes"
-                            ? "bg-gray-500 text-white"
-                            : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
-                        }`}
-                      >
-                        Pacientes Coosalud
-                      </button>
                     </div>
 
                     <div className="p-2 md:p-5">
-                      {selectedOption === "servicios" ? (
+                      {selectedOption === "servicios" && (
                         <ConsultarSvContratados />
-                      ) : (
-                        <FormPacientesCS />
                       )}
                     </div>
                   </div>

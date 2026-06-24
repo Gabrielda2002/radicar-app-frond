@@ -1,8 +1,14 @@
-const Layout = (props: any) => {
+import { ReactNode } from 'react';
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <section className="w-full px-4 pt-4 md:pt-10 md:px-12">
-        {props.children}
+      <section className="min-h-full w-full px-4 pt-4 md:px-12 md:pt-10">
+        {children}
       </section>
     </>
   );

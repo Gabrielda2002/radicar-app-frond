@@ -8,24 +8,24 @@ interface SidebarSectionProps {
   openAccordions: { [key: string]: boolean };
   onToggleAccordion: (key: string) => void;
   onAction?: (actionKey: string) => void;
+  isCollapsed?: boolean;
 }
 
 const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({
   section,
   openAccordions,
   onToggleAccordion,
-  onAction
+  onAction,
+  isCollapsed = false
 }) => {
-
-
   return (
     <div className="space-y-3">
-      {section.title && (
+      {section.title && !isCollapsed && (
         <label className="px-2 text-sm font-bold text-color2 uppercase tracking-wide dark:text-[#4F9BDC]">
           {section.title}
         </label>
       )}
-      
+
       <div className="space-y-2">
         {section.items.map((item) => {
           const isOpen = openAccordions[item.id] || false;
@@ -38,13 +38,14 @@ const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({
                 isOpen={isOpen}
                 onToggle={() => onToggleAccordion(item.id)}
                 onAction={onAction}
+                isCollapsed={isCollapsed}
               />
             );
           }
 
           return (
             <div key={item.id}>
-              <SidebarItem item={item} onAction={onAction} />
+              <SidebarItem item={item} onAction={onAction} isCollapsed={isCollapsed} />
             </div>
           );
         })}
