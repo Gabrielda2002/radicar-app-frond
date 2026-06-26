@@ -2,25 +2,14 @@ import { SidebarSection } from '../types/sidebar.types';
 
 // Icons
 import { FaFolderOpen, FaRegFolder } from 'react-icons/fa';
-import { MdOutlineInventory } from 'react-icons/md';
+import { MdOutlineInventory, MdHomeRepairService  } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
-import { Box } from 'lucide-react';
+import { Box, ClipboardList, GitPullRequestArrow, HandCoins, Mailbox, Sheet, User, UsersRound } from 'lucide-react';
 import { BiMailSend } from 'react-icons/bi';
-
-// Images
-import user from '/assets/user.svg';
-import audit from '/assets/audit.svg';
-import table from '/assets/table.svg';
-import surgery from '/assets/surgery.svg';
-import userMain from '/assets/userMain.svg';
-import services from '/assets/services.svg';
-import taskList from '/assets/task-list.svg';
-import recobro from '/assets/recobro.svg';
-import carta from '/assets/carta.svg';
-import auditoria from '/assets/auditoria.svg';
-import ticket from '/assets/ticket.svg';
+import { FaUserDoctor } from "react-icons/fa6";
+import { AiOutlineAudit } from "react-icons/ai";
 
 export const SIDEBAR_CONFIG: SidebarSection[] = [
   // Inicio
@@ -76,21 +65,21 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'recovery-letter',
         title: 'Gestión Carta Recobro',
-        icon: recobro,
+        icon: HandCoins,
         type: 'category',
         roles: [1, 10, 6, 2],
         children: [
           {
             id: 'recovery-request',
             title: 'Solicitar',
-            icon: carta,
+            icon: GitPullRequestArrow,
             path: '/carta-recobro',
             type: 'subcategory'
           },
           {
             id: 'recovery-audit',
             title: 'Auditoria',
-            icon: auditoria,
+            icon: AiOutlineAudit,
             path: '/auditoria',
             type: 'subcategory',
             roles: [1, 6, 2]
@@ -100,22 +89,22 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'service-management',
         title: 'Gestión de Servicios',
-        icon: services,
+        icon: MdHomeRepairService,
         type: 'category',
         roles: [10, 3, 1, 15, 6, 2],
         children: [
           {
             id: 'radicator',
             title: 'Radicador',
-            icon: taskList,
+            icon: ClipboardList,
             path: '/tabla-radicacion',
             type: 'subcategory',
             roles: [10, 3, 1, 15, 6, 2]
           },
           {
-            id: 'surgery',
+            id: 'FaUserDoctor',
             title: 'Cirugía',
-            icon: surgery,
+            icon: FaUserDoctor,
             path: '/tabla-cirugias',
             type: 'subcategory',
             roles: [15, 1, 3, 2]
@@ -123,7 +112,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
           {
             id: 'audit',
             title: 'Auditoría',
-            icon: audit,
+            icon: AiOutlineAudit,
             path: '/tabla-auditoria',
             type: 'subcategory',
             roles: [3, 1, 2]
@@ -133,15 +122,15 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'human-resources',
         title: 'Gestión Humana',
-        icon: userMain,
+        icon: User,
         type: 'category',
         roles: [1, 18, 6, 20, 2],
         children: [
           {
             id: 'biometric-users',
             title: 'Biométricos Usuarios',
-            icon: user,
-            path: '/create-user',
+            icon: UsersRound,
+            path: '/create-UsersRound',
             type: 'subcategory',
             roles: [1, 18, 2]
           },
@@ -156,7 +145,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
           {
             id: 'configuration-vacations',
             title: 'Configuración Vacaciones',
-            icon: user,
+            icon: UsersRound,
             path: '/configuration-vacations',
             type: 'subcategory',
             roles: [1, 6, 20, 18, 2]
@@ -166,7 +155,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'demand-induced',
         title: 'Gestión demanda inducida',
-        icon: userMain,
+        icon: User ,
         type: 'category',
         roles: [1, 19, 20, 21, 2],
         children: [
@@ -206,7 +195,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'ticket-management',
         title: 'Mesa de Ayuda',
-        icon: ticket,
+        icon: Mailbox,
         type: 'section',
         path: '/help-desk'
       }
@@ -222,18 +211,18 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       {
         id: 'radication-tables',
         title: 'Tablas Radicación',
-        icon: table,
+        icon: Sheet,
         type: 'section',
         roles: [1],
         path: '/admin/tablas-radicacion'
       },
       {
-        id: 'user-management',
+        id: 'UsersRound-management',
         title: 'Gestión Usuarios',
-        icon: userMain,
+        icon: User ,
         type: 'section',
         roles: [1,18],
-        path: '/admin/user-options'
+        path: '/admin/UsersRound-options'
       }
     ]
   }

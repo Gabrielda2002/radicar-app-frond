@@ -4,7 +4,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
 import React, { Suspense, useCallback, useState } from "react";
 
-import auditoria from "/assets/auditoria.svg";
 import ModalAuditForm from "../Components/ModalAuditForm";
 import { useFetchAuditLetter } from "../Hook/useFetchAuditLetter";
 import { CupsAuthorizedLetter, IAuditLetter } from "@/models/IAuditLetter";
@@ -13,6 +12,8 @@ import usePagination from "@/hooks/usePagination";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import Select from "@/components/common/Ui/Select";
 import Input from "@/components/common/Ui/Input";
+import { AiOutlineAudit } from "react-icons/ai";
+
 
 const RecoverLastPage = () => {
   const { auditLetter, loading, error } = useFetchAuditLetter();
@@ -84,10 +85,10 @@ const RecoverLastPage = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar"
-              className="block w-full h-10 pl-1 border-[1px] ps-2 border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="block w-full h-10 pl-1 border ps-2 border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          <div className="flex items-center space-x-[10px] ml-4">
+          <div className="flex items-center space-x-2.5 ml-4">
             <Select
               options={[
                 { label: "10", value: "10" },
@@ -151,9 +152,7 @@ const RecoverLastPage = () => {
                           setIdRequest(a.id);
                         }}
                       >
-                        <img
-                          src={auditoria}
-                          alt="request-icon"
+                        <AiOutlineAudit
                           className="w-10 h-10 dark:filter dark:invert "
                         />
                       </button>

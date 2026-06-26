@@ -2,9 +2,6 @@ import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { UseFetchRequestLetter } from "../Hooks/UseFetchRequestLetter";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
-// icons
-import carta from "/assets/carta.svg";
-
 import { Suspense, useState } from "react";
 import ModalRequestForm from "../Components/ModalRequestForm";
 import { handleDownload } from "../Utils/HandleDownload";
@@ -12,6 +9,7 @@ import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { FormatDate } from "@/utils/FormatDate";
 import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
+import { GitPullRequestArrow } from "lucide-react";
 
 
 const RecoverLetterPage = () => {
@@ -140,7 +138,7 @@ const RecoverLetterPage = () => {
                                     {c.code}
                                   </td>
                                   <td
-                                    className={`block p-3 border-b dark:border-gray-700 max-w-[200px] ${
+                                    className={`block p-3 border-b dark:border-gray-700 max-w-50 ${
                                       isExpanded
                                         ? "whitespace-normal"
                                         : "truncate"
@@ -171,10 +169,8 @@ const RecoverLetterPage = () => {
                           setIsRequested(r.isRequested);
                         }}
                       >
-                        <img
-                          src={carta}
-                          alt="request-icon"
-                          className="w-10 h-10 dark:filter dark:invert "
+                        <GitPullRequestArrow
+                          className="w-6 h-6 "
                         />
                       </button>
                     </td>
@@ -269,7 +265,7 @@ const RecoverLetterPage = () => {
                         </div>
                         <div className="mt-2 text-gray-500 dark:text-gray-400">Descripción</div>
                         <div
-                          className={`block border-b dark:border-gray-700 max-w-[200px] mt-2 ${
+                          className={`block border-b dark:border-gray-700 max-w-50 mt-2 ${
                             isExpanded ? "whitespace-normal" : "truncate"
                           }`}
                           title="Ver descripción completa"
@@ -304,11 +300,7 @@ const RecoverLetterPage = () => {
                       setIsRequested(r.isRequested);
                     }}
                   >
-                    <img
-                      src={carta}
-                      alt="request-icon"
-                      className="w-10 h-10 dark:filter dark:invert "
-                    />
+                   Buton
                   </button>
                 </div>
 

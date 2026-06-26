@@ -1,4 +1,4 @@
-import ticket from '/assets/ticket.svg';
+import ticket from '/assets/search.svg';
 import { IconType } from 'react-icons';
 
 export interface HelpDeskCard {
