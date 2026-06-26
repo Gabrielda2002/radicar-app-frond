@@ -19,6 +19,7 @@ interface ModalContentProps {
   isValid?: boolean;
   className?: string;
   footerVariant?: "form" | "default";
+  scrollable?: boolean;
 }
 
 const ModalDefault: React.FC<ModalContentProps> = ({
@@ -34,11 +35,12 @@ const ModalDefault: React.FC<ModalContentProps> = ({
   isValid = true,
   className,
   funtionClick = () => {},
+  scrollable = true,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size} className={className}>
       <ModalHeader title={title} onClose={onClose} />
-      <ModalBody>{children}</ModalBody>
+      <ModalBody scrollable={scrollable}>{children}</ModalBody>
       <ModalFooter variant="form">
         <Button
           type="button"

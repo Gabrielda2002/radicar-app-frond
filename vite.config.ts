@@ -52,7 +52,9 @@ export default defineConfig({
   worker: {
     format: 'es'
   },
-  // Eliminar optimizeDeps problemática
+  optimizeDeps: {
+    include: ["react-pdf", "pdfjs-dist"],
+  },
   preview: {
     port: 4173,
     host: true

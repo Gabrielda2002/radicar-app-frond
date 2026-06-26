@@ -20,7 +20,6 @@ import { PrivateRoutes } from "./components/PrivateRoutes";
 import { UserProfileProvider } from "./context/userProfileContext";
 import { NotificationProvider } from "@/context/notificationContext.tsx";
 
-import "@pdfslick/react/dist/pdf_viewer.css";
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 
 function AppRoutes() {
