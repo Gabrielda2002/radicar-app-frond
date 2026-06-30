@@ -97,7 +97,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfFile, onClose, isOpen }) => {
           </Document>
 
         </div>
-          {/* {error && ( */}
+          {error && (
             <div className="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
               <div className="w-full max-w-screen-sm bg-gray-600 dark:bg-gray-700 p-4 rounded pointer-events-auto">
                 <div className="flex items-start gap-2 text-white">
@@ -110,14 +110,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfFile, onClose, isOpen }) => {
                     <p className="mt-1">Detalles:</p>
                     <div className="overflow-scroll max-h-48 mt-2 p-2 bg-gray-800 rounded">
                       <pre className="text-sm text-red-600">
-                        {error?.message} Error
+                        {error.message}
                       </pre>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          {/* // )} */}
+          )} 
 
         <div className="flex justify-center py-3 bg-white border-t border-gray-200 dark:bg-gray-800 dark:border-gray-600">
           <PDFNavigation
