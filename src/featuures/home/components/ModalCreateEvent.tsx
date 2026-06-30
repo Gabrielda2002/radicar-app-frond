@@ -5,14 +5,14 @@ import { IEventos } from "@/models/IEventos";
 import { format } from "date-fns";
 import { useAuth } from "@/context/authContext";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
-import { useCreateEvent } from "../hooks/useCreateEvent";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { FormatDate } from "@/utils/FormatDate";
 import { FaCalendarAlt, FaClock, FaInfoCircle, FaTag } from "react-icons/fa";
 import FormModal from "@/components/common/Ui/FormModal";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
+import { useStoreEvent } from "../store/useStoreEvent";
 
 interface ModalCreateEventProps {
   initialData?: IEventos;
@@ -21,7 +21,7 @@ interface ModalCreateEventProps {
 const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { actionEvent, success, error, loading } = useCreateEvent();
+  const { create, error, isLoading } = useStoreEvent();
 
   useBlockScroll(isOpen);
 
@@ -74,7 +74,6 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      try {
         const formData = new FormData();
         formData.append("title", values.titulo);
         formData.append("description", values.descripcion);
@@ -87,28 +86,11 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
         formData.append("timeStart", values.horaInicio);
         formData.append("timeEnd", values.horaFin);
 
-        const response = await actionEvent(formData, initialData?.id);
-
-        if (response?.status === 200 || (response?.status === 201 && success)) {
+        await create(formData, () => {
+          toast.success('Evento creado exitosamente')
           formik.resetForm();
-          toast.success("Evento creado exitosamente.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        }
-      } catch (error) {
-        console.log(`Ocurrió un error inesperado: ${error}`);
-      }
+          // window.location.reload;
+        });
     },
   });
 
@@ -129,11 +111,11 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
         onClose={() => setIsOpen(false)}
         title={initialData ? "Datos Evento" : "Evento"}
         onSubmit={formik.handleSubmit}
-        isSubmitting={loading || (initialData && !formik.dirty)}
+        isSubmitting={isLoading}
         isValid={formik.isValid && formik.dirty}
         submitText="Crear"
       >
-        {[1, 18].includes(Number(rol)) ? (
+        {[1, 18, 24, 25].includes(Number(rol)) ? (
           <>
             <div className="grid grid-cols-2 gap-6 p-4 mb-4 md:gap-10">
               <div>
@@ -242,7 +224,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
               </div>
             </div>
 
-            \ <AnimatePresence>
+            <AnimatePresence>
             {error && (
               <div>
                 <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
@@ -253,7 +235,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({ initialData }) => {
           </AnimatePresence>
           </>
         ) : (
-          <div className="p-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800 w-[430px] sm:w-[600px] md:w-[650px] h-fit">
+          <div className="p-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800 w-107.5 sm:w-150 md:w-162.5 h-fit">
             <h2 className="mb-4 text-xl font-bold text-gray-700 dark:text-gray-200">
               Detalles del Evento
             </h2>

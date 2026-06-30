@@ -5,7 +5,6 @@ import { api } from "../utils/api-config";
 import { IRol } from "../models/IRol";
 import { ICirugias } from "../models/ICirugias";
 import { IDiagnostico } from "../models/IDiagnostico";
-import { IEventos } from "../models/IEventos";
 
 export const fetchCups = async (): Promise<ICups[]> => {
     const response = await api.get('/servicio-solicitado');
@@ -82,12 +81,4 @@ export const fetchDiagnosticos = async (): Promise<IDiagnostico[]> => {
         createdAt: new Date(diagnostico.createdAt)
     }));
     return diagnosticos;
-}
-
-export const fetchEventosEp = async (): Promise<IEventos[]> => {
-    const response = await api.get('/eventos');
-    const eventos = response.data.map((evento: IEventos) => ({
-        ...evento,
-    }));
-    return eventos;
 }

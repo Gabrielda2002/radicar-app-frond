@@ -1,5 +1,4 @@
 //*Fuctions and Hooks
-import "moment/locale/es";
 import moment from "moment";
 import { useAuth } from "@/context/authContext";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -7,8 +6,8 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import ModalCrearEvento from "./ModalCreateEvent";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { IEventos } from "@/models/IEventos";
-import { useFetchEvents } from "../hooks/UseFetchEvents";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useStoreEvent } from "../store/useStoreEvent";
 
 const localizer = momentLocalizer(moment);
 moment.locale("es");
@@ -21,10 +20,13 @@ const CalendarEvents: React.FC = () => {
     setSelectedEvent(event);
   };
 
-  const load = true;
-  const { evetns, loadingEventos, errorEventos } = useFetchEvents(load);
+  const { data, isLoading, error, get } = useStoreEvent();
 
-  const calendarEvents = evetns?.map((event) => ({
+  useEffect(() => {
+    get();
+  }, [get])
+
+  const calendarEvents = data?.map((event) => ({
     ...event,
     title: event.title,
     start: event.dateStart && event.timeStart 
@@ -41,8 +43,8 @@ const CalendarEvents: React.FC = () => {
 
   const { rol } = useAuth();
 
-  if (loadingEventos) return <LoadingSpinner duration={100000} />;
-  if (errorEventos) return <div>Hubo un error al cargar los eventos</div>;
+  if (isLoading) return <LoadingSpinner duration={100000} />;
+  if (error) return <div>Hubo un error al cargar los eventos</div>;
 
   const eventStyleGetter = (event: IEventos) => {
     const backgroundColor = event.color || "#3174ad";
@@ -127,12 +129,12 @@ const CalendarEvents: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-[428px] sm:w-[600px] md:w-full mx-auto p-4 md:p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
+    <div className="flex flex-col items-center w-107 sm:w-150 md:w-full mx-auto p-4 md:p-10 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
       <div className="w-full text-sm md:text-lg dark:text-gray-200">
         <Calendar
           localizer={localizer}
           events={calendarEvents}
-          views={["month", "week", "day", "agenda"]}
+          views={["month", "agenda"]}
           defaultView="month"
           startAccessor="start"
           endAccessor="end"
@@ -164,8 +166,6 @@ const CalendarEvents: React.FC = () => {
             previous: "Anterior",
             next: "Siguiente",
             month: "Mes",
-            week: "Semana",
-            day: "Día",
             agenda: "Agenda",
             date: "Fecha",
             time: "Hora",
@@ -176,7 +176,7 @@ const CalendarEvents: React.FC = () => {
           className="bg-gray-200 border-2 rounded-lg dark:bg-gray-800"
         />
       </div>
-      {[1, 18].includes(Number(rol)) && (
+      {[1, 18, 24, 25].includes(Number(rol)) && (
        <ModalCrearEvento
         initialData={selectedEvent || undefined}
       />
