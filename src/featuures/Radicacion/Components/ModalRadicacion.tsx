@@ -494,7 +494,7 @@ const ModalRadicacion = () => {
               <div>
                 <InputAutocompletado
                   label="Profesional remite"
-                  apiRoute="profesionales/buscar"
+                  apiRoute="professional/buscar"
                   error={
                     formik.touched.professional
                       ? formik.errors.professional
