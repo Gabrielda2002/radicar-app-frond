@@ -1,17 +1,8 @@
-import { IconType } from 'react-icons';
+import { CardItem } from '@/components/common/Ui/Card';
 import report from '/assets/report.svg';
 
-export interface RadicationCard {
-  id: string;
-  title: string;
-  description: string;
-  icon: string | IconType;
-  actionLabel?: string
-  path: string;
-  roles?: number[];
-}
 
-export const RADICATION_CARD: RadicationCard[] = [
+export const RADICATION_CARD: CardItem[] = [
   {
     id: 'cups-table',
     title: 'Cups',

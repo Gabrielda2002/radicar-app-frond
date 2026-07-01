@@ -1,17 +1,7 @@
+import { CardItem } from '@/components/common/Ui/Card';
 import ticket from '/assets/search.svg';
-import { IconType } from 'react-icons';
 
-export interface HelpDeskCard {
-  id: string;
-  title: string;
-  description: string;
-  icon: string | IconType;
-  actionLabel?: string
-  path: string;
-  roles?: number[];
-}
-
-export const HELP_DESK_CARDS: HelpDeskCard[] = [
+export const HELP_DESK_CARDS: CardItem[] = [
   {
     id: 'ticket-management',
     title: 'Gestión de Tickets',
