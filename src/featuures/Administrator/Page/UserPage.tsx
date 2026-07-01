@@ -1,8 +1,8 @@
 import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import { USER_CARD } from "../config/UserManagementCard";
-import CardGrid from "@/components/common/Ui/CardGrid";
+import Card from "@/components/common/Ui/Card";
 
-function UserCard() {
+function UserPage() {
     return (
     <>
       <HeaderPage
@@ -15,9 +15,9 @@ function UserCard() {
         />
         
         <div className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-            <CardGrid cards={USER_CARD} />
+            <Card cards={USER_CARD} />
         </div>
     </>
   );
 }
-export default UserCard;
+export default UserPage;
