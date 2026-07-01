@@ -1,6 +1,6 @@
 import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import { RADICATION_CARD } from "../config/RadicationCards";
-import CardGrid from "@/components/common/Ui/CardGrid";
+import Card from "@/components/common/Ui/Card";
 
 function RadicationTablesPage(){
   
@@ -15,7 +15,7 @@ function RadicationTablesPage(){
             description='Administra catálogos clínicos, CUPS, diagnósticos, especialidades, operativos convenios y pacientes'
         />
         <div className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-            <CardGrid cards={RADICATION_CARD} />
+            <Card cards={RADICATION_CARD} />
         </div>
 
       </>
