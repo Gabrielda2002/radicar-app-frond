@@ -27,7 +27,7 @@ export const USER_CARD: userManagement[] = [
     {
         id: 'users',
         title: 'Usuarios',
-        description: 'Datos personales y configuración de tu cuenta.',
+        description: 'Gestiona información y configuración de usuarios.',
         icon: user1,
         path: '/Usuarios',
         actionLabel: 'Gestionar',
