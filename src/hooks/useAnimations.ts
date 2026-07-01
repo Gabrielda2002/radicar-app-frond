@@ -10,10 +10,11 @@ const useAnimation = (isOpen: boolean, onClose: () => void, delay: number = 300)
       setClosing(false); // Al abrir, aseguramos que no esté en estado de cierre
     } else {
       setClosing(true); // Inicia el estado de cierre
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setShowAnimation(false);
         onClose();
       }, delay); // Espera la duración de la animación para cerrar completamente
+      return () => clearTimeout(timer);
     }
   }, [isOpen, onClose, delay]);
 
