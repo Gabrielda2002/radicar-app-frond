@@ -1,110 +1,45 @@
-//*Funciones y Hooks
-import { lazy, Suspense } from "react";
-// import ModalAction from "../modals/ModalAction";
-import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-// import ModalAgregarDato from "../modals/ModalAgregarDato";
 import { useFetchConvenio } from "@/hooks/UseFetchConvenio";
-import { IConvenios } from "@/models/IConvenios";
-
-//*Properties
-import ModalSection from "@/components/common/HeaderPage/HeaderPage";
-import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
-const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
-const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
-
+import { convenioForm } from "@/featuures/Configuration/config/forms/convenioForm";
+import type { ColumnConfig } from "@/components/common/ReusableTable";
+import type { IConvenios } from "@/models/IConvenios";
+import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
 
 interface TablaConveniosProps {
   hidePageHeader?: boolean;
 }
 
+const columns: ColumnConfig<IConvenios>[] = [
+  { key: "id", header: "ID", size: "sm", accessor: (item) => item.id },
+  { key: "name", header: "Nombre Convenio", size: "lg", accessor: (item) => item.name },
+  {
+    key: "status",
+    header: "Estado",
+    size: "md",
+    render: (item) => (item.status ? "Activo" : "Inactivo"),
+  },
+];
+
 const TablaConvenios = ({ hidePageHeader = false }: TablaConveniosProps) => {
   const { dataConvenios, loading, errorConvenio, refetch } = useFetchConvenio();
 
-  const tableState = useTableState({
-    data: dataConvenios,
-    searchFields: ["id", "name", "status"],
-    initialItemsPerPage: 10
-  })
-
-  const columns = [
-    {
-      key: "id",
-      header: "ID",
-      width: "30%",
-      accessor: (item: IConvenios) => item.id,
-    },
-    {
-      key: "name",
-      header: "Nombre Convenio",
-      width: "20%",
-      accessor: (item: IConvenios) => item.name,
-    },
-    {
-      key: "status",
-      header: "Estado",
-      width: "40%",
-      render: (item: IConvenios) => (item.status ? "Activo" : "Inactivo"),
-    }
-  ]
-
-  if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorConvenio)
-    return (
-      <h1 className="flex justify-center text-lg dark:text-white">
-        {errorConvenio}
-      </h1>
-    );
-
   return (
-    <>
-      {!hidePageHeader && (
-        <ModalSection
-          title="Módulo Convenio"
-          breadcrumb={[
-            { label: "Inicio", path: "/home" },
-            { label: "/ Servicio Convenios", path: "" },
-          ]}
-        />
-      )}
-
-        <DataTableContainer
-          searchValue={tableState.searchQuery}
-          onSearchChange={tableState.setSearchQuery}
-          itemsPerPage={tableState.itemsPerPage}
-          onItemsPerPageChange={tableState.setItemsPerPage}
-          currentPage={tableState.currentPage}
-          totalPages={tableState.totalPages}
-          onPageChange={tableState.paginate}
-          showPagination={true}
-          headerActions={
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalAgregarDato
-                name="Convenio"
-                endPoint="convenio"
-                onSuccess={refetch}
-              />
-            </Suspense>
-          }
-        >
-          <DataTable
-            data={tableState.currentData()}
-            columns={columns}
-            getRowKey={(item) => item.id.toString()}
-            loading={loading}
-            error={errorConvenio}
-            renderActions={(item) => (
-              <Suspense fallback={<LoadingSpinner />}>
-                <ModalAction
-                  name="Convenio"
-                  endPoint="update-status-convenio"
-                  onSuccess={refetch}
-                  item={item}
-                />
-              </Suspense>
-            )}
-          />
-        </DataTableContainer>
-    </>
+    <ConfigurableTablePage
+      name="Convenio"
+      formConfig={convenioForm}
+      dataProvider={{
+        data: dataConvenios,
+        loading,
+        error: errorConvenio,
+        refetch,
+      }}
+      columns={columns}
+      searchFields={["id", "name", "status"]}
+      hidePageHeader={hidePageHeader}
+      breadcrumb={[
+        { label: "Inicio", path: "/home" },
+        { label: "Servicio Convenios", path: "/convenios" },
+      ]}
+    />
   );
 };
 

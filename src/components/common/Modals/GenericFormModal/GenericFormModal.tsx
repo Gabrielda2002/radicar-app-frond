@@ -6,7 +6,7 @@ import type { SelectOption } from "@/components/common/Ui/Select";
 import DynamicFormFields from "./DynamicFormFields";
 import { useDynamicForm, type DynamicFormMode } from "./useDynamicForm";
 import type { TableFormConfig, FieldDefinition } from "./types";
-import onOff from "/assets/on-off.svg";
+import { SquarePen } from "lucide-react";
 
 interface GenericFormModalProps {
   mode: DynamicFormMode;
@@ -113,7 +113,7 @@ const GenericFormModal = ({
         variant="secondary"
         onClick={handleOpen}
         icon={
-          <img className="dark:invert" src={onOff} alt="Configuraciones" />
+          <SquarePen className="text-gray-600 dark:text-gray-300" />
         }
       />
     );

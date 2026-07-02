@@ -20,14 +20,14 @@ export const convenioForm: TableFormConfig = {
     mapInitialValues: () => ({ name: "" }),
   },
   edit: {
-    fields: [
+    fields: [ 
       { name: "id", label: "ID Convenio", type: "text", readOnly: true },
       { name: "name", label: "Nombre", type: "text", required: true },
       { name: "status", label: "Estado", type: "select", required: true, options: STATUS_OPTIONS },
     ],
     validationSchema: Yup.object({
       id: Yup.number(),
-      name: Yup.string().required("El nombre es obligatorio"),
+      name: Yup.string().required("El nombre es obligatorio"),  
       status: Yup.number().oneOf([0, 1]),
     }),
     mapInitialValues: (source) => ({

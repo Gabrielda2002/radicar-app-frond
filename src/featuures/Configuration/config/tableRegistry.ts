@@ -15,17 +15,6 @@ import {
   Tags,
   User,
 } from "lucide-react";
-import type { TableFormConfig } from "@/components/common/Modals/GenericFormModal/types";
-import { tipoDocumentoForm } from "./forms/tipoDocumentoForm";
-import { lugarRadicacionForm } from "./forms/lugarRadicacionForm";
-import { municipioForm } from "./forms/municipioForm";
-import { cupsForm } from "./forms/cupsForm";
-import { diagnosticoForm } from "./forms/diagnosticoForm";
-import { especialidadForm } from "./forms/especialidadForm";
-import { convenioForm } from "./forms/convenioForm";
-import { ipsPrimariaForm } from "./forms/ipsPrimariaForm";
-import { ipsRemiteForm } from "./forms/ipsRemiteForm";
-import { tipoServicioForm } from "./forms/tipoServicioForm";
 
 export interface ConfigTable {
   id: string;
@@ -33,7 +22,6 @@ export interface ConfigTable {
   description: string;
   icon: LucideIcon;
   component: LazyExoticComponent<ComponentType<any>>;
-  formConfig: TableFormConfig;
 }
 
 export interface ConfigModule {
@@ -68,7 +56,6 @@ export const configModules: ConfigModule[] = [
         description: "Tipos de documento de identidad",
         icon: FileText,
         component: TablaTipoDocumento,
-        formConfig: tipoDocumentoForm,
       },
       {
         id: "lugar-radicacion",
@@ -76,7 +63,6 @@ export const configModules: ConfigModule[] = [
         description: "Lugares de radicación",
         icon: MapPinned,
         component: TablaLugarRadicacion,
-        formConfig: lugarRadicacionForm,
       },
       {
         id: "pacientes",
@@ -84,7 +70,6 @@ export const configModules: ConfigModule[] = [
         description: "Gestión de pacientes del sistema",
         icon: Users,
         component: TablaPatient,
-        formConfig: tipoDocumentoForm,
       },
       {
         id: "municipios",
@@ -92,7 +77,6 @@ export const configModules: ConfigModule[] = [
         description: "Gestión de municipios del sistema",
         icon: MapPin,
         component: TablaMunicipios,
-        formConfig: municipioForm,
       },
     ]
   },
@@ -107,7 +91,6 @@ export const configModules: ConfigModule[] = [
         description: "Especialidades médicas",
         icon: Stethoscope,
         component: TablaEspecialidad,
-        formConfig: especialidadForm,
       },
       {
         id: "cups",
@@ -115,7 +98,6 @@ export const configModules: ConfigModule[] = [
         description: "Procedimientos y servicios CUPS",
         icon: Code2,
         component: TablaCups,
-        formConfig: cupsForm,
       },
       {
         id: "diagnostico",
@@ -123,7 +105,6 @@ export const configModules: ConfigModule[] = [
         description: "Diagnósticos médicos",
         icon: ClipboardList,
         component: TablaDiagnostico,
-        formConfig: diagnosticoForm,
       },
       {
         id: "convenios",
@@ -131,7 +112,6 @@ export const configModules: ConfigModule[] = [
         description: "Convenios del sistema",
         icon: Handshake,
         component: TablaConvenios,
-        formConfig: convenioForm,
       },
       {
         id: "ips-primaria",
@@ -139,7 +119,6 @@ export const configModules: ConfigModule[] = [
         description: "IPS primaria del sistema",
         icon: Building2,
         component: TablaIpsPrimaria,
-        formConfig: ipsPrimariaForm,
       },
       {
         id: "ips-remite",
@@ -147,7 +126,6 @@ export const configModules: ConfigModule[] = [
         description: "IPS que remiten pacientes",
         icon: ArrowRightFromLine,
         component: TablaIpsRemite,
-        formConfig: ipsRemiteForm,
       },
       {
         id: "tipo-servicio",
@@ -155,7 +133,6 @@ export const configModules: ConfigModule[] = [
         description: "Tipos de servicio del sistema",
         icon: Tags,
         component: TablaTipoServicio,
-        formConfig: tipoServicioForm,
       },
       {
         id: "professional",
@@ -163,7 +140,6 @@ export const configModules: ConfigModule[] = [
         description: "Profesionales que prestaran el servicio solicitado",
         icon: User,
         component: TableProfessional,
-        formConfig: tipoDocumentoForm,
       }
     ],
   },
