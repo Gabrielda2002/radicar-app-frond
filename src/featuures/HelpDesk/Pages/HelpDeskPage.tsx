@@ -1,6 +1,6 @@
 import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import { HELP_DESK_CARDS } from "../config/HelpDeskCards";
-import CardGrid from "@/components/common/Ui/CardGrid";
+import Card from "@/components/common/Ui/Card";
 
 function HelpDeskPage(){
 
@@ -16,7 +16,7 @@ function HelpDeskPage(){
       />
 
         <div className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
-            <CardGrid cards={HELP_DESK_CARDS} />
+            <Card cards={HELP_DESK_CARDS} />
         </div>
     </>  
   )

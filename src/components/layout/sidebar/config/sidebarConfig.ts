@@ -209,14 +209,6 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
     roles: [1,18],
     items: [
       {
-        id: 'radication-tables',
-        title: 'Tablas Radicación',
-        icon: Sheet,
-        type: 'section',
-        roles: [1],
-        path: '/admin/tablas-radicacion'
-      },
-      {
         id: 'UsersRound-management',
         title: 'Gestión Usuarios',
         icon: User ,
