@@ -40,7 +40,7 @@ const TablaConvenios = lazy(() => import("@/featuures/Convenio/Pages/TablaConven
 const TablaIpsPrimaria = lazy(() => import("@/featuures/IpsPrimaria/Pages/TablaIpsPrimaria"));
 const TablaLugarRadicacion = lazy(() => import("@/featuures/Sede/Pages/TablaLugarRadicacion"));
 const TablaIpsRemite = lazy(() => import("@/featuures/IpsRemite/Pages/TablaIpsRemite"));
-const TablaEspecialidad = lazy(() => import("@/featuures/Especialidad/Pages/TablaEspecialidad"));
+const TablaEspecialidad = lazy(() => import("@/featuures/Especialidad/Pages/TableSpecialty"));
 const TablaTipoServicio = lazy(() => import("@/featuures/TypeService/Pages/TablaTipoServicio"));
 const TableProfessional = lazy(() => import("@/featuures/Professional/page/Professional"));
 

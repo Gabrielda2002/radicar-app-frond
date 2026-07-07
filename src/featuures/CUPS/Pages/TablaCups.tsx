@@ -1,16 +1,7 @@
-//*Funciones y Hooks
-import { lazy, Suspense } from "react";
-
-import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchCups } from "@/hooks/UseFetchCup";
 import { ICups } from "@/models/ICups";
-
-//*Properties
-import ModalSection from "@/components/common/HeaderPage/HeaderPage";
-import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
-
-const ModalUpdateCupsDiagnostico = lazy(() => import("@/components/common/Modals/UpdateDiagCUPS/ModalUpdateCupsDiagnostico"));
-const ModalCrearCupsDiagnostico = lazy(() => import("@/components/common/Modals/CreateDiagCUPS/ModalCrearCupsDiagnostico"));
+import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
+import { cupsForm } from "@/featuures/Configuration/config/forms/cupsForm";
 
 interface TablaCupsProps {
   hidePageHeader?: boolean;
@@ -18,12 +9,6 @@ interface TablaCupsProps {
 
 const TablaCups = ({ hidePageHeader = false }: TablaCupsProps) => {
   const { data, loading, error, refetch } = useFetchCups();
-
-  const tableState = useTableState({
-    data: data,
-    searchFields: ["id", "code", "name", "status"],
-    initialItemsPerPage: 10
-  });
 
   const columns = [
     {
@@ -39,7 +24,7 @@ const TablaCups = ({ hidePageHeader = false }: TablaCupsProps) => {
       accessor: (item: ICups) => item.code,
     },
     {
-      key: "description",
+      key: "name",
       header: "Descripción CUPS",
       width: "40%",
       accessor: (item: ICups) => item.name,
@@ -49,62 +34,22 @@ const TablaCups = ({ hidePageHeader = false }: TablaCupsProps) => {
       header: "Estado",
       width: "15%",
       render: (item: ICups) => (item.status ? "Activo" : "Inactivo"),
-    }
+    },
   ];
 
-  if (loading) return <LoadingSpinner duration={500} />;
-  if (error)
-    return (
-      <h2 className="flex justify-center text-lg dark:text-white">{error}</h2>
-    );
-
   return (
-    <>
-      {!hidePageHeader && (
-        <ModalSection
-          title="Modulo Cups"
-          breadcrumb={[
-            { label: "Inicio", path: "/home" },
-            { label: "/ Servicio Cups", path: "" },
-          ]}
-        />
-      )}
-
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-        headerActions={
-          <Suspense fallback={<LoadingSpinner/>}>
-            <ModalCrearCupsDiagnostico
-              modulo="cups" 
-              onSuccess={refetch}
-            />
-          </Suspense>
-        }
-      >
-        <DataTable
-          data={tableState.currentData()}
-          columns={columns}
-          getRowKey={(item) => item.id.toString()}
-          loading={loading}
-          error={error}
-          renderActions={(item) => (
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalUpdateCupsDiagnostico
-                item={item} 
-                modulo="cups" 
-                onSuccess={refetch}
-              />
-            </Suspense>
-          )}
-        />
-      </DataTableContainer>
-    </>
+    <ConfigurableTablePage
+      name="CUPS"
+      formConfig={cupsForm}
+      dataProvider={{ data, loading, error, refetch }}
+      columns={columns}
+      searchFields={["id", "code", "name", "status"]}
+      hidePageHeader={hidePageHeader}
+      breadcrumb={[
+        { label: "Inicio", path: "/home" },
+        { label: "/ Servicio Cups", path: "" },
+      ]}
+    />
   );
 };
 

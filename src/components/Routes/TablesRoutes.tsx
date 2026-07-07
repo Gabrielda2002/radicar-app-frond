@@ -18,7 +18,7 @@ const TablaIpsPrimaria = lazy(
   () => import("../../featuures/IpsPrimaria/Pages/TablaIpsPrimaria")
 );
 const TablaEspecialidad = lazy(
-  () => import("../../featuures/Especialidad/Pages/TablaEspecialidad")
+  () => import("../../featuures/Especialidad/Pages/TableSpecialty")
 );
 const TablaTipoServicio = lazy(
   () => import("@/featuures/TypeService/Pages/TablaTipoServicio")

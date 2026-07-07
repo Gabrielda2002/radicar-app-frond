@@ -21,7 +21,7 @@ import TablaTipoDocumento from "@/featuures/DocumentType/Pages/TablaTipoDocument
 import TablaIpsPrimaria from "@/featuures/IpsPrimaria/Pages/TablaIpsPrimaria";
 import TablaLugarRadicacion from "@/featuures/Sede/Pages/TablaLugarRadicacion";
 import TablaIpsRemite from "@/featuures/IpsRemite/Pages/TablaIpsRemite";
-import TablaEspecialidad from "@/featuures/Especialidad/Pages/TablaEspecialidad";
+import TablaEspecialidad from "@/featuures/Especialidad/Pages/TableSpecialty";
 import TablaTipoServicio from "@/featuures/TypeService/Pages/TablaTipoServicio";
 import DemandInduce from "@/featuures/DemandInduce/Page/DemandInduce";
 import Area from "@/featuures/Areas/Page/Area";

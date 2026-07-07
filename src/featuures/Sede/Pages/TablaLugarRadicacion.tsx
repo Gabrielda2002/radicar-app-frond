@@ -1,23 +1,7 @@
-//*Funciones y Hooks
-import { lazy, Suspense } from "react";
-import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-
-//*Properties
-import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { ILugarRadicacion } from "@/models/ILugarRadicado";
 import { useFetchSede } from "@/hooks/UseFetchSede";
-import {
-  DataTable,
-  DataTableContainer,
-  useTableState,
-} from "@/components/common/ReusableTable";
-
-const ModalAction = lazy(
-  () => import("@/components/common/Modals/ActionTables/ModalAction")
-);
-const ModalAgregarDato = lazy(
-  () => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato")
-);
+import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
+import { lugarRadicacionForm } from "@/featuures/Configuration/config/forms/lugarRadicacionForm";
 
 interface TablaLugarRadicacionProps {
   hidePageHeader?: boolean;
@@ -25,12 +9,6 @@ interface TablaLugarRadicacionProps {
 
 const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionProps) => {
   const { data, loading, error, refetch } = useFetchSede();
-
-  const tableState = useTableState({
-    data: data,
-    searchFields: ["id", "name", "status"],
-    initialItemsPerPage: 10,
-  });
 
   const columns = [
     {
@@ -55,7 +33,7 @@ const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionPr
       key: "status",
       header: "Estado",
       width: "15%",
-      accessor: (item: ILugarRadicacion) => (item.status ? "Activo" : "Inactivo"),
+      render: (item: ILugarRadicacion) => (item.status ? "Activo" : "Inactivo"),
     },
     {
       key: "department",
@@ -71,61 +49,24 @@ const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionPr
     },
   ];
 
-  if (loading) return <LoadingSpinner duration={100000} />;
-  if (error)
-    return (
-      <h1 className="flex justify-center text-lg dark:text-white">{error}</h1>
-    );
-
   return (
-    <>
-      {!hidePageHeader && (
-        <ModalSection
-          title="Módulo Lugar Radicación"
-          breadcrumb={[
-            { label: "Inicio", path: "/home" },
-            { label: "/ Servicio Lugar Radicación", path: "" },
-          ]}
-        />
-      )}
-
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-        headerActions={
-          <Suspense fallback={<LoadingSpinner />}>
-            <ModalAgregarDato
-              name="Lugar Radicacion"
-              endPoint="lugares-radicacion"
-              onSuccess={refetch}
-            />
-          </Suspense>
-        }
-      >
-        <DataTable
-          data={tableState.currentData()}
-          columns={columns}
-          getRowKey={(item) => item.id.toString()}
-          loading={loading}
-          error={error}
-          renderActions={(item) => (
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalAction
-                name="Lugar Radicacion"
-                item={item}
-                endPoint="update-lugar-status"
-                onSuccess={refetch}
-              />
-            </Suspense>
-          )}
-        />
-      </DataTableContainer>
-    </>
+    <ConfigurableTablePage
+      name="Lugar Radicacion"
+      formConfig={lugarRadicacionForm}
+      dataProvider={{
+        data,
+        loading,
+        error,
+        refetch,
+      }}
+      columns={columns}
+      searchFields={["id", "name", "headquartersNumber", "status", "department", "city"]}
+      hidePageHeader={hidePageHeader}
+      breadcrumb={[
+        { label: "Inicio", path: "/home" },
+        { label: "/ Servicio Lugar Radicación", path: "" },
+      ]}
+    />
   );
 };
 

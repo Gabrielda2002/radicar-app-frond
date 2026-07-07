@@ -1,17 +1,7 @@
-//*Funciones y Hooks
-import { lazy, Suspense } from "react";
-
-import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { useFetchIpsPrimaria } from "@/hooks/UseFetchIpsPrimaria";
-
-//*Properties
-import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import { IIPSPrimaria } from "@/models/IIpsPrimaria";
-import { DataTable, DataTableContainer, useTableState } from "@/components/common/ReusableTable";
-
-const ModalAction = lazy(() => import("@/components/common/Modals/ActionTables/ModalAction"));
-const ModalAgregarDato = lazy(() => import("@/components/common/Modals/CrearDataTables/ModalAgregarDato"));
-
+import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
+import { ipsPrimariaForm } from "@/featuures/Configuration/config/forms/ipsPrimariaForm";
 
 interface TablaIpsPrimariaProps {
   hidePageHeader?: boolean;
@@ -20,14 +10,7 @@ interface TablaIpsPrimariaProps {
 const TablaIpsPrimaria = ({ hidePageHeader = false }: TablaIpsPrimariaProps) => {
   const load = true;
   const { dataIpsPrimaria, loading, errorIpsPrimaria, refetch } =
-  useFetchIpsPrimaria(load);
-
-
-  const tableState = useTableState({
-    data: dataIpsPrimaria || [],
-    searchFields: ["id", "name", "status"],
-    initialItemsPerPage: 10,
-  });
+    useFetchIpsPrimaria(load);
 
   const columns = [
     {
@@ -47,66 +30,27 @@ const TablaIpsPrimaria = ({ hidePageHeader = false }: TablaIpsPrimariaProps) => 
       header: "Estado",
       width: "20%",
       render: (item: IIPSPrimaria) => (item.status ? "Activo" : "Inactivo"),
-    }
-  ]
-
-  if (loading) return <LoadingSpinner duration={100000} />;
-  if (errorIpsPrimaria)
-    return (
-      <h1 className="flex justify-center text-lg dark:text-white">
-        {errorIpsPrimaria}
-      </h1>
-    );
+    },
+  ];
 
   return (
-    <>
-      {!hidePageHeader && (
-        <ModalSection
-          title="Módulo IPS Primaria"
-          breadcrumb={[
-            { label: "Inicio", path: "/home" },
-            { label: "/ Servicio IPS Primaria", path: "" },
-          ]}
-        />
-      )}
-
-      <DataTableContainer
-        searchValue={tableState.searchQuery}
-        onSearchChange={tableState.setSearchQuery}
-        itemsPerPage={tableState.itemsPerPage}
-        onItemsPerPageChange={tableState.setItemsPerPage}
-        currentPage={tableState.currentPage}
-        totalPages={tableState.totalPages}
-        onPageChange={tableState.paginate}
-        headerActions={
-          <Suspense fallback={<LoadingSpinner />}>
-            <ModalAgregarDato
-              endPoint="create-ips-primaria"
-              name="ips-primaria"
-              onSuccess={refetch}
-            />
-          </Suspense>
-        }
-      >
-        <DataTable
-          data={tableState.currentData()}
-          columns={columns}
-          getRowKey={(item) => item.id.toString()}
-          loading={loading}
-          error={errorIpsPrimaria}
-          renderActions={(item) => (
-            <Suspense fallback={<LoadingSpinner />}>
-              <ModalAction
-                endPoint="update-status-ips-primaria"
-                name="ips-primaria"
-                onSuccess={refetch}
-                item={item}
-              />
-            </Suspense>
-          )}
-        />
-      </DataTableContainer>
-    </>
+    <ConfigurableTablePage
+      name="IPS Primaria"
+      formConfig={ipsPrimariaForm}
+      dataProvider={{
+        data: dataIpsPrimaria,
+        loading,
+        error: errorIpsPrimaria,
+        refetch,
+      }}
+      columns={columns}
+      searchFields={["id", "name", "status"]}
+      hidePageHeader={hidePageHeader}
+      breadcrumb={[
+        { label: "Inicio", path: "/home" },
+        { label: "/ Servicio IPS Primaria", path: "" },
+      ]}
+    />
   );
 };
 
