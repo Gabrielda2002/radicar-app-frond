@@ -4,9 +4,12 @@ import Button from "@/components/common/Ui/Button";
 
 interface DocumentCardProps {
   onOpen: () => void;
+  title: string;
+  subTitle: string;
+  description: string;
 }
 
-const DocumentCard: React.FC<DocumentCardProps> = ({ onOpen }) => {
+const DocumentCard: React.FC<DocumentCardProps> = ({ onOpen, title, subTitle, description }) => {
   return (
     <div className="group relative flex items-center gap-4 overflow-hidden p-4 md:p-5 mb-3 rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-teal-300 dark:border-gray-600 dark:bg-gray-800 dark:hover:border-teal-500/60 dark:hover:bg-gray-800/95">
 
@@ -16,13 +19,13 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ onOpen }) => {
 
       <div className="flex-1 min-w-0 pl-1">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-teal-700/80 dark:text-teal-300/80">
-          Documento · PDF
+          {subTitle}
         </p>
         <h2 className="mt-0.5 text-base md:text-lg font-semibold text-gray-800 truncate dark:text-gray-100">
-          JUR-R-001 — Reglamento Interno de Trabajo
+          {title}
         </h2>
         <p className="mt-0.5 text-xs md:text-sm text-gray-500 dark:text-gray-400">
-          Consulta el reglamento interno de trabajo vigente.
+          {description}
         </p>
       </div>
 

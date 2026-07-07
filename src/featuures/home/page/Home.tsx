@@ -10,6 +10,7 @@ import DocumentCard from "../components/DocumentCard";
 import icon from "@/featuures/home/images/ico.png";
 
 import REGLEMENTO_PDF_URL from "@/assets/pdf/Regalmento_interno.pdf?url";
+import { HOME_CONFIG_PDF } from "../utils/homeConfig";
 
 // const IndicadoresSalud = lazy(() => import("./HealthIndicators"));
 const Calendario = lazy(() => import("../components/CalendarEvent"));
@@ -20,6 +21,7 @@ const Home = () => {
   const [showContent, setShowContent] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertFadeOut, setAlertFadeOut] = useState(false);
+  const [pdfSelected, setPdfSelected] = useState<string | null>(null);
 
   useEffect(() => {
     const alertClosed = localStorage.getItem("alertClosed");
@@ -123,9 +125,16 @@ const Home = () => {
                 )}
               </div>
 
-              <div className="mt-5">
-                <DocumentCard onOpen={() => setIsPdfOpen(true)} />
-              </div>
+              {HOME_CONFIG_PDF.map((doc, index) => (
+                <div key={index} className="mt-5">
+                  <DocumentCard
+                    onOpen={() => {setIsPdfOpen(true); setPdfSelected(doc.pdfUrl);}}
+                    title={doc.title}
+                    subTitle={doc.subTitle}
+                    description={doc.description}
+                  />
+                </div>
+              ))}
 
               <div className="mt-5">
                 {/* Calendario de actividades */}
@@ -162,7 +171,7 @@ const Home = () => {
           <Suspense fallback={null}>
             {isPdfOpen && (
               <PdfViewer
-                pdfFile={REGLEMENTO_PDF_URL}
+                pdfFile={pdfSelected || REGLEMENTO_PDF_URL}
                 isOpen={isPdfOpen}
                 onClose={() => setIsPdfOpen(false)}
               />
