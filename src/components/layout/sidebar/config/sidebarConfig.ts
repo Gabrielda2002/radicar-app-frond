@@ -6,7 +6,7 @@ import { MdOutlineInventory, MdHomeRepairService  } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
-import { Box, ClipboardList, GitPullRequestArrow, HandCoins, Mailbox, Sheet, User, UsersRound } from 'lucide-react';
+import { Box, ClipboardList, GitPullRequestArrow, HandCoins, Mailbox, User, UsersRound } from 'lucide-react';
 import { BiMailSend } from 'react-icons/bi';
 import { FaUserDoctor } from "react-icons/fa6";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -214,7 +214,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         icon: User ,
         type: 'section',
         roles: [1,18],
-        path: '/admin/UsersRound-options'
+        path: '/admin/users-options'
       }
     ]
   }
