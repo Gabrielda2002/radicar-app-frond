@@ -175,6 +175,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       then: (schema) => schema.required("El profesional es obligatorio"),
       otherwise: (schema) => schema.optional(),
     }),
+    headquartersId: Yup.string().required("Sede es obligatorio"),
   });
 
   const formik = useFormik({
@@ -215,6 +216,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       idPatient: "",
       profetional: "",
       idUser: idUsuario,
+      headquartersId: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -873,6 +875,17 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 required={formik.values.classification === true ? true : false}
               />
             </div>
+             <InputAutocompletado
+                label="Sede"
+                onInputChanged={(value) =>
+                  formik.setFieldValue("headquartersId", value)
+                }
+                apiRoute="lugares-radicacion-name"
+                error={formik.errors.headquartersId}
+                touched={formik.touched.headquartersId}
+                placeholder="Ej: Calle 15"
+                required
+              />
           </div>
 
           <AnimatePresence>
