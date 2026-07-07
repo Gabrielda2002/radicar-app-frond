@@ -89,7 +89,8 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
       {
         name: 'convenio',
         label: 'Convenio',
-        type: 'number',
+        type: 'autocomplete',
+        endpoint: 'agreement/search',
         required: false,
       },
     ];
