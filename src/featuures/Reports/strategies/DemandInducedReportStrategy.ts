@@ -81,7 +81,7 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
     return [
       {
         name: 'headquarter',
-        label: 'Lugar de radicación',
+        label: 'Sede',
         type: 'autocomplete',
         endpoint: 'lugares-radicacion-name',
         required: false,
