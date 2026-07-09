@@ -1,12 +1,47 @@
+import axios from "axios";
 import { z } from "zod";
 import { api } from "@/utils/api-config";
 
-/**
- * Cliente tipado para los endpoints de dashboards/filtros, ahora servidos por
- * Api-nordvital bajo /api/v1. Usa la instancia axios de radicar (que adjunta el
- * JWT y refresca el token automáticamente). Valida la respuesta con Zod.
- * Los params vacíos, undefined o 'all' se omiten.
- */
+const dashApi = axios.create({
+  baseURL: import.meta.env.VITE_URL_BACKEND_DASHBOARD,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+dashApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return config;
+});
+
+dashApi.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshResponse = await api.post("/refresh");
+        const { accessToken } = refreshResponse.data;
+        localStorage.setItem("token", accessToken);
+        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+        return dashApi(originalRequest);
+      } catch {
+        localStorage.removeItem("token");
+        localStorage.removeItem("rol");
+        localStorage.removeItem("Municipio");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 export async function get<S extends z.ZodTypeAny>(
   path: string,
   schema: S,
@@ -18,7 +53,7 @@ export async function get<S extends z.ZodTypeAny>(
       if (v !== undefined && v !== "" && v !== "all") cleanParams[k] = v;
     }
   }
-  const res = await api.get(path, { params: cleanParams });
+  const res = await dashApi.get(path, { params: cleanParams });
   const parsed = schema.safeParse(res.data);
   if (!parsed.success) {
     console.error("Zod parse failed for", path, parsed.error);
