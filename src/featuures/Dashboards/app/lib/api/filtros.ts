@@ -10,7 +10,6 @@ const SedeOption = z.object({
   label: z.string(),
   citas: z.number(),
 });
-const ConvenioOption = SedeOption.extend({ tieneNT: z.boolean() });
 const RangoFechas = z.object({
   desde: StringOrNull,
   hasta: StringOrNull,
@@ -18,7 +17,6 @@ const RangoFechas = z.object({
 });
 
 export type SedeOption = z.infer<typeof SedeOption>;
-export type ConvenioOption = z.infer<typeof ConvenioOption>;
 export type RangoFechas = z.infer<typeof RangoFechas>;
 
 const SedeJerarquia = SedeOption.extend({
@@ -32,8 +30,6 @@ const ConvenioJerarquia = SedeOption.extend({
 export type ConvenioJerarquia = z.infer<typeof ConvenioJerarquia>;
 
 export const filtrosApi = {
-  sedes: () => get('/filtros/sedes', z.array(SedeOption)),
-  convenios: () => get('/filtros/convenios', z.array(ConvenioOption)),
   rangoFechas: () => get('/filtros/rango-fechas', RangoFechas),
   conveniosGrupo: (f: DashboardFilters = {}, soloNt = false) =>
     get('/filtros/convenios-grupo', z.array(SedeOption), soloNt ? { ...f, soloNt: 'true' } : f),

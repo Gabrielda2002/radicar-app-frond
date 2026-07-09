@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { Card } from '@dash/components/ui/card';
 import { cn, clampPercent } from '@dash/lib/utils';
 
-export type GaugeTone = 'primary' | 'secondary' | 'error' | 'green' | 'amber';
+type GaugeTone = 'primary' | 'secondary' | 'error' | 'green' | 'amber';
 
 const toneClass: Record<GaugeTone, string> = {
   primary: 'text-primary',
@@ -27,7 +27,7 @@ interface GaugeProps {
 /**
  * Gauge: indicador circular SVG. Llena un arco proporcional a `fillPct`.
  */
-export function Gauge({
+function Gauge({
   value,
   unit,
   fillPct,

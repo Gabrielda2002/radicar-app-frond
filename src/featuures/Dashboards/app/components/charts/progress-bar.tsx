@@ -1,6 +1,6 @@
 import { clampPercent, cn } from "../../lib/utils";
 
-export type ProgressTone = 'navy' | 'turquoise' | 'green' | 'amber' | 'red' | 'red-light' | 'primary' | 'secondary';
+type ProgressTone = 'navy' | 'turquoise' | 'green' | 'amber' | 'red' | 'red-light' | 'primary' | 'secondary';
 
 const toneClass: Record<ProgressTone, string> = {
   navy: 'bg-corporate-navy',
@@ -20,7 +20,7 @@ interface ProgressBarProps {
   className?: string;
 }
 
-export function ProgressBar({ value, tone = 'turquoise', height = 'md', className }: ProgressBarProps) {
+function ProgressBar({ value, tone = 'turquoise', height = 'md', className }: ProgressBarProps) {
   const h = height === 'sm' ? 'h-1.5' : height === 'lg' ? 'h-3' : 'h-2';
   return (
     <div className={cn('w-full overflow-hidden rounded-full bg-surface-container-high', h, className)}>

@@ -15,7 +15,7 @@ export interface FilterOption {
 }
 
 /** Ciudad (sede_grupo) con sus sedes fisicas (nombre_sede) anidadas. */
-export interface SedeJerarquiaOption {
+interface SedeJerarquiaOption {
   value: string;
   label: string;
   citas: number;
@@ -23,7 +23,7 @@ export interface SedeJerarquiaOption {
 }
 
 /** Grupo comercial (convenio_grupo) con sus convenios (nombre_convenio) anidados. */
-export interface ConvenioJerarquiaOption {
+interface ConvenioJerarquiaOption {
   value: string;
   label: string;
   citas: number;

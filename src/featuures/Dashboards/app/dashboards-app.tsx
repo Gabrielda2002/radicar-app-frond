@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "@dash/lib/theme";
 import { ResumenPage } from "@dash/pages/resumen";
 import { EjecucionNtPage } from "@dash/pages/ejecucion-nt";
 import { FinancieroPage } from "@dash/pages/financiero";
@@ -19,7 +18,6 @@ const queryClient = new QueryClient({
 export default function DashboardsApp() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
         <div className="dnt-root min-h-full">
           <Routes>
             <Route index element={<Navigate to="resumen" replace />} />
@@ -31,7 +29,6 @@ export default function DashboardsApp() {
             <Route path="*" element={<Navigate to="resumen" replace />} />
           </Routes>
         </div>
-      </ThemeProvider>
     </QueryClientProvider>
   );
 }

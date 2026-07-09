@@ -41,28 +41,9 @@ export const CardTitle = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElemen
   },
 );
 
-export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
-  function CardDescription({ className, ...props }, ref) {
-    return (
-      <p ref={ref} className={cn('text-label-md text-on-surface-variant', className)} {...props} />
-    );
-  },
-);
-
 export const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function CardContent({ className, ...props }, ref) {
     return <div ref={ref} className={cn('p-6 pt-4', className)} {...props} />;
   },
 );
 
-export const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  function CardFooter({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={cn('flex items-center p-6 pt-0', className)}
-        {...props}
-      />
-    );
-  },
-);

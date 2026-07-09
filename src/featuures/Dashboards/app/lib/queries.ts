@@ -9,7 +9,6 @@ import {
   type CalidadResponse,
   type PymResponse,
   type SedeOption,
-  type ConvenioOption,
   type RangoFechas,
   type SedeJerarquia,
   type ConvenioJerarquia,
@@ -81,22 +80,6 @@ export function usePym(f: DashboardFilters): UseQueryResult<PymResponse> {
 // ════════════════════════════════════════════════════════════════
 //  Catalogos para filtros
 // ════════════════════════════════════════════════════════════════
-
-export function useSedes(): UseQueryResult<SedeOption[]> {
-  return useQuery({
-    queryKey: ['filtros', 'sedes'],
-    queryFn: filtrosApi.sedes,
-    staleTime: FIVE_MIN,
-  });
-}
-
-export function useConvenios(): UseQueryResult<ConvenioOption[]> {
-  return useQuery({
-    queryKey: ['filtros', 'convenios'],
-    queryFn: filtrosApi.convenios,
-    staleTime: FIVE_MIN,
-  });
-}
 
 export function useRangoFechas(): UseQueryResult<RangoFechas> {
   return useQuery({
