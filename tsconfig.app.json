@@ -22,6 +22,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
+      "@dash/*": ["src/featuures/Dashboards/app/*"],
     }
   },
   "include": ["src", "src/featuures/Radicacion/Page/TableServiceRequestSubmission.tsx"]
