@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
-import { DASHBOARD_NAV } from "./sidebar";
 import { cn } from "@dash/lib/utils";
+import { DASHBOARD_NAV } from "@/featuures/Dashboards/utils/tabsConfig";
 
 interface PageShellProps {
   title: string;
@@ -15,12 +15,6 @@ interface PageShellProps {
     | "primary";
   children: ReactNode;
 }
-
-/**
- * Navegación (tabs) centrada de los 5 paneles + contenido. No renderiza título
- * de sección (la pestaña activa ya lo indica) ni sidebar/topbar/footer: esos
- * los aporta el layout de radicar.
- */
 export function PageShell({ children }: PageShellProps) {
   return (
     <div className="flex min-w-0 flex-1 flex-col">

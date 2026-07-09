@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@dash/components/ui/select';
-import { Button } from '@dash/components/ui/button';
+import Button from '@/components/common/Ui/Button';
 
 export interface FilterOption {
   value: string;
@@ -147,14 +147,12 @@ export function GlobalFilters({
       </div>
       <div className="flex gap-2">
         {onOpenAdvanced && (
-          <Button variant="outline" onClick={onOpenAdvanced}>
-            <Filter className="h-4 w-4" />
+          <Button variant="outline" onClick={onOpenAdvanced} icon={<Filter className="h-4 w-4" />}>
             Filtros Avanzados
           </Button>
         )}
         {onRefresh && (
-          <Button variant="secondary" onClick={onRefresh}>
-            <RefreshCw className="h-4 w-4" />
+          <Button variant="primary" onClick={onRefresh} icon={<RefreshCw className="h-4 w-4" />}>
             Actualizar Datos
           </Button>
         )}
@@ -237,7 +235,7 @@ function SedeFilterItem({ jerarquia, selectedSedeGrupo, selectedSede, onChange }
         <SelectTrigger className="h-auto p-0">
           <SelectValue placeholder="Todas las sedes" />
         </SelectTrigger>
-        <SelectContent className="max-h-[22rem]">
+        <SelectContent className="max-h-88">
           <SelectItem value="all">Todas las sedes</SelectItem>
           {jerarquia.map((ciudad) => (
             <SelectGroup key={ciudad.value}>
@@ -297,7 +295,7 @@ function ConvenioFilterItem({
         <SelectTrigger className="h-auto p-0">
           <SelectValue placeholder="Todos los convenios" />
         </SelectTrigger>
-        <SelectContent className="max-h-[22rem]">
+        <SelectContent className="max-h-88">
           <SelectItem value="all">Todos los convenios</SelectItem>
           {jerarquia.map((grupo) => (
             <SelectGroup key={grupo.value}>

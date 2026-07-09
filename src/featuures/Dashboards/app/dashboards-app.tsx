@@ -16,11 +16,6 @@ const queryClient = new QueryClient({
   },
 });
 
-/**
- * App de paneles embebida nativamente en radicar. Provee su propio
- * QueryClient (scoped) y rutas anidadas bajo /paneles/*. El contenedor
- * `.dnt-root` scopea los tokens de estilo M3.
- */
 export default function DashboardsApp() {
   return (
     <QueryClientProvider client={queryClient}>

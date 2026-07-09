@@ -13,14 +13,6 @@ interface TooltipProps {
   /** Clase extra para la burbuja del tooltip. */
   contentClassName?: string;
 }
-
-/**
- * Tooltip ligero renderizado en un portal a `document.body` con posicion
- * `fixed`, de modo que NO se recorta dentro de contenedores con
- * `overflow-hidden` (p.ej. el carrusel del mapa de calor). Aparece debajo
- * del trigger y se reubica si se sale del viewport. Respeta
- * `prefers-reduced-motion`.
- */
 export function Tooltip({ content, children, className, contentClassName }: TooltipProps) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);

@@ -5,7 +5,7 @@ import { PageShell } from '@dash/components/layout/page-shell';
 import { GlobalFilters, type FilterOption, type SedeJerarquiaOption } from '@dash/components/filters/global-filters';
 import { Card, CardHeader, CardTitle, CardContent } from '@dash/components/ui/card';
 import { Badge } from '@dash/components/ui/badge';
-import { Button } from '@dash/components/ui/button';
+import Button from '@/components/common/Ui/Button';
 import { BannerInfo } from '@dash/components/ui/banner-info';
 import { KpiCard } from '@dash/components/charts/kpi-card';
 import { ProgressList } from '@dash/components/charts/progress-bar';
@@ -404,13 +404,11 @@ export function LibraryDemo() {
       <Section title="10. Button + Badge" description="Variantes shadcn de control y estado.">
         <Card className="p-6">
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="default">Default</Button>
-            <Button variant="primary">Primary</Button>
+            <Button variant="primary">Default / Primary</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="outline">Outline</Button>
             <Button variant="ghost">Ghost</Button>
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="link">Link</Button>
+            <Button variant="danger">Destructive / Danger</Button>
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <Badge variant="neutral">NEUTRAL</Badge>
