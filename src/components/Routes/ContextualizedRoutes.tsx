@@ -65,6 +65,9 @@ const HelpDesk = lazy(
 const UserCard  = lazy(
   () => import("@/featuures/Administrator/Page/UserPage")
 );
+const Dashboards = lazy(
+  () => import("@/featuures/Dashboards/Page/DashboardsPage")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -123,6 +126,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/help-desk" element={<HelpDesk />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/configuration" element={<Configuration />} />
+        <Route path="/paneles/*" element={<Dashboards />} />
         
         {/* Rutas con contextos específicos */}
         <Route path="/usuarios" element={<UsersPage />} />

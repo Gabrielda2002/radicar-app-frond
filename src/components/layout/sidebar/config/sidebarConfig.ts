@@ -6,7 +6,7 @@ import { MdOutlineInventory, MdHomeRepairService  } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
-import { Box, ClipboardList, GitPullRequestArrow, HandCoins, Mailbox, User, UsersRound } from 'lucide-react';
+import { Box, ClipboardList, GitPullRequestArrow, HandCoins, LayoutDashboard, Mailbox, User, UsersRound } from 'lucide-react';
 import { BiMailSend } from 'react-icons/bi';
 import { FaUserDoctor } from "react-icons/fa6";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -170,9 +170,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       },
     ]
   },
-
-  // Reportes
-  {
+{
     id: 'reports',
     title: 'Reportes',
     roles: [6, 2, 14, 3, 15, 1, 18, 19, 20, 21],
@@ -198,6 +196,64 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         icon: Mailbox,
         type: 'section',
         path: '/help-desk'
+      }
+    ]
+  },
+
+  // Dashboards
+  {
+    id: 'dashboards',
+    title: 'Dashboards',
+    roles: [1],
+    items: [
+      {
+        id: 'dashboards-category',
+        title: 'Paneles BI',
+        icon: LayoutDashboard,
+        type: 'category',
+        roles: [1],
+        children: [
+          {
+            id: 'dashboards-resumen',
+            title: 'Resumen de Citas',
+            icon: LayoutDashboard,
+            path: '/paneles/resumen',
+            type: 'subcategory',
+            roles: [1]
+          },
+          {
+            id: 'dashboards-ejecucion',
+            title: 'Ejecución vs Nota Técnica',
+            icon: LayoutDashboard,
+            path: '/paneles/ejecucion-nt',
+            type: 'subcategory',
+            roles: [1]
+          },
+          {
+            id: 'dashboards-financiero',
+            title: 'Análisis Financiero',
+            icon: LayoutDashboard,
+            path: '/paneles/financiero',
+            type: 'subcategory',
+            roles: [1]
+          },
+          {
+            id: 'dashboards-calidad',
+            title: 'Calidad y Oportunidad',
+            icon: LayoutDashboard,
+            path: '/paneles/calidad',
+            type: 'subcategory',
+            roles: [1]
+          },
+          {
+            id: 'dashboards-pym',
+            title: 'PyM / RIAS',
+            icon: LayoutDashboard,
+            path: '/paneles/pym',
+            type: 'subcategory',
+            roles: [1]
+          }
+        ]
       }
     ]
   },

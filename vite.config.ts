@@ -24,6 +24,7 @@ export default defineConfig({
     alias: {
       "@hooks": path.resolve(__dirname, "./src/hooks"),
       '@' : path.resolve(__dirname, './src'),
+      '@dash' : path.resolve(__dirname, './src/featuures/Dashboards/app'),
     },
   },
   build: {
