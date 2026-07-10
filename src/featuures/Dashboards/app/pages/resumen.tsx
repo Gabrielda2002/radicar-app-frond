@@ -110,7 +110,7 @@ export function ResumenPage() {
                           color: 'hsl(var(--on-surface))',
                         }}
                       />
-                      <Bar dataKey="efectivas" fill="#0B3B5E" radius={[6, 6, 0, 0]} />
+                      <Bar dataKey="citas" fill="#0B3B5E" radius={[6, 6, 0, 0]} />
                       <Bar dataKey="cumplidas" fill="#1F8E8E" radius={[6, 6, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
