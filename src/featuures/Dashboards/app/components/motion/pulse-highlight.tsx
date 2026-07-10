@@ -29,7 +29,7 @@ export function PulseHighlight({
 
   if (reduce) {
     return (
-      <div className={cn('rounded-xl', className)} style={{ boxShadow: `0 0 0 1px ${color}55` }}>
+      <div className={cn('rounded-xl', className)} style={{ boxShadow: `0 0 0 1px ${color}44` }}>
         {children}
       </div>
     );

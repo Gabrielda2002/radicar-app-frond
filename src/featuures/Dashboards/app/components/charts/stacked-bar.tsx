@@ -26,7 +26,7 @@ export function StackedBar({ segments, normalized = false, height = 'md', classN
   return (
     <div
       className={cn(
-        'flex w-full overflow-hidden rounded-full bg-surface-container-highest',
+        'flex w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700',
         h,
         className,
       )}

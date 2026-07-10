@@ -81,18 +81,18 @@ export function ResumenPage() {
             {/* Charts row 1 */}
             <BlurFade delay={0.12}>
               <section className="grid grid-cols-12 gap-6">
-                <Card className="col-span-12 p-6 lg:col-span-8">
-                <CardHeader className="flex flex-row items-start justify-between p-0 pb-6">
+                <Card className="col-span-12 lg:col-span-8">
+                <CardHeader className="flex flex-row items-start justify-between p-0 pb-5">
                   <div>
                     <CardTitle>Evolución Mensual: Efectivas vs Cumplidas</CardTitle>
-                    <p className="text-label-md text-on-surface-variant">Base efectiva (cumplidas + incumplidas) · solo convenios NT</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Base efectiva (cumplidas + incumplidas) · solo convenios NT</p>
                   </div>
-                  <div className="flex gap-4 text-[12px] font-bold text-on-surface-variant">
+                  <div className="flex gap-4 text-xs font-bold text-gray-500 dark:text-gray-400">
                     <span className="flex items-center gap-1">
-                      <span className="h-3 w-3 rounded-full bg-corporate-navy" /> Efectivas
+                      <span className="h-3 w-3 rounded-full bg-[#0B3B5E]" /> Efectivas
                     </span>
                     <span className="flex items-center gap-1">
-                      <span className="h-3 w-3 rounded-full bg-corporate-turquoise" /> Cumplidas
+                      <span className="h-3 w-3 rounded-full bg-[#049AE7]" /> Cumplidas
                     </span>
                   </div>
                 </CardHeader>
@@ -100,14 +100,15 @@ export function ResumenPage() {
                   <ResponsiveContainer width="100%" height={260}>
                     <BarChart data={data.evolucionMensual}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="mes" stroke="hsl(var(--on-surface-variant))" />
-                      <YAxis stroke="hsl(var(--on-surface-variant))" tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
+                      <XAxis dataKey="mes" stroke="#9CA3AF" tick={{ fontSize: 11 }} />
+                      <YAxis stroke="#9CA3AF" tick={{ fontSize: 11 }} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
                       <Tooltip
                         contentStyle={{
-                          background: 'hsl(var(--surface-container-lowest))',
-                          border: '1px solid hsl(var(--outline-variant))',
+                          background: '#fff',
+                          border: '1px solid #E5E7EB',
                           borderRadius: 8,
-                          color: 'hsl(var(--on-surface))',
+                          color: '#111827',
+                          fontSize: 12,
                         }}
                       />
                       <Bar dataKey="citas" fill="#0B3B5E" radius={[6, 6, 0, 0]} />
@@ -117,10 +118,10 @@ export function ResumenPage() {
                 </CardContent>
               </Card>
 
-              <Card className="col-span-12 p-6 lg:col-span-4">
+              <Card className="col-span-12 lg:col-span-4">
                 <CardHeader className="p-0 pb-2">
                   <CardTitle>Distribución de Servicios</CardTitle>
-                  <p className="text-label-md text-on-surface-variant">Por funcionalidad</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Por funcionalidad</p>
                 </CardHeader>
                 <CardContent className="p-0">
                   <ResponsiveContainer width="100%" height={220}>
@@ -140,22 +141,23 @@ export function ResumenPage() {
                       <Tooltip
                         formatter={(v) => formatNumber(Number(v ?? 0))}
                         contentStyle={{
-                          background: 'hsl(var(--surface-container-lowest))',
-                          border: '1px solid hsl(var(--outline-variant))',
+                          background: '#fff',
+                          border: '1px solid #E5E7EB',
                           borderRadius: 8,
-                          color: 'hsl(var(--on-surface))',
+                          color: '#111827',
+                          fontSize: 12,
                         }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
                   <ul className="mt-4 space-y-2">
                     {data.distribucionServicios.map((d, i) => (
-                      <li key={d.tipo} className="flex items-center justify-between text-label-md">
+                      <li key={d.tipo} className="flex items-center justify-between text-xs">
                         <span className="flex items-center gap-2">
                           <span className="h-3 w-3 rounded" style={{ background: DONUT_COLORS[i % DONUT_COLORS.length] }} />
                           {d.tipo}
                         </span>
-                        <span className="font-bold text-on-surface">{formatNumber(d.n)}</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{formatNumber(d.n)}</span>
                       </li>
                     ))}
                   </ul>

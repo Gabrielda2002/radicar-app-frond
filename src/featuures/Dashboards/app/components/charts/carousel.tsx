@@ -70,19 +70,19 @@ export function Carousel<T>({
   const canNext = page < totalPages - 1;
 
   return (
-    <Card className={cn('p-6', className)}>
+    <Card className={cn('p-5', className)}>
       <div className="flex flex-row items-start justify-between gap-4 pb-4">
         <div className="min-w-0">
-          <h3 className="text-title-lg text-primary">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">{title}</h3>
           {description && (
-            <p className="text-label-md text-on-surface-variant">{description}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
           )}
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {headerExtra}
           {items.length > pageSize && (
             <div className="flex items-center gap-2">
-              <span className="tabular-nums text-label-md text-on-surface-variant">
+              <span className="tabular-nums text-sm text-gray-500 dark:text-gray-400">
                 {start}–{end} de {items.length}
               </span>
               <div className="flex gap-1">
@@ -108,7 +108,7 @@ export function Carousel<T>({
 
       <div className={cn('relative min-h-[1px] overflow-hidden', bodyClassName)}>
         {items.length === 0 ? (
-          <p className="py-8 text-center text-body-md text-on-surface-variant">{emptyText}</p>
+          <p className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">{emptyText}</p>
         ) : reduce ? (
           renderPage(slice)
         ) : (
@@ -136,7 +136,7 @@ export function Carousel<T>({
               onClick={() => go(i)}
               className={cn(
                 'h-1.5 rounded-full transition-all',
-                i === page ? 'w-5 bg-corporate-turquoise' : 'w-1.5 bg-outline-variant',
+                i === page ? 'w-5 bg-[#049AE7]' : 'w-1.5 bg-gray-300 dark:bg-gray-600',
               )}
             />
           ))}
@@ -164,8 +164,8 @@ function NavButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        'flex h-8 w-8 items-center justify-center rounded-md border border-outline-variant text-on-surface-variant transition-all',
-        disabled ? 'cursor-not-allowed opacity-30' : 'hover:bg-surface-container-low active:scale-95',
+        'flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 text-gray-500 transition-all dark:border-gray-600 dark:text-gray-400',
+        disabled ? 'cursor-not-allowed opacity-30' : 'hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-800',
       )}
     >
       {children}

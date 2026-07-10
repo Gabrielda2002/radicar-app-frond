@@ -9,12 +9,12 @@ import { cn, formatPercent } from "../../lib/utils";
 export function PctBadge({ value, className }: { value: number | null; className?: string }) {
   const cls =
     value == null
-      ? 'bg-outline-variant'
+      ? 'bg-gray-400'
       : value < 80
-        ? 'bg-status-low'
+        ? 'bg-red-500'
         : value > 120
-          ? 'bg-status-over'
-          : 'bg-status-on-target';
+          ? 'bg-purple-500'
+          : 'bg-green-500';
   return (
     <span
       className={cn(

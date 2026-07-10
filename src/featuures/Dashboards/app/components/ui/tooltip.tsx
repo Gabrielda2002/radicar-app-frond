@@ -79,7 +79,7 @@ export function Tooltip({ content, children, className, contentClassName }: Tool
                 zIndex: 9999,
               }}
               className={cn(
-                'pointer-events-none max-w-[18rem] rounded-lg bg-on-surface px-3 py-2 text-left text-xs font-medium leading-snug text-surface shadow-lg ring-1 ring-black/5',
+                'pointer-events-none max-w-[18rem] rounded-lg bg-gray-900 px-3 py-2 text-left text-xs font-medium leading-snug text-white shadow-lg ring-1 ring-black/5 dark:bg-gray-100 dark:text-gray-900',
                 contentClassName,
               )}
             >

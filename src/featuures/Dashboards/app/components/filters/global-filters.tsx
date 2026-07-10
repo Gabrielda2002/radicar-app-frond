@@ -90,7 +90,7 @@ export function GlobalFilters({
 }: GlobalFiltersProps) {
   return (
     <section className="flex flex-wrap items-center justify-between gap-4">
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-outline-variant bg-card px-4 py-2 shadow-sm">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
         <FilterItem
           label="Periodo"
           value={selectedPeriodo}
@@ -162,7 +162,7 @@ export function GlobalFilters({
 }
 
 function Divider() {
-  return <div className="mx-2 h-8 w-px bg-outline-variant" />;
+  return <div className="mx-2 h-8 w-px bg-gray-200 dark:bg-gray-700" />;
 }
 
 interface FilterItemProps {
@@ -176,7 +176,7 @@ interface FilterItemProps {
 function FilterItem({ label, value, onChange, options, placeholder }: FilterItemProps) {
   return (
     <div className="flex flex-col">
-      <span className="text-label-md text-on-surface-variant">{label}</span>
+      <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">{label}</span>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="h-auto p-0">
           <SelectValue placeholder={placeholder} />
@@ -230,7 +230,7 @@ function SedeFilterItem({ jerarquia, selectedSedeGrupo, selectedSede, onChange }
 
   return (
     <div className="flex flex-col">
-      <span className="text-label-md text-on-surface-variant">Sede</span>
+      <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">Sede</span>
       <Select value={value} onValueChange={handleChange}>
         <SelectTrigger className="h-auto p-0">
           <SelectValue placeholder="Todas las sedes" />
@@ -290,7 +290,7 @@ function ConvenioFilterItem({
 
   return (
     <div className="flex flex-col">
-      <span className="text-label-md text-on-surface-variant">Convenio</span>
+      <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">Convenio</span>
       <Select value={value} onValueChange={handleChange}>
         <SelectTrigger className="h-auto p-0">
           <SelectValue placeholder="Todos los convenios" />

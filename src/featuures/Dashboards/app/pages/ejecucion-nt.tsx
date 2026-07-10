@@ -67,7 +67,7 @@ export function EjecucionNtPage() {
               emptyText={catSearch ? 'Ningún CUPS coincide con la búsqueda' : 'Sin datos para los filtros actuales'}
               renderPage={(slice) => (
                 <table className="w-full text-left text-[13px]">
-                  <thead className="bg-surface-container-high text-label-md uppercase tracking-wider text-on-surface-variant">
+                  <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                     <tr>
                       <th className="px-4 py-3 font-semibold">CUPS</th>
                       <th className="px-4 py-3 font-semibold">Descripción</th>
@@ -76,10 +76,10 @@ export function EjecucionNtPage() {
                       <th className="px-4 py-3 text-right font-semibold">Cumplimiento</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-outline-variant/20 text-on-surface">
+                  <tbody className="divide-y divide-gray-200 text-gray-900 dark:divide-gray-700 dark:text-white">
                     {slice.map((c) => (
-                      <tr key={c.cups} className="transition-colors hover:bg-surface-container-low">
-                        <td className="px-4 py-4 font-bold text-primary">{c.cups}</td>
+                      <tr key={c.cups} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <td className="px-4 py-4 font-bold text-[#00776f] dark:text-[#049AE7]">{c.cups}</td>
                         <td className="px-4 py-4">{c.descripcion ?? '—'}</td>
                         <td className="px-4 py-4 text-right tabular-nums">{formatNumber(c.meta)}</td>
                         <td className="px-4 py-4 text-right tabular-nums">{formatNumber(c.ejecutado)}</td>
@@ -109,17 +109,17 @@ export function EjecucionNtPage() {
               }
               renderPage={(slice) => (
                 <table className="w-full text-left text-[13px]">
-                  <thead className="bg-surface-container-high text-label-md uppercase tracking-wider text-on-surface-variant">
+                  <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                     <tr>
                       <th className="px-4 py-3 font-semibold">CUPS</th>
                       <th className="px-4 py-3 font-semibold">Descripción</th>
                       <th className="px-4 py-3 text-right font-semibold">Meta esperada</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-outline-variant/20 text-on-surface">
+                  <tbody className="divide-y divide-gray-200 text-gray-900 dark:divide-gray-700 dark:text-white">
                     {slice.map((c) => (
-                      <tr key={c.cups} className="transition-colors hover:bg-surface-container-low">
-                        <td className="px-4 py-4 font-bold text-primary">{c.cups}</td>
+                      <tr key={c.cups} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <td className="px-4 py-4 font-bold text-[#00776f] dark:text-[#049AE7]">{c.cups}</td>
                         <td className="px-4 py-4">{c.descripcion ?? '—'}</td>
                         <td className="px-4 py-4 text-right tabular-nums">{formatNumber(c.meta)}</td>
                       </tr>
@@ -138,17 +138,17 @@ export function EjecucionNtPage() {
               emptyText="Todos los CUPS ejecutados están en la nota técnica"
               renderPage={(slice) => (
                 <table className="w-full text-left text-[13px]">
-                  <thead className="bg-surface-container-high text-label-md uppercase tracking-wider text-on-surface-variant">
+                  <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                     <tr>
                       <th className="px-4 py-3 font-semibold">CUPS</th>
                       <th className="px-4 py-3 font-semibold">Descripción</th>
                       <th className="px-4 py-3 text-right font-semibold">Ejecutado</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-outline-variant/20 text-on-surface">
+                  <tbody className="divide-y divide-gray-200 text-gray-900 dark:divide-gray-700 dark:text-white">
                     {slice.map((c) => (
-                      <tr key={c.cups} className="transition-colors hover:bg-surface-container-low">
-                        <td className="px-4 py-4 font-bold text-primary">{c.cups}</td>
+                      <tr key={c.cups} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <td className="px-4 py-4 font-bold text-[#00776f] dark:text-[#049AE7]">{c.cups}</td>
                         <td className="px-4 py-4">{c.descripcion ?? '—'}</td>
                         <td className="px-4 py-4 text-right tabular-nums">{formatNumber(c.ejecutado)}</td>
                       </tr>
@@ -166,12 +166,12 @@ export function EjecucionNtPage() {
               renderPage={(slice) => (
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                   {slice.map((s) => (
-                    <div key={s.convenio} className="rounded-lg border border-outline-variant p-3">
+                    <div key={s.convenio} className="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
                       <div className="mb-2 flex items-start justify-between">
-                        <span className="text-[10px] font-bold uppercase text-on-surface-variant">
+                        <span className="text-[10px] font-bold uppercase text-gray-500 dark:text-gray-400">
                           {s.convenio}
                         </span>
-                        <span className="text-[10px] text-on-surface-variant">{formatNumber(s.total)} ejec.</span>
+                        <span className="text-[10px] text-gray-500 dark:text-gray-400">{formatNumber(s.total)} ejec.</span>
                       </div>
                       <TendenciaBars points={s.points} />
                     </div>
@@ -215,7 +215,7 @@ function CupsSearch({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <div className="flex overflow-hidden rounded-md border border-outline-variant text-[11px] font-semibold">
+      <div className="flex overflow-hidden rounded-md border border-gray-200 text-[11px] font-semibold dark:border-gray-700">
         {(['cups', 'descripcion'] as const).map((m) => (
           <button
             key={m}
@@ -224,8 +224,8 @@ function CupsSearch({
             className={cn(
               'px-2.5 py-1.5 transition-colors',
               mode === m
-                ? 'bg-corporate-turquoise text-white'
-                : 'bg-surface text-on-surface-variant hover:bg-surface-container-low',
+                ? 'bg-[#049AE7] text-white'
+                : 'bg-white text-gray-500 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800',
             )}
           >
             {m === 'cups' ? 'CUPS' : 'Descripción'}
@@ -233,20 +233,20 @@ function CupsSearch({
         ))}
       </div>
       <div className="relative">
-        <Search className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-on-surface-variant" />
+        <Search className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
         <input
           type="text"
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
           placeholder={mode === 'cups' ? 'Buscar CUPS…' : 'Buscar descripción…'}
-          className="w-44 rounded-md border border-outline-variant bg-surface py-1.5 pl-7 pr-6 text-[12px] text-on-surface placeholder:text-on-surface-variant focus:border-corporate-turquoise focus:outline-none"
+          className="w-44 rounded-md border border-gray-200 bg-white py-1.5 pl-7 pr-6 text-[12px] text-gray-900 placeholder:text-gray-400 focus:border-[#049AE7] focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
         />
         {value && (
           <button
             type="button"
             aria-label="Limpiar búsqueda"
             onClick={() => onValueChange('')}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -278,15 +278,15 @@ function ejecTone(pct: number | null): 'green' | 'turquoise' | 'red' | 'outline'
 }
 
 const ejecBarBg: Record<'green' | 'turquoise' | 'red' | 'outline', string> = {
-  green: 'bg-normative-green',
-  turquoise: 'bg-corporate-turquoise',
-  red: 'bg-normative-red',
-  outline: 'bg-outline-variant',
+  green: 'bg-green-500',
+  turquoise: 'bg-[#049AE7]',
+  red: 'bg-red-500',
+  outline: 'bg-gray-300 dark:bg-gray-600',
 };
 
 /** Barras mensuales de ejecucion, coloreadas por el semaforo del KPI; tooltip con el %. */
 function TendenciaBars({ points }: { points: Array<{ mes: string; ejecutado: number; pct: number | null }> }) {
-  if (points.length === 0) return <div className="h-16 rounded bg-outline-variant/10" />;
+  if (points.length === 0) return <div className="h-16 rounded bg-gray-100 dark:bg-gray-800" />;
   const max = Math.max(...points.map((p) => p.ejecutado), 1);
   return (
     <div className="flex h-16 items-end gap-1">
@@ -298,7 +298,7 @@ function TendenciaBars({ points }: { points: Array<{ mes: string; ejecutado: num
             content={
               <div className="text-center">
                 <span className="block font-bold tabular-nums">{p.pct != null ? `${p.pct}%` : 's/d'}</span>
-                <span className="mt-0.5 block text-surface/80">
+                <span className="mt-0.5 block text-gray-400">
                   {p.mes} · {formatNumber(p.ejecutado)} ejec.
                 </span>
               </div>
@@ -334,37 +334,37 @@ function CumplimientoKpi({
   const value = pct ?? 0;
   const tone = !hasMeta ? 'outline' : value >= 80 ? 'green' : value >= 50 ? 'turquoise' : 'red';
   const border = {
-    outline: 'border-l-outline-variant',
-    green: 'border-l-normative-green',
-    turquoise: 'border-l-corporate-turquoise',
-    red: 'border-l-normative-red',
+    outline: 'border-l-gray-300 dark:border-l-gray-600',
+    green: 'border-l-green-500',
+    turquoise: 'border-l-[#049AE7]',
+    red: 'border-l-red-500',
   }[tone];
   const bar = {
-    outline: 'bg-outline-variant',
-    green: 'bg-normative-green',
-    turquoise: 'bg-corporate-turquoise',
-    red: 'bg-normative-red',
+    outline: 'bg-gray-300 dark:bg-gray-600',
+    green: 'bg-green-500',
+    turquoise: 'bg-[#049AE7]',
+    red: 'bg-red-500',
   }[tone];
 
   const card = (
-    <Card className={cn('flex h-full items-center gap-4 border-l-4 px-5 py-3', border)}>
+    <Card className={cn('flex h-full items-center gap-4 border-l-[3px] px-5 py-3', border)}>
       <div className="min-w-0 flex-1">
-        <p className="text-label-md uppercase tracking-wider text-on-surface-variant">
+        <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
           Cumplimiento Global
         </p>
-        <p className="mt-0.5 text-[10px] text-on-surface-variant">
+        <p className="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400">
           {hasMeta
             ? `${formatNumber(ejecutado)} ejec. / ${formatNumber(meta)} meta`
             : 'Sin NT vigente para el filtro'}
         </p>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-surface-container">
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
           <div
             className={cn('h-full rounded-full transition-all duration-700', bar)}
             style={{ width: `${clampPercent(value)}%` }}
           />
         </div>
       </div>
-      <div className="text-headline-md font-bold text-corporate-navy">
+      <div className="text-2xl font-bold text-[#0B3B5E] dark:text-white">
         {hasMeta ? <NumberTicker value={value} decimals={1} suffix="%" /> : '—'}
       </div>
     </Card>

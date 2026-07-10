@@ -5,10 +5,10 @@ import { cn } from '@dash/lib/utils';
 const BASE = 'rounded-lg border-l-4 p-3 flex items-start gap-3';
 
 const BANNER_STYLES: Record<string, string> = {
-  info: `${BASE} bg-secondary-container/30 border-secondary text-on-secondary-container`,
-  warning: `${BASE} bg-normative-amber/15 border-normative-amber`,
-  danger: `${BASE} bg-error-container/30 border-normative-red`,
-  success: `${BASE} bg-tertiary-container/30 border-normative-green`,
+  info: `${BASE} bg-blue-50 border-blue-400 text-blue-900 dark:bg-blue-950 dark:text-blue-200`,
+  warning: `${BASE} bg-amber-50 border-amber-400 text-amber-900 dark:bg-amber-950 dark:text-amber-200`,
+  danger: `${BASE} bg-red-50 border-red-400 text-red-900 dark:bg-red-950 dark:text-red-200`,
+  success: `${BASE} bg-green-50 border-green-400 text-green-900 dark:bg-green-950 dark:text-green-200`,
 };
 
 const iconMap = {
@@ -19,10 +19,10 @@ const iconMap = {
 } as const;
 
 const iconColorMap = {
-  info: 'text-on-secondary-container',
-  warning: 'text-normative-amber',
-  danger: 'text-normative-red',
-  success: 'text-normative-green',
+  info: 'text-blue-500',
+  warning: 'text-amber-500',
+  danger: 'text-red-500',
+  success: 'text-green-500',
 } as const;
 
 export interface BannerInfoProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -40,9 +40,9 @@ export const BannerInfo = forwardRef<HTMLDivElement, BannerInfoProps>(function B
     <div ref={ref} className={cn(BANNER_STYLES[variant ?? 'info'], className)} {...props}>
       <Icon className={cn('h-5 w-5 shrink-0 mt-0.5', iconColorMap[variant ?? 'info'])} />
       <div className="flex-1 min-w-0">
-        {title && <p className="font-bold text-[13px] text-on-surface">{title}</p>}
+        {title && <p className="font-bold text-[13px] text-gray-900 dark:text-white">{title}</p>}
         {description && (
-          <p className="text-[11px] text-on-surface-variant mt-0.5">{description}</p>
+          <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5">{description}</p>
         )}
         {children}
       </div>
