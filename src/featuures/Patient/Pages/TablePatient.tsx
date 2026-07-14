@@ -9,6 +9,7 @@ import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
 import { DataTable } from "@/components/common/ReusableTable";
 import { IPacientes } from "@/models/IPacientes";
+import ModalUploadPatients from "../Components/ModalUploadPatients";
 const ModalPaciente = lazy(() => import("../Components/ModalPatient"));
 
 interface TablaPatientProps {
@@ -88,27 +89,31 @@ const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
       )}
 
       <section className="p-5 mb-8 bg-white rounded-md shadow-lg dark:bg-gray-800 container-tabla shadow-indigo-500/40">
-        {/* header-table */}
-        <section className="flex items-end md:justify-between w-full mb-4">
-          <div className="flex md:flex-col flex-wrap w-80">
-            <Input
-              label="Identificación del Paciente"
-              type="text"
-              placeholder="Buscar paciente"
-              onChange={(e) => setIdentificacion(e.target.value)}
-              helpText="Ingrese el número de identificación del paciente y presione buscar."
-              error={error ? error : undefined}
-              touched={!!error}
-              value={identificacion}
-              required
-            />
+        <section className="flex flex-wrap items-end justify-between gap-4 mb-4">
+          <div className="flex items-end gap-2 w-full md:w-96">
+            <div className="flex-1">
+              <Input
+                label="Identificación del Paciente"
+                type="text"
+                placeholder="Buscar paciente"
+                onChange={(e) => setIdentificacion(e.target.value)}
+                helpText="Ingrese el número de identificación del paciente y presione buscar."
+                error={error ? error : undefined}
+                touched={!!error}
+                value={identificacion}
+                required
+              />
+            </div>
             <Button onClick={handleSearch} variant="secondary" type="button">
               Buscar
             </Button>
           </div>
-          <Suspense fallback={<LoadingSpinner />}>
-            <ModalPaciente id={null} paciente={null} onSuccess={refetch} />
-          </Suspense>
+          <div className="flex items-center gap-2">
+            <ModalUploadPatients/>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ModalPaciente id={null} paciente={null} onSuccess={refetch} />
+            </Suspense>
+          </div>
         </section>
         <div>
           {patients && (
