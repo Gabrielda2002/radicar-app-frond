@@ -37,7 +37,7 @@ export function PymPage() {
         header: () => <span className="block text-right">Ejec. Real</span>,
         cell: (i) => {
           const v = i.getValue() as number | null;
-          const cls = (v ?? 0) < 30 ? 'text-normative-red' : 'text-normative-amber';
+          const cls = (v ?? 0) < 30 ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400';
           return <span className={`block text-right font-bold ${cls}`}>{formatPercent(v)}</span>;
         },
       },
@@ -51,7 +51,7 @@ export function PymPage() {
         header: () => <span className="block text-right">Desviación</span>,
         cell: (i) => {
           const v = i.row.original.pct_cump ?? 0;
-          return <span className="block text-right text-normative-red">{formatPercent(v - 80)}</span>;
+          return <span className="block text-right text-red-600 dark:text-red-400">{formatPercent(v - 80)}</span>;
         },
       },
     ],
@@ -108,15 +108,15 @@ export function PymPage() {
                 />
               </div>
 
-              <Card className="flex flex-col p-6 lg:col-span-5">
-                <CardHeader className="p-0 pb-6">
+              <Card className="flex flex-col p-5 lg:col-span-5">
+                <CardHeader className="p-0 pb-5">
                   <CardTitle>Ejecución CUPS P&amp;P por Grupo Etario</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-1 items-center justify-center p-0 text-center">
                   <div>
-                    <Cake className="mx-auto h-16 w-16 text-on-surface-variant opacity-40" />
-                    <p className="mt-2 font-bold text-on-surface">Pendiente Fase A</p>
-                    <p className="mt-1 text-[12px] text-on-surface-variant">
+                    <Cake className="mx-auto h-16 w-16 text-gray-400 opacity-40" />
+                    <p className="mt-2 font-bold text-gray-900 dark:text-white">Pendiente Fase A</p>
+                    <p className="mt-1 text-[12px] text-gray-500 dark:text-gray-400">
                       <code>costos</code> aún no incluye <code>fecha_nacimiento</code> /{' '}
                       <code>grupo_etario</code>.
                     </p>
@@ -127,7 +127,7 @@ export function PymPage() {
 
             <PulseHighlight active={data.alertasCohortes.length > 0}>
               <Card className="overflow-hidden p-0">
-                <div className="flex items-center justify-between border-b border-outline-variant/30 bg-error-container/10 px-6 py-4">
+                <div className="flex items-center justify-between border-b border-gray-200 bg-red-50 px-6 py-4 dark:border-gray-700 dark:bg-red-950">
                   <CardTitle>Alertas de Cohortes (Cumplimiento &lt; 80%)</CardTitle>
                   <Badge variant="danger">{data.alertasCohortes.length} críticas</Badge>
                 </div>

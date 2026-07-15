@@ -40,7 +40,7 @@ export function CalidadPage() {
               items={data.oportunidadEspecialidad}
               pageSize={8}
               renderPage={(slice) => (
-                <div className="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
                   {slice.map((e, i) => (
                     <GaugeCard
                       key={e.especialidad}
@@ -49,14 +49,14 @@ export function CalidadPage() {
                       unit="Días"
                       fillPct={oportunidadFill(e.dias)}
                       tone={['secondary', 'primary', 'green', 'amber'][i % 4] as never}
-                      footer={<span className="text-on-surface-variant">{formatNumber(e.n)} citas</span>}
+                      footer={<span className="text-xs text-gray-500 dark:text-gray-400">{formatNumber(e.n)} citas</span>}
                     />
                   ))}
                 </div>
               )}
             />
 
-            <section className="grid grid-cols-1 gap-gutter lg:grid-cols-2">
+            <section className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               <Carousel
                 title="Estado de Consultas por Sede"
                 description={`${data.estadoPorSede.length} sedes`}
@@ -64,16 +64,16 @@ export function CalidadPage() {
                 pageSize={4}
                 headerExtra={
                   <div className="hidden gap-4 md:flex">
-                    <Legend color="bg-secondary" label="Cumplida" />
-                    <Legend color="bg-secondary-container" label="Incumplida" />
-                    <Legend color="bg-error-container" label="Cancelada" />
+                    <Legend color="bg-[#00776f]" label="Cumplida" />
+                    <Legend color="bg-blue-300" label="Incumplida" />
+                    <Legend color="bg-red-300" label="Cancelada" />
                   </div>
                 }
                 renderPage={(slice) => (
                   <div className="space-y-6">
                     {slice.map((s) => (
                       <div key={s.sede_grupo} className="space-y-2">
-                        <div className="flex justify-between text-label-md text-on-surface-variant">
+                        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                           <span className="font-bold">{s.sede_grupo}</span>
                           <span>
                             {formatNumber(s.total)} citas ·{' '}
@@ -85,9 +85,9 @@ export function CalidadPage() {
                         <StackedBar
                           normalized
                           segments={[
-                            { value: s.pct_cump ?? 0, bgClass: 'bg-secondary', label: 'Cumplida' },
-                            { value: s.pct_incump ?? 0, bgClass: 'bg-secondary-container', label: 'Incumplida' },
-                            { value: s.pct_canc ?? 0, bgClass: 'bg-error-container', label: 'Cancelada' },
+                            { value: s.pct_cump ?? 0, bgClass: 'bg-[#00776f]', label: 'Cumplida' },
+                            { value: s.pct_incump ?? 0, bgClass: 'bg-blue-300', label: 'Incumplida' },
+                            { value: s.pct_canc ?? 0, bgClass: 'bg-red-300', label: 'Cancelada' },
                           ]}
                         />
                       </div>
@@ -96,7 +96,7 @@ export function CalidadPage() {
                 )}
               />
 
-              <Card className="p-gutter">
+              <Card className="p-5">
                 <CardHeader className="p-0 pb-6">
                   <CardTitle>% Inasistencia Mensual por Convenio</CardTitle>
                 </CardHeader>
@@ -104,14 +104,15 @@ export function CalidadPage() {
                   <ResponsiveContainer width="100%" height={260}>
                     <LineChart data={inasisten.rows}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="mes" stroke="hsl(var(--on-surface-variant))" />
-                      <YAxis stroke="hsl(var(--on-surface-variant))" tickFormatter={(v) => `${v}%`} />
+                      <XAxis dataKey="mes" stroke="#9CA3AF" tick={{ fontSize: 11 }} />
+                      <YAxis stroke="#9CA3AF" tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}%`} />
                       <Tooltip
                         formatter={(v) => `${Number(v ?? 0).toFixed(1)}%`}
                         contentStyle={{
-                          background: 'hsl(var(--surface-container-lowest))',
-                          border: '1px solid hsl(var(--outline-variant))',
+                          background: '#fff',
+                          border: '1px solid #E5E7EB',
                           borderRadius: 8,
+                          fontSize: 12,
                         }}
                       />
                       {inasisten.convenios.map((c, i) => (
@@ -126,7 +127,7 @@ export function CalidadPage() {
                       ))}
                     </LineChart>
                   </ResponsiveContainer>
-                  <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-label-md">
+                  <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
                     {inasisten.convenios.map((c, i) => (
                       <span key={c} className="flex items-center gap-2">
                         <span
@@ -179,11 +180,11 @@ function efectivoCumpl(s: { pct_cump?: number | null; pct_incump?: number | null
 
 /** Semáforo de 4 bandas (idéntico al Resumen): >=85 verde, 80-85 amarillo, 75-80 rojo claro, <75 rojo oscuro */
 function cumplBandTextClass(pct: number | null): string {
-  if (pct == null) return 'text-on-surface-variant';
-  if (pct >= 85) return 'text-normative-green';
-  if (pct >= 80) return 'text-normative-amber';
-  if (pct >= 75) return 'text-[#EF5350]';
-  return 'text-normative-red';
+  if (pct == null) return 'text-gray-500 dark:text-gray-400';
+  if (pct >= 85) return 'text-green-600 dark:text-green-400';
+  if (pct >= 80) return 'text-amber-600 dark:text-amber-400';
+  if (pct >= 75) return 'text-red-400';
+  return 'text-red-600 dark:text-red-400';
 }
 
 function Legend({ color, label }: { color: string; label: string }) {

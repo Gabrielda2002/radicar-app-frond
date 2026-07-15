@@ -86,8 +86,8 @@ export function FinancieroPage() {
                   headerExtra={<Badge>{formatPercent(data.paretoTop20Pct)} top-20 del costo</Badge>}
                   bodyClassName="overflow-x-auto"
                   renderPage={(slice) => (
-                    <table className="w-full text-left text-body-md">
-                      <thead className="bg-surface-container-high text-label-md uppercase tracking-wider text-on-surface-variant">
+                    <table className="w-full text-left text-sm">
+                      <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                         <tr>
                           <th className="px-4 py-3 font-semibold">CUPS</th>
                           <th className="px-4 py-3 font-semibold">Servicio</th>
@@ -95,10 +95,10 @@ export function FinancieroPage() {
                           <th className="px-4 py-3 text-right font-semibold">Costo</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-outline-variant/20 text-on-surface">
+                      <tbody className="divide-y divide-gray-200 text-gray-900 dark:divide-gray-700 dark:text-white">
                         {slice.map((c) => (
-                          <tr key={c.cups} className="transition-colors hover:bg-surface-container-low">
-                            <td className="px-4 py-4 font-bold text-primary">{c.cups}</td>
+                          <tr key={c.cups} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="px-4 py-4 font-bold text-[#00776f] dark:text-[#049AE7]">{c.cups}</td>
                             <td className="px-4 py-4">{c.descripcion ?? '—'}</td>
                             <td className="px-4 py-4 text-right tabular-nums">{formatNumber(c.n)}</td>
                             <td className="px-4 py-4 text-right tabular-nums">{formatCurrency(c.millones)}</td>
@@ -126,7 +126,7 @@ export function FinancieroPage() {
                           tone: 'navy',
                         }))}
                       />
-                      <p className="mt-4 text-[11px] italic text-on-surface-variant">
+                      <p className="mt-4 text-[11px] italic text-gray-500 dark:text-gray-400">
                         Recuperación reportada solo en PANA:{' '}
                         {data.recuperacionPorConvenio[0]?.convenio_grupo ?? '—'} ({formatCurrency(
                           data.recuperacionPorConvenio[0]?.millones,

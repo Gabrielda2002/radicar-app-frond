@@ -44,7 +44,7 @@ export function DataTable<T>({
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center p-8 text-on-surface-variant">
+      <div className="flex items-center justify-center p-8 text-gray-500 dark:text-gray-400">
         {emptyState ?? 'Sin datos para mostrar'}
       </div>
     );
@@ -55,8 +55,8 @@ export function DataTable<T>({
       <table className="w-full border-collapse text-left">
         <thead
           className={cn(
-            'text-label-md uppercase tracking-wider text-on-surface-variant',
-            alertHeader ? 'bg-error-container/10' : 'bg-surface-container-high',
+            'text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400',
+            alertHeader ? 'bg-red-50 dark:bg-red-950' : 'bg-gray-50 dark:bg-gray-800',
           )}
         >
           {table.getHeaderGroups().map((hg) => (
@@ -84,14 +84,14 @@ export function DataTable<T>({
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y divide-outline-variant/20">
+        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="transition-colors hover:bg-surface-container-low"
+              className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-6 py-4 text-body-md text-on-surface">
+                <td key={cell.id} className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

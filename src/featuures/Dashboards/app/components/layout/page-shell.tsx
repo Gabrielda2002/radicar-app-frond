@@ -17,18 +17,18 @@ interface PageShellProps {
 }
 export function PageShell({ children }: PageShellProps) {
   return (
-    <div className="flex min-w-0 flex-1 flex-col">
-      <nav className="mb-4 flex flex-wrap justify-center gap-1 border-b border-outline-variant">
+    <div className="flex min-w-0 flex-1 flex-col py-2">
+      <nav className="mb-5 flex flex-wrap justify-center gap-1.5 border-b border-gray-200 dark:border-gray-700">
         {DASHBOARD_NAV.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={`/paneles${to}`}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-2 rounded-t-lg px-4 py-2 text-label-md transition-colors",
+                "flex items-center gap-2 rounded-t-lg px-4 py-2.5 text-sm font-semibold transition-colors",
                 isActive
-                  ? "border-b-2 border-corporate-turquoise text-corporate-navy dark:text-primary"
-                  : "text-on-surface-variant hover:bg-surface-container-low",
+                  ? "border-b-2 border-[#049AE7] text-[#00776f] dark:text-[#049AE7]"
+                  : "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800",
               )
             }
           >
@@ -37,7 +37,7 @@ export function PageShell({ children }: PageShellProps) {
           </NavLink>
         ))}
       </nav>
-      <main className="min-w-0 flex-1 space-y-gutter">{children}</main>
+      <main className="min-w-0 flex-1 space-y-5">{children}</main>
     </div>
   );
 }

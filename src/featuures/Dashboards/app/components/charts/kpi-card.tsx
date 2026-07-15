@@ -18,25 +18,25 @@ export type KpiAccent =
   | 'outline';
 
 const accentBorder: Record<KpiAccent, string> = {
-  turquoise: 'border-l-corporate-turquoise',
-  navy: 'border-l-corporate-navy',
-  amber: 'border-l-normative-amber',
-  red: 'border-l-normative-red',
-  'red-light': 'border-l-[#EF5350]',
-  green: 'border-l-normative-green',
-  secondary: 'border-l-secondary',
-  outline: 'border-l-outline-variant',
+  turquoise: 'border-l-[#049AE7]',
+  navy: 'border-l-[#0B3B5E]',
+  amber: 'border-l-amber-500',
+  red: 'border-l-red-500',
+  'red-light': 'border-l-red-400',
+  green: 'border-l-green-500',
+  secondary: 'border-l-[#00776f]',
+  outline: 'border-l-gray-300 dark:border-l-gray-600',
 };
 
 const accentBar: Record<KpiAccent, string> = {
-  turquoise: 'bg-corporate-turquoise',
-  navy: 'bg-corporate-navy',
-  amber: 'bg-normative-amber',
-  red: 'bg-normative-red',
-  'red-light': 'bg-[#EF5350]',
-  green: 'bg-normative-green',
-  secondary: 'bg-secondary',
-  outline: 'bg-outline-variant',
+  turquoise: 'bg-[#049AE7]',
+  navy: 'bg-[#0B3B5E]',
+  amber: 'bg-amber-500',
+  red: 'bg-red-500',
+  'red-light': 'bg-red-400',
+  green: 'bg-green-500',
+  secondary: 'bg-[#00776f]',
+  outline: 'bg-gray-300 dark:bg-gray-600',
 };
 
 /** Color del pulso de alerta segun accent (solo rojo/amarillo lo activan). */
@@ -47,9 +47,9 @@ const accentPulseColor: Partial<Record<KpiAccent, string>> = {
 };
 
 const trendColor = {
-  up: 'text-normative-green',
-  down: 'text-normative-red',
-  flat: 'text-on-surface-variant',
+  up: 'text-green-600 dark:text-green-400',
+  down: 'text-red-600 dark:text-red-400',
+  flat: 'text-gray-500 dark:text-gray-400',
 } as const;
 
 const TrendIcon = {
@@ -112,13 +112,13 @@ export function KpiCard({
   const card = (
     <Card
       className={cn(
-        'h-full border-l-4 transition-all card-shadow-hover p-6',
+        'h-full border-l-[3px] transition-all hover:shadow-md p-5',
         accentBorder[accent],
         className,
       )}
     >
       <div className="mb-4 flex items-start justify-between gap-2">
-        <span className="text-label-md uppercase tracking-wider text-on-surface-variant">
+        <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
           {label}
         </span>
         {delta && (
@@ -130,7 +130,7 @@ export function KpiCard({
         {!delta && icon}
       </div>
       <div className="flex items-baseline gap-2">
-        <h3 className="text-headline-lg text-corporate-navy">
+        <h3 className="text-2xl font-bold text-[#0B3B5E] dark:text-white">
           {ticker ? (
             <NumberTicker
               value={ticker.value}
@@ -145,7 +145,7 @@ export function KpiCard({
         </h3>
       </div>
       {progress !== undefined && (
-        <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-surface-container">
+        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
           <div
             className={cn('h-full rounded-full transition-all duration-700', accentBar[accent])}
             style={{ width: `${clampPercent(progress)}%` }}
@@ -153,7 +153,7 @@ export function KpiCard({
         </div>
       )}
       {caption && (
-        <p className="mt-2 text-[10px] text-on-surface-variant">{caption}</p>
+        <p className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">{caption}</p>
       )}
     </Card>
   );

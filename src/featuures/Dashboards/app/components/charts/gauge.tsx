@@ -5,11 +5,11 @@ import { cn, clampPercent } from '@dash/lib/utils';
 type GaugeTone = 'primary' | 'secondary' | 'error' | 'green' | 'amber';
 
 const toneClass: Record<GaugeTone, string> = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  error: 'text-error',
-  green: 'text-normative-green',
-  amber: 'text-normative-amber',
+  primary: 'text-[#00776f]',
+  secondary: 'text-[#049AE7]',
+  error: 'text-red-500',
+  green: 'text-green-500',
+  amber: 'text-amber-500',
 };
 
 interface GaugeProps {
@@ -43,7 +43,7 @@ function Gauge({
     <div className={cn('relative inline-block', className)} style={{ width: size, height: size }}>
       <svg className="gauge-svg h-full w-full" viewBox="0 0 100 100">
         <circle
-          className="text-surface-variant/50"
+          className="text-gray-200 dark:text-gray-700"
           cx="50"
           cy="50"
           r={radius}
@@ -65,9 +65,9 @@ function Gauge({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-headline-lg text-on-surface">{value}</span>
+        <span className="text-2xl font-bold text-gray-900 dark:text-white">{value}</span>
         {unit && (
-          <span className="text-[10px] font-black uppercase tracking-tighter text-on-surface-variant">
+          <span className="text-[10px] font-black uppercase tracking-tighter text-gray-500 dark:text-gray-400">
             {unit}
           </span>
         )}
@@ -83,15 +83,15 @@ interface GaugeCardProps extends GaugeProps {
 
 export function GaugeCard({ title, footer, ...gaugeProps }: GaugeCardProps) {
   return (
-    <Card className="flex flex-col items-center p-gutter text-center card-shadow-hover">
+    <Card className="flex flex-col items-center p-5 text-center hover:shadow-md">
       <div className="mb-4 flex w-full items-center justify-between">
-        <span className="text-label-md font-bold text-on-surface-variant">{title}</span>
+        <span className="text-xs font-bold text-gray-500 dark:text-gray-400">{title}</span>
       </div>
       <div className="mb-6">
         <Gauge {...gaugeProps} />
       </div>
       {footer && (
-        <div className="flex items-center gap-1 text-label-md">{footer}</div>
+        <div className="flex items-center gap-1 text-xs">{footer}</div>
       )}
     </Card>
   );

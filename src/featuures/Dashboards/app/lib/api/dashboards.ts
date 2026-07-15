@@ -26,7 +26,7 @@ const ResumenSchema = z.object({
     oportunidadDias: NumericOrNull,
   }),
   evolucionMensual: z.array(
-    z.object({ mes: z.string(), efectivas: IntegerOrNull, cumplidas: IntegerOrNull, pct: NumericOrNull }),
+    z.object({ mes: z.string(), citas: IntegerOrNull, cumplidas: IntegerOrNull }),
   ),
   distribucionServicios: z.array(z.object({ tipo: z.string(), n: IntegerOrNull })),
   cumplimientoTopConvenios: z.array(
