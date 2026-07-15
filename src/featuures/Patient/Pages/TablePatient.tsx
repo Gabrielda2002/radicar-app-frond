@@ -10,6 +10,7 @@ import Button from "@/components/common/Ui/Button";
 import { DataTable } from "@/components/common/ReusableTable";
 import { IPacientes } from "@/models/IPacientes";
 import ModalUploadPatients from "../Components/ModalUploadPatients";
+import { useAuth } from "@/context/authContext";
 const ModalPaciente = lazy(() => import("../Components/ModalPatient"));
 
 interface TablaPatientProps {
@@ -18,6 +19,8 @@ interface TablaPatientProps {
 
 const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
   const { data: patients, error, getData, refetch } = useFetchPatient();
+
+  const { rol } = useAuth()
 
   const [identificacion, setIdentificacion] = useState<string>("");
 
@@ -109,7 +112,9 @@ const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <ModalUploadPatients/>
+            {[1].includes(Number(rol)) && (
+              <ModalUploadPatients />
+            )}
             <Suspense fallback={<LoadingSpinner />}>
               <ModalPaciente id={null} paciente={null} onSuccess={refetch} />
             </Suspense>

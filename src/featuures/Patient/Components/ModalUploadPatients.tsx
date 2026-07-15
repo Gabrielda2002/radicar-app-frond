@@ -9,6 +9,7 @@ import { useStoreUploadPatients } from '../store/useStoreUploadPatients'
 import { ColumnConfig, DataTable } from '@/components/common/ReusableTable'
 import { Row } from '../types/UploadData'
 import { toast } from 'react-toastify'
+import SummaryCard from './SummaryCard'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 
@@ -208,35 +209,16 @@ const ModalUploadPatients = () => {
 
             </>
           )}
-          <p className='dark:text-gray-50 text-gray-800 dark:bg-green-600 bg-gray-500  p-2'>{uploadResult?.message}</p>
-          {error && <p className='text-sm text-red-500'>{error}</p>}
+          {uploadResult && (
+            <p className='dark:text-gray-50 text-gray-800 dark:bg-green-600 bg-green-500 p-2'>
+              {uploadResult?.message}
+            </p>
+          )}
+          {error && <p className='dark:text-gray-50 text-gray-800 dark:bg-red-500 p-2 bg-red-600'>{error}</p>}
         </div>
       </FormModal>
     </>
   )
 }
 
-interface SummaryCardProps {
-  label: string
-  value: number
-  variant: 'default' | 'success' | 'error' | 'warning' | 'info'
-}
-
-const SummaryCard = ({ label, value, variant }: SummaryCardProps) => {
-  const variantClasses: Record<SummaryCardProps['variant'], string> = {
-    default: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
-    success: 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-    error: 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-    warning: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-    info: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  }
-
-  return (
-    <div className={`rounded-lg p-4 text-center ${variantClasses[variant]}`}>
-      <p className='text-2xl font-bold'>{value}</p>
-      <p className='mt-1 text-xs font-medium'>{label}</p>
-    </div>
-  )
-}
-
-export default ModalUploadPatients
+export default ModalUploadPatients;

@@ -37,7 +37,7 @@ export const useStoreUploadPatients = create<UseStoreUploadPatientsReturn>((set)
             const responseData = error?.response?.data;
 
             if (responseData && typeof responseData === 'object' && 'rows' in responseData && 'ok' in responseData) {
-                set({ previewData: responseData as PreviewData });
+                set({ previewData: responseData as PreviewData, error: responseData.rows.length === 0 ? 'Formato de encabezados erroneos, rectifique e intente nuevamente.' : null });
             } else {
                 set({ error: 'Error inesperado al validar el archivo.' });
             }
