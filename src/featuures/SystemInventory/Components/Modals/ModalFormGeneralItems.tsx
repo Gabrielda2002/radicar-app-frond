@@ -5,7 +5,6 @@ import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFetchClassification } from "../../Hooks/useFetchClassification";
-import { useFetchAsset } from "../../Hooks/useFetchAsset";
 import { useFetchMaterials } from "../../Hooks/useFetchMaterials";
 import { useFetchStatusIvGeneral } from "../../Hooks/useFetchStatusIvGeneral";
 import { useTypeArea } from "../../Hooks/useTypeArea";
@@ -20,6 +19,7 @@ import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useStoreGeneral } from "../../Store/useStoreGeneral";
+import { useStoreAsset } from "../../Store/useStoreAsset";
 
 interface IModalFormGeneralItemsProps {
   idSede?: number | null;
@@ -40,7 +40,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   // clasificacion
   const { classification } = useFetchClassification();
 
-  const { asset, fetchData } = useFetchAsset();
+  const { asset, getAssetByClassification } = useStoreAsset();
 
   const { materials } = useFetchMaterials();
 
@@ -230,7 +230,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
               value={formik.values.classificationId}
               onChange={(e) => {
                 formik.setFieldValue("classificationId", e.target.value);
-                fetchData(e.target.value);
+                getAssetByClassification(e.target.value);
               }}
               onBlur={formik.handleBlur}
               touched={formik.touched.classificationId}

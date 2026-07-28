@@ -15,7 +15,6 @@ import {
   Tags,
   User,
 } from "lucide-react";
-
 export interface ConfigTable {
   id: string;
   label: string;
@@ -43,6 +42,9 @@ const TablaIpsRemite = lazy(() => import("@/featuures/IpsRemite/Pages/TablaIpsRe
 const TablaEspecialidad = lazy(() => import("@/featuures/Especialidad/Pages/TableSpecialty"));
 const TablaTipoServicio = lazy(() => import("@/featuures/TypeService/Pages/TablaTipoServicio"));
 const TableProfessional = lazy(() => import("@/featuures/Professional/page/Professional"));
+const TableAreaDependency = lazy(() => import("../components/views/TableAreaDependency"))
+const TableClassification = lazy(() => import("../components/views/TableClassification"))
+const TableAssets = lazy(() => import("../components/views/TableAssets"));
 
 export const configModules: ConfigModule[] = [
   {
@@ -143,6 +145,34 @@ export const configModules: ConfigModule[] = [
       }
     ],
   },
+  {
+    id: "general-inventory",
+    label: "Inventario General",
+    icon: BookOpen,
+    tables: [
+      {
+        id: "area-dependency",
+        label: 'Area Dependencia',
+        description: "Area dependencia",
+        icon: User,
+        component: TableAreaDependency
+      },
+      {
+        id: "classification",
+        label: "Clasificación",
+        icon: User,
+        description: "Clasificacion",
+        component: TableClassification
+      },
+      {
+        id: "assets",
+        label: "Activos",
+        icon: User,
+        description: "Activos",
+        component: TableAssets
+      }
+    ]
+  }
 ];
 
 export interface FlatTable extends ConfigTable {

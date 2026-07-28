@@ -2,6 +2,7 @@ import type { SelectOption } from "@/components/common/Ui/Select";
 import { api } from "@/utils/api-config";
 import { IMunicipios } from "@/models/IMunicipios";
 import { IDepartamentos } from "@/models/IDepartamentos";
+import { ICustomSelectOption } from "@/featuures/SystemInventory/Models/ICustomSelectOption";
 
 const cache: Record<string, unknown> = {};
 
@@ -24,6 +25,14 @@ export const fetchDepartamentosAsOptions = async (): Promise<SelectOption[]> => 
   );
   return data.map((d) => ({ value: d.id, label: d.name }));
 };
+
+export const fetchClassificationAsOptions = async (): Promise<SelectOption[]> => {
+  const data = await fetchJson<ICustomSelectOption[]>(
+    'classification',
+    '/clasificaciones'
+  )
+  return data.map((d) => ({ value: d.id, label: d.name}))
+}
 
 export const STATUS_OPTIONS: SelectOption[] = [
   { value: 1, label: "Activo" },
