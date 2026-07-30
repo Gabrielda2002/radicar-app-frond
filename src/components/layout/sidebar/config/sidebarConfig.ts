@@ -116,6 +116,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             path: '/tabla-auditoria',
             type: 'subcategory',
             roles: [3, 1, 2]
+          },
+          {
+            id: 'surveys',
+            title: 'Encuestas de Satisfacción',
+            icon: ClipboardList,
+            path: '/encuestas',
+            type: 'subcategory',
+            roles: [1, 3, 4, 11]
           }
         ]
       },

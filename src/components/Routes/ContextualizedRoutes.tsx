@@ -68,6 +68,15 @@ const UserCard  = lazy(
 const Dashboards = lazy(
   () => import("@/featuures/Dashboards/Page/DashboardsPage")
 );
+const EncuestasListado = lazy(
+  () => import("@/featuures/Encuestas/Page/EncuestasListado")
+);
+const EncuestasFormulario = lazy(
+  () => import("@/featuures/Encuestas/Page/EncuestasFormulario")
+);
+const EncuestaDetalle = lazy(
+  () => import("@/featuures/Encuestas/Page/EncuestaDetalle")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -133,6 +142,11 @@ const ContextualizedRoutes: React.FC = () => {
 
         {/* Rutas de las tablas radicacion - asegurándose que no entre en conflicto */}
         <Route path="/tablas/*" element={<TableRoutes />} />
+
+        {/* Rutas de Encuestas de Satisfacción */}
+        <Route path="/encuestas" element={<EncuestasListado />} />
+        <Route path="/encuestas/nueva" element={<EncuestasFormulario />} />
+        <Route path="/encuestas/:id" element={<EncuestaDetalle />} />
 
         {/* Fallback route - debe ser la última */}
         <Route path="*" element={<Navigate to="/home" />} />
