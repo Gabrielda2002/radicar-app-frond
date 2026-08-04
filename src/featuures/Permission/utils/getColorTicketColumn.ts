@@ -1,11 +1,16 @@
 export const getStatusColor = (status: string): string => {
-    switch (status) {
+
+    const statusUpper = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+
+    switch (statusUpper ) {
         case "Cerrado":
-            return " p-1 bg-red-800/60 rounded-lg dark:text-gray-300 text-gray-700";
+            return " p-1 bg-red-600 rounded-lg dark:text-gray-300 dark:bg-red-700 text-gray-700";
         case "Abierto":
             return " p-1 bg-green-500/60 rounded-lg dark:text-gray-300 text-gray-700";
         case "Pendiente":
             return " p-1 bg-blue-500/60 rounded-lg text-gray-300";
+        case "En_gestion":
+            return " p-1 bg-yellow-500/60 rounded-lg dark:text-gray-300 text-gray-700";
         default:
             return "";
     }

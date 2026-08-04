@@ -23,20 +23,13 @@ import {
   ESTADO_OPTIONS,
   MEDIO_NOTIFICACION_OPTIONS,
   ATRIBUTO_AFECTADO_OPTIONS,
+  CatalogoItem,
 } from "@/featuures/Pqrsdf/models/IPqrsdf";
 import { IPacientes } from "@/models/IPacientes";
 
 interface PqrsdfFormularioProps {
-  /** Datos iniciales para modo edición (cuando se usa embebido desde Detalle) */
   initialData?: IPqrsdf | null;
 }
-
-//* Catálogos genéricos
-interface CatalogoItem {
-  id: number;
-  name: string;
-}
-
 /** Convierte un array de { id, name } en SelectOption[] */
 const toSelectOptions = (items: CatalogoItem[]): SelectOption[] =>
   items.map((item) => ({
@@ -149,8 +142,6 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
   const navigate = useNavigate();
   const { createPqrsdf, updatePqrsdf, isLoading, error } = useStorePqrsdf();
 
-  console.log(initialData)
-
   const isEditMode = !!initialData;
   const pqrsdfId = initialData?.id;
 
@@ -206,8 +197,6 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
     formik.setFieldValue("patientId", patient.id);
     formik.setFieldTouched("patientId", true, false);
   };
-
-  console.log(formik.values)
 
   return (
     <>

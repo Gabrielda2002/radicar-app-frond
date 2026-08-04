@@ -12,6 +12,7 @@ import Button from "@/components/common/Ui/Button";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import { ENUM_LABELS, IPqrsdf } from "@/featuures/Pqrsdf/models/IPqrsdf";
 import { FormatDate } from "@/utils/FormatDate";
+import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 
 const PqrsdfListado: React.FC = () => {
   const navigate = useNavigate();
@@ -64,7 +65,11 @@ const PqrsdfListado: React.FC = () => {
       key: "status",
       header: "Estado",
       size: "sm",
-      render: (item) => item.status,
+      render: (item) => (
+        <span className={getStatusColor(item.status.toUpperCase())}>
+          {item.status}
+        </span>
+      ),
     },
     {
       key: "originAreaName",

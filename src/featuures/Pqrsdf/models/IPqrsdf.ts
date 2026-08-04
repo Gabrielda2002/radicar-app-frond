@@ -51,7 +51,11 @@ export enum AtributoAfectado {
   OTRO = "OTRO",
 }
 
-//* Interfaz principal — respuesta del backend (GET)
+export interface CatalogoItem {
+  id: number;
+  name: string;
+}
+
 export interface IPqrsdf {
     id:                 number;
     patientId:          number;

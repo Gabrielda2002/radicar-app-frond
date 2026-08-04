@@ -8,28 +8,8 @@ import PqrsdfFormulario from "@/featuures/Pqrsdf/Page/PqrsdfFormulario";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import { ENUM_LABELS } from "@/featuures/Pqrsdf/models/IPqrsdf";
 import { FormatDate } from "@/utils/FormatDate";
-
-//* Badge de estado con colores
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-
-  const colors: Record<string, string> = {
-    ABIERTO:
-      "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-    EN_GESTION:
-      "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
-    CERRADO: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
-  };
-
-  return (
-    <span
-      className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-        colors[status] || ""
-      }`}
-    >
-      {ENUM_LABELS.status[status] || status}
-    </span>
-  );
-};
+import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
+import { responseOpportunityDays } from "../utils/oportunityDays";
 
 //* Helper: muestra "—" si el valor es null/undefined/empty
 const displayValue = (value: unknown): string => {
@@ -51,7 +31,6 @@ const PqrsdfDetalle: React.FC = () => {
     }
   }, [id, getPqrsdfById]);
 
-  //* Verificar rol Admin (1) o Calidad (4) para botón de edición
   const rol = localStorage.getItem("rol");
   const canEdit = rol === "1" || rol === "4";
 
@@ -94,7 +73,6 @@ const PqrsdfDetalle: React.FC = () => {
 
   const pqrsdf = currentPqrsdf;
 
-  console.log(typeof  pqrsdf)
   return (
     <>
       <HeaderPage
@@ -117,8 +95,10 @@ const PqrsdfDetalle: React.FC = () => {
             <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
               Estado:
             </span>
-            <StatusBadge status={pqrsdf.status} />
-          </div>
+            <span className={getStatusColor(pqrsdf.status) + `text-sm`}>
+              {pqrsdf.status}
+            </span>
+           </div>
         </section>
 
         {/* ── Datos del PQRSDF ── */}
@@ -166,7 +146,7 @@ const PqrsdfDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {pqrsdf.presentedBy
                   ? ENUM_LABELS.presentedBy[pqrsdf.presentedBy] ||
-                    pqrsdf.presentedBy
+                  pqrsdf.presentedBy
                   : "—"}
               </p>
             </div>
@@ -177,7 +157,7 @@ const PqrsdfDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {pqrsdf.classification
                   ? ENUM_LABELS.classification[pqrsdf.classification] ||
-                    pqrsdf.classification
+                  pqrsdf.classification
                   : "—"}
               </p>
             </div>
@@ -198,7 +178,7 @@ const PqrsdfDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {pqrsdf.receptionMedium
                   ? ENUM_LABELS.receptionMedium[pqrsdf.receptionMedium] ||
-                    pqrsdf.receptionMedium
+                  pqrsdf.receptionMedium
                   : "—"}
               </p>
             </div>
@@ -293,13 +273,24 @@ const PqrsdfDetalle: React.FC = () => {
             </div>
             <div>
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Fecha Oportunidad de Respuesta
+              </span>
+              <p className="text-gray-800 dark:text-gray-200">
+                {responseOpportunityDays(
+                  pqrsdf.receivedDate,
+                  pqrsdf.responseDate
+                )}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Medio de Notificación
               </span>
               <p className="text-gray-800 dark:text-gray-200">
                 {pqrsdf.notificationMedium
                   ? ENUM_LABELS.notificationMedium[
-                      pqrsdf.notificationMedium
-                    ] || pqrsdf.notificationMedium
+                  pqrsdf.notificationMedium
+                  ] || pqrsdf.notificationMedium
                   : "—"}
               </p>
             </div>
@@ -310,8 +301,8 @@ const PqrsdfDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {pqrsdf.affectedAttribute
                   ? ENUM_LABELS.affectedAttribute[
-                      pqrsdf.affectedAttribute
-                    ] || pqrsdf.affectedAttribute
+                  pqrsdf.affectedAttribute
+                  ] || pqrsdf.affectedAttribute
                   : "—"}
               </p>
             </div>
