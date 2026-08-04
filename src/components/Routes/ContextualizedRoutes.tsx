@@ -77,6 +77,15 @@ const EncuestasFormulario = lazy(
 const EncuestaDetalle = lazy(
   () => import("@/featuures/Encuestas/Page/EncuestaDetalle")
 );
+const PqrsdfListado = lazy(
+  () => import("@/featuures/Pqrsdf/Page/PqrsdfListado")
+);
+const PqrsdfFormulario = lazy(
+  () => import("@/featuures/Pqrsdf/Page/PqrsdfFormulario")
+);
+const PqrsdfDetalle = lazy(
+  () => import("@/featuures/Pqrsdf/Page/PqrsdfDetalle")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -147,6 +156,11 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/encuestas" element={<EncuestasListado />} />
         <Route path="/encuestas/nueva" element={<EncuestasFormulario />} />
         <Route path="/encuestas/:id" element={<EncuestaDetalle />} />
+
+        {/* Rutas de PQRSDF */}
+        <Route path="/pqrsdf" element={<PqrsdfListado />} />
+        <Route path="/pqrsdf/nueva" element={<PqrsdfFormulario />} />
+        <Route path="/pqrsdf/:id" element={<PqrsdfDetalle />} />
 
         {/* Fallback route - debe ser la última */}
         <Route path="*" element={<Navigate to="/home" />} />

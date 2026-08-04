@@ -124,6 +124,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             path: '/encuestas',
             type: 'subcategory',
             roles: [1, 3, 4, 11]
+          },
+          {
+            id: 'pqrsdf',
+            title: 'PQRSDF',
+            icon: ClipboardList,
+            path: '/pqrsdf',
+            type: 'subcategory',
+            roles: [1, 3, 4, 11]
           }
         ]
       },
