@@ -50,7 +50,7 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const disabledClasses =
-    disabled || isLoading ? "opacity-50 cursor-not-allowed" : "";
+    disabled || isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer";
 
     const renderSpinner = () => (
       <svg

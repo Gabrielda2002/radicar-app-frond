@@ -11,7 +11,7 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import type { SelectOption } from "@/components/common/Ui/Select";
 import Textarea from "@/components/common/Ui/Textarea";
-import BuscadorPaciente from "@/featuures/Pqrsdf/Components/BuscadorPaciente";
+import BuscadorPaciente from "@/components/common/BuscadorPaciente";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import {
   IPqrsdf,
@@ -181,7 +181,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
       if (isEditMode && pqrsdfId) {
         await updatePqrsdf(pqrsdfId, values, () => {
           toast.success("PQRSDF actualizado exitosamente");
-          navigate(`/pqrsdf/${pqrsdfId}`);
+          navigate(`/pqrsdf`);
         });
       } else {
         await createPqrsdf(values, () => {

@@ -9,11 +9,13 @@ import { IPacientes } from "@/models/IPacientes";
 interface BuscadorPacienteProps {
   onPatientFound: (patient: IPacientes) => void;
   disabled?: boolean;
+  renderPatientInfo?: (patient: IPacientes) => React.ReactNode;
 }
 
 const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
   onPatientFound,
   disabled = false,
+  renderPatientInfo,
 }) => {
   const [documento, setDocumento] = useState<string>("");
   const [isSearching, setIsSearching] = useState(false);
@@ -56,6 +58,18 @@ const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
     }
   };
 
+  const defaultPatientInfo = (patient: IPacientes) => (
+    <>
+      <p className="text-sm font-medium text-green-800 dark:text-green-200">
+        Paciente encontrado:{" "}
+        <span className="font-semibold">{patient.name}</span>
+      </p>
+      <p className="text-xs text-green-600 dark:text-green-300">
+        Documento: {patient.documentNumber}
+      </p>
+    </>
+  );
+
   return (
     <div className="space-y-3">
       <h5 className="text-xl font-semibold text-blue-500 dark:text-gray-200">
@@ -95,13 +109,7 @@ const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
 
       {paciente && (
         <div className="p-3 bg-green-50 border border-green-200 rounded-md dark:bg-green-900/20 dark:border-green-800">
-          <p className="text-sm font-medium text-green-800 dark:text-green-200">
-            Paciente encontrado:{" "}
-            <span className="font-semibold">{paciente.name}</span>
-          </p>
-          <p className="text-xs text-green-600 dark:text-green-300">
-            Documento: {paciente.documentNumber}
-          </p>
+          {renderPatientInfo ? renderPatientInfo(paciente) : defaultPatientInfo(paciente)}
         </div>
       )}
     </div>

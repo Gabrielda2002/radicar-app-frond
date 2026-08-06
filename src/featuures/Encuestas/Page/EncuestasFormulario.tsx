@@ -8,7 +8,7 @@ import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import Button from "@/components/common/Ui/Button";
 import Select from "@/components/common/Ui/Select";
 import type { SelectOption } from "@/components/common/Ui/Select";
-import BuscadorPaciente from "@/featuures/Encuestas/Components/BuscadorPaciente";
+import BuscadorPaciente from "@/components/common/BuscadorPaciente";
 import GridSiNoNa from "@/featuures/Encuestas/Components/GridSiNoNa";
 import { useStoreEncuestas } from "@/featuures/Encuestas/store/useStoreEncuestas";
 import {
@@ -155,7 +155,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
       if (isEditing && surveyId) {
         await updateSurvey(surveyId, values, () => {
           toast.success("Encuesta actualizada exitosamente");
-          navigate(`/encuestas/${surveyId}`);
+          navigate(`/encuestas`);
         });
       } else {
         await createSurvey(values, () => {
@@ -166,7 +166,6 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
     },
   });
 
-  //* Callback del BuscadorPaciente → asigna patientId al form
   const handlePatientFound = (patient: IPacientes) => {
     formik.setFieldValue("patientId", patient.id);
     formik.setFieldTouched("patientId", true, false);
@@ -218,6 +217,22 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
             <BuscadorPaciente
               onPatientFound={handlePatientFound}
               disabled={isEditing || formik.isSubmitting}
+              renderPatientInfo={(patient) => (
+                <>
+                  <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                    Paciente encontrado:{" "}
+                    <span className="font-semibold">{patient.name}</span>
+                  </p>
+                  <p className="text-xs text-green-600 dark:text-green-300">
+                    Documento: {patient.documentNumber}
+                  </p>
+                  {patient.convenioRelation && (
+                    <p className="text-xs text-green-600 dark:text-green-300">
+                      Convenio: {patient.convenioRelation.name}
+                    </p>
+                  )}
+                </>
+              )}
             />
           </section>
 
