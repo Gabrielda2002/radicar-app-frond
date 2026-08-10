@@ -26,9 +26,7 @@ const EncuestaDetalle: React.FC = () => {
     }
   }, [id]);
 
-  //* Verificar rol Admin para botón de edición
-  const rol = localStorage.getItem("rol");
-  const isAdmin = rol === "1";
+  const rol = Number(localStorage.getItem("rol"));
 
   // ── Vista de carga ──
   if (isLoading) {
@@ -311,7 +309,7 @@ const EncuestaDetalle: React.FC = () => {
           >
             Volver al listado
           </Button>
-          {isAdmin && (
+          {[1, 11].includes(rol ) && (
             <Button
               type="button"
               variant="primary"

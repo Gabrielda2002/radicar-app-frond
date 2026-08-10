@@ -2,7 +2,7 @@ import { SidebarSection } from '../types/sidebar.types';
 
 // Icons
 import { FaFolderOpen, FaRegFolder } from 'react-icons/fa';
-import { MdOutlineInventory, MdHomeRepairService  } from 'react-icons/md';
+import { MdOutlineInventory, MdHomeRepairService } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
@@ -117,22 +117,6 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             type: 'subcategory',
             roles: [3, 1, 2]
           },
-          {
-            id: 'surveys',
-            title: 'Encuestas de Satisfacción',
-            icon: ClipboardList,
-            path: '/encuestas',
-            type: 'subcategory',
-            roles: [1, 3, 4, 11]
-          },
-          {
-            id: 'pqrsdf',
-            title: 'PQRSDF',
-            icon: ClipboardList,
-            path: '/pqrsdf',
-            type: 'subcategory',
-            roles: [1, 3, 4, 11]
-          }
         ]
       },
       {
@@ -156,7 +140,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: BiMailSend,
             path: '/permissions',
             type: 'subcategory',
-            roles: [6, 1, 20, 18, 2] 
+            roles: [6, 1, 20, 18, 2]
           },
           {
             id: 'configuration-vacations',
@@ -169,9 +153,34 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         ]
       },
       {
+        id: 'service-siau',
+        title: 'Gestión SIAU',
+        icon: ClipboardList,
+        type: 'category',
+        roles: [1, 4, 6, 2, 11, 20, 22, 24],
+        children: [
+          {
+            id: 'surveys',
+            title: 'Encuestas de Satisfacción',
+            icon: ClipboardList,
+            path: '/encuestas',
+            type: 'subcategory',
+          roles: [1, 4, 6, 2, 11, 20, 22, 24]
+          },
+          {
+            id: 'pqrsdf',
+            title: 'PQRSDF',
+            icon: ClipboardList,
+            path: '/pqrsdf',
+            type: 'subcategory',
+            roles: [1, 4, 6, 2, 11, 20, 22, 24]
+          }
+        ]
+      },
+      {
         id: 'demand-induced',
         title: 'Gestión demanda inducida',
-        icon: User ,
+        icon: User,
         type: 'category',
         roles: [1, 19, 20, 21, 2],
         children: [
@@ -186,7 +195,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
       },
     ]
   },
-{
+  {
     id: 'reports',
     title: 'Reportes',
     roles: [6, 2, 14, 3, 15, 1, 18, 19, 20, 21],
@@ -278,14 +287,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
   {
     id: 'admin',
     title: 'Administrador',
-    roles: [1,18],
+    roles: [1, 18],
     items: [
       {
         id: 'UsersRound-management',
         title: 'Gestión Usuarios',
-        icon: User ,
+        icon: User,
         type: 'section',
-        roles: [1,18],
+        roles: [1, 18],
         path: '/admin/users-options'
       }
     ]

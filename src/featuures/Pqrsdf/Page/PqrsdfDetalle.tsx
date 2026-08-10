@@ -24,15 +24,14 @@ const PqrsdfDetalle: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false);
 
-  //* Cargar PQRSDF al montar
   useEffect(() => {
     if (id) {
       getPqrsdfById(id);
     }
   }, [id, getPqrsdfById]);
 
-  const rol = localStorage.getItem("rol");
-  const canEdit = rol === "1" || rol === "4";
+  const rol = Number(localStorage.getItem("rol"));
+  const canEdit = [1, 11].includes(rol);
 
   // ── Vista de carga ──
   if (isLoading) {
