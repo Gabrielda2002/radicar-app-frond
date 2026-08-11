@@ -226,11 +226,12 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
                   <p className="text-xs text-green-600 dark:text-green-300">
                     Documento: {patient.documentNumber}
                   </p>
-                  {patient.convenioRelation && (
-                    <p className="text-xs text-green-600 dark:text-green-300">
-                      Convenio: {patient.convenioRelation.name}
-                    </p>
-                  )}
+                  <p className="text-xs text-green-600 dark:text-green-300">
+                    Tipo de Documento: {patient?.documentRelation?.name}
+                  </p>
+                  <p className="text-xs text-green-600 dark:text-green-300">
+                    Convenio: {patient?.convenioRelation?.name}
+                  </p>
                 </>
               )}
             />
@@ -272,7 +273,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
               onBlur={formik.handleBlur}
               error={
                 formik.touched.specialPopulationId &&
-                formik.errors.specialPopulationId
+                  formik.errors.specialPopulationId
                   ? formik.errors.specialPopulationId
                   : undefined
               }
@@ -296,7 +297,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
               onBlur={formik.handleBlur}
               error={
                 formik.touched.attentionServiceId &&
-                formik.errors.attentionServiceId
+                  formik.errors.attentionServiceId
                   ? formik.errors.attentionServiceId
                   : undefined
               }
@@ -329,7 +330,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.professionalCareRating &&
-                  formik.errors.professionalCareRating
+                    formik.errors.professionalCareRating
                     ? formik.errors.professionalCareRating
                     : undefined
                 }
@@ -346,7 +347,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.customerServiceRating &&
-                  formik.errors.customerServiceRating
+                    formik.errors.customerServiceRating
                     ? formik.errors.customerServiceRating
                     : undefined
                 }
@@ -372,7 +373,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.globalExperience &&
-                  formik.errors.globalExperience
+                    formik.errors.globalExperience
                     ? formik.errors.globalExperience
                     : undefined
                 }
@@ -389,7 +390,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.wouldRecommend &&
-                  formik.errors.wouldRecommend
+                    formik.errors.wouldRecommend
                     ? formik.errors.wouldRecommend
                     : undefined
                 }
@@ -417,7 +418,7 @@ const EncuestasFormulario: React.FC<EncuestasFormularioProps> = ({
               icon={<ArrowLeft className="w-5 h-5" />}
               iconPosition="left"
               onClick={() =>
-                  navigate("/encuestas")
+                navigate("/encuestas")
               }
             >
               Cancelar

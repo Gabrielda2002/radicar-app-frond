@@ -11,6 +11,8 @@ import type { ColumnConfig } from "@/components/common/ReusableTable";
 import Button from "@/components/common/Ui/Button";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import { ENUM_LABELS, IPqrsdf } from "@/featuures/Pqrsdf/models/IPqrsdf";
+import { formatTimeRemaining } from "@/featuures/Pqrsdf/utils/formatTimeRemaining";
+import { useCountdown } from "@/featuures/Pqrsdf/utils/useCountdown";
 import { FormatDate } from "@/utils/FormatDate";
 import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 
@@ -33,6 +35,9 @@ const PqrsdfListado: React.FC = () => {
     ],
     initialItemsPerPage: 10,
   });
+
+  // Contador en tiempo real para la columna "Tiempo restante"
+  const tick = useCountdown();
 
   // Columnas de la tabla
   const columns: ColumnConfig<IPqrsdf>[] = [
@@ -70,6 +75,22 @@ const PqrsdfListado: React.FC = () => {
           {item.status}
         </span>
       ),
+    },
+    {
+      key: "slaDeadLineAt",
+      header: "Tiempo restante",
+      size: "md",
+      render: (item) => {
+        // Si ya se cerró, el temporizador se detiene
+        if (item.slaClosedAt)
+          return <span className="text-green-500 font-semibold">Cumplido</span>;
+
+        const formatted = formatTimeRemaining(item.slaDeadlineAt, tick);
+        if (formatted === null) return <span>—</span>;
+        if (formatted === "Vencido")
+          return <span className="text-red-500 font-semibold">Vencido</span>;
+        return <span  className="bg-blue-600 text-white p-1 rounded-xl">{formatted}</span>;
+      },
     },
     {
       key: "originAreaName",

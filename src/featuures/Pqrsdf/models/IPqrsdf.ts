@@ -90,6 +90,15 @@ export interface IPqrsdf {
     improvementAction:  boolean;
     status:             string;
     pqrsDate:           Date;
+    riskCode:           string;
+    riskName:           string;
+    slaDurationValue:   number;
+    slaDurationUnit:    string;
+    slaBusinessDays:    boolean | null;
+    slaDeadlineAt:      Date | null;
+    slaClosedAt:        Date | null;
+    slaOverdue:         boolean;
+    slaOverdueSeconds:  number | null;
     createdBy:          string;
     createdAt:          Date;
     updatedAt:          Date;
@@ -119,6 +128,7 @@ export interface IPqrsdfFormValues {
   affectedAttribute?: string;
   improvementAction?: boolean;
   filingNumber?: number;
+  riskCode: string;
 }
 
 //* Etiquetas en español para mostrar en UI

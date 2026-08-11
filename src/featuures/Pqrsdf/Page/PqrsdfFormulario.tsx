@@ -82,6 +82,7 @@ const validationSchema = Yup.object({
   affectedAttribute: Yup.string().notRequired(),
   improvementAction: Yup.boolean().notRequired(),
   filingNumber: Yup.number().required('Requerido'),
+  riskCode: Yup.string().required('Requerido'),
 });
 
 //* Valores iniciales del formulario (creación)
@@ -108,21 +109,22 @@ const emptyInitialValues: IPqrsdfFormValues = {
   affectedAttribute: "",
   improvementAction: false,
   filingNumber: 0,
+  riskCode: "",
 };
 
 //* Convierte datos del backend (IPqrsdf) a valores del formulario
 const pqrsdfToFormValues = (pqrsdf: IPqrsdf): IPqrsdfFormValues => ({
   patientId: pqrsdf.patientId,
   populationTypeId: pqrsdf.populationTypeId,
-  presentedBy: pqrsdf.presentedBy ,
+  presentedBy: pqrsdf.presentedBy,
   presenterName: pqrsdf.presenterName || "",
-  classification: pqrsdf.classification ,
-  instance: pqrsdf.instance ,
+  classification: pqrsdf.classification,
+  instance: pqrsdf.instance,
   receptionMedium: pqrsdf.receptionMedium,
   originAreaId: pqrsdf.originAreaId,
   generalReasonId: pqrsdf.generalReasonId,
   generationAreaId: pqrsdf.generationAreaId || 0,
-  description: pqrsdf.description ,
+  description: pqrsdf.description,
   specificReason: pqrsdf.specificReason || "",
   pqrsDate: pqrsdf.pqrsDate.toString(),
   receivedDate: pqrsdf.receivedDate.toString(),
@@ -134,6 +136,7 @@ const pqrsdfToFormValues = (pqrsdf: IPqrsdf): IPqrsdfFormValues => ({
   notificationMedium: pqrsdf.notificationMedium || "",
   affectedAttribute: pqrsdf.affectedAttribute || "",
   improvementAction: pqrsdf.improvementAction || false,
+  riskCode: pqrsdf.riskCode,
 });
 
 const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
@@ -232,12 +235,32 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                   <p className="text-xs text-green-600 dark:text-green-300">
                     Documento: {initialData?.patientDocument}
                   </p>
+                  <p className="text-xs text-green-600 dark:text-green-300">
+                    Documento: {initialData?.patientDocument}
+                  </p>
                 </div>
               </>
             ) : (
               <BuscadorPaciente
                 onPatientFound={handlePatientFound}
                 disabled={formik.isSubmitting}
+                renderPatientInfo={(patient) => (
+                  <>
+                    <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                      Paciente encontrado:{" "}
+                      <span className="font-semibold">{patient.name}</span>
+                    </p>
+                    <p className="text-xs text-green-600 dark:text-green-300">
+                      Documento: {patient.documentNumber}
+                    </p>
+                    <p className="text-xs text-green-600 dark:text-green-300">
+                      Tipo de Documento: {patient?.documentRelation?.name}
+                    </p>
+                    <p className="text-xs text-green-600 dark:text-green-300">
+                      Convenio: {patient?.convenioRelation?.name}
+                    </p>
+                  </>
+                )}
               />
             )}
           </section>
@@ -255,7 +278,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
               onBlur={formik.handleBlur}
               error={
                 formik.touched.populationTypeId &&
-                formik.errors.populationTypeId
+                  formik.errors.populationTypeId
                   ? formik.errors.populationTypeId
                   : undefined
               }
@@ -299,7 +322,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.presenterName &&
-                  formik.errors.presenterName
+                    formik.errors.presenterName
                     ? formik.errors.presenterName
                     : undefined
                 }
@@ -323,7 +346,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.classification &&
-                  formik.errors.classification
+                    formik.errors.classification
                     ? formik.errors.classification
                     : undefined
                 }
@@ -356,7 +379,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.receptionMedium &&
-                  formik.errors.receptionMedium
+                    formik.errors.receptionMedium
                     ? formik.errors.receptionMedium
                     : undefined
                 }
@@ -400,7 +423,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.generalReasonId &&
-                  formik.errors.generalReasonId
+                    formik.errors.generalReasonId
                     ? formik.errors.generalReasonId
                     : undefined
                 }
@@ -419,7 +442,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.generationAreaId &&
-                  formik.errors.generationAreaId
+                    formik.errors.generationAreaId
                     ? formik.errors.generationAreaId
                     : undefined
                 }
@@ -464,7 +487,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.specificReason &&
-                  formik.errors.specificReason
+                    formik.errors.specificReason
                     ? formik.errors.specificReason
                     : undefined
                 }
@@ -485,6 +508,27 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                     : undefined
                 }
                 touched={formik.touched.filingNumber as boolean}
+                required
+                disabled={formik.isSubmitting}
+              />
+              <Select
+                label="Código de Riesgo"
+                options={[
+                  { value: "VITAL", label: "Vital" },
+                  { value: "PRIORIZADO", label: "Priorizado" },
+                  { value: "SIMPLE", label: "Simple" },
+                  { value: "GENERAL", label: "General" },
+                ]}
+                name="riskCode"
+                value={formik.values.riskCode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.riskCode && formik.errors.riskCode
+                    ? formik.errors.riskCode
+                    : undefined
+                }
+                touched={formik.touched.riskCode as boolean}
                 required
                 disabled={formik.isSubmitting}
               />
@@ -563,7 +607,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                     onBlur={formik.handleBlur}
                     error={
                       formik.touched.resolutionAreaId &&
-                      formik.errors.resolutionAreaId
+                        formik.errors.resolutionAreaId
                         ? formik.errors.resolutionAreaId
                         : undefined
                     }
@@ -580,7 +624,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                     onBlur={formik.handleBlur}
                     error={
                       formik.touched.responseDate &&
-                      formik.errors.responseDate
+                        formik.errors.responseDate
                         ? formik.errors.responseDate
                         : undefined
                     }
@@ -596,7 +640,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                   onBlur={formik.handleBlur}
                   error={
                     formik.touched.responseSummary &&
-                    formik.errors.responseSummary
+                      formik.errors.responseSummary
                       ? formik.errors.responseSummary
                       : undefined
                   }
@@ -613,7 +657,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                     onBlur={formik.handleBlur}
                     error={
                       formik.touched.notificationMedium &&
-                      formik.errors.notificationMedium
+                        formik.errors.notificationMedium
                         ? formik.errors.notificationMedium
                         : undefined
                     }
@@ -629,7 +673,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                     onBlur={formik.handleBlur}
                     error={
                       formik.touched.affectedAttribute &&
-                      formik.errors.affectedAttribute
+                        formik.errors.affectedAttribute
                         ? formik.errors.affectedAttribute
                         : undefined
                     }
@@ -648,7 +692,7 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                   onBlur={formik.handleBlur}
                   error={
                     formik.touched.improvementAction &&
-                    formik.errors.improvementAction
+                      formik.errors.improvementAction
                       ? formik.errors.improvementAction
                       : undefined
                   }
