@@ -6,10 +6,11 @@ import Button from "@/components/common/Ui/Button";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import PqrsdfFormulario from "@/featuures/Pqrsdf/Page/PqrsdfFormulario";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
-import { ENUM_LABELS } from "@/featuures/Pqrsdf/models/IPqrsdf";
+import { ENUM_LABELS, IPqrsdfStatusHistory } from "@/featuures/Pqrsdf/models/IPqrsdf";
 import { FormatDate } from "@/utils/FormatDate";
 import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
 import { responseOpportunityDays } from "../utils/oportunityDays";
+import { ColumnConfig, DataTable, useTableState } from "@/components/common/ReusableTable";
 
 //* Helper: muestra "—" si el valor es null/undefined/empty
 const displayValue = (value: unknown): string => {
@@ -23,6 +24,37 @@ const PqrsdfDetalle: React.FC = () => {
   const { currentPqrsdf, isLoading, error, getPqrsdfById } = useStorePqrsdf();
 
   const [editMode, setEditMode] = useState(false);
+
+  const tableState = useTableState({
+    data: currentPqrsdf?.statusHistory || [],
+    searchFields: ["status", "note", "actor"],
+    initialItemsPerPage: 5,
+  });
+
+  const columns: ColumnConfig<IPqrsdfStatusHistory>[] = [
+    {
+      key: "status",
+      header: "Estado",
+      size: "sm",
+      render: (item) => (
+        <span className={getStatusColor(item.status)}>
+          {item.status}
+        </span>
+      ),
+    },
+    {
+      key: "note",
+      header: "Nota",
+      size: "md",
+      accessor: (item) => item.note,
+    },
+    {
+      key: "actor",
+      header: "Actor",
+      size: "md",
+      accessor: (item) => item.actor,
+    },
+  ];
 
   useEffect(() => {
     if (id) {
@@ -248,6 +280,18 @@ const PqrsdfDetalle: React.FC = () => {
           </div>
         </section>
 
+        {/* Historial de Estados */}
+        <section className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
+          <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
+            Historial de Estados:
+          </h5>
+          <DataTable
+            data={tableState.currentData()}
+            columns={columns}
+            getRowKey={(item) => item.id.toString()}
+          />
+        </section>
+
         {/* ── Resolución ── */}
         <section className="p-6 bg-white rounded-lg shadow dark:bg-gray-800">
           <h5 className="mb-4 text-xl font-semibold text-blue-500 dark:text-gray-200">
@@ -307,18 +351,18 @@ const PqrsdfDetalle: React.FC = () => {
             </div>
             <div className="sm:col-span-2">
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                Resumen de Respuesta
-              </span>
-              <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
-                {displayValue(pqrsdf.responseSummary)}
-              </p>
-            </div>
-            <div className="sm:col-span-2">
-              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Acción de Mejora
               </span>
               <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
                 {pqrsdf.improvementAction ? "Sí" : "No"}
+              </p>
+            </div>
+            <div className="sm:col-span-2">
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+              Detalles Plan de Accion
+              </span>
+              <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
+                {displayValue(pqrsdf.improvementActionDetails)}
               </p>
             </div>
           </div>

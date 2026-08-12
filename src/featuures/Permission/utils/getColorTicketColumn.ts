@@ -4,13 +4,13 @@ export const getStatusColor = (status: string): string => {
 
     switch (statusUpper ) {
         case "Cerrado":
-            return " p-1 bg-gray-600 rounded-lg dark:text-gray-400 dark:bg-gray-500 text-gray-700";
+            return "p-1 bg-gray-400 rounded-lg dark:bg-gray-500 dark:text-gray-400 text-gray-700";
         case "Abierto":
-            return " p-1 bg-green-700 rounded-lg dark:text-gray-300 text-gray-700";
+            return "p-1 bg-green-400 rounded-lg dark:bg-green-700 dark:text-green-400 text-green-700";
         case "Pendiente":
-            return " p-1 bg-blue-500/60 rounded-lg text-gray-300";
+            return "p-1 bg-blue-400 rounded-lg dark:bg-blue-700 dark:text-blue-400 text-blue-700";
         case "En_gestion":
-            return " p-1 bg-yellow-500/60 rounded-lg dark:text-gray-300 text-gray-700";
+            return "p-1 bg-yellow-700 rounded-lg dark:bg-yellow-700 dark:text-yellow-400 text-gray-700";
         default:
             return "";
     }

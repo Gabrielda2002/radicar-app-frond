@@ -75,14 +75,41 @@ const validationSchema = Yup.object({
   receivedDate: Yup.string().required("Requerido"),
   // Resolución — opcionales en create, editables en edit
   status: Yup.string().notRequired(),
-  resolutionAreaId: Yup.number().notRequired().nullable(),
-  responseDate: Yup.string().notRequired(),
+  resolutionAreaId: Yup.number()
+    .nullable()
+    .when("status", {
+      is: "CERRADO",
+      then: (schema) =>
+        schema
+          .typeError("Requerido")
+          .min(1, "Requerido")
+          .required("Requerido"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  responseDate: Yup.string().when("status", {
+    is: "CERRADO",
+    then: (schema) => schema.required("Requerido"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   responseSummary: Yup.string().notRequired(),
-  notificationMedium: Yup.string().notRequired(),
-  affectedAttribute: Yup.string().notRequired(),
+  notificationMedium: Yup.string().when("status", {
+    is: "CERRADO",
+    then: (schema) => schema.required("Requerido"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  affectedAttribute: Yup.string().when("status", {
+    is: "CERRADO",
+    then: (schema) => schema.required("Requerido"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   improvementAction: Yup.boolean().notRequired(),
   filingNumber: Yup.number().required('Requerido'),
   riskCode: Yup.string().required('Requerido'),
+  improvementActionDetails: Yup.string().when("improvementAction", {
+    is:  (val: boolean) => val === true,
+    then: (schema) => schema.required("Requerido cuando hay acción de mejora"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 });
 
 //* Valores iniciales del formulario (creación)
@@ -110,6 +137,7 @@ const emptyInitialValues: IPqrsdfFormValues = {
   improvementAction: false,
   filingNumber: 0,
   riskCode: "",
+  improvementActionDetails: ''
 };
 
 //* Convierte datos del backend (IPqrsdf) a valores del formulario
@@ -132,11 +160,11 @@ const pqrsdfToFormValues = (pqrsdf: IPqrsdf): IPqrsdfFormValues => ({
   filingNumber: pqrsdf.filingNumber,
   resolutionAreaId: pqrsdf.resolutionAreaId || 0,
   responseDate: pqrsdf.responseDate?.toString(),
-  responseSummary: pqrsdf.responseSummary || "",
   notificationMedium: pqrsdf.notificationMedium || "",
   affectedAttribute: pqrsdf.affectedAttribute || "",
   improvementAction: pqrsdf.improvementAction || false,
   riskCode: pqrsdf.riskCode,
+  improvementActionDetails: pqrsdf.improvementActionDetails || ''
 });
 
 const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
@@ -700,6 +728,23 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                   disabled={formik.isSubmitting}
                 />
               </div>
+              {formik.values.improvementAction && (
+                <Textarea
+                  label="Detalles de la Acción de Mejora"
+                  name="improvementActionDetails"
+                  value={formik.values.improvementActionDetails}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.improvementActionDetails &&
+                      formik.errors.improvementActionDetails
+                      ? formik.errors.improvementActionDetails
+                      : undefined
+                  }
+                  touched={formik.touched.improvementActionDetails as boolean}
+                  disabled={formik.isSubmitting}
+                />
+              )}
             </section>
           )}
 

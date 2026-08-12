@@ -84,10 +84,11 @@ export interface IPqrsdf {
     resolutionAreaId: number | null;
     resolutionAreaName: string;
     responseDate:       Date | null;
-    responseSummary:    string | null;
+    // responseSummary:    string | null;
     notificationMedium: string | null;
     affectedAttribute:  string | null;
     improvementAction:  boolean;
+    improvementActionDetails: string | null;
     status:             string;
     pqrsDate:           Date;
     riskCode:           string;
@@ -99,10 +100,20 @@ export interface IPqrsdf {
     slaClosedAt:        Date | null;
     slaOverdue:         boolean;
     slaOverdueSeconds:  number | null;
+    statusHistory:      IPqrsdfStatusHistory[];
     createdBy:          string;
     createdAt:          Date;
     updatedAt:          Date;
 }
+
+export type IPqrsdfStatusHistory = {
+  id: number;
+  status: string;
+  note: string | null;
+  actor: string;
+  createdAt: Date;
+}
+
 //* Valores del formulario (POST / PUT body al backend)
 export interface IPqrsdfFormValues {
   patientId: number | string;
@@ -129,6 +140,7 @@ export interface IPqrsdfFormValues {
   improvementAction?: boolean;
   filingNumber?: number;
   riskCode: string;
+  improvementActionDetails: string;
 }
 
 //* Etiquetas en español para mostrar en UI
