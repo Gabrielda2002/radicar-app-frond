@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, PlusCircle } from "lucide-react";
+import { Eye, MessageSquare, PlusCircle } from "lucide-react";
 import HeaderPage from "@/components/common/HeaderPage/HeaderPage";
 import {
   DataTable,
@@ -11,6 +11,7 @@ import type { ColumnConfig } from "@/components/common/ReusableTable";
 import Button from "@/components/common/Ui/Button";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import { ENUM_LABELS, IPqrsdf } from "@/featuures/Pqrsdf/models/IPqrsdf";
+import ModalComments from "@/featuures/Pqrsdf/Components/ModalComments";
 import { formatTimeRemaining } from "@/featuures/Pqrsdf/utils/formatTimeRemaining";
 import { useCountdown } from "@/featuures/Pqrsdf/utils/useCountdown";
 import { FormatDate } from "@/utils/FormatDate";
@@ -19,6 +20,7 @@ import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColum
 const PqrsdfListado: React.FC = () => {
   const navigate = useNavigate();
   const { pqrsdf, isLoading, error, getPqrsdf } = useStorePqrsdf();
+  const [commentsPqrsdf, setCommentsPqrsdf] = useState<IPqrsdf | null>(null);
 
   // Cargar PQRSDF al montar el componente
   useEffect(() => {
@@ -152,22 +154,41 @@ const PqrsdfListado: React.FC = () => {
           error={error}
           emptyMessage="No se encontraron PQRSDF registrados"
           renderActions={(item) => (
-            <Button
-              type="button"
-              variant="ghost"
-              size="xs"
-              icon={<Eye className="w-4 h-4" />}
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/pqrsdf/${item.id}`);
-              }}
-              title="Ver detalle"
-            >
-              Ver
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                icon={<MessageSquare className="w-4 h-4" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCommentsPqrsdf(item);
+                }}
+                title="Comentarios"
+                aria-label={`Ver comentarios del radicado ${item.filingNumber}`}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                icon={<Eye className="w-4 h-4" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/pqrsdf/${item.id}`);
+                }}
+                title="Ver detalle"
+              />
+            </div>
           )}
         />
       </DataTableContainer>
+
+      <ModalComments
+        isOpen={!!commentsPqrsdf}
+        onClose={() => setCommentsPqrsdf(null)}
+        pqrsdfId={commentsPqrsdf?.id ?? 0}
+        filingNumber={commentsPqrsdf?.filingNumber ?? null}
+      />
     </>
   );
 };
