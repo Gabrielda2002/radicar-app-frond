@@ -17,13 +17,13 @@ const CommentList: React.FC<CommentListProps> = ({
   isLoading,
   error,
 }) => {
-  const { openSecureFile  } = useSecureFileAccess();
+  const { openSecureFile, error: errorFile  } = useSecureFileAccess();
 
   return (
     <>
-      {error && (
+      {error || errorFile && (
         <div className="p-3 mb-3 text-sm text-white bg-red-500 rounded-lg shadow-lg">
-          {error}
+          {error || errorFile}
         </div>
       )}
 

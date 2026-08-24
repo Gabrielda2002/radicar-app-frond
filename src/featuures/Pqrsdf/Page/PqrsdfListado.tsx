@@ -112,6 +112,38 @@ const PqrsdfListado: React.FC = () => {
       size: "sm",
       render: (item) => FormatDate(item.createdAt) ?? "—",
     },
+    {
+      key: "Actions",
+      header: "Acciones",
+      size: 'md',
+      render: (item) => (
+         <>
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                icon={<MessageSquare className="w-4 h-4" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCommentsPqrsdf(item);
+                }}
+                title="Comentarios"
+                aria-label={`Ver comentarios del radicado ${item.filingNumber}`}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                icon={<Eye className="w-4 h-4" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/pqrsdf/${item.id}`);
+                }}
+                title="Ver detalle"
+              />
+            </>
+      )
+    }
   ];
 
   return (
@@ -153,33 +185,6 @@ const PqrsdfListado: React.FC = () => {
           loading={isLoading}
           error={error}
           emptyMessage="No se encontraron PQRSDF registrados"
-          renderActions={(item) => (
-            <div className="flex items-center gap-1">
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                icon={<MessageSquare className="w-4 h-4" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCommentsPqrsdf(item);
-                }}
-                title="Comentarios"
-                aria-label={`Ver comentarios del radicado ${item.filingNumber}`}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                icon={<Eye className="w-4 h-4" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/pqrsdf/${item.id}`);
-                }}
-                title="Ver detalle"
-              />
-            </div>
-          )}
         />
       </DataTableContainer>
 
