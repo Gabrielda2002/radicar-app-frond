@@ -129,7 +129,7 @@ const PqrsdfDetalle: React.FC = () => {
             <span className={getStatusColor(pqrsdf.status) + `text-sm`}>
               {pqrsdf.status}
             </span>
-           </div>
+          </div>
         </section>
 
         {/* ── Datos del PQRSDF ── */}
@@ -138,6 +138,14 @@ const PqrsdfDetalle: React.FC = () => {
             Datos del PQRSDF:
           </h5>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Id
+              </span>
+              <p className="text-gray-800 dark:text-gray-200">
+                {displayValue(pqrsdf.id)}
+              </p>
+            </div>
             <div>
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Radicado #
@@ -164,12 +172,31 @@ const PqrsdfDetalle: React.FC = () => {
             </div>
             <div>
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Tipo de Documento
+              </span>
+              <p className="text-gray-800 dark:text-gray-200">
+                {displayValue(pqrsdf.patientTypeDocument)}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Convenio
+              </span>
+              <p className="text-gray-800 dark:text-gray-200">
+                {displayValue(pqrsdf.patientAgreement)}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Tipo de Población
               </span>
               <p className="text-gray-800 dark:text-gray-200">
                 {displayValue(pqrsdf.populationType)}
               </p>
             </div>
+
+            <div className="col-span-full my-2 border-t border-gray-200 dark:border-gray-700"></div>
+
             <div>
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Presentado por
@@ -237,6 +264,9 @@ const PqrsdfDetalle: React.FC = () => {
                 {displayValue(pqrsdf.originAreaName)}
               </p>
             </div>
+
+            <div className="col-span-full my-2 border-t border-gray-200 dark:border-gray-700"></div>
+
             <div className="sm:col-span-2">
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 Descripción
@@ -359,7 +389,7 @@ const PqrsdfDetalle: React.FC = () => {
             </div>
             <div className="sm:col-span-2">
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-              Detalles Plan de Accion
+                Detalles Plan de Accion
               </span>
               <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
                 {displayValue(pqrsdf.improvementActionDetails)}

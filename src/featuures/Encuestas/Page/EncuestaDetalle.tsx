@@ -81,7 +81,7 @@ const EncuestaDetalle: React.FC = () => {
   //* Objeto formik mínimo para GridSiNoNa en modo lectura
   const readOnlyFormik = {
     values: readOnlyFormikValues,
-    setFieldValue: () => {},
+    setFieldValue: () => { },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 
@@ -115,7 +115,7 @@ const EncuestaDetalle: React.FC = () => {
               </span>
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.patientName ?? "—"}
-              </p>
+            </p>
             </div>
             <div>
               <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
@@ -131,6 +131,14 @@ const EncuestaDetalle: React.FC = () => {
               </span>
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.documentPatient ?? "—"}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Convenio
+              </span>
+              <p className="text-gray-800 dark:text-gray-200">
+                {survey.patientAgreement ?? "—"}
               </p>
             </div>
           </div>
@@ -199,7 +207,7 @@ const EncuestaDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.professionalCareRating
                   ? ENUM_LABELS.Calificacion[survey.professionalCareRating] ??
-                    survey.professionalCareRating
+                  survey.professionalCareRating
                   : "—"}
               </p>
             </div>
@@ -210,7 +218,7 @@ const EncuestaDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.customerServiceRating
                   ? ENUM_LABELS.Calificacion[survey.customerServiceRating] ??
-                    survey.customerServiceRating
+                  survey.customerServiceRating
                   : "—"}
               </p>
             </div>
@@ -230,7 +238,7 @@ const EncuestaDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.globalExperience
                   ? ENUM_LABELS.ExperienciaGlobal[survey.globalExperience] ??
-                    survey.globalExperience
+                  survey.globalExperience
                   : "—"}
               </p>
             </div>
@@ -241,7 +249,7 @@ const EncuestaDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.wouldRecommend
                   ? ENUM_LABELS.Recomendacion[survey.wouldRecommend] ??
-                    survey.wouldRecommend
+                  survey.wouldRecommend
                   : "—"}
               </p>
             </div>
@@ -269,12 +277,12 @@ const EncuestaDetalle: React.FC = () => {
               <p className="text-gray-800 dark:text-gray-200">
                 {survey.createdAt
                   ? new Date(survey.createdAt).toLocaleDateString("es-CO", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
                   : "—"}
               </p>
             </div>
@@ -309,7 +317,7 @@ const EncuestaDetalle: React.FC = () => {
           >
             Volver al listado
           </Button>
-          {[1, 11].includes(rol ) && (
+          {[1, 11].includes(rol) && (
             <Button
               type="button"
               variant="primary"

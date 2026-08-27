@@ -31,9 +31,10 @@ const PqrsdfListado: React.FC = () => {
   const tableState = useTableState<IPqrsdf>({
     data: pqrsdf,
     searchFields: [
-      "patientName" as any,
-      "patientDocument" as any,
-      "filingNumber" as any,
+      "patientName",
+      "patientDocument",
+      "filingNumber",
+      "id"
     ],
     initialItemsPerPage: 10,
   });
@@ -43,6 +44,12 @@ const PqrsdfListado: React.FC = () => {
 
   // Columnas de la tabla
   const columns: ColumnConfig<IPqrsdf>[] = [
+    {
+      key: "id",
+      header: "Id",
+      size: "sm",
+      accessor: (item) => item.id
+    },
     {
       key: "filingNumber",
       header: "Radicado #",

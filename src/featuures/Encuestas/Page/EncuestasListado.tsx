@@ -38,6 +38,12 @@ const EncuestasListado: React.FC = () => {
   // Columnas de la tabla
   const columns: ColumnConfig<IEncuestaSatisfaccion>[] = [
     {
+      key: "id",
+      header: "Id",
+      size: "sm",
+      accessor: (i) => i.id,
+    },
+    {
       key: "paciente",
       header: "Paciente",
       size: "lg",
