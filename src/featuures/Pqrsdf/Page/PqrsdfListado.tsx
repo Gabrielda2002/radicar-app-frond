@@ -7,7 +7,7 @@ import {
   DataTableContainer,
   useTableState,
 } from "@/components/common/ReusableTable";
-import type { ColumnConfig } from "@/components/common/ReusableTable";
+import type { ColumnConfig, FilterFieldConfig } from "@/components/common/ReusableTable";
 import Button from "@/components/common/Ui/Button";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import { ENUM_LABELS, IPqrsdf } from "@/featuures/Pqrsdf/models/IPqrsdf";
@@ -16,6 +16,24 @@ import { formatTimeRemaining } from "@/featuures/Pqrsdf/utils/formatTimeRemainin
 import { useCountdown } from "@/featuures/Pqrsdf/utils/useCountdown";
 import { FormatDate } from "@/utils/FormatDate";
 import { getStatusColor } from "@/featuures/Permission/utils/getColorTicketColumn";
+
+const FILTER_CONFIG: FilterFieldConfig[] = [
+  {
+    key: 'status',
+    label: "Estado",
+    type: "multi-select",
+    options: [
+      { value: "ABIERTO", label: "Abierto" },
+      { value: "EN_GESTION", label: "En Gestion" },
+      { value: "CERRADO", label: "Cerrado" }
+    ]
+  },
+  {
+    key: "createdAt",
+    label: "Fecha",
+    type: "date-range",
+  }
+]
 
 const PqrsdfListado: React.FC = () => {
   const navigate = useNavigate();
@@ -37,6 +55,7 @@ const PqrsdfListado: React.FC = () => {
       "id"
     ],
     initialItemsPerPage: 10,
+    filterConfig: FILTER_CONFIG
   });
 
   // Contador en tiempo real para la columna "Tiempo restante"
@@ -98,7 +117,7 @@ const PqrsdfListado: React.FC = () => {
         if (formatted === null) return <span>—</span>;
         if (formatted === "Vencido")
           return <span className="text-red-500 font-semibold">Vencido</span>;
-        return <span  className="bg-blue-600 text-white p-1 rounded-xl">{formatted}</span>;
+        return <span className="bg-blue-600 text-white p-1 rounded-xl">{formatted}</span>;
       },
     },
     {
@@ -124,31 +143,31 @@ const PqrsdfListado: React.FC = () => {
       header: "Acciones",
       size: 'md',
       render: (item) => (
-         <>
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                icon={<MessageSquare className="w-4 h-4" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCommentsPqrsdf(item);
-                }}
-                title="Comentarios"
-                aria-label={`Ver comentarios del radicado ${item.filingNumber}`}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                icon={<Eye className="w-4 h-4" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/pqrsdf/${item.id}`);
-                }}
-                title="Ver detalle"
-              />
-            </>
+        <>
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            icon={<MessageSquare className="w-4 h-4" />}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCommentsPqrsdf(item);
+            }}
+            title="Comentarios"
+            aria-label={`Ver comentarios del radicado ${item.filingNumber}`}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            icon={<Eye className="w-4 h-4" />}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/pqrsdf/${item.id}`);
+            }}
+            title="Ver detalle"
+          />
+        </>
       )
     }
   ];
@@ -172,6 +191,7 @@ const PqrsdfListado: React.FC = () => {
         currentPage={tableState.currentPage}
         totalPages={tableState.totalPages}
         onPageChange={tableState.paginate}
+        filterState={tableState.filterState}
         headerActions={
           <Button
             type="button"

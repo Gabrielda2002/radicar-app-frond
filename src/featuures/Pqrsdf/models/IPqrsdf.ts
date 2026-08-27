@@ -61,7 +61,7 @@ export interface IPqrsdf {
     patientId:          number;
     filingNumber:       number;
     patientName:        string;
-    patientDocument:    string;
+  patientDocument:    string;
     patientPhone:       string;
     patientEmail:       string;
     patientTypeDocument: string;

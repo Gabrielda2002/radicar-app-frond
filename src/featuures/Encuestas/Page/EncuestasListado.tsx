@@ -7,7 +7,7 @@ import {
   DataTableContainer,
   useTableState,
 } from "@/components/common/ReusableTable";
-import type { ColumnConfig } from "@/components/common/ReusableTable";
+import type { ColumnConfig, FilterFieldConfig } from "@/components/common/ReusableTable";
 import Button from "@/components/common/Ui/Button";
 import { useStoreEncuestas } from "@/featuures/Encuestas/store/useStoreEncuestas";
 import {
@@ -15,6 +15,28 @@ import {
   IEncuestaSatisfaccion,
 } from "@/models/IEncuestaSatisfaccion";
 import { FormatDate } from "@/utils/FormatDate";
+import { getExperienceColor } from "@/featuures/Encuestas/utils/getExperienceColor";
+
+const FILTER_CONFIG: FilterFieldConfig[] = [
+  {
+    key: "globalExperience",
+    label: "Experiencia",
+    type: "multi-select",
+    options: [
+      { value: "MUY_BUENO", label: "Muy Bueno" },
+      { value: "BUENO", label: "Bueno" },
+      { value: "REGULAR", label: "Regular" },
+      { value: "MALO", label: "Malo" },
+      { value: "MUY_MALO", label: "Muy Malo" },
+      { value: "NO_RESPONDE", label: "No Responde" },
+    ],
+  },
+  {
+    key: "createdAt",
+    label: "Fecha",
+    type: "date-range",
+  },
+];
 
 const EncuestasListado: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +55,7 @@ const EncuestasListado: React.FC = () => {
       "patientDocument" as any,
     ],
     initialItemsPerPage: 10,
+    filterConfig: FILTER_CONFIG,
   });
 
   // Columnas de la tabla
@@ -71,10 +94,12 @@ const EncuestasListado: React.FC = () => {
       key: "experienciaGlobal",
       header: "Experiencia",
       size: "md",
-      render: (item) =>
-        item.globalExperience
-          ? ENUM_LABELS.ExperienciaGlobal[item.globalExperience] || item.globalExperience
-          : "—",
+      render: (item) => {
+        if (!item.globalExperience) return "—";
+        const label = ENUM_LABELS.ExperienciaGlobal[item.globalExperience] || item.globalExperience;
+        const colorClass = getExperienceColor(item.globalExperience);
+        return <span className={colorClass}>{label}</span>;
+      },
     },
     {
       key: "recomendaria",
@@ -118,6 +143,7 @@ const EncuestasListado: React.FC = () => {
         currentPage={tableState.currentPage}
         totalPages={tableState.totalPages}
         onPageChange={tableState.paginate}
+        filterState={tableState.filterState}
         headerActions={
           <Button
             type="button"
