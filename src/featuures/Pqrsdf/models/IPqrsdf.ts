@@ -61,7 +61,7 @@ export interface IPqrsdf {
     patientId:          number;
     filingNumber:       number;
     patientName:        string;
-  patientDocument:    string;
+  patientDocument:      string;
     patientPhone:       string;
     patientEmail:       string;
     patientTypeDocument: string;
@@ -75,7 +75,9 @@ export interface IPqrsdf {
     receptionMedium:    string;
     generalReasonId:    number;
     generalReason:      string;
-    specificReason:     string;
+    specificReasonId:   number;
+    specificReasonCode: string
+    specificReason:     string
     generationAreaName: string;
     generationAreaId:   number;
     originAreaId:        number;
@@ -85,7 +87,6 @@ export interface IPqrsdf {
     resolutionAreaId: number | null;
     resolutionAreaName: string;
     responseDate:       Date | null;
-    // responseSummary:    string | null;
     notificationMedium: string | null;
     affectedAttribute:  string | null;
     improvementAction:  boolean;
@@ -128,7 +129,7 @@ export interface IPqrsdfFormValues {
   generalReasonId: number | string;
   generationAreaId: number | string;
   description: string;
-  specificReason: string;
+  specificReasonId: number;
   pqrsDate: string;
   receivedDate: string;
   // Resolución (opcionales en create, enviados en edit)

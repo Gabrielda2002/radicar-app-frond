@@ -12,6 +12,7 @@ import Select from "@/components/common/Ui/Select";
 import type { SelectOption } from "@/components/common/Ui/Select";
 import Textarea from "@/components/common/Ui/Textarea";
 import BuscadorPaciente from "@/components/common/BuscadorPaciente";
+import useFetchCups from "@/hooks/useFetchCups";
 import { useStorePqrsdf } from "@/featuures/Pqrsdf/store/useStorePqrsdf";
 import {
   IPqrsdf,
@@ -70,7 +71,10 @@ const validationSchema = Yup.object({
     .min(1, "Requerido")
     .required("Requerido"),
   description: Yup.string().required("Requerido"),
-  specificReason: Yup.string().required("Requerido"),
+  specificReasonId: Yup.number()
+    .typeError("Requerido")
+    .min(1, "Requerido")
+    .required("Requerido"),
   pqrsDate: Yup.string().required("Requerido"),
   receivedDate: Yup.string().required("Requerido"),
   // Resolución — opcionales en create, editables en edit
@@ -125,7 +129,7 @@ const emptyInitialValues: IPqrsdfFormValues = {
   generalReasonId: "",
   generationAreaId: "",
   description: "",
-  specificReason: "",
+  specificReasonId: 0,
   pqrsDate: "",
   receivedDate: "",
   status: undefined,
@@ -153,7 +157,7 @@ const pqrsdfToFormValues = (pqrsdf: IPqrsdf): IPqrsdfFormValues => ({
   generalReasonId: pqrsdf.generalReasonId,
   generationAreaId: pqrsdf.generationAreaId || 0,
   description: pqrsdf.description,
-  specificReason: pqrsdf.specificReason || "",
+  specificReasonId: pqrsdf.specificReasonId || 0,
   pqrsDate: pqrsdf.pqrsDate.toString(),
   receivedDate: pqrsdf.receivedDate.toString(),
   status: pqrsdf.status,
@@ -181,6 +185,37 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
   const [populations, setPopulations] = useState<CatalogoItem[]>([]);
   const [reasons, setReasons] = useState<CatalogoItem[]>([]);
   const [loadingCatalogos, setLoadingCatalogos] = useState(true);
+
+  const {
+    data: cupsData,
+    fetchCups,
+    error: cupsError,
+    loading: cupsLoading,
+  } = useFetchCups();
+  const [cupsCode, setCupsCode] = useState("");
+  const [cupsDescription, setCupsDescription] = useState("");
+
+  useEffect(() => {
+    if (cupsData && cupsData.name) {
+      setCupsDescription(cupsData.name);
+      formik.setFieldValue("specificReasonId", cupsData.id);
+    }
+  }, [cupsData]);
+
+  useEffect(() => {
+    if (isEditMode && initialData?.specificReasonCode) {
+      setCupsCode(initialData.specificReasonCode);
+      setCupsDescription(initialData.specificReason || "");
+      fetchCups(initialData.specificReasonCode);
+    }
+  }, [initialData])
+
+  const handleCupsCodeBlur = () => {
+    formik.setFieldTouched("specificReasonId", true, false);
+    if (cupsCode.trim()) {
+      fetchCups(cupsCode.trim());
+    }
+  };
 
   useEffect(() => {
     const cargarCatalogos = async () => {
@@ -506,23 +541,49 @@ const PqrsdfFormulario: React.FC<PqrsdfFormularioProps> = ({
                 disabled={formik.isSubmitting}
                 minRows={4}
               />
-              <Input
-                type="text"
-                label="Motivo Específico"
-                name="specificReason"
-                value={formik.values.specificReason}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.specificReason &&
-                    formik.errors.specificReason
-                    ? formik.errors.specificReason
-                    : undefined
-                }
-                touched={formik.touched.specificReason as boolean}
-                required
-                disabled={formik.isSubmitting}
-              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Input
+                    type="text"
+                    label="Código CUPS (Motivo Específico)"
+                    name="cupsCode"
+                    value={cupsCode}
+                    onChange={(e) => setCupsCode(e.target.value)}
+                    onBlur={handleCupsCodeBlur}
+                    placeholder="Código"
+                    required
+                    disabled={formik.isSubmitting}
+                  />
+                  {cupsError && (
+                    <p className="mt-1 text-sm text-red-500">{cupsError}</p>
+                  )}
+                  {formik.touched.specificReasonId &&
+                    formik.errors.specificReasonId &&
+                    !cupsError && (
+                      <p className="mt-1 text-sm text-red-500">
+                        {formik.errors.specificReasonId}
+                      </p>
+                    )}
+                </div>
+                <div>
+                  <Textarea
+                    label="Descripción CUPS"
+                    name="cupsDescription"
+                    value={
+                      cupsLoading && cupsCode
+                        ? "Cargando..."
+                        : cupsDescription ||
+                          (isEditMode && formik.values.specificReasonId
+                            ? `${formik.values.specificReasonId}`
+                            : "")
+                    }
+                    readOnly
+                    placeholder="Descripción"
+                    disabled={formik.isSubmitting}
+                    className="text-gray-400 dark:text-gray-400"
+                  />
+                </div>
+              </div>
               <Input
                 type="number"
                 label="Número de Radicado"

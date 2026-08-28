@@ -79,6 +79,8 @@ export const useSecureFileAccess = (): UseSecureFileAccessReturn => {
                 setError(null);
                 return response.data;
             }
+
+            throw new Error("Unexpected response status");
         } catch (error: any) {
             setError(error.response?.data?.message || error.message || "Unknown error");
             throw new Error(error.response?.data?.message || error.message || "Unknown error");
