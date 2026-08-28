@@ -58,7 +58,7 @@ export function ResumenPage() {
                   label="Convenios en Riesgo"
                   value={data.kpis.conveniosRiesgo}
                   ticker={{ value: data.kpis.conveniosRiesgo }}
-                  caption="Cumplimiento < 80%"
+                  caption="Cumplimiento < 90%"
                   accent={data.kpis.conveniosRiesgo > 10 ? 'red' : 'amber'}
                   delta={{ value: 'ALERTA', variant: 'warning' }}
                 />
@@ -72,7 +72,7 @@ export function ResumenPage() {
                       ? { value: data.kpis.oportunidadDias, decimals: 1, suffix: ' d' }
                       : undefined
                   }
-                  caption="Días promedio fecha_deseada → fecha_cita"
+                  caption="Días promedio fecha_asig → fecha_cita"
                   accent="navy"
                 />
               </BlurFade>
@@ -221,16 +221,16 @@ export function ResumenPage() {
 
 function cumplAccent(pct: number | null | undefined): 'green' | 'turquoise' | 'amber' | 'red' | 'red-light' {
   if (pct == null) return 'turquoise';
-  if (pct >= 85) return 'green';
+  if (pct >= 90) return 'green';
   if (pct >= 80) return 'amber';
-  if (pct >= 75) return 'red-light';
+  if (pct >= 70) return 'red-light';
   return 'red';
 }
 
 function pctTone(pct: number | null | undefined): 'green' | 'turquoise' | 'amber' | 'red' | 'red-light' {
   if (pct == null) return 'navy' as never;
-  if (pct >= 85) return 'green';
+  if (pct >= 90) return 'green';
   if (pct >= 80) return 'amber';
-  if (pct >= 75) return 'red-light';
+  if (pct >= 70) return 'red-light';
   return 'red';
 }
