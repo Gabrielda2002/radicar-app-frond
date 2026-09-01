@@ -10,6 +10,7 @@ export interface IPacientes {
     address:             string;
     agreementId:            number;
     ipsPrimaryId:         number;
+    regime:              string;
     status:              boolean;
     updatedAt:           Date;
     createdAt:           Date;

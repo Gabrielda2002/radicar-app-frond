@@ -7,7 +7,7 @@ import { useFetchPatient } from "@/featuures/Patient/Hooks/useFetchPatient";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
-import { DataTable } from "@/components/common/ReusableTable";
+import { ColumnConfig, DataTable } from "@/components/common/ReusableTable";
 import { IPacientes } from "@/models/IPacientes";
 import ModalUploadPatients from "../Components/ModalUploadPatients";
 import { useAuth } from "@/context/authContext";
@@ -28,55 +28,63 @@ const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
     getData(identificacion);
   };
 
-  const columns = [
+  const columns: ColumnConfig<IPacientes>[] = [
     {
       key: "id",
       header: "ID",
-      width: "20%",
+      size: "xs" as const,
       accessor: (item: IPacientes) => item.id,
     },
     {
       key: "dniNumber",
       header: "Identificación",
-      width: "20%",
+      size: "sm" as const,
       accessor: (item: IPacientes) => item.documentNumber,
     },
     {
       key: "dniType",
       header: "Tipo Identificación",
-      width: "20%",
+      size: "xs" as const,
       accessor: (item: IPacientes) => item.documentRelation.name,
     },
     {
       key: "name",
       header: "Nombre",
-      width: "20%",
+      size: "sm" as const,
       accessor: (item: IPacientes) => item.name,
     },
     {
       key: "numberPhone",
       header: "Teléfono",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: IPacientes) => item.phoneNumber,
     },
     {
       key: "email",
       header: "Email",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: IPacientes) => item.email,
     },
     {
       key: "agreement",
       header: "Convenio",
-      width: "20%",
+      size: "md" as const,
       accessor: (item: IPacientes) => item.convenioRelation.name,
     },
     {
       key: "status",
       header: "Estado",
-      width: "20%",
+      size: "sm" as const,
       render: (item: IPacientes) => (item.status ? "Activo" : "Inactivo"),
     },
+    {
+      key: "actions",
+      header: "Acciones",
+      size: "md" as const,
+      render: (item) => (
+        <ModalPaciente id={item.id} paciente={item} onSuccess={refetch} />
+      )
+    }
   ];
 
   return (
@@ -129,11 +137,6 @@ const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
                 getRowKey={(item) => item.id.toString()}
                 loading={false}
                 error={null}
-                renderActions={(item) => (
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ModalPaciente id={item.id} paciente={item} onSuccess={refetch} />
-                  </Suspense>
-                )}
               />
             </>
           )}

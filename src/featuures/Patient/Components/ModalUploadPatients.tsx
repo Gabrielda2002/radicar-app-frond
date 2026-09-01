@@ -6,7 +6,7 @@ import { CheckCircle, UploadIcon, XCircle } from 'lucide-react'
 import { useState } from 'react'
 import * as Yup from 'yup'
 import { useStoreUploadPatients } from '../store/useStoreUploadPatients'
-import { ColumnConfig, DataTable } from '@/components/common/ReusableTable'
+import { ColumnConfig, DataTable, DataTableContainer, useTableState } from '@/components/common/ReusableTable'
 import { Row } from '../types/UploadData'
 import { toast } from 'react-toastify'
 import SummaryCard from './SummaryCard'
@@ -61,6 +61,12 @@ const ModalUploadPatients = () => {
         });
       }
     },
+  })
+
+  const tableState = useTableState({
+    data: previewData?.rows || [],
+    searchFields: ['data.numero_documento', 'data.nombre_completo', 'data.celular', 'data.email'],
+    initialItemsPerPage: 10
   })
 
   const handleClose = () => {
@@ -136,6 +142,12 @@ const ModalUploadPatients = () => {
       render: (item: Row) => item.data.ips_primaria,
     },
     {
+      key: 'regimen',
+      header: 'Régimen',
+      size: 'sm' as const,
+      render: (item: Row) => item.data.regimen,
+    },
+    {
       key: 'estado',
       header: 'Estado',
       size: 'xs' as const,
@@ -199,13 +211,24 @@ const ModalUploadPatients = () => {
                 <SummaryCard label='Ya existen' value={previewData.alreadyExistsRows.length} variant='info' />
               </div>
 
+            <DataTableContainer
+              searchValue={tableState.searchQuery}
+              onSearchChange={tableState.setSearchQuery}
+              itemsPerPage={tableState.itemsPerPage}
+              onItemsPerPageChange={tableState.setItemsPerPage}
+              currentPage={tableState.currentPage}
+              totalPages={tableState.totalPages}
+              onPageChange={tableState.paginate}
+            >
               <DataTable
-                data={previewData.rows}
+                data={tableState.currentData()}
                 columns={columns}
                 getRowKey={(row) => row.row.toString()}
                 loading={isLoading}
                 error={error}
               />
+            </DataTableContainer>
+
 
             </>
           )}

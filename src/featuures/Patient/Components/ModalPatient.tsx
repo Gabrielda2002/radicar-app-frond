@@ -48,10 +48,10 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
   // hook para traer  las ips primarias
   const { dataIpsPrimaria, errorIpsPrimaria, fetchIpsPrimaria } = useLazyFetchIpsPrimary();
 
-const handleModalOpen = async () => {
+  const handleModalOpen = async () => {
     setIsOpen(true);
     await Promise.all([fetchConvenios(), fetchDocument(), fetchIpsPrimaria()]);
-}
+  }
 
   const validationSchema = useMemo(
     () =>
@@ -82,6 +82,7 @@ const handleModalOpen = async () => {
           .max(10, "El número de celular debe tener como máximo 10 caracteres"),
         ipsPrimaria: Yup.string().required("La IPS primaria es obligatoria"),
         address: Yup.string().required("La dirección es obligatoria"),
+        regime: Yup.string().required("El régimen es obligatorio"),
       }),
     []
   );
@@ -98,6 +99,7 @@ const handleModalOpen = async () => {
       phoneNumber2: "",
       ipsPrimaria: "",
       address: "",
+      regime: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -109,7 +111,7 @@ const handleModalOpen = async () => {
           toast.success("Paciente actualizado exitosamente");
           formik.resetForm();
         });
-      }else {
+      } else {
         await createPatient(values, () => {
           setIsOpen(false);
           onSuccess?.();
@@ -133,6 +135,7 @@ const handleModalOpen = async () => {
         phoneNumber2: paciente.phoneNumber2 ?? "",
         ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
         address: paciente.address,
+        regime: paciente.regime,
       });
     }
   }, [id, paciente]);
@@ -269,6 +272,22 @@ const handleModalOpen = async () => {
           {/* Segunda parte del formulario */}
           <div className="grid grid-cols-1 p-2 mb-4 md:grid-cols-2 gap-x-10">
             <div>
+              <Select
+                label="Régimen"
+                name="regime"
+                value={formik.values.regime}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                options={[
+                  { value: "Contributivo", label: "Contributivo" },
+                  { value: "Subsidiado", label: "Subsidiado" },
+                ]}
+                error={formik.errors.regime}
+                touched={formik.touched.regime}
+                required
+              />
+            </div>
+            <div>
               <Input
                 label="Dirección"
                 type="text"
@@ -334,7 +353,7 @@ const handleModalOpen = async () => {
               />
             </div>
           </div>
-           <AnimatePresence>
+          <AnimatePresence>
             {error && (
               <div>
                 <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">

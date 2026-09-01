@@ -26,6 +26,7 @@ export interface Data {
     direccion:        string;
     convenio:         string;
     ips_primaria:     string;
+    regimen:          string;
 }
 
 export interface Error {
