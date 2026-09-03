@@ -13,30 +13,31 @@ import { NetworkDevicesReportStrategy } from "./NetworkDevicesReportStrategy";
 import { GeneralInventoryReportStrategy } from "./GeneralInventoryReportStrategy";
 import { TvReportStrategy } from "./TvReportStrategy";
 import { PhonesReportStrategy } from "./PhonesReportStrategy";
+import { PqrsdfStrategy } from './PqrsdfStrategy';
 
 // Generic strategy interface for all report types
 export interface ReportStrategy<T = any> {
   // Get the preview endpoint for this report
   getPreviewEndpoint(): string;
-  
+
   // Get the download endpoint for this report
   getDownloadEndpoint(): string;
-  
+
   // Get the columns configuration for the preview table
   getColumns(): ColumnConfig<T>[];
-  
+
   // Get the extra filter fields specific to this report (beyond dateStart/dateEnd)
   getFilterFields(): FilterFieldConfig[];
-  
+
   // Get the validation schema for extra filters (dateStart/dateEnd are validated globally)
   getValidationSchema(): Yup.ObjectSchema<any>;
-  
+
   // Build the API payload from form values
   buildPayload(values: Record<string, any>): Record<string, any>;
-  
+
   // Get the unique key for each row in the table
   getRowKey(item: T): string;
-  
+
   // Get the search fields for the table
   getSearchFields(): string[];
 }
@@ -69,6 +70,8 @@ export const ReportStrategyFactory = {
         return new TvReportStrategy();
       case "phones":
         return new PhonesReportStrategy();
+      case "pqrsdf":
+        return new PqrsdfStrategy();
       default:
         throw new Error(`No hay estrategia definida para el reporte: ${reportId}`);
     }
