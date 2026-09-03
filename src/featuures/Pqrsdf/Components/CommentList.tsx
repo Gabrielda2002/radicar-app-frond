@@ -17,7 +17,7 @@ const CommentList: React.FC<CommentListProps> = ({
   isLoading,
   error,
 }) => {
-  const { openSecureFile, error: errorFile  } = useSecureFileAccess();
+  const { openSecureFile, error: errorFile } = useSecureFileAccess();
 
   return (
     <>
@@ -44,15 +44,22 @@ const CommentList: React.FC<CommentListProps> = ({
               key={c.id}
               className="p-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
             >
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
-                  {c.author ?? "Usuario"}
-                </span>
+              <div className="flex items-start justify-between mb-1">
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                    {c.author ?? "Usuario"}
+                  </span>
+                  {c.position && (
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {c.position}
+                    </span>
+                  )}
+                </div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                   {FormatDate(c.createdAt)}
                 </span>
               </div>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap dark:text-gray-200">
+              <p className="text-sm py-4 text-gray-700 whitespace-pre-wrap dark:text-gray-200">
                 {c.comment}
               </p>
               {c.attachment && (
