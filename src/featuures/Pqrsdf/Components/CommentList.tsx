@@ -1,10 +1,10 @@
-import { FormatDate } from "@/utils/FormatDate";
 import type {
   IPqrsdfComment,
 } from "@/featuures/Pqrsdf/models/IPqrsdfComment";
 import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAccess";
-import CommentAttachment from "./CommentAttachment";
 import { MessageSquare } from "lucide-react";
+import CommentItem from "./CommentItem";
+
 
 interface CommentListProps {
   comments: IPqrsdfComment[];
@@ -38,43 +38,16 @@ const CommentList: React.FC<CommentListProps> = ({
           <p className="text-sm">Sé el primero en comentar esta solicitud.</p>
         </div>
       ) : (
-        <div className="flex flex-col space-y-3">
-          {comments.map((c) => (
-            <div
-              key={c.id}
-              className="p-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
-            >
-              <div className="flex items-start justify-between mb-1">
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
-                    {c.author ?? "Usuario"}
-                  </span>
-                  {c.position && (
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {c.position}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {FormatDate(c.createdAt)}
-                </span>
-              </div>
-              <p className="text-sm py-4 text-gray-700 whitespace-pre-wrap dark:text-gray-200">
-                {c.comment}
-              </p>
-              {c.attachment && (
-                <CommentAttachment
-                  attachment={c.attachment}
-                  onOpen={() => {
-                    openSecureFile(
-                      c.attachment!.id.toString(),
-                      "VIEW",
-                      "pqrsdf",
-                    );
-                  }}
-                />
-              )}
-            </div>
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          {comments.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onOpenAttachment={(item) => {
+                if (!item.attachment) return;
+                openSecureFile(item.attachment.id.toString(), "VIEW", "pqrsdf");
+              }}
+            />
           ))}
         </div>
       )}
