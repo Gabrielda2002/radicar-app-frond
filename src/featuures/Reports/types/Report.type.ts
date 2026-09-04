@@ -337,3 +337,24 @@ export interface PqrsdfReportData {
     Estado:                                 string;
     Indicador:                              string;
 }
+
+export interface SurveyReportData {
+    Marca_temporal:                Date;
+    Sede_atencion:                 string;
+    Convenio_paciente:             string;
+    Numero_identificacion:         string;
+    Nombre_completo:               string;
+    Poblacion_especial:            string;
+    Servicio_atencion:             string;
+    Cita_oportuna:                 string;
+    Atencion_puntual:              string;
+    Interes_profesional:           string;
+    Recomendaciones_claras:        string;
+    Senalizacion_ayudo:            string;
+    Instalaciones_adecuadas:       string;
+    Instalaciones_limpias:         string;
+    Calificacion_profesional:      string;
+    Calificacion_servicio_cliente: string;
+    Experiencia_global:            string;
+    Recomendaria_ips:              string;
+}

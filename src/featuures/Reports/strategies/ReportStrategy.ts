@@ -14,6 +14,7 @@ import { GeneralInventoryReportStrategy } from "./GeneralInventoryReportStrategy
 import { TvReportStrategy } from "./TvReportStrategy";
 import { PhonesReportStrategy } from "./PhonesReportStrategy";
 import { PqrsdfStrategy } from './PqrsdfStrategy';
+import { SurveyReportStrategy } from './SurveyReportStrategy';
 
 // Generic strategy interface for all report types
 export interface ReportStrategy<T = any> {
@@ -72,6 +73,8 @@ export const ReportStrategyFactory = {
         return new PhonesReportStrategy();
       case "pqrsdf":
         return new PqrsdfStrategy();
+      case "surveys":
+        return new SurveyReportStrategy();
       default:
         throw new Error(`No hay estrategia definida para el reporte: ${reportId}`);
     }

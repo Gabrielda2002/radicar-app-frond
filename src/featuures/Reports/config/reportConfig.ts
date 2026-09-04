@@ -103,5 +103,12 @@ export const REPORT_CONFIG: ReportConfig[] = [
         description: 'Genera reportes de las solicitudes, quejas, reclamos, sugerencias, denuncias y felicitaciones radicadas.',
         icon: FaToolbox,
         roles: ['1','3','6','11']
+    },
+    {
+        id: 'surveys',
+        title: "Encuesta Satisfacción",
+        description: "Genera reportes de las encuestas de satisfacción.",
+        icon: FaToolbox,
+        roles: ['1','3','6','11']
     }
 ]
