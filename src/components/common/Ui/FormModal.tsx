@@ -18,6 +18,8 @@ interface FormModalProps {
   isSubmitting?: boolean;
   isValid?: boolean;
   className?: string;
+  headerClassName?: string;
+  footerClassName?: string;
 }
 
 const FormModal: React.FC<FormModalProps> = ({
@@ -33,13 +35,15 @@ const FormModal: React.FC<FormModalProps> = ({
   isSubmitting = false,
   isValid = true,
   className,
+  headerClassName,
+  footerClassName,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size} className={className}>
       <form onSubmit={onSubmit}>
-        <ModalHeader title={title} onClose={onClose} />
+        <ModalHeader title={title} onClose={onClose} className={headerClassName} />
         <ModalBody>{children}</ModalBody>
-        <ModalFooter variant="form">
+        <ModalFooter variant="form" className={footerClassName}>
           {showCancelButton && (
             <Button
               variant="closed"

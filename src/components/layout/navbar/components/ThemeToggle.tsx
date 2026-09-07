@@ -1,14 +1,15 @@
 import React from "react";
 
+import Button from "@/components/common/Ui/Button";
+
+import { Moon, Sun } from "lucide-react";
+
 interface ThemeToggleProps {
   theme: "light" | "dark";
   onToggle: () => void;
-  size?: "xs"| "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }
-
-import Button from "@/components/common/Ui/Button";
-import { Moon, Sun } from "lucide-react";
 
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   theme,
@@ -17,14 +18,16 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   className = "",
 }) => {
   const baseBtn =
-    "rounded-full focus:outline-none transition-colors duration-300";
+    "rounded-xl p-2.5 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none active:ring-0 transition-all duration-200 flex items-center justify-center";
 
-  const sizeClasses = size === "sm" ? "w-5 h-5" : "w-8 h-8";
+  const sizeClasses =
+    size === "sm" || size === "xs" ? "w-6 h-6" : "w-7 h-7";
 
-  const containerClasses =
-    theme === "dark"
-      ? "text-gray-200 bg-gray-700 border-2 border-gray-600 rounded-full dark:bg-color dark:hover:bg-teal-600 hover:bg-gray-600 group"
-      : "text-gray-800 bg-gray-200 border-2 border-gray-300 rounded-full hover:bg-gray-700 hover:text-white group";
+    const containerClasses =
+     theme === "dark"
+      ? "text-[#008d93] hover:bg-[#283547]"
+      : "text-[#008d93] bg-transparent hover:bg-[#dff5f5]";
+
   return (
     <Button
       variant="any"

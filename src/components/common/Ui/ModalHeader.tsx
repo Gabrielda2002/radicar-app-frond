@@ -19,11 +19,12 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
   return (
     <div
       className={clsx(
-        "flex items-center justify-between p-4 bg-gray-200 border-b-2 dark:bg-gray-600 border-b-gray-900 dark:border-b-white",
+        "flex items-center justify-between p-4",
+        !className && "border-b border-[#b7e4e5] bg-[#effbfb] dark:border-gray-600 dark:bg-gray-700",
         className
       )}
     >
-      <h1 className="text-2xl font-semibold text-color dark:text-gray-200">
+      <h1 className="text-2xl font-semibold text-[#008d93] dark:text-gray-200">
         {title}
       </h1>
       <div className="flex items-center gap-2">
