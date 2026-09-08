@@ -11,6 +11,7 @@ export interface IPqrsdfCommentAttachment {
 export interface IPqrsdfComment {
   id: number;
   author: string | null;
+  position: string;
   comment: string;
   createdAt: string;
   attachment: IPqrsdfCommentAttachment | null;

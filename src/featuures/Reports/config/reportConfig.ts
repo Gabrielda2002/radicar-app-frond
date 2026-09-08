@@ -96,5 +96,19 @@ export const REPORT_CONFIG: ReportConfig[] = [
         description: 'Evalúa el estado y asignación de los teléfonos corporativos inventariados.',
         icon: Smartphone,
         roles: ['1']
+    },
+    {
+        id: 'pqrsdf',
+        title: 'PQRSDF',
+        description: 'Genera reportes de las solicitudes, quejas, reclamos, sugerencias, denuncias y felicitaciones radicadas.',
+        icon: FaToolbox,
+        roles: ['1','3','6','11']
+    },
+    {
+        id: 'surveys',
+        title: "Encuesta Satisfacción",
+        description: "Genera reportes de las encuestas de satisfacción.",
+        icon: FaToolbox,
+        roles: ['1','3','6','11']
     }
 ]

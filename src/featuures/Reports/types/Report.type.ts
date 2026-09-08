@@ -277,7 +277,7 @@ export interface tvReportData {
     updatedAt:        Date;
 }
 
-export interface phoneReportData {
+export interface    phoneReportData {
     createdAt:        Date;
     name:             string;
     brand:            string;
@@ -307,4 +307,54 @@ export interface phoneReportData {
     headquarters:     string;
     acquisitionValue: string;
     updatedAt:        Date;
+}
+
+export interface PqrsdfReportData { 
+     Nombre_del_paciente:                    string;
+    Documento:                              string;
+    Asegurador_EPS:                         String;
+    Ente:                                   string;
+    Regimen:                                string;
+    Novedad_presentada_por:                 string;
+    Notifica_EPS:                           string;
+    PQRS:                                   string;
+    Medio:                                  string;
+    Numero_de_radicado:                     number;
+    Fecha_de_radicacion:                    Date;
+    Fecha_de_hallazgo:                      string;
+    Fecha_de_respuesta:                     Date;
+    Oportunidad_desde_radicacion:           Date;
+    Oportunidad_desde_hallazgo:             string;
+    Via_utilizada_para_la_respuesta:        string;
+    Servicio:                               string;
+    Respuesta:                              string;
+    Area_con_la_cual_se_resolvio_el_evento: string;
+    Clasificacion_final:                    string;
+    Accion_de_mejora:                       string;
+    Plan_de_mejoramiento:                   string;
+    Fecha_del_seguimiento:                  string;
+    Seguimiento:                            string;
+    Estado:                                 string;
+    Indicador:                              string;
+}
+
+export interface SurveyReportData {
+    Marca_temporal:                Date;
+    Sede_atencion:                 string;
+    Convenio_paciente:             string;
+    Numero_identificacion:         string;
+    Nombre_completo:               string;
+    Poblacion_especial:            string;
+    Servicio_atencion:             string;
+    Cita_oportuna:                 string;
+    Atencion_puntual:              string;
+    Interes_profesional:           string;
+    Recomendaciones_claras:        string;
+    Senalizacion_ayudo:            string;
+    Instalaciones_adecuadas:       string;
+    Instalaciones_limpias:         string;
+    Calificacion_profesional:      string;
+    Calificacion_servicio_cliente: string;
+    Experiencia_global:            string;
+    Recomendaria_ips:              string;
 }

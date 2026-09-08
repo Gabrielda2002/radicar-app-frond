@@ -25,7 +25,6 @@ const Reports = () => {
     const [filteredReports, setFilteredReports] = useState<typeof REPORT_CONFIG>([]);
 
     const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
-    console.log('error generacion de preview', error)
 
     useEffect(() => {
         if (rol) {
@@ -38,7 +37,6 @@ const Reports = () => {
 
     const { downloadReport, error: dError, loading: dLoading } = useDownloadReport();
 
-    // Get the strategy for the selected report
     const strategy = useMemo(() => {
         if (!selectedReport) return null;
         try {
@@ -49,7 +47,6 @@ const Reports = () => {
         }
     }, [selectedReport]);
 
-    // Generate dynamic validation schema based on selected report
     const validationSchema = useMemo(() => {
         const baseSchema = Yup.object({
             dateStart: Yup.date().required('La fecha de inicio es requerida'),
@@ -58,11 +55,9 @@ const Reports = () => {
 
         if (!strategy) return baseSchema;
 
-        // Merge with strategy-specific validation
         return baseSchema.concat(strategy.getValidationSchema());
     }, [strategy]);
 
-    // Generate initial values dynamically based on selected report
     const initialValues = useMemo(() => {
         const baseValues: Record<string, any> = {
             dateStart: '',
@@ -71,7 +66,6 @@ const Reports = () => {
 
         if (!strategy) return baseValues;
 
-        // Add extra filter fields from strategy
         strategy.getFilterFields().forEach(field => {
             baseValues[field.name] = field.type === 'number' ? 0 : '';
         });
@@ -93,7 +87,6 @@ const Reports = () => {
         }
     })
 
-    // Clear preview when report type changes
     useEffect(() => {
         if (selectedReport !== null) {
             clearPreview();
@@ -107,24 +100,20 @@ const Reports = () => {
     const handleDownloadReport = async () => {
         if (!strategy) return;
 
-        try {
-            const downloadEndpoint = strategy.getDownloadEndpoint();
-            const payload = strategy.buildPayload(formik.values);
+        const downloadEndpoint = strategy.getDownloadEndpoint();
+        const payload = strategy.buildPayload(formik.values);
 
-            await downloadReport({
-                dateStart: payload.dateStart,
-                dateEnd: payload.dateEnd,
-                cupsCode: payload.cupsCode,
-                statusCups: payload.statusCups,
-                headquarter: payload.headquarter,
-                convenio: payload.convenio,
-                specialty: payload.specialty,
-            },
-                downloadEndpoint
-            );
-        } catch (error) {
-            console.error("Error al descargar reporte:", error);
-        }
+        await downloadReport({
+            dateStart: payload.dateStart,
+            dateEnd: payload.dateEnd,
+            cupsCode: payload.cupsCode,
+            statusCups: payload.statusCups,
+            headquarter: payload.headquarter,
+            convenio: payload.convenio,
+            specialty: payload.specialty,
+        },
+            downloadEndpoint
+        );
     };
 
     const handleGoBack = () => {

@@ -91,7 +91,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         title: 'Gestión de Servicios',
         icon: MdHomeRepairService,
         type: 'category',
-        roles: [10, 3, 1, 15, 6, 2],
+        roles: [10, 3, 1, 15, 6, 2, 11],
         children: [
           {
             id: 'radicator',
@@ -99,7 +99,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             icon: ClipboardList,
             path: '/tabla-radicacion',
             type: 'subcategory',
-            roles: [10, 3, 1, 15, 6, 2]
+            roles: [10, 3, 1, 15, 6, 2, 11]
           },
           {
             id: 'FaUserDoctor',
@@ -198,7 +198,7 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
   {
     id: 'reports',
     title: 'Reportes',
-    roles: [6, 2, 14, 3, 15, 1, 18, 19, 20, 21],
+    roles: [6, 2, 14, 3, 15, 1, 18, 19, 20, 21, 11],
     items: [
       {
         id: 'report-management',
