@@ -1,32 +1,68 @@
 import React from "react";
+
 import { Menu, MenuButton } from "@headlessui/react";
+
 import type { SupportLink } from "../types/navigation.types";
 
 interface SupportMenuProps {
   links: SupportLink[];
+
   theme: "light" | "dark";
-  buttonClassName?: string; // permite pasar estilos distintos segun contexto
-  itemsClassName?: string; // para posicionamiento (absolute en desktop, estático en móvil)
+
+  buttonClassName?: string;
+
+  itemsClassName?: string;
 }
 
 export const SupportMenu: React.FC<SupportMenuProps> = ({
   links,
   theme,
-  buttonClassName = "duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:bg-teal-600 dark:bg-color border-2 border-gray-300 dark:border-gray-600 px-4 py-2",
+  buttonClassName,
   itemsClassName,
 }) => {
+  const defaultButtonClassName = `
+    rounded-xl
+    p-2.5
+    text-[#008d93]
+    bg-transparent
+    hover:bg-[#dff5f5]
+    dark:hover:bg-[#283547]
+    outline-none
+    focus:outline-none
+    focus:ring-0
+    focus-visible:outline-none
+    focus-visible:ring-0
+    active:outline-none
+    active:ring-0
+    transition-all
+    duration-200
+    flex
+    items-center
+    justify-center
+  `;
+
   return (
     <Menu as="div" className="relative" title="Soportes">
-      <MenuButton className={buttonClassName}>
+      <MenuButton
+        className={buttonClassName ?? defaultButtonClassName}
+      >
         Soportes
       </MenuButton>
 
       <Menu.Items
-        className={`${
-          theme === "dark" ? "bg-gray-800" : "bg-white"
-        } rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${
-          itemsClassName ?? ""
-        }`}
+        className={`
+          ${
+            theme === "dark"
+              ? "bg-gray-800"
+              : "bg-white"
+          }
+          rounded-md
+          shadow-lg
+          ring-1
+          ring-black
+          ring-opacity-5
+          ${itemsClassName ?? ""}
+        `}
       >
         <div className="flex-grow w-full py-2 mt-1">
           {links.map((link) => (
@@ -36,11 +72,20 @@ export const SupportMenu: React.FC<SupportMenuProps> = ({
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${
-                    active
-                      ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600"
-                      : "text-gray-700 dark:text-gray-200"
-                  } group flex items-center w-full px-2 py-2 text-sm`}
+                  className={`
+                    ${
+                      active
+                        ? "bg-blue-100 text-gray-900 dark:text-white dark:bg-gray-600"
+                        : "text-gray-700 dark:text-gray-200"
+                    }
+                    group
+                    flex
+                    items-center
+                    w-full
+                    px-2
+                    py-2
+                    text-sm
+                  `}
                 >
                   {link.name}
                 </a>

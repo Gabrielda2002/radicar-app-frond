@@ -17,7 +17,7 @@ const ModalBody: React.FC<ModalBodyProps> = ({
   return (
     <div
         className={clsx(
-            "dark:bg-gray-800 dark:text-gray-200",
+            "bg-gradient-to-b from-[#fbffff] to-white text-gray-800 dark:from-gray-800 dark:to-gray-800 dark:text-gray-200",
             scrollable && `${maxHeight} overflow-y-auto`,
             className
         )}

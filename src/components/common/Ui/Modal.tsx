@@ -55,7 +55,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div
             className={clsx(
-                "overflow-hidden transition-transform duration-300 transform bg-white rounded shadow-lg dark:bg-gray-800 h-fit",
+                "overflow-hidden transition-transform duration-300 transform rounded-2xl border border-[#ccebec] bg-white shadow-2xl dark:border-gray-600 dark:bg-gray-800 h-fit",
                 sizeClasses[size],
                 showAnimation && !closing ? 'translate-y-0' : 'translate-y-10',
                 className
