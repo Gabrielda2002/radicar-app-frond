@@ -10,6 +10,18 @@ import { useGlobalFiltersFromUrl } from '@dash/lib/use-filters';
 import { formatCurrency, formatNumber, formatPercent } from '@dash/lib/utils';
 import { Badge } from '@dash/components/ui/badge';
 
+/**
+ * Lectura del % de ejecución en valor frente a la nota técnica.
+ * Por debajo del contrato es subejecución (no se prestó lo pactado); por
+ * encima es sobreejecución, que también merece atención aunque no sea "malo".
+ */
+function ejecucionNt(pct: number | null) {
+  if (pct == null) return { caption: 'Sin datos en el filtro', accent: 'outline' as const };
+  if (pct < 70) return { caption: 'Subejecución del contrato', accent: 'red' as const };
+  if (pct <= 100) return { caption: 'Dentro del contrato', accent: 'green' as const };
+  return { caption: 'Sobreejecución del contrato', accent: 'amber' as const };
+}
+
 export function FinancieroPage() {
   const { filters } = useGlobalFiltersFromUrl();
   const q = useFinanciero(filters);
@@ -44,7 +56,7 @@ export function FinancieroPage() {
                       ? { value: data.kpis.costoEsperadoMillones, decimals: 1, prefix: '$', suffix: 'M' }
                       : undefined
                   }
-                  caption="Meta NT × costo_medio × 5 meses"
+                  caption="Meta NT × costo_medio × meses del periodo"
                   accent="navy"
                 />
               </BlurFade>
@@ -63,15 +75,15 @@ export function FinancieroPage() {
               </BlurFade>
               <BlurFade delay={0.18}>
                 <KpiCard
-                  label="Eficiencia (Rec/Costo)"
-                  value={formatPercent(data.kpis.eficienciaPct)}
+                  label="Ejecución vs NT (valor)"
+                  value={formatPercent(data.kpis.ejecucionNtPct)}
                   ticker={
-                    data.kpis.eficienciaPct != null
-                      ? { value: data.kpis.eficienciaPct, decimals: 1, suffix: '%' }
+                    data.kpis.ejecucionNtPct != null
+                      ? { value: data.kpis.ejecucionNtPct, decimals: 1, suffix: '%' }
                       : undefined
                   }
-                  caption={(data.kpis.eficienciaPct ?? 0) < 10 ? 'Recuperación muy baja' : 'Rango aceptable'}
-                  accent={(data.kpis.eficienciaPct ?? 0) < 10 ? 'red' : 'green'}
+                  caption={ejecucionNt(data.kpis.ejecucionNtPct).caption}
+                  accent={ejecucionNt(data.kpis.ejecucionNtPct).accent}
                 />
               </BlurFade>
             </section>

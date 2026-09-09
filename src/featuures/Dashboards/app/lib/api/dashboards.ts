@@ -106,6 +106,7 @@ const FinancieroSchema = z.object({
     costoEsperadoMillones: NumericOrNull,
     recuperacionMillones: NumericOrNull,
     eficienciaPct: NumericOrNull,
+    ejecucionNtPct: NumericOrNull,
   }),
   paretoCups: z.array(
     z.object({
