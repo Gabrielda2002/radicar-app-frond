@@ -54,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({
     outline:
       "text-gray-600 bg-transparent hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 border-2 border-gray-400 focus:ring-gray-500",
 
-    any: "focus:outline-none focus:ring-0 focus:ring-offset-0",
+    any: "focus-visible:!outline-none focus-visible:!ring-2 focus-visible:!ring-offset-2",
 
     action:
       "p-2 duration-300 ease-in-out bg-gray-200 rounded-full hover:text-white hover:bg-gray-700 dark:text-white focus:outline-none dark:hover:opacity-80 dark:bg-gray-500",
