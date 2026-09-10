@@ -46,7 +46,13 @@ const EjecucionNtSchema = z.object({
     .object({
       ejecutado: IntegerOrNull,
       meta_periodo: IntegerOrNull,
+      // Ejecutado de la ciudad y aporte de la sede física dentro de ella.
+      // Ambos null cuando NO hay sede física seleccionada: ahí el KPI ya es el
+      // total. Usan NumericOrNull (no IntegerOrNull) porque este null es
+      // información —"no aplica"— y IntegerOrNull lo colapsaría a 0.
+      ejecutado_total: NumericOrNull,
       pct: NumericOrNull,
+      aporte_pct: NumericOrNull,
     })
     .nullable(),
   desviaciones: z.array(
@@ -103,6 +109,10 @@ const FinancieroSchema = z.object({
   kpis: z.object({
     costoRealMillones: NumericOrNull,
     citasCosteadas: IntegerOrNull,
+    // Costo real de la ciudad y aporte de la sede física dentro de ella.
+    // Ambos null sin sede física seleccionada (el KPI ya es el total).
+    costoRealTotalMillones: NumericOrNull,
+    aporteCostoRealPct: NumericOrNull,
     costoEsperadoMillones: NumericOrNull,
     recuperacionMillones: NumericOrNull,
     eficienciaPct: NumericOrNull,
