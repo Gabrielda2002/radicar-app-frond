@@ -26,6 +26,8 @@ jobs:
       - name: Configure Environment Variables
         run: |
           echo "VITE_URL_BACKEND=${{secrets.VITE_URL_BACKEND}}" >> .env
+          echo "VITE_URL_BACKEND_DASHBOARD=${{secrets.VITE_URL_BACKEND_DASHBOARD}}" >> .env
+          echo "VITE_NODE_ENV=${{secrets.VITE_NODE_ENV}}" >> .env
 
       
       - name: Build Project

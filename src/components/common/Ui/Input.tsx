@@ -14,8 +14,6 @@ interface InputProps
   variant?: "default" | "dark" | "error" | "checkbox" | "any";
   size?: "sm" | "md" | "lg" | "full";
   helpText?: string;
-  requiredClassName?: string;
-  errorClassName?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -29,8 +27,6 @@ const Input: React.FC<InputProps> = ({
   variant = "default",
   size = "md",
   helpText,
-  requiredClassName = "text-red-600",
-  errorClassName = "text-red-500",
   disabled,
   type,
   ...props
@@ -52,7 +48,7 @@ const Input: React.FC<InputProps> = ({
 
   const getVariantClasses = () => {
     if (error && touched) {
-      return "border-[#008d93] dark:border-[#008d93] focus:ring-[#008d93]";;
+      return "border-red-500 dark:border-red-500 focus:ring-red-500";
     }
 
     switch (variant) {
@@ -65,13 +61,13 @@ const Input: React.FC<InputProps> = ({
       case "any":
         return ""
       default:
-        return "border-[#d8eeee] dark:border-gray-600 bg-transparent dark:bg-gray-800 dark:text-white";
+        return "border-gray-200 dark:border-gray-600 bg-transparent dark:bg-gray-800 dark:text-white";
     }
   };
 
   // Para checkbox, no usar inputClasses normales ni iconos dentro del input
   const inputClasses = `
-    w-full border-2 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-[#008d93]/40 transition-colors duration-200
+    w-full border-2 rounded bg-transparent focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
     ${getSizeClasses()}
     ${getVariantClasses()}
     ${
@@ -107,7 +103,7 @@ const Input: React.FC<InputProps> = ({
           <label className="text-base font-bold text-gray-700 select-none dark:text-gray-200">
             {label}
             {required && (
-              <span className={`ml-2 ${requiredClassName} after:content-['*']`}></span>
+              <span className="ml-2 text-red-600 after:content-['*']"></span>
             )}
           </label>
         )}
@@ -120,7 +116,7 @@ const Input: React.FC<InputProps> = ({
 
         <AnimatePresence>
           {error && touched && (
-            <ErrorMessage textClassName={errorClassName} className="ml-2">{error}</ErrorMessage>
+            <ErrorMessage className="ml-2">{error}</ErrorMessage>
           )}
         </AnimatePresence>
       </div>
@@ -134,7 +130,7 @@ const Input: React.FC<InputProps> = ({
           <span className="flex items-center">
             {label}
             {required && (
-              <span className={`ml-2 ${requiredClassName} after:content-['*']`}></span>
+              <span className="ml-2 text-red-600 after:content-['*']"></span>
             )}
           </span>
         </label>
@@ -172,7 +168,7 @@ const Input: React.FC<InputProps> = ({
       )}
 
       <AnimatePresence>
-        {error && touched && <ErrorMessage textClassName={errorClassName}>{error}</ErrorMessage>}
+        {error && touched && <ErrorMessage>{error}</ErrorMessage>}
       </AnimatePresence>
     </div>
   );

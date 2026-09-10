@@ -260,8 +260,6 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
     error: formik.errors[name],
     touched: formik.touched[name],
     size: "full" as const,
-    requiredClassName: "text-gray-700 dark:text-gray-200",
-    errorClassName: "text-gray-700 dark:text-gray-200",
   });
 
   const duracion = getDuracionLegible(
