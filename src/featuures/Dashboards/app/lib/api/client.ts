@@ -62,6 +62,15 @@ export async function get<S extends z.ZodTypeAny>(
   return parsed.data;
 }
 
+/**
+ * POST sin cuerpo, para los endpoints administrativos. No valida con Zod
+ * porque devuelven un acuse simple, no datos de dashboard.
+ */
+export async function post<T = unknown>(path: string): Promise<T> {
+  const res = await dashApi.post(path);
+  return res.data as T;
+}
+
 // ═══════════════════════════════════════════════════════════════
 //  Schemas/primitivas comunes
 // ═══════════════════════════════════════════════════════════════

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { get, NumericOrNull, IntegerOrNull, StringOrNull, type DashboardFilters } from './client';
+import { get, post, NumericOrNull, IntegerOrNull, StringOrNull, type DashboardFilters } from './client';
 
 // ═══════════════════════════════════════════════════════════════
 //  Dashboard 1 - Resumen Gerencial
@@ -184,4 +184,11 @@ export const dashboardsApi = {
   financiero: (f: DashboardFilters = {}) => get('/dashboards/financiero', FinancieroSchema, f),
   calidad: (f: DashboardFilters = {}) => get('/dashboards/calidad', CalidadSchema, f),
   pym: (f: DashboardFilters = {}) => get('/dashboards/pym', PymSchema, f),
+  /**
+   * Reconstruye el pre-agregado costos_agg desde costos. Tarda ~2 min porque
+   * recorre la tabla entera; hay que llamarlo despues de cada corrida del ETL,
+   * si no los dashboards siguen mostrando la foto anterior sin avisar.
+   */
+  rebuildAgregado: () =>
+    post<{ rows: number; segundos: number }>('/dashboards/admin/rebuild-agregado'),
 };
