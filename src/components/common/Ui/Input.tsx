@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import React from "react";
+import { Eye, EyeOff } from "lucide-react";
 import ErrorMessage from "../ErrorMessageModal/ErrorMessageModals";
 
 interface InputProps
@@ -11,7 +12,13 @@ interface InputProps
   required?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
-  variant?: "default" | "dark" | "error" | "checkbox" | "any";
+  variant?:
+    | "default"
+    | "dark"
+    | "error"
+    | "checkbox"
+    | "password"
+    | "any";
   size?: "sm" | "md" | "lg" | "full";
   helpText?: string;
 }
@@ -31,6 +38,14 @@ const Input: React.FC<InputProps> = ({
   type,
   ...props
 }) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const isPasswordVariant = variant === "password";
+  const inputType = isPasswordVariant
+    ? showPassword
+      ? "text"
+      : "password"
+    : type;
+
   const getSizeClasses = () => {
     switch (size) {
       case "sm":
@@ -58,6 +73,8 @@ const Input: React.FC<InputProps> = ({
         return "border-gray-300 dark:border-gray-500 bg-white bg:gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100";
       case "error":
         return "border-red-500 dark:border-red-500 bg-red-100 dark:bg-red-800 text-red-900 dark:text-red-100";
+      case "password":
+        return "border-gray-200 dark:border-gray-600 bg-transparent dark:bg-gray-800 dark:text-white";
       case "any":
         return ""
       default:
@@ -76,12 +93,13 @@ const Input: React.FC<InputProps> = ({
         : ""
     }
     ${
-      icon && type !== "checkbox"
+      icon && inputType !== "checkbox"
         ? iconPosition === "left"
           ? "pl-10"
           : "pr-10"
         : ""
     }
+    ${isPasswordVariant ? "pr-10" : ""}
     ${className}
   `.trim();
 
@@ -146,13 +164,31 @@ const Input: React.FC<InputProps> = ({
         )}
 
         <input
-          type={type}
-          className={inputClasses}
-          disabled={disabled}
-          {...props}
-        />
+           type={inputType}
+           className={inputClasses}
+           disabled={disabled}
+           {...props}
+         />
 
-        {icon && iconPosition === "right" && (
+        {isPasswordVariant && (
+          <button
+            type="button"
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 transition-colors hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#008d93]/40 dark:text-gray-300 dark:hover:text-white"
+            onClick={() => setShowPassword((visible) => !visible)}
+            onMouseDown={(event) => event.preventDefault()}
+            disabled={disabled}
+          >
+            {showPassword ? (
+              <EyeOff className="w-5 h-5" aria-hidden="true" />
+            ) : (
+              <Eye className="w-5 h-5" aria-hidden="true" />
+            )}
+          </button>
+        )}
+
+        {icon && iconPosition === "right" && !isPasswordVariant && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
             <div className="w-5 h-5 text-gray-400 dark:text-gray-300">
               {icon}
