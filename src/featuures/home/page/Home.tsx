@@ -156,7 +156,7 @@ const [isDocPanelOpen, setIsDocPanelOpen] = useState(false);
 
             {/* BEGIN: Calendario de actividades */}
             <div className="rounded-xl bg-gray-50 pb-5 shadow-sm dark:bg-gray-700">
-              <h1 className="pl-6 md:pl-10 pt-5 mx-auto text-[28px] font-bold md:text-5xl dark:text-white">
+              <h1 className="pl-6 md:pl-10 pt-5 mx-auto text-gray-700 [28px] font-bold md:text-5xl dark:text-white">
                 Calendario de Actividades:
               </h1>
               <Suspense fallback={<LoadingSpinner />}>

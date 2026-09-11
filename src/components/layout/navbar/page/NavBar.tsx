@@ -57,8 +57,7 @@ const Navbar: React.FC = React.memo(() => {
   const [isNotificationsOpen, setIsNotificationsOpen] =
     useState<boolean>(false);
 
-  const [isSupportMenuOpen, setIsSupportMenuOpen] =
-    useState<boolean>(false);
+  const [isSupportMenuOpen, setIsSupportMenuOpen] = useState<boolean>(false);
 
   const isDark = theme === "dark";
 
@@ -177,9 +176,7 @@ const Navbar: React.FC = React.memo(() => {
           border-b
           transition-colors duration-300
           ${
-            isDark
-              ? "bg-gray-900 border-gray-700"
-              : "bg-white border-[#ccebec]"
+            isDark ? "bg-gray-900 border-gray-700" : "bg-white border-[#ccebec]"
           }
           shadow-[0_2px_12px_rgba(0,141,147,0.06)]
         `}
@@ -192,9 +189,7 @@ const Navbar: React.FC = React.memo(() => {
             md:px-5 md:py-3
           "
         >
- 
           <div className="flex items-center min-w-0 gap-3">
-
             <button
               type="button"
               title="Abrir/Cerrar Sidebar"
@@ -255,7 +250,6 @@ const Navbar: React.FC = React.memo(() => {
             </NavLink>
           </div>
 
-
           <div className="flex items-center md:hidden">
             <AccordionMenu theme={theme}>
               <div className="py-3 space-y-2">
@@ -274,18 +268,12 @@ const Navbar: React.FC = React.memo(() => {
                   />
                 </div>
 
-
                 <div
                   className={`
                     my-3 border-t
-                    ${
-                      isDark
-                        ? "border-gray-700"
-                        : "border-[#e2f1f1]"
-                    }
+                    ${isDark ? "border-gray-700" : "border-[#e2f1f1]"}
                   `}
                 />
-
 
                 <div className="px-4 py-2">
                   <p className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase">
@@ -327,11 +315,7 @@ const Navbar: React.FC = React.memo(() => {
                         flex items-center justify-center
                         w-8 h-8
                         rounded-lg
-                        ${
-                          isDark
-                            ? "bg-gray-700"
-                            : "bg-[#effbfb]"
-                        }
+                        ${isDark ? "bg-gray-700" : "bg-[#effbfb]"}
                       `}
                     >
                       {theme === "light" ? (
@@ -342,9 +326,7 @@ const Navbar: React.FC = React.memo(() => {
                     </div>
 
                     <span className="text-sm font-medium">
-                      {theme === "light"
-                        ? "Modo Oscuro"
-                        : "Modo Claro"}
+                      {theme === "light" ? "Modo Oscuro" : "Modo Claro"}
                     </span>
                   </button>
                 </div>
@@ -354,11 +336,7 @@ const Navbar: React.FC = React.memo(() => {
                 <div
                   className={`
                     my-3 border-t
-                    ${
-                      isDark
-                        ? "border-gray-700"
-                        : "border-[#e2f1f1]"
-                    }
+                    ${isDark ? "border-gray-700" : "border-[#e2f1f1]"}
                   `}
                 />
 
@@ -440,7 +418,6 @@ const Navbar: React.FC = React.memo(() => {
               <NotificacionBell />
             </div>
 
-
             <div className="relative ml-1">
               <UserMenu
                 items={userNavigation}
@@ -471,7 +448,6 @@ const Navbar: React.FC = React.memo(() => {
         onClose={handleCloseMyPermissions}
       />
 
-  
       {isNotificationsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
@@ -489,7 +465,6 @@ const Navbar: React.FC = React.memo(() => {
         </div>
       )}
 
-  
       {isSupportMenuOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Overlay */}
@@ -552,11 +527,7 @@ const Navbar: React.FC = React.memo(() => {
                   <h3
                     className={`
                       text-base font-semibold
-                      ${
-                        isDark
-                          ? "text-gray-100"
-                          : "text-gray-700"
-                      }
+                      ${isDark ? "text-gray-100" : "text-gray-700"}
                     `}
                   >
                     Enlaces de Soporte
@@ -632,9 +603,7 @@ const Navbar: React.FC = React.memo(() => {
                       }
                     `}
                   >
-                    <span className="text-sm font-medium">
-                      {link.name}
-                    </span>
+                    <span className="text-sm font-medium">{link.name}</span>
                   </a>
                 ))}
               </div>

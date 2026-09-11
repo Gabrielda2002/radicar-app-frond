@@ -20,6 +20,7 @@ interface ModalContentProps {
   className?: string;
   footerVariant?: "form" | "default";
   scrollable?: boolean;
+  footerExtra?: React.ReactNode;
 }
 
 const ModalDefault: React.FC<ModalContentProps> = ({
@@ -36,12 +37,16 @@ const ModalDefault: React.FC<ModalContentProps> = ({
   className,
   funtionClick = () => {},
   scrollable = true,
+  footerExtra,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size} className={className}>
       <ModalHeader title={title} onClose={onClose} />
       <ModalBody scrollable={scrollable}>{children}</ModalBody>
       <ModalFooter variant="form">
+        {footerExtra && (
+          <div className="mr-auto flex items-center gap-2">{footerExtra}</div>
+        )}
         <Button
           type="button"
           variant="closed"

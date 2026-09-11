@@ -2,12 +2,26 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { format } from "date-fns";
-import { CalendarDays, Clock3, MapPin, UserRound, Check } from "lucide-react";
+import moment from "moment";
+import {
+  CalendarDays,
+  Clock3,
+  MapPin,
+  UserRound,
+  Mail,
+  FileText,
+  Palette,
+  Edit3,
+  Trash2,
+  Check,
+} from "lucide-react";
 import { IEventos } from "@/models/IEventos";
 import { useAuth } from "@/context/authContext";
 import { useBlockScroll } from "@/hooks/useBlockScroll";
 import { toast } from "react-toastify";
 import FormModal from "@/components/common/Ui/FormModal";
+import ModalDefault from "@/components/common/Ui/ModalDefault";
+import ConfirmDeletePopup from "@/components/common/ConfirmDeletePopUp/ConfirmDeletePopUp";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import { AnimatePresence } from "framer-motion";
@@ -17,6 +31,9 @@ interface ModalCreateEventProps {
   initialData?: IEventos;
   autoOpen?: boolean;
   hideTrigger?: boolean;
+  /** "form" (por defecto): crear/editar evento. "view": detalle de solo lectura,
+   *  con opción de pasar a edición sin abrir un segundo modal. */
+  mode?: "form" | "view";
   onSaved?: () => void;
   onClosed?: () => void;
 }
@@ -38,8 +55,23 @@ const extractFechaHora = (fechaCompleta: Date | string) => {
   return { fecha: format(date, "yyyy-MM-dd"), hora: format(date, "HH:mm") };
 };
 
+const formatSpanishDate = (date: moment.Moment) =>
+  new Intl.DateTimeFormat("es-CO", {
+    day: "numeric",
+    month: "long",
+    weekday: "long",
+    year: "numeric",
+  })
+    .format(date.toDate())
+    .replace(",", "");
+
 // Calcula la duración legible entre fecha/hora inicio y fin
-const getDuracionLegible = (fechaInicio: string, horaInicio: string, fechaFin: string, horaFin: string) => {
+const getDuracionLegible = (
+  fechaInicio: string,
+  horaInicio: string,
+  fechaFin: string,
+  horaFin: string,
+) => {
   if (!fechaInicio || !horaInicio || !fechaFin || !horaFin) return null;
   const start = new Date(`${fechaInicio}T${horaInicio}`);
   const end = new Date(`${fechaFin}T${horaFin}`);
@@ -110,40 +142,29 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
         {label} {required && <span className="text-gray-700 dark:text-gray-200">*</span>}
       </label>
       <div className="flex items-center gap-1.5" onBlur={onBlur}>
-        {/* Hora */}
         <select
           value={hour12}
           onChange={(e) => emit(e.target.value, minute || "00", meridiem)}
           className={`${timeSelectBaseClass} ${showError ? "border-[#008d93]" : "border-gray-200 dark:border-gray-600"}`}
           aria-label="Hora"
         >
-          <option value="" disabled>
-            --
-          </option>
+          <option value="" disabled>--</option>
           {HOURS_12.map((h) => (
-            <option key={h} value={h}>
-              {String(h).padStart(2, "0")}
-            </option>
+            <option key={h} value={h}>{String(h).padStart(2, "0")}</option>
           ))}
         </select>
         <span className="text-gray-400">:</span>
-        {/* Minuto */}
         <select
           value={minute}
           onChange={(e) => emit(hour12 || "12", e.target.value, meridiem)}
           className={`${timeSelectBaseClass} ${showError ? "border-rose-300" : "border-gray-200 dark:border-gray-600"}`}
           aria-label="Minuto"
         >
-          <option value="" disabled>
-            --
-          </option>
+          <option value="" disabled>--</option>
           {MINUTES.map((m) => (
-            <option key={m} value={String(m).padStart(2, "0")}>
-              {String(m).padStart(2, "0")}
-            </option>
+            <option key={m} value={String(m).padStart(2, "0")}>{String(m).padStart(2, "0")}</option>
           ))}
         </select>
-        {/* AM / PM */}
         <div className="ml-1 flex overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600">
           {(["AM", "PM"] as const).map((option) => (
             <button
@@ -166,51 +187,202 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
   );
 };
 
+/* =====================================================
+   InfoCard + EventReadView: bloque de detalle de solo lectura.
+   Antes vivían en CalendarEvents.tsx como el componente
+   EventDetail; ahora son parte de este mismo modal (mode="view").
+   ===================================================== */
+
+interface InfoCardProps {
+  icon: React.ElementType;
+  label: string;
+  variant?: "filled" | "outline";
+  children: React.ReactNode;
+}
+
+const InfoCard = ({ icon: Icon, label, variant = "outline", children }: InfoCardProps) => (
+  <div
+    className={
+      variant === "filled"
+        ? "flex items-start gap-3 rounded-xl bg-[#e6f8f9] p-4 dark:bg-gray-700"
+        : "flex items-start gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-600"
+    }
+  >
+    <Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#008d93]" />
+    <div className="min-w-0">
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-300">
+        {label}
+      </p>
+      <div className="mt-1 text-sm font-medium text-gray-800 dark:text-gray-100">{children}</div>
+    </div>
+  </div>
+);
+
+const EventReadView = ({ event }: { event: IEventos }) => {
+  const location = event.location || "No especificado";
+  const responsibleName = event.responsibleName || "No especificado";
+  const responsibleEmail = event.responsibleEmail || "";
+  const startDate = moment(event.dateStart);
+  const endDate = moment(event.dateEnd);
+  const startTime = event.timeStart ? moment(event.timeStart, "HH:mm").format("hh:mm A") : "Sin hora";
+  const endTime = event.timeEnd ? moment(event.timeEnd, "HH:mm").format("hh:mm A") : "";
+  const sameDate = startDate.isSame(endDate, "day");
+
+  return (
+    <div className="space-y-5 p-1">
+      <div className="rounded-xl border border-[#ccebec] bg-gradient-to-r from-[#effbfb] to-white p-4 dark:border-gray-600 dark:from-gray-700 dark:to-gray-800">
+        <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#008d93]">
+          <CalendarDays className="h-4 w-4" />
+          <span>Evento institucional</span>
+        </div>
+        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{event.title}</h3>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <InfoCard icon={CalendarDays} label="Fecha" variant="filled">
+          {sameDate ? (
+            <p className="capitalize">{formatSpanishDate(startDate)}</p>
+          ) : (
+            <div className="space-y-1">
+              <p className="capitalize">Inicio: {formatSpanishDate(startDate)}</p>
+              <p className="capitalize">Fin: {formatSpanishDate(endDate)}</p>
+            </div>
+          )}
+        </InfoCard>
+
+        <InfoCard icon={Clock3} label="Horario" variant="filled">
+          <p>
+            {startTime}
+            {endTime && <> - {endTime}</>}
+          </p>
+          <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+            Zona horaria: GMT-5
+          </p>
+        </InfoCard>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <InfoCard icon={MapPin} label="Lugar o enlace">
+          <p className="break-words">{location}</p>
+        </InfoCard>
+        <InfoCard icon={UserRound} label="Responsable">
+          <p className="break-words">{responsibleName}</p>
+        </InfoCard>
+      </div>
+
+      {responsibleEmail && (
+        <InfoCard icon={Mail} label="Correo del responsable">
+          <p className="break-all">{responsibleEmail}</p>
+        </InfoCard>
+      )}
+
+      <div className="rounded-xl border border-gray-200 p-4 dark:border-gray-600">
+        <div className="mb-3 flex items-center gap-2 text-[#008d93]">
+          <FileText className="h-4 w-4" />
+          <p className="text-xs font-bold uppercase tracking-wider">Descripción y agenda</p>
+        </div>
+        <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+          {event.description || "Este evento no tiene descripción."}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 p-4 dark:border-gray-600">
+        <div className="flex items-center gap-3">
+          <Palette className="h-5 w-5 text-[#008d93]" />
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-300">
+              Color del evento
+            </p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Identificador del calendario
+            </p>
+          </div>
+        </div>
+        <span
+          className="h-7 w-7 rounded-full border-2 border-white shadow-md dark:border-gray-700"
+          style={{ backgroundColor: event.color || "#008d93" }}
+          title={event.color || "#008d93"}
+        />
+      </div>
+    </div>
+  );
+};
+
 const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
   initialData,
   autoOpen = false,
   hideTrigger = false,
+  mode = "form",
   onSaved,
   onClosed,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { create, update, error, isLoading } = useStoreEvent();
+  const [viewMode, setViewMode] = useState(mode === "view");
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const { create, update, remove, error, isLoading } = useStoreEvent();
   const { rol } = useAuth();
+  const canManageRole = rolesCanManage.includes(Number(rol));
   const isEditing = Boolean(initialData);
 
   useEffect(() => {
     if (autoOpen) setIsOpen(true);
   }, [autoOpen]);
 
+  useEffect(() => {
+    setViewMode(mode === "view");
+  }, [mode, initialData?.id]);
+
   useBlockScroll(isOpen);
 
   const validationSchema = Yup.object({
-    titulo: Yup.string().required("El título es requerido").min(2, "El título debe tener al menos 2 caracteres").max(200, "El título debe tener máximo 200 caracteres"),
-    descripcion: Yup.string().required("La descripción es requerida").min(2, "La descripción debe tener al menos 2 caracteres").max(300, "La descripción debe tener máximo 300 caracteres"),
-    lugar: Yup.string().required("El lugar es requerido").max(150, "El lugar debe tener máximo 150 caracteres"),
-    responsableNombre: Yup.string().required("El nombre del responsable es requerido").max(120, "El nombre debe tener máximo 120 caracteres"),
-    responsableCorreo: Yup.string().required("El correo del responsable es requerido").email("El correo no es válido"),
+    titulo: Yup.string()
+      .required("El título es requerido")
+      .min(2, "El título debe tener al menos 2 caracteres")
+      .max(200, "El título debe tener máximo 200 caracteres"),
+    descripcion: Yup.string()
+      .required("La descripción es requerida")
+      .min(2, "La descripción debe tener al menos 2 caracteres")
+      .max(300, "La descripción debe tener máximo 300 caracteres"),
+    lugar: Yup.string()
+      .required("El lugar es requerido")
+      .max(150, "El lugar debe tener máximo 150 caracteres"),
+    responsableNombre: Yup.string()
+      .required("El nombre del responsable es requerido")
+      .max(120, "El nombre debe tener máximo 120 caracteres"),
+    responsableCorreo: Yup.string()
+      .required("El correo del responsable es requerido")
+      .email("El correo no es válido"),
     fechaInicio: Yup.string().required("La fecha de inicio es requerida"),
-    fechaFin: Yup.string().required("La fecha de fin es requerida").test("fecha-posterior", "La fecha de fin no puede ser anterior", function (value) {
-      return !value || !this.parent.fechaInicio || value >= this.parent.fechaInicio;
-    }),
+    fechaFin: Yup.string()
+      .required("La fecha de fin es requerida")
+      .test("fecha-posterior", "La fecha de fin no puede ser anterior", function (value) {
+        return !value || !this.parent.fechaInicio || value >= this.parent.fechaInicio;
+      }),
     horaInicio: Yup.string().required("La hora de inicio es requerida"),
-    horaFin: Yup.string().required("La hora de fin es requerida").test("hora-posterior", "La hora de fin debe ser posterior a la hora de inicio", function (value) {
-      if (!value || !this.parent.horaInicio || this.parent.fechaFin !== this.parent.fechaInicio) return true;
-      return value >= this.parent.horaInicio;
-    }),
+    horaFin: Yup.string()
+      .required("La hora de fin es requerida")
+      .test(
+        "hora-posterior",
+        "La hora de fin debe ser posterior a la hora de inicio",
+        function (value) {
+          if (!value || !this.parent.horaInicio || this.parent.fechaFin !== this.parent.fechaInicio)
+            return true;
+          return value >= this.parent.horaInicio;
+        },
+      ),
     color: Yup.string().required("El color es requerido"),
   });
 
   const startValues = initialData?.dateStart ? extractFechaHora(initialData.dateStart) : { fecha: "", hora: "" };
   const endValues = initialData?.dateEnd ? extractFechaHora(initialData.dateEnd) : { fecha: "", hora: "" };
+
   const formik = useFormik({
     initialValues: {
       titulo: initialData?.title || "",
       descripcion: initialData?.description || "",
-      lugar: initialData?.location || initialData?.place || initialData?.lugar || "",
-      responsableNombre: initialData?.responsibleName || initialData?.responsible || initialData?.responsableNombre || "",
-      responsableCorreo: initialData?.responsibleEmail || initialData?.emailResponsible || initialData?.responsableCorreo || "",
+      lugar: initialData?.location || "",
+      responsableNombre: initialData?.responsibleName || "",
+      responsableCorreo: initialData?.responsibleEmail || "",
       fechaInicio: startValues.fecha,
       fechaFin: endValues.fecha,
       horaInicio: initialData?.timeStart || startValues.hora,
@@ -224,14 +396,8 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
       formData.append("title", values.titulo);
       formData.append("description", values.descripcion);
       formData.append("location", values.lugar);
-      formData.append("place", values.lugar);
-      formData.append("lugar", values.lugar);
       formData.append("responsibleName", values.responsableNombre);
-      formData.append("responsible", values.responsableNombre);
-      formData.append("responsableNombre", values.responsableNombre);
       formData.append("responsibleEmail", values.responsableCorreo);
-      formData.append("emailResponsible", values.responsableCorreo);
-      formData.append("responsableCorreo", values.responsableCorreo);
       formData.append("dateStart", `${values.fechaInicio}T${values.horaInicio}`);
       formData.append("dateEnd", `${values.fechaFin}T${values.horaFin}`);
       formData.append("timeStart", values.horaInicio);
@@ -250,7 +416,31 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
     },
   });
 
-  if (!rolesCanManage.includes(Number(rol))) return null;
+  const handleClose = () => {
+    setIsOpen(false);
+    onClosed?.();
+  };
+
+  const handleDelete = () => {
+    if (!initialData) return;
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!initialData) return;
+
+    remove(initialData.id, () => {
+      toast.success("Evento eliminado exitosamente");
+      setIsConfirmDeleteOpen(false);
+      setIsOpen(false);
+      onClosed?.();
+    });
+  };
+
+  // En modo formulario, el gate de rol sigue aplicando (solo quien puede
+  // gestionar eventos ve el botón/trigger). En modo vista, cualquiera
+  // puede abrir el detalle; el gate solo oculta las acciones de editar/eliminar.
+  if (mode === "form" && !canManageRole) return null;
 
   const fieldProps = (name: keyof typeof formik.values) => ({
     name,
@@ -260,14 +450,67 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
     error: formik.errors[name],
     touched: formik.touched[name],
     size: "full" as const,
+    requiredClassName: "text-gray-700 dark:text-gray-200",
+    errorClassName: "text-gray-700 dark:text-gray-200",
   });
 
   const duracion = getDuracionLegible(
     formik.values.fechaInicio,
     formik.values.horaInicio,
     formik.values.fechaFin,
-    formik.values.horaFin
+    formik.values.horaFin,
   );
+
+  if (viewMode && initialData) {
+    const footerExtra = canManageRole ? (
+      <>
+        <Button
+          type="button"
+          variant="primary"
+          size="sm"
+          onClick={() => setViewMode(false)}
+          icon={<Edit3 className="h-4 w-4" />}
+          className="rounded-lg border border-[#b7e4e5] bg-[#e6f8f9] px-4 py-2.5 text-sm font-semibold text-[#00776f] shadow-sm transition hover:border-[#8bd9dc] hover:bg-[#d3f1f2] hover:shadow dark:border-[#008d93]/40 dark:bg-[#008d93]/15 dark:text-[#4fd1d9] dark:hover:border-[#008d93]/60 dark:hover:bg-[#008d93]/25"
+        >
+          Editar evento
+        </Button>
+        <Button
+          type="button"
+          variant="danger"
+          size="sm"
+          onClick={handleDelete}
+          isLoading={isLoading}
+          icon={<Trash2 className="h-4 w-4" />}
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-red-100 hover:shadow dark:border-red-500/40 dark:bg-red-500/15 dark:text-red-400 dark:hover:border-red-500/60 dark:hover:bg-red-500/25"
+        >
+          {isLoading ? "Eliminando..." : "Eliminar evento"}
+        </Button>
+      </>
+    ) : null;
+
+    return (
+      <>
+        <ModalDefault
+          isOpen={isOpen}
+          onClose={handleClose}
+          title="Detalle del evento"
+          size="md"
+          cancelText="Cerrar"
+          footerExtra={footerExtra}
+        >
+          <EventReadView event={initialData} />
+        </ModalDefault>
+
+        <ConfirmDeletePopup
+          isOpen={isConfirmDeleteOpen}
+          onClose={() => setIsConfirmDeleteOpen(false)}
+          onConfirm={handleConfirmDelete}
+          itemName={initialData.title}
+          isDeleting={isLoading}
+        />
+      </>
+    );
+  }
 
   return (
     <>
@@ -278,10 +521,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
       )}
       <FormModal
         isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-          onClosed?.();
-        }}
+        onClose={handleClose}
         title={isEditing ? "Editar Evento" : "Crear Evento"}
         onSubmit={formik.handleSubmit}
         isSubmitting={isLoading}
@@ -293,9 +533,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
         footerClassName="border-t border-[#ccebec] bg-[#f5fbfb] dark:border-gray-600 dark:bg-gray-700"
       >
         <div className="grid grid-cols-1 gap-6 bg-gradient-to-b from-[#fbffff] to-white p-2 sm:p-5 lg:grid-cols-12 dark:from-gray-800 dark:to-gray-800">
-          {/* COLUMNA IZQUIERDA: Detalles principales + Fechas y horario */}
           <div className="space-y-5 lg:col-span-7">
-            {/* Detalles Principales */}
             <section className="rounded-2xl border border-[#d8eeee] bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
               <div className="mb-4 flex items-center justify-between border-b border-[#e2f1f1] pb-3 dark:border-gray-600">
                 <div className="flex items-center gap-2 text-base font-semibold uppercase tracking-wider text-[#008d93]">
@@ -333,17 +571,11 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
                     </label>
                     <span className="text-[15px] text-gray-400">{formik.values.descripcion.length} / 300</span>
                   </div>
-                  <Input
-                    type="text"
-                    placeholder=""
-                    required
-                    {...fieldProps("descripcion")}
-                  />
+                  <Input type="text" placeholder="" required {...fieldProps("descripcion")} />
                 </div>
               </div>
             </section>
 
-            {/* Fechas y Horario */}
             <section className="rounded-2xl border border-[#d8eeee] bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
               <div className="mb-4 flex items-center gap-2 border-b border-[#e2f1f1] pb-3 text-base font-semibold uppercase tracking-wider text-[#008d93] dark:border-gray-600">
                 <Clock3 className="h-4 w-4" />
@@ -375,12 +607,11 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
 
               <div className="mt-3 flex items-center justify-between px-1 text-[15px] text-gray-400">
                 <span>Zona horaria: GMT-5</span>
-                {duracion && <span className="font-medium text-[#008d93]">Duración: {duracion}in</span>}
+                {duracion && <span className="font-medium text-[#008d93]">Duración: {duracion}</span>}
               </div>
             </section>
           </div>
 
-          {/* COLUMNA DERECHA: Responsable + Color */}
           <div className="space-y-5 lg:col-span-5">
             <section className="rounded-2xl border border-[#d8eeee] bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
               <div className="mb-4 flex items-center gap-2 border-b border-[#e2f1f1] pb-3 text-base font-semibold uppercase tracking-wider text-[#008d93] dark:border-gray-600">

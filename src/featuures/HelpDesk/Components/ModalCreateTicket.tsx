@@ -64,9 +64,7 @@ const HelpDesk = () => {
     type: Yup.string().when("deskType", {
       is: "sistemas",
       then: (schema) =>
-        schema.required(
-          "El tipo es requerido para la mesa de sistemas"
-        ),
+        schema.required("El tipo es requerido para la mesa de sistemas"),
       otherwise: (schema) => schema.notRequired(),
     }),
 
@@ -84,8 +82,7 @@ const HelpDesk = () => {
 
     locationDescription: Yup.string().when("deskType", {
       is: "infraestructura",
-      then: (schema) =>
-        schema.required("La localización es requerida"),
+      then: (schema) => schema.required("La localización es requerida"),
       otherwise: (schema) => schema.notRequired(),
     }),
 
@@ -103,13 +100,12 @@ const HelpDesk = () => {
         function (value) {
           const attachmentType = (this.parent?.attachmentType ?? "") as string;
 
-          const hasAttachmentType =
-            attachmentType.trim().length > 0;
+          const hasAttachmentType = attachmentType.trim().length > 0;
 
           if (!hasAttachmentType) return true;
 
           return value instanceof File;
-        }
+        },
       )
       .test(
         "fileSize",
@@ -118,7 +114,7 @@ const HelpDesk = () => {
           if (!(value instanceof File)) return true;
 
           return value.size <= 5 * 1024 * 1024;
-        }
+        },
       ),
 
     attachmentType: Yup.string()
@@ -127,27 +123,20 @@ const HelpDesk = () => {
         "attachmentTypeRequiredWhenFile",
         "El tipo de archivo es requerido cuando se adjunta un archivo",
         function (value) {
-          const file = this.parent?.file as
-            | File
-            | null
-            | undefined;
+          const file = this.parent?.file as File | null | undefined;
 
           const hasFile = file instanceof File;
 
           if (!hasFile) return true;
 
-          return (
-            typeof value === "string" &&
-            value.trim().length > 0
-          );
-        }
+          return typeof value === "string" && value.trim().length > 0;
+        },
       ),
   });
 
   const handleSubmit = useCallback(
     async (values: TicketFormValues) => {
-      const config =
-        DESK_CONFIG[values.deskType as DeskType];
+      const config = DESK_CONFIG[values.deskType as DeskType];
 
       await createTicket(config.createEndpoint, values, () => {
         toast.success("Ticket creado exitosamente.");
@@ -157,7 +146,7 @@ const HelpDesk = () => {
         setIsModalOpen(false);
       });
     },
-    [idUsuario]
+    [idUsuario],
   );
 
   const formik = useFormik({
@@ -183,9 +172,7 @@ const HelpDesk = () => {
     ? DESK_CONFIG[formik.values.deskType as DeskType]
     : null;
 
-  const handleDeskTypeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleDeskTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     formik.handleChange(e);
 
     formik.setFieldValue("categoryId", "");
@@ -203,25 +190,10 @@ const HelpDesk = () => {
     <>
       <Button
         onClick={handleOpenModal}
-        className="
-          rounded-xl
-          p-2.5
-          text-[#008d93]
-          bg-transparent
-          hover:bg-[#dff5f5]
-          outline-none
-          focus:outline-none
-          focus:ring-0
-          focus-visible:outline-none
-          focus-visible:ring-0
-          active:outline-none
-          active:ring-0
-          transition-all
-          duration-200
-          flex
-          items-center
-          justify-center
-        "
+        className="relative flex items-center justify-center rounded-xl border p-2.5 transition-all duration-200
+          outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none active:ring-0
+          bg-[#f7fdfd] border-[#d8eeee] text-gray-500 hover:bg-[#effbfb] hover:border-[#b7e4e5] hover:text-[#008d93]
+          dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:hover:text-[#008d93]"
         title="Solicitar Soporte"
         variant="any"
         size="xs"
@@ -264,8 +236,7 @@ const HelpDesk = () => {
                     onBlur={formik.handleBlur}
                     variant="default"
                     error={
-                      formik.touched.deskType &&
-                      formik.errors.deskType
+                      formik.touched.deskType && formik.errors.deskType
                         ? formik.errors.deskType
                         : undefined
                     }
@@ -294,8 +265,7 @@ const HelpDesk = () => {
                     onBlur={formik.handleBlur}
                     variant="default"
                     error={
-                      formik.touched.type &&
-                      formik.errors.type
+                      formik.touched.type && formik.errors.type
                         ? formik.errors.type
                         : undefined
                     }
@@ -329,8 +299,7 @@ const HelpDesk = () => {
                         : "Buscar categoría..."
                   }
                   error={
-                    formik.touched.categoryId &&
-                    formik.errors.categoryId
+                    formik.touched.categoryId && formik.errors.categoryId
                       ? formik.errors.categoryId
                       : undefined
                   }
@@ -350,8 +319,7 @@ const HelpDesk = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={
-                    formik.touched.title &&
-                    formik.errors.title
+                    formik.touched.title && formik.errors.title
                       ? formik.errors.title
                       : undefined
                   }
@@ -383,10 +351,7 @@ const HelpDesk = () => {
                   <InputAutocompletado
                     label="Lugar Radicación"
                     onInputChanged={(value) =>
-                      formik.setFieldValue(
-                        "headquartersId",
-                        value
-                      )
+                      formik.setFieldValue("headquartersId", value)
                     }
                     apiRoute="lugares-radicacion-name"
                     error={formik.errors.headquartersId}
@@ -398,9 +363,7 @@ const HelpDesk = () => {
 
                 <Select
                   label="Tipo de Archivo"
-                  options={[
-                    ...(activeConfig?.attachmentsOptions || []),
-                  ]}
+                  options={[...(activeConfig?.attachmentsOptions || [])]}
                   id="attachmentType"
                   name="attachmentType"
                   value={formik.values.attachmentType}
@@ -431,14 +394,11 @@ const HelpDesk = () => {
                   onBlur={formik.handleBlur}
                   touched={formik.touched.file}
                   error={
-                    formik.touched.file &&
-                    formik.errors.file
+                    formik.touched.file && formik.errors.file
                       ? formik.errors.file
                       : undefined
                   }
-                  icon={
-                    <IoDocumentTextOutline className="w-4 h-4" />
-                  }
+                  icon={<IoDocumentTextOutline className="w-4 h-4" />}
                 />
 
                 <div className="col-span-1 w-full sm:col-span-2">
@@ -453,8 +413,7 @@ const HelpDesk = () => {
                     placeholder="Descripcion de la solicitud"
                     required
                     error={
-                      formik.touched.description &&
-                      formik.errors.description
+                      formik.touched.description && formik.errors.description
                         ? formik.errors.description
                         : undefined
                     }
