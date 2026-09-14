@@ -1,6 +1,7 @@
 //*Fuctions and Hooks
 import LoadingSpinner from "../../../components/common/LoadingSpinner/LoadingSpinner";
-import { useState, lazy, Suspense } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
@@ -40,10 +41,40 @@ const Home = () => {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
 
   const { user } = useAuth();
- const [isServicesPanelOpen, setIsServicesPanelOpen] = useState(false);
-const [isDocPanelOpen, setIsDocPanelOpen] = useState(false);
+  const [isServicesPanelOpen, setIsServicesPanelOpen] = useState(false);
   const userName = `${user?.name ?? ""} ${user?.lastname ?? ""}`.trim() || "colaborador";
   const userCity = user?.municipality || "sede principal";
+
+  const floatingModules = HOME_CONFIG_PDF.slice(0, 2);
+
+  const [openModuleCode, setOpenModuleCode] = useState<string | null>(null);
+  const modulesWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openModuleCode) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (modulesWrapperRef.current && !modulesWrapperRef.current.contains(e.target as Node)) {
+        setOpenModuleCode(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openModuleCode]);
+
+  useEffect(() => {
+    if (!openModuleCode) return;
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpenModuleCode(null);
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [openModuleCode]);
+
+  const handleOpenPdf = (pdfUrl: string) => {
+    setPdfSelected(pdfUrl);
+    setIsPdfOpen(true);
+    setOpenModuleCode(null);
+  };
 
   return (
     <>
@@ -101,59 +132,6 @@ const [isDocPanelOpen, setIsDocPanelOpen] = useState(false);
             </div>
             {/* END: Consulta de servicios contratados */}
 
-            {/* BEGIN: Panel De Consultas (documentos institucionales) */}
-            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-600 dark:bg-gray-800">
-              <button
-                type="button"
-                onClick={() => setIsDocPanelOpen((prev) => !prev)}
-                aria-expanded={isDocPanelOpen}
-                className="flex w-full items-center justify-between bg-gray-800 px-6 py-4.5 text-white transition-colors hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-500 dark:bg-gray-900"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-teal-300">
-                    <FolderKanban className="h-5 w-5" strokeWidth={2} />
-                  </div>
-                  <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-white">
-                    Panel De Consultas
-                    <span className="rounded bg-white/10 px-2 py-0.5 text-base font-normal text-gray-300">
-                      Normativa Vigente
-                    </span>
-                  </h2>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="hidden text-base font-medium text-gray-400 sm:inline">Alternar vista</span>
-                  <ChevronDown
-                    className={`h-5 w-5 transform transition-transform duration-200 ${isDocPanelOpen ? "rotate-180" : ""}`}
-                    strokeWidth={2}
-                  />
-                </div>
-              </button>
-
-              {isDocPanelOpen && (
-                <div className="space-y-3 p-4 sm:p-6">
-                  {HOME_CONFIG_PDF.length > 0 ? (
-                    HOME_CONFIG_PDF.map((doc) => (
-                      <DocumentCard
-                        key={doc.code}
-                        onOpen={() => {
-                          setIsPdfOpen(true);
-                          setPdfSelected(doc.pdfUrl);
-                        }}
-                        title={doc.title}
-                        subTitle={doc.subTitle}
-                        description={doc.description}
-                        category={doc.category}
-                        badgeClassName={doc.badgeClassName}
-                        meta={doc.meta}
-                        confidential={doc.confidential}
-                      />
-                    ))
-                  ) : null}
-                </div>
-              )}
-            </div>
-            {/* END: Panel De Consultas (documentos institucionales) */}
-
             {/* BEGIN: Calendario de actividades */}
             <div className="rounded-xl bg-gray-50 pb-5 shadow-sm dark:bg-gray-700">
               <h1 className="pl-6 md:pl-10 pt-5 mx-auto text-gray-700 [28px] font-bold md:text-5xl dark:text-white">
@@ -195,6 +173,57 @@ const [isDocPanelOpen, setIsDocPanelOpen] = useState(false);
               />
             )}
           </Suspense>
+
+          {/* BEGIN: Botones flotantes — un módulo por botón */}
+          <div ref={modulesWrapperRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+            {floatingModules.map((doc) => {
+              const isOpen = openModuleCode === doc.code;
+              return (
+                <div key={doc.code} className="group relative">
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 12, scale: 0.96 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className="absolute bottom-full right-0 mb-3 w-[calc(100vw-3rem)] max-w-sm origin-bottom-right"
+                      >
+                        <DocumentCard
+                          onOpen={() => handleOpenPdf(doc.pdfUrl)}
+                          title={doc.title}
+                          subTitle={doc.subTitle}
+                          description={doc.description}
+                          category={doc.category}
+                          badgeClassName={doc.badgeClassName}
+                          meta={doc.meta}
+                          confidential={doc.confidential}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {!isOpen && (
+                    <span className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-md bg-gray-800 px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 dark:bg-gray-700">
+                      {doc.title}
+                    </span>
+                  )}
+
+                  <motion.button
+                    type="button"
+                    onClick={() => setOpenModuleCode((prev) => (prev === doc.code ? null : doc.code))}
+                    whileTap={{ scale: 0.94 }}
+                    aria-expanded={isOpen}
+                    aria-label={doc.title}
+                    className="flex h-14 w-14 items-center justify-center rounded-full bg-teal-700 text-white shadow-lg shadow-teal-900/30 transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2"
+                  >
+                    <FolderKanban size={22} strokeWidth={2} />
+                  </motion.button>
+                </div>
+              );
+            })}
+          </div>
+          {/* END: Botones flotantes — un módulo por botón */}
         </section>
       )}
     </>
