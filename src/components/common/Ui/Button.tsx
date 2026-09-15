@@ -40,7 +40,7 @@ const Button: React.FC<ButtonProps> = ({
       "text-blue-400 duration-200 border-2 border-gray-400 rounded-md hover:border-red-500 hover:text-red-600 active:text-red-600 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-600 dark:hover:text-gray-200",
 
     secondary:
-      "text-gray-600 bg-gray-200 hover:bg-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border-2 border-gray-400 focus:ring-gray-500",
+      "text-gray-600 bg-gray-200 hover:bg-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border-2 border-gray-400 dark:border-gray-700 focus:ring-gray-500",
 
     danger:
       "text-white bg-red-500 hover:bg-red-600 active:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 border-2 border-transparent focus:ring-red-500",

@@ -63,15 +63,11 @@ const NotificationBell: React.FC = () => {
   return (
     <div className="relative" ref={notificationRef}>
       <Button
-        variant="any"
+        variant="secondary"
         onClick={() => setIsOpen(!isOpen)}
         title="Notificaciones"
         aria-label="Notificaciones"
         size="xs"
-        className="relative flex items-center justify-center rounded-xl border p-2.5 transition-all duration-200
-          outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none active:ring-0
-          bg-[#f7fdfd] border-[#d8eeee] text-gray-600 hover:bg-[#effbfb] hover:border-[#b7e4e5] hover:text-[#008d93]
-          dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:hover:text-[#008d93]"
       >
         <BellIcon className="w-6 h-6 md:w-7 md:h-7 animate-pulse md:animate-none" />
 

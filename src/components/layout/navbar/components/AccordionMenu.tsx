@@ -3,6 +3,7 @@ import { TiThMenuOutline } from "react-icons/ti";
 import { X } from "lucide-react";
 import HelpDesk from "@/featuures/HelpDesk/Components/ModalCreateTicket";
 import ModalPausasActivas from "./ModalPausasActivas";
+import Button from "@/components/common/Ui/Button";
 
 interface AccordionMenuProps {
   theme: string;
@@ -47,14 +48,13 @@ const AccordionMenu: React.FC<AccordionMenuProps> = ({ theme, children }) => {
     <div className="relative z-50">
       <div className="flex gap-2">
       <HelpDesk />
-      <ModalPausasActivas />
-      <button
+      <Button
         onClick={toggleAccordion}
         aria-label="Abrir menú"
-        className={`lg:top-2 right-3 sm:left-40 z-10 p-1 shadow-lg transition-all dark:text-white bg-gray-300 rounded-lg hover:bg-gray-700 dark:bg-color dark:hover:bg-teal-600`}
+        variant="secondary"
       >
         <TiThMenuOutline className="w-6 h-6" />
-      </button>
+      </Button>
       </div>
 
       {/* Backdrop/Overlay */}

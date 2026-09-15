@@ -186,13 +186,6 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     </div>
   );
 };
-
-/* =====================================================
-   InfoCard + EventReadView: bloque de detalle de solo lectura.
-   Antes vivían en CalendarEvents.tsx como el componente
-   EventDetail; ahora son parte de este mismo modal (mode="view").
-   ===================================================== */
-
 interface InfoCardProps {
   icon: React.ElementType;
   label: string;

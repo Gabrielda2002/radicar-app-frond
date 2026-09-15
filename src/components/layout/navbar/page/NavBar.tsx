@@ -38,6 +38,7 @@ import { useStorePermissions } from "@/featuures/Permission/store/useStorePermis
 import userLogo from "/assets/user-logo.svg";
 import defaultUserPicture from "/assets/icon-user.svg";
 import logo from "@/assets/Layout/logo-navbar.png";
+import Button from "@/components/common/Ui/Button";
 
 const Navbar: React.FC = React.memo(() => {
   const { logout } = useAuth();
@@ -175,8 +176,7 @@ const Navbar: React.FC = React.memo(() => {
           sticky top-0 z-40 w-full
           border-b
           transition-colors duration-300
-          ${
-            isDark ? "bg-gray-900 border-gray-700" : "bg-white border-[#ccebec]"
+          ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-[#ccebec]"
           }
           shadow-[0_2px_12px_rgba(0,141,147,0.06)]
         `}
@@ -190,46 +190,18 @@ const Navbar: React.FC = React.memo(() => {
           "
         >
           <div className="flex items-center min-w-0 gap-3">
-            <button
-              type="button"
+            <Button
+              variant="secondary"
               title="Abrir/Cerrar Sidebar"
               aria-label="Abrir/Cerrar Sidebar"
               onClick={handleToggleSidebar}
-              className={`
-                flex items-center justify-center
-                w-10 h-10 md:w-11 md:h-11
-                rounded-xl
-                border
-                transition-all duration-200
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#008d93]/20
-                ${
-                  isDark
-                    ? `
-                      bg-gray-800
-                      border-gray-700
-                      text-gray-200
-                      hover:bg-gray-700
-                      hover:text-[#008d93]
-                    `
-                    : `
-                      bg-[#f7fdfd]
-                      border-[#d8eeee]
-                      text-gray-600
-                      hover:bg-[#effbfb]
-                      hover:border-[#b7e4e5]
-                      hover:text-[#008d93]
-                    `
-                }
-              `}
             >
               {isCollapsed ? (
                 <PanelRightOpen className="w-5 h-5 md:w-6 md:h-6" />
               ) : (
                 <PanelRightClose className="w-5 h-5 md:w-6 md:h-6" />
               )}
-            </button>
+            </Button>
 
             {/* Logo */}
 
@@ -291,15 +263,14 @@ const Navbar: React.FC = React.memo(() => {
                       rounded-xl
                       border
                       transition-all duration-200
-                      ${
-                        isDark
-                          ? `
+                      ${isDark
+                        ? `
                             bg-gray-800
                             border-gray-700
                             text-gray-200
                             hover:bg-gray-700
                           `
-                          : `
+                        : `
                             bg-white
                             border-[#d8eeee]
                             text-gray-700
@@ -352,31 +323,10 @@ const Navbar: React.FC = React.memo(() => {
                     theme={theme as "light" | "dark"}
                     avatarUrl={imageUrl || defaultUserPicture}
                     userIconUrl={userLogo}
-                    buttonClassName={`
-                      flex items-center justify-between
-                      w-full
-                      px-4 py-3
-                      rounded-xl
-                      border
-                      transition-all duration-200
-                      ${
-                        isDark
-                          ? `
-                            bg-gray-800
-                            border-gray-700
-                            text-white
-                            hover:bg-gray-700
-                          `
-                          : `
-                            bg-white
-                            border-[#d8eeee]
-                            text-gray-700
-                            hover:bg-[#effbfb]
-                            hover:border-[#b7e4e5]
-                            hover:text-[#008d93]
-                          `
-                      }
-                    `}
+                    buttonClassName="
+                      w-full justify-between
+                      py-3
+                    "
                     itemsClassName="relative w-full mt-2"
                   />
                 </div>
@@ -388,7 +338,6 @@ const Navbar: React.FC = React.memo(() => {
             <ThemeToggle
               theme={theme as "light" | "dark"}
               onToggle={handleToggleTheme}
-              size="xs"
             />
 
             {/* Help desk */}
@@ -397,7 +346,6 @@ const Navbar: React.FC = React.memo(() => {
               <HelpDesk />
             </div>
 
-            {/* Support */}
 
             <div className="flex items-center">
               <SupportMenu
@@ -486,10 +434,9 @@ const Navbar: React.FC = React.memo(() => {
               rounded-2xl
               border
               shadow-2xl
-              ${
-                isDark
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-[#ccebec]"
+              ${isDark
+                ? "bg-gray-800 border-gray-700"
+                : "bg-white border-[#ccebec]"
               }
             `}
           >
@@ -500,10 +447,9 @@ const Navbar: React.FC = React.memo(() => {
                 flex items-center justify-between
                 px-6 py-4
                 border-b
-                ${
-                  isDark
-                    ? "bg-gray-800 border-gray-700"
-                    : "bg-[#effbfb] border-[#b7e4e5]"
+                ${isDark
+                  ? "bg-gray-800 border-gray-700"
+                  : "bg-[#effbfb] border-[#b7e4e5]"
                 }
               `}
             >
@@ -513,10 +459,9 @@ const Navbar: React.FC = React.memo(() => {
                     flex items-center justify-center
                     w-9 h-9
                     rounded-lg
-                    ${
-                      isDark
-                        ? "bg-gray-700 text-[#008d93]"
-                        : "bg-white text-[#008d93]"
+                    ${isDark
+                      ? "bg-gray-700 text-[#008d93]"
+                      : "bg-white text-[#008d93]"
                     }
                   `}
                 >
@@ -548,14 +493,13 @@ const Navbar: React.FC = React.memo(() => {
                   w-8 h-8
                   rounded-lg
                   transition-colors
-                  ${
-                    isDark
-                      ? `
+                  ${isDark
+                    ? `
                         text-gray-400
                         hover:bg-gray-700
                         hover:text-gray-200
                       `
-                      : `
+                    : `
                         text-gray-400
                         hover:bg-white
                         hover:text-[#008d93]
@@ -585,15 +529,14 @@ const Navbar: React.FC = React.memo(() => {
                       rounded-xl
                       border
                       transition-all duration-200
-                      ${
-                        isDark
-                          ? `
+                      ${isDark
+                        ? `
                             border-gray-700
                             text-gray-200
                             hover:bg-gray-700
                             hover:border-gray-600
                           `
-                          : `
+                        : `
                             border-[#d8eeee]
                             text-gray-700
                             hover:bg-[#effbfb]
@@ -615,10 +558,9 @@ const Navbar: React.FC = React.memo(() => {
               className={`
                 px-6 py-3
                 border-t
-                ${
-                  isDark
-                    ? "bg-gray-800 border-gray-700"
-                    : "bg-[#f5fbfb] border-[#d8eeee]"
+                ${isDark
+                  ? "bg-gray-800 border-gray-700"
+                  : "bg-[#f5fbfb] border-[#d8eeee]"
                 }
               `}
             >

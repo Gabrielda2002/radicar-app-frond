@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import { Menu, MenuButton } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import type { UserNavigationItem } from "../types/navigation.types";
 import { useAuth } from "@/context/authContext";
+import Button from "@/components/common/Ui/Button";
 
 interface UserMenuProps {
   items: UserNavigationItem[];
@@ -43,19 +45,6 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   const toggleSubmenu = (index: number) => {
     setOpenSubmenuIndex(openSubmenuIndex === index ? null : index);
   };
-
-  // Estándar de navbar: mismo patrón que ThemeToggle — colores resueltos por
-  // el prop `theme`, sin depender de la variante `dark:` de Tailwind (evita
-  // que quede el borde claro por defecto cuando `dark:` no se activa).
-  const baseButtonClasses =
-    "flex items-center gap-2 rounded-xl border p-2 transition-all duration-200 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none active:ring-0";
-
-  const themeButtonClasses =
-    theme === "dark"
-      ? "bg-gray-800 border-gray-700 text-gray-200 hover:bg-gray-700 hover:text-[#008d93]"
-      : "bg-[#f7fdfd] border-[#d8eeee] text-gray-600 hover:bg-[#effbfb] hover:border-[#b7e4e5] hover:text-[#008d93]";
-
-  const defaultButtonClassName = `${baseButtonClasses} ${themeButtonClasses}`;
 
   const renderSubItem = (subItem: NonNullable<UserNavigationItem["submenu"]>[number]) => {
     const classes = itemClasses(theme, "ps-4");
@@ -142,7 +131,12 @@ export const UserMenu: React.FC<UserMenuProps> = ({
 
   return (
     <Menu as="div" className="relative">
-      <MenuButton className={buttonClassName ?? defaultButtonClassName} aria-label="Menú de usuario">
+      <MenuButton
+        as={Button}
+        variant="secondary"
+        className={clsx("gap-2", buttonClassName)}
+        aria-label="Menú de usuario"
+      >
         <div className="text-right">
           <p className="text-sm font-medium leading-tight">{userName}</p>
           <p className="text-xs text-gray-400 leading-tight">{userRol}</p>
