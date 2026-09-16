@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { TiThMenuOutline } from "react-icons/ti";
 import { X } from "lucide-react";
 import HelpDesk from "@/featuures/HelpDesk/Components/ModalCreateTicket";
-import ModalPausasActivas from "./ModalPausasActivas";
 import Button from "@/components/common/Ui/Button";
 
 interface AccordionMenuProps {

@@ -11,9 +11,9 @@ type ApiError = {
 
 const normalizeEvent = (event: IEventos): IEventos => ({
     ...event,
-    location: event.location || event.place || event.lugar,
-    responsibleName: event.responsibleName || event.responsible || event.responsableNombre,
-    responsibleEmail: event.responsibleEmail || event.emailResponsible || event.responsableCorreo,
+    place: event.place,
+    responsibleName: event.responsibleName,
+    // responsibleEmail: event.responsibleEmail || event.emailResponsible || event.responsableCorreo,
 });
 
 type UseStoreEventReturn = {
@@ -63,7 +63,6 @@ export const useStoreEvent = create<UseStoreEventReturn>((set, get) => ({
                 onSuccess?.();
                 await get().get()
             }
-
 
         } catch (error: unknown) {
             const apiError = error as ApiError;

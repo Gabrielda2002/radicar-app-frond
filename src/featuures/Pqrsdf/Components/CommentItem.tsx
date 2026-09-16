@@ -3,9 +3,6 @@ import { formatRelativeTime } from "@/utils/formatRelativeTime";
 import { IPqrsdfComment } from "../models/IPqrsdfComment";
 import { Paperclip } from "lucide-react";
 
-
-
-
 interface CommentItemProps {
   comment: IPqrsdfComment;
   onOpenAttachment: (comment: IPqrsdfComment) => void;

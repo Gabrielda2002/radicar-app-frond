@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
       "text-gray-600 bg-gray-200 hover:bg-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border-2 border-gray-400 dark:border-gray-700 focus:ring-gray-500",
 
     danger:
-      "text-white bg-red-500 hover:bg-red-600 active:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 border-2 border-transparent focus:ring-red-500",
+      "text-white bg-red-600 hover:bg-red-700 active:bg-red-800 disabled:hover:bg-red-600 focus:ring-red-700 border-2 border-transparent focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
 
     success:
       "text-white bg-green-500 hover:bg-green-600 active:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 border-2 border-transparent focus:ring-green-500",
