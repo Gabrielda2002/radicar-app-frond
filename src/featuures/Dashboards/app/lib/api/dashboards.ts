@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { get, NumericOrNull, IntegerOrNull, StringOrNull, type DashboardFilters } from './client';
+import { get, post, NumericOrNull, IntegerOrNull, StringOrNull, type DashboardFilters } from './client';
 
 // ═══════════════════════════════════════════════════════════════
 //  Dashboard 1 - Resumen Gerencial
@@ -46,7 +46,13 @@ const EjecucionNtSchema = z.object({
     .object({
       ejecutado: IntegerOrNull,
       meta_periodo: IntegerOrNull,
+      // Ejecutado de la ciudad y aporte de la sede física dentro de ella.
+      // Ambos null cuando NO hay sede física seleccionada: ahí el KPI ya es el
+      // total. Usan NumericOrNull (no IntegerOrNull) porque este null es
+      // información —"no aplica"— y IntegerOrNull lo colapsaría a 0.
+      ejecutado_total: NumericOrNull,
       pct: NumericOrNull,
+      aporte_pct: NumericOrNull,
     })
     .nullable(),
   desviaciones: z.array(
@@ -103,9 +109,14 @@ const FinancieroSchema = z.object({
   kpis: z.object({
     costoRealMillones: NumericOrNull,
     citasCosteadas: IntegerOrNull,
+    // Costo real de la ciudad y aporte de la sede física dentro de ella.
+    // Ambos null sin sede física seleccionada (el KPI ya es el total).
+    costoRealTotalMillones: NumericOrNull,
+    aporteCostoRealPct: NumericOrNull,
     costoEsperadoMillones: NumericOrNull,
     recuperacionMillones: NumericOrNull,
     eficienciaPct: NumericOrNull,
+    ejecucionNtPct: NumericOrNull,
   }),
   paretoCups: z.array(
     z.object({
@@ -183,4 +194,11 @@ export const dashboardsApi = {
   financiero: (f: DashboardFilters = {}) => get('/dashboards/financiero', FinancieroSchema, f),
   calidad: (f: DashboardFilters = {}) => get('/dashboards/calidad', CalidadSchema, f),
   pym: (f: DashboardFilters = {}) => get('/dashboards/pym', PymSchema, f),
+  /**
+   * Reconstruye el pre-agregado costos_agg desde costos. Tarda ~2 min porque
+   * recorre la tabla entera; hay que llamarlo despues de cada corrida del ETL,
+   * si no los dashboards siguen mostrando la foto anterior sin avisar.
+   */
+  rebuildAgregado: () =>
+    post<{ rows: number; segundos: number }>('/dashboards/admin/rebuild-agregado'),
 };

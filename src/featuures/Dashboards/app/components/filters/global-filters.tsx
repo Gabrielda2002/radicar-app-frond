@@ -54,6 +54,8 @@ interface GlobalFiltersProps {
   onRegimenChange: (value: string) => void;
   onEspecialidadChange: (value: string) => void;
   onRefresh?: () => void;
+  /** Deshabilita el boton y muestra el spinner mientras se recalcula. */
+  refreshing?: boolean;
   onOpenAdvanced?: () => void;
 }
 
@@ -86,6 +88,7 @@ export function GlobalFilters({
   onRegimenChange,
   onEspecialidadChange,
   onRefresh,
+  refreshing = false,
   onOpenAdvanced,
 }: GlobalFiltersProps) {
   return (
@@ -152,8 +155,13 @@ export function GlobalFilters({
           </Button>
         )}
         {onRefresh && (
-          <Button variant="primary" onClick={onRefresh} icon={<RefreshCw className="h-4 w-4" />}>
-            Actualizar Datos
+          <Button
+            variant="primary"
+            onClick={onRefresh}
+            disabled={refreshing}
+            icon={<RefreshCw className={refreshing ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />}
+          >
+            {refreshing ? 'Recalculando…' : 'Actualizar Datos'}
           </Button>
         )}
       </div>
