@@ -75,6 +75,9 @@ const Position = () => {
             currentPage={tableState.currentPage}
             totalPages={tableState.totalPages}
             onPageChange={tableState.paginate}
+            headerActions={
+              <ModalPositionMutatios onSuccess={refetch} item={null} />
+            }
           >
             <DataTable
               data={tableState.currentData()}
