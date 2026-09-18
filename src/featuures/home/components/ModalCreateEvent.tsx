@@ -481,7 +481,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
           onClick={handleDelete}
           isLoading={isLoading}
           icon={<Trash2 className="h-4 w-4" />}
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-red-100 hover:shadow dark:border-red-500/40 dark:bg-red-500/15 dark:text-red-400 dark:hover:border-red-500/60 dark:hover:bg-red-500/25"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-red-100 hover:shadow dark:border-red-500/40 dark:bg-red-500/15 dark:text-gray-100 dark:hover:border-red-500/60 dark:hover:bg-red-500/25"
         >
           {isLoading ? "Eliminando..." : "Eliminar evento"}
         </Button>
