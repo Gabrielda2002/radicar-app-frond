@@ -1,10 +1,15 @@
+export type CargaAccion = "crear" | "actualizar";
+
 export interface PreviewData {
     ok:                boolean;
     totalRows:         number;
     validRows:         number;
     invalidRows:       number;
     duplicateRows:     any[];
-    alreadyExistsRows: string[];
+    alreadyExistsRows?: string[];
+    notFoundRows?:     string[];
+    ambiguousRows?:    string[];
+    columns?:          string[];
     rows:              Row[];
 }
 
@@ -38,6 +43,9 @@ export interface UploadResult {
     ok: boolean;
     message: string;
     inserted?: number;
+    updated?: number;
     alreadyExists?: string[];
     duplicates?: string[];
+    notFound?: string[];
+    ambiguous?: string[];
 }

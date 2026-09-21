@@ -1,13 +1,14 @@
 import Button from '@/components/common/Ui/Button'
 import FormModal from '@/components/common/Ui/FormModal'
 import Input from '@/components/common/Ui/Input'
+import Select from '@/components/common/Ui/Select'
 import { useFormik } from 'formik'
 import { CheckCircle, UploadIcon, XCircle } from 'lucide-react'
 import { useState } from 'react'
 import * as Yup from 'yup'
 import { useStoreUploadPatients } from '../store/useStoreUploadPatients'
 import { ColumnConfig, DataTable, DataTableContainer, useTableState } from '@/components/common/ReusableTable'
-import { Row } from '../types/UploadData'
+import { CargaAccion, Row } from '../types/UploadData'
 import { toast } from 'react-toastify'
 import SummaryCard from './SummaryCard'
 
@@ -18,6 +19,13 @@ const CSV_MIME_TYPES: readonly string[] = [
   'application/vnd.ms-excel',
   'application/csv',
 ]
+
+const ACCION_OPTIONS = [
+  { value: 'crear', label: 'Crear pacientes' },
+  { value: 'actualizar', label: 'Actualizar pacientes' },
+]
+
+const FIXED_COLUMN_KEYS = new Set(['row', 'numero_documento', 'estado', 'errores'])
 
 type StepType = 'upload' | 'confirm'
 
@@ -46,7 +54,7 @@ const ModalUploadPatients = () => {
   const { validationFile, confirmUpload, error, isLoading, previewData, resetPreview, uploadResult } = useStoreUploadPatients()
 
   const formik = useFormik({
-    initialValues: { file: null as File | null },
+    initialValues: { file: null as File | null, accion: 'crear' as CargaAccion },
     validationSchema,
     onSubmit: async (values) => {
       if (step === 'upload') {
@@ -57,11 +65,13 @@ const ModalUploadPatients = () => {
       } else {
         await confirmUpload(values, () => {
           toast.success('Cargue exitoso.')
-          formik.resetForm()
+          formik.resetForm({ values: { file: null, accion } })
         });
       }
     },
   })
+
+  const accion = formik.values.accion
 
   const tableState = useTableState({
     data: previewData?.rows || [],
@@ -78,7 +88,7 @@ const ModalUploadPatients = () => {
 
   const showResults = Boolean(previewData)
 
-  const canConfirm = previewData !== null && previewData.validRows === previewData.totalRows;
+  const canConfirm = previewData !== null && previewData.totalRows > 0 && previewData.validRows === previewData.totalRows;
 
   const columns: ColumnConfig<Row>[] = [
     {
@@ -169,6 +179,12 @@ const ModalUploadPatients = () => {
     }
   ]
 
+  const updateColumns = previewData?.columns ?? []
+  const visibleColumns =
+    updateColumns.length > 0
+      ? columns.filter((column) => FIXED_COLUMN_KEYS.has(column.key) || updateColumns.includes(column.key))
+      : columns
+
   return (
     <>
       <Button onClick={() => setIsOpen(true)} icon={<UploadIcon className='h-4 w-4' />}>
@@ -186,20 +202,43 @@ const ModalUploadPatients = () => {
         isSubmitting={isLoading}
       >
         <div className='flex flex-col gap-4 p-4'>
-          <Input
-            label='Archivo'
-            type='file'
-            id='file'
-            onChange={(event) => {
-              const file = event.currentTarget.files ? event.currentTarget.files[0] : null
-              formik.setFieldValue('file', file)
-            }}
-            onBlur={formik.handleBlur}
-            name='file'
-            accept='.csv'
-            error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
-            touched={formik.touched.file}
-          />
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+            <Select
+              label='Acción'
+              name='accion'
+              value={accion}
+              onChange={(event) => {
+                formik.setFieldValue('accion', event.target.value)
+                setStep('upload')
+                resetPreview()
+              }}
+              options={ACCION_OPTIONS}
+              disabled={isLoading}
+              hidePlaceholder
+              helpText={
+                accion === 'actualizar'
+                  ? 'Incluya numero_documento y solo las columnas a modificar.'
+                  : 'Use la plantilla con las 11 columnas.'
+              }
+            />
+
+            <div className='md:col-span-2'>
+              <Input
+                label='Archivo'
+                type='file'
+                id='file'
+                onChange={(event) => {
+                  const file = event.currentTarget.files ? event.currentTarget.files[0] : null
+                  formik.setFieldValue('file', file)
+                }}
+                onBlur={formik.handleBlur}
+                name='file'
+                accept='.csv'
+                error={formik.touched.file && formik.errors.file ? formik.errors.file : undefined}
+                touched={formik.touched.file}
+              />
+            </div>
+          </div>
 
           {showResults && previewData && (
             <>
@@ -208,7 +247,11 @@ const ModalUploadPatients = () => {
                 <SummaryCard label='Válidas' value={previewData.validRows} variant='success' />
                 <SummaryCard label='Inválidas' value={previewData.invalidRows} variant='error' />
                 <SummaryCard label='Duplicadas' value={previewData.duplicateRows.length} variant='warning' />
-                <SummaryCard label='Ya existen' value={previewData.alreadyExistsRows.length} variant='info' />
+                {accion === 'actualizar' ? (
+                  <SummaryCard label='No existen' value={previewData.notFoundRows?.length ?? 0} variant='error' />
+                ) : (
+                  <SummaryCard label='Ya existen' value={previewData.alreadyExistsRows?.length ?? 0} variant='info' />
+                )}
               </div>
 
             <DataTableContainer
@@ -222,7 +265,7 @@ const ModalUploadPatients = () => {
             >
               <DataTable
                 data={tableState.currentData()}
-                columns={columns}
+                columns={visibleColumns}
                 getRowKey={(row) => row.row.toString()}
                 loading={isLoading}
                 error={error}

@@ -20,7 +20,7 @@ export const useStoreUploadPatients = create<UseStoreUploadPatientsReturn>((set)
 
     validationFile: async (data, onSuccess) => {
         try {
-            set({ isLoading: true });
+            set({ isLoading: true, uploadResult: null });
 
             const response = await api.post('/pacientes/carga-masiva/validar', data, {
                 headers: {
@@ -79,5 +79,5 @@ export const useStoreUploadPatients = create<UseStoreUploadPatientsReturn>((set)
         }
     },
 
-    resetPreview: () => set({ previewData: null, error: null }),
+    resetPreview: () => set({ previewData: null, uploadResult: null, error: null }),
 }))

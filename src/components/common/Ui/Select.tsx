@@ -17,6 +17,8 @@ interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>
   variant?: "default" | "dark" | "error";
   selectSize?: "sm" | "md" | "lg";
   helpText?: string;
+  placeholder?: string;
+  hidePlaceholder?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -29,6 +31,8 @@ const Select: React.FC<SelectProps> = ({
   variant = "default",
   selectSize = "md",
   helpText,
+  placeholder = "Seleccione",
+  hidePlaceholder = false,
   disabled,
   ...props
 }) => {
@@ -80,7 +84,7 @@ const Select: React.FC<SelectProps> = ({
         disabled={disabled}
         {...props}
       >
-        <option value="">Seleccione</option>
+        {!hidePlaceholder && <option value="">{placeholder}</option>}
         {options.map((op) => (
           <option key={op.value} value={op.value}>
             {op.label}
