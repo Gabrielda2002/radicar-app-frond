@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/utils/api-config";
 import { toast } from "react-toastify";
 import Input from "@/components/common/Ui/Input";
 import Button from "@/components/common/Ui/Button";
 import { IdCard, Search } from "lucide-react";
 import { IPacientes } from "@/models/IPacientes";
+import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
+import Select from "./Ui/Select";
 
 interface BuscadorPacienteProps {
   onPatientFound: (patient: IPacientes) => void;
@@ -18,8 +20,15 @@ const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
   renderPatientInfo,
 }) => {
   const [documento, setDocumento] = useState<string>("");
+  const [typeDocument, setTypeDocument] = useState<string>();
   const [isSearching, setIsSearching] = useState(false);
   const [paciente, setPaciente] = useState<IPacientes | null>(null);
+
+  const { dataDocument: data, fetchDocument } = useLazyFetchTypeDocument()
+
+  useEffect(() => {
+    fetchDocument()
+  }, [])
 
   const handleSearch = async () => {
     if (!documento.trim()) {
@@ -31,7 +40,8 @@ const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
 
     try {
       const response = await api.post("/pacientes-documento", {
-        documentNumber: documento.trim(),
+        documentNumber: documento,
+        documentType: typeDocument
       });
 
       if (response.status === 200 && response.data) {
@@ -91,6 +101,18 @@ const BuscadorPaciente: React.FC<BuscadorPacienteProps> = ({
             icon={<IdCard className="w-5 h-5" />}
             iconPosition="left"
             disabled={disabled}
+          />
+        </div>
+        <div>
+          <Select
+            label="Documento"
+            options={data.map(a => ({
+              value: a.id,
+              label: a.name
+            }))}
+            value={typeDocument}
+            name="typeDocument"
+            onChange={(e) => setTypeDocument(e.target.value)}
           />
         </div>
         <Button
