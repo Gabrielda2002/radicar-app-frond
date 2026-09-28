@@ -2,9 +2,10 @@ import React from 'react'
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useStoreStatistics } from '../Store/useStoreStatistics';
+import { IItemType } from '../strategies/ItemStrategy';
 
 interface ItemsWithLockStaticsProps {
-    typeItem: "equipos" | "dispositivos-red" | "inventario/general";
+    typeItem: IItemType;
     idHeadquartersSelected?: number;
 }
 
@@ -127,7 +128,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                                         ))}
                                     </Pie>
                                     <Tooltip 
-                                        formatter={(value) => [`${value} ${typeItem === "equipos" ? "equipos" : "ítems"}`, 'Cantidad']} 
+                                        formatter={(value) => [`${value} ${typeItem === "equipments" ? "equipos" : "ítems"}`, 'Cantidad']} 
                                     />
                                     <Legend />
                                 </PieChart>
@@ -148,7 +149,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total</h3>
                                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{withLock.total || 0}</p>
                                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                    {typeItem === "equipos" ? "Equipos" : "Ítems"} registrados
+                                    {typeItem === "equipments" ? "Equipos" : "Ítems"} registrados
                                 </p>
                             </div>
                             <div className="col-span-2 bg-green-50 dark:bg-green-900/30 p-4 rounded-lg shadow-sm">

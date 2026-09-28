@@ -8,7 +8,7 @@ import {
   ServerIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import { AnyItem, IItemType, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import EditableCell from "../EditableCell";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ import ModalDefault from "@/components/common/Ui/ModalDefault";
 
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
-  tipoItem: string | null;
+  tipoItem: IItemType;
   refreshItems?: () => void;
 }
 
@@ -127,7 +127,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
 
   const [isMobile, setIsMobile] = useState(false);
 
-  const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
+  const strategy = ItemStrategyFactory.getStrategy(tipoItem);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -947,7 +947,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       <ModalDefault
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`Detalles del ${tipoItem === "equipments" ? "Equipo" : tipoItem === "dispositivos-red" ? "Dispositivo de Red" : "Item"}`}
+        title={`Detalles del ${tipoItem === "equipments" ? "Equipo" : tipoItem === "devices-red" ? "Dispositivo de Red" : "Item"}`}
         size="xl"
       >
         <div className="max-h-[74vh] md:max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">

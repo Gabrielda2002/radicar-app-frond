@@ -10,10 +10,11 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { AnimatePresence } from "framer-motion";
 import useStoreMonitoringItem from "../../Store/useStoreMonitoringItem";
+import { IItemType } from "../../strategies/ItemStrategy";
 
 interface ModalSeguimientoItemProps {
   id: number;
-  tipoItem: string | null;
+  tipoItem: IItemType;
   refreshItems: () => void;
 }
 
@@ -58,13 +59,13 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
     validationSchema: validationSchema,
     onSubmit: async (values) => {
 
-      const endPoint = tipoItem == "equipos"
+      const endPoint = tipoItem == "equipments"
         ? "seguimiento-equipos"
-        : tipoItem === "dispositivos-red"
+        : tipoItem === "devices-red"
           ? "seguimiento-dispositivos-red"
-          : tipoItem === "inventario/general"
+          : tipoItem === "general/inventory"
             ? "seguimiento/inventario-general"
-            : tipoItem === "inventario/televisores"
+            : tipoItem === "tv/inventory"
               ? "seguimiento/televisor"
               : "seguimiento/celulares"
 

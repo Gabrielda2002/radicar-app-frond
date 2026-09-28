@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import { IItems } from "@/models/IItems";
 import { IItemsNetworking } from "@/models/IItemsNetworking";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
@@ -10,12 +11,19 @@ import { TelevisoresStrategy } from "./TvStrategy";
 import { IItemsPhone } from "../Models/IItemsPhone";
 import { PhoneStrategy } from "./PhoneStrategy";
 
-// Interfaz genérica para la estrategia de elementos de inventario
+export type IItemType =
+    | "equipments"
+    | "devices-red"
+    | "general/inventory"
+    | "tv/inventory"
+    | "phones/inventory"
+
 export interface ItemStrategy<T> {
   getName(item: T): string;
   getTypeLabel(item: T): string | null;
+  getSearchFields(): NestedKeyOf<T>[];
   getIcon(): ReactNode;
-  renderDetailsButton(item: T, tipoItem: string, refreshItems?: () => void): ReactNode;
+  renderDetailsButton(item: T, tipoItem: IItemType, refreshItems?: () => void): ReactNode;
   renderActionButtons(
     item: T,
     refreshItems: () => void,
@@ -29,7 +37,6 @@ export interface ItemStrategy<T> {
     items: T | null,
     refreshItems: () => void,
     idItems: number | null,
-    tipoTtem?: string | null,
     isUpdate?: boolean
   ): ReactNode;
 }
@@ -44,7 +51,7 @@ export type AnyItem =
 
 // Factory para obtener la estrategia correcta según el tipo de item
 export const ItemStrategyFactory = {
-  getStrategy(tipoItem: string): ItemStrategy<any> {
+  getStrategy(tipoItem: IItemType): ItemStrategy<any> {
     switch (tipoItem) {
       case "equipments":
         return new EquiposStrategy();

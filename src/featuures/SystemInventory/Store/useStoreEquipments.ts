@@ -38,16 +38,14 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
 
     getEquipmentsByHeadquartersId: async (_headquartersId: number) => {
         try {
-            set({ isLoading: true, error: null });
+            set({ isLoading: true });
 
             const response = await api.get(`/equipments/sede/${_headquartersId}`);
 
-            if (!response.data || response.data.length === 0) {
-                set({ equipments: [], error: "No se encontraron resultados" });
-                return;
+            if (response.status === 201 || response.status === 200) {
+                set({ equipments: response.data });
             }
 
-            set({ equipments: response.data, error: null });
         } catch (error: any) {
             if (error.response?.status === 500) {
                 set({ error: "Error interno del servidor. Por favor, intenta más tarde." });
@@ -70,7 +68,8 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
                 }
             });
 
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200) {
+                set({ error: null })
                 onSuccess?.()
             }
 
@@ -96,7 +95,8 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
                 }
             });
 
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
+                set({ error: null })
                 onSuccess?.()
             }
 
@@ -113,7 +113,7 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
 
     createEquipmentAccessory: async (data: ICreateEquipmentAccessoryPayload, onSuccess?: () => void) => {
         try {
-            set({ isLoading: true, error: null });
+            set({ isLoading: true });
 
             const endpointByType: Record<AccessoryType, string> = {
                 Periferico: "accesorios-equipos",
@@ -154,6 +154,7 @@ export const useStoreEquipments = create<UseStoreEquipments>((set) => ({
             const response = await api.post(`/${endpoint}`, formData);
 
             if (response.status === 201 || response.status === 200) {
+                set({ error: null })
                 onSuccess?.();
             }
         } catch (error: any) {

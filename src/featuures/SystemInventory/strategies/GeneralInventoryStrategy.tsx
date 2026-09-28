@@ -1,6 +1,7 @@
 import { Building } from "lucide-react";
 import { IItemsGeneral } from "../Models/IItemsGeneral";
-import { ItemStrategy } from "./ItemStrategy";
+import { IItemType, ItemStrategy } from "./ItemStrategy";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import { ReactNode } from "react";
 import ModalFormGeneralItems from "../Components/Modals/ModalFormGeneralItems";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
@@ -16,11 +17,22 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
     return item.status;
   }
 
+  getSearchFields(): NestedKeyOf<IItemsGeneral>[] {
+    return [
+      "name",
+      "brand",
+      "model",
+      "asset",
+      "responsable",
+      "dependencyArea",
+    ];
+  }
+
   getIcon() {
     return <Building className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(item: IItemsGeneral, tipoItem: string): ReactNode {
+  renderDetailsButton(item: IItemsGeneral, tipoItem: IItemType): ReactNode {
     return <ModalItemsDetails item={item} tipoItem={tipoItem} />;
   }
 
@@ -40,7 +52,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
 
         <ModalTablaSeguimientoItem
           Items={item}
-          tipoItem="inventario/general"
+          tipoItem="general/inventory"
           refreshItems={refreshItems}
         />
       </>
@@ -149,13 +161,12 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
     items: IItemsGeneral,
     refreshItems: () => void
     // idItems: number,
-    // tipoTtem?: string,
     // isUpdate?: boolean
   ): ReactNode {
     return (
       <ModalFormGeneralItems
         idSede={idSede}
-        tipoItem={"inventario/general"}
+        tipoItem="general/inventory"
         isUpdate={false}
         items={items}
         refreshItems={refreshItems}

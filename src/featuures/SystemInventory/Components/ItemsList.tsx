@@ -1,12 +1,12 @@
 // * Fuctions and Hooks
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Pagination from "@/components/common/PaginationTable/PaginationTable";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import usePagination from "@/hooks/usePagination";
 
 // * Icons
 import { useFetchAreaDependency } from "../Hooks/useFetchAreaDependency";
-import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
+import { AnyItem, IItemType, ItemStrategyFactory } from "../strategies/ItemStrategy";
 import FilterChips from "./FilterChips";
 import { useItemsFilter } from "../Hooks/useItemsFilter";
 import Input from "@/components/common/Ui/Input";
@@ -16,7 +16,7 @@ import { useSecureFileAccess } from "@/featuures/SystemGC/Hooks/useSecureFileAcc
 // * Interface
 interface ItemsListProps {
   invetario: AnyItem[] | null;
-  tipoItem: string | null;
+  tipoItem: IItemType;
   idSede: number;
   onItemsUpdate: () => void;
   targetItemId?: string | number | null;
@@ -33,7 +33,10 @@ const ItemsList: React.FC<ItemsListProps> = ({
 }) => {
   // * Estados para almacenar datos
 
-  const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
+  const strategy = useMemo(
+    () => ItemStrategyFactory.getStrategy(tipoItem),
+    [tipoItem]
+  );
 
   const { areaDependency } = useFetchAreaDependency();
   const [selectedAreaDependency, setSelectedAreaDependency] = useState<
@@ -49,6 +52,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
 
   const { query, setQuery, filteredData } = useItemsFilter({
     data: invetario,
+    strategy,
     tipoItem,
     selectedAreaDependency,
   }) 
@@ -96,7 +100,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
       const timer = setTimeout(() => {
         const targetPage = navigateToItem(targetItemId);
         
-        // ✅ Función recursiva para buscar el elemento
         const findAndScrollToElement = (attempts = 0, maxAttempts = 10) => {
           const elementId = `item-${targetItemId}`;
           const element = document.getElementById(elementId);
@@ -149,7 +152,6 @@ const ItemsList: React.FC<ItemsListProps> = ({
                 null,
                 onItemsUpdate,
                 null,
-                tipoItem,
                 false
               )}
             </div>
@@ -165,7 +167,7 @@ const ItemsList: React.FC<ItemsListProps> = ({
               onChange={(e) => setQuery(e.target.value)}
             />
             {/* filtro pora inventario general */}
-            {tipoItem === "inventario/general" && (
+            {tipoItem === "general/inventory" && (
               <div className="relative ml-2">
                 <button
                   type="button"
@@ -252,13 +254,13 @@ const ItemsList: React.FC<ItemsListProps> = ({
                   <div className="flex flex-wrap justify-between gap-2 mt-4">
                     {strategy?.renderDetailsButton(
                       item,
-                      tipoItem ?? "",
+                      tipoItem,
                       onItemsUpdate
                     )}
                     <div className="flex flex-wrap gap-2">
                       {strategy?.renderActionButtons(
                         item,
-                        onItemsUpdate,
+                        onItemsUpdate,                                      
                         openSecureFile
                       )}
                     </div>

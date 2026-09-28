@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { IItemsPhone } from "../Models/IItemsPhone";
-import { ItemStrategy } from "./ItemStrategy";
+import { IItemType, ItemStrategy } from "./ItemStrategy";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import { Smartphone } from "lucide-react";
 import ModalFormPhones from "../Components/Modals/ModalFormPhones";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
@@ -16,13 +17,26 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
     return item.operativeSystem;
   }
 
+  getSearchFields(): NestedKeyOf<IItemsPhone>[] {
+    return [
+      "name",
+      "brand",
+      "model",
+      "serial",
+      "imei",
+      "inventoryNumber",
+      "responsableName",
+      "responsableLastName",
+    ];
+  }
+
   getIcon(): ReactNode {
     return <Smartphone className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
   renderDetailsButton(
     item: IItemsPhone,
-    tipoItem: string
+    tipoItem: IItemType
   ): ReactNode {
     return (
       <ModalItemsDetails
@@ -46,7 +60,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
         />
         <ModalTablaSeguimientoItem
           Items={item}
-          tipoItem="inventario/celulares"
+          tipoItem="phones/inventory"
           refreshItems={refreshItems}
         />
         {/* falta boton para abrir actas */}
@@ -201,7 +215,6 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
     items: IItemsPhone,
     refreshItems: () => void,
     // idItems: number,
-    // tipoTtem?: string,
     // isUpdate?: boolean
   ): ReactNode {
     return (

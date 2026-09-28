@@ -1,5 +1,6 @@
 import { IItemsNetworking } from "@/models/IItemsNetworking";
-import { ItemStrategy } from "./ItemStrategy";
+import { IItemType, ItemStrategy } from "./ItemStrategy";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import { ReactNode } from "react";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
 import ModalDevicesRedForm from "../Components/Modals/ModalDevicesRedForm";
@@ -15,11 +16,22 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     return item.status;
   }
 
+  getSearchFields(): NestedKeyOf<IItemsNetworking>[] {
+    return [
+      "name",
+      "brand",
+      "model",
+      "serial",
+      "inventoryNumber",
+      "addressIp",
+    ];
+  }
+
   getIcon(): ReactNode {
     return <CpuChipIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(item: IItemsNetworking, tipoItem: string): ReactNode {
+  renderDetailsButton(item: IItemsNetworking, tipoItem: IItemType): ReactNode {
     return <ModalItemsDetails item={item} tipoItem={tipoItem} />;
   }
 
@@ -37,7 +49,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
         />
         <ModalTablaSeguimientoItem
           Items={item}
-          tipoItem="dispositivos-red"
+          tipoItem="devices-red"
           refreshItems={refreshItems}
         />
       </>
@@ -105,8 +117,7 @@ export class DispositivosRedStrategy implements ItemStrategy<IItemsNetworking> {
     idSede: number,
     items: IItemsNetworking,
     refreshItems: () => void,
-    idItems: number,
-    _tipoTtem?: string
+    idItems: number
     // isUpdate?: boolean
   ): ReactNode {
     return (

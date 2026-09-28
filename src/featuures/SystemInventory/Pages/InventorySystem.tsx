@@ -23,6 +23,7 @@ import StatiticsScreemItems from "../Components/StatiticsScreenItems";
 import { GlobalSearchResult } from "../Hooks/useGlobalSearch";
 import GlobalSearch from "../Components/GlobalSearch";
 import useFetchItems from "../Hooks/UseFetchItems";
+import { IItemType } from "../strategies/ItemStrategy";
 
 const SistemaInventario: React.FC = () => {
   const {
@@ -42,7 +43,7 @@ const SistemaInventario: React.FC = () => {
     setSedeSelect(result.sedeId);
     setDepartmentSelect(result.departmentId);
     setTargetItemId(result.item.id);
-    setTipoItem(result.tipoItem as any);
+    setTipoItem(result.tipoItem);
     setScreen("items");
   }, []);
 
@@ -73,14 +74,7 @@ const SistemaInventario: React.FC = () => {
 
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 
-  const [tipoItem, setTipoItem] = useState<
-    | "equipments"
-    | "devices-red"
-    | "general/inventory"
-    | "tv/inventory"
-    | "phones/inventory"
-    | null
-  >(null);
+  const [tipoItem, setTipoItem] = useState<IItemType | null>(null);
 
   // traer los items
   const { items, refetch } = useFetchItems(sedeSelect, tipoItem);

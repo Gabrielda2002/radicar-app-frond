@@ -8,7 +8,7 @@ interface FileAccessTokenResponse {
     action: "VIEW" | "DOWNLOAD";
 }
 
-type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | "attachments-infra-tickets" | "attachments-permissions" | "attachments-sst-tickets" | "pqrsdf" | "" |  null;
+type FileType = "files" | "soporte" | "attachments" | "attachments-tickets" | "attachments-infra-tickets" | "attachments-permissions" | "attachments-sst-tickets" | "pqrsdf" |  null;
 
 const customEndPoint = [
     {

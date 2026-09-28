@@ -9,10 +9,9 @@ import { useStoreDevicesRed } from "../Store/useStoreDevicesRed";
 import { useStoreGeneral } from "../Store/useStoreGeneral";
 import { useStoreTv } from "../Store/useStoreTv";
 import { useStorePhones } from "../Store/useStorePhones";
+import { IItemType } from "../strategies/ItemStrategy";
 
-type typeItems = "equipments" | "devices-red" | "general/inventory" | "tv/inventory" | "phones/inventory" | null;
-
-const useFetchItems = (id: number | null, tipoItem: typeItems) => {
+const useFetchItems = (id: number | null, tipoItem: IItemType | null) => {
   const {
     equipments,
     isLoading: equipmentsLoading,

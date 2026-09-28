@@ -3,9 +3,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import { IQuantityTypeItems } from '../Models/IQuantityTypeItems';
 import { useStoreStatistics } from '../Store/useStoreStatistics';
+import { IItemType } from '../strategies/ItemStrategy';
 
 interface QuantityTypeItensProps {
-    typeItem: string;
+    typeItem: IItemType;
     idHeadquartersSelected?: number;
 }
 

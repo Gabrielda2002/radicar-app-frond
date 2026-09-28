@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ModalSeguimientoItem from "./ModalSeguimientoItem";
 import { FormatDate } from "@/utils/FormatDate";
-import { AnyItem } from "../../strategies/ItemStrategy";
+import { AnyItem, IItemType } from "../../strategies/ItemStrategy";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import {
   useTableState,
@@ -14,13 +14,7 @@ import ModalCheckList from "./ModalCheckList";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
-  tipoItem:
-  | "equipos"
-  | "dispositivos-red"
-  | "inventario/general"
-  | "inventario/televisores"
-  | "inventario/celulares"
-  | null;
+  tipoItem: IItemType;
   refreshItems: () => void;
 }
 

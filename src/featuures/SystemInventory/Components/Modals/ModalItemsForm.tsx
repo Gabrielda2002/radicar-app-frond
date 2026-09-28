@@ -107,7 +107,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
     }),
     deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
     manager: Yup.string().required("El responsable es requerido"),
-    docDelivery: Yup.mixed()
+    file: Yup.mixed()
       .nullable()
       .optional()
       .test("fileSize", "El archivo no debe ser menor a 1mb", (value: any) => {
@@ -142,27 +142,27 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       manager: "",
       candado: false,
       codigo: "",
-      docDelivery: null,
+      file: null,
       inventoryNumber: "",
       sedeId: idSede ? String(idSede) : "",
     },
     enableReinitialize: true,
     validationSchema: Yup.object(validationSchema),
     onSubmit: async (values) => {
-        if (!idItem) {
-          await createEquipment(values, () => {
-            toast.success("Equipo creado exitosamente");
-            setStadopen(false);
-            formik.resetForm();
-            onSuccess();
-          });
-        } else {
-          await updateEquipment(idItem, values, () => {
-            toast.success("Equipo actualizado exitosamente");
-            setStadopen(false);
-          });
+      if (!idItem) {
+        await createEquipment(values, () => {
+          toast.success("Equipo creado exitosamente");
+          setStadopen(false);
+          formik.resetForm();
           onSuccess();
-        }
+        });
+      } else {
+        await updateEquipment(idItem, values, () => {
+          toast.success("Equipo actualizado exitosamente");
+          setStadopen(false);
+        });
+        onSuccess();
+      }
     },
   });
 
@@ -185,7 +185,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         manager: String(items.idUser),
         candado: Boolean(items.lock),
         codigo: String(items.lockKey) === "N/A" ? "" : String(items.lockKey),
-        docDelivery: null,
+        file: null,
         inventoryNumber: items.inventoryNumberEquipment || "",
         sedeId: String(items.sedeId) || String(idSede) || "",
       });
@@ -421,16 +421,16 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
               <Input
                 type="file"
                 label="Documento de Entrega"
-                id="docDelivery"
-                name="docDelivery"
+                id="file"
+                name="file"
                 accept=".pdf"
                 onChange={(event) => {
                   const file = event.target.files ? event.target.files[0] : null;
-                  formik.setFieldValue("docDelivery", file);
+                  formik.setFieldValue("file", file);
                 }}
                 onBlur={formik.handleBlur}
-                touched={formik.touched.docDelivery}
-                error={formik.errors.docDelivery}
+                touched={formik.touched.file}
+                error={formik.errors.file}
                 icon={<IoDocumentTextOutline className="w-5 h-5" />}
               />
             </div>
@@ -591,17 +591,17 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   />
                 </div>
               )}
-              <AnimatePresence>
-                {error && (
-                  <div>
-                    <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
-                      {error}
-                    </div>
-                  </div>
-                )}
-              </AnimatePresence>
             </div>
           </div>
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>

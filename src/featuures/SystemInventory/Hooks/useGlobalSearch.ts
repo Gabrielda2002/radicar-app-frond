@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
-import { AnyItem, ItemStrategyFactory } from "../strategies/ItemStrategy";
+import { AnyItem, IItemType, ItemStrategyFactory } from "../strategies/ItemStrategy";
 import { api } from "@/utils/api-config";
 
 export interface GlobalSearchResult {
     item: AnyItem;
-    tipoItem: string;
+    tipoItem: IItemType;
     departmentId: number;
     departmentName: string;
     sedeId: number;
@@ -25,7 +25,7 @@ export const useGlobalSearch = (): UseGlobalSearchReturn => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [searchError, setSearchError] = useState<string | null>(null);
 
-    const itemTypes = useMemo(() => [
+    const itemTypes = useMemo<IItemType[]>(() => [
         'equipments',
         'devices-red',
         'general/inventory',
