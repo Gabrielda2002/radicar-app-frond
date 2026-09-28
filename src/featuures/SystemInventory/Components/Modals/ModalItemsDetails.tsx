@@ -102,7 +102,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           "brand",
           "model",
           "serial",
-          `description`,
+          `otherData`,
           "status",
           "inventoryNumber",
         ]
@@ -112,7 +112,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
             "brand",
             "capacity",
             "speed",
-            `description`,
+            `otherData`,
             "model",
             "serial",
           ]
@@ -242,14 +242,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         isEditing={editingRows[acc.id]}
                         value={
                           editedData[acc.id]
-                            ? editedData[acc.id]["description"] ??
-                            acc["description"]
-                            : acc["description"]
+                            ? editedData[acc.id]["otherData"] ??
+                            acc["otherData"]
+                            : acc["otherData"]
                         }
                         onChange={(value) =>
-                          handleInputChange(acc.id, "description", value)
+                          handleInputChange(acc.id, "otherData", value)
                         }
-                        fieldId={`acc-${acc.id}-description`}
+                        fieldId={`acc-${acc.id}-otherData`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
                       />
@@ -459,14 +459,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         isEditing={editingRows[comp.id]}
                         value={
                           editedData[comp.id]
-                            ? editedData[comp.id]["description"] ??
-                            comp["description"]
-                            : comp["description"]
+                            ? editedData[comp.id]["otherData"] ??
+                            comp["otherData"]
+                            : comp["otherData"]
                         }
                         onChange={(value) =>
-                          handleInputChange(comp.id, "description", value)
+                          handleInputChange(comp.id, "otherData", value)
                         }
-                        fieldId={`comp-${comp.id}-description`}
+                        fieldId={`comp-${comp.id}-otherData`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
                       />
