@@ -45,6 +45,8 @@ export function EjecucionNtPage() {
             pct={data.kpiCumplimientoGlobal?.pct ?? null}
             ejecutado={data.kpiCumplimientoGlobal?.ejecutado ?? 0}
             meta={data.kpiCumplimientoGlobal?.meta_periodo ?? 0}
+            ejecutadoTotal={data.kpiCumplimientoGlobal?.ejecutado_total ?? null}
+            aportePct={data.kpiCumplimientoGlobal?.aporte_pct ?? null}
           />
         )}
         <div className="min-w-0 flex-1">
@@ -325,14 +327,32 @@ function CumplimientoKpi({
   pct,
   ejecutado,
   meta,
+  ejecutadoTotal,
+  aportePct,
 }: {
   pct: number | null;
   ejecutado: number;
   meta: number;
+  ejecutadoTotal: number | null;
+  aportePct: number | null;
 }) {
   const hasMeta = meta > 0;
   const value = pct ?? 0;
-  const tone = !hasMeta ? 'outline' : value >= 80 ? 'green' : value >= 50 ? 'turquoise' : 'red';
+  // Con sede física seleccionada el backend manda el aporte. La nota técnica no
+  // se divide por sede, así que la meta es la de la ciudad entera y este
+  // porcentaje mide qué parte de ese contrato cubre esta sede — no si la sede
+  // "cumple". Por eso no se le aplican los umbrales de cumplimiento: pintarían
+  // de rojo a toda sede que no ejecute sola el 80% de su ciudad.
+  const esAporte = aportePct != null;
+  const tone = !hasMeta
+    ? 'outline'
+    : esAporte
+      ? 'turquoise'
+      : value >= 80
+        ? 'green'
+        : value >= 50
+          ? 'turquoise'
+          : 'red';
   const border = {
     outline: 'border-l-gray-300 dark:border-l-gray-600',
     green: 'border-l-green-500',
@@ -350,12 +370,14 @@ function CumplimientoKpi({
     <Card className={cn('flex h-full items-center gap-4 border-l-[3px] px-5 py-3', border)}>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-          Cumplimiento Global
+          {esAporte ? 'Aporte al Cumplimiento' : 'Cumplimiento Global'}
         </p>
         <p className="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400">
-          {hasMeta
-            ? `${formatNumber(ejecutado)} ejec. / ${formatNumber(meta)} meta`
-            : 'Sin NT vigente para el filtro'}
+          {!hasMeta
+            ? 'Sin NT vigente para el filtro'
+            : esAporte
+              ? `Aporta ${aportePct}% de las ${formatNumber(ejecutadoTotal ?? 0)} ejec. de la sede · meta ${formatNumber(meta)}`
+              : `${formatNumber(ejecutado)} ejec. / ${formatNumber(meta)} meta`}
         </p>
         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
           <div

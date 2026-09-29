@@ -10,10 +10,32 @@ import { useGlobalFiltersFromUrl } from '@dash/lib/use-filters';
 import { formatCurrency, formatNumber, formatPercent } from '@dash/lib/utils';
 import { Badge } from '@dash/components/ui/badge';
 
+/**
+ * Lectura del % de ejecución en valor frente a la nota técnica.
+ * Por debajo del contrato es subejecución (no se prestó lo pactado); por
+ * encima es sobreejecución, que también merece atención aunque no sea "malo".
+ */
+function ejecucionNt(pct: number | null, aporteSede: boolean) {
+  if (pct == null) return { caption: 'Sin datos en el filtro', accent: 'outline' as const };
+  // Con una sede física seleccionada el porcentaje NO es un cumplimiento: la
+  // nota técnica no se divide por sede, así que el denominador es el contrato
+  // de la ciudad entera y lo que se mide es cuánto de ese contrato cubre esta
+  // sede. Leerlo con los umbrales de cumplimiento pintaría de rojo a toda sede
+  // que no ejecute sola el 70% de su ciudad, que es casi cualquiera.
+  if (aporteSede)
+    return { caption: 'Aporte de la sede al contrato de la ciudad', accent: 'navy' as const };
+  if (pct < 70) return { caption: 'Subejecución del contrato', accent: 'red' as const };
+  if (pct <= 100) return { caption: 'Dentro del contrato', accent: 'green' as const };
+  return { caption: 'Sobreejecución del contrato', accent: 'amber' as const };
+}
+
 export function FinancieroPage() {
   const { filters } = useGlobalFiltersFromUrl();
   const q = useFinanciero(filters);
   const data = q.data;
+  // El backend manda el aporte solo cuando hay una sede física seleccionada;
+  // es la señal de que los KPIs se leen contra el total de la ciudad.
+  const aporteSede = data?.kpis.aporteCostoRealPct != null;
 
   return (
     <PageShell title="Análisis Financiero" badge="Costos desde NT vigente" badgeVariant="info">
@@ -31,7 +53,11 @@ export function FinancieroPage() {
                       ? { value: data.kpis.costoRealMillones, decimals: 1, prefix: '$', suffix: 'M' }
                       : undefined
                   }
-                  caption={`${formatNumber(data.kpis.citasCosteadas)} citas costeadas (match NT)`}
+                  caption={
+                    aporteSede
+                      ? `Aporta ${formatPercent(data.kpis.aporteCostoRealPct)} de ${formatCurrency(data.kpis.costoRealTotalMillones)} de la sede · ${formatNumber(data.kpis.citasCosteadas)} citas`
+                      : `${formatNumber(data.kpis.citasCosteadas)} citas costeadas (match NT)`
+                  }
                   accent="navy"
                 />
               </BlurFade>
@@ -44,7 +70,11 @@ export function FinancieroPage() {
                       ? { value: data.kpis.costoEsperadoMillones, decimals: 1, prefix: '$', suffix: 'M' }
                       : undefined
                   }
-                  caption="Meta NT × costo_medio × 5 meses"
+                  caption={
+                    aporteSede
+                      ? 'Contrato de la sede completa: la NT no se divide por sub-sede'
+                      : 'Meta NT × costo_medio × meses del periodo'
+                  }
                   accent="navy"
                 />
               </BlurFade>
@@ -63,15 +93,15 @@ export function FinancieroPage() {
               </BlurFade>
               <BlurFade delay={0.18}>
                 <KpiCard
-                  label="Eficiencia (Rec/Costo)"
-                  value={formatPercent(data.kpis.eficienciaPct)}
+                  label="Ejecución vs NT (valor)"
+                  value={formatPercent(data.kpis.ejecucionNtPct)}
                   ticker={
-                    data.kpis.eficienciaPct != null
-                      ? { value: data.kpis.eficienciaPct, decimals: 1, suffix: '%' }
+                    data.kpis.ejecucionNtPct != null
+                      ? { value: data.kpis.ejecucionNtPct, decimals: 1, suffix: '%' }
                       : undefined
                   }
-                  caption={(data.kpis.eficienciaPct ?? 0) < 10 ? 'Recuperación muy baja' : 'Rango aceptable'}
-                  accent={(data.kpis.eficienciaPct ?? 0) < 10 ? 'red' : 'green'}
+                  caption={ejecucionNt(data.kpis.ejecucionNtPct, aporteSede).caption}
+                  accent={ejecucionNt(data.kpis.ejecucionNtPct, aporteSede).accent}
                 />
               </BlurFade>
             </section>

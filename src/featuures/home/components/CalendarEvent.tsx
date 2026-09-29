@@ -1,15 +1,10 @@
 import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
-
 import { CalendarRange, ChevronLeft, ChevronRight, X } from "lucide-react";
-
 import { useAuth } from "@/context/authContext";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
-
 import { IEventos } from "@/models/IEventos";
-
 import { useStoreEvent } from "../store/useStoreEvent";
-
 import ModalCrearEvento from "./ModalCreateEvent";
 
 const formatSpanishMonth = (date: moment.Moment) =>
@@ -60,13 +55,9 @@ const buildCalendarGrid = (currentDate: Date) => {
 
 const CalendarEvents: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<IEventos | null>(null);
-
   const [currentDate, setCurrentDate] = useState(new Date());
-
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
-
   const { data, isLoading, error, get } = useStoreEvent();
-
   const { rol } = useAuth();
 
   const canManage = [1, 18, 24, 25].includes(Number(rol));
@@ -101,8 +92,8 @@ const CalendarEvents: React.FC = () => {
 
   const eventsToShow = selectedDay
     ? monthEvents.filter(
-        (event) => moment(event.dateStart).format("YYYY-MM-DD") === selectedDay,
-      )
+      (event) => moment(event.dateStart).format("YYYY-MM-DD") === selectedDay,
+    )
     : monthEvents;
 
   const moveMonth = (amount: number) => {
@@ -224,8 +215,8 @@ const CalendarEvents: React.FC = () => {
                     style={
                       !isToday && hasEvents && isSelected
                         ? {
-                            color: eventColor,
-                          }
+                          color: eventColor,
+                        }
                         : undefined
                     }
                   >
@@ -274,7 +265,7 @@ const CalendarEvents: React.FC = () => {
                   <X className="h-3 w-3" />
                   Ver todos
                 </button>
-              )} 
+              )}
 
               <span className="rounded-full bg-gray-700 px-3 py-1 text-2xl font-bold text-[#e6f8f9]">
                 {eventsToShow.length}
