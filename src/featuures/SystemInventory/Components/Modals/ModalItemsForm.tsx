@@ -76,8 +76,8 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       .min(3, "El número de inventario debe tener al menos 3 caracteres")
       .max(200, "El número de inventario debe tener como máximo 200 caracteres"),
     sedeId: Yup.string().optional(),
-    candado: Yup.boolean().optional(),
-    codigo: Yup.string().when("candado", {
+    lock: Yup.boolean().optional(),
+    codeLock: Yup.string().when("lock", {
       is: (value: boolean) => value,
       then: (schema) =>
         schema
@@ -106,7 +106,7 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       otherwise: (schema) => schema.optional(),
     }),
     deliveryDate: Yup.date().required("La fecha de entrega es requerida"),
-    manager: Yup.string().required("El responsable es requerido"),
+    managerId: Yup.string().required("El responsable es requerido"),
     file: Yup.mixed()
       .nullable()
       .optional()
@@ -139,9 +139,9 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
       deliveryDate: "",
       addressIp: "",
       dhcp: false,
-      manager: "",
-      candado: false,
-      codigo: "",
+      managerId: "",
+      lock: false,
+      codeLock: "",
       file: null,
       inventoryNumber: "",
       sedeId: idSede ? String(idSede) : "",
@@ -160,11 +160,12 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         await updateEquipment(idItem, values, () => {
           toast.success("Equipo actualizado exitosamente");
           setStadopen(false);
+          onSuccess();
         });
-        onSuccess();
       }
     },
   });
+
 
   useEffect(() => {
     if (items && idItem) {
@@ -182,9 +183,9 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
         deliveryDate: FormatDate(items.deliveryDate, false),
         addressIp: items.addressIp,
         dhcp: Boolean(items.dhcp),
-        manager: String(items.idUser),
-        candado: Boolean(items.lock),
-        codigo: String(items.lockKey) === "N/A" ? "" : String(items.lockKey),
+        managerId: String(items.idUser),
+        lock: Boolean(items.lock),
+        codeLock: String(items.lockKey) === "N/A" ? "" : String(items.lockKey),
         file: null,
         inventoryNumber: items.inventoryNumberEquipment || "",
         sedeId: String(items.sedeId) || String(idSede) || "",
@@ -252,10 +253,11 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
 
             <div>
               <Select
-                options={["TODO EN 1", "LAPTOP", "PC MESA"].map((option) => ({
-                  value: option,
-                  label: option,
-                }))}
+                options={[
+                  { value: "Desktop", label: "PC de Mesa"},
+                  { value: "LAPTOP", label: "Portatil"},
+                  { value: "TODO EN 1", label: "Todo en 1"},
+                ]}
                 label="Tipo de Equipo"
                 name="typeEquipment"
                 value={formik.values.typeEquipment}
@@ -315,14 +317,14 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
             {/* RESPONSABLE */}
             <InputAutocompletado
               label="Responsable"
-              onInputChanged={(value) => formik.setFieldValue("manager", value)}
+              onInputChanged={(value) => formik.setFieldValue("managerId", value)}
               apiRoute="search-user-by-name"
               error={
-                formik.touched.manager && formik.errors.manager
-                  ? formik.errors.manager
+                formik.touched.managerId && formik.errors.managerId
+                  ? formik.errors.managerId
                   : undefined
               }
-              touched={formik.touched.manager}
+              touched={formik.touched.managerId}
               required={true}
               placeholder="Ej: Juan Perez"
             />
@@ -560,34 +562,34 @@ const ModalItemsForm: React.FC<ModalItemsFormProps> = ({
                   type="checkbox"
                   label="Candado"
                   variant="checkbox"
-                  id="candado"
-                  name="candado"
-                  checked={formik.values.candado}
+                  id="lock"
+                  name="lock"
+                  checked={formik.values.lock}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={
-                    formik.touched.candado && formik.errors.candado
-                      ? formik.errors.candado
+                    formik.touched.lock && formik.errors.lock
+                      ? formik.errors.lock
                       : undefined
                   }
-                  touched={formik.touched.candado}
+                  touched={formik.touched.lock}
                   icon={<LockClosedIcon className="w-5 h-5" />}
                 />
               </div>
-              {formik.values.candado && (
+              {formik.values.lock && (
                 <div>
                   <Input
                     type="text"
                     label="Código"
-                    id="codigo"
-                    name="codigo"
-                    value={formik.values.codigo}
+                    id="codeLock"
+                    name="codeLock"
+                    value={formik.values.codeLock}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    touched={formik.touched.codigo}
-                    error={formik.errors.codigo}
+                    touched={formik.touched.codeLock}
+                    error={formik.errors.codeLock}
                     icon={<LockClosedIcon className="w-5 h-5" />}
-                    required={formik.values.candado}
+                    required={formik.values.lock}
                   />
                 </div>
               )}

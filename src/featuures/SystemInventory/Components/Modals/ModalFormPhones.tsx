@@ -12,6 +12,7 @@ import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useStorePhones } from "../../Store/useStorePhones";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalFormPhoneProps {
   sedeId: number | null;
@@ -220,7 +221,7 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
   return (
     <>
       <div>
-        <Button type="button" onClick={() => setIsOpen(true)}>
+        <Button variant="secondary" onClick={() => setIsOpen(true)}>
           {items ? (
             <PencilSquareIcon
               className="w-7 h-7"
@@ -658,11 +659,15 @@ const ModalFormPhones: React.FC<ModalFormPhoneProps> = ({
             )}
           </div>
 
-          {error && (
-            <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
-              {error}
-            </div>
-          )}
+          <AnimatePresence>
+            {error && (
+              <div>
+                <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                  {error}
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </FormModal>
     </>

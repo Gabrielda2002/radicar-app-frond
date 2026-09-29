@@ -23,7 +23,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
       "brand",
       "model",
       "asset",
-      "responsable",
+      "responsible",
       "dependencyArea",
     ];
   }
@@ -84,7 +84,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
         </li>
         <li>
           <strong>Responsable: </strong>
-          {item.responsable}
+          {item.responsible}
         </li>
         <li>
           <strong>Tipo de Área: </strong>
@@ -137,7 +137,7 @@ export class GeneralInventoryStrategy implements ItemStrategy<IItemsGeneral> {
         <li>
           <strong>Garantía: </strong>
           <ul className="ml-4">
-            <li>Número: {item.warranty}</li>
+            <li>Número: {item.warranty === 1 ? "Si" : "No"}</li>
             <li>Período: {item.warrantyPeriod}</li>
           </ul>
         </li>

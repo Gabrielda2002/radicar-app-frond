@@ -18,16 +18,14 @@ export const useStoreDevicesRed = create<UseStoreDevicesRed>((set) => ({
 
     getDevicesByHeadquartersId: async (headquartersId: number) => {
         try {
-            set({ isLoading: true, error: null });
+            set({ isLoading: true });
 
             const response = await api.get(`/devices-red/sede/${headquartersId}`);
 
-            if (!response.data || response.data.length === 0) {
-                set({ devices: [], error: "No se encontraron resultados" });
-                return;
+            if (response.status === 200 || response.status === 201) {
+                set({ devices: response.data, error: null });
             }
 
-            set({ devices: response.data, error: null });
         } catch (error: any) {
             if (error.response?.status === 500) {
                 set({ error: "Error interno del servidor. Por favor, intenta más tarde." });
@@ -42,15 +40,12 @@ export const useStoreDevicesRed = create<UseStoreDevicesRed>((set) => ({
     createDevice: async (data: Object, onSuccess?: () => void) => {
         try {
             
-            set({ isLoading: true, error: null });
+            set({ isLoading: true });
 
-            const response = await api.post("/devices-red", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                }
-            });
+            const response = await api.post("/devices-red", data);
 
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
+                set({ error: null });
                 onSuccess?.()
             }
 
@@ -68,15 +63,12 @@ export const useStoreDevicesRed = create<UseStoreDevicesRed>((set) => ({
     updateDevice: async (id: number, data: Object, onSuccess?: () => void) => {
         try {
             
-            set({ isLoading: true, error: null });
+            set({ isLoading: true });
 
-            const response = await api.put(`/devices-red/${id}`, data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                }
-            });
+            const response = await api.put(`/devices-red/${id}`, data);
 
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
+                set({ error: null})
                 onSuccess?.()
             }
 

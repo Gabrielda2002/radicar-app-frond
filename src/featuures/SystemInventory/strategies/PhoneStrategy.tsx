@@ -27,6 +27,7 @@ export class PhoneStrategy implements ItemStrategy<IItemsPhone> {
       "inventoryNumber",
       "responsableName",
       "responsableLastName",
+      "phoneNumber"
     ];
   }
 
