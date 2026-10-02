@@ -640,7 +640,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
                 onInputChanged={(value) =>
                   formik.setFieldValue("sedeId", value)
                 }
-                apiRoute="lugares-radicacion-name"
+                apiRoute="headquarters/name"
                 placeholder="Ej: Sede 15"
                 error={
                   formik.touched.sedeId && formik.errors.sedeId

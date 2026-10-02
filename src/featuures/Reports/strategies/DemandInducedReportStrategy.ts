@@ -83,7 +83,7 @@ export class DemandInducedReportStrategy implements ReportStrategy<demandaInduci
         name: 'headquarter',
         label: 'Sede',
         type: 'autocomplete',
-        endpoint: 'lugares-radicacion-name',
+        endpoint: 'headquarters/name',
         required: false,
       },
       {

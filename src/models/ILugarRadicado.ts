@@ -8,4 +8,5 @@ export interface ILugarRadicacion {
     headquartersNumber: number;
     departmentId:      number;
     cityId:            number;
+    licenseCode:     string;
 }

@@ -548,7 +548,7 @@ const ModalRadicacion = () => {
                 onInputChanged={(value) =>
                   formik.setFieldValue("placeId", value)
                 }
-                apiRoute="lugares-radicacion-name"
+                apiRoute="headquarters/name"
                 error={formik.errors.placeId}
                 touched={formik.touched.placeId}
                 placeholder="Ej: Calle 15"

@@ -573,7 +573,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
                 onInputChanged={(value) =>
                   formik.setFieldValue("headquartersId", value)
                 }
-                apiRoute="lugares-radicacion-name"
+                apiRoute="headquarters/name"
                 placeholder="Ej: Sede 15"
                 error={
                   formik.touched.headquartersId && formik.errors.headquartersId

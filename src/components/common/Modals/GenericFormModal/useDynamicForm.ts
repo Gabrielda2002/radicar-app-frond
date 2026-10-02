@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useFormik, type FormikHelpers } from "formik";
+import { useFormik } from "formik";
 import { useTableMutations } from "@/components/common/Modals/CrearDataTables/Hook/useTablesMutations";
 import type { FormDescriptor } from "./types";
 
@@ -39,12 +39,13 @@ export const useDynamicForm = ({
     enableReinitialize: false,
     onSubmit: async (
       values: Record<string, unknown>,
-      helpers: FormikHelpers<Record<string, unknown>>
+      // helpers: FormikHelpers<Record<string, unknown>>
     ) => {
       const handler = () => {
         setIsOpen(false);
         onClose();
         onSuccess?.();
+        formik.resetForm({ values: computeInitialValues(null) });
       };
 
       try {
@@ -58,8 +59,6 @@ export const useDynamicForm = ({
       } catch {
         // El error ya se expone vía `error` del hook de mutaciones.
       }
-
-      helpers.resetForm({ values: computeInitialValues(null) });
     },
   });
 

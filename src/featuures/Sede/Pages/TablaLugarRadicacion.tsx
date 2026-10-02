@@ -1,5 +1,5 @@
 import { ILugarRadicacion } from "@/models/ILugarRadicado";
-import { useFetchSede } from "@/hooks/UseFetchSede";
+import { useFetchHeadquarters } from "@/hooks/useFetchHeadquarters";
 import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
 import { lugarRadicacionForm } from "@/featuures/Configuration/config/forms/lugarRadicacionForm";
 
@@ -8,7 +8,7 @@ interface TablaLugarRadicacionProps {
 }
 
 const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionProps) => {
-  const { data, loading, error, refetch } = useFetchSede();
+  const { data, loading, error, refetch } = useFetchHeadquarters();
 
   const columns = [
     {
@@ -46,6 +46,12 @@ const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionPr
       header: "Municipio",
       width: "15%",
       accessor: (item: ILugarRadicacion) => item.city,
+    },
+    {
+      key: "licenseNumber",
+      header: "Cód Habilitación",
+      width: "15%",
+      accessor: (item: ILugarRadicacion) => item.licenseCode,
     },
   ];
 

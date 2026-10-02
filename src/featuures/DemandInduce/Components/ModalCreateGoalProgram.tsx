@@ -126,7 +126,7 @@ const ModalCreateGoalProgram: React.FC<ModalCreateGoalProgramProps> = ({
                   onInputChanged={(value) =>
                     formik.setFieldValue("headquarters", value)
                   }
-                  apiRoute="lugares-radicacion-name"
+                  apiRoute="headquarters/name"
                   placeholder="Ej: Calle 15"
                   required
                   error={formik.errors.headquarters}

@@ -9,7 +9,7 @@ type UseFetchSedeResult = {
   refetch: () => void;
 };
 
-export const useFetchSede = (): UseFetchSedeResult => {
+export const useFetchHeadquarters = (): UseFetchSedeResult => {
   const [data, setData] = useState<ILugarRadicacion[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,7 @@ export const useFetchSede = (): UseFetchSedeResult => {
     try {
       setLoading(true);
 
-      const lugarRadicado = await api.get("/lugares-radicacion");
+      const lugarRadicado = await api.get("/headquarters");
 
       if (lugarRadicado.status === 200 || lugarRadicado.status === 201) {
         setData(lugarRadicado.data);

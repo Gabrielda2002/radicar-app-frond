@@ -21,7 +21,7 @@ export const useLazyFetchHeadquarters = (): UseLazyFetchHeadquartersResult => {
     if (headquarters.length > 0) return;
     setLoadingHeadquarters(true);
     try {
-      const response = await api.get("/lugares-radicacion");
+      const response = await api.get("/headquarters");
 
       if (response.status === 200 || response.status === 201) {
         setHeadquarters(response.data);

@@ -880,7 +880,7 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 onInputChanged={(value) =>
                   formik.setFieldValue("headquartersId", value)
                 }
-                apiRoute="lugares-radicacion-name"
+                apiRoute="headquarters/name"
                 error={formik.errors.headquartersId}
                 touched={formik.touched.headquartersId}
                 placeholder="Ej: Calle 15"

@@ -6,7 +6,7 @@ import { useFetchRoles } from "@/hooks/UseFetchRoles";
 //*Icons
 import { useFormik } from "formik";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
-import { useFetchSede } from "@/hooks/UseFetchSede";
+import { useFetchHeadquarters } from "@/hooks/useFetchHeadquarters";
 import Input from "@/components/common/Ui/Input";
 import Select, { SelectOption } from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";
@@ -22,7 +22,7 @@ const RegistrarUsuarios: React.FC = () => {
   // traer los datos de los roles
   const { dataRol, errorRol } = useFetchRoles(load);
   // hook pora traer las sedes
-  const { data } = useFetchSede();
+  const { data } = useFetchHeadquarters();
 
   const { create, error, isLoading } = useUsersMutations();
 
