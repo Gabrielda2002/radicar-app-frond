@@ -15,7 +15,7 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useLazyFetchTypeDocument } from "@/hooks/useLazyFetchTypeDocument";
 import { useLazyFetchRol } from "@/hooks/useLazyFetchRol";
-import { useLazyFetchHeadquarters } from "@/hooks/useLazyFetchHeadquarters";
+import { useStoreHeadquarters } from "@/store/useStoreHeadquarters";
 import { FormatDate } from "@/utils/FormatDate";
 import { useUsersMutations } from "../Hooks/useUsersMutations";
 import InputAutocompletado from "@/components/common/InputAutoCompletado/InputAutoCompletado";
@@ -39,22 +39,19 @@ const ModalActionUsuario: React.FC<ModalActionUsuarioProps> = ({
 
   const { refreshUsers } = useUsers();
 
-  //hook para traer los tipos de documentos
   const { dataDocument, errorDocument, fetchDocument } =
     useLazyFetchTypeDocument();
 
-  // hook para traer los roles
   const { rols, errorRol, fetchRols } = useLazyFetchRol();
 
-  // hook para traer las sedes
-  const { headquarters, errorHeadquarters, fetchHeadquarters } =
-    useLazyFetchHeadquarters();
+  const { headquarters, error: errorHeadquarters, getHeadquarters } =
+    useStoreHeadquarters();
 
   const { error, isLoading, update } = useUsersMutations();
 
   const handleOpenModal = async () => {
     setIsOpen(true);
-    Promise.all([fetchDocument(), fetchRols(), fetchHeadquarters()]);
+    Promise.all([fetchDocument(), fetchRols(), getHeadquarters()]);
   };
 
   const validationSchema = useMemo(

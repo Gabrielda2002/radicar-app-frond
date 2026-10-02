@@ -1,12 +1,12 @@
 //*Funciones y Hooks
 import * as Yup from "yup";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useFetchRoles } from "@/hooks/UseFetchRoles";
 
 //*Icons
 import { useFormik } from "formik";
 import { useFetchDocumento } from "@/hooks/UseFetchDocument";
-import { useFetchHeadquarters } from "@/hooks/useFetchHeadquarters";
+import { useStoreHeadquarters } from "@/store/useStoreHeadquarters";
 import Input from "@/components/common/Ui/Input";
 import Select, { SelectOption } from "@/components/common/Ui/Select";
 import Button from "@/components/common/Ui/Button";
@@ -19,10 +19,12 @@ const RegistrarUsuarios: React.FC = () => {
   const { dataDocumento, errorDocumento } = useFetchDocumento(isOpen);
   const load = true;
 
-  // traer los datos de los roles
   const { dataRol, errorRol } = useFetchRoles(load);
-  // hook pora traer las sedes
-  const { data } = useFetchHeadquarters();
+  const { headquarters, getHeadquarters } = useStoreHeadquarters();
+
+  useEffect(() => {
+    getHeadquarters();
+  }, [getHeadquarters]);
 
   const { create, error, isLoading } = useUsersMutations();
 
@@ -110,7 +112,7 @@ const RegistrarUsuarios: React.FC = () => {
     })) || [];
 
   const sedeOptions: SelectOption[] =
-    data?.map((headquarters) => ({
+    headquarters?.map((headquarters) => ({
       value: headquarters.id,
       label: headquarters.name,
     })) || [];

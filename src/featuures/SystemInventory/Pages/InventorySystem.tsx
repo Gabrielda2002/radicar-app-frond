@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import DeviceCard from "@/components/common/DevicesCard/DevicesCard";
 import ModalSection from "@/components/common/HeaderPage/HeaderPage";
 import DepartamentosList from "../Components/DepartamentosList";
-import useFetchSedes from "../Hooks/UseFetchSedes";
+import { useStoreHeadquarters } from "@/store/useStoreHeadquarters";
 import { useFetchDepartment } from "../Hooks/useFetchDeparment";
 import { Hammer, Tv, Smartphone } from "lucide-react";
 
@@ -69,8 +69,20 @@ const SistemaInventario: React.FC = () => {
     };
   }, []);
 
-  // traer las sedes
-  const { sedes } = useFetchSedes(departmentSelect);
+  const { sedes, getHeadquartersByDepartment, clearSedes } =
+    useStoreHeadquarters();
+
+  useEffect(() => {
+    if (departmentSelect) {
+      getHeadquartersByDepartment(departmentSelect);
+    }
+  }, [departmentSelect, getHeadquartersByDepartment]);
+
+  useEffect(() => {
+    return () => {
+      clearSedes();
+    };
+  }, [clearSedes]);
 
   const [sedeSelect, setSedeSelect] = useState<number | null>(null);
 

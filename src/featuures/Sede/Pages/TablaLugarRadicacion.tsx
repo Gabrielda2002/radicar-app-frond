@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { ILugarRadicacion } from "@/models/ILugarRadicado";
-import { useFetchHeadquarters } from "@/hooks/useFetchHeadquarters";
+import { useStoreHeadquarters } from "@/store/useStoreHeadquarters";
 import ConfigurableTablePage from "@/featuures/Configuration/components/ConfigurableTablePage";
 import { lugarRadicacionForm } from "@/featuures/Configuration/config/forms/lugarRadicacionForm";
 
@@ -8,7 +9,12 @@ interface TablaLugarRadicacionProps {
 }
 
 const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionProps) => {
-  const { data, loading, error, refetch } = useFetchHeadquarters();
+  const { headquarters, isLoading, error, getHeadquarters } =
+    useStoreHeadquarters();
+
+  useEffect(() => {
+    getHeadquarters();
+  }, [getHeadquarters]);
 
   const columns = [
     {
@@ -60,10 +66,10 @@ const TablaLugarRadicacion = ({ hidePageHeader = false }: TablaLugarRadicacionPr
       name="Lugar Radicacion"
       formConfig={lugarRadicacionForm}
       dataProvider={{
-        data,
-        loading,
+        data: headquarters,
+        loading: isLoading,
         error,
-        refetch,
+        refetch: () => getHeadquarters(true),
       }}
       columns={columns}
       searchFields={["id", "name", "headquartersNumber", "status", "department", "city"]}
