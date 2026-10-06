@@ -86,6 +86,9 @@ const PqrsdfFormulario = lazy(
 const PqrsdfDetalle = lazy(
   () => import("@/featuures/Pqrsdf/Page/PqrsdfDetalle")
 );
+const PpsPage = lazy(
+  () => import("@/featuures/PPS/Page/PpsPage")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -161,6 +164,9 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="/pqrsdf" element={<PqrsdfListado />} />
         <Route path="/pqrsdf/nueva" element={<PqrsdfFormulario />} />
         <Route path="/pqrsdf/:id" element={<PqrsdfDetalle />} />
+
+        {/* Rutas de PPS */}
+        <Route path="/pps" element={<PpsPage />} />
 
         {/* Fallback route - debe ser la última */}
         <Route path="*" element={<Navigate to="/home" />} />

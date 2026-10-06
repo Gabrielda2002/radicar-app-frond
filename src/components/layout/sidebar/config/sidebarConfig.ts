@@ -6,7 +6,7 @@ import { MdOutlineInventory, MdHomeRepairService } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoMagnetOutline } from 'react-icons/io5';
 import { IoMdHome } from 'react-icons/io';
-import { Box, ClipboardList, GitPullRequestArrow, HandCoins, LayoutDashboard, Mailbox, User, UsersRound } from 'lucide-react';
+import { Box, ClipboardList, GitPullRequestArrow, HandCoins, HeartHandshake, LayoutDashboard, Mailbox, User, UsersRound } from 'lucide-react';
 import { BiMailSend } from 'react-icons/bi';
 import { FaUserDoctor } from "react-icons/fa6";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -174,6 +174,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
             path: '/pqrsdf',
             type: 'subcategory',
             roles: [1, 4, 6, 2, 11, 20, 22, 24]
+          },
+          {
+            id: 'pps-panel',
+            title: 'PPS',
+            icon: ClipboardList,
+            path: '/pps',
+            type: 'subcategory',
+            roles: [1, 2, 6, 4, 11, 20, 22, 24]
           }
         ]
       },
