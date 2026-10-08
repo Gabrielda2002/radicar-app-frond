@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { AxiosError } from "axios";
 import { api } from "@/utils/api-config";
 import type {
+  PpsMonitoringInput,
   PpsProgrammedActivityInput,
   PpsProgrammedActivityRow,
 } from "@/featuures/PPS/models/IPps";
@@ -20,6 +21,11 @@ interface UseStorePpsProgrammedActivities {
   updateProgrammedActivity: (
     id: number,
     data: PpsProgrammedActivityInput,
+    onSuccess?: () => void
+  ) => Promise<void>;
+  updateMonitoring: (
+    activityId: number,
+    data: PpsMonitoringInput,
     onSuccess?: () => void
   ) => Promise<void>;
   deleteProgrammedActivity: (
@@ -117,6 +123,38 @@ export const useStorePpsProgrammedActivities =
             error:
               err.response?.data?.message ||
               "Error al actualizar la actividad programada.",
+          });
+        }
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    updateMonitoring: async (activityId, data, onSuccess) => {
+      try {
+        set({ isLoading: true, error: null });
+
+        const response = await api.put(
+          `/pps/programmed-activities/${activityId}/monitoring`,
+          data
+        );
+
+        if (response.status === 200) {
+          const periodId = get().periodId;
+          if (periodId !== null) {
+            await get().getByPeriod(periodId);
+          }
+          onSuccess?.();
+        }
+      } catch (error: unknown) {
+        const err = error as AxiosError<{ message?: string }>;
+        if (err.response?.status === 500) {
+          set({ error: "Error del servidor, por favor intente más tarde." });
+        } else {
+          set({
+            error:
+              err.response?.data?.message ||
+              "Error al actualizar el seguimiento.",
           });
         }
       } finally {

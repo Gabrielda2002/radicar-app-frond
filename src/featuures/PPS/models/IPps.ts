@@ -102,6 +102,7 @@ export interface PpsProgrammedActivityRow extends PpsProgrammedActivity {
   headquartersRelation?: { id: number; name: string; licenseCode: string | null };
   monitoringRelation?: PpsMonitoring | null;
   monitoringComplete?: boolean;
+  monitoringIssues: string[];
 }
 
 export interface PpsProgrammedActivityInput {
@@ -137,4 +138,23 @@ export interface PpsReportingEntity {
   monitoringDueYear: DueYearRelation;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PpsFundingSource {
+  id: number;
+  code: string;
+  description: string;
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PpsMonitoringInput {
+  result?: number | null;
+  intervenedPopulationId?: number | null;
+  totalPersons?: number | null;
+  executedResources?: number | null;
+  fundingSourceId?: number | null;
+  evidenceLink?: string | null;
+  verificationMeans?: string | null;
 }

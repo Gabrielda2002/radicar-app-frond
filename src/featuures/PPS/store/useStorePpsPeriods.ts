@@ -10,8 +10,9 @@ interface CreatePeriodData {
 }
 
 interface UpdatePeriodData {
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
+  cutoffDate?: string | null;
 }
 
 interface UseStorePpsPeriods {

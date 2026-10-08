@@ -1,6 +1,16 @@
 import type { AxiosError } from "axios";
 import { api } from "@/utils/api-config";
 
+export class PpsFileDownloadError extends Error {
+  status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "PpsFileDownloadError";
+    this.status = status;
+  }
+}
+
 const parseContentDisposition = (value: string | undefined): string | null => {
   if (!value) return null;
 
@@ -65,9 +75,12 @@ export async function downloadPpsFile(
       } catch {
         // Se conserva el mensaje por defecto.
       }
-      throw new Error(message);
+      throw new PpsFileDownloadError(message, err.response?.status);
     }
 
-    throw new Error("No se pudo generar el archivo. Intente nuevamente.");
+    throw new PpsFileDownloadError(
+      "No se pudo generar el archivo. Intente nuevamente.",
+      err.response?.status
+    );
   }
 }
