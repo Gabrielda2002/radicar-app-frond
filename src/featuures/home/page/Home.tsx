@@ -5,9 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 //*Icons
 import cookieX from "/assets/cookie-X.svg";
-import { FolderKanban, ChevronDown } from "lucide-react";
+import { FolderKanban } from "lucide-react";
 // import FormPacientesCS from "../components/ConsultarPacientesCS";
-import ConsultarSvContratados from "../components/ConsultarSvContratados";
 import DocumentCard from "../components/DocumentCard";
 import { useAuth } from "@/context/authContext";
 
@@ -41,7 +40,6 @@ const Home = () => {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
 
   const { user } = useAuth();
-  const [isServicesPanelOpen, setIsServicesPanelOpen] = useState(false);
   const userName = `${user?.name ?? ""} ${user?.lastname ?? ""}`.trim() || "colaborador";
   const userCity = user?.municipality || "sede principal";
 
@@ -86,57 +84,27 @@ const Home = () => {
             showContent ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="container mx-auto space-y-6">
+          <div className="container mx-auto space-y-3">
             {/* BEGIN: Header institucional con gradiente */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-900 via-teal-800 to-teal-950 p-6 shadow-lg sm:p-8 lg:p-10">
+            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-teal-900 via-teal-800 to-teal-950 p-4 shadow-lg sm:p-5 lg:p-6">
               <div className="pointer-events-none absolute -bottom-16 -right-12 h-80 w-80 rounded-full bg-teal-500/10 blur-3xl" />
               <div className="pointer-events-none absolute -top-20 right-1/4 h-60 w-60 rounded-full bg-teal-400/10 blur-2xl" />
-              <div className="relative z-10 max-w-2xl space-y-2">
-                <span className="inline-flex items-center gap-2 rounded-md border border-teal-400/25 bg-teal-500/15 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-teal-200">
+              <div className="relative z-10 max-w-none space-y-1">
+                <span className="inline-flex items-center gap-2 rounded-md border border-teal-400/25 bg-teal-500/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-teal-200">
                   SOMOS NORDVITAL IPS
                 </span>
-                <h1 className="text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+                <h1 className="text-xl font-bold leading-tight tracking-tight text-white sm:text-2xl lg:text-3xl lg:whitespace-nowrap">
                   Bienvenidos a Nordvital IPS | Sede {userCity}
                 </h1>
-                <p className="pt-1 text-sm leading-relaxed text-teal-100/90 sm:text-base">
+                <p className="text-xs leading-snug text-teal-100/90 sm:text-sm lg:whitespace-nowrap">
                   ¡Buenos días, {userName}! — Panel de Gestión y Consultas de Nordvital IPS ({userCity})
                 </p>
               </div>
             </div>
             {/* END: Header institucional con gradiente */}
 
-            {/* BEGIN: Consulta de servicios contratados */}
-            <div className="overflow-hidden rounded-xl border border-teal-100 bg-white shadow-sm dark:border-gray-600 dark:bg-gray-700">
-              <button
-                type="button"
-                onClick={() => setIsServicesPanelOpen((prev) => !prev)}
-                aria-expanded={isServicesPanelOpen}
-                className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-teal-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-500 dark:hover:bg-gray-600 sm:p-5"
-              >
-                <span className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
-                    <FolderKanban className="h-5 w-5" />
-                  </span>
-                  <span>
-                    <span className="block text-2xl font-semibold text-gray-800 dark:text-gray-100">Consultar Servicios Contratados</span>
-                    <span className="block text-base text-gray-500 dark:text-gray-400">Consulta la información de un servicio por su código.</span>
-                  </span>
-                </span>
-                <ChevronDown className={`h-5 w-5 shrink-0 text-teal-700 transition-transform duration-200 dark:text-teal-300 ${isServicesPanelOpen ? "rotate-180" : ""}`} />
-              </button>
-              {isServicesPanelOpen && (
-                <div className="border-t border-teal-100 p-4 dark:border-gray-600 sm:p-5">
-                  <ConsultarSvContratados />
-                </div>
-              )}
-            </div>
-            {/* END: Consulta de servicios contratados */}
-
             {/* BEGIN: Calendario de actividades */}
-            <div className="rounded-xl bg-gray-50 pb-5 shadow-sm dark:bg-gray-700">
-              <h1 className="pl-6 md:pl-10 pt-5 mx-auto text-gray-700 [28px] font-bold md:text-5xl dark:text-white">
-                Calendario de Actividades:
-              </h1>
+            <div className="rounded-xl bg-gray-50 pb-3 shadow-sm dark:bg-gray-700">
               <Suspense fallback={<LoadingSpinner />}>
                 <Calendario />
               </Suspense>

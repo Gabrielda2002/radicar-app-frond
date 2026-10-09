@@ -19,7 +19,7 @@ export const TimeSelect: React.FC<TimeSelectProps> = ({ label, value, onChange, 
   const [minute, setMinute] = useState(parsed.minute);
   const [period, setPeriod] = useState<Period>(parsed.meridiem);
   const showError = Boolean(touched && error);
-  const inputClass = `w-full border-2 rounded bg-transparent px-3 py-2 text-center text-base font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200 dark:bg-gray-800 dark:text-black ${showError ? "border-red-500 dark:border-red-500 focus:ring-red-500" : "border-gray-200 dark:border-gray-600"}`;
+  const inputClass = `w-full border-2 rounded bg-transparent px-3 py-2 text-center text-base font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200 dark:bg-gray-800 dark:text-white ${showError ? "border-red-500 dark:border-red-500 focus:ring-red-500" : "border-gray-200 dark:border-gray-600"}`;
 
   useEffect(() => {
     const next = parseTimeValue(value);
