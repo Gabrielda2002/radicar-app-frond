@@ -182,7 +182,9 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
                 </div>
               </div>
             </section>
+          </div>
 
+         <div className="space-y-5 lg:col-span-5">
             <section className="rounded-2xl border border-[#d8eeee] bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
               <div className="mb-4 flex items-center gap-2 border-b border-[#e2f1f1] pb-3 text-base font-semibold uppercase tracking-wider text-[#008d93] dark:border-gray-600">
                 <Clock3 className="h-4 w-4" />
@@ -217,9 +219,7 @@ const ModalCreateEvent: React.FC<ModalCreateEventProps> = ({
                 {duracion && <span className="font-medium text-[#008d93]">Duración: {duracion}</span>}
               </div>
             </section>
-          </div>
 
-          <div className="space-y-5 lg:col-span-5">
             {/* <section className="rounded-2xl border border-[#d8eeee] bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
               <div className="mb-4 flex items-center gap-2 border-b border-[#e2f1f1] pb-3 text-base font-semibold uppercase tracking-wider text-[#008d93] dark:border-gray-600">
                 <UserRound className="h-4 w-4" />

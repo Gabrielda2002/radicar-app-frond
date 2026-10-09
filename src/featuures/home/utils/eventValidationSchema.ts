@@ -33,7 +33,7 @@ export const eventValidationSchema = Yup.object({
       function (value) {
         if (!value || !this.parent.horaInicio || this.parent.fechaFin !== this.parent.fechaInicio)
           return true;
-        return value >= this.parent.horaInicio;
+        return value > this.parent.horaInicio;
       },
     ),  
   color: Yup.string().required("El color es requerido"),
