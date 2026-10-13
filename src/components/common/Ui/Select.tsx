@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
 import ErrorMessage from "../ErrorMessageModal/ErrorMessageModals";
 
 export interface SelectOption {
   value: string | number;
   label: string;
+  title?: string;
+  disabled?: boolean;
 }
 
 interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
@@ -19,7 +21,15 @@ interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>
   helpText?: string;
   placeholder?: string;
   hidePlaceholder?: boolean;
+  maxOptionLength?: number;
 }
+
+const truncateText = (text: string, maxLength?: number): string => {
+  if (!maxLength || maxLength <= 0 || text.length <= maxLength) {
+    return text;
+  }
+  return `${text.slice(0, maxLength).trimEnd()}...`;
+};
 
 const Select: React.FC<SelectProps> = ({
   label,
@@ -34,6 +44,7 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Seleccione",
   hidePlaceholder = false,
   disabled,
+  maxOptionLength = 90,
   ...props
 }) => {
   const getSizeClasses = () => {
@@ -49,7 +60,7 @@ const Select: React.FC<SelectProps> = ({
 
   const getVariantClasses = () => {
     if (error && touched) {
-      return "border-red-500 dark:border-red-500 focus:ring-red-500 bg-transparent dark:bg-gray-800 text-red-600 dark:text-red-400";
+      return "border-red-500 dark:border-red-500 focus:ring-red-500 bg-transparent dark:bg-gray-800";
     }
     switch (variant) {
       case "dark":
@@ -60,15 +71,24 @@ const Select: React.FC<SelectProps> = ({
   };
 
   const selectClasses = `
-    w-full border-2 rounded focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
+    w-full max-w-full truncate border-2 rounded focus:outline-none focus:ring-2 focus:ring-color2 transition-colors duration-200
     ${getSizeClasses()}
     ${getVariantClasses()}
     ${disabled ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-75" : ""}
     ${className}
   `.trim();
 
+  const selectedOption = useMemo(() => {
+    if (props.value === undefined || props.value === null || props.value === "") {
+      return null;
+    }
+    return options.find((op) => String(op.value) === String(props.value)) ?? null;
+  }, [options, props.value]);
+
+  const selectTitle = props.title || selectedOption?.label || undefined;
+
   return (
-    <div>
+    <div className="w-full min-w-0">
       {label && (
         <label className="block mb-2 text-base font-bold text-gray-700 dark:text-gray-200">
           <span className="flex items-center">
@@ -82,14 +102,28 @@ const Select: React.FC<SelectProps> = ({
       <select
         className={selectClasses}
         disabled={disabled}
+        title={selectTitle}
         {...props}
       >
-        {!hidePlaceholder && <option value="">{placeholder}</option>}
-        {options.map((op) => (
-          <option key={op.value} value={op.value}>
-            {op.label}
+        {!hidePlaceholder && (
+          <option value="" title={placeholder}>
+            {truncateText(placeholder, maxOptionLength)}
           </option>
-        ))}
+        )}
+        {options.map((op) => {
+          const fullLabel = String(op.label ?? "");
+          const displayLabel = truncateText(fullLabel, maxOptionLength);
+          return (
+            <option
+              key={op.value}
+              value={op.value}
+              title={op.title || fullLabel}
+              disabled={op.disabled}
+            >
+              {displayLabel}
+            </option>
+          );
+        })}
       </select>
       {helpText && !error && (
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
