@@ -1,14 +1,23 @@
 import Input from "@/components/common/Ui/Input";
 import Select, { type SelectOption } from "@/components/common/Ui/Select";
 import type { FieldDefinition } from "./types";
+import Textarea from "../../Ui/Textarea";
 
 interface DynamicFormFieldsProps {
   fields: FieldDefinition[];
   values: Record<string, unknown>;
   errors: Record<string, string | undefined>;
   touched: Record<string, boolean | undefined>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => void;
+  onBlur: (
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => void;
   resolveOptions?: (field: FieldDefinition) => SelectOption[] | undefined;
 }
 
@@ -51,6 +60,26 @@ const DynamicFormFields = ({
                 required={field.required}
                 error={error}
                 touched={isTouched}
+              />
+            </div>
+          );
+        }
+
+        if (field.type === "textarea") {
+          return (
+            <div key={field.name} className={gridClass(field.gridColumn)}>
+              <Textarea
+                label={field.label}
+                name={field.name}
+                value={value as string}
+                onChange={onChange}
+                onBlur={onBlur}
+                disabled={field.readOnly}
+                required={field.required}
+                placeholder={field.placeholder}
+                error={error}
+                touched={isTouched}
+                showCharCount={true}
               />
             </div>
           );
