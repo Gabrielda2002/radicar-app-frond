@@ -22,6 +22,7 @@ import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModa
 import FormModal from "@/components/common/Ui/FormModal";
 import Select from "@/components/common/Ui/Select";
 import { useStoreDevicesRed } from "../../Store/useStoreDevicesRed";
+import Button from "@/components/common/Ui/Button";
 
 interface ModalDevicesRedFormProps {
   idSede: number | null;
@@ -99,22 +100,22 @@ const ModalDevicesRedForm: React.FC<ModalDevicesRedFormProps> = ({
     enableReinitialize: true,
     validationSchema: Yup.object(validationSchema),
     onSubmit: async (values) => {
-        if (!idItem) {
-          await createDevice(values, () => {
-            toast.success("Dispositivo de Red creado exitosamente");
-            setStadopen(false);
-            formik.resetForm();
-            onSuccess();
-          });
-        } else {
-          await updateDevice(idItem, values, () => {
-            toast.success("Dispositivo de Red actualizado exitosamente");
-            setStadopen(false);
-            onSuccess();
-          });
-        }
+      if (!idItem) {
+        await createDevice(values, () => {
+          toast.success("Dispositivo de Red creado exitosamente");
+          setStadopen(false);
+          formik.resetForm();
+          onSuccess();
+        });
+      } else {
+        await updateDevice(idItem, values, () => {
+          toast.success("Dispositivo de Red actualizado exitosamente");
+          setStadopen(false);
+          onSuccess();
+        });
+      }
 
-       
+
     },
   });
 
@@ -139,8 +140,8 @@ const ModalDevicesRedForm: React.FC<ModalDevicesRedFormProps> = ({
   return (
     <>
       <div className="relative group">
-        <button
-          className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+        <Button
+          variant="secondary"
           onClick={() => setStadopen(true)}
         >
           {idItem ? (
@@ -151,7 +152,7 @@ const ModalDevicesRedForm: React.FC<ModalDevicesRedFormProps> = ({
               <PlusCircleIcon className="w-5 h-5 ml-2" />
             </div>
           )}
-        </button>
+        </Button>
         {idItem && (
           <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none -translate-x-14 w-28 left-1/2 group-hover:opacity-100 dark:bg-gray-900">
             Actualizar Item
@@ -338,11 +339,10 @@ const ModalDevicesRedForm: React.FC<ModalDevicesRedFormProps> = ({
               value={formik.values.status}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${
-                formik.touched.status && formik.errors.status
+              className={` w-full p-2 mt-1 border-2 border-gray-400 rounded-md dark:bg-gray-800 dark:text-gray-200 ${formik.touched.status && formik.errors.status
                   ? "border-red-500 dark:border-red-500"
                   : "border-gray-200 dark:border-gray-600"
-              }`}
+                }`}
             >
               <option value="">- SELECT -</option>
               <option value="Activo">Activo</option>

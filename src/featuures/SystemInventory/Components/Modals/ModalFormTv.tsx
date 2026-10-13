@@ -12,6 +12,7 @@ import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { useStoreTv } from "../../Store/useStoreTv";
+import { AnimatePresence } from "framer-motion";
 
 interface ModalFormTvProps {
   sedeId: number | null;
@@ -139,6 +140,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
         ? await createTv(values, () => {
           formik.resetForm();
           setIsOpen(false);
+          toast.success("TV creado con éxito");
           refreshItems();
         })
         : await updateTv(items.id, values, () => {
@@ -187,7 +189,7 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
   return (
     <>
       <div>
-        <Button type="button" onClick={() => setIsOpen(true)}>
+        <Button variant="secondary" onClick={() => setIsOpen(true)}>
           {items ? (
             <PencilSquareIcon
               className="w-7 h-7"
@@ -652,11 +654,15 @@ const ModalFormTv: React.FC<ModalFormTvProps> = ({
           )}
         </div>
 
-        {error && (
-          <div className="flex items-center justify-center w-full p-2 text-sm font-semibold text-red-500 bg-red-100 border-2 border-red-500 rounded-md dark:bg-red-900 dark:text-red-200 dark:border-red-700">
-            {error}
-          </div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <div>
+              <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                {error}
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
       </FormModal>
     </>
   );

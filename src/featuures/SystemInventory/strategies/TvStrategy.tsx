@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { IItemsTv } from "../Models/IItemsTv";
-import { ItemStrategy } from "./ItemStrategy";
+import { IItemType, ItemStrategy } from "./ItemStrategy";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import { Tv } from "lucide-react";
 import ModalFormTv from "../Components/Modals/ModalFormTv";
 import ModalTablaSeguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
@@ -16,13 +17,25 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
     return item.status;
   }
 
+  getSearchFields(): NestedKeyOf<IItemsTv>[] {
+    return [
+      "name",
+      "brand",
+      "model",
+      "serial",
+      "inventoryNumber",
+      "responsableName",
+      "responsableLastName",
+    ];
+  }
+
   getIcon(): ReactNode {
     return <Tv className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
   renderDetailsButton(
     item: IItemsTv,
-    tipoItem: string
+    tipoItem: IItemType
   ): ReactNode {
     return (
       <ModalItemsDetails
@@ -38,7 +51,7 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
         <ModalFormTv sedeId={null} refreshItems={refreshItems} items={item} />
         <ModalTablaSeguimientoItem
           Items={item}
-          tipoItem='inventario/televisores'
+          tipoItem="tv/inventory"
           refreshItems={refreshItems}
         />
       </>
@@ -175,7 +188,6 @@ export class TelevisoresStrategy implements ItemStrategy<IItemsTv> {
     items: IItemsTv,
     refreshItems: () => void,
     // idItems: number,
-    // tipoTtem?: string,
     // isUpdate?: boolean
   ): ReactNode {
     return (

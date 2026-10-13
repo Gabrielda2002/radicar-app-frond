@@ -2,9 +2,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import React, { useEffect } from 'react';
 import { useStoreStatistics } from '../Store/useStoreStatistics';
+import { IItemType } from '../strategies/ItemStrategy';
 
 interface ExpiringSoonStaticsProps {
-  typeItem: string;
+  typeItem: IItemType;
   idHeadquartersSelected?: number;
 }
 

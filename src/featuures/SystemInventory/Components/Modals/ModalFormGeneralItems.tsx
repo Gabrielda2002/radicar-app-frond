@@ -1,4 +1,3 @@
-import ErrorMessage from "@/components/common/ErrorMessageModal/ErrorMessageModals";
 import { PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import { AnimatePresence } from "framer-motion";
@@ -68,8 +67,8 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
     location: Yup.string().required("La ubicación es requerida"),
     assetTypeId: Yup.string().required("El tipo de activo es requerido"),
     quantity: Yup.number().required("La cantidad es requerida"),
-    responsableId: Yup.string().required("El responsable es requerido"),
-    othersDetails: Yup.string().required(
+    responsibleId: Yup.string().required("El responsable es requerido"),
+    otherDetails: Yup.string().required(
       "Los detalles adicionales son requeridos"
     ),
     acquisitionDate: Yup.date().optional(),
@@ -111,8 +110,8 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
       location: "",
       assetTypeId: "",
       quantity: 0,
-      responsableId: "",
-      othersDetails: "",
+      responsibleId: "",
+      otherDetails: "",
       acquisitionDate: "",
       purchaseValue: "",
       warranty: false,
@@ -153,8 +152,8 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
         location: items.location,
         assetTypeId: items.assetTypeId.toString(),
         quantity: items.quantity,
-        responsableId: items.assetTypeId.toString(),
-        othersDetails: items.otherDetails,
+        responsibleId: items.responsibleId.toString(),
+        otherDetails: items.otherDetails,
         acquisitionDate: FormatDate(items.acquisitionDate, false),
         purchaseValue: items.purchaseValue,
         warranty: !!items.warranty,
@@ -168,7 +167,7 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
   return (
     <>
       <div className="relative group">
-        <Button type="button" variant="outline" onClick={() => setIsOpen(true)}>
+        <Button variant="secondary" onClick={() => setIsOpen(true)}>
           {isUpdate ? (
             <PencilSquareIcon
               className="w-7 h-7"
@@ -452,37 +451,37 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
             />
           </div>
 
-          {/* responsableId */}
+          {/* responsibleId */}
           <div>
             <InputAutocompletado
               label="Responsable"
               onInputChanged={(value) =>
-                formik.setFieldValue("responsableId", value)
+                formik.setFieldValue("responsibleId", value)
               }
               apiRoute="search-user-by-name"
               error={
-                formik.errors.responsableId && formik.touched.responsableId
-                  ? formik.errors.responsableId
+                formik.errors.responsibleId && formik.touched.responsibleId
+                  ? formik.errors.responsibleId
                   : undefined
               }
-              touched={formik.touched.responsableId}
+              touched={formik.touched.responsibleId}
               required={true}
               placeholder="Ej: Juan Perez"
             />
           </div>
 
-          {/* othersDetails */}
+          {/* otherDetails */}
           <div>
             <Input
               type="text"
-              id="othersDetails"
-              name="othersDetails"
+              id="otherDetails"
+              name="otherDetails"
               label="Detalles adicionales"
-              value={formik.values.othersDetails}
+              value={formik.values.otherDetails}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              touched={formik.touched.othersDetails}
-              error={formik.errors.othersDetails}
+              touched={formik.touched.otherDetails}
+              error={formik.errors.otherDetails}
               required
             />
           </div>
@@ -588,11 +587,15 @@ const ModalFormGeneralItems: React.FC<IModalFormGeneralItemsProps> = ({
           )}
         </div>
 
-        {error && (
-          <AnimatePresence>
-            <ErrorMessage>{error}</ErrorMessage>
-          </AnimatePresence>
-        )}
+        <AnimatePresence>
+          {error && (
+            <div>
+              <div className="p-4 text-white bg-red-500 rounded-lg shadow-lg">
+                {error}
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
       </FormModal>
     </>
   );

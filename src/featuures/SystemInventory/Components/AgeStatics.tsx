@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import { useStoreStatistics } from "../Store/useStoreStatistics";
+import { IItemType } from "../strategies/ItemStrategy";
 
 interface AgeStaticsProps {
-  typeItem: string;
+  typeItem: IItemType;
   idHeadquartersSelected?: number;
 }
 
@@ -28,7 +29,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
   // Formateador para los valores en el tooltip
   const formatTooltipValue = (value: number | undefined) => {
     if (value === undefined) return ["0", "Cantidad"];
-    return [`${value} ${typeItem === "equipos" ? "equipos" : "items"}`, "Cantidad"];
+    return [`${value} ${typeItem === "equipments" ? "equipos" : "items"}`, "Cantidad"];
   };
 
   // Formateador para mostrar la edad promedio en texto legible
@@ -85,7 +86,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                 <div className='flex flex-col items-center justify-center h-full'>
                   <p className='text-3xl font-bold text-green-600 dark:text-green-400'>{formatAverageAge()}</p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
-                    Tiempo promedio de uso de los {typeItem === "equipos" ? "equipos" : "items"}
+                    Tiempo promedio de uso de los {typeItem === "equipments" ? "equipos" : "items"}
                   </p>
                 </div>
               </div>
@@ -97,7 +98,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
                     {age.total}
                   </p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
-                    {typeItem === "equipos" ? "Equipos registrados" : "Items registrados"}
+                    {typeItem === "equipments" ? "Equipos registrados" : "Items registrados"}
                   </p>
                 </div>
               </div>

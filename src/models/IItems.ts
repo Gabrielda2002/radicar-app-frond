@@ -37,7 +37,7 @@ export interface Accessory {
     brand:           string;
     model:           string;
     serial:          string;
-    description:     string;
+    otherData:     string;
     status:          string;
     inventoryNumber: string;
 }
@@ -48,7 +48,7 @@ export interface Component {
     brand:     string;
     capacity:  string;
     speed:     string;
-    description: string;
+    otherData: string;
     model:     string;
     serial:    string;
 }

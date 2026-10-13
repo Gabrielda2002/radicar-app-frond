@@ -58,10 +58,10 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
         >
           {activeSection === 1 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <QuantityTypeItens typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
-              <ExpiringSoonStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
-              <AgeStatics typeItem="equipos"  idHeadquartersSelected={idHeadquartersSelected} />
-              <ItemsWithLockStatics typeItem="equipos" idHeadquartersSelected={idHeadquartersSelected} />
+              <QuantityTypeItens typeItem="equipments" idHeadquartersSelected={idHeadquartersSelected} />
+              <ExpiringSoonStatics typeItem="equipments" idHeadquartersSelected={idHeadquartersSelected} />
+              <AgeStatics typeItem="equipments"  idHeadquartersSelected={idHeadquartersSelected} />
+              <ItemsWithLockStatics typeItem="equipments" idHeadquartersSelected={idHeadquartersSelected} />
               {/* <QuantityItemsStatics typeItem="equipos"  idHeadquartersSelected={idHeadquartersSelected} /> */}
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
@@ -79,8 +79,8 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
           ): activeSection === 5 && [1].includes(Number(rol)) ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* <QuantityItemsStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected} /> */}
-              <AgeStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected}  />
-              <ExpiringSoonStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected} />
+              <AgeStatics typeItem="phones/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
+              <ExpiringSoonStatics typeItem="phones/inventory" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ) : null}
         </div>

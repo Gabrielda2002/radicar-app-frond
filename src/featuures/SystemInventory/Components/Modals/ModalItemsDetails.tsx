@@ -8,7 +8,7 @@ import {
   ServerIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import { AnyItem, ItemStrategyFactory } from "../../strategies/ItemStrategy";
+import { AnyItem, IItemType, ItemStrategyFactory } from "../../strategies/ItemStrategy";
 import EditableCell from "../EditableCell";
 import { useEditableRow } from "../../Hooks/useEditableRow";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ import ModalDefault from "@/components/common/Ui/ModalDefault";
 
 interface ModalItemsDetailsProps {
   item: AnyItem | null;
-  tipoItem: string | null;
+  tipoItem: IItemType;
   refreshItems?: () => void;
 }
 
@@ -102,7 +102,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
           "brand",
           "model",
           "serial",
-          `description`,
+          `otherData`,
           "status",
           "inventoryNumber",
         ]
@@ -112,7 +112,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
             "brand",
             "capacity",
             "speed",
-            `description`,
+            `otherData`,
             "model",
             "serial",
           ]
@@ -127,7 +127,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
 
   const [isMobile, setIsMobile] = useState(false);
 
-  const strategy = tipoItem ? ItemStrategyFactory.getStrategy(tipoItem) : null;
+  const strategy = ItemStrategyFactory.getStrategy(tipoItem);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -242,14 +242,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         isEditing={editingRows[acc.id]}
                         value={
                           editedData[acc.id]
-                            ? editedData[acc.id]["description"] ??
-                            acc["description"]
-                            : acc["description"]
+                            ? editedData[acc.id]["otherData"] ??
+                            acc["otherData"]
+                            : acc["otherData"]
                         }
                         onChange={(value) =>
-                          handleInputChange(acc.id, "description", value)
+                          handleInputChange(acc.id, "otherData", value)
                         }
-                        fieldId={`acc-${acc.id}-description`}
+                        fieldId={`acc-${acc.id}-otherData`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
                       />
@@ -459,14 +459,14 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
                         isEditing={editingRows[comp.id]}
                         value={
                           editedData[comp.id]
-                            ? editedData[comp.id]["description"] ??
-                            comp["description"]
-                            : comp["description"]
+                            ? editedData[comp.id]["otherData"] ??
+                            comp["otherData"]
+                            : comp["otherData"]
                         }
                         onChange={(value) =>
-                          handleInputChange(comp.id, "description", value)
+                          handleInputChange(comp.id, "otherData", value)
                         }
-                        fieldId={`comp-${comp.id}-description`}
+                        fieldId={`comp-${comp.id}-otherData`}
                         activeFieldId={activeFieldId}
                         setActiveFieldId={setActiveFieldId}
                       />
@@ -947,7 +947,7 @@ const ModalItemsDetails: React.FC<ModalItemsDetailsProps> = ({
       <ModalDefault
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`Detalles del ${tipoItem === "equipments" ? "Equipo" : tipoItem === "dispositivos-red" ? "Dispositivo de Red" : "Item"}`}
+        title={`Detalles del ${tipoItem === "equipments" ? "Equipo" : tipoItem === "devices-red" ? "Dispositivo de Red" : "Item"}`}
         size="xl"
       >
         <div className="max-h-[74vh] md:max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:text-gray-200">

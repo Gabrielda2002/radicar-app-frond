@@ -10,14 +10,24 @@ import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import { AnimatePresence } from "framer-motion";
 import useStoreMonitoringItem from "../../Store/useStoreMonitoringItem";
+import { IItemType } from "../../strategies/ItemStrategy";
+import Button from "@/components/common/Ui/Button";
+
+interface FormValues {
+  eventDate: string;
+  typeEvent: string;
+  description: string;
+  itemId: string;
+  managerId: string;
+}
 
 interface ModalSeguimientoItemProps {
   id: number;
-  tipoItem: string | null;
+  tipoItem: IItemType;
   refreshItems: () => void;
 }
 
-const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
+const ModalCreateSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
   id,
   tipoItem,
   refreshItems,
@@ -41,13 +51,7 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
       .max(600, "La descripción debe tener como máximo 600 caracteres"),
   });
 
-  const formik = useFormik<{
-    eventDate: string;
-    typeEvent: string;
-    description: string;
-    itemId: string;
-    managerId: string;
-  }>({
+  const formik = useFormik<FormValues>({
     initialValues: {
       eventDate: "",
       typeEvent: "",
@@ -58,13 +62,13 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
     validationSchema: validationSchema,
     onSubmit: async (values) => {
 
-      const endPoint = tipoItem == "equipos"
+      const endPoint = tipoItem == "equipments"
         ? "seguimiento-equipos"
-        : tipoItem === "dispositivos-red"
+        : tipoItem === "devices-red"
           ? "seguimiento-dispositivos-red"
-          : tipoItem === "inventario/general"
+          : tipoItem === "general/inventory"
             ? "seguimiento/inventario-general"
-            : tipoItem === "inventario/televisores"
+            : tipoItem === "tv/inventory"
               ? "seguimiento/televisor"
               : "seguimiento/celulares"
 
@@ -82,12 +86,12 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
 
   return (
     <>
-      <button
-        className="p-2 duration-300 bg-gray-300 border-2 rounded-lg focus:outline-none hover:bg-gray-700 hover:text-white dark:bg-color dark:hover:bg-teal-600 dark:text-white"
+      <Button
+        variant="primary"
         onClick={() => setStadopen(true)}
       >
         Nuevo seguimiento
-      </button>
+      </Button>
 
       {stadopen &&
         createPortal(
@@ -172,4 +176,4 @@ const ModalSeguimientoItem: React.FC<ModalSeguimientoItemProps> = ({
   );
 };
 
-export default ModalSeguimientoItem;
+export default ModalCreateSeguimientoItem;

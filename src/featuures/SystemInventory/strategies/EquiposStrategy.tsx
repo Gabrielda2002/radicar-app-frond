@@ -2,8 +2,9 @@ import {
   ComputerDesktopIcon,
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
-import { ItemStrategy } from "./ItemStrategy";
+import { IItemType, ItemStrategy } from "./ItemStrategy";
 import { IItems } from "@/models/IItems";
+import { NestedKeyOf } from "@/hooks/useSearch";
 import ModalItemsForm from "../Components/Modals/ModalItemsForm";
 import ModalTablaseguimientoItem from "../Components/Modals/ModalTablaSeguimientoItem";
 import ModalAccesorioItem from "../Components/Modals/ModalAccesorioItem";
@@ -20,11 +21,23 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
     return item.typeEquipment;
   }
 
+  getSearchFields(): NestedKeyOf<IItems>[] {
+    return [
+      "nameEquipment",
+      "brandEquipment",
+      "modelEquipment",
+      "serialEquipment",
+      "inventoryNumberEquipment",
+      "nameUser",
+      "lastNameUser",
+    ];
+  }
+
   getIcon() {
     return <ComputerDesktopIcon className="w-8 h-8 mr-2 dark:text-white" />;
   }
 
-  renderDetailsButton(item: IItems, tipoItem: string, refreshItems?: () => void) {
+  renderDetailsButton(item: IItems, tipoItem: IItemType, refreshItems?: () => void) {
     return (
       <ModalItemsDetails
         item={item}
@@ -51,7 +64,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
         />
         <ModalTablaseguimientoItem
           Items={item}
-          tipoItem="equipos"
+          tipoItem="equipments"
           refreshItems={refreshItems}
         />
         <ModalAccesorioItem id={item.id} refreshItems={refreshItems} />
@@ -59,7 +72,7 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
           <button
             type="button"
             className="p-2 duration-200 border-2 rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
-            onClick={() => handleOpen && handleOpen(item.documentId.toString(), "VIEW", "soporte")}
+            onClick={() => handleOpen?.(item.documentId.toString(), "VIEW", "soporte")}
             aria-label="Acta de entrega"
           >
             <ClipboardDocumentCheckIcon className="w-7 h-7" />
@@ -167,7 +180,6 @@ export class EquiposStrategy implements ItemStrategy<IItems> {
     items: IItems,
     refreshItems: () => void,
     idItems: number,
-    _tipoTtem?: string,
     // isUpdate?: boolean
   ): ReactNode {
     return (

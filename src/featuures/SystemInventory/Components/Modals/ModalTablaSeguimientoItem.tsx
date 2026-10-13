@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ModalSeguimientoItem from "./ModalSeguimientoItem";
+import ModalCreateSeguimientoItem from "./ModalCreateSeguimientoItem";
 import { FormatDate } from "@/utils/FormatDate";
-import { AnyItem } from "../../strategies/ItemStrategy";
+import { AnyItem, IItemType } from "../../strategies/ItemStrategy";
 import ModalDefault from "@/components/common/Ui/ModalDefault";
 import {
   useTableState,
@@ -11,16 +11,11 @@ import {
 } from "@/components/common/ReusableTable";
 import { WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
 import ModalCheckList from "./ModalCheckList";
+import Button from "@/components/common/Ui/Button";
 
 interface ModalTablaseguimientoItemProps {
   Items: AnyItem;
-  tipoItem:
-  | "equipos"
-  | "dispositivos-red"
-  | "inventario/general"
-  | "inventario/televisores"
-  | "inventario/celulares"
-  | null;
+  tipoItem: IItemType;
   refreshItems: () => void;
 }
 
@@ -32,10 +27,8 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   const [stadopen, setStadopen] = useState(false);
 
 
-  // Obtener datos de seguimiento (ahora todos usan la misma propiedad 'monitoring')
   const monitoringData = Items?.monitoring || [];
 
-  // Hook de tabla con búsqueda y paginación
   const tableState = useTableState({
     data: monitoringData as any[],
     searchFields: ["typeEvent", "TypeEvent", "description", "observation", "responsableName", "responsableLastName"] as any,
@@ -89,12 +82,12 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
   return (
     <>
       <div className="relative group">
-        <button
-          className="p-2 duration-200 border rounded-md hover:bg-gray-200 focus:outline-none dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-700"
+        <Button
+          variant="secondary"
           onClick={() => setStadopen(true)}
         >
           <WrenchScrewdriverIcon className="w-7 h-7" />
-        </button>
+        </Button>
         {/* Tooltip */}
         <div className="absolute z-10 px-2 py-1 text-sm text-white transition-opacity duration-200 transform -translate-x-1/2 translate-y-1 bg-gray-800 rounded-md opacity-0 pointer-events-none left-1/2 group-hover:opacity-100 dark:bg-gray-900">
           Seguimientos
@@ -115,7 +108,7 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
       >
         <div className="flex flex-col max-h-[calc(90vh-120px)] gap-4">
           <div className="px-2 py-3 shrink-0">
-            <ModalSeguimientoItem
+            <ModalCreateSeguimientoItem
               id={Items?.id || 0}
               tipoItem={tipoItem}
               refreshItems={refreshItems}
@@ -140,7 +133,6 @@ const ModalTablaSeguimientoItem: React.FC<ModalTablaseguimientoItemProps> = ({
                 columns={columns}
                 getRowKey={(item) => item.id}
                 emptyMessage="No hay seguimientos registrados para este ítem."
-                tableClassName="border-collapse"
               />
             </DataTableContainer>
           </div>

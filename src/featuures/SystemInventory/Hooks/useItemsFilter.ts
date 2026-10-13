@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
-import useSearch from '@/hooks/useSearch';
+import useSearch, { NestedKeyOf } from '@/hooks/useSearch';
 import { IItemsGeneral } from '../Models/IItemsGeneral';
-import { AnyItem } from '../strategies/ItemStrategy';
+import { AnyItem, IItemType, ItemStrategy } from '../strategies/ItemStrategy';
 
 interface UseItemsFilterProps {
   data: AnyItem[] | null;
-  tipoItem: string | null;
+  strategy: ItemStrategy<AnyItem> | null;
+  tipoItem: IItemType | null;
   selectedAreaDependency: string[];
 }
 
@@ -17,29 +18,24 @@ interface UseItemsFilterReturn {
 
 export const useItemsFilter = ({
   data,
+  strategy,
   tipoItem,
   selectedAreaDependency,
 }: UseItemsFilterProps): UseItemsFilterReturn => {
-  const searchFields = useMemo(() => {
-    switch (tipoItem) {
-      case "equipos":
-        return ["nameEquipment", "brandEquipment", "modelEquipment", "nameUser", "lastNameUser"];
-      case "dispositivos-red":
-        return ["name", "brand", "model"];
-      default:
-        return ["name", "brand", "model", "responsable"];
-    }
-  }, [tipoItem]);
+  const searchFields = useMemo<NestedKeyOf<AnyItem>[]>(() => {
+    if (!strategy) return [];
+    return strategy.getSearchFields();
+  }, [strategy]);
 
   const {
     query,
     setQuery,
     filteredData: searchFilteredData,
-  } = useSearch<AnyItem>(data || [], searchFields as any);
+  } = useSearch<AnyItem>(data || [], searchFields);
 
   const finalFilterredData = useMemo(() => {
     if (
-      tipoItem !== "inventario/general" ||
+      tipoItem !== "general/inventory" ||
       selectedAreaDependency.length === 0
     ) {
       return searchFilteredData;
