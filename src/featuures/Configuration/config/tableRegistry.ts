@@ -14,6 +14,11 @@ import {
   Stethoscope,
   Tags,
   User,
+  HeartHandshake,
+  GitFork,
+  Target,
+  CheckSquare,
+  Coins,
 } from "lucide-react";
 export interface ConfigTable {
   id: string;
@@ -21,6 +26,7 @@ export interface ConfigTable {
   description: string;
   icon: LucideIcon;
   component: LazyExoticComponent<ComponentType<any>>;
+  rols?: number[];
 }
 
 export interface ConfigModule {
@@ -28,6 +34,7 @@ export interface ConfigModule {
   label: string;
   icon: LucideIcon;
   tables: ConfigTable[];
+  rols?: number[];
 }
 
 const TablaMunicipios = lazy(() => import("@/featuures/Municipality/Pages/TablaMunicipios"));
@@ -46,11 +53,18 @@ const TableAreaDependency = lazy(() => import("../components/views/TableAreaDepe
 const TableClassification = lazy(() => import("../components/views/TableClassification"))
 const TableAssets = lazy(() => import("../components/views/TableAssets"));
 
+const TablePpsActionLines = lazy(() => import("@/featuures/PPS/Page/TablePpsActionLines"));
+const TablePpsGoals = lazy(() => import("@/featuures/PPS/Page/TablePpsGoals"));
+const TablePpsActivities = lazy(() => import("@/featuures/PPS/Page/TablePpsActivities"));
+const TablePpsTargetPopulations = lazy(() => import("@/featuures/PPS/Page/TablePpsTargetPopulations"));
+const TablePpsFundingSources = lazy(() => import("@/featuures/PPS/Page/TablePpsFundingSources"));
+
 export const configModules: ConfigModule[] = [
   {
     id: 'General',
     label: "General",
     icon: BookOpen,
+    rols: [1],
     tables: [
       {
         id: "tipo-documento",
@@ -86,6 +100,7 @@ export const configModules: ConfigModule[] = [
     id: "catalogos",
     label: "Radicacion",
     icon: BookOpen,
+    rols: [1],
     tables: [
       {
         id: "especialidad",
@@ -149,6 +164,7 @@ export const configModules: ConfigModule[] = [
     id: "general-inventory",
     label: "Inventario General",
     icon: BookOpen,
+    rols: [1],
     tables: [
       {
         id: "area-dependency",
@@ -172,6 +188,49 @@ export const configModules: ConfigModule[] = [
         component: TableAssets
       }
     ]
+  },
+  {
+    id: "pps-catalogos",
+    label: "Participación Social (PPS)",
+    icon: HeartHandshake,
+    rols: [1, 11],
+    tables: [
+      {
+        id: "pps-action-lines",
+        label: "Líneas de Acción",
+        description: "Líneas de acción oficiales del Plan de Participación Social",
+        icon: GitFork,
+        component: TablePpsActionLines,
+      },
+      {
+        id: "pps-goals",
+        label: "Metas",
+        description: "Metas asociadas a las líneas de acción",
+        icon: Target,
+        component: TablePpsGoals,
+      },
+      {
+        id: "pps-activities",
+        label: "Actividades",
+        description: "Actividades vinculadas a las metas del plan",
+        icon: CheckSquare,
+        component: TablePpsActivities,
+      },
+      {
+        id: "pps-target-populations",
+        label: "Poblaciones Objetivo",
+        description: "Catálogo de poblaciones objetivo del plan",
+        icon: Users,
+        component: TablePpsTargetPopulations,
+      },
+      {
+        id: "pps-funding-sources",
+        label: "Fuentes de Recursos",
+        description: "Catálogo de fuentes de financiamiento del plan",
+        icon: Coins,
+        component: TablePpsFundingSources,
+      },
+    ],
   }
 ];
 
@@ -183,6 +242,11 @@ export interface FlatTable extends ConfigTable {
 export const flatTableMap: Record<string, FlatTable> = {};
 for (const mod of configModules) {
   for (const table of mod.tables) {
-    flatTableMap[table.id] = { ...table, moduleId: mod.id, moduleLabel: mod.label };
+    flatTableMap[table.id] = {
+      ...table,
+      moduleId: mod.id,
+      moduleLabel: mod.label,
+      rols: table.rols ?? mod.rols,
+    };
   }
 }

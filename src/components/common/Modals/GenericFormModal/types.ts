@@ -1,7 +1,7 @@
 import type { SelectOption } from "@/components/common/Ui/Select";
 import type * as Yup from "yup";
 
-export type FieldType = "text" | "number" | "select";
+export type FieldType = "text" | "number" | "select" | "textarea";
 
 export type FieldOptions = SelectOption[] | (() => Promise<SelectOption[]>);
 

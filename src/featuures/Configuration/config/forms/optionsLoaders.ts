@@ -34,6 +34,26 @@ export const fetchClassificationAsOptions = async (): Promise<SelectOption[]> =>
   return data.map((d) => ({ value: d.id, label: d.name}))
 }
 
+export const fetchPpsActionLinesAsOptions = async (): Promise<SelectOption[]> => {
+  const response = await api.get<{ id: number; code: string; description: string }[]>(
+    "/pps/action-lines?onlyActive=true"
+  );
+  return response.data.map((item) => ({
+    value: item.id,
+    label: `${item.code} - ${item.description.length > 60 ? `${item.description.slice(0, 60)}...` : item.description}`,
+  }));
+};
+
+export const fetchPpsGoalsAsOptions = async (): Promise<SelectOption[]> => {
+  const response = await api.get<{ id: number; code: string; description: string }[]>(
+    "/pps/goals?onlyActive=true"
+  );
+  return response.data.map((item) => ({
+    value: item.id,
+    label: `${item.code} - ${item.description.length > 60 ? `${item.description.slice(0, 60)}...` : item.description}`,
+  }));
+};
+
 export const STATUS_OPTIONS: SelectOption[] = [
   { value: 1, label: "Activo" },
   { value: 0, label: "Inactivo" },
