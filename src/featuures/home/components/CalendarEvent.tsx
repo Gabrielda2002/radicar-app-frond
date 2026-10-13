@@ -121,16 +121,16 @@ const CalendarEvents: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto w-full rounded-lg bg-gray-50 p-4 dark:bg-gray-700 md:p-6">
-      <div className="mb-5 flex flex-col gap-4 border-b border-gray-200 pb-5 dark:border-gray-600 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-
-          <h2 className="mt-1 text-2xl font-bold capitalize text-gray-800 dark:text-white">
-            {MONTH_NAMES_ES[currentDate.getMonth()]} {currentDate.getFullYear()}
-          </h2>
-        </div>
-
-        {canManage && <ModalCrearEvento />}
+    <div className="mx-auto w-full rounded-lg bg-gray-50 p-4 dark:bg-gray-700 md:p-5">
+      <div className="mb-2 flex flex-col gap-3 border-b border-gray-200 pb-3 dark:border-gray-600 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-2xl font-bold text-gray-700 dark:text-white md:text-3xl">
+          Calendario de Actividades:
+        </h1>
+        {canManage && (
+          <div className="sm:ml-auto">
+            <ModalCrearEvento />
+          </div>
+        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(300px,1.15fr)]">
@@ -141,7 +141,7 @@ const CalendarEvents: React.FC = () => {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-xl font-bold text-gray-700 dark:text-gray-200">
               <CalendarRange className="h-6 w-6 text-[#008d93]" />
-              Calendario mensual
+              {MONTH_NAMES_ES[currentDate.getMonth()]} {currentDate.getFullYear()}
             </div>
 
             <div className="flex items-center gap-1">
