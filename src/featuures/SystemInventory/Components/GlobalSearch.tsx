@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { GlobalSearchResult, useGlobalSearch } from "../Hooks/useGlobalSearch";
-import { IItemType } from "../strategies/ItemStrategy";
+import { ItemStrategyFactory } from "../strategies/ItemStrategy";
 import React, { useEffect, useRef, useState } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
@@ -61,31 +61,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     clearResults();
   };
 
-  const getTypeColor = (tipoItem: IItemType): string => {
-    const colors: Record<IItemType, string> = {
-      equipments: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
-      "devices-red":
-        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-      "general/inventory":
-        "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
-      "tv/inventory":
-        "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
-      "phones/inventory":
-        "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300",
-    };
-    return colors[tipoItem];
-  };
-
-  const getTypeLabel = (tipoItem: IItemType): string => {
-    const labels: Record<IItemType, string> = {
-      equipments: "Equipos",
-      "devices-red": "Dispositivos de Red",
-      "general/inventory": "Inventario General",
-      "tv/inventory": "Televisores",
-      "phones/inventory": "Celulares",
-    };
-    return labels[tipoItem];
-  };
 
   if (!isOpen) return null;
 
@@ -152,11 +127,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   </div>
                   <div className="flex items-center space-x-2">
                     <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeColor(
-                        result.tipoItem
-                      )}`}
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        ItemStrategyFactory.getMetadata(result.tipoItem).badgeClass
+                      }`}
                     >
-                      {getTypeLabel(result.tipoItem)}
+                      {ItemStrategyFactory.getMetadata(result.tipoItem).label}
                     </span>
                     <span className="text-xs text-gray-400">
                       {result.strategy.getTypeLabel(result.item)}
