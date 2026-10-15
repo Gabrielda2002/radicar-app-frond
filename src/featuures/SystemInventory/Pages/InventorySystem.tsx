@@ -24,20 +24,33 @@ import { GlobalSearchResult } from "../Hooks/useGlobalSearch";
 import GlobalSearch from "../Components/GlobalSearch";
 import useFetchItems from "../Hooks/UseFetchItems";
 import { IItemType } from "../strategies/ItemStrategy";
+import { useFetchItemsInvNum } from "../Hooks/useFetchItemsInvNum";
+import DuplicateInventoryList from "../Components/DuplicateInventoryList";
 
 const SistemaInventario: React.FC = () => {
+
+  const {
+    items: itemsInvNum,
+    loading: loadingInvNum,
+    error: errorInvNum,
+    refetch: refetchInvNum,
+  } = useFetchItemsInvNum();
+
   const {
     department: departments,
     loading: loadingDepartment,
     errordepartment,
   } = useFetchDepartment();
 
-  // estados para manejar los departamentos y sedes
+  // estados para manejar las selecciones y pantallas
   const [departmentSelect, setDepartmentSelect] = useState<number | null>(null);
-
+  const [sedeSelect, setSedeSelect] = useState<number | null>(null);
+  const [tipoItem, setTipoItem] = useState<IItemType | null>(null);
+  const [screen, setScreen] = useState<
+    "departamentos" | "sedes" | "tipoItem" | "items"
+  >("departamentos");
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
-
-  const [ targetItemId, setTargetItemId ] = useState<string | number | null>(null);
+  const [targetItemId, setTargetItemId] = useState<string | number | null>(null);
 
   const handleNavigateToItem = useCallback((result: GlobalSearchResult) => {
     setSedeSelect(result.sedeId);
@@ -49,7 +62,7 @@ const SistemaInventario: React.FC = () => {
 
   const clearTargetItemId = useCallback(() => {
     setTargetItemId(null);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -84,21 +97,13 @@ const SistemaInventario: React.FC = () => {
     };
   }, [clearSedes]);
 
-  const [sedeSelect, setSedeSelect] = useState<number | null>(null);
-
-  const [tipoItem, setTipoItem] = useState<IItemType | null>(null);
-
   // traer los items
   const { items, refetch } = useFetchItems(sedeSelect, tipoItem);
 
-  // estado para manejar la pantalla actual
-  const [screen, setScreen] = useState<
-    "departamentos" | "sedes" | "tipoItem" | "items"
-  >("departamentos");
-
   const handleItemsUpdate = useCallback(() => {
     refetch();
-  }, [refetch]);
+    refetchInvNum();
+  }, [refetch, refetchInvNum]);
 
   // funcion ir al componente anterior
   const handleBack = () => {
@@ -167,21 +172,31 @@ const SistemaInventario: React.FC = () => {
               <div>
                 <div>
                   {screen === "departamentos" && (
-                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                      {loadingDepartment ? (
-                        <LoadingSpinner />
-                      ) : errordepartment ? (
-                        <p>{errordepartment}</p>
-                      ) : (
-                        <DepartamentosList
-                          departamentos={departments}
-                          onSelected={(departamento) => {
-                            setDepartmentSelect(departamento.id);
-                            setScreen("sedes");
-                          }}
-                        />
-                      )}
-                    </div>
+                    <>
+                      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                        {loadingDepartment ? (
+                          <LoadingSpinner />
+                        ) : errordepartment ? (
+                          <p>{errordepartment}</p>
+                        ) : (
+                          <DepartamentosList
+                            departamentos={departments}
+                            onSelected={(departamento) => {
+                              setDepartmentSelect(departamento.id);
+                              setScreen("sedes");
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      {/* listado de items con el mismo numero de inventario */}
+                      <DuplicateInventoryList
+                        groups={itemsInvNum}
+                        loading={loadingInvNum}
+                        error={errorInvNum}
+                        onNavigateToItem={handleNavigateToItem}
+                      />
+                    </>
                   )}
                 </div>
 
