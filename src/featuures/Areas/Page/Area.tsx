@@ -75,6 +75,7 @@ const Area = () => {
             currentPage={tableState.currentPage}
             totalPages={tableState.totalPages}
             onPageChange={tableState.paginate}
+            headerActions={<ModalMutationArea onSuccess={refetch} item={null} />}
           >
             <DataTable
               data={tableState.currentData()}

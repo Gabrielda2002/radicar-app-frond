@@ -12,7 +12,7 @@ import { AnimatePresence } from "framer-motion";
 
 interface ModalMutationAreaProps {
   onSuccess: () => void;
-  item?: IArea;
+  item?: IArea | null;
 }
 
 const ModalMutationArea: React.FC<ModalMutationAreaProps> = ({
