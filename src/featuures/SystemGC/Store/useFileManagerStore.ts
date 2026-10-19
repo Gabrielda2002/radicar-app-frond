@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { FolderContents } from "../Types/IFileManager";
 import { api, createFolder, deleteItem, downloadFile, getFolderContent, renameItems, updateFolderIcon as updateFolderIconRequest, uploadFile } from "@/utils/api-config";
 import { toast } from "react-toastify";
+import { createZipArchive } from "../utils/createZipArchive";
 
 
 interface FileManagerState {
@@ -230,34 +231,18 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
     downloadFolderAsZip: async (folderId: number, folderName?: string) => {
         try {
             set({ isDownloading: true, error: null });
-
-            const response = await api.get(`/carpetas/${folderId}/download`, {
-                responseType: "blob"
-            });
-
-            const blob = new Blob([response.data], {
-                type: response.headers["content-type"] || "application/zip"
-            });
-
-            if (blob.type && !blob.type.includes("zip") && blob.size < 1024) {
-                const text = await blob.text();
-                toast.error(text || "Error al generar el ZIP");
+            const section = get().section || "sgc";
+            const entries = await collectFolderEntries(folderId, folderName || `folder_${folderId}`, section);
+            if (entries.length === 0) {
+                toast.info("La carpeta no contiene archivos descargables diferentes de PDF.");
                 return;
             }
 
-            const contentDisposition = response.headers["content-disposition"];
-            let filename = `${folderName || `folder_${folderId}`}.zip`;
-            if (contentDisposition) {
-                const match = contentDisposition.match(/filename\*?=(?:UTF-8'')?["']?([^;"']+)/i);
-                if (match?.[1]) {
-                    filename = decodeURIComponent(match[1]);
-                }
-            }
-
+            const blob = createZipArchive(entries);
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", filename);
+            link.setAttribute("download", `${folderName || `folder_${folderId}`}.zip`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -276,5 +261,30 @@ const useFileManagerStore = create<FileManagerState>((set, get) => ({
     }
 
 }));
+
+const collectFolderEntries = async (
+    folderId: string | number,
+    folderPath: string,
+    section: string
+): Promise<{ name: string; data: Uint8Array }[]> => {
+    const response = await getFolderContent(section, String(folderId));
+    const contents = response.data as FolderContents;
+    const fileEntries = await Promise.all(
+        contents.files
+            .filter((file) => !file.name.toLowerCase().endsWith(".pdf") && !file.mimeType?.toLowerCase().includes("application/pdf"))
+            .map(async (file) => {
+                const fileResponse = await downloadFile(file.id);
+                const data = await new Blob([fileResponse.data]).arrayBuffer();
+                return { name: `${folderPath}/${file.name}`, data: new Uint8Array(data) };
+            })
+    );
+    const nestedEntries = await Promise.all(
+        contents.folders.map((folder) =>
+            collectFolderEntries(folder.id, `${folderPath}/${folder.name}`, section)
+        )
+    );
+
+    return [...fileEntries, ...nestedEntries.flat()];
+};
 
 export default useFileManagerStore;
