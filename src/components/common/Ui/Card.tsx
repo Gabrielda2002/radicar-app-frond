@@ -61,7 +61,7 @@ const Card: React.FC<CardProps> = ({
     }
 
     return (
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
         {filteredCards.map((card) => (
           <Card
             key={card.id}
@@ -83,14 +83,14 @@ const Card: React.FC<CardProps> = ({
   const IconComponent = typeof icon !== "string" ? icon : null;
 
   return (
-    <div className="relative group">
+    <div className="relative group h-full">
       <div
         role="button"
         aria-label={`Generar reporte: ${title}`}
         onClick={onClick}
         onKeyDown={(e) => (e.key === "Enter" ? onClick?.() : null)}
         tabIndex={0}
-        className="relative flex flex-col items-start p-4 border border-gray-700 rounded-lg w-2xs min-h-30 space-y-2.5 hover:shadow-indigo-600 shadow-lg ease-in-out duration-500 translate-y-1 hover:scale-105"
+        className="relative flex flex-col justify-between items-start p-4 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg w-full h-full min-h-36 space-y-2.5 hover:shadow-indigo-600/30 shadow-md ease-in-out duration-300 hover:-translate-y-1 hover:scale-[1.02]"
       >
         <div className="absolute top-6 right-6 opacity-10 pointer-events-none">
           {IconComponent ? (
@@ -100,8 +100,8 @@ const Card: React.FC<CardProps> = ({
           )}
         </div>
 
-        <div className="relative z-10 flex flex-col space-y-2 w-full">
-          <span className="dark:bg-gray-700 bg-gray-300 p-2 rounded-md dark:text-white text-black w-10 h-10 flex items-center justify-center">
+        <div className="relative z-10 flex flex-col space-y-2 w-full flex-1">
+          <span className="dark:bg-gray-700 bg-gray-100 p-2 rounded-md dark:text-white text-gray-800 w-10 h-10 flex items-center justify-center">
             {IconComponent ? (
               <IconComponent className="w-7 h-7" />
             ) : (
@@ -112,17 +112,17 @@ const Card: React.FC<CardProps> = ({
           <h3 className="font-medium text-lg dark:text-white text-gray-900">{title}</h3>
 
           <p
-            className="text-gray-500 dark:text-gray-300 text-base text-justify hyphens-auto line-clamp-4"
+            className="text-gray-500 dark:text-gray-300 text-sm sm:text-base leading-relaxed text-justify hyphens-auto line-clamp-4 flex-1"
             title={description}
           >
             {description}
           </p>
 
-          <div className="flex items-center text-blue-500">
+          <div className="flex items-center text-blue-500 pt-2 mt-auto">
             <span className="text-sm text-blue-500 group-hover:text-blue-400 font-medium">
               {actionLabel}
             </span>
-            <ArrowRight className="w-6 h-6 group-hover:text-blue-400" />
+            <ArrowRight className="w-5 h-5 group-hover:text-blue-400 transition-transform group-hover:translate-x-1" />
           </div>
         </div>
       </div>

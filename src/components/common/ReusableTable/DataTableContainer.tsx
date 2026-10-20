@@ -87,22 +87,22 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
         className={`p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40 ${className}`}
       >
         {/* Header de la tabla */}
-        <section className="items-center justify-between pb-6 md:flex header-tabla">
+        <section className="flex flex-col gap-4 pb-6 md:flex-row md:items-center md:justify-between header-tabla">
           {/* Búsqueda */}
           {showSearch && (
-            <div className="flex items-center space-x-2 container-filter">
+            <div className="flex items-center space-x-2 container-filter w-full md:w-auto">
               <Input
                 label={searchLabel}
                 value={searchValue}
                 onChange={handleSearchChange}
                 placeholder={searchPlaceholder}
-                className="block ps-2 w-70 h-10 pl-1 border border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="block ps-2 w-full md:w-72 h-10 pl-1 border border-stone-300 text-stone-700 rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:bg-blue-100 dark:focus:bg-gray-500 dark:focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               />
             </div>
           )}
 
           {/* Controles de la derecha */}
-          <div className="flex items-center mt-3 space-x-4 md:mt-0">
+          <div className="flex flex-wrap items-center gap-3">
             {/* Selector de items por página */}
             {showItemsPerPageSelector && (
               <Select
@@ -112,7 +112,7 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
                 }))}
                 value={itemsPerPage}
                 onChange={handleItemsPerPageChange}
-                className="border-2 h-10 w-30 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="border-2 h-10 w-32 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             )}
 
