@@ -33,17 +33,17 @@ function AppRoutes() {
           <Route
             path="/*"
             element={
-              <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
+              <div className="flex h-dvh flex-col overflow-hidden">
                 <Navbar />
-                <div className="grid h-full grid-cols-[auto_1fr] overflow-hidden">
+                <div className="grid min-h-0 flex-1 grid-cols-[auto_1fr]">
                   <SideBar />
-                  <main className="flex h-full flex-col overflow-auto bg-slate-200 dark:bg-gray-900">
+                  <main className="min-h-0 min-w-0 overflow-y-auto bg-slate-200 dark:bg-gray-900">
                     <Layout>
                       <ContextualizedRoutes />
                     </Layout>
+                    <Footer />
                   </main>
                 </div>
-                <Footer />
               </div>
             }
           />
