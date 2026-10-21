@@ -277,3 +277,14 @@
     transform: none !important;
   }
 }
+
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 180ms ease 0.5s;
+}
+
+.sidebar-scrollbar-scope:hover .sidebar-scrollbar {
+  scrollbar-color: rgb(156 163 175 / 0.9) transparent;
+  transition-delay: 0s;
+}

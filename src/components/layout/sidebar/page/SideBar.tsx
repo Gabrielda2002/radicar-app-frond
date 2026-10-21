@@ -17,18 +17,18 @@ const SideBar: React.FC<SidebarProps> = ({ className = '' }) => {
   return (
     <aside
       className={`
-        z-10 flex h-full min-h-0 flex-col transition-[width] duration-300 ease-in-out
+        sidebar-scrollbar-scope z-10 flex h-full min-h-0 flex-col transition-[width] duration-300 ease-in-out
         border-r border-gray-200 rtl:border-r-0 rtl:border-l
         bg-white dark:bg-gray-900 dark:border-gray-800
         shadow-lg dark:shadow-none
-        ${isCollapsed ? 'w-16 px-2 py-3' : 'w-72 px-4 py-3'}
+        ${isCollapsed ? 'w-16 px-2 pt-3 pb-2' : 'w-72 px-4 pt-3 pb-2'}
         ${className}
       `}
       role="navigation"
       aria-label="Navegación principal"
     >
-      <div className="flex min-h-0 flex-1 flex-col justify-between">
-        <nav className="min-h-0 flex-1 space-y-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <div className="flex min-h-0 flex-1 flex-col">
+        <nav className="sidebar-scrollbar -mr-2 max-h-[calc(100%_-_3.5rem)] min-h-0 flex-none space-y-1 overflow-y-auto pr-2">
           {filteredSections.map((section, index: number) => (
             <React.Fragment key={section.id}>
               <SidebarSection
@@ -47,7 +47,7 @@ const SideBar: React.FC<SidebarProps> = ({ className = '' }) => {
         <button
           onClick={toggleSideBar}
           className={`
-            mt-6 flex items-center justify-center rounded-lg border border-gray-200
+            mt-auto flex items-center justify-center rounded-lg border border-gray-200
             bg-gray-50 p-2 text-gray-600 transition-colors duration-200
             hover:bg-color2 hover:text-white hover:border-color2
             dark:border-gray-800 dark:bg-gray-800 dark:text-gray-300

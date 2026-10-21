@@ -33,6 +33,7 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const isOpen = isOpenProp || activeChild || isActivePage;
+  const iconSizeClass = isCollapsed ? 'h-6 w-6 shrink-0' : 'h-5 w-5 shrink-0';
 
   const updatePopoverPosition = () => {
     if (!buttonRef.current) return;
@@ -83,13 +84,6 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
     }
   };
 
-  const tooltip = isCollapsed && (
-    <span className="absolute left-full top-1/2 z-50 ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:block group-hover:opacity-100 dark:bg-gray-700">
-      {item.title}
-      <span className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 border-4 border-transparent border-r-gray-800 dark:border-r-gray-700" />
-    </span>
-  );
-
   const popover = showPopover && (
     <div
       ref={popoverRef}
@@ -134,12 +128,12 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
         title={isCollapsed ? item.title : undefined}
       >
         {IconComponent ? (
-          <IconComponent className={`w-5 h-5 ${getIconClass(activeChild || isOpen || isActivePage)}`} />
+          <IconComponent className={`${iconSizeClass} ${getIconClass(activeChild || isOpen || isActivePage)}`} />
         ) : (
           <img
             src={item.icon as string}
             alt=""
-            className={`w-5 h-5 ${getImageClass(activeChild || isOpen || isActivePage)}`}
+            className={`${iconSizeClass} object-contain ${getImageClass(activeChild || isOpen || isActivePage)}`}
           />
         )}
         <span className={`${getTextClass(activeChild || isOpen || isActivePage, isCollapsed)} ml-3`}>
@@ -154,7 +148,6 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
             }`}
           />
         )}
-        {tooltip}
       </button>
 
       {/* Expandido: acordeón clásico */}

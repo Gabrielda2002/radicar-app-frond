@@ -19,14 +19,14 @@ const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({
   isCollapsed = false
 }) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-1">
       {section.title && !isCollapsed && (
         <label className="px-2 text-sm font-bold text-color2 uppercase tracking-wide dark:text-[#4F9BDC]">
           {section.title}
         </label>
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-0">
         {section.items.map((item) => {
           const isOpen = openAccordions[item.id] || false;
 

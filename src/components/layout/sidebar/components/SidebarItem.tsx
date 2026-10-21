@@ -16,6 +16,7 @@ const SidebarItem: React.FC<ExtendedSidebarItemProps> = ({
   const { isActiveRoute, getLinkClass, getIconClass, getImageClass, getTextClass } = useSidebarStyles();
   const IconComponent = typeof item.icon !== 'string' ? item.icon : null;
   const isActive = item.path ? isActiveRoute(item.path) : false;
+  const iconSizeClass = isCollapsed ? 'h-6 w-6 shrink-0' : 'h-5 w-5 shrink-0';
 
   const handleAction = () => {
     if (typeof item.action === 'function') {
@@ -28,12 +29,12 @@ const SidebarItem: React.FC<ExtendedSidebarItemProps> = ({
   const content = () => (
     <>
       {IconComponent ? (
-        <IconComponent className={`w-5 h-5 ${getIconClass(isActive)}`} />
+        <IconComponent className={`${iconSizeClass} ${getIconClass(isActive)}`} />
       ) : (
         <img
           src={item.icon as string}
           alt=""
-          className={`w-5 h-5 ${getImageClass(isActive)}`}
+          className={`${iconSizeClass} object-contain ${getImageClass(isActive)}`}
         />
       )}
       <span className={`${getTextClass(isActive, isCollapsed)} ${level > 0 ? 'ml-3' : 'ml-3'}`}>
@@ -42,19 +43,11 @@ const SidebarItem: React.FC<ExtendedSidebarItemProps> = ({
     </>
   );
 
-  const tooltip = isCollapsed && (
-    <span className="absolute left-full top-1/2 z-50 ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:block group-hover:opacity-100 dark:bg-gray-700">
-      {item.title}
-      <span className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 border-4 border-transparent border-r-gray-800 dark:border-r-gray-700" />
-    </span>
-  );
-
   if (item.path) {
     return (
       <NavLink to={item.path} aria-current={isActive ? 'page' : undefined}>
         <div className={getLinkClass(item.path, isCollapsed)} title={isCollapsed ? item.title : undefined}>
           {content()}
-          {tooltip}
         </div>
       </NavLink>
     );
@@ -68,7 +61,6 @@ const SidebarItem: React.FC<ExtendedSidebarItemProps> = ({
         title={isCollapsed ? item.title : undefined}
       >
         {content()}
-        {tooltip}
       </button>
     );
   }
@@ -76,7 +68,6 @@ const SidebarItem: React.FC<ExtendedSidebarItemProps> = ({
   return (
     <div className={getLinkClass('', isCollapsed)} title={isCollapsed ? item.title : undefined}>
       {content()}
-      {tooltip}
     </div>
   );
 };
