@@ -252,8 +252,8 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
       <Button
         onClick={() => setIsOpen(true)}
         variant="primary"
-        size="lg"
-        icon={<PlusCircleIcon />}
+        size="md"
+        icon={<PlusCircleIcon className="w-5 h-5" />}
         iconPosition="left"
       >
         Crear
@@ -282,9 +282,9 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
                 value={documento}
                 name="document"
                 onChange={(e) => setDocumento(e.target.value)}
-                onBlur={() => {
+                onBlur={(e) => {
                   getData(documento);
-                  formik.handleBlur;
+                  formik.handleBlur(e);
                 }}
                 touched={formik.touched.document || error ? true : false}
                 error={formik.errors.document || (error ?? undefined)}

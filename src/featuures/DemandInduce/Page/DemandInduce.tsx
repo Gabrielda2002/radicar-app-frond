@@ -133,22 +133,25 @@ const DemandInduce = () => {
               { label: "/Inducción de demanda", path: "/demanda/inducida" },
             ]}
           />
-          {SECTIONS.map((s) => (
-            <Button
-              key={s.id}
-              role="tab"
-              onClick={() => setActiveSection(s.id)}
-              aria-selected={activeSection === s.id}
-              aria-controls={`panel-${s.id}`}
-              variant="any"
-              className={`px-6 py-4 font-medium transition-all duration-200 whitespace-nowrap flex-1 text-center ${activeSection === s.id
-                ? "text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-400"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto gap-2">
+            {SECTIONS.map((s) => (
+              <Button
+                key={s.id}
+                role="tab"
+                onClick={() => setActiveSection(s.id)}
+                aria-selected={activeSection === s.id}
+                aria-controls={`panel-${s.id}`}
+                variant="any"
+                className={`px-6 py-3 font-medium transition-all duration-200 whitespace-nowrap text-center rounded-t-lg cursor-pointer ${
+                  activeSection === s.id
+                    ? "text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-400 font-semibold"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
                 }`}
-            >
-              {s.name}
-            </Button>
-          ))}
+              >
+                {s.name}
+              </Button>
+            ))}
+          </div>
 
           {activeSection === 1 ? (
             <>
@@ -160,16 +163,15 @@ const DemandInduce = () => {
                 currentPage={tableState.currentPage}
                 totalPages={tableState.totalPages}
                 onPageChange={tableState.paginate}
-                // falta el renderizado de las acciones del header
                 headerActions={
-                  <>
+                  <div className="flex flex-wrap items-center gap-2">
                     <ModalSummaryDI
                       filteredData={tableState.filteredData}
                       totalRecords={tableState.filteredData.length}
                     />
                     <ModalProgramGoals />
                     <ModalCreateDI refresh={refetch} />
-                  </>
+                  </div>
                 }
               >
                 <DataTable

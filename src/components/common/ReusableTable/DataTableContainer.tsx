@@ -74,7 +74,9 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
     }
   };
 
-  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     if (onItemsPerPageChange) {
       onItemsPerPageChange(Number(e.target.value));
     }
@@ -105,15 +107,17 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
           <div className="flex flex-wrap items-center gap-3">
             {/* Selector de items por página */}
             {showItemsPerPageSelector && (
-              <Select
-                options={itemsPerPageOptions.map((value) => ({
-                  value: value.toString(),
-                  label: `${value} Páginas`,
-                }))}
-                value={itemsPerPage}
-                onChange={handleItemsPerPageChange}
-                className="border-2 h-10 w-32 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              />
+              <div className="w-36 shrink-0">
+                <Select
+                  options={itemsPerPageOptions.map((value) => ({
+                    value: value.toString(),
+                    label: `${value} Páginas`,
+                  }))}
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                  className="border-2 h-10 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+              </div>
             )}
 
             {/* Botón Filtros (solo si se configuró filterState) */}
@@ -122,9 +126,10 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
                 type="button"
                 onClick={filterState.onToggle}
                 className={`relative inline-flex items-center gap-1.5 px-3 h-10 text-sm font-medium rounded-md border-2 transition-colors duration-200
-                  ${filterState.isOpen
-                    ? "bg-color border-indigo-600 text-white hover:bg-color/90"
-                    : "border-gray-400 text-gray-600 hover:border-color hover:text-color-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-color dark:hover:text-indigo-400"
+                  ${
+                    filterState.isOpen
+                      ? "bg-color border-indigo-600 text-white hover:bg-color/90"
+                      : "border-gray-400 text-gray-600 hover:border-color hover:text-color-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-color dark:hover:text-indigo-400"
                   }`}
                 variant="any"
                 title="Filtros avanzados"
@@ -133,7 +138,9 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
                 <span>Filtros</span>
                 {filterState.activeCount > 0 && (
                   <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                    {filterState.activeCount > 9 ? "9+" : filterState.activeCount}
+                    {filterState.activeCount > 9
+                      ? "9+"
+                      : filterState.activeCount}
                   </span>
                 )}
               </Button>
@@ -175,7 +182,7 @@ export const DataTableContainer: React.FC<DataTableContainerProps> = ({
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={onPageChange || (() => { })}
+              onPageChange={onPageChange || (() => {})}
             />
           </>
         )}

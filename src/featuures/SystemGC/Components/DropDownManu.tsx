@@ -6,6 +6,7 @@ import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import Button from "@/components/common/Ui/Button";
 
 const ModalSubirArchivo = lazy(() => import("./ModalSubirArchivo"));
 const ModalCrearCarpeta = lazy(() => import("./ModalCrearCarpeta"));
@@ -45,12 +46,13 @@ const DropDownManu: React.FC<DropDownManuProps> = ({
       {({ open }) => (
         <>
           <div>
-            <MenuButton className="flex w-full items-center justify-center gap-x-1.5 rounded-md dark:text-white bg-white dark:bg-gray-500 px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <MenuButton as={Button} variant="primary">
               Nuevo
               <PlusIcon
                 arial-hidden="true"
-                className={`w-6 h-6 -mr-1 text-gray-800 dark:text-white duration-300 transform ${open ? "rotate-[132deg]" : ""
-                  }`}
+                className={`w-6 h-6 -mr-1 text-gray-800 dark:text-white duration-300 transform ${
+                  open ? "rotate-132" : ""
+                }`}
               />
             </MenuButton>
           </div>
