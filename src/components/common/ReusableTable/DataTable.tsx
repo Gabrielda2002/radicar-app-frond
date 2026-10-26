@@ -43,6 +43,8 @@ export interface DataTableProps<T> {
   tableClassName?: string;
   showMobileCards?: boolean;
   renderMobileCard?: (item: T) => ReactNode;
+  isRowExpanded?: (item: T) => boolean;
+  renderExpandedRow?: (item: T) => ReactNode;
 }
 export function DataTable<T>({
   data,
@@ -56,7 +58,40 @@ export function DataTable<T>({
   tableClassName = "",
   showMobileCards = true,
   renderMobileCard,
+  isRowExpanded,
+  renderExpandedRow,
 }: DataTableProps<T>) {
+  // Calcular widths automáticamente basado en size/weight (antes de cualquier early return)
+  const calculateColumnWidths = useMemo(() => {
+    return columns.map((column) => {
+      if (column.width) {
+        return column.width;
+      }
+
+      // Si no tiene size ni weight, usar default
+      let weight = column.weight;
+      if (!weight && column.size) {
+        weight = COLUMN_WEIGHTS[column.size];
+      }
+      if (!weight) {
+        weight = 1; // default
+      }
+
+      // Calcular el total de pesos
+      const totalWeights = columns.reduce((sum, col) => {
+        if (col.width) return sum; // Ignorar los que tienen width explícito
+        let w = col.weight;
+        if (!w && col.size) {
+          w = COLUMN_WEIGHTS[col.size];
+        }
+        return sum + (w || 1);
+      }, 0);
+
+      // Calcular porcentaje dejando 1 numero despues de la coma
+      return `${((weight / totalWeights) * 100).toFixed(1)}%`;
+    });
+  }, [columns]);
+
   // Loading state
   if (loading) {
     return <LoadingSpinner duration={100000} />;
@@ -89,37 +124,6 @@ export function DataTable<T>({
     return null;
   };
 
-  // Calcular widths automáticamente basado en size/weight
-  const calculateColumnWidths = useMemo(() => {
-    return columns.map((column) => {
-      if (column.width) {
-        return column.width;
-      }
-
-      // Si no tiene size ni weight, usar default
-      let weight = column.weight;
-      if (!weight && column.size) {
-        weight = COLUMN_WEIGHTS[column.size];
-      }
-      if (!weight) {
-        weight = 1; // default
-      }
-
-      // Calcular el total de pesos
-      const totalWeights = columns.reduce((sum, col) => {
-        if (col.width) return sum; // Ignorar los que tienen width explícito
-        let w = col.weight;
-        if (!w && col.size) {
-          w = COLUMN_WEIGHTS[col.size];
-        }
-        return sum + (w || 1);
-      }, 0);
-
-      // Calcular porcentaje dejando 1 numero despues de la coma
-      return `${((weight / totalWeights) * 100).toFixed(1)}%`;
-    });
-  }, [columns]);
-
   return (
     <>
       {/* Vista Desktop - Tabla */}
@@ -144,33 +148,50 @@ export function DataTable<T>({
           </thead>
 
           <tbody className="text-xs text-center bg-white dark:bg-gray-800 dark:text-gray-200">
-            {data.map((item, index) => (
-              <tr
-                // `getRowKey(item)` a veces no es único (p.ej. IDs repetidos desde backend).
-                // Incluir el índice garantiza unicidad a nivel de siblings para React.
-                key={`${String(getRowKey(item))}-${index}`}
-                className="transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
-              >
-                {columns.map((column, index) => (
-                  <td
-                    key={`${getRowKey(item)}-${column.key}`}
-                    className={`p-3 border-b dark:border-gray-700 border border-gray-200 overflow-hidden ${
-                      column.cellClassName || ""
+            {data.map((item, index) => {
+              const rowKey = getRowKey(item);
+              const isExpanded = isRowExpanded ? isRowExpanded(item) : false;
+              const totalColSpan = columns.length + (renderActions ? 1 : 0);
+
+              return (
+                <React.Fragment key={`${String(rowKey)}-${index}`}>
+                  <tr
+                    className={`transition duration-200 ease-in-out bg-white shadow-md dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                      isExpanded ? "bg-slate-50 dark:bg-gray-750" : ""
                     }`}
-                    style={{ width: calculateColumnWidths[index] }}
                   >
-                    <div>
-                      {renderCellValue(column, item)}
-                    </div>
-                  </td>
-                ))}
-                {renderActions && (
-                  <td className="p-3 border-b dark:border-gray-700 border border-gray-200 w-24">
-                    {renderActions(item)}
-                  </td>
-                )}
-              </tr>
-            ))}
+                    {columns.map((column, colIndex) => (
+                      <td
+                        key={`${rowKey}-${column.key}`}
+                        className={`p-3 border-b dark:border-gray-700 border border-gray-200 overflow-hidden ${
+                          column.cellClassName || ""
+                        }`}
+                        style={{ width: calculateColumnWidths[colIndex] }}
+                      >
+                        <div>
+                          {renderCellValue(column, item)}
+                        </div>
+                      </td>
+                    ))}
+                    {renderActions && (
+                      <td className="p-3 border-b dark:border-gray-700 border border-gray-200 w-24">
+                        {renderActions(item)}
+                      </td>
+                    )}
+                  </tr>
+                  {isExpanded && renderExpandedRow && (
+                    <tr className="bg-slate-50/70 dark:bg-gray-900/60 border-b dark:border-gray-700">
+                      <td
+                        colSpan={totalColSpan}
+                        className="p-0 border border-gray-200 dark:border-gray-700"
+                      >
+                        {renderExpandedRow(item)}
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -179,6 +200,8 @@ export function DataTable<T>({
       {showMobileCards && (
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {data.map((item, index) => {
+            const isExpanded = isRowExpanded ? isRowExpanded(item) : false;
+
             if (renderMobileCard) {
               return (
                 <div
@@ -186,6 +209,11 @@ export function DataTable<T>({
                   className="p-4 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
                 >
                   {renderMobileCard(item)}
+                  {isExpanded && renderExpandedRow && (
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                      {renderExpandedRow(item)}
+                    </div>
+                  )}
                 </div>
               );
             }
@@ -218,6 +246,11 @@ export function DataTable<T>({
                     </>
                   )}
                 </div>
+                {isExpanded && renderExpandedRow && (
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                    {renderExpandedRow(item)}
+                  </div>
+                )}
               </div>
             );
           })}
