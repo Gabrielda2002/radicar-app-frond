@@ -177,6 +177,7 @@ export const ENUM_LABELS: Record<string, Record<string, string>> = {
     WHATSAPP: "WhatsApp",
     SALA: "Sala",
     BUZON: "Buzón",
+    CORREO_ELECTRONICO: "CORREO_ELECTRONICO",
   },
   notificationMedium: {
     CORREO_ELECTRONICO: "Correo Electrónico",
