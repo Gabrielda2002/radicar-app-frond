@@ -26,14 +26,14 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
   const [activeSection, setActiveSection] = useState(1);
 
   return (
-    <div className="flex flex-col w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-900">
+    <div className="flex min-w-0 flex-col w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-900">
       {/* Tabs Header */}
-      <div className="sticky top-0 flex w-full overflow-x-auto bg-white rounded-t-lg shadow-md z-40 dark:bg-gray-800"> 
-        <div className="grid w-full grid-cols-1 md:flex place-self-center">
+      <div className="sticky top-0 z-30 flex w-full overflow-x-auto rounded-t-lg bg-white shadow-md dark:bg-gray-800">
+        <div className="flex w-max min-w-full place-self-center">
           {SECTIONS.map((s) => (
             <button
               key={s.id}
-              className={`px-6 py-4 font-medium transition-all duration-200 whitespace-nowrap flex-1 text-center ${
+              className={`flex-none px-4 py-3 text-sm font-medium transition-all duration-200 whitespace-nowrap text-center sm:px-6 sm:py-4 sm:text-base ${
                 activeSection === s.id
                   ? "text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-400"
                   : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
@@ -50,14 +50,14 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
       </div>
 
       {/* Tabs Content */}
-      <div className="p-1 bg-white rounded-b-lg shadow-md md:p-4 dark:bg-gray-800">
+      <div className="min-w-0 p-2 bg-white rounded-b-lg shadow-md sm:p-4 dark:bg-gray-800">
         <div
           role="tabpanel"
           id={`panel-${activeSection}`}
           className="transition-opacity duration-300"
         >
           {activeSection === 1 && [1].includes(Number(rol)) ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
               <QuantityTypeItens typeItem="equipments" idHeadquartersSelected={idHeadquartersSelected} />
               <ExpiringSoonStatics typeItem="equipments" idHeadquartersSelected={idHeadquartersSelected} />
               <AgeStatics typeItem="equipments"  idHeadquartersSelected={idHeadquartersSelected} />
@@ -65,19 +65,19 @@ const StatiticsScreemItems: React.FC<StatiticsScreemItemsProps> = ({
               {/* <QuantityItemsStatics typeItem="equipos"  idHeadquartersSelected={idHeadquartersSelected} /> */}
             </div>
           ) : activeSection === 3 && [1,6].includes(Number(rol)) ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
               <ExpiringSoonStatics typeItem="general/inventory" idHeadquartersSelected={idHeadquartersSelected} />
               <AgeStatics typeItem="general/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
               {/* <QuantityItemsStatics typeItem="inventario/general" idHeadquartersSelected={idHeadquartersSelected}  /> */}
             </div>
           ) : activeSection === 4 && [1].includes(Number(rol)) ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
               {/* <QuantityItemsStatics typeItem="inventario/televisores" idHeadquartersSelected={idHeadquartersSelected}  /> */}
               <AgeStatics typeItem="tv/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
               <ExpiringSoonStatics typeItem="tv/inventory" idHeadquartersSelected={idHeadquartersSelected} />
             </div>
           ): activeSection === 5 && [1].includes(Number(rol)) ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
               {/* <QuantityItemsStatics typeItem="inventario/celulares" idHeadquartersSelected={idHeadquartersSelected} /> */}
               <AgeStatics typeItem="phones/inventory" idHeadquartersSelected={idHeadquartersSelected}  />
               <ExpiringSoonStatics typeItem="phones/inventory" idHeadquartersSelected={idHeadquartersSelected} />

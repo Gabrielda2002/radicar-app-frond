@@ -142,7 +142,7 @@ const SistemaInventario: React.FC = () => {
               ]}
             />
 
-            <div className="w-full p-5 ml-0 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
+            <div className="mb-11 ml-0 w-full min-w-0 rounded-md bg-white p-3 shadow-lg shadow-indigo-500/40 dark:bg-gray-800 sm:p-5">
               {/* si scree en diferente a departamentos se muestra la flecha */}
               <div>
                 {screen !== "departamentos" && (
