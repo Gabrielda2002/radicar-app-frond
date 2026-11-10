@@ -94,7 +94,9 @@ const TurnoTicketPage = () => {
           <p className="text-xs font-medium tracking-[0.16em] uppercase opacity-80">
             Atención presencial
           </p>
-          <h1 className="mt-2 text-3xl font-medium tracking-tight">Tu turno digital</h1>
+          <h1 className="mt-2 text-3xl font-medium tracking-tight">
+            Tu turno digital
+          </h1>
         </header>
 
         <div className="space-y-6 p-6 sm:p-8">
@@ -109,7 +111,8 @@ const TurnoTicketPage = () => {
                   aria-hidden="true"
                 />
                 <span>
-                  Conexión en vivo pausada. La información puede estar desactualizada.
+                  Conexión en vivo pausada. La información puede estar
+                  desactualizada.
                 </span>
               </div>
               <button
@@ -163,7 +166,9 @@ const TurnoTicketPage = () => {
                       className="mb-3 h-5 w-5 text-color dark:text-teal-300"
                       aria-hidden="true"
                     />
-                    <p className="text-3xl font-medium tabular-nums">{ticket.aheadCount}</p>
+                    <p className="text-3xl font-medium tabular-nums">
+                      {ticket.aheadCount}
+                    </p>
                     <p className="mt-1 text-xs text-slate-500 dark:text-gray-400">
                       Turnos por delante
                     </p>
@@ -184,16 +189,19 @@ const TurnoTicketPage = () => {
                 </div>
               ) : null}
 
-              {(ticket.status === "LLAMADO" || ticket.status === "EN_ATENCION") &&
-              ticket.modulo ? (
+              {(ticket.status === "LLAMADO" ||
+                ticket.status === "EN_ATENCION") &&
+                ticket.modulo ? (
                 <div
                   role={ticket.status === "LLAMADO" ? "alert" : "status"}
-                  aria-live={ticket.status === "LLAMADO" ? "assertive" : "polite"}
+                  aria-live={
+                    ticket.status === "LLAMADO" ? "assertive" : "polite"
+                  }
                   className={clsx(
                     "p-6 text-center rounded-2xl transition-all",
                     ticket.status === "LLAMADO"
                       ? "text-emerald-950 bg-emerald-50 border-2 border-emerald-500 shadow-md ring-4 ring-emerald-500/10 dark:text-emerald-100 dark:bg-emerald-950/60 dark:border-emerald-400 dark:ring-emerald-400/20"
-                      : "text-teal-900 bg-teal-50 border border-teal-100 dark:text-teal-200 dark:bg-teal-950/40 dark:border-teal-900"
+                      : "text-teal-900 bg-teal-50 border border-teal-100 dark:text-teal-200 dark:bg-teal-950/40 dark:border-teal-900",
                   )}
                 >
                   <p
@@ -201,7 +209,7 @@ const TurnoTicketPage = () => {
                       "text-xs sm:text-sm font-semibold uppercase tracking-wider",
                       ticket.status === "LLAMADO"
                         ? "text-emerald-700 dark:text-emerald-300"
-                        : "text-teal-700 dark:text-teal-300"
+                        : "text-teal-700 dark:text-teal-300",
                     )}
                   >
                     {ticket.status === "LLAMADO"
@@ -259,7 +267,7 @@ const TurnoTicketPage = () => {
                       "px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0",
                       soundEnabled
                         ? "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                        : "bg-color text-white hover:bg-color/90 shadow-sm"
+                        : "bg-color text-white hover:bg-color/90 shadow-sm",
                     )}
                   >
                     {soundEnabled ? "Desactivar" : "Activar avisos sonoros"}
@@ -292,7 +300,9 @@ const TurnoTicketPage = () => {
                         </p>
                       </div>
 
-                      {surveyError ? <TurnoNotice message={surveyError} /> : null}
+                      {surveyError ? (
+                        <TurnoNotice message={surveyError} />
+                      ) : null}
 
                       <div className="flex flex-col items-center gap-2">
                         <div
@@ -321,7 +331,7 @@ const TurnoTicketPage = () => {
                                     "h-8 w-8 transition-colors",
                                     isFilled
                                       ? "fill-amber-400 text-amber-400"
-                                      : "text-slate-300 dark:text-gray-600"
+                                      : "text-slate-300 dark:text-gray-600",
                                   )}
                                   aria-hidden="true"
                                 />
@@ -388,12 +398,15 @@ const TurnoTicketPage = () => {
               ) : null}
 
               <p className="text-center text-xs leading-relaxed text-slate-500 dark:text-gray-400">
-                Usa «Actualizar estado» para consultar los cambios. Conserva este enlace para
-                volver a tu ticket.
+                Usa «Actualizar estado» para consultar los cambios. Conserva
+                este enlace para volver a tu ticket.
               </p>
             </>
           ) : !error ? (
-            <p role="status" className="flex items-center gap-3 text-sm text-slate-500">
+            <p
+              role="status"
+              className="flex items-center gap-3 text-sm text-slate-500"
+            >
               <LoaderCircle
                 className="h-5 w-5 animate-spin motion-reduce:animate-none"
                 aria-hidden="true"
@@ -444,8 +457,8 @@ const TurnoTicketPage = () => {
                   id="cancel-dialog-desc"
                   className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-gray-300"
                 >
-                  Si cancelas tu turno, perderás tu lugar en la fila de espera y deberás
-                  solicitar uno nuevo si requieres atención.
+                  Si cancelas tu turno, perderás tu lugar en la fila de espera y
+                  deberás solicitar uno nuevo si requieres atención.
                 </p>
               </div>
             </div>

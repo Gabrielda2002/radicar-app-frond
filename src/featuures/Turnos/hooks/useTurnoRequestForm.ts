@@ -8,27 +8,55 @@ import { useStoreTurnoRequest } from "../store/useStoreTurnoRequest";
 
 const identitySchema = Yup.object({
   documentTypeId: Yup.string().required("Selecciona un tipo de documento"),
-  documentNumber: Yup.string().trim().matches(/^\d+$/, "Ingresa solo números").min(5, "Ingresa al menos 5 dígitos").max(20, "Ingresa máximo 20 dígitos").required("Ingresa tu número de documento"),
+  documentNumber: Yup.string()
+    .trim()
+    .matches(/^\d+$/, "Ingresa solo números")
+    .min(5, "Ingresa al menos 5 dígitos")
+    .max(20, "Ingresa máximo 20 dígitos")
+    .required("Ingresa tu número de documento"),
 });
 
 const detailsSchema = Yup.object({
-  name: Yup.string().trim().min(3, "Ingresa tu nombre completo").max(250, "Ingresa máximo 250 caracteres").required("Ingresa tu nombre completo"),
-  phoneNumber: Yup.string().trim().matches(/^\d+$/, "Ingresa solo números").max(10, "Ingresa máximo 10 dígitos").required("Ingresa tu número de celular"),
+  name: Yup.string()
+    .trim()
+    .min(3, "Ingresa tu nombre completo")
+    .max(250, "Ingresa máximo 250 caracteres")
+    .required("Ingresa tu nombre completo"),
+  phoneNumber: Yup.string()
+    .trim()
+    .matches(/^\d+$/, "Ingresa solo números")
+    .max(10, "Ingresa máximo 10 dígitos")
+    .required("Ingresa tu número de celular"),
   serviceId: Yup.string().required("Selecciona el servicio que necesitas"),
   priority: Yup.string().oneOf(["GENERAL", "PRIORITARIO"]).required(),
 });
 
-const getLocation = (): Promise<GeolocationPosition> => new Promise((resolve, reject) => {
-  if (!navigator.geolocation) return reject(new Error("Tu navegador no permite obtener la ubicación. Intenta desde otro dispositivo."));
-  navigator.geolocation.getCurrentPosition(resolve, (error) => {
-    const messages: Record<number, string> = {
-      1: "Autoriza el acceso a tu ubicación en los permisos del navegador y vuelve a intentar.",
-      2: "No pudimos obtener tu ubicación. Comprueba que esté activada y vuelve a intentar.",
-      3: "La ubicación tardó más de lo esperado. Vuelve a intentar desde la sede.",
-    };
-    reject(new Error(messages[error.code] || "No pudimos obtener tu ubicación. Vuelve a intentar."));
-  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
-});
+const getLocation = (): Promise<GeolocationPosition> =>
+  new Promise((resolve, reject) => {
+    if (!navigator.geolocation)
+      return reject(
+        new Error(
+          "Tu navegador no permite obtener la ubicación. Intenta desde otro dispositivo.",
+        ),
+      );
+    navigator.geolocation.getCurrentPosition(
+      resolve,
+      (error) => {
+        const messages: Record<number, string> = {
+          1: "Autoriza el acceso a tu ubicación en los permisos del navegador y vuelve a intentar.",
+          2: "No pudimos obtener tu ubicación. Comprueba que esté activada y vuelve a intentar.",
+          3: "La ubicación tardó más de lo esperado. Vuelve a intentar desde la sede.",
+        };
+        reject(
+          new Error(
+            messages[error.code] ||
+              "No pudimos obtener tu ubicación. Vuelve a intentar.",
+          ),
+        );
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+    );
+  });
 
 export const useTurnoRequestForm = (slug: string) => {
   const navigate = useNavigate();
@@ -39,14 +67,37 @@ export const useTurnoRequestForm = (slug: string) => {
   const active = useRef(true);
   const verify = useStoreTurnoRequest((state) => state.verify);
   const submit = useStoreTurnoRequest((state) => state.submit);
-  const clearVerification = useStoreTurnoRequest((state) => state.clearVerification);
-  useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
+  const clearVerification = useStoreTurnoRequest(
+    (state) => state.clearVerification,
+  );
+  useEffect(() => {
+    active.current = true;
+    return () => {
+      active.current = false;
+    };
+  }, []);
 
-  const identify = async (values: ITurnoRequestForm, helpers: FormikHelpers<ITurnoRequestForm>) => {
-    const result = await verify({ documentNumber: values.documentNumber.trim(), documentType: Number(values.documentTypeId) });
+  const identify = async (
+    values: ITurnoRequestForm,
+    helpers: FormikHelpers<ITurnoRequestForm>,
+  ) => {
+    const result = await verify({
+      documentNumber: values.documentNumber.trim(),
+      documentType: Number(values.documentTypeId),
+    });
     if (!result || !active.current) return;
-    if (result.activeTurn) return navigate(`/turnos/ticket/${encodeURIComponent(result.activeTurn.ticketToken)}`);
-    await helpers.setValues({ ...values, name: result.patient?.fullName ?? "", phoneNumber: result.patient?.phoneNumber ?? "" }, false);
+    if (result.activeTurn)
+      return navigate(
+        `/turnos/ticket/${encodeURIComponent(result.activeTurn.ticketToken)}`,
+      );
+    await helpers.setValues(
+      {
+        ...values,
+        name: result.patient?.fullName ?? "",
+        phoneNumber: result.patient?.phoneNumber ?? "",
+      },
+      false,
+    );
     helpers.setTouched({});
     setStep(1);
   };
@@ -59,22 +110,47 @@ export const useTurnoRequestForm = (slug: string) => {
       if (!active.current) return;
       setIsLocating(false);
       const token = await submit({
-        slug, serviceId: Number(values.serviceId), documentNumber: values.documentNumber.trim(),
-        documentTypeId: Number(values.documentTypeId), name: values.name.trim(), phoneNumber: values.phoneNumber.trim(), priority: values.priority,
-        ...(position ? { userLatitude: position.coords.latitude, userLongitude: position.coords.longitude } : { skipGeolocation: true }),
+        slug,
+        serviceId: Number(values.serviceId),
+        documentNumber: values.documentNumber.trim(),
+        documentTypeId: Number(values.documentTypeId),
+        name: values.name.trim(),
+        phoneNumber: values.phoneNumber.trim(),
+        priority: values.priority,
+        ...(position
+          ? {
+              userLatitude: position.coords.latitude,
+              userLongitude: position.coords.longitude,
+            }
+          : { skipGeolocation: true }),
       });
       if (token) navigate(`/turnos/ticket/${encodeURIComponent(token)}`);
-    } catch (error: unknown) { if (active.current) setLocationError(getTurnoError(error)); }
-    finally { if (active.current) setIsLocating(false); skipLocation.current = false; }
+    } catch (error: unknown) {
+      if (active.current) setLocationError(getTurnoError(error));
+    } finally {
+      if (active.current) setIsLocating(false);
+      skipLocation.current = false;
+    }
   };
 
   const formik = useFormik<ITurnoRequestForm>({
-    initialValues: { documentTypeId: "", documentNumber: "", name: "", phoneNumber: "", serviceId: "", priority: "GENERAL" },
+    initialValues: {
+      documentTypeId: "",
+      documentNumber: "",
+      name: "",
+      phoneNumber: "",
+      serviceId: "",
+      priority: "GENERAL",
+    },
     validationSchema: step === 0 ? identitySchema : detailsSchema,
     onSubmit: async (values, helpers) => {
       setLocationError(null);
       if (step === 0) return identify(values, helpers);
-      if (step === 1) { helpers.setTouched({}); setStep(2); return; }
+      if (step === 1) {
+        helpers.setTouched({});
+        setStep(2);
+        return;
+      }
       await issue(values);
     },
   });
@@ -91,5 +167,13 @@ export const useTurnoRequestForm = (slug: string) => {
     void formik.submitForm();
   };
 
-  return { formik, step, goBack, isLocating, locationError, submitWithoutLocation, clearVerification };
+  return {
+    formik,
+    step,
+    goBack,
+    isLocating,
+    locationError,
+    submitWithoutLocation,
+    clearVerification,
+  };
 };

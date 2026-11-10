@@ -53,7 +53,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      error.response.status === 401 &&
+      error.response?.status === 401 &&
       error.response?.data?.code === "TOKEN_EXPIRED" &&
       !originalRequest._retry
     ) {
@@ -114,7 +114,7 @@ api.interceptors.response.use(
     }
 
     if (
-      error.response.status === 401 &&
+      error.response?.status === 401 &&
       error.response?.data?.code !== "TOKEN_EXPIRED"
     ) {
       toast.error("No tienes permisos para realizar esta acción.", {

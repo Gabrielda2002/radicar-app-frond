@@ -26,7 +26,7 @@ const TurnoTvPage = () => {
 
   const { soundEnabled, toggleSound } = useTurnoTvLive(
     safeSlug,
-    data?.headquarter.id
+    data?.headquarter.id,
   );
 
   useEffect(() => {
@@ -49,9 +49,7 @@ const TurnoTvPage = () => {
           <h1 className="mt-4 text-2xl font-black text-white">
             No pudimos cargar la pantalla de la sede
           </h1>
-          <p className="mt-3 text-sm leading-relaxed text-slate-300">
-            {error}
-          </p>
+          <p className="mt-3 text-sm leading-relaxed text-slate-300">{error}</p>
           <button
             type="button"
             onClick={() => safeSlug && void load(safeSlug)}
@@ -112,9 +110,7 @@ const TurnoTvPage = () => {
             </div>
 
             <div className="flex flex-col lg:col-span-5 xl:col-span-4">
-              <TvTurnList
-                turns={upcomingTurns}
-              />
+              <TvTurnList turns={upcomingTurns} />
             </div>
           </div>
         )}
@@ -125,8 +121,9 @@ const TurnoTvPage = () => {
           aria-label="Aviso de sonido"
           className="border-t border-slate-800 bg-slate-900/60 px-4 py-3 text-center text-xs font-medium text-slate-400"
         >
-          El audio está desactivado. Para escuchar los llamados por voz, pulsa el botón{" "}
-          <strong className="text-amber-300">«Activar audio»</strong> en la barra superior.
+          El audio está desactivado. Para escuchar los llamados por voz, pulsa
+          el botón <strong className="text-amber-300">«Activar audio»</strong>{" "}
+          en la barra superior.
         </aside>
       )}
     </div>

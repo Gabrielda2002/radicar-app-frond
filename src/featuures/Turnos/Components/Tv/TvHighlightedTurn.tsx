@@ -19,7 +19,10 @@ export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-950/80 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-emerald-300 sm:text-sm">
-          <BellRing className="h-4 w-4 animate-bounce text-emerald-400" aria-hidden="true" />
+          <BellRing
+            className="h-4 w-4 animate-bounce text-emerald-400"
+            aria-hidden="true"
+          />
           <span>Último llamado</span>
         </div>
 

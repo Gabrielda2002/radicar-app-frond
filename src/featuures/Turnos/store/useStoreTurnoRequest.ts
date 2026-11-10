@@ -106,7 +106,7 @@ export const useStoreTurnoRequest = create<UseStoreTurnoRequest>(
         error: null,
         version: get().version + 1,
       }),
-      
+
     reset: () =>
       set({
         data: emptyData,

@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import type { ITurnoTicket, TurnoPriorityType, TurnoStatusType } from "@/models/ITurnos";
+import type {
+  ITurnoTicket,
+  TurnoPriorityType,
+  TurnoStatusType,
+} from "@/models/ITurnos";
 import { useStoreTurnoTicket } from "../store/useStoreTurnoTicket";
-import { playTurnoChime, unlockAudio, vibrateDevice } from "../utils/turnoAudio";
+import {
+  playTurnoChime,
+  unlockAudio,
+  vibrateDevice,
+} from "../utils/turnoAudio";
 
 interface TicketLlamadoEvent {
   turnoId?: number;
@@ -37,7 +45,8 @@ interface TicketActualizadoEvent {
 }
 
 const getSocketOrigin = (): string => {
-  const backendUrl = (import.meta.env.VITE_URL_BACKEND as string | undefined) || "";
+  const backendUrl =
+    (import.meta.env.VITE_URL_BACKEND as string | undefined) || "";
   try {
     const parsed = new URL(backendUrl, window.location.origin);
     return parsed.origin;
@@ -200,11 +209,13 @@ export const useTurnoTicketLive = (token: string) => {
 
       const partial: Partial<ITurnoTicket> = {};
       if (payload.status) partial.status = payload.status;
-      if (typeof payload.aheadCount === "number") partial.aheadCount = payload.aheadCount;
+      if (typeof payload.aheadCount === "number")
+        partial.aheadCount = payload.aheadCount;
       if (typeof payload.estimatedWaitMinutes === "number") {
         partial.estimatedWaitMinutes = payload.estimatedWaitMinutes;
       }
-      if (typeof payload.callCount === "number") partial.callCount = payload.callCount;
+      if (typeof payload.callCount === "number")
+        partial.callCount = payload.callCount;
 
       if (payload.moduloName || payload.moduloCode) {
         partial.modulo = {

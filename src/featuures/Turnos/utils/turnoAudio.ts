@@ -4,7 +4,8 @@ const getAudioContext = (): AudioContext | null => {
   if (typeof window === "undefined") return null;
   const AudioCtx =
     window.AudioContext ||
-    (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    (window as unknown as { webkitAudioContext: typeof AudioContext })
+      .webkitAudioContext;
   if (!AudioCtx) return null;
   if (!audioContextInstance || audioContextInstance.state === "closed") {
     audioContextInstance = new AudioCtx();
@@ -65,8 +66,13 @@ export const playTurnoChime = (): void => {
   }
 };
 
-export const vibrateDevice = (pattern: number[] = [200, 100, 200, 100, 200]): void => {
-  if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+export const vibrateDevice = (
+  pattern: number[] = [200, 100, 200, 100, 200],
+): void => {
+  if (
+    typeof navigator !== "undefined" &&
+    typeof navigator.vibrate === "function"
+  ) {
     try {
       navigator.vibrate(pattern);
     } catch {

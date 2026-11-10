@@ -44,10 +44,14 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
         const stillPresent =
           Boolean(currentHighlight) &&
           data.activeTurns.some((t) => t.turnoId === currentHighlight);
-        const firstCalled = data.activeTurns.find((t) => t.status === "LLAMADO");
+        const firstCalled = data.activeTurns.find(
+          (t) => t.status === "LLAMADO",
+        );
         const nextHighlight = stillPresent
           ? currentHighlight
-          : (firstCalled ? firstCalled.turnoId : (data.activeTurns[0]?.turnoId ?? null));
+          : firstCalled
+            ? firstCalled.turnoId
+            : (data.activeTurns[0]?.turnoId ?? null);
 
         set({
           data,
@@ -76,7 +80,7 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
     if (!currentData) return;
 
     const existingIndex = currentData.activeTurns.findIndex(
-      (t) => t.turnoId === turn.turnoId
+      (t) => t.turnoId === turn.turnoId,
     );
 
     let updatedTurns: ITurnoTvItem[];
@@ -88,7 +92,7 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
         ...turn,
       };
       const remaining = currentData.activeTurns.filter(
-        (t) => t.turnoId !== turn.turnoId
+        (t) => t.turnoId !== turn.turnoId,
       );
       updatedTurns = [merged, ...remaining].slice(0, 10);
     } else {
@@ -107,9 +111,12 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
       data: {
         ...currentData,
         activeTurns: updatedTurns,
-        upcomingTurns: turn.status === "LLAMADO"
-          ? currentData.upcomingTurns.filter((t) => t.turnoId !== turn.turnoId)
-          : currentData.upcomingTurns,
+        upcomingTurns:
+          turn.status === "LLAMADO"
+            ? currentData.upcomingTurns.filter(
+                (t) => t.turnoId !== turn.turnoId,
+              )
+            : currentData.upcomingTurns,
       },
     });
   },
@@ -119,10 +126,10 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
     if (!currentData) return;
 
     const updatedTurns = currentData.activeTurns.filter(
-      (t) => t.turnoId !== turnoId
+      (t) => t.turnoId !== turnoId,
     );
     const updatedUpcomingTurns = currentData.upcomingTurns.filter(
-      (t) => t.turnoId !== turnoId
+      (t) => t.turnoId !== turnoId,
     );
 
     set({

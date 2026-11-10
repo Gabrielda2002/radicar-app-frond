@@ -43,7 +43,8 @@ interface SpeechQueueTask {
 }
 
 const getSocketOrigin = (): string => {
-  const backendUrl = (import.meta.env.VITE_URL_BACKEND as string | undefined) || "";
+  const backendUrl =
+    (import.meta.env.VITE_URL_BACKEND as string | undefined) || "";
   try {
     const parsed = new URL(backendUrl, window.location.origin);
     return parsed.origin;
@@ -52,7 +53,10 @@ const getSocketOrigin = (): string => {
   }
 };
 
-const formatModuloSpeech = (moduloName?: string, moduloCode?: string): string => {
+const formatModuloSpeech = (
+  moduloName?: string,
+  moduloCode?: string,
+): string => {
   if (moduloName && moduloName.trim()) {
     const trimmed = moduloName.trim();
     if (/^(m[oó]dulo|ventanilla|consultorio|sala)/i.test(trimmed)) {
@@ -84,7 +88,9 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
   const queueRef = useRef<SpeechQueueTask[]>([]);
   const isSpeakingRef = useRef<boolean>(false);
   const activeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const queueRefreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const queueRefreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const announcedKeysRef = useRef<Map<string, number>>(new Map());
   const processQueueRef = useRef<() => void>(() => {});
 
@@ -187,7 +193,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       queueRef.current.push({ key, text });
       processQueue();
     },
-    [processQueue]
+    [processQueue],
   );
 
   const toggleSound = useCallback(() => {
@@ -234,7 +240,8 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       setIsOutdated(false);
 
       const targetHeadquarterId =
-        headquarterIdRef.current ?? useStoreTurnoTv.getState().data?.headquarter.id;
+        headquarterIdRef.current ??
+        useStoreTurnoTv.getState().data?.headquarter.id;
       if (typeof targetHeadquarterId === "number") {
         socket.emit("join", `sede_${targetHeadquarterId}_tv`);
       }
@@ -275,7 +282,10 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       setHighlightedTurnoId(payload.turnoId);
 
       const cleanCode = (payload.ticketCode || "").replace(/-/g, " ");
-      const moduloText = formatModuloSpeech(payload.moduloName, payload.moduloCode);
+      const moduloText = formatModuloSpeech(
+        payload.moduloName,
+        payload.moduloCode,
+      );
       const text = `Turno ${cleanCode}, pasar a ${moduloText}`;
       const dedupKey = `${payload.turnoId}_llamado_${payload.callCount || 1}`;
 
@@ -301,7 +311,10 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       setHighlightedTurnoId(payload.turnoId);
 
       const cleanCode = (payload.ticketCode || "").replace(/-/g, " ");
-      const moduloText = formatModuloSpeech(payload.moduloName, payload.moduloCode);
+      const moduloText = formatModuloSpeech(
+        payload.moduloName,
+        payload.moduloCode,
+      );
       const text = `Turno ${cleanCode}, pasar a ${moduloText}`;
       const dedupKey = `${payload.turnoId}_rellamado_${payload.callCount ?? Date.now()}`;
 
@@ -343,9 +356,11 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
         !payload ||
         typeof payload.headquarterId !== "number" ||
         payload.headquarterId !== headquarterIdRef.current
-      ) return;
+      )
+        return;
 
-      if (queueRefreshTimeoutRef.current) clearTimeout(queueRefreshTimeoutRef.current);
+      if (queueRefreshTimeoutRef.current)
+        clearTimeout(queueRefreshTimeoutRef.current);
       queueRefreshTimeoutRef.current = setTimeout(() => {
         queueRefreshTimeoutRef.current = null;
         void load(slug);

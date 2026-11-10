@@ -14,7 +14,8 @@ export const TvOfflineBanner = ({ isOutdated }: TvOfflineBannerProps) => {
     >
       <WifiOff className="h-5 w-5 shrink-0" aria-hidden="true" />
       <span>
-        Conexión interrumpida con el servidor. Mostrando últimos turnos conocidos mientras se restablece la conexión…
+        Conexión interrumpida con el servidor. Mostrando últimos turnos
+        conocidos mientras se restablece la conexión…
       </span>
     </div>
   );

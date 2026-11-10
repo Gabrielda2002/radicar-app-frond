@@ -29,14 +29,14 @@ export const TvHeader = ({
           minute: "2-digit",
           second: "2-digit",
           hour12: true,
-        })
+        }),
       );
       setDateString(
         now.toLocaleDateString("es-CO", {
           weekday: "long",
           day: "numeric",
           month: "short",
-        })
+        }),
       );
     };
 

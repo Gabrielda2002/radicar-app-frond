@@ -22,7 +22,11 @@ interface UseStoreTurnoTicket {
   isOutdated: boolean;
   load: (token: string) => Promise<void>;
   cancel: (token: string, reason?: string) => Promise<boolean>;
-  submitSurvey: (token: string, rating: number, comment?: string) => Promise<boolean>;
+  submitSurvey: (
+    token: string,
+    rating: number,
+    comment?: string,
+  ) => Promise<boolean>;
   setIsLiveConnected: (connected: boolean) => void;
   setIsOutdated: (outdated: boolean) => void;
   updatePartial: (partial: Partial<ITurnoTicket>) => void;
