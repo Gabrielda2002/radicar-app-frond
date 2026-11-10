@@ -80,13 +80,11 @@ const TurnoTvPage = () => {
   }
 
   const activeTurns = data?.activeTurns || [];
+  const upcomingTurns = data?.upcomingTurns || [];
   const highlightedTurn =
     activeTurns.find((t) => t.turnoId === highlightedTurnoId) ||
     activeTurns.find((t) => t.status === "LLAMADO") ||
     activeTurns[0];
-  const otherTurns = highlightedTurn
-    ? activeTurns.filter((turn) => turn.turnoId !== highlightedTurn.turnoId).slice(0, 10)
-    : [];
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-950 text-white selection:bg-emerald-500 selection:text-slate-950">
@@ -101,7 +99,7 @@ const TurnoTvPage = () => {
       <TvOfflineBanner isOutdated={isOutdated} />
 
       <main className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
-        {activeTurns.length === 0 ? (
+        {activeTurns.length === 0 && upcomingTurns.length === 0 ? (
           <TvWaitingState />
         ) : (
           <div className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-12">
@@ -115,8 +113,7 @@ const TurnoTvPage = () => {
 
             <div className="flex flex-col lg:col-span-5 xl:col-span-4">
               <TvTurnList
-                turns={otherTurns}
-                highlightedTurnoId={highlightedTurnoId}
+                turns={upcomingTurns}
               />
             </div>
           </div>

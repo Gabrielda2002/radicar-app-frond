@@ -98,7 +98,13 @@ export interface ITurnoTvItem {
   callCount?: number;
 }
 
+export interface ITurnoTvUpcomingItem {
+  turnoId: number;
+  ticketCode: string;
+}
+
 export interface ITurnoTvState {
   headquarter: ITurnoOption & { slug: string };
   activeTurns: ITurnoTvItem[];
+  upcomingTurns: ITurnoTvUpcomingItem[];
 }

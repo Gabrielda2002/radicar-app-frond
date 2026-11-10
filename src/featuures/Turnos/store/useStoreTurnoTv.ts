@@ -107,6 +107,9 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
       data: {
         ...currentData,
         activeTurns: updatedTurns,
+        upcomingTurns: turn.status === "LLAMADO"
+          ? currentData.upcomingTurns.filter((t) => t.turnoId !== turn.turnoId)
+          : currentData.upcomingTurns,
       },
     });
   },
@@ -118,10 +121,15 @@ export const useStoreTurnoTv = create<UseStoreTurnoTv>((set, get) => ({
     const updatedTurns = currentData.activeTurns.filter(
       (t) => t.turnoId !== turnoId
     );
+    const updatedUpcomingTurns = currentData.upcomingTurns.filter(
+      (t) => t.turnoId !== turnoId
+    );
+
     set({
       data: {
         ...currentData,
         activeTurns: updatedTurns,
+        upcomingTurns: updatedUpcomingTurns,
       },
       highlightedTurnoId:
         get().highlightedTurnoId === turnoId ? null : get().highlightedTurnoId,

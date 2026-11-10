@@ -33,6 +33,10 @@ interface TurnoRetiradoEvent {
   turnoId: number;
 }
 
+interface ColaActualizadaEvent {
+  headquarterId: number;
+}
+
 interface SpeechQueueTask {
   key: string;
   text: string;
@@ -80,6 +84,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
   const queueRef = useRef<SpeechQueueTask[]>([]);
   const isSpeakingRef = useRef<boolean>(false);
   const activeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const queueRefreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const announcedKeysRef = useRef<Map<string, number>>(new Map());
   const processQueueRef = useRef<() => void>(() => {});
 
@@ -333,10 +338,25 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       removeTurn(payload.turnoId);
     };
 
+    const handleColaActualizada = (payload: ColaActualizadaEvent) => {
+      if (
+        !payload ||
+        typeof payload.headquarterId !== "number" ||
+        payload.headquarterId !== headquarterIdRef.current
+      ) return;
+
+      if (queueRefreshTimeoutRef.current) clearTimeout(queueRefreshTimeoutRef.current);
+      queueRefreshTimeoutRef.current = setTimeout(() => {
+        queueRefreshTimeoutRef.current = null;
+        void load(slug);
+      }, 100);
+    };
+
     socket.on("turno:llamado", handleTurnoLlamado);
     socket.on("turno:rellamado", handleTurnoRellamado);
     socket.on("turno:actualizado", handleTurnoActualizado);
     socket.on("turno:retirado", handleTurnoRetirado);
+    socket.on("cola:actualizada", handleColaActualizada);
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -356,6 +376,10 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
         clearTimeout(activeTimeoutRef.current);
         activeTimeoutRef.current = null;
       }
+      if (queueRefreshTimeoutRef.current) {
+        clearTimeout(queueRefreshTimeoutRef.current);
+        queueRefreshTimeoutRef.current = null;
+      }
       queueRef.current = [];
       isSpeakingRef.current = false;
 
@@ -366,6 +390,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       socket.off("turno:rellamado");
       socket.off("turno:actualizado");
       socket.off("turno:retirado");
+      socket.off("cola:actualizada");
       socket.disconnect();
       socketRef.current = null;
 

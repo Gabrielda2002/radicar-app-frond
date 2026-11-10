@@ -69,7 +69,7 @@ export const submitTurnoSurvey = async (
 
 export const fetchTurnoTvState = async (slug: string): Promise<ITurnoTvState> => {
   const { data } = await api.get<ITurnoTvState>(`/turnos/tv/${encodeURIComponent(slug)}/estado`);
-  if (!data || !data.headquarter || typeof data.headquarter.id !== "number" || !Array.isArray(data.activeTurns)) {
+  if (!data || !data.headquarter || typeof data.headquarter.id !== "number" || !Array.isArray(data.activeTurns) || !Array.isArray(data.upcomingTurns)) {
     throw new Error("La información de la pantalla de la sede no está disponible o tiene un formato incorrecto.");
   }
   return data;

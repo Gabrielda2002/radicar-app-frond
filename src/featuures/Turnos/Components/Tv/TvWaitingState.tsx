@@ -11,11 +11,11 @@ export const TvWaitingState = () => {
       </div>
 
       <h2 className="mt-8 text-3xl font-extrabold text-white sm:text-5xl">
-        En espera de turnos
+        En espera del próximo llamado
       </h2>
 
       <p className="mt-4 max-w-xl text-lg font-medium leading-relaxed text-slate-300 sm:text-2xl">
-        Los turnos llamados y en atención en esta sede se mostrarán automáticamente en esta pantalla acompañados de sonido.
+        El turno que esté siendo llamado se destacará aquí automáticamente.
       </p>
 
       <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/80 px-5 py-2 text-sm font-semibold text-slate-300">
