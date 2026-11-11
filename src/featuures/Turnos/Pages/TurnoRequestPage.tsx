@@ -13,15 +13,32 @@ import TurnoPublicLayout from "../Components/TurnoPublicLayout";
 import TurnoNotice from "../Components/TurnoNotice";
 import TurnoIdentityFields from "../Components/TurnoIdentityFields";
 import TurnoDetailsFields from "../Components/TurnoDetailsFields";
+import TurnoServiceSelection from "../Components/TurnoServiceSelection";
+import TurnoPrioritySelection from "../Components/TurnoPrioritySelection";
 import TurnoRequestSummary from "../Components/TurnoRequestSummary";
 import { useTurnoRequestForm } from "../hooks/useTurnoRequestForm";
 import { useStoreTurnoRequest } from "../store/useStoreTurnoRequest";
 
-const steps = ["Identificación", "Tu atención", "Confirmación"];
+const steps = [
+  "Identificación",
+  "Tus datos",
+  "Servicio",
+  "Prioridad",
+  "Confirmación",
+];
 const titles = [
   "Tu turno empieza aquí.",
-  "Cuéntanos qué necesitas.",
-  "Todo listo para tu turno.",
+  "Confirma tus datos.",
+  "Elige tu servicio.",
+  "Elige tu prioridad.",
+  "Revisa tu solicitud.",
+];
+const descriptions = [
+  "Ingresa tu documento para solicitar o recuperar tu turno.",
+  "Revisa tus datos antes de continuar.",
+  "Toca el servicio que necesitas.",
+  "Responde una pregunta para definir el tipo de atención.",
+  "Verifica la información antes de confirmar tu solicitud.",
 ];
 
 const TurnoRequestContent = ({
@@ -35,6 +52,8 @@ const TurnoRequestContent = ({
     formik,
     step,
     goBack,
+    goToService,
+    goToPriority,
     isLocating,
     locationError,
     submitWithoutLocation,
@@ -68,16 +87,16 @@ const TurnoRequestContent = ({
       <section className="overflow-hidden bg-white border border-slate-200 rounded-2xl shadow-sm dark:bg-gray-900 dark:border-gray-800">
         <ol
           aria-label="Pasos de la solicitud"
-          className="grid grid-cols-3 gap-2 px-5 py-5 border-b border-slate-100 sm:px-8 dark:border-gray-800"
+          className="grid grid-cols-5 gap-1 px-3 py-5 border-b border-slate-100 sm:gap-2 sm:px-8 dark:border-gray-800"
         >
           {steps.map((label, index) => (
             <li
               key={label}
               aria-current={step === index ? "step" : undefined}
-              className={`flex flex-col gap-2 text-xs sm:flex-row sm:items-center ${step === index ? "font-semibold text-color dark:text-teal-300" : "text-slate-500 dark:text-gray-400"}`}
+              className={`flex min-w-0 flex-col items-center gap-2 text-center text-[10px] leading-tight sm:flex-row sm:text-left sm:text-xs ${step === index ? "font-semibold text-color dark:text-teal-300" : "text-slate-500 dark:text-gray-400"}`}
             >
               <span
-                className={`flex items-center justify-center h-7 w-7 rounded-full ${step >= index ? "text-white bg-color" : "bg-slate-100 dark:bg-gray-800"}`}
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs ${step >= index ? "text-white bg-color" : "bg-slate-100 dark:bg-gray-800"}`}
               >
                 {step > index ? (
                   <Check className="h-3.5 w-3.5" aria-hidden="true" />
@@ -85,7 +104,7 @@ const TurnoRequestContent = ({
                   `0${index + 1}`
                 )}
               </span>
-              {label}
+              <span className="sr-only sm:not-sr-only">{label}</span>
             </li>
           ))}
         </ol>
@@ -100,12 +119,14 @@ const TurnoRequestContent = ({
           >
             {titles[step]}
           </h1>
-          <p className="mb-7 text-sm leading-relaxed text-slate-500 dark:text-gray-400">
-            {step === 0
-              ? "Ingresa tu documento para solicitar o recuperar tu turno."
-              : step === 1
-                ? "Revisa tus datos y selecciona el servicio de atención."
-                : "Revisa la información antes de confirmar tu solicitud."}
+          <p
+            className="mb-2 text-sm font-semibold text-color dark:text-teal-300"
+            aria-live="polite"
+          >
+            Paso {step + 1} de {steps.length} · {steps[step]}
+          </p>
+          <p className="mb-7 text-base leading-relaxed text-slate-600 dark:text-gray-300">
+            {descriptions[step]}
           </p>
           {unavailable ? (
             <TurnoNotice message="Esta sede no tiene servicios o tipos de documento disponibles. Solicita orientación al personal de la sede." />
@@ -121,11 +142,22 @@ const TurnoRequestContent = ({
                 ) : step === 1 ? (
                   <TurnoDetailsFields
                     formik={formik}
-                    services={config.services}
                     isExistingPatient={verification?.exists === true}
                   />
+                ) : step === 2 ? (
+                  <TurnoServiceSelection
+                    formik={formik}
+                    services={config.services}
+                  />
+                ) : step === 3 ? (
+                  <TurnoPrioritySelection formik={formik} />
                 ) : (
-                  <TurnoRequestSummary values={formik.values} config={config} />
+                  <TurnoRequestSummary
+                    values={formik.values}
+                    config={config}
+                    onEditService={goToService}
+                    onEditPriority={goToPriority}
+                  />
                 )}
                 {error || locationError ? (
                   <TurnoNotice message={locationError || error || ""} />
@@ -154,14 +186,14 @@ const TurnoRequestContent = ({
                       ? "Obteniendo ubicación…"
                       : busy
                         ? "Procesando…"
-                        : step === 0
-                          ? "Continuar"
-                          : step === 1
+                        : step === 4
+                          ? "Solicitar mi turno"
+                          : step === 3
                             ? "Revisar solicitud"
-                            : "Solicitar mi turno"}
+                            : "Continuar"}
                   </Button>
                 </div>
-                {import.meta.env.DEV && step === 2 ? (
+                {import.meta.env.DEV && step === 4 ? (
                   <Button
                     type="button"
                     variant="outline"
@@ -194,6 +226,8 @@ const TurnoRequestPage = () => {
   const load = useStoreTurnoRequest((state) => state.load);
   const reset = useStoreTurnoRequest((state) => state.reset);
   const config = data.slug === slug ? data.config : null;
+
+  console.log(data)
 
   useEffect(() => {
     void load(slug);

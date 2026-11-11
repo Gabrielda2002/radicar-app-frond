@@ -1,18 +1,15 @@
 import type { FormikProps } from "formik";
 import { CheckCircle2 } from "lucide-react";
 import Input from "@/components/common/Ui/Input";
-import Select from "@/components/common/Ui/Select";
-import type { ITurnoOption, ITurnoRequestForm } from "@/models/ITurnos";
+import type { ITurnoRequestForm } from "@/models/ITurnos";
 
 interface TurnoDetailsFieldsProps {
   formik: FormikProps<ITurnoRequestForm>;
-  services: ITurnoOption[];
   isExistingPatient: boolean;
 }
 
 const TurnoDetailsFields = ({
   formik,
-  services,
   isExistingPatient,
 }: TurnoDetailsFieldsProps) => (
   <div className="space-y-5">
@@ -55,40 +52,6 @@ const TurnoDetailsFields = ({
       touched={formik.touched.phoneNumber}
       error={formik.errors.phoneNumber}
       size="lg"
-    />
-    <div className="pt-4 border-t border-slate-100 dark:border-gray-800">
-      <Select
-        name="serviceId"
-        label="¿Qué servicio necesitas?"
-        aria-label="Servicio de atención"
-        required
-        options={services.map((service) => ({
-          value: service.id,
-          label: service.name,
-        }))}
-        value={formik.values.serviceId}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        touched={formik.touched.serviceId}
-        error={formik.errors.serviceId}
-        selectSize="lg"
-      />
-    </div>
-    <Select
-      name="priority"
-      label="Tipo de atención"
-      aria-label="Tipo de atención"
-      options={[
-        { value: "GENERAL", label: "General" },
-        { value: "PRIORITARIO", label: "Prioritaria" },
-      ]}
-      value={formik.values.priority}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      touched={formik.touched.priority}
-      error={formik.errors.priority}
-      selectSize="lg"
-      helpText="Selecciona atención prioritaria si cumples con las condiciones de atención preferencial."
     />
   </div>
 );

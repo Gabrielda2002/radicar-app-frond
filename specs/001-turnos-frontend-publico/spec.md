@@ -35,7 +35,7 @@ Para esta funcionalidad se consideran activos los turnos pendientes, llamados o 
 ### Solicitud y ubicación
 
 - **RF-10:** CUANDO el paciente continúe sin turno activo del día, EL SISTEMA permitirá seleccionar un servicio disponible.
-- **RF-11:** EL SISTEMA ofrecerá las prioridades general y prioritaria, con general seleccionada inicialmente.
+- **RF-11:** EL SISTEMA ofrecerá las prioridades general y prioritaria y requerirá que el paciente seleccione una; el flujo de selección se define en [`003-seleccion-accesible-turno`](../003-seleccion-accesible-turno/spec.md).
 - **RF-12:** CUANDO el paciente confirme una nueva solicitud, EL SISTEMA solicitará su ubicación.
 - **RF-13:** SI no se obtiene la ubicación, ENTONCES EL SISTEMA impedirá emitir el turno e informará cómo reintentar.
 - **RF-14:** SI la ubicación está fuera del radio permitido, ENTONCES EL SISTEMA informará que el paciente debe encontrarse en la sede para solicitar el turno.

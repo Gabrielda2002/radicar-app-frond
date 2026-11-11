@@ -60,7 +60,7 @@ export interface ITurnoRequestForm {
   name: string;
   phoneNumber: string;
   serviceId: string;
-  priority: TurnoPriorityType;
+  priority: TurnoPriorityType | "";
 }
 
 export interface ITurnoCreatedTicket {

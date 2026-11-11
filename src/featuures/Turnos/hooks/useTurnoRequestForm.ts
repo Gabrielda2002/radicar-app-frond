@@ -27,8 +27,16 @@ const detailsSchema = Yup.object({
     .matches(/^\d+$/, "Ingresa solo números")
     .max(10, "Ingresa máximo 10 dígitos")
     .required("Ingresa tu número de celular"),
+});
+
+const serviceSchema = Yup.object({
   serviceId: Yup.string().required("Selecciona el servicio que necesitas"),
-  priority: Yup.string().oneOf(["GENERAL", "PRIORITARIO"]).required(),
+});
+
+const prioritySchema = Yup.object({
+  priority: Yup.string()
+    .oneOf(["GENERAL", "PRIORITARIO"])
+    .required("Responde si requieres atención prioritaria"),
 });
 
 const getLocation = (): Promise<GeolocationPosition> =>
@@ -104,6 +112,7 @@ export const useTurnoRequestForm = (slug: string) => {
 
   const issue = async (values: ITurnoRequestForm) => {
     try {
+      if (!values.serviceId || !values.priority) return;
       const skip = import.meta.env.DEV && skipLocation.current;
       setIsLocating(!skip);
       const position = skip ? null : await getLocation();
@@ -140,15 +149,24 @@ export const useTurnoRequestForm = (slug: string) => {
       name: "",
       phoneNumber: "",
       serviceId: "",
-      priority: "GENERAL",
+      priority: "",
     },
-    validationSchema: step === 0 ? identitySchema : detailsSchema,
+    validationSchema:
+      step === 0
+        ? identitySchema
+        : step === 1
+          ? detailsSchema
+          : step === 2
+            ? serviceSchema
+            : step === 3
+              ? prioritySchema
+              : serviceSchema.concat(prioritySchema),
     onSubmit: async (values, helpers) => {
       setLocationError(null);
       if (step === 0) return identify(values, helpers);
-      if (step === 1) {
+      if (step > 0 && step < 4) {
         helpers.setTouched({});
-        setStep(2);
+        setStep((current) => current + 1);
         return;
       }
       await issue(values);
@@ -167,10 +185,15 @@ export const useTurnoRequestForm = (slug: string) => {
     void formik.submitForm();
   };
 
+  const goToService = () => setStep(2);
+  const goToPriority = () => setStep(3);
+
   return {
     formik,
     step,
     goBack,
+    goToService,
+    goToPriority,
     isLocating,
     locationError,
     submitWithoutLocation,
