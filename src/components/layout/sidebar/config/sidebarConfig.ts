@@ -94,6 +94,14 @@ export const SIDEBAR_CONFIG: SidebarSection[] = [
         roles: [10, 3, 1, 15, 6, 2, 11],
         children: [
           {
+            id: 'turno-attention',
+            title: 'Atención de turnos',
+            icon: ClipboardList,
+            path: '/turnos/atencion',
+            type: 'subcategory',
+            roles: [1, 10]
+          },
+          {
             id: 'radicator',
             title: 'Radicador',
             icon: ClipboardList,
