@@ -62,6 +62,7 @@ const TurnoRequestContent = ({
   const verification = useStoreTurnoRequest((state) => state.data.verification);
   const error = useStoreTurnoRequest((state) => state.error);
   const isLoading = useStoreTurnoRequest((state) => state.isLoading);
+  const load = useStoreTurnoRequest((state) => state.load);
   const heading = useRef<HTMLHeadingElement>(null);
   const busy = formik.isSubmitting || isLoading;
   const unavailable =
@@ -129,7 +130,12 @@ const TurnoRequestContent = ({
             {descriptions[step]}
           </p>
           {unavailable ? (
-            <TurnoNotice message="Esta sede no tiene servicios o tipos de documento disponibles. Solicita orientación al personal de la sede." />
+            <div className="space-y-4">
+              <TurnoNotice message={config.services.length === 0
+                ? "Esta sede no tiene servicios habilitados. No es posible emitir un nuevo turno. Solicita orientación al personal de la sede."
+                : "Esta sede no tiene tipos de documento disponibles. Solicita orientación al personal de la sede."} />
+              <Button type="button" className="min-h-12 min-w-12" isLoading={busy} onClick={() => void load(slug)}>Actualizar opciones de la sede</Button>
+            </div>
           ) : (
             <form onSubmit={formik.handleSubmit} noValidate aria-busy={busy}>
               <fieldset disabled={busy} className="min-w-0 space-y-6">
@@ -162,6 +168,7 @@ const TurnoRequestContent = ({
                 {error || locationError ? (
                   <TurnoNotice message={locationError || error || ""} />
                 ) : null}
+                {error ? <Button type="button" variant="outline" className="min-h-12 min-w-12" onClick={() => void load(slug)}>Actualizar opciones de la sede</Button> : null}
                 <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between">
                   {step > 0 ? (
                     <Button

@@ -179,8 +179,14 @@ const TurnoTicketPage = () => {
                       aria-hidden="true"
                     />
                     <p className="text-3xl font-medium tabular-nums">
-                      {ticket.estimatedWaitMinutes}
-                      <span className="ml-1 text-sm">min</span>
+                      {ticket.estimatedWaitMinutes === null ? (
+                        <span className="text-xl">No disponible</span>
+                      ) : (
+                        <>
+                          {ticket.estimatedWaitMinutes}
+                          <span className="ml-1 text-sm">min</span>
+                        </>
+                      )}
                     </p>
                     <p className="mt-1 text-xs text-slate-500 dark:text-gray-400">
                       Espera estimada

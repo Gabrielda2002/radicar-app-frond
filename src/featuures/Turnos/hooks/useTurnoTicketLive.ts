@@ -38,7 +38,7 @@ interface TicketActualizadoEvent {
   moduloName?: string;
   moduloId?: number;
   aheadCount?: number;
-  estimatedWaitMinutes?: number;
+  estimatedWaitMinutes?: number | null;
   callCount?: number;
   serviceId?: number;
   serviceName?: string;
@@ -211,7 +211,7 @@ export const useTurnoTicketLive = (token: string) => {
       if (payload.status) partial.status = payload.status;
       if (typeof payload.aheadCount === "number")
         partial.aheadCount = payload.aheadCount;
-      if (typeof payload.estimatedWaitMinutes === "number") {
+      if (payload.estimatedWaitMinutes === null || typeof payload.estimatedWaitMinutes === "number") {
         partial.estimatedWaitMinutes = payload.estimatedWaitMinutes;
       }
       if (typeof payload.callCount === "number")

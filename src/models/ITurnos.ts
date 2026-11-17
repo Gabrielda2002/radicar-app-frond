@@ -79,7 +79,7 @@ export interface ITurnoTicket {
   modulo: (ITurnoOption & { code: string }) | null;
   advisorName: string | null;
   aheadCount: number;
-  estimatedWaitMinutes: number;
+  estimatedWaitMinutes: number | null;
   callCount: number;
   hasSurvey: boolean;
   createdAt: string;

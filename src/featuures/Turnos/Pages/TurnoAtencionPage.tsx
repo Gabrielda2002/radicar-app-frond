@@ -22,6 +22,8 @@ const TurnoAtencionPage = () => {
     options,
     error,
     isLoading,
+    optionsLoading,
+    optionsError,
     isMutating,
     loadOptions,
     loadState,
@@ -34,6 +36,35 @@ const TurnoAtencionPage = () => {
   const [transferServiceId, setTransferServiceId] = useState("");
   const [cancelReason, setCancelReason] = useState("");
   const authorized = ALLOWED_ROLES.includes(Number(rol));
+  const selectedModule = options.modules.find(
+    (module) => module.id === Number(moduleId),
+  );
+  const selectedServices =
+    options.servicesByHeadquarter.find(
+      (group) => group.headquarterId === selectedModule?.headquarterId,
+    )?.services ?? [];
+  const validServiceIds = serviceIds.filter((id) =>
+    selectedServices.some((service) => service.id === id),
+  );
+  const activeModule = options.modules.find(
+    (module) => module.id === data?.session?.modulo.id,
+  );
+  const transferOptions = (
+    options.servicesByHeadquarter.find(
+      (group) => group.headquarterId === activeModule?.headquarterId,
+    )?.services ?? []
+  ).filter((service) => service.id !== data?.activeTurn?.service.id);
+  const changeModule = (value: string) => {
+    const module = options.modules.find((item) => item.id === Number(value));
+    const services =
+      options.servicesByHeadquarter.find(
+        (group) => group.headquarterId === module?.headquarterId,
+      )?.services ?? [];
+    setModuleId(value);
+    setServiceIds((ids) =>
+      ids.filter((id) => services.some((service) => service.id === id)),
+    );
+  };
 
   useEffect(() => {
     if (!authorized) return;
@@ -49,7 +80,9 @@ const TurnoAtencionPage = () => {
   };
 
   const handleStart = async () => {
-    const result = await startSession(Number(moduleId), serviceIds);
+    if (!selectedModule?.isAvailable || !validServiceIds.length || optionsError)
+      return;
+    const result = await startSession(Number(moduleId), validServiceIds);
     if (result.ok) setServiceIds([]);
   };
 
@@ -58,7 +91,13 @@ const TurnoAtencionPage = () => {
     notes?: string,
     newServiceId?: number,
   ) => {
+    if (
+      action === "TRANSFERIR" &&
+      !transferOptions.some((service) => service.id === newServiceId)
+    )
+      return;
     const result = await performAction({ action, notes, newServiceId });
+    if (result.ok) setTransferServiceId("");
     if (result.ok && action === "CANCELAR") setCancelReason("");
   };
 
@@ -74,7 +113,10 @@ const TurnoAtencionPage = () => {
   if (!data && isLoading) {
     return (
       <main className="mx-auto max-w-7xl p-8">
-          <p role="status" className="text-sm font-semibold text-slate-600 dark:text-gray-300">
+        <p
+          role="status"
+          className="text-sm font-semibold text-slate-600 dark:text-gray-300"
+        >
           Cargando tu sesión de atención…
         </p>
       </main>
@@ -99,7 +141,8 @@ const TurnoAtencionPage = () => {
           type="button"
           onClick={() => void Promise.all([loadOptions(), loadState()])}
           variant="outline"
-          isLoading={isLoading}
+          isLoading={isLoading || optionsLoading}
+          disabled={isMutating}
           icon={<RefreshCw className="h-4 w-4" />}
           className="gap-2 rounded-lg border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
         >
@@ -107,15 +150,26 @@ const TurnoAtencionPage = () => {
         </Button>
       </header>
 
-      {error && (
+      {(error || optionsError) && (
         <div
           role="alert"
           className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200"
         >
-          {error}
+          {error || optionsError}
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isMutating || isLoading || optionsLoading}
+            onClick={() => void Promise.all([loadOptions(), loadState()])}
+          >
+            Reintentar consulta
+          </Button>
         </div>
       )}
 
+      {optionsLoading ? (
+        <p role="status">Cargando módulos y servicios…</p>
+      ) : null}
       {!data?.hasActiveSession ? (
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)]">
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-7 dark:border-gray-700 dark:bg-gray-800">
@@ -143,25 +197,39 @@ const TurnoAtencionPage = () => {
               aria-label="Módulo de atención"
               options={options.modules.map((module) => ({
                 value: module.id,
-                label: `${module.headquarterName} · ${module.code} — ${module.name}${module.isAvailable ? "" : " (Ocupado)"}`,
+                label: `${module.headquarterName} · ${module.code} — ${module.name} · ${module.isPriority ? "Prioritario" : "General"}${module.isAvailable ? "" : " (Ocupado)"}`,
                 disabled: !module.isAvailable,
               }))}
               value={moduleId}
-              onChange={(event) => setModuleId(event.target.value)}
+              onChange={(event) => changeModule(event.target.value)}
+              disabled={optionsLoading || isMutating || Boolean(optionsError)}
               placeholder="Seleccioná un módulo disponible"
               selectSize="lg"
               className="mb-5 rounded-lg border-slate-300 text-sm text-slate-800 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
-            <fieldset className="space-y-2">
+            {selectedModule ? (
+              <p className="mb-4 text-sm">
+                Sede: {selectedModule.headquarterName} · Atención exclusiva:{" "}
+                {selectedModule.isPriority ? "Prioritaria" : "General"}
+              </p>
+            ) : null}
+            <fieldset
+              className="space-y-2"
+              disabled={isMutating || optionsLoading || Boolean(optionsError)}
+            >
               <legend className="mb-2 text-sm font-semibold text-slate-700 dark:text-gray-200">
                 Servicios de atención
               </legend>
-              {options.services.length === 0 && (
-                <p className="text-sm text-slate-500 dark:text-gray-400">
-                  No hay servicios activos disponibles.
-                </p>
-              )}
-              {options.services.map((service) => (
+              {!optionsLoading &&
+                !optionsError &&
+                selectedServices.length === 0 && (
+                  <p className="text-sm text-slate-500 dark:text-gray-400">
+                    {selectedModule
+                      ? "Esta sede no tiene servicios habilitados. Configura al menos uno antes de iniciar atención."
+                      : "Selecciona un módulo para consultar los servicios de su sede."}
+                  </p>
+                )}
+              {selectedServices.map((service) => (
                 <label
                   key={service.id}
                   className="flex cursor-pointer items-center gap-3 rounded-lg border border-slate-200 px-3 py-3 text-sm text-slate-700 hover:border-teal-300 hover:bg-teal-50/40 dark:border-gray-700 dark:text-gray-200 dark:hover:border-teal-700 dark:hover:bg-gray-700 [&>div]:mb-0"
@@ -180,7 +248,15 @@ const TurnoAtencionPage = () => {
             <Button
               type="button"
               onClick={() => void handleStart()}
-              disabled={!moduleId || serviceIds.length === 0 || isMutating}
+              disabled={
+                !selectedModule?.isAvailable ||
+                validServiceIds.length === 0 ||
+                isMutating ||
+                isLoading ||
+                optionsLoading ||
+                Boolean(optionsError) ||
+                !data
+              }
               fullWidth
               size="lg"
               className="mt-6"
@@ -202,8 +278,8 @@ const TurnoAtencionPage = () => {
               </p>
             </div>
             <div className="mt-8 flex items-center gap-3 border-t border-white/15 pt-5 text-sm text-slate-300">
-              <Clock3 className="h-5 w-5 text-teal-300" /> Prioridad y
-              antigüedad determinan el orden.
+              <Clock3 className="h-5 w-5 text-teal-300" /> Orden de llegada
+              dentro de la cola compatible con el tipo de módulo.
             </div>
           </aside>
         </section>
@@ -217,6 +293,11 @@ const TurnoAtencionPage = () => {
               <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">
                 {data.session?.modulo.code} · {data.session?.modulo.name}
               </h2>
+              <p className="mt-1 text-sm">
+                {activeModule
+                  ? `Sede: ${activeModule.headquarterName} · Atención exclusiva: ${activeModule.isPriority ? "Prioritaria" : "General"}`
+                  : "Consulta las opciones para conocer la sede y el tipo del módulo."}
+              </p>
               <p className="mt-1 text-sm text-slate-600 dark:text-gray-300">
                 {data.session?.services
                   .map((service) => service.name)
@@ -244,14 +325,23 @@ const TurnoAtencionPage = () => {
           {data.activeTurn ? (
             <ActiveTurnCard
               turn={data.activeTurn}
-              isMutating={isMutating}
+              isMutating={
+                isMutating ||
+                isLoading ||
+                optionsLoading ||
+                Boolean(optionsError)
+              }
               cancelReason={cancelReason}
               setCancelReason={setCancelReason}
-              transferServiceId={transferServiceId}
+              transferServiceId={
+                transferOptions.some(
+                  (service) => service.id === Number(transferServiceId),
+                )
+                  ? transferServiceId
+                  : ""
+              }
               setTransferServiceId={setTransferServiceId}
-              transferOptions={options.services.filter(
-                (service) => service.id !== data.activeTurn?.service.id,
-              )}
+              transferOptions={transferOptions}
               onAction={handleAction}
             />
           ) : (
@@ -275,7 +365,9 @@ const TurnoAtencionPage = () => {
           <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-gray-700">
               <div>
-                <h2 className="font-bold text-slate-900 dark:text-white">Próximos turnos</h2>
+                <h2 className="font-bold text-slate-900 dark:text-white">
+                  Próximos turnos
+                </h2>
                 <p className="mt-1 text-sm text-slate-500 dark:text-gray-400">
                   {data.pendingQueueCount} en espera · solo consulta
                 </p>
@@ -438,6 +530,11 @@ const ActiveTurnCard = ({
             >
               Transferir a otro servicio activo
             </label>
+            {transferOptions.length === 0 ? (
+              <p role="status" className="mb-2 text-sm">
+                No hay otros servicios habilitados en esta sede para transferir.
+              </p>
+            ) : null}
             <div className="flex gap-2">
               <Select
                 id="transfer-service"
@@ -453,7 +550,12 @@ const ActiveTurnCard = ({
               />
               <Button
                 type="button"
-                disabled={isMutating || !transferServiceId}
+                disabled={
+                  isMutating ||
+                  !transferOptions.some(
+                    (service) => service.id === Number(transferServiceId),
+                  )
+                }
                 onClick={() =>
                   void onAction(
                     "TRANSFERIR",
@@ -473,7 +575,7 @@ const ActiveTurnCard = ({
         <div>
           <label
             htmlFor="cancel-reason"
-              className="mb-2 block text-sm font-semibold text-slate-700 dark:text-gray-200"
+            className="mb-2 block text-sm font-semibold text-slate-700 dark:text-gray-200"
           >
             Motivo de cancelación
           </label>

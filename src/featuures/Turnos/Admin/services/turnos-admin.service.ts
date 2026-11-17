@@ -5,6 +5,7 @@ import type {
   ITurnoModuloAdmin,
   ITurnoModuloInput,
   ITurnoModuloUpdate,
+  ITurnoSedeServicios,
 } from "@/models/ITurnoAdmin";
 import { getTurnoError } from "../../services/turnos.service";
 
@@ -33,10 +34,8 @@ export const fetchTurnoModulos = async (
   const { data } = await api.get<ITurnoModuloAdmin[]>("/turnos/admin/modulos", {
     params: { headquarterId },
   });
-  if (!Array.isArray(data))
-    throw new Error(
-      "La información de los módulos tiene un formato incorrecto.",
-    );
+  if (!Array.isArray(data) || !data.every((module) => typeof module.isPriority === "boolean"))
+    throw new Error("La información de los módulos tiene un formato incorrecto.");
   return data;
 };
 
@@ -54,3 +53,19 @@ export const updateTurnoModulo = async (
 };
 
 export { getTurnoError };
+
+export const fetchTurnoSedeServicios = async (headquarterId: number): Promise<ITurnoSedeServicios> => {
+  const { data } = await api.get<ITurnoSedeServicios>(`/turnos/admin/sedes/${headquarterId}/servicios`);
+  if (data.headquarterId !== headquarterId || !Array.isArray(data.services) || !Array.isArray(data.assignedServiceIds))
+    throw new Error("La configuración de servicios tiene un formato incorrecto.");
+  return data;
+};
+
+export const saveTurnoSedeServicios = async (headquarterId: number, serviceIds: number[]): Promise<number[]> => {
+  const { data } = await api.put<{ headquarterId: number; serviceIds: number[] }>(
+    `/turnos/admin/sedes/${headquarterId}/servicios`, { serviceIds },
+  );
+  if (data.headquarterId !== headquarterId || !Array.isArray(data.serviceIds))
+    throw new Error("No se recibió confirmación de los servicios guardados. Consulta nuevamente la sede.");
+  return data.serviceIds;
+};

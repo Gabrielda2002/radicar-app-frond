@@ -1,6 +1,7 @@
 import type { TurnoPriorityType, TurnoStatusType } from "./ITurnos";
 
 export interface ITurnoAtencionModule {
+  isPriority: boolean;
   id: number;
   headquarterId: number;
   headquarterName: string;
@@ -17,6 +18,7 @@ export interface ITurnoAtencionService {
 export interface ITurnoAtencionOptions {
   modules: ITurnoAtencionModule[];
   services: ITurnoAtencionService[];
+  servicesByHeadquarter: { headquarterId: number; services: ITurnoAtencionService[] }[];
 }
 
 export interface ITurnoAtencionQueueItem {

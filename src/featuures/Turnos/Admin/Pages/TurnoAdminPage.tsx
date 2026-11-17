@@ -18,6 +18,7 @@ import TurnoSedePickerModal, {
   type ITurnoSedeOption,
 } from "../Components/TurnoSedePickerModal";
 import TurnoModulosSection from "../Components/TurnoModulosSection";
+import TurnoSedeServiciosSection from "../Components/TurnoSedeServiciosSection";
 
 interface ISelectedSede {
   headquarterId: number;
@@ -62,8 +63,8 @@ const TurnoAdminPage = () => {
     () =>
       selected
         ? (sedes.find(
-            (sede) => sede.headquarterId === selected.headquarterId,
-          ) ?? null)
+          (sede) => sede.headquarterId === selected.headquarterId,
+        ) ?? null)
         : null,
     [selected, sedes],
   );
@@ -207,7 +208,14 @@ const TurnoAdminPage = () => {
             <TurnoPublicLinks slug={selectedConfig.slug} />
           ) : null}
           {selectedConfig ? (
+            <TurnoSedeServiciosSection
+              key={`services-${selected.headquarterId}`}
+              {...selected}
+            />
+          ) : null}
+          {selectedConfig ? (
             <TurnoModulosSection
+              key={selected.headquarterId}
               headquarterId={selected.headquarterId}
               headquarterName={selected.headquarterName}
             />

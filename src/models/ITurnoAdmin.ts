@@ -22,6 +22,7 @@ export interface ITurnoSedeConfigInput {
 }
 
 export interface ITurnoModuloAdmin {
+  isPriority: boolean;
   id: number;
   headquarterId: number;
   headquarterName?: string;
@@ -31,13 +32,21 @@ export interface ITurnoModuloAdmin {
 }
 
 export interface ITurnoModuloInput {
+  isPriority: boolean;
   headquarterId: number;
   code: string;
   name: string;
 }
 
 export interface ITurnoModuloUpdate {
+  isPriority?: boolean;
   code?: string;
   name?: string;
   isActive?: boolean;
+}
+
+export interface ITurnoSedeServicios {
+  headquarterId: number;
+  assignedServiceIds: number[];
+  services: { id: number; name: string; isAssigned: boolean }[];
 }

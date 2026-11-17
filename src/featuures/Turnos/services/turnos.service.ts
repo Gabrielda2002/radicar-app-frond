@@ -17,21 +17,50 @@ import type {
   ITurnoAtencionState,
 } from "@/models/ITurnoAtencion";
 
-export const fetchTurnoAtencionOptions = async (): Promise<ITurnoAtencionOptions> => {
-  const { data } = await api.get<ITurnoAtencionOptions>("/turnos/atencion/opciones");
-  if (!Array.isArray(data.modules) || !Array.isArray(data.services)) {
-    throw new Error("Las opciones de atención tienen un formato incorrecto.");
-  }
-  return data;
-};
+export const fetchTurnoAtencionOptions =
+  async (): Promise<ITurnoAtencionOptions> => {
+    const { data } = await api.get<ITurnoAtencionOptions>(
+      "/turnos/atencion/opciones",
+    );
+    if (
+      !Array.isArray(data.modules) ||
+      !data.modules.every(
+        (module) =>
+          typeof module.isPriority === "boolean" &&
+          Number.isInteger(module.headquarterId),
+      ) ||
+      !Array.isArray(data.servicesByHeadquarter) ||
+      !data.servicesByHeadquarter.every(
+        (group) =>
+          Number.isInteger(group.headquarterId) &&
+          Array.isArray(group.services) &&
+          group.services.every(
+            (service) =>
+              Number.isInteger(service.id) && typeof service.name === "string",
+          ),
+      )
+    ) {
+      throw new Error("Las opciones de atención tienen un formato incorrecto.");
+    }
+    return {
+      ...data,
+      services: Array.isArray(data.services) ? data.services : [],
+    };
+  };
 
-export const fetchTurnoAtencionState = async (): Promise<ITurnoAtencionState> => {
-  const { data } = await api.get<ITurnoAtencionState>("/turnos/atencion/estado-actual");
-  if (typeof data.hasActiveSession !== "boolean" || !Array.isArray(data.pendingQueue)) {
-    throw new Error("El estado de atención tiene un formato incorrecto.");
-  }
-  return data;
-};
+export const fetchTurnoAtencionState =
+  async (): Promise<ITurnoAtencionState> => {
+    const { data } = await api.get<ITurnoAtencionState>(
+      "/turnos/atencion/estado-actual",
+    );
+    if (
+      typeof data.hasActiveSession !== "boolean" ||
+      !Array.isArray(data.pendingQueue)
+    ) {
+      throw new Error("El estado de atención tiene un formato incorrecto.");
+    }
+    return data;
+  };
 
 export const startTurnoAtencionSession = async (input: {
   moduloId: number;
@@ -45,11 +74,21 @@ export const closeTurnoAtencionSession = async (): Promise<void> => {
 };
 
 export const executeTurnoAtencionAction = async (input: {
-  action: "LLAMAR" | "RELLAMAR" | "INICIAR" | "FINALIZAR" | "NO_ASISTIO" | "TRANSFERIR" | "CANCELAR";
+  action:
+  | "LLAMAR"
+  | "RELLAMAR"
+  | "INICIAR"
+  | "FINALIZAR"
+  | "NO_ASISTIO"
+  | "TRANSFERIR"
+  | "CANCELAR";
   newServiceId?: number;
   notes?: string;
 }): Promise<ITurnoAtencionActionResponse> => {
-  const { data } = await api.post<ITurnoAtencionActionResponse>("/turnos/atencion/accion", input);
+  const { data } = await api.post<ITurnoAtencionActionResponse>(
+    "/turnos/atencion/accion",
+    input,
+  );
   return data;
 };
 

@@ -22,6 +22,8 @@ interface UseStoreTurnoAtencion {
   options: ITurnoAtencionOptions;
   error: string | null;
   isLoading: boolean;
+  optionsLoading: boolean;
+  optionsError: string | null;
   isMutating: boolean;
   loadOptions: () => Promise<void>;
   loadState: () => Promise<void>;
@@ -31,28 +33,32 @@ interface UseStoreTurnoAtencion {
   reset: () => void;
 }
 
-const emptyOptions: ITurnoAtencionOptions = { modules: [], services: [] };
+const emptyOptions: ITurnoAtencionOptions = { modules: [], services: [], servicesByHeadquarter: [] };
 
-export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set) => ({
+export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set, get) => ({
   data: null,
   options: emptyOptions,
   error: null,
   isLoading: false,
+  optionsLoading: false,
+  optionsError: null,
   isMutating: false,
 
   loadOptions: async () => {
-    set({ isLoading: true, error: null });
+    if (get().optionsLoading || get().isMutating) return;
+    set({ optionsLoading: true, optionsError: null });
     try {
       const options = await fetchTurnoAtencionOptions();
       set({ options });
     } catch (error: unknown) {
-      set({ error: getTurnoError(error) });
+      set({ optionsError: getTurnoError(error) });
     } finally {
-      set({ isLoading: false });
+      set({ optionsLoading: false });
     }
   },
 
   loadState: async () => {
+    if (get().isLoading || get().isMutating) return;
     set({ isLoading: true, error: null });
     try {
       const data = await fetchTurnoAtencionState();
@@ -65,6 +71,7 @@ export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set) => ({
   },
 
   startSession: async (moduloId, serviceIds) => {
+    if (get().isMutating || get().isLoading || get().optionsLoading) return { ok: false, message: null };
     set({ isMutating: true, error: null });
     try {
       await startTurnoAtencionSession({ moduloId, serviceIds });
@@ -81,6 +88,7 @@ export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set) => ({
   },
 
   closeSession: async () => {
+    if (get().isMutating || get().isLoading) return { ok: false, message: null };
     set({ isMutating: true, error: null });
     try {
       await closeTurnoAtencionSession();
@@ -97,12 +105,16 @@ export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set) => ({
   },
 
   performAction: async (input) => {
+    if (get().isMutating || get().isLoading) return { ok: false, message: null };
     set({ isMutating: true, error: null });
     try {
-      await executeTurnoAtencionAction(input);
+      const response = await executeTurnoAtencionAction(input);
       const data = await fetchTurnoAtencionState();
-      set({ data });
-      return { ok: true, message: null };
+      set({
+        data, error: input.action === "LLAMAR" && !data.activeTurn
+          ? "No hay turnos disponibles para los servicios y el tipo de módulo de esta sesión." : null
+      });
+      return { ok: true, message: response.message };
     } catch (error: unknown) {
       const message = getTurnoError(error);
       set({ error: message });
@@ -112,5 +124,5 @@ export const useStoreTurnoAtencion = create<UseStoreTurnoAtencion>((set) => ({
     }
   },
 
-  reset: () => set({ data: null, options: emptyOptions, error: null, isLoading: false, isMutating: false }),
+  reset: () => set({ data: null, options: emptyOptions, error: null, isLoading: false, isMutating: false, optionsLoading: false, optionsError: null }),
 }));

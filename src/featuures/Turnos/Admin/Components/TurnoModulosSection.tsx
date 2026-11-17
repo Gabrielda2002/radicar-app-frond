@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Pencil, Plus } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,6 +11,7 @@ import {
 } from "@/components/common/ReusableTable";
 import Button from "@/components/common/Ui/Button";
 import Input from "@/components/common/Ui/Input";
+import Select from "@/components/common/Ui/Select";
 import Modal from "@/components/common/Ui/Modal";
 import ModalBody from "@/components/common/Ui/ModalBody";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
@@ -23,6 +24,7 @@ interface TurnoModulosSectionProps {
 }
 
 interface IModuloFormValues {
+  moduleType: string;
   code: string;
   name: string;
 }
@@ -30,6 +32,9 @@ interface IModuloFormValues {
 const EMPTY_MODULOS: ITurnoModuloAdmin[] = [];
 
 const moduloSchema = Yup.object({
+  moduleType: Yup.string()
+    .oneOf(["GENERAL", "PRIORITARIO"])
+    .required("Selecciona el tipo de atención"),
   code: Yup.string()
     .trim()
     .min(1, "El código es requerido")
@@ -49,17 +54,27 @@ const TurnoModulosSection = ({
   const modulos = useStoreTurnoAdmin(
     (state) => state.data.modulosBySede[headquarterId] ?? EMPTY_MODULOS,
   );
-  const isLoading = useStoreTurnoAdmin((state) => state.modulosLoading);
-  const error = useStoreTurnoAdmin((state) => state.modulosError);
+  const isLoading = useStoreTurnoAdmin(
+    (state) =>
+      state.modulosHeadquarterId !== headquarterId || state.modulosLoading,
+  );
+  const error = useStoreTurnoAdmin((state) =>
+    state.modulosHeadquarterId === headquarterId ? state.modulosError : null,
+  );
   const isMutating = useStoreTurnoAdmin((state) => state.moduloMutationLoading);
   const loadModulos = useStoreTurnoAdmin((state) => state.loadModulos);
   const createModulo = useStoreTurnoAdmin((state) => state.createModulo);
   const updateModulo = useStoreTurnoAdmin((state) => state.updateModulo);
   const [editing, setEditing] = useState<ITurnoModuloAdmin | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const active = useRef(true);
 
   useEffect(() => {
+    active.current = true;
     void loadModulos(headquarterId);
+    return () => {
+      active.current = false;
+    };
   }, [headquarterId, loadModulos]);
 
   const tableState = useTableState<ITurnoModuloAdmin>({
@@ -98,22 +113,38 @@ const TurnoModulosSection = ({
           </span>
         ),
       },
+      {
+        key: "isPriority",
+        header: "Tipo",
+        size: "sm",
+        accessor: (item) => (item.isPriority ? "Prioritario" : "General"),
+      },
     ],
     [],
   );
 
   const formik = useFormik<IModuloFormValues>({
     enableReinitialize: true,
-    initialValues: { code: editing?.code ?? "", name: editing?.name ?? "" },
+    initialValues: {
+      code: editing?.code ?? "",
+      name: editing?.name ?? "",
+      moduleType: editing
+        ? editing.isPriority
+          ? "PRIORITARIO"
+          : "GENERAL"
+        : "",
+    },
     validationSchema: moduloSchema,
     onSubmit: async (values) => {
       const input = {
         code: values.code.trim().toUpperCase(),
         name: values.name.trim(),
+        isPriority: values.moduleType === "PRIORITARIO",
       };
       const result = editing
         ? await updateModulo(editing.id, input)
         : await createModulo({ headquarterId, ...input });
+      if (!active.current) return;
       if (!result.ok) {
         toast.error(result.message ?? "No se pudo guardar el módulo.");
         return;
@@ -126,6 +157,7 @@ const TurnoModulosSection = ({
   });
 
   const openCreateForm = () => {
+    formik.resetForm({ values: { code: "", name: "", moduleType: "" } });
     setEditing(null);
     setIsFormOpen(true);
   };
@@ -140,6 +172,7 @@ const TurnoModulosSection = ({
     const result = await updateModulo(modulo.id, {
       isActive: !modulo.isActive,
     });
+    if (!active.current) return;
     if (!result.ok) {
       toast.error(result.message ?? "No se pudo cambiar el estado del módulo.");
       return;
@@ -281,6 +314,32 @@ const TurnoModulosSection = ({
               touched={formik.touched.name}
               error={formik.errors.name}
             />
+            <Select
+              name="moduleType"
+              label="Tipo de atención"
+              aria-label="Tipo de atención"
+              required
+              options={[
+                { value: "GENERAL", label: "General" },
+                { value: "PRIORITARIO", label: "Prioritario" },
+              ]}
+              value={formik.values.moduleType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              touched={formik.touched.moduleType}
+              error={formik.errors.moduleType}
+              disabled={isMutating}
+              placeholder="Selecciona un tipo"
+            />
+            <p className="text-sm text-slate-600 dark:text-gray-300">
+              Un módulo general atiende exclusivamente turnos generales; uno
+              prioritario, exclusivamente turnos prioritarios.
+            </p>
+            {editing ? (
+              <p className="text-sm">
+                Tipo vigente: {editing.isPriority ? "Prioritario" : "General"}
+              </p>
+            ) : null}
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
               <Button
                 type="button"
@@ -292,6 +351,7 @@ const TurnoModulosSection = ({
               </Button>
               <Button
                 type="submit"
+                disabled={!formik.values.moduleType}
                 isLoading={formik.isSubmitting || isMutating}
               >
                 Guardar módulo
