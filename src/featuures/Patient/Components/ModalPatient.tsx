@@ -126,16 +126,16 @@ const ModalPatient: React.FC<ModalPatientProps> = ({
     if (id !== null && paciente) {
       formik.setValues({
         documentType: paciente.documentRelation.id.toString(),
-        email: paciente.email,
+        email: paciente.email ?? "",
         documentNumber: paciente.documentNumber.toString(),
-        landline: paciente.landline,
+        landline: paciente.landline ?? "",
         name: paciente.name,
-        agreement: paciente.convenioRelation.id.toString(),
+        agreement: paciente.convenioRelation?.id.toString() ?? "",
         phoneNumber: paciente.phoneNumber,
         phoneNumber2: paciente.phoneNumber2 ?? "",
-        ipsPrimaria: paciente.ipsPrimariaRelation.id.toString(),
-        address: paciente.address,
-        regime: paciente.regime,
+        ipsPrimaria: paciente.ipsPrimariaRelation?.id.toString() ?? "",
+        address: paciente.address ?? "",
+        regime: paciente.regime ?? "",
       });
     }
   }, [id, paciente]);

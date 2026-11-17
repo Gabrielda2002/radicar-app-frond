@@ -69,7 +69,7 @@ const TablaPatient = ({ hidePageHeader = false }: TablaPatientProps) => {
       key: "agreement",
       header: "Convenio",
       size: "md" as const,
-      accessor: (item: IPacientes) => item.convenioRelation.name,
+      accessor: (item: IPacientes) => item.convenioRelation?.name ?? "Pendiente",
     },
     {
       key: "status",

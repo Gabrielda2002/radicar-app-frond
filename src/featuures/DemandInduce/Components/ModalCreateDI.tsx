@@ -238,11 +238,11 @@ const ModalCreateDI: React.FC<ModalCreateDIProps> = ({ refresh }) => {
   useEffect(() => {
     if (data) {
       formik.setFieldValue("tipoDocumento", data.documentRelation.name);
-      formik.setFieldValue("email", data.email);
+      formik.setFieldValue("email", data.email ?? "");
       formik.setFieldValue("phoneNumber", data.phoneNumber);
-      formik.setFieldValue("phoneNumber2", data.phoneNumber2);
-      formik.setFieldValue("landline", data.landline);
-      formik.setFieldValue("address", data.address);
+      formik.setFieldValue("phoneNumber2", data.phoneNumber2 ?? "");
+      formik.setFieldValue("landline", data.landline ?? "");
+      formik.setFieldValue("address", data.address ?? "");
       formik.setFieldValue("idPatient", data.id.toString());
     }
   }, [documento, data]);
