@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="turnos-backend" content="%VITE_URL_BACKEND%">
+    <title>Pantalla de turnos | NordVital IPS</title>
+    <link rel="stylesheet" href="/src/featuures/Turnos/Pages/turnos-tv-lite.css">
+  </head>
+  <body>
+    <header class="tv-header">
+      <img src="/src/assets/Layout/logo-navbar.png" alt="NordVital IPS">
+      <div class="tv-heading">
+        <p class="eyebrow">NordVital IPS · Sala de espera</p>
+        <h1 id="sede">Sede de atención</h1>
+      </div>
+      <div class="tv-controls">
+        <span id="connection" class="connection" role="status">Cargando turnos…</span>
+        <button type="button" id="audio" disabled>Activar audio</button>
+      </div>
+    </header>
+    <p id="notice" class="notice" role="status">Consultando la pantalla de la sede.</p>
+    <noscript><p class="notice">Esta pantalla necesita JavaScript para actualizar los turnos.</p></noscript>
+    <main class="tv-layout">
+      <section class="current" aria-label="Turno destacado">
+        <div class="panel" id="current-panel">
+          <div class="wave" aria-hidden="true"></div>
+          <div class="wave wave-delay" aria-hidden="true"></div>
+          <div class="panel-content">
+            <p class="badge" id="call-status">Sala de espera</p>
+            <p class="ticket-label">Código de turno</p>
+            <p class="ticket" id="ticket">—</p>
+            <p class="module" id="module">Por favor, esté atento a su llamado</p>
+          </div>
+        </div>
+      </section>
+      <section class="upcoming" aria-labelledby="upcoming-title">
+        <div class="panel">
+          <h2 id="upcoming-title">Próximos turnos</h2>
+          <p id="upcoming-empty">Esperando información…</p>
+          <ol id="upcoming-list"></ol>
+        </div>
+      </section>
+    </main>
+    <footer id="audio-status" role="status">Pulse «Activar audio» para escuchar una prueba de voz.</footer>
+    <script src="/turnos-tv-lite.js"></script>
+  </body>
+</html>

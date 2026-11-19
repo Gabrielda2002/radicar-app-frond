@@ -22,6 +22,12 @@ const TurnoPublicLinks = ({ slug }: TurnoPublicLinksProps) => {
       description: "Enlace público para mostrar los turnos llamados.",
       url: `${origin}/turnos/tv/${slug}`,
     },
+    {
+      key: "tv-lite",
+      label: "Pantalla de sala Lite",
+      description: "Versión compatible con navegadores de televisores antiguos.",
+      url: `${origin}/turnos/tv-lite/${slug}`,
+    },
   ];
 
   const handleCopy = async (label: string, url: string) => {
