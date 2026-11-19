@@ -1,9 +1,11 @@
 import { MapPin } from "lucide-react";
 import type { ITurnoSedeConfig, ITurnoRequestForm } from "@/models/ITurnos";
+import { TURNO_CLASSIFICATION_LABELS } from "../constants/turnoClassification";
 
 interface TurnoRequestSummaryProps {
   values: ITurnoRequestForm;
   config: ITurnoSedeConfig;
+  onEditClassification: () => void;
   onEditService: () => void;
   onEditPriority: () => void;
 }
@@ -11,6 +13,7 @@ interface TurnoRequestSummaryProps {
 const TurnoRequestSummary = ({
   values,
   config,
+  onEditClassification,
   onEditService,
   onEditPriority,
 }: TurnoRequestSummaryProps) => {
@@ -24,6 +27,12 @@ const TurnoRequestSummary = ({
     ["Paciente", values.name],
     ["Documento", `${documentType} ${values.documentNumber}`],
     ["Celular", values.phoneNumber],
+    [
+      "Clasificación",
+      values.classification
+        ? TURNO_CLASSIFICATION_LABELS[values.classification]
+        : "",
+    ],
   ];
   return (
     <div className="space-y-6">
@@ -51,7 +60,14 @@ const TurnoRequestSummary = ({
           </dd>
         </div>
       </dl>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <button
+          type="button"
+          onClick={onEditClassification}
+          className="min-h-12 rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-color hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/40 dark:border-gray-700 dark:text-teal-300 dark:hover:bg-gray-800"
+        >
+          Cambiar clasificación
+        </button>
         <button
           type="button"
           onClick={onEditService}

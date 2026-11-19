@@ -13,6 +13,7 @@ import TurnoPublicLayout from "../Components/TurnoPublicLayout";
 import TurnoNotice from "../Components/TurnoNotice";
 import TurnoIdentityFields from "../Components/TurnoIdentityFields";
 import TurnoDetailsFields from "../Components/TurnoDetailsFields";
+import TurnoClassificationSelection from "../Components/TurnoClassificationSelection";
 import TurnoServiceSelection from "../Components/TurnoServiceSelection";
 import TurnoPrioritySelection from "../Components/TurnoPrioritySelection";
 import TurnoRequestSummary from "../Components/TurnoRequestSummary";
@@ -22,23 +23,18 @@ import { useStoreTurnoRequest } from "../store/useStoreTurnoRequest";
 const steps = [
   "Identificación",
   "Tus datos",
+  "Clasificación",
   "Servicio",
   "Prioridad",
   "Confirmación",
 ];
 const titles = [
-  "Tu turno empieza aquí.",
+  "Ingresa tu documento.",
   "Confirma tus datos.",
-  "Elige tu servicio.",
-  "Elige tu prioridad.",
+  "¿Qué trámite vas a realizar?",
+  "¿Qué servicio necesitas?",
+  "¿Requieres atención prioritaria?",
   "Revisa tu solicitud.",
-];
-const descriptions = [
-  "Ingresa tu documento para solicitar o recuperar tu turno.",
-  "Revisa tus datos antes de continuar.",
-  "Toca el servicio que necesitas.",
-  "Responde una pregunta para definir el tipo de atención.",
-  "Verifica la información antes de confirmar tu solicitud.",
 ];
 
 const TurnoRequestContent = ({
@@ -52,6 +48,7 @@ const TurnoRequestContent = ({
     formik,
     step,
     goBack,
+    goToClassification,
     goToService,
     goToPriority,
     isLocating,
@@ -88,13 +85,13 @@ const TurnoRequestContent = ({
       <section className="overflow-hidden bg-white border border-slate-200 rounded-2xl shadow-sm dark:bg-gray-900 dark:border-gray-800">
         <ol
           aria-label="Pasos de la solicitud"
-          className="grid grid-cols-5 gap-1 px-3 py-5 border-b border-slate-100 sm:gap-2 sm:px-8 dark:border-gray-800"
+          className="grid grid-cols-6 gap-1 px-3 py-5 border-b border-slate-100 sm:gap-2 sm:px-8 dark:border-gray-800"
         >
           {steps.map((label, index) => (
             <li
               key={label}
               aria-current={step === index ? "step" : undefined}
-              className={`flex min-w-0 flex-col items-center gap-2 text-center text-[10px] leading-tight sm:flex-row sm:text-left sm:text-xs ${step === index ? "font-semibold text-color dark:text-teal-300" : "text-slate-500 dark:text-gray-400"}`}
+              className={`flex min-w-0 flex-col items-center gap-2 text-center text-[10px] leading-tight sm:text-xs ${step === index ? "font-semibold text-color dark:text-teal-300" : "text-slate-500 dark:text-gray-400"}`}
             >
               <span
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs ${step >= index ? "text-white bg-color" : "bg-slate-100 dark:bg-gray-800"}`}
@@ -110,31 +107,36 @@ const TurnoRequestContent = ({
           ))}
         </ol>
         <div className="p-5 sm:p-8">
-          <p className="mb-3 text-xs font-semibold tracking-[0.16em] text-color uppercase dark:text-teal-300">
-            Atención presencial
-          </p>
-          <h1
-            ref={heading}
-            tabIndex={-1}
-            className="mb-3 text-3xl font-medium leading-tight tracking-tight outline-none sm:text-4xl"
-          >
-            {titles[step]}
-          </h1>
           <p
             className="mb-2 text-sm font-semibold text-color dark:text-teal-300"
             aria-live="polite"
           >
             Paso {step + 1} de {steps.length} · {steps[step]}
           </p>
-          <p className="mb-7 text-base leading-relaxed text-slate-600 dark:text-gray-300">
-            {descriptions[step]}
-          </p>
+          <h1
+            ref={heading}
+            tabIndex={-1}
+            className="mb-5 text-3xl font-medium leading-tight tracking-tight outline-none sm:text-4xl"
+          >
+            {titles[step]}
+          </h1>
           {unavailable ? (
             <div className="space-y-4">
-              <TurnoNotice message={config.services.length === 0
-                ? "Esta sede no tiene servicios habilitados. No es posible emitir un nuevo turno. Solicita orientación al personal de la sede."
-                : "Esta sede no tiene tipos de documento disponibles. Solicita orientación al personal de la sede."} />
-              <Button type="button" className="min-h-12 min-w-12" isLoading={busy} onClick={() => void load(slug)}>Actualizar opciones de la sede</Button>
+              <TurnoNotice
+                message={
+                  config.services.length === 0
+                    ? "Esta sede no tiene servicios habilitados. No es posible emitir un nuevo turno. Solicita orientación al personal de la sede."
+                    : "Esta sede no tiene tipos de documento disponibles. Solicita orientación al personal de la sede."
+                }
+              />
+              <Button
+                type="button"
+                className="min-h-12 min-w-12"
+                isLoading={busy}
+                onClick={() => void load(slug)}
+              >
+                Actualizar opciones de la sede
+              </Button>
             </div>
           ) : (
             <form onSubmit={formik.handleSubmit} noValidate aria-busy={busy}>
@@ -151,16 +153,19 @@ const TurnoRequestContent = ({
                     isExistingPatient={verification?.exists === true}
                   />
                 ) : step === 2 ? (
+                  <TurnoClassificationSelection formik={formik} />
+                ) : step === 3 ? (
                   <TurnoServiceSelection
                     formik={formik}
                     services={config.services}
                   />
-                ) : step === 3 ? (
+                ) : step === 4 ? (
                   <TurnoPrioritySelection formik={formik} />
                 ) : (
                   <TurnoRequestSummary
                     values={formik.values}
                     config={config}
+                    onEditClassification={goToClassification}
                     onEditService={goToService}
                     onEditPriority={goToPriority}
                   />
@@ -168,7 +173,16 @@ const TurnoRequestContent = ({
                 {error || locationError ? (
                   <TurnoNotice message={locationError || error || ""} />
                 ) : null}
-                {error ? <Button type="button" variant="outline" className="min-h-12 min-w-12" onClick={() => void load(slug)}>Actualizar opciones de la sede</Button> : null}
+                {error ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-12 min-w-12"
+                    onClick={() => void load(slug)}
+                  >
+                    Actualizar opciones de la sede
+                  </Button>
+                ) : null}
                 <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between">
                   {step > 0 ? (
                     <Button
@@ -193,14 +207,14 @@ const TurnoRequestContent = ({
                       ? "Obteniendo ubicación…"
                       : busy
                         ? "Procesando…"
-                        : step === 4
+                        : step === 5
                           ? "Solicitar mi turno"
-                          : step === 3
+                          : step === 4
                             ? "Revisar solicitud"
                             : "Continuar"}
                   </Button>
                 </div>
-                {import.meta.env.DEV && step === 4 ? (
+                {import.meta.env.DEV && step === 5 ? (
                   <Button
                     type="button"
                     variant="outline"
@@ -234,7 +248,7 @@ const TurnoRequestPage = () => {
   const reset = useStoreTurnoRequest((state) => state.reset);
   const config = data.slug === slug ? data.config : null;
 
-  console.log(data)
+  console.log(data);
 
   useEffect(() => {
     void load(slug);

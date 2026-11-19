@@ -1,27 +1,27 @@
-# Spec frontend 006 — Servicios por sede y módulos prioritarios
+# Spec frontend 006 — Servicios por sede, prioridad por turno y clasificación
 
 **Estado:** Aprobada por el usuario.
 
 ## Objetivo
 
-Permitir que el Administrador defina qué servicios de turnos ofrece cada sede y qué módulos atienden turnos generales o prioritarios, para que pacientes y asesores solo seleccionen servicios habilitados en la sede correspondiente y comprendan la separación de las colas.
+Permitir que el Administrador defina qué servicios de turnos ofrece cada sede. Cualquier módulo que atienda un servicio atenderá generales y prioritarios, con prioritarios primero. El paciente elegirá una clasificación de trámite que se guardará con el turno.
 
 ## Alcance
 
 - Configurar manualmente los servicios de cada sede desde Administración de turnos, dentro de Configuración.
 - Mostrar las asignaciones actuales y permitir agregar o retirar servicios del catálogo activo.
-- Consultar y definir el tipo exclusivo de atención de cada módulo: general o prioritario.
+- Administrar módulos sin tipo exclusivo de prioridad.
 - Adaptar la selección de servicios de la solicitud pública, del inicio de atención y de las transferencias a la sede correspondiente.
-- Identificar el tipo de módulo durante la selección y la sesión de atención.
+- Incorporar Clasificación entre Tus datos y Servicio, sin filtrar servicios según la clasificación.
 - Reflejar los rechazos de cambios de configuración o de operaciones de turnos sin presentar cambios rechazados como guardados.
-- Conservar la emisión de turnos prioritarios aunque no haya un módulo prioritario configurado o con sesión activa.
+- Conservar la emisión de turnos sin asesores activos para el servicio.
 
 ## Criterios de aceptación (EARS)
 
 ### Administración de servicios por sede
 
 - **RF-1:** CUANDO un Administrador consulte una sede configurada en Administración de turnos, EL SISTEMA ofrecerá la gestión de sus servicios de turnos.
-- **RF-2:** SI un usuario no tiene el rol Administrador, ENTONCES EL SISTEMA impedirá que administre las asignaciones de servicios o el tipo de los módulos.
+- **RF-2:** SI un usuario no tiene el rol Administrador, ENTONCES EL SISTEMA impedirá que administre las asignaciones de servicios o los módulos.
 - **RF-3:** CUANDO el Administrador abra la gestión de servicios, EL SISTEMA identificará la sede que está configurando.
 - **RF-4:** CUANDO se cargue la configuración de servicios de una sede, EL SISTEMA mostrará el catálogo activo disponible para asignación.
 - **RF-5:** CUANDO se cargue la configuración de servicios de una sede, EL SISTEMA distinguirá sus asignaciones actuales de los servicios no asignados.
@@ -37,15 +37,15 @@ Permitir que el Administrador defina qué servicios de turnos ofrece cada sede y
 - **RF-15:** SI falla el guardado de asignaciones, ENTONCES EL SISTEMA conservará como vigente la última configuración confirmada.
 - **RF-16:** SI el catálogo activo está vacío, ENTONCES EL SISTEMA informará que no hay servicios disponibles para asignar.
 
-### Tipo de módulo
+### Módulos sin exclusividad de prioridad
 
-- **RF-17:** CUANDO el Administrador consulte los módulos de una sede, EL SISTEMA mostrará el tipo general o prioritario de cada módulo, incluidos los inactivos.
-- **RF-18:** CUANDO el Administrador cree o edite un módulo, EL SISTEMA exigirá elegir explícitamente un único tipo de atención entre general y prioritario, sin preselección.
-- **RF-19:** CUANDO se muestre la elección del tipo de módulo, EL SISTEMA explicará que un módulo general atiende exclusivamente turnos generales y uno prioritario exclusivamente turnos prioritarios.
-- **RF-20:** CUANDO el Administrador consulte o edite un módulo existente, EL SISTEMA mostrará el tipo vigente informado para ese módulo.
-- **RF-21:** SI se rechaza un cambio de tipo porque el módulo tiene una sesión activa, ENTONCES EL SISTEMA informará que debe cerrarse esa sesión antes de cambiar el tipo.
-- **RF-22:** SI se rechaza el cambio de tipo de un módulo, ENTONCES EL SISTEMA conservará el tipo confirmado como vigente.
-- **RF-23:** CUANDO el Administrador configure los módulos de una sede, EL SISTEMA permitirá que más de uno sea prioritario.
+- **RF-17:** CUANDO el Administrador consulte los módulos de una sede, EL SISTEMA mostrará su código, nombre y estado sin tipo exclusivo de prioridad.
+- **RF-18:** CUANDO el Administrador cree o edite un módulo, EL SISTEMA no solicitará un tipo general o prioritario.
+- **RF-19:** EL SISTEMA conservará la prioridad como atributo del turno, no del módulo.
+- **RF-20:** CUANDO el Administrador edite un módulo, EL SISTEMA conservará los datos confirmados mientras no se confirme el guardado.
+- **RF-21:** SI falla el guardado de un módulo, ENTONCES EL SISTEMA informará el error.
+- **RF-22:** SI falla el guardado de un módulo, ENTONCES EL SISTEMA no mostrará el cambio como confirmado.
+- **RF-23:** EL SISTEMA permitirá que todos los módulos atiendan ambas prioridades para los servicios de su sesión.
 
 ### Solicitud pública de turnos
 
@@ -54,20 +54,20 @@ Permitir que el Administrador defina qué servicios de turnos ofrece cada sede y
 - **RF-26:** MIENTRAS la sede no tenga servicios habilitados disponibles, EL SISTEMA impedirá confirmar una nueva solicitud de turno.
 - **RF-27:** SI se rechaza una emisión porque el servicio seleccionado dejó de estar activo o asignado a la sede, ENTONCES EL SISTEMA informará que el servicio ya no está disponible para esa solicitud.
 - **RF-28:** CUANDO el paciente actualice las opciones tras un rechazo por servicio no disponible, EL SISTEMA permitirá seleccionar entre los servicios vigentes de la sede.
-- **RF-29:** SI no hay módulos prioritarios configurados o con sesión activa, ENTONCES EL SISTEMA permitirá solicitar un turno prioritario sujeto a las demás condiciones de emisión vigentes.
-- **RF-30:** CUANDO se confirme la emisión de un turno prioritario sin un módulo compatible disponible, EL SISTEMA mostrará su ticket en el estado pendiente informado.
+- **RF-29:** SI no hay asesores activos para el servicio, ENTONCES EL SISTEMA permitirá solicitar un turno sujeto a las demás condiciones de emisión vigentes.
+- **RF-30:** CUANDO se confirme la emisión de un turno sin asesor disponible, EL SISTEMA mostrará su ticket en el estado pendiente informado.
 
 ### Inicio y operación de atención
 
-- **RF-31:** CUANDO un Administrador o Radicador seleccione un módulo para iniciar atención, EL SISTEMA mostrará la sede y el tipo de atención del módulo.
+- **RF-31:** CUANDO un Administrador o Radicador seleccione un módulo para iniciar atención, EL SISTEMA mostrará la sede del módulo sin etiquetarlo como general o prioritario.
 - **RF-32:** CUANDO el asesor seleccione un módulo, EL SISTEMA ofrecerá para la sesión únicamente servicios activos asignados a la sede de ese módulo.
 - **RF-33:** CUANDO el asesor cambie el módulo seleccionado antes de iniciar la sesión, EL SISTEMA descartará de su selección los servicios que no estén habilitados en la sede del nuevo módulo.
 - **RF-34:** SI la sede del módulo no tiene servicios disponibles, ENTONCES EL SISTEMA informará que no puede iniciarse atención hasta que se configure al menos uno.
 - **RF-35:** SI falta seleccionar un módulo disponible o al menos un servicio válido, ENTONCES EL SISTEMA impedirá iniciar la sesión de atención.
 - **RF-36:** SI se rechaza el inicio de sesión por servicios que dejaron de estar habilitados, ENTONCES EL SISTEMA informará el motivo sin mostrar la sesión como iniciada.
-- **RF-37:** MIENTRAS exista una sesión activa, EL SISTEMA mostrará el tipo exclusivo de atención del módulo.
-- **RF-38:** CUANDO el asesor solicite llamar al siguiente turno, EL SISTEMA mostrará el turno confirmado para los servicios de su sesión y el tipo de su módulo, según el orden de llegada dentro de la cola compatible.
-- **RF-39:** SI la operación de llamado informa que no hay turnos elegibles, ENTONCES EL SISTEMA informará que no hay turnos disponibles para los servicios y el tipo de módulo de esa sesión.
+- **RF-37:** MIENTRAS exista una sesión activa, EL SISTEMA mostrará los turnos elegibles generales y prioritarios en el orden recibido del backend.
+- **RF-38:** CUANDO el asesor solicite llamar al siguiente turno, EL SISTEMA mostrará el turno confirmado para sus servicios con prioritarios primero y FIFO dentro de cada prioridad.
+- **RF-39:** SI la operación de llamado informa que no hay turnos elegibles, ENTONCES EL SISTEMA informará que no hay turnos disponibles para los servicios de esa sesión.
 - **RF-40:** EL SISTEMA mantendrá el llamado mediante la acción de siguiente turno sin permitir seleccionar manualmente una persona de la lista.
 - **RF-41:** CUANDO el asesor elija un destino para transferir un turno en atención, EL SISTEMA ofrecerá únicamente otros servicios activos asignados a la sede del turno.
 - **RF-42:** SI no hay otro servicio habilitado como destino, ENTONCES EL SISTEMA informará que no hay servicios disponibles para transferir.
@@ -82,38 +82,49 @@ Permitir que el Administrador defina qué servicios de turnos ofrece cada sede y
 - **RF-48:** SI una operación no obtiene confirmación de éxito, ENTONCES EL SISTEMA mostrará el error sin presentar el cambio como confirmado.
 - **RF-49:** CUANDO el usuario cambie de sede en la administración, EL SISTEMA mostrará únicamente las asignaciones y los módulos correspondientes a la sede seleccionada.
 
+### Clasificación del trámite
+
+- **RF-50:** CUANDO el paciente avance desde Tus datos, EL SISTEMA mostrará Clasificación antes de Servicio.
+- **RF-51:** CUANDO se muestre Clasificación, EL SISTEMA ofrecerá Asignación de Citas, Confirmación de Citas y Trámites Administrativos sin preselección.
+- **RF-52:** SI el paciente no elige una clasificación, ENTONCES EL SISTEMA impedirá avanzar e informará que debe seleccionarla.
+- **RF-53:** CUANDO el paciente seleccione cualquiera de las tres clasificaciones, EL SISTEMA mostrará el mismo catálogo habilitado para la sede.
+- **RF-54:** CUANDO el paciente revise su solicitud, EL SISTEMA mostrará la clasificación elegida.
+- **RF-55:** CUANDO el paciente edite la clasificación desde el resumen, EL SISTEMA conservará los demás datos de la solicitud.
+- **RF-56:** CUANDO el paciente solicite su turno, EL SISTEMA enviará la clasificación seleccionada para guardarla con el turno.
+- **RF-57:** CUANDO se consulte un ticket con clasificación, EL SISTEMA mostrará su etiqueta en español.
+- **RF-58:** CUANDO se consulte un ticket histórico sin clasificación, EL SISTEMA no inventará una clasificación.
+- **RF-59:** CUANDO se muestre un paso de la solicitud pública, EL SISTEMA presentará un único título visible sin repetir la instrucción en el selector.
+- **RF-60:** CUANDO se solicite la prioridad, EL SISTEMA conservará visibles las condiciones de atención prioritaria.
+
 ## Restricciones
 
 - Interfaz y mensajes en español.
-- Solo el Administrador configura servicios por sede y tipos de módulo; Administrador y Radicador conservan el acceso a la operación de atención.
+- Solo el Administrador configura servicios por sede y módulos; Administrador y Radicador conservan el acceso a la operación de atención.
 - La configuración inicial de servicios por sede es vacía y manual; no se copia ni se selecciona automáticamente el catálogo global.
 - Ninguna selección operativa puede utilizar el catálogo global como sustituto de una sede sin servicios asignados.
-- El tipo de módulo no cambia durante una sesión activa; los bloqueos de retiro de servicios y cambio de tipo se rigen por la validación vigente del servicio de turnos.
+- Los bloqueos de retiro de servicios se rigen por la validación vigente del servicio de turnos.
 - La prioridad continúa siendo la indicada por el paciente al emitir el turno; no se adapta al módulo disponible.
 - Se conservan la selección pública explícita sin preselección, sus controles de al menos 48 × 48 píxeles CSS y las reglas vigentes de identificación, ubicación y turno activo único.
-- Se conservan las acciones y restricciones de atención existentes fuera de la selección de servicios y de la separación por tipo de módulo descritas aquí.
+- Se conservan las acciones y restricciones de atención existentes fuera de la selección de servicios y del orden de prioridad descritos aquí.
 - La posición, la espera estimada y el orden informado de los turnos no se recalculan en la interfaz.
-- El tipo de atención de un módulo nuevo no tendrá un valor inicial; el Administrador deberá escogerlo antes de guardar.
+- El flujo será Identificación → Tus datos → Clasificación → Servicio → Prioridad → Confirmación.
 
 ## Fuera de alcance
 
 - Crear, editar o desactivar servicios del catálogo global.
 - Asignar automáticamente servicios a sedes o transformar automáticamente módulos existentes.
-- Crear un tipo de módulo mixto o permitir atender la otra prioridad cuando la cola propia esté vacía.
 - Elegir un módulo concreto al emitir el turno o asignar manualmente un turno a un módulo.
 - Cambiar criterios clínicos de prioridad, geolocalización, identificación o datos de pacientes.
 - Cambiar las reglas de cierre de sesión, cancelación, inasistencia o finalización.
 - Rediseñar el ticket digital o la pantalla de sala, separar visualmente sus colas o agregar nuevas estimaciones.
 - Reportes, estadísticas, notificaciones adicionales o administración masiva entre sedes.
-- Modificar el servicio backend, preparar el diseño técnico o elaborar tareas de implementación.
 
 ## Dependencias y decisiones de alcance
 
-- Depende del contrato funcional aprobado «Spec backend 005 — Servicios por sede y colas prioritarias», en particular las restricciones de retiro de servicios, la exclusividad de los módulos y la emisión prioritaria sin cobertura activa.
-- Amplía la administración descrita en la spec frontend 004 con asignaciones de servicios y tipo de módulo; mantiene el resto de su alcance.
+- Depende del contrato funcional actualizado «Spec backend 005 — Servicios por sede y colas prioritarias», con prioridad por turno y clasificación persistente.
+- Amplía la administración descrita en la spec frontend 004 con asignaciones de servicios; mantiene el resto de su alcance.
 - Precisa la selección de servicios de las specs frontend 001 y 003 para limitarla a las asignaciones de la sede.
-- Actualiza la regla de llamado de la spec frontend 005: la prioridad define colas exclusivas por tipo de módulo, con orden de llegada dentro de cada cola; no existe alternancia entre prioridades en un mismo módulo.
+- Restaura la regla de llamado con prioritarios primero en cualquier módulo que atienda el servicio.
 - Restringe la transferencia de la spec frontend 005 a servicios activos efectivamente asignados a la sede del turno, aunque no estén seleccionados para la sesión del asesor.
-- El Administrador elegirá explícitamente el tipo de cada módulo; el formulario no preseleccionará «General» ni «Prioritario».
-- La lista de próximos turnos conservará su carácter informativo y mostrará la prioridad de cada turno. El llamado seguirá limitado por el tipo del módulo y lo decidirá el backend; no se agrega selección manual de turnos.
-- El ticket seguirá mostrando el estado pendiente habitual cuando no haya un módulo prioritario compatible activo. No se agrega un aviso especial al paciente.
+- La lista de próximos turnos conservará su carácter informativo y mostrará la prioridad de cada turno; el backend decidirá el llamado, sin selección manual.
+- El ticket seguirá mostrando el estado pendiente habitual sin un aviso especial por ausencia de asesores.

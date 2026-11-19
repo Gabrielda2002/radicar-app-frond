@@ -24,11 +24,7 @@ export const fetchTurnoAtencionOptions =
     );
     if (
       !Array.isArray(data.modules) ||
-      !data.modules.every(
-        (module) =>
-          typeof module.isPriority === "boolean" &&
-          Number.isInteger(module.headquarterId),
-      ) ||
+      !data.modules.every((module) => Number.isInteger(module.headquarterId)) ||
       !Array.isArray(data.servicesByHeadquarter) ||
       !data.servicesByHeadquarter.every(
         (group) =>
@@ -75,13 +71,13 @@ export const closeTurnoAtencionSession = async (): Promise<void> => {
 
 export const executeTurnoAtencionAction = async (input: {
   action:
-  | "LLAMAR"
-  | "RELLAMAR"
-  | "INICIAR"
-  | "FINALIZAR"
-  | "NO_ASISTIO"
-  | "TRANSFERIR"
-  | "CANCELAR";
+    | "LLAMAR"
+    | "RELLAMAR"
+    | "INICIAR"
+    | "FINALIZAR"
+    | "NO_ASISTIO"
+    | "TRANSFERIR"
+    | "CANCELAR";
   newServiceId?: number;
   notes?: string;
 }): Promise<ITurnoAtencionActionResponse> => {

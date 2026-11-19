@@ -28,10 +28,12 @@ const TurnoPrioritySelection = ({ formik }: TurnoPrioritySelectionProps) => {
 
   return (
     <fieldset className="space-y-5" aria-describedby={error ? "turno-priority-help turno-priority-error" : "turno-priority-help"}>
-      <legend id="turno-priority-legend" className="text-xl font-bold leading-snug text-slate-900 dark:text-white sm:text-2xl">
-        ¿Requieres atención prioritaria por ser persona adulta mayor, estar en
-        embarazo, tener un niño en brazos o tener discapacidad?
+      <legend id="turno-priority-legend" className="sr-only">
+        ¿Requieres atención prioritaria?
       </legend>
+      <p id="turno-priority-help" className="text-base leading-relaxed text-slate-600 dark:text-gray-300">
+        Para personas adultas mayores, en embarazo, con un niño en brazos o con discapacidad.
+      </p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {options.map((option) => {
           const selected = formik.values.priority === option.value;
@@ -68,9 +70,6 @@ const TurnoPrioritySelection = ({ formik }: TurnoPrioritySelectionProps) => {
           );
         })}
       </div>
-      <p id="turno-priority-help" className="text-base leading-relaxed text-slate-600 dark:text-gray-300">
-        Selecciona “Sí” si cumples alguna de esas condiciones.
-      </p>
       {error ? <p id="turno-priority-error" role="alert" className="text-sm font-semibold text-red-700 dark:text-red-300">{error}</p> : null}
     </fieldset>
   );

@@ -1,5 +1,16 @@
 export type TurnoPriorityType = "GENERAL" | "PRIORITARIO";
-export type TurnoStatusType = "PENDIENTE" | "LLAMADO" | "EN_ATENCION" | "FINALIZADO" | "NO_ASISTIO" | "CANCELADO" | "TRANSFERIDO";
+export type TurnoClassificationType =
+  | "ASIGNACION_CITAS"
+  | "CONFIRMACION_CITAS"
+  | "TRAMITES_ADMINISTRATIVOS";
+export type TurnoStatusType =
+  | "PENDIENTE"
+  | "LLAMADO"
+  | "EN_ATENCION"
+  | "FINALIZADO"
+  | "NO_ASISTIO"
+  | "CANCELADO"
+  | "TRANSFERIDO";
 
 export interface ITurnoOption {
   id: number;
@@ -44,6 +55,7 @@ export interface ITurnoVerification {
 export interface ITurnoRequest {
   slug: string;
   serviceId: number;
+  classification: TurnoClassificationType;
   documentNumber: string;
   documentTypeId: number;
   name: string;
@@ -59,6 +71,7 @@ export interface ITurnoRequestForm {
   documentNumber: string;
   name: string;
   phoneNumber: string;
+  classification: TurnoClassificationType | "";
   serviceId: string;
   priority: TurnoPriorityType | "";
 }
@@ -73,6 +86,7 @@ export interface ITurnoTicket {
   ticketCode: string;
   status: TurnoStatusType;
   priority: TurnoPriorityType;
+  classification?: TurnoClassificationType | null;
   headquarter: ITurnoOption;
   service: ITurnoOption;
   patient: { name: string; documentNumber: string };

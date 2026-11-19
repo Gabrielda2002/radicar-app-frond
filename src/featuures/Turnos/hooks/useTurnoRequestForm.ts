@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import type { ITurnoRequestForm } from "@/models/ITurnos";
 import { getTurnoError } from "../services/turnos.service";
 import { useStoreTurnoRequest } from "../store/useStoreTurnoRequest";
+import { TURNO_CLASSIFICATION_VALUES } from "../constants/turnoClassification";
 
 const identitySchema = Yup.object({
   documentTypeId: Yup.string().required("Selecciona un tipo de documento"),
@@ -27,6 +28,12 @@ const detailsSchema = Yup.object({
     .matches(/^\d+$/, "Ingresa solo números")
     .max(10, "Ingresa máximo 10 dígitos")
     .required("Ingresa tu número de celular"),
+});
+
+const classificationSchema = Yup.object({
+  classification: Yup.string()
+    .oneOf(TURNO_CLASSIFICATION_VALUES, "Selecciona una clasificación válida")
+    .required("Selecciona el trámite que vas a realizar"),
 });
 
 const serviceSchema = Yup.object({
@@ -112,7 +119,8 @@ export const useTurnoRequestForm = (slug: string) => {
 
   const issue = async (values: ITurnoRequestForm) => {
     try {
-      if (!values.serviceId || !values.priority) return;
+      if (!values.classification || !values.serviceId || !values.priority)
+        return;
       const skip = import.meta.env.DEV && skipLocation.current;
       setIsLocating(!skip);
       const position = skip ? null : await getLocation();
@@ -121,6 +129,7 @@ export const useTurnoRequestForm = (slug: string) => {
       const token = await submit({
         slug,
         serviceId: Number(values.serviceId),
+        classification: values.classification,
         documentNumber: values.documentNumber.trim(),
         documentTypeId: Number(values.documentTypeId),
         name: values.name.trim(),
@@ -148,6 +157,7 @@ export const useTurnoRequestForm = (slug: string) => {
       documentNumber: "",
       name: "",
       phoneNumber: "",
+      classification: "",
       serviceId: "",
       priority: "",
     },
@@ -157,14 +167,18 @@ export const useTurnoRequestForm = (slug: string) => {
         : step === 1
           ? detailsSchema
           : step === 2
-            ? serviceSchema
+            ? classificationSchema
             : step === 3
-              ? prioritySchema
-              : serviceSchema.concat(prioritySchema),
+              ? serviceSchema
+              : step === 4
+                ? prioritySchema
+                : classificationSchema
+                    .concat(serviceSchema)
+                    .concat(prioritySchema),
     onSubmit: async (values, helpers) => {
       setLocationError(null);
       if (step === 0) return identify(values, helpers);
-      if (step > 0 && step < 4) {
+      if (step > 0 && step < 5) {
         helpers.setTouched({});
         setStep((current) => current + 1);
         return;
@@ -185,13 +199,15 @@ export const useTurnoRequestForm = (slug: string) => {
     void formik.submitForm();
   };
 
-  const goToService = () => setStep(2);
-  const goToPriority = () => setStep(3);
+  const goToClassification = () => setStep(2);
+  const goToService = () => setStep(3);
+  const goToPriority = () => setStep(4);
 
   return {
     formik,
     step,
     goBack,
+    goToClassification,
     goToService,
     goToPriority,
     isLocating,

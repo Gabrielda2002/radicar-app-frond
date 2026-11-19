@@ -15,24 +15,14 @@ const TurnoServiceSelection = ({
 
   return (
     <fieldset
-      className="space-y-4"
-      aria-describedby={
-        error ? "turno-service-help turno-service-error" : "turno-service-help"
-      }
+      aria-describedby={error ? "turno-service-error" : undefined}
     >
       <legend
         id="turno-service-legend"
-        className="text-xl font-bold text-slate-900 dark:text-white sm:text-2xl"
+        className="sr-only"
       >
         ¿Qué servicio necesitas?
       </legend>
-      <p
-        id="turno-service-help"
-        className="text-base leading-relaxed text-slate-600 dark:text-gray-300"
-      >
-        Toca una opción para seleccionarla.
-      </p>
-
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {services.map((service) => {
           const value = String(service.id);
@@ -54,11 +44,7 @@ const TurnoServiceSelection = ({
                 checked={selected}
                 required
                 aria-invalid={Boolean(error)}
-                aria-describedby={
-                  error
-                    ? "turno-service-help turno-service-error"
-                    : "turno-service-help"
-                }
+                aria-describedby={error ? "turno-service-error" : undefined}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -80,7 +66,7 @@ const TurnoServiceSelection = ({
         <p
           id="turno-service-error"
           role="alert"
-          className="text-sm font-semibold text-red-700 dark:text-red-300"
+          className="mt-3 text-sm font-semibold text-red-700 dark:text-red-300"
         >
           {error}
         </p>
