@@ -42,7 +42,7 @@ const TurnoPublicLinks = ({ slug }: TurnoPublicLinksProps) => {
   };
 
   return (
-    <section className="space-y-4 rounded-xl border border-slate-200 p-4 dark:border-gray-700">
+    <section className="space-y-4 rounded-xl border border-slate-200 bg-white dark:bg-gray-800 p-4 dark:border-gray-700">
       <div className="flex items-center gap-2">
         <Link2
           className="h-5 w-5 text-color dark:text-teal-300"

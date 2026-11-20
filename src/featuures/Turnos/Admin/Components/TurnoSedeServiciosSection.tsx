@@ -54,7 +54,7 @@ const TurnoSedeServiciosSection = ({
     );
 
   return (
-    <section className="space-y-4 rounded-xl border border-slate-200 p-5 dark:border-gray-700">
+    <section className="space-y-4 rounded-xl border border-slate-200 p-5 bg-white dark:bg-gray-800 dark:border-gray-700">
       <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
         Servicios de turnos · {headquarterName}
       </h3>
@@ -85,11 +85,11 @@ const TurnoSedeServiciosSection = ({
             {data.assignedServiceIds.length === 0
               ? "sin asignaciones. Configura manualmente los servicios para permitir nuevas solicitudes."
               : `${data.services
-                .filter((service) => service.isAssigned)
-                .map((service) => service.name)
-                .join(
-                  ", ",
-                )}${inactiveIds.length ? ` · ${inactiveIds.length} asignaciones inactivas` : ""}`}
+                  .filter((service) => service.isAssigned)
+                  .map((service) => service.name)
+                  .join(
+                    ", ",
+                  )}${inactiveIds.length ? ` · ${inactiveIds.length} asignaciones inactivas` : ""}`}
           </p>
           <fieldset disabled={busy} className="space-y-2">
             <legend className="mb-2 font-medium">Selección para guardar</legend>
@@ -97,7 +97,10 @@ const TurnoSedeServiciosSection = ({
               <p>No hay servicios activos disponibles para asignar.</p>
             ) : null}
             {data.services.map((service) => (
-              <label key={service.id} className="flex items-center gap-3 p-2">
+              <label
+                key={service.id}
+                className={`flex items-center gap-3 rounded-xl p-2 ${formik.values.serviceIds.includes(service.id) ? "bg-color2/40" : ""}`}
+              >
                 <Input
                   type="checkbox"
                   variant="checkbox"

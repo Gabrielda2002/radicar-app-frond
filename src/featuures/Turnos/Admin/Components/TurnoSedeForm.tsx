@@ -133,7 +133,7 @@ const TurnoSedeForm = ({
     <form
       onSubmit={formik.handleSubmit}
       noValidate
-      className="space-y-6 rounded-xl border border-slate-200 p-5 dark:border-gray-700"
+      className="space-y-6 rounded-xl border border-slate-200 bg-white dark:bg-gray-800 p-5 dark:border-gray-700"
     >
       <div>
         <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -234,7 +234,7 @@ const TurnoSedeForm = ({
               onBlur={formik.handleBlur}
               touched={formik.touched.averageServiceMinutes}
               error={formik.errors.averageServiceMinutes}
-              helpText="Estimado que verá el paciente."
+              helpText="Tiempo estimado de espera."
             />
           </div>
 
@@ -242,7 +242,7 @@ const TurnoSedeForm = ({
             name="isEnabled"
             type="checkbox"
             variant="checkbox"
-            label="Sede habilitada para turnos"
+            label="Sede habilitada"
             checked={formik.values.isEnabled}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
