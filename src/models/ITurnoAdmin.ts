@@ -47,3 +47,8 @@ export interface ITurnoSedeServicios {
   assignedServiceIds: number[];
   services: { id: number; name: string; isAssigned: boolean }[];
 }
+export interface ITurnoServiceAdmin {
+  id: number;
+  name: string;
+  status: boolean;
+}

@@ -6,8 +6,19 @@ import type {
   ITurnoModuloInput,
   ITurnoModuloUpdate,
   ITurnoSedeServicios,
+  ITurnoServiceAdmin,
 } from "@/models/ITurnoAdmin";
 import { getTurnoError } from "../../services/turnos.service";
+
+export const TURNO_SERVICE_ENDPOINT = "turnos/admin/servicios";
+
+export const fetchTurnoServices = async (): Promise<ITurnoServiceAdmin[]> => {
+  const { data } = await api.get<ITurnoServiceAdmin[]>(`/${TURNO_SERVICE_ENDPOINT}`);
+  if (!Array.isArray(data)) {
+    throw new Error("No se pudieron cargar los servicios de turnos.");
+  }
+  return data;
+};
 
 export const fetchTurnoSedesConfig = async (): Promise<
   ITurnoSedeConfigAdmin[]

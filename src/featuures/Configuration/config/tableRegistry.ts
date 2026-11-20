@@ -56,6 +56,9 @@ const TableAssets = lazy(() => import("../components/views/TableAssets"));
 const TurnoAdminPage = lazy(
   () => import("@/featuures/Turnos/Admin/Pages/TurnoAdminPage"),
 );
+const TurnoServicesPage = lazy(
+  () => import("@/featuures/Turnos/Admin/Pages/TurnoServicesPage"),
+);
 
 const TablePpsActionLines = lazy(() => import("@/featuures/PPS/Page/TablePpsActionLines"));
 const TablePpsGoals = lazy(() => import("@/featuures/PPS/Page/TablePpsGoals"));
@@ -113,7 +116,15 @@ export const configModules: ConfigModule[] = [
         icon: CalendarClock,
         component: TurnoAdminPage,
         rols: [1],
-      }
+      },
+      {
+        id: "servicios-turnos",
+        label: "Servicios de turnos",
+        description: "Creación, edición y estado de los servicios de atención",
+        icon: Tags,
+        component: TurnoServicesPage,
+        rols: [1],
+      },
     ]
   },
   {
