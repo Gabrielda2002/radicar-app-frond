@@ -18,6 +18,7 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import NotificacionBell from "@/components/NotificationBell";
 import AccordionMenu from "../components/AccordionMenu";
 import SupportMenu from "../components/SupportMenu";
+import NavBarSearch from "../components/NavBarSearch";
 import UserMenu from "../components/UserMenu";
 import ThemeToggle from "../components/ThemeToggle";
 import MobileMenuItem from "../components/MobileMenuItem";
@@ -169,6 +170,40 @@ const Navbar: React.FC = React.memo(() => {
     ]
   );
 
+  const searchActions = useMemo(
+    () => [
+      {
+        id: "request-permission",
+        title: "Solicitar permiso",
+        description: "Abrir el formulario para solicitar un permiso",
+        keywords: ["permiso", "solicitud", "ausencia"],
+        onSelect: handleOpenPermissionModal,
+      },
+      {
+        id: "my-permission-requests",
+        title: "Mis solicitudes de permiso",
+        description: "Consultar las solicitudes de permiso enviadas",
+        keywords: ["permiso", "mis solicitudes", "estado"],
+        onSelect: handleOpenMyPermissions,
+      },
+      {
+        id: "training-platform",
+        title: "Plataforma de capacitación",
+        description: "Abrir la plataforma de capacitación",
+        keywords: ["moodle", "cursos", "formación", "capacitación"],
+        onSelect: MoodleButtonAction,
+      },
+      {
+        id: "support-links",
+        title: "Enlaces de soporte",
+        description: "Consultar recursos y herramientas de soporte",
+        keywords: ["soporte", "ayuda", "recursos"],
+        onSelect: handleOpenSupportMenu,
+      },
+    ],
+    [handleOpenPermissionModal, handleOpenMyPermissions, MoodleButtonAction, handleOpenSupportMenu],
+  );
+
   return (
     <>
       <header
@@ -220,6 +255,10 @@ const Navbar: React.FC = React.memo(() => {
                 title="Inicio"
               />
             </NavLink>
+          </div>
+
+          <div className="flex min-w-0 flex-1 items-center">
+            <NavBarSearch actions={searchActions} />
           </div>
 
           <div className="flex items-center md:hidden">

@@ -32,7 +32,7 @@ export const useSidebarStyles = () => {
     (path: string, isCollapsed = false) => {
       const isActive = isActiveRoute(path);
       const baseClasses = `flex items-center transition-all duration-300 transform rounded-md group relative border-l-4 ${
-        isCollapsed ? 'justify-center px-2 py-2.5' : 'px-3 py-2.5'
+        isCollapsed ? 'justify-center px-2 py-2' : 'px-2.5 py-2'
       }`;
       const activeClasses =
         'bg-color2/10 text-color2 border-color2 font-semibold dark:bg-color2/20 dark:text-[#4F9BDC] dark:border-[#4F9BDC]';
@@ -53,7 +53,7 @@ export const useSidebarStyles = () => {
     ) => {
       const baseClasses = `flex items-center transition-all duration-300 transform rounded-md group ${
         isActivePage ? 'border-l-4' : ''
-      } ${collapsed ? 'justify-center px-2 py-2.5' : 'px-3 py-2.5'}`;
+      } ${collapsed ? 'justify-center px-3 py-2' : 'px-2.5 py-2'}`;
 
       if (isActivePage) {
         return `${baseClasses} bg-color2/10 text-color2 border-color2 font-semibold dark:bg-color2/20 dark:text-[#4F9BDC] dark:border-[#4F9BDC]`;

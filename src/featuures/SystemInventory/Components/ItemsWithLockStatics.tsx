@@ -93,7 +93,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
     
     return (
         <>
-            <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <div className="flex min-w-0 flex-col gap-4 rounded-lg bg-white p-3 shadow-md dark:bg-gray-800 sm:p-4">
                 
                 {isLoading ? (
                     <div className="flex justify-center items-center h-64">
@@ -104,14 +104,14 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                         {error}
                     </div>
                 ) : withLock ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
                         {/* Gráfico circular */}
-                        <div className="h-64 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm">
+                        <div className="h-72 min-w-0 rounded-lg bg-gray-50 p-3 shadow-sm dark:bg-gray-700 sm:p-4">
                             <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">
                                 Distribución de Candado
                             </h2>
                             {isMounted && (
-                            <ResponsiveContainer width="100%" height="90%" minHeight={200} minWidth={300}>
+                            <ResponsiveContainer width="100%" height="90%" minHeight={200}>
                                 <PieChart>
                                     <Pie
                                         data={chartData}
@@ -137,7 +137,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                         </div>
                         
                         {/* Tarjetas con información detallada */}
-                        <div className="grid grid-cols-2 gap-4 h-64">
+                        <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4 xl:h-72">
                             <div className="bg-orange-50 dark:bg-orange-900/30 p-4 rounded-lg shadow-sm">
                                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Bloqueados</h3>
                                 <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{withLock.withLock || 0}</p>
@@ -152,7 +152,7 @@ const ItemsWithLockStatics: React.FC<ItemsWithLockStaticsProps> = ({
                                     {typeItem === "equipments" ? "Equipos" : "Ítems"} registrados
                                 </p>
                             </div>
-                            <div className="col-span-2 bg-green-50 dark:bg-green-900/30 p-4 rounded-lg shadow-sm">
+                            <div className="col-span-2 bg-green-50 dark:bg-green-900/30 p-3 shadow-sm rounded-lg sm:p-4">
                                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Sin Candado</h3>
                                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                                     {(withLock.total || 0) - (withLock.withLock || 0)}

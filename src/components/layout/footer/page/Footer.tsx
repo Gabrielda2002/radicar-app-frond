@@ -108,13 +108,13 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="relative z-10 bg-gray-100">
+      <div className="relative z-10 bg-gray-100 dark:bg-gray-900">
         <div className="container flex flex-col flex-wrap px-5 py-4 mx-auto text-lg md:text-xl sm:flex-row">
-          <p className="flex items-center text-gray-500">
+          <p className="flex items-center text-gray-500 dark:text-gray-300">
             <a
               href="https://nordvitalips.com/"
               rel="noopener noreferrer"
-              className="text-gray-600"
+              className="text-gray-600 dark:text-gray-300"
               target="_blank"
             >
               Nordvital IPS © {new Date().getFullYear()}
@@ -129,25 +129,25 @@ const Footer = () => {
               </p>
             </div>
             <a
-              className="text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
+              className="text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2 dark:text-gray-300"
               href="https://www.facebook.com/Nordvitaloficial/?locale=es_LA"
               target="_blank"
             >
-              <img src={facebook} alt="" className="w-8 h-8" />
+              <img src={facebook} alt="" className="w-8 h-8 dark:invert" />
             </a>
             <a
-              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
+              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2 dark:text-gray-300"
               href="https://www.youtube.com/@ipsnordvital7237"
               target="_blank"
             >
-              <img src={youtube} alt="" className="w-8 h-8" />
+              <img src={youtube} alt="" className="w-8 h-8 dark:invert" />
             </a>
             <a
-              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2"
+              className="ml-3 text-gray-500 duration-300 ease-in-out hover:text-white hover:-translate-y-2 dark:text-gray-300"
               href="https://www.instagram.com/nordvital_ips/"
               target="_blank"
             >
-              <img src={instagram} alt="" className="w-8 h-8" />
+              <img src={instagram} alt="" className="w-8 h-8 dark:invert" />
             </a>
           </span>
         </div>

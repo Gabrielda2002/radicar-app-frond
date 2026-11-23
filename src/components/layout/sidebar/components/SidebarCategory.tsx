@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CategoryProps } from '../types/sidebar.types';
 import { useSidebarStyles } from '../hooks/useSidebarStyles';
@@ -35,16 +35,27 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
   const isOpen = isOpenProp || activeChild || isActivePage;
   const iconSizeClass = isCollapsed ? 'h-6 w-6 shrink-0' : 'h-5 w-5 shrink-0';
 
-  const updatePopoverPosition = () => {
-    if (!buttonRef.current) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    setPopoverPosition({
-      top: rect.top,
-      left: rect.right + 8
-    });
-  };
+  useLayoutEffect(() => {
+    if (!showPopover) return;
 
-  useEffect(() => {
+    const updatePopoverPosition = () => {
+      if (!buttonRef.current || !popoverRef.current) return;
+      const rect = buttonRef.current.getBoundingClientRect();
+      const popoverRect = popoverRef.current.getBoundingClientRect();
+      const gutter = 8;
+      const top = Math.max(
+        gutter,
+        Math.min(rect.top, window.innerHeight - popoverRect.height - gutter)
+      );
+      const left = Math.max(
+        gutter,
+        Math.min(rect.right + gutter, window.innerWidth - popoverRect.width - gutter)
+      );
+
+      setPopoverPosition({ top, left });
+    };
+
+    updatePopoverPosition();
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (
@@ -56,12 +67,9 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
       setShowPopover(false);
     };
 
-    if (showPopover) {
-      updatePopoverPosition();
-      document.addEventListener('mousedown', handleClickOutside);
-      window.addEventListener('resize', updatePopoverPosition);
-      window.addEventListener('scroll', updatePopoverPosition, true);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', updatePopoverPosition);
+    window.addEventListener('scroll', updatePopoverPosition, true);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -87,7 +95,7 @@ const SidebarCategory: React.FC<ExtendedCategoryProps> = ({
   const popover = showPopover && (
     <div
       ref={popoverRef}
-      className="fixed z-[100] w-60 rounded-lg border border-gray-200 bg-white p-2 shadow-xl dark:border-gray-700 dark:bg-gray-800"
+      className="fixed z-[100] max-h-[calc(100vh-1rem)] w-60 max-w-[calc(100vw-1rem)] overflow-y-auto rounded-lg border border-gray-200 bg-white p-2 shadow-xl dark:border-gray-700 dark:bg-gray-800"
       style={{ top: popoverPosition.top, left: popoverPosition.left }}
     >
       <div className="mb-2 border-b border-gray-100 px-2 pb-1.5 text-sm font-semibold text-color dark:border-gray-700 dark:text-color">

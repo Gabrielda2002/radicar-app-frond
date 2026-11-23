@@ -1,10 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, useLayoutEffect, useRef, Suspense } from "react";
 //*Componentes
 import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout/layout.tsx";
 import Navbar from "./components/layout/navbar/page/NavBar.tsx";
 import Login from "./featuures/auth/Page/login.tsx";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import ContextualizedRoutes from "./components/Routes/ContextualizedRoutes.tsx";
 const CookieConsent = lazy(
   () => import("./components/common/CookieConsent/PopCookie.tsx")
@@ -27,6 +27,13 @@ const TurnoTicketPage = lazy(() => import("@/featuures/Turnos/Pages/TurnoTicketP
 const TurnoTvPage = lazy(() => import("@/featuures/Turnos/Pages/TurnoTvPage"));
 
 function AppRoutes() {
+  const { key } = useLocation();
+  const mainContentRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    if (mainContentRef.current) mainContentRef.current.scrollTop = 0;
+  }, [key]);
+
   return (
     <div>
       <Routes>
@@ -44,7 +51,11 @@ function AppRoutes() {
                 <Navbar />
                 <div className="grid min-h-0 flex-1 grid-cols-[auto_1fr]">
                   <SideBar />
-                  <main className="min-h-0 min-w-0 overflow-y-auto bg-slate-200 dark:bg-gray-900">
+                  <main
+                    ref={mainContentRef}
+                    id="main-content"
+                    className="min-h-0 min-w-0 overflow-y-auto bg-slate-200 dark:bg-gray-900"
+                  >
                     <Layout>
                       <ContextualizedRoutes />
                     </Layout>
@@ -93,4 +104,3 @@ export function App() {
     </div>
   );
 }
-

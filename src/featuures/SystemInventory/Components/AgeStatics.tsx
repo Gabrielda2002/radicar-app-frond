@@ -48,7 +48,7 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
 
   return (
     <>
-      <div className='flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800'>
+      <div className='flex min-w-0 flex-col gap-4 rounded-lg bg-white p-3 shadow-md dark:bg-gray-800 sm:p-4'>
         {isLoading ? (
           <div className="flex items-center justify-center h-64">
             <LoadingSpinner />
@@ -58,15 +58,15 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
             {error}
           </div>
         ) : age ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          <div className='grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2'>
             {/* Gráfico de barras */}
-            <div className='col-span-1 h-80 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm'>
+            <div className='col-span-1 h-80 min-w-0 rounded-lg bg-gray-50 p-3 shadow-sm dark:bg-gray-700 sm:p-4'>
               <h2 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">Distribución por Edad</h2>
               {isMounted && (
-                <ResponsiveContainer width="100%" height="90%" minHeight={250} minWidth={300}>
+                <ResponsiveContainer width="100%" height="90%" minHeight={250}>
                 <BarChart
                   data={age.distribution}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 12, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="label" />
@@ -80,20 +80,20 @@ const AgeStatics: React.FC<AgeStaticsProps> = ({
             </div>
 
             {/* Tarjeta con edad promedio */}
-            <div className='h-80 flex flex-wrap md:flex-col'>
-              <div className='flex-1 bg-green-50 dark:bg-green-900/30 p-4 rounded-lg shadow-sm mb-4'>
+            <div className='flex min-w-0 flex-col gap-3 xl:h-80'>
+              <div className='min-w-0 flex-1 overflow-hidden rounded-lg bg-green-50 p-4 shadow-sm dark:bg-green-900/30'>
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Edad Promedio</h3>
-                <div className='flex flex-col items-center justify-center h-full'>
-                  <p className='text-3xl font-bold text-green-600 dark:text-green-400'>{formatAverageAge()}</p>
+                <div className='flex min-h-24 flex-col items-center justify-center'>
+                  <p className='text-center text-2xl font-bold leading-tight text-green-600 dark:text-green-400 sm:text-3xl'>{formatAverageAge()}</p>
                   <p className='text-sm text-gray-500 dark:text-gray-400 mt-2 text-center'>
                     Tiempo promedio de uso de los {typeItem === "equipments" ? "equipos" : "items"}
                   </p>
                 </div>
               </div>
               
-              <div className='flex-1 bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg shadow-sm'>
+              <div className='min-w-0 flex-1 overflow-hidden rounded-lg bg-blue-50 p-4 shadow-sm dark:bg-blue-900/30'>
                 <h3 className='text-lg font-medium mb-2 text-gray-700 dark:text-gray-300'>Total Registros</h3>
-                <div className='flex flex-col items-center justify-center h-full'>
+                <div className='flex min-h-20 flex-col items-center justify-center'>
                   <p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
                     {age.total}
                   </p>
