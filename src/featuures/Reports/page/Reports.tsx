@@ -1,7 +1,7 @@
 import HeaderPage from '@/components/common/HeaderPage/HeaderPage'
 import Card from '../../../components/common/Ui/Card'
 import { REPORT_CONFIG } from '../config/reportConfig'
-import { Suspense, useState, useMemo, useEffect } from 'react'
+import { Suspense, useState, useMemo } from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import Input from '@/components/common/Ui/Input';
@@ -22,18 +22,12 @@ const Reports = () => {
     const { rol } = useAuth();
 
     const [selectedReport, setSelectedReport] = useState<string | null>(null);
-    const [filteredReports, setFilteredReports] = useState<typeof REPORT_CONFIG>([]);
+    const filteredReports = useMemo(
+        () => rol ? REPORT_CONFIG.filter(r => r.roles.includes(String(rol))) : [],
+        [rol],
+    );
 
     const { dataPreview, generatePreview, isLoading, error, clearPreview } = useGeneratePreview();
-
-    useEffect(() => {
-        if (rol) {
-            const filtered = REPORT_CONFIG.filter(r => r.roles.includes(String(rol)));
-            setFilteredReports(filtered);
-        } else {
-            setFilteredReports([]);
-        }
-    }, [rol]);
 
     const { downloadReport, error: dError, loading: dLoading } = useDownloadReport();
 
@@ -59,7 +53,7 @@ const Reports = () => {
     }, [strategy]);
 
     const initialValues = useMemo(() => {
-        const baseValues: Record<string, any> = {
+        const baseValues: Record<string, string | number> = {
             dateStart: '',
             dateEnd: '',
         };
@@ -87,13 +81,8 @@ const Reports = () => {
         }
     })
 
-    useEffect(() => {
-        if (selectedReport !== null) {
-            clearPreview();
-        }
-    }, [selectedReport]);
-
     const handleCardClick = (reportId: string) => {
+        clearPreview();
         setSelectedReport(reportId);
     }
 
@@ -131,7 +120,7 @@ const Reports = () => {
                 title="Generación de Reportes"
                 description='Acceso a diferentes reportes filtros y creación vista previas.'
             />
-            <div className='p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'>
+            <div className={selectedReport === null ? 'mb-11' : 'p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40'}>
                 {selectedReport === null ? (
                     <>
                         {!rol ? (
@@ -144,13 +133,14 @@ const Reports = () => {
                                 <p className='text-sm'>Contacta al administrador si crees que esto es un error</p>
                             </div>
                         ) : (
-                            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-4 p-5'>
+                            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-4'>
                                 {filteredReports.map((r) => (
                                     <div key={r.id}>
                                         <Card
                                             title={r.title}
                                             description={r.description}
                                             icon={r.icon}
+                                            actionLabel='Generar'
                                             onClick={() => handleCardClick(r.id)}
                                         />
                                     </div>
@@ -248,7 +238,7 @@ const Reports = () => {
                                         type='submit'
                                         disabled={!formik.isValid || formik.isSubmitting}
                                     >
-                                        {isLoading ? 'Generando Preview...' : 'Generar Preview'}
+                                        {isLoading ? 'Generando...' : 'Generar'}
                                     </Button>
 
                                     <AnimatePresence>
@@ -274,7 +264,7 @@ const Reports = () => {
                                         onClick={handleDownloadReport}
                                         isLoading={dLoading}
                                     >
-                                        Descargar Reporte
+                                        Descargar
                                     </Button>
                                 </div>
                                 <AnimatePresence>

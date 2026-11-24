@@ -1,4 +1,5 @@
-import { useState, Suspense, useMemo } from "react";
+import { Suspense } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { configModules, flatTableMap } from "../config/tableRegistry";
@@ -10,7 +11,8 @@ const Configuration = () => {
   const { rol } = useAuth();
   const userRole = Number(rol);
 
-  const [selectedTable, setSelectedTable] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTable = searchParams.get("tabla");
 
   const hasAccess = (itemRols?: number[]) => {
     if (userRole === 1) return true; // El admin tiene acceso a todo
@@ -18,26 +20,22 @@ const Configuration = () => {
     return itemRols.includes(userRole);
   };
 
-  const visibleModules = useMemo(() => {
-    return configModules
-      .filter((module) => hasAccess(module.rols))
-      .map((module) => ({
-        ...module,
-        tables: module.tables.filter((table) =>
-          hasAccess(table.rols ?? module.rols),
-        ),
-      }))
-      .filter((module) => module.tables.length > 0);
-  }, [userRole]);
+  const visibleModules = configModules
+    .filter((module) => hasAccess(module.rols))
+    .map((module) => ({
+      ...module,
+      tables: module.tables.filter((table) =>
+        hasAccess(table.rols ?? module.rols),
+      ),
+    }))
+    .filter((module) => module.tables.length > 0);
 
-  const activeTable = useMemo(() => {
-    if (!selectedTable) return null;
-    const table = flatTableMap[selectedTable];
-    if (!table) return null;
-    return hasAccess(table.rols) ? table : null;
-  }, [selectedTable, userRole]);
+  const selectedTableConfig = selectedTable ? flatTableMap[selectedTable] : null;
+  const activeTable = selectedTableConfig && hasAccess(selectedTableConfig.rols)
+    ? selectedTableConfig
+    : null;
 
-  const handleBack = () => setSelectedTable(null);
+  const handleBack = () => setSearchParams({});
 
   if (activeTable) {
     const TableComponent = activeTable.component;
@@ -64,7 +62,7 @@ const Configuration = () => {
           { label: "configuration", path: "" },
         ]}
       />
-      <div className="space-y-8 p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
+      <div className="mb-11 space-y-8">
         {visibleModules.length === 0 ? (
           <div className="py-12 text-center text-gray-500 dark:text-gray-400">
             No tienes tablas de configuración asignadas a tu rol.
@@ -89,7 +87,7 @@ const Configuration = () => {
                       <button
                         key={table.id}
                         type="button"
-                        onClick={() => setSelectedTable(table.id)}
+                        onClick={() => setSearchParams({ tabla: table.id })}
                         className="flex items-start gap-4 p-5 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-teal-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-teal-600 transition-all duration-200 text-left cursor-pointer"
                       >
                         <div className="shrink-0 p-2.5 rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">

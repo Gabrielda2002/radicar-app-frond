@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { ArrowUturnLeftIcon, ChevronRightIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { ArrowLeft, Circle, House } from "lucide-react";
 
 interface ModuleSectionProps {
   title: string;
@@ -16,95 +16,62 @@ const HeaderPage: React.FC<ModuleSectionProps> = ({
   duration = 500,
   description
 }) => {
-  const location = useLocation();
-
-  // Generar breadcrumb automático basado en la URL actual
-  const autoBreadcrumb = useMemo(() => {
-    const paths = location.pathname.split('/').filter(Boolean);
-    const autoItems = [{ label: 'Inicio', path: '/' }];
-    
-    let accumulatedPath = '';
-    paths.forEach((path, index) => {
-      accumulatedPath += `/${path}`;
-      const label = path
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-      
-      if (index < paths.length - 1) {
-        autoItems.push({ label, path: accumulatedPath });
-      }
-    })
-    
-    return autoItems;
-  }, [location.pathname]);
-
-  // Usar breadcrumb proporcionado o el automático
-  const displayBreadcrumb = breadcrumb.length > 0 ? breadcrumb : autoBreadcrumb;
-
   return (
-    <section className="w-full p-5 mb-6 bg-white rounded-lg shadow-lg dark:bg-gray-800 shadow-indigo-500/40 transition-all duration-300">
+    <header className="relative mb-8 w-full">
       <LoadingSpinner duration={duration} />
-      
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        {/* Sección del título con botón de retroceso */}
-        <div className="flex items-center gap-3">
+
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex items-start gap-4">
           <button
-            title="Regresar a la página anterior"
+            type="button"
+            title="Regresar"
+            aria-label="Regresar a la página anterior"
             onClick={() => window.history.back()}
-            className="group flex items-center justify-center p-2.5 text-gray-600 bg-gray-100 border-2 border-gray-200 rounded-lg 
-                     hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-600 
-                     dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 
-                     dark:hover:bg-gray-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400
-                     transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+            className="mt-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#e8ebf3] bg-white text-[#253957] shadow-sm transition hover:bg-[#eef2ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
           >
-            <ArrowUturnLeftIcon className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+            <ArrowLeft className="h-7 w-7" aria-hidden="true" />
           </button>
 
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl text-color dark:text-gray-100 transition-colors duration-300">
+          <div className="min-w-0">
+            <h1 className="text-[28px] font-semibold leading-tight tracking-[-0.04em] text-gray-950 dark:text-gray-300 sm:text-[45px]">
               {title}
             </h1>
-            {/* Línea decorativa debajo del título */}
-            <div className="h-1 mt-1 bg-linear-to-r from-indigo-500 to-transparent rounded-full w-20 dark:from-indigo-400"></div>
-              {/* Descripción opcional debajo del título */}
-              {description && (
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-md">
-                  {description}
-                </p>
-              )}
+            <div className="mt-1 h-[3px] w-[135px] rounded-full bg-gradient-to-r from-teal-600 to-violet-500" />
+            {description && (
+              <p className="mt-2 max-w-xl text-sm font-medium leading-5 text-[#34466a] dark:text-gray-300">
+                {description}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Breadcrumb mejorado */}
-        <nav className="flex items-center" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2 flex-wrap">
-            {displayBreadcrumb.map((item, index) => (
-              <li key={index} className="flex items-center gap-2">
-                {index > 0 && (
-                  <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                )}
-                <Link
-                  to={item.path}
-                  className="group flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 
-                           dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 
-                           rounded-md hover:bg-gray-100 dark:hover:bg-gray-700
-                           transition-all duration-200 ease-in-out"
-                >
-                  {index === 0 && (
-                    <HomeIcon className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-                  )}
-                  <span className="transition-all duration-200 group-hover:translate-x-0.5">
-                    {item.label}
+        <nav aria-label="Ruta de navegación" className="flex w-full items-center justify-end gap-2 text-sm font-medium text-[#34466a] dark:text-gray-300 lg:w-auto lg:pt-3">
+          {breadcrumb.map((item, index) => {
+            const label = item.label.replace(/^\/+\s*/, "");
+            const isCurrent = index === breadcrumb.length - 1 && !item.path;
+
+            return (
+              <React.Fragment key={`${item.path}-${item.label}`}>
+                {index > 0 && <span aria-hidden="true" className="text-slate-400">/</span>}
+                {isCurrent ? (
+                  <span aria-current="page" className="inline-flex items-center gap-1.5 text-blue-700 dark:text-blue-400">
+                    <Circle className="h-2.5 w-2.5 fill-current" aria-hidden="true" />
+                    {label}
                   </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+                ) : item.path ? (
+                  <Link to={item.path} className="inline-flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
+                    {index === 0 && <House className="h-4 w-4" aria-hidden="true" />}
+                    {label}
+                  </Link>
+                ) : (
+                  <span>{label}</span>
+                )}
+              </React.Fragment>
+            );
+          })}
         </nav>
       </div>
-    </section>
+    </header>
   );
 };
 
