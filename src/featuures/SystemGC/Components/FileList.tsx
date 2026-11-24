@@ -48,7 +48,7 @@ const FileList: React.FC<{ files: FileItem[] }> = ({ files }) => {
         {files.map((file) => (
           <div
             key={file.id}
-            className="relative flex flex-col items-center p-2 text-gray-700 duration-500 bg-gray-100 border-2 rounded-md shadow-sm cursor-pointer md:p-4 group dark:shadow-indigo-500 dark:border-gray-700 dark:bg-gray-700 hover:shadow-lg dark:hover:bg-gray-600 dark:text-gray-300"
+            className="relative flex flex-col items-center p-2 text-gray-700 bg-white border-1 border-gray-300 rounded-md shadow-sm cursor-pointer transition-all duration-200 hover:z-30 hover:shadow-lg md:p-4 group hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:shadow-gray-500/30"
             title={`${file.name} - ${file.size / 1024} KB`}
           >
             {[1, 4].includes(Number(rol)) && (

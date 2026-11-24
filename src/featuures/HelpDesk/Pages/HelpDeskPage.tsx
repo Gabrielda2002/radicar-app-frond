@@ -15,7 +15,7 @@ function HelpDeskPage(){
           description='Centraliza y da seguimiento a todas las incidencias, consultas y solicitudes de soporte'
       />
 
-        <div className="p-5 bg-white rounded-md shadow-lg dark:bg-gray-800 mb-11 shadow-indigo-500/40">
+        <div className="mb-11">
             <Card cards={HELP_DESK_CARDS} />
         </div>
     </>  

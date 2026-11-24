@@ -7,7 +7,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <section className="min-h-full w-full px-4 pt-4 md:px-12 md:pt-10">
+      <section className="min-h-full w-full md:px-4 md:pt-4">
         {children}
       </section>
     </>
