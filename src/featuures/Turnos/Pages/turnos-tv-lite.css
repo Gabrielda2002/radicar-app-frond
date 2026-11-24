@@ -15,7 +15,7 @@ button:disabled { cursor: default; opacity: .7; }
 .offline, .notice { color: #fde68a; background: #451a03; }
 .notice { padding: 12px 24px; text-align: center; }
 .tv-layout { padding: 24px 16px; }
-.current, .upcoming { padding: 0 8px 16px; }
+.current, .recent, .upcoming { padding: 0 8px 16px; }
 .panel { position: relative; padding: 24px; border: 1px solid #334155; border-radius: 24px; background: #0f172a; }
 .panel-content { position: relative; }
 .calling { border: 2px solid #34d399; }
@@ -23,9 +23,12 @@ button:disabled { cursor: default; opacity: .7; }
 .ticket { margin: 8px 0 24px; text-align: center; color: #34d399; font: bold 60px monospace; word-wrap: break-word; }
 .module, .upcoming li { padding: 14px; border: 1px solid #334155; border-radius: 12px; background: #020617; }
 .module { text-align: center; font-size: 22px; font-weight: bold; }
-.upcoming h2 { padding-bottom: 12px; border-bottom: 1px solid #334155; font-size: 20px; }
-.upcoming p { padding-top: 16px; color: #cbd5e1; }
-.upcoming ol { margin: 0; padding: 0; list-style-position: inside; }
+.recent h2, .upcoming h2 { padding-bottom: 12px; border-bottom: 1px solid #334155; font-size: 20px; }
+.recent p, .upcoming p { padding-top: 16px; color: #cbd5e1; }
+.recent ol, .upcoming ol { margin: 0; padding: 0; list-style-position: inside; }
+.recent li { margin-top: 8px; padding: 8px 14px; border: 1px solid #334155; border-radius: 12px; background: #020617; list-style: none; }
+.recent strong { display: inline-block; margin-right: 12px; color: #a7f3d0; font: bold 24px monospace; }
+.recent span { color: #e2e8f0; font-size: 18px; }
 .upcoming li { margin-top: 8px; color: #f8fafc; font: bold 24px monospace; }
 footer { padding: 12px 24px; border-top: 1px solid #1e293b; color: #cbd5e1; text-align: center; }
 .wave { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 3px solid #34d399; border-radius: 24px; opacity: 0; }
@@ -45,7 +48,7 @@ footer { padding: 12px 24px; border-top: 1px solid #1e293b; color: #cbd5e1; text
 @media (min-width: 760px) {
   .tv-controls { float: right; }
   .tv-layout { display: table; width: 100%; table-layout: fixed; box-sizing: border-box; }
-  .current, .upcoming { display: table-cell; vertical-align: top; }
+  .current, .tv-lists { display: table-cell; vertical-align: top; }
   .current { width: 62%; }
   .ticket { font-size: 88px; }
 }

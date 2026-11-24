@@ -125,6 +125,28 @@
     empty.style.display = turns.length ? "none" : "";
   }
 
+  function renderRecentCalls(calls) {
+    var list = get("recent-calls-list");
+    var fragment = document.createDocumentFragment();
+    for (var index = 0; index < calls.length && index < 5; index++) {
+      var call = calls[index];
+      var item = document.createElement("li");
+      var code = document.createElement("strong");
+      var destination = document.createElement("span");
+      setText(code, call.ticketCode);
+      setText(destination, call.moduloName ||
+        (call.moduloCode ? "Módulo " + call.moduloCode : "Módulo no informado"));
+      item.appendChild(code);
+      item.appendChild(destination);
+      fragment.appendChild(item);
+    }
+    while (list.firstChild) list.removeChild(list.firstChild);
+    list.appendChild(fragment);
+    var empty = get("recent-calls-empty");
+    setText(empty, "No hay llamados recientes");
+    empty.style.display = calls.length ? "none" : "";
+  }
+
   function showCalls(calls) {
     if (!calls.length) return;
     panel.className = "panel calling";
@@ -153,6 +175,7 @@
     setText(get("sede"), state.headquarter.name || "Sede de atención");
     renderCurrent(highlight);
     renderUpcoming(state.upcomingTurns);
+    renderRecentCalls(Array.isArray(state.recentCalls) ? state.recentCalls : []);
     setText(connection, "Actualizado");
     connection.className = "connection";
     notice.style.display = "none";

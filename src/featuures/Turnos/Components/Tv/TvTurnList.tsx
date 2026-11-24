@@ -1,4 +1,4 @@
-import { Clock, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import type { ITurnoTvUpcomingItem } from "@/models/ITurnos";
 
 interface TvTurnListProps {
@@ -8,9 +8,9 @@ interface TvTurnListProps {
 export const TvTurnList = ({ turns }: TvTurnListProps) => (
   <section
     aria-label="Próximos turnos"
-    className="flex flex-1 flex-col rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-sm"
+    className="p-4 bg-slate-900/70 border border-slate-800 rounded-3xl sm:px-5"
   >
-    <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Users className="h-5 w-5 text-sky-400" aria-hidden="true" />
         <h2 className="text-lg font-bold text-white sm:text-xl">
@@ -22,17 +22,16 @@ export const TvTurnList = ({ turns }: TvTurnListProps) => (
       </span>
     </div>
 
-    <ol className="mt-4 flex-1 space-y-3">
-      {turns.length === 0 ? (
-        <li className="flex h-48 flex-col items-center justify-center gap-3 text-center text-slate-400">
-          <Clock className="h-8 w-8 text-slate-500" aria-hidden="true" />
-          <p className="text-sm font-medium">No hay turnos próximos</p>
-        </li>
-      ) : (
-        turns.slice(0, 5).map((turn, index) => (
+    {turns.length === 0 ? (
+      <p className="mt-2 text-sm font-medium text-slate-300">
+        No hay turnos próximos
+      </p>
+    ) : (
+      <ol className="grid grid-cols-2 gap-2 mt-3 sm:grid-cols-3 lg:grid-cols-5">
+        {turns.slice(0, 5).map((turn, index) => (
           <li
             key={turn.turnoId}
-            className="flex items-center gap-5 rounded-2xl border border-slate-800 bg-slate-950/60 px-5 py-4"
+            className="flex items-center justify-center gap-3 px-3 py-2 bg-slate-950/60 border border-slate-800 rounded-xl"
           >
             <span className="text-sm font-bold tabular-nums text-slate-500">
               {String(index + 1).padStart(2, "0")}
@@ -41,8 +40,8 @@ export const TvTurnList = ({ turns }: TvTurnListProps) => (
               {turn.ticketCode}
             </span>
           </li>
-        ))
-      )}
-    </ol>
+        ))}
+      </ol>
+    )}
   </section>
 );

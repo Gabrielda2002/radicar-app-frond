@@ -263,6 +263,15 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       setIsOutdated(true);
     });
 
+    const scheduleStateRefresh = () => {
+      if (queueRefreshTimeoutRef.current)
+        clearTimeout(queueRefreshTimeoutRef.current);
+      queueRefreshTimeoutRef.current = setTimeout(() => {
+        queueRefreshTimeoutRef.current = null;
+        void load(slug);
+      }, 100);
+    };
+
     const handleTurnoLlamado = (payload: TurnoLlamadoEvent) => {
       if (!payload || typeof payload.turnoId !== "number") return;
 
@@ -290,6 +299,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       const dedupKey = `${payload.turnoId}_llamado_${payload.callCount || 1}`;
 
       enqueueSpeech(dedupKey, text);
+      scheduleStateRefresh();
     };
 
     const handleTurnoRellamado = (payload: TurnoLlamadoEvent) => {
@@ -319,6 +329,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       const dedupKey = `${payload.turnoId}_rellamado_${payload.callCount ?? Date.now()}`;
 
       enqueueSpeech(dedupKey, text);
+      scheduleStateRefresh();
     };
 
     const handleTurnoActualizado = (payload: TurnoActualizadoEvent) => {
@@ -359,12 +370,7 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       )
         return;
 
-      if (queueRefreshTimeoutRef.current)
-        clearTimeout(queueRefreshTimeoutRef.current);
-      queueRefreshTimeoutRef.current = setTimeout(() => {
-        queueRefreshTimeoutRef.current = null;
-        void load(slug);
-      }, 100);
+      scheduleStateRefresh();
     };
 
     socket.on("turno:llamado", handleTurnoLlamado);

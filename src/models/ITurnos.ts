@@ -117,8 +117,16 @@ export interface ITurnoTvUpcomingItem {
   ticketCode: string;
 }
 
+export interface ITurnoTvRecentCall {
+  ticketCode: string;
+  moduloCode: string | null;
+  moduloName: string | null;
+  calledAt: string;
+}
+
 export interface ITurnoTvState {
   headquarter: ITurnoOption & { slug: string };
   activeTurns: ITurnoTvItem[];
   upcomingTurns: ITurnoTvUpcomingItem[];
+  recentCalls: ITurnoTvRecentCall[];
 }

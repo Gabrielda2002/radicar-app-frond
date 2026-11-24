@@ -1,5 +1,7 @@
 # Spec 002 — Próximos turnos en la pantalla de sala
 
+> La [Spec 007](../007-historial-llamados-tv/spec.md) permite mostrar el módulo en el historial y en el llamado vigente de la TV normal. Los próximos turnos siguen mostrando solo su código.
+
 ## Objetivo
 
 Permitir que las personas en sala vean cuáles turnos están próximos a ser

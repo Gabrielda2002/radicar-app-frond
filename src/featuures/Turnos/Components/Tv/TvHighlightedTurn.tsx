@@ -6,10 +6,14 @@ interface TvHighlightedTurnProps {
 }
 
 export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
+  const destination =
+    turn.moduloName?.trim() ||
+    (turn.moduloCode ? `Módulo ${turn.moduloCode}` : "Módulo no informado");
+
   return (
     <section
       aria-label="Último turno llamado"
-      className="relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-emerald-500/80 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-emerald-950/40 sm:p-10"
+      className="relative flex flex-1 flex-col justify-between overflow-hidden rounded-3xl border-2 border-emerald-500/80 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-emerald-950/40 sm:p-8"
     >
       {/* Glow pulsante de fondo */}
       <div
@@ -31,7 +35,7 @@ export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
         </span>
       </div>
 
-      <div className="my-8 text-center sm:my-12">
+      <div className="my-6 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-slate-400 sm:text-sm">
           Código de Turno
         </p>
@@ -41,7 +45,7 @@ export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
       </div>
 
       <p className="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 text-center text-lg font-semibold text-slate-300 sm:text-xl">
-        Este es el turno que está siendo llamado
+        {destination}
       </p>
     </section>
   );

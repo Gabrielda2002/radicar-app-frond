@@ -6,6 +6,7 @@ import { useTurnoTvLive } from "../hooks/useTurnoTvLive";
 import { TvHeader } from "../Components/Tv/TvHeader";
 import { TvOfflineBanner } from "../Components/Tv/TvOfflineBanner";
 import { TvHighlightedTurn } from "../Components/Tv/TvHighlightedTurn";
+import { TvRecentCalls } from "../Components/Tv/TvRecentCalls";
 import { TvTurnList } from "../Components/Tv/TvTurnList";
 import { TvWaitingState } from "../Components/Tv/TvWaitingState";
 
@@ -79,10 +80,11 @@ const TurnoTvPage = () => {
 
   const activeTurns = data?.activeTurns || [];
   const upcomingTurns = data?.upcomingTurns || [];
+  const recentCalls = data?.recentCalls ?? [];
   const highlightedTurn =
-    activeTurns.find((t) => t.turnoId === highlightedTurnoId) ||
-    activeTurns.find((t) => t.status === "LLAMADO") ||
-    activeTurns[0];
+    activeTurns.find(
+      (turn) => turn.turnoId === highlightedTurnoId && turn.status === "LLAMADO",
+    ) ?? activeTurns.find((turn) => turn.status === "LLAMADO");
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-950 text-white selection:bg-emerald-500 selection:text-slate-950">
@@ -96,24 +98,22 @@ const TurnoTvPage = () => {
 
       <TvOfflineBanner isOutdated={isOutdated} />
 
-      <main className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
-        {activeTurns.length === 0 && upcomingTurns.length === 0 ? (
-          <TvWaitingState />
-        ) : (
-          <div className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-12">
-            <div className="flex flex-col lg:col-span-7 xl:col-span-8">
-              {highlightedTurn ? (
-                <TvHighlightedTurn turn={highlightedTurn} />
-              ) : (
-                <TvWaitingState />
-              )}
-            </div>
+      <main className="grid flex-1 grid-cols-1 gap-4 p-4 sm:p-6 lg:grid-cols-5 lg:grid-rows-[minmax(min-content,1fr)_auto]">
+        <div className="flex min-w-0 flex-col lg:col-span-3">
+          {highlightedTurn ? (
+            <TvHighlightedTurn turn={highlightedTurn} />
+          ) : (
+            <TvWaitingState />
+          )}
+        </div>
 
-            <div className="flex flex-col lg:col-span-5 xl:col-span-4">
-              <TvTurnList turns={upcomingTurns} />
-            </div>
-          </div>
-        )}
+        <div className="flex min-w-0 flex-col lg:col-span-2">
+          <TvRecentCalls calls={recentCalls} />
+        </div>
+
+        <div className="min-w-0 lg:col-span-full">
+          <TvTurnList turns={upcomingTurns} />
+        </div>
       </main>
 
       {!soundEnabled && (
