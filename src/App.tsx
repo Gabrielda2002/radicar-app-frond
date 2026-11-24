@@ -1,4 +1,4 @@
-import { lazy, useLayoutEffect, useRef } from "react";
+import { lazy, useLayoutEffect, useRef, Suspense } from "react";
 //*Componentes
 import Footer from "./components/layout/footer/page/Footer.tsx";
 import Layout from "./components/layout/layout.tsx";
@@ -22,6 +22,10 @@ import { NotificationProvider } from "@/context/notificationContext.tsx";
 
 import SideBar from "./components/layout/sidebar/page/SideBar.tsx";
 
+const TurnoRequestPage = lazy(() => import("@/featuures/Turnos/Pages/TurnoRequestPage"));
+const TurnoTicketPage = lazy(() => import("@/featuures/Turnos/Pages/TurnoTicketPage"));
+const TurnoTvPage = lazy(() => import("@/featuures/Turnos/Pages/TurnoTvPage"));
+
 function AppRoutes() {
   const { key } = useLocation();
   const mainContentRef = useRef<HTMLElement>(null);
@@ -35,6 +39,9 @@ function AppRoutes() {
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
+        <Route path="/turnos/sede/:slug" element={<Suspense fallback={<p role="status" className="p-8 text-center">Cargando solicitud de turno…</p>}><TurnoRequestPage /></Suspense>} />
+        <Route path="/turnos/ticket/:token" element={<Suspense fallback={<p role="status" className="p-8 text-center">Cargando ticket…</p>}><TurnoTicketPage /></Suspense>} />
+        <Route path="/turnos/tv/:slug" element={<Suspense fallback={<p role="status" className="p-8 text-center text-white bg-slate-900 min-h-screen">Cargando pantalla de turnos…</p>}><TurnoTvPage /></Suspense>} />
         {/* Rutas protegidas */}
         <Route element={<PrivateRoutes />}>
           <Route

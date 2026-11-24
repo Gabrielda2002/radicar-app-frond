@@ -5,17 +5,17 @@ export interface IPacientes {
     name:                string;
     phoneNumber:         string;
     phoneNumber2:        string | null;
-    landline:            string;
-    email:               string;
-    address:             string;
-    agreementId:            number;
-    ipsPrimaryId:         number;
-    regime:              string;
+    landline:            string | null;
+    email:               string | null;
+    address:             string | null;
+    agreementId:            number | null;
+    ipsPrimaryId:         number | null;
+    regime:              string | null;
     status:              boolean;
     updatedAt:           Date;
     createdAt:           Date;
-    convenioRelation:    Relation;
-    ipsPrimariaRelation: Relation;
+    convenioRelation:    Relation | null;
+    ipsPrimariaRelation: Relation | null;
     documentRelation:    Relation;
 }
 

@@ -89,6 +89,9 @@ const PqrsdfDetalle = lazy(
 const PpsPage = lazy(
   () => import("@/featuures/PPS/Page/PpsPage")
 );
+const TurnoAtencionPage = lazy(
+  () => import("@/featuures/Turnos/Pages/TurnoAtencionPage")
+);
 
 // Componente para rutas envueltas en el contexto de usuarios
 const UsersPage = () => (
@@ -110,6 +113,7 @@ const ContextualizedRoutes: React.FC = () => {
         <Route path="*" element={<NotFound />} />
         {/* Rutas generales sin contextos específicos */}
         <Route path="/home" element={<Inicio />} />
+        <Route path="/turnos/atencion" element={<TurnoAtencionPage />} />
         <Route path="/tabla-radicacion" element={<TablaRadicacion />} />
         <Route path="/tabla-auditoria" element={<TablaAuditoria />} />
         <Route path="/tabla-cirugias" element={<TablaCirugias />} />

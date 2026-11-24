@@ -180,14 +180,14 @@ const ModalRadicacion = () => {
   // * efecto para llenar los campos del formulario con los datos del paciente cada que data cambie
   useEffect(() => {
     if (data) {
-      formik.setFieldValue("landline", data.landline);
+      formik.setFieldValue("landline", data.landline ?? "");
       formik.setFieldValue("phoneNumber", data.phoneNumber);
       formik.setFieldValue("phoneNumber2", data.phoneNumber2 || "");
-      formik.setFieldValue("address", data.address);
-      formik.setFieldValue("email", data.email);
-      formik.setFieldValue("agreement", data.agreementId);
+      formik.setFieldValue("address", data.address ?? "");
+      formik.setFieldValue("email", data.email ?? "");
+      formik.setFieldValue("agreement", data.agreementId ?? "");
       formik.setFieldValue("patientId", data.id.toString());
-      formik.setFieldValue("ipsPrimary", data.ipsPrimaryId);
+      formik.setFieldValue("ipsPrimary", data.ipsPrimaryId ?? "");
     }
   }, [data]);
 

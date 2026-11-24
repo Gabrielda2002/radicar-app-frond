@@ -19,6 +19,7 @@ import {
   Target,
   CheckSquare,
   Coins,
+  CalendarClock,
 } from "lucide-react";
 export interface ConfigTable {
   id: string;
@@ -52,6 +53,12 @@ const TableProfessional = lazy(() => import("@/featuures/Professional/page/Profe
 const TableAreaDependency = lazy(() => import("../components/views/TableAreaDependency"))
 const TableClassification = lazy(() => import("../components/views/TableClassification"))
 const TableAssets = lazy(() => import("../components/views/TableAssets"));
+const TurnoAdminPage = lazy(
+  () => import("@/featuures/Turnos/Admin/Pages/TurnoAdminPage"),
+);
+const TurnoServicesPage = lazy(
+  () => import("@/featuures/Turnos/Admin/Pages/TurnoServicesPage"),
+);
 
 const TablePpsActionLines = lazy(() => import("@/featuures/PPS/Page/TablePpsActionLines"));
 const TablePpsGoals = lazy(() => import("@/featuures/PPS/Page/TablePpsGoals"));
@@ -93,6 +100,30 @@ export const configModules: ConfigModule[] = [
         description: "Gestión de municipios del sistema",
         icon: MapPin,
         component: TablaMunicipios,
+      },
+    ]
+  },
+  {
+    id: "turnos",
+    label: "Turnos",
+    icon: CalendarClock,
+    rols: [1, 10],
+    tables: [
+      {
+        id: "administracion-turnos",
+        label: "Administración de turnos",
+        description: "Configuración de sedes, enlaces y módulos de turnos",
+        icon: CalendarClock,
+        component: TurnoAdminPage,
+        rols: [1],
+      },
+      {
+        id: "servicios-turnos",
+        label: "Servicios de turnos",
+        description: "Creación, edición y estado de los servicios de atención",
+        icon: Tags,
+        component: TurnoServicesPage,
+        rols: [1],
       },
     ]
   },
@@ -157,7 +188,7 @@ export const configModules: ConfigModule[] = [
         description: "Profesionales que prestaran el servicio solicitado",
         icon: User,
         component: TableProfessional,
-      }
+      },
     ],
   },
   {

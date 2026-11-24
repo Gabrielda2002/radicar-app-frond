@@ -10,6 +10,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import ModalMoveItems from "./ModalMoveItems";
 import { Download, Move } from "lucide-react";
+import { useSecureFileAccess } from "../Hooks/useSecureFileAccess";
 
 type ItemOption = {
   id: string;
@@ -48,8 +49,10 @@ const ItemMenu: React.FC<ItemManuProps> = ({
 
   const [stadOpenRename, setStadOpenRename] = useState(false);
   const [stadOpenDelete, setStadOpenDelete] = useState(false);
-  const [stadOpenMove, setStadOpenMove] = useState(false);
+  const [stadOpenMove, setStadOpenMove] =  useState(false);
   const [stadOpenChangeIcon, setStadOpenChangeIcon] = useState(false);
+
+    const { downloadSecureFile } = useSecureFileAccess();
 
 
   const handleModalOpenRename = () => {
@@ -114,7 +117,7 @@ const ItemMenu: React.FC<ItemManuProps> = ({
         if (itemType === "carpetas") {
           downloadFolderAsZip(Number(itemId), itemName);
         } else {
-          alert("Funcionalidad de descarga de archivos individuales no implementada.");
+          downloadSecureFile(itemId, "files")
         }
       }
     },

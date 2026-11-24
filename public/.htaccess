@@ -1,20 +1,28 @@
 <IfModule mod_headers.c>
-    # index.html: NUNCA cachear
-    <FilesMatch "^(index\.html)$">
+    # HTML de entrada: nunca cachear
+    <FilesMatch "^(index|turnos-tv-lite)\.html$">
         Header set Cache-Control "no-cache, no-store, must-revalidate"
         Header set Pragma "no-cache"
         Header set Expires "0"
     </FilesMatch>
 
     # Assets con hash: cachear por 1 año (son inmutables)
-    <FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp|map)$">
+    <FilesMatch "^(?!turnos-tv-lite\.js$).*\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp|map)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
+
+    # El JS clásico de TV Lite no lleva hash.
+    <Files "turnos-tv-lite.js">
+        Header set Cache-Control "no-cache"
+    </Files>
 </IfModule>
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+
+    # Pantalla compatible sin arranque de la SPA.
+    RewriteRule ^turnos/tv-lite/[^/]+/?$ turnos-tv-lite.html [L]
 
     # No reescribir archivos existentes
     RewriteCond %{REQUEST_FILENAME} -f [OR]

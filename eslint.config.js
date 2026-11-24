@@ -23,4 +23,15 @@ export default tseslint.config({
       { allowConstantExport: true },
     ],
   },
+}, {
+  files: ['public/turnos-tv-lite.js'],
+  languageOptions: {
+    ecmaVersion: 5,
+    sourceType: 'script',
+    globals: globals.browser,
+  },
+  rules: {
+    ...js.configs.recommended.rules,
+    'no-unused-vars': ['error', { caughtErrorsIgnorePattern: '^_' }],
+  },
 })

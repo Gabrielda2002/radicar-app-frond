@@ -107,6 +107,13 @@ repositorio. Resumen:
 - Evita el code slop: no agregues dependencias, abstracciones ni código sin uso; no refactorices fuera del alcance de la spec; no cambies nombres de clases Tailwind ni stores de Zustand existentes 
   (a menos que la spec lo indique). No agregues tests sin aprobación.
 
+### Modularización de componentes
+
+- Mantén cada componente React por debajo de 450 líneas.
+- Extrae la lógica compleja o reutilizable a hooks personalizados; divide los hooks grandes en hooks más pequeños.
+- Separa la lógica de negocio de la presentación y evita lógica compleja dentro de los componentes.
+- Agrupa los componentes relacionados por funcionalidad y asigna una responsabilidad clara a cada función.
+
 ## Despliegue
 
 - `.github/workflows/deploy.yml`: al hacer push a `master`, ejecuta

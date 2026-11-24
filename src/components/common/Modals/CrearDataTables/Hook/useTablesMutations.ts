@@ -1,6 +1,19 @@
 import { api } from "@/utils/api-config";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
+
+const getMutationError = (error: unknown): string => {
+    if (isAxiosError<{ message?: string }>(error)) {
+        if (error.response?.status === 500) {
+            return "Error del servidor. Por favor, inténtelo de nuevo más tarde.";
+        }
+        if (typeof error.response?.data?.message === "string") {
+            return error.response.data.message;
+        }
+    }
+    return "No se pudieron guardar los cambios. Inténtelo de nuevo.";
+};
 
 interface UseTablesMutationsReturn {
     loading: boolean;
@@ -29,12 +42,8 @@ export const useTableMutations = (): UseTablesMutationsReturn => {
                 }
             }
 
-        } catch (error: any) {
-            if (error.response.status === 5004) {
-                setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
-            } else {
-                setError(error.response.data.message);
-            }
+        } catch (error: unknown) {
+            setError(getMutationError(error));
         } finally {
             setLoading(false);
         }
@@ -54,12 +63,8 @@ export const useTableMutations = (): UseTablesMutationsReturn => {
                 }
             }
 
-        } catch (error: any) {
-            if (error.response.status === 500) {
-                setError("Error del servidor. Por favor, inténtelo de nuevo más tarde.");
-            }else {
-                setError(error.response.data.message);
-            }
+        } catch (error: unknown) {
+            setError(getMutationError(error));
         }finally {
             setLoading(false);
         }
