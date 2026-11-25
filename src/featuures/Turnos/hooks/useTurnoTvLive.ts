@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import type { TurnoPriorityType, TurnoStatusType } from "@/models/ITurnos";
 import { useStoreTurnoTv } from "../store/useStoreTurnoTv";
-import { playTurnoChime, unlockAudio } from "../utils/turnoAudio";
+import { useTurnoTvAudio } from "./useTurnoTvAudio";
 
 interface TurnoLlamadoEvent {
   turnoId: number;
@@ -35,11 +35,6 @@ interface TurnoRetiradoEvent {
 
 interface ColaActualizadaEvent {
   headquarterId: number;
-}
-
-interface SpeechQueueTask {
-  key: string;
-  text: string;
 }
 
 const getSocketOrigin = (): string => {
@@ -80,23 +75,14 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
     setHighlightedTurnoId,
   } = useStoreTurnoTv();
 
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const soundEnabledRef = useRef(soundEnabled);
+  const audio = useTurnoTvAudio(slug);
+  const { enqueueSpeech } = audio;
   const socketRef = useRef<Socket | null>(null);
   const headquarterIdRef = useRef<number | undefined>(headquarterId);
 
-  const queueRef = useRef<SpeechQueueTask[]>([]);
-  const isSpeakingRef = useRef<boolean>(false);
-  const activeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const queueRefreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
-  const announcedKeysRef = useRef<Map<string, number>>(new Map());
-  const processQueueRef = useRef<() => void>(() => {});
-
-  useEffect(() => {
-    soundEnabledRef.current = soundEnabled;
-  }, [soundEnabled]);
 
   useEffect(() => {
     headquarterIdRef.current = headquarterId;
@@ -104,121 +90,6 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
       socketRef.current.emit("join", `sede_${headquarterId}_tv`);
     }
   }, [headquarterId]);
-
-  const processQueue = useCallback(() => {
-    if (isSpeakingRef.current) return;
-    if (queueRef.current.length === 0) return;
-
-    isSpeakingRef.current = true;
-    const currentTask = queueRef.current.shift();
-    if (!currentTask) {
-      isSpeakingRef.current = false;
-      return;
-    }
-
-    // Reproducir sonido previo (chime)
-    playTurnoChime();
-
-    // Esperar a que el chime finalice antes del sintetizador de voz
-    activeTimeoutRef.current = setTimeout(() => {
-      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-        activeTimeoutRef.current = setTimeout(() => {
-          isSpeakingRef.current = false;
-          processQueueRef.current();
-        }, 500);
-        return;
-      }
-
-      try {
-        if (window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
-        }
-
-        const utterance = new SpeechSynthesisUtterance(currentTask.text);
-        utterance.lang = "es-CO";
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
-
-        let hasFinished = false;
-        const finishTask = () => {
-          if (hasFinished) return;
-          hasFinished = true;
-          if (activeTimeoutRef.current) {
-            clearTimeout(activeTimeoutRef.current);
-            activeTimeoutRef.current = null;
-          }
-          activeTimeoutRef.current = setTimeout(() => {
-            isSpeakingRef.current = false;
-            processQueueRef.current();
-          }, 400);
-        };
-
-        utterance.onend = finishTask;
-        utterance.onerror = finishTask;
-
-        // Tiempo máximo de seguridad por anuncio: 10 segundos
-        activeTimeoutRef.current = setTimeout(finishTask, 10000);
-
-        window.speechSynthesis.speak(utterance);
-      } catch {
-        isSpeakingRef.current = false;
-        processQueueRef.current();
-      }
-    }, 700);
-  }, []);
-
-  useEffect(() => {
-    processQueueRef.current = processQueue;
-  }, [processQueue]);
-
-  const enqueueSpeech = useCallback(
-    (key: string, text: string) => {
-      // Limpiar llaves con más de 60 segundos
-      const now = Date.now();
-      for (const [k, timestamp] of announcedKeysRef.current.entries()) {
-        if (now - timestamp > 60000) {
-          announcedKeysRef.current.delete(k);
-        }
-      }
-
-      if (announcedKeysRef.current.has(key)) {
-        return;
-      }
-      announcedKeysRef.current.set(key, now);
-
-      if (!soundEnabledRef.current) {
-        return;
-      }
-
-      queueRef.current.push({ key, text });
-      processQueue();
-    },
-    [processQueue],
-  );
-
-  const toggleSound = useCallback(() => {
-    setSoundEnabled((prev) => {
-      const next = !prev;
-      soundEnabledRef.current = next;
-      if (next) {
-        void unlockAudio();
-        if (typeof window !== "undefined" && "speechSynthesis" in window) {
-          window.speechSynthesis.resume();
-        }
-      } else {
-        if (typeof window !== "undefined" && "speechSynthesis" in window) {
-          window.speechSynthesis.cancel();
-        }
-        if (activeTimeoutRef.current) {
-          clearTimeout(activeTimeoutRef.current);
-          activeTimeoutRef.current = null;
-        }
-        queueRef.current = [];
-        isSpeakingRef.current = false;
-      }
-      return next;
-    });
-  }, []);
 
   useEffect(() => {
     if (!slug) return;
@@ -390,20 +261,10 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
 
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-      if (activeTimeoutRef.current) {
-        clearTimeout(activeTimeoutRef.current);
-        activeTimeoutRef.current = null;
-      }
       if (queueRefreshTimeoutRef.current) {
         clearTimeout(queueRefreshTimeoutRef.current);
         queueRefreshTimeoutRef.current = null;
       }
-      queueRef.current = [];
-      isSpeakingRef.current = false;
-
       socket.off("connect");
       socket.off("disconnect");
       socket.off("connect_error");
@@ -428,8 +289,5 @@ export const useTurnoTvLive = (slug: string, headquarterId?: number) => {
     enqueueSpeech,
   ]);
 
-  return {
-    soundEnabled,
-    toggleSound,
-  };
+  return audio;
 };

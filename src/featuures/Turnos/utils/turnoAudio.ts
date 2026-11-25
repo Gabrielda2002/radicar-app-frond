@@ -26,13 +26,12 @@ export const unlockAudio = async (): Promise<boolean> => {
   return ctx.state === "running";
 };
 
-export const playTurnoChime = (): void => {
-  const ctx = getAudioContext();
-  if (!ctx) return;
-
+export const playTurnoChime = (): boolean => {
   try {
+    const ctx = getAudioContext();
+    if (!ctx) return false;
     if (ctx.state === "suspended") {
-      void ctx.resume();
+      void ctx.resume().catch(() => undefined);
     }
     const now = ctx.currentTime;
 
@@ -61,8 +60,10 @@ export const playTurnoChime = (): void => {
     gain2.connect(ctx.destination);
     osc2.start(now + 0.16);
     osc2.stop(now + 0.7);
+    return true;
   } catch (error) {
     console.error("Error al reproducir sonido de turno:", error);
+    return false;
   }
 };
 

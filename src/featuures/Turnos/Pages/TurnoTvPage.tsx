@@ -4,6 +4,7 @@ import { AlertCircle, RefreshCw } from "lucide-react";
 import { useStoreTurnoTv } from "../store/useStoreTurnoTv";
 import { useTurnoTvLive } from "../hooks/useTurnoTvLive";
 import { TvHeader } from "../Components/Tv/TvHeader";
+import { TvAudioDiagnostics } from "../Components/Tv/TvAudioDiagnostics";
 import { TvOfflineBanner } from "../Components/Tv/TvOfflineBanner";
 import { TvHighlightedTurn } from "../Components/Tv/TvHighlightedTurn";
 import { TvRecentCalls } from "../Components/Tv/TvRecentCalls";
@@ -25,10 +26,8 @@ const TurnoTvPage = () => {
     reset,
   } = useStoreTurnoTv();
 
-  const { soundEnabled, toggleSound } = useTurnoTvLive(
-    safeSlug,
-    data?.headquarter.id,
-  );
+  const audio = useTurnoTvLive(safeSlug, data?.headquarter.id);
+  const { soundEnabled, toggleSound } = audio;
 
   useEffect(() => {
     if (safeSlug) {
@@ -94,6 +93,15 @@ const TurnoTvPage = () => {
         isOutdated={isOutdated}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}
+        diagnostics={
+          <TvAudioDiagnostics
+            lastCall={audio.lastCall}
+            toneResult={audio.toneResult}
+            voiceSteps={audio.voiceSteps}
+            testTone={audio.testTone}
+            testVoice={audio.testVoice}
+          />
+        }
       />
 
       <TvOfflineBanner isOutdated={isOutdated} />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import logo from "@/assets/Layout/logo-navbar.png";
 
@@ -8,6 +8,7 @@ interface TvHeaderProps {
   isOutdated: boolean;
   soundEnabled: boolean;
   onToggleSound: () => void;
+  diagnostics: ReactNode;
 }
 
 export const TvHeader = ({
@@ -16,6 +17,7 @@ export const TvHeader = ({
   isOutdated,
   soundEnabled,
   onToggleSound,
+  diagnostics,
 }: TvHeaderProps) => {
   const [timeString, setTimeString] = useState<string>("");
   const [dateString, setDateString] = useState<string>("");
@@ -46,7 +48,7 @@ export const TvHeader = ({
   }, []);
 
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-900/90 px-6 py-4 backdrop-blur-sm">
+    <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-900/90 px-6 py-4 backdrop-blur-sm">
       <div className="flex items-center gap-4">
         <img
           src={logo}
@@ -63,7 +65,7 @@ export const TvHeader = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 sm:gap-6">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-6">
         <div className="text-right hidden sm:block">
           <p className="font-mono text-2xl font-black tracking-tight text-white md:text-3xl">
             {timeString}
@@ -109,7 +111,7 @@ export const TvHeader = ({
             {soundEnabled ? (
               <>
                 <Volume2 className="h-4 w-4 md:h-5 md:w-5" aria-hidden="true" />
-                <span>Audio activo</span>
+                <span>Audio habilitado</span>
               </>
             ) : (
               <>
@@ -119,6 +121,7 @@ export const TvHeader = ({
             )}
           </button>
         </div>
+        {diagnostics}
       </div>
     </header>
   );
