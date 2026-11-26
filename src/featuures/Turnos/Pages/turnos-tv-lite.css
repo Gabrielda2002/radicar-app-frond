@@ -21,6 +21,7 @@ button:disabled { cursor: default; opacity: .7; }
 .calling { border: 2px solid #34d399; }
 .ticket-label { margin-top: 28px; text-align: center; color: #cbd5e1; }
 .ticket { margin: 8px 0 24px; text-align: center; color: #34d399; font: bold 60px monospace; word-wrap: break-word; }
+.called-patient { margin-bottom: 20px; text-align: center; color: #f8fafc; font-size: 30px; font-weight: bold; word-wrap: break-word; }
 .module, .upcoming li { padding: 14px; border: 1px solid #334155; border-radius: 12px; background: #020617; }
 .module { text-align: center; font-size: 22px; font-weight: bold; }
 .recent h2, .upcoming h2 { padding-bottom: 12px; border-bottom: 1px solid #334155; font-size: 20px; }
@@ -29,6 +30,7 @@ button:disabled { cursor: default; opacity: .7; }
 .recent li { margin-top: 8px; padding: 8px 14px; border: 1px solid #334155; border-radius: 12px; background: #020617; list-style: none; }
 .recent strong { display: inline-block; margin-right: 12px; color: #a7f3d0; font: bold 24px monospace; }
 .recent span { color: #e2e8f0; font-size: 18px; }
+.recent .recent-patient { display: block; margin: 2px 0; color: #f8fafc; font-size: 20px; font-weight: bold; word-wrap: break-word; }
 .upcoming li { margin-top: 8px; color: #f8fafc; font: bold 24px monospace; }
 footer { padding: 12px 24px; border-top: 1px solid #1e293b; color: #cbd5e1; text-align: center; }
 .wave { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 3px solid #34d399; border-radius: 24px; opacity: 0; }

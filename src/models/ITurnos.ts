@@ -102,6 +102,7 @@ export interface ITurnoTicket {
 export interface ITurnoTvItem {
   turnoId: number;
   ticketCode: string;
+  patientDisplayName?: string | null;
   priority: TurnoPriorityType;
   status: TurnoStatusType;
   moduloCode?: string;
@@ -119,6 +120,7 @@ export interface ITurnoTvUpcomingItem {
 
 export interface ITurnoTvRecentCall {
   ticketCode: string;
+  patientDisplayName?: string | null;
   moduloCode: string | null;
   moduloName: string | null;
   calledAt: string;

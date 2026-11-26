@@ -44,12 +44,19 @@ export const TvRecentCalls = ({ calls }: TvRecentCallsProps) => {
               <span className="font-mono text-2xl font-black text-emerald-300">
                 {call.ticketCode}
               </span>
-              <span className="text-base font-medium break-words text-slate-200">
-                {call.moduloName?.trim() ||
-                  (call.moduloCode
-                    ? `Módulo ${call.moduloCode}`
-                    : "Módulo no informado")}
-              </span>
+              <div className="min-w-0 wrap-anywhere">
+                {call.patientDisplayName?.trim() ? (
+                  <p className="text-lg font-bold text-white">
+                    {call.patientDisplayName.trim()}
+                  </p>
+                ) : null}
+                <p className="text-base font-medium text-slate-200">
+                  {call.moduloName?.trim() ||
+                    (call.moduloCode
+                      ? `Módulo ${call.moduloCode}`
+                      : "Módulo no informado")}
+                </p>
+              </div>
               <time
                 dateTime={call.calledAt}
                 className="text-right text-sm font-semibold whitespace-nowrap tabular-nums text-slate-300 sm:text-base"

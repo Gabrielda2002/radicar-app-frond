@@ -24,7 +24,7 @@ Permitir que las personas en sala identifiquen los últimos turnos llamados de s
 
 ## Restricciones
 
-- Los próximos turnos siguen mostrando solo sus códigos. No se muestran nombres de pacientes, asesores ni servicios.
+- Los próximos turnos siguen mostrando solo sus códigos. La [Spec 009](../009-nombre-visible-turnos-tv/spec.md) permite el nombre abreviado únicamente en el llamado vigente y el historial. No se muestran nombres completos, asesores ni servicios.
 - Esta spec amplía la [Spec 002](../002-turnos-proximos-tv/spec.md) únicamente para permitir el módulo en el historial y en el llamado vigente de la TV normal.
 - La TV Lite conserva su distribución previa salvo por la incorporación del historial, sin tiempo transcurrido.
 

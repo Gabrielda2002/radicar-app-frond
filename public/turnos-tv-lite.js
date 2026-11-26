@@ -103,11 +103,21 @@
 
   function renderCurrent(turn) {
     var calling = turn && turn.status === "LLAMADO";
+    var patient = get("called-patient");
+    var name = calling ? getPatientDisplayName(turn) : "";
     if (!calling) panel.className = "panel";
     if (calling && panel.className === "panel") panel.className = "panel calling";
     setText(get("ticket"), turn ? turn.ticketCode : "—");
+    if (patient) {
+      setText(patient, name);
+      patient.style.display = name ? "" : "none";
+    }
     setText(get("call-status"), calling ? "Llamando" : turn ? "En atención" : "Sala de espera");
     setText(get("module"), turn && formatModule(turn) || "Por favor, esté atento a su llamado");
+  }
+
+  function getPatientDisplayName(turn) {
+    return typeof turn.patientDisplayName === "string" ? turn.patientDisplayName.trim() : "";
   }
 
   function renderUpcoming(turns) {
@@ -137,6 +147,13 @@
       setText(destination, call.moduloName ||
         (call.moduloCode ? "Módulo " + call.moduloCode : "Módulo no informado"));
       item.appendChild(code);
+      var name = getPatientDisplayName(call);
+      if (name) {
+        var patient = document.createElement("span");
+        patient.className = "recent-patient";
+        setText(patient, name);
+        item.appendChild(patient);
+      }
       item.appendChild(destination);
       fragment.appendChild(item);
     }

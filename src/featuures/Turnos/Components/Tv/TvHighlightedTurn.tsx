@@ -6,6 +6,7 @@ interface TvHighlightedTurnProps {
 }
 
 export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
+  const patientDisplayName = turn.patientDisplayName?.trim();
   const destination =
     turn.moduloName?.trim() ||
     (turn.moduloCode ? `Módulo ${turn.moduloCode}` : "Módulo no informado");
@@ -42,6 +43,11 @@ export const TvHighlightedTurn = ({ turn }: TvHighlightedTurnProps) => {
         <p className="font-mono text-7xl font-black tracking-widest text-emerald-400 drop-shadow-md sm:text-8xl md:text-9xl">
           {turn.ticketCode}
         </p>
+        {patientDisplayName ? (
+          <p className="mt-2 text-2xl font-bold wrap-anywhere text-white sm:text-4xl">
+            {patientDisplayName}
+          </p>
+        ) : null}
       </div>
 
       <p className="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 text-center text-lg font-semibold text-slate-300 sm:text-xl">
