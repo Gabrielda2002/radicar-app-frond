@@ -104,6 +104,7 @@ export const useTurnoRequestForm = (slug: string) => {
     if (result.activeTurn)
       return navigate(
         `/turnos/ticket/${encodeURIComponent(result.activeTurn.ticketToken)}`,
+        { state: { requestSlug: slug } },
       );
     await helpers.setValues(
       {
@@ -142,7 +143,11 @@ export const useTurnoRequestForm = (slug: string) => {
             }
           : { skipGeolocation: true }),
       });
-      if (token) navigate(`/turnos/ticket/${encodeURIComponent(token)}`);
+      if (token) {
+        navigate(`/turnos/ticket/${encodeURIComponent(token)}`, {
+          state: { requestSlug: slug },
+        });
+      }
     } catch (error: unknown) {
       if (active.current) setLocationError(getTurnoError(error));
     } finally {

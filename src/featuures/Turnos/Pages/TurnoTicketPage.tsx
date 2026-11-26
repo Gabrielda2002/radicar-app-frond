@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import clsx from "clsx";
 import {
   AlertTriangle,
   CheckCircle2,
   LoaderCircle,
+  Plus,
   RefreshCw,
   Star,
   Volume2,
@@ -20,6 +21,7 @@ import TurnoTicketDetails from "../Components/TurnoTicketDetails";
 
 const TurnoTicketPage = () => {
   const { token = "" } = useParams();
+  const { state } = useLocation();
   const {
     data,
     error,
@@ -44,6 +46,12 @@ const TurnoTicketPage = () => {
   const [comment, setComment] = useState<string>("");
 
   const ticket = data?.ticketToken === token ? data : null;
+  const requestSlug = (state as { requestSlug?: unknown } | null)?.requestSlug;
+  const sedeSlug =
+    (typeof requestSlug === "string" && requestSlug.trim()) ||
+    ticket?.headquarter.slug?.trim();
+  const hasActiveActions =
+    ticket?.status === "PENDIENTE" || ticket?.status === "LLAMADO";
 
   useEffect(() => {
     void load(token);
@@ -72,21 +80,13 @@ const TurnoTicketPage = () => {
   };
 
   return (
-    <TurnoPublicLayout>
+    <TurnoPublicLayout compact>
       <section
         className="overflow-hidden bg-white border border-slate-200 rounded-2xl shadow-sm dark:bg-gray-900 dark:border-gray-800"
         aria-busy={isLoading}
       >
-        <header className="px-6 py-7 text-white bg-color sm:px-8">
-          <p className="text-xs font-medium tracking-[0.16em] uppercase opacity-80">
-            Atención presencial
-          </p>
-          <h1 className="mt-2 text-3xl font-medium tracking-tight">
-            Tu turno digital
-          </h1>
-        </header>
-
-        <div className="space-y-6 p-6 sm:p-8">
+        <div className="space-y-3 p-4 sm:p-6">
+          {!ticket ? <h1 className="text-xl font-semibold">Tu turno digital</h1> : null}
           {!isLiveConnected && isOutdated ? (
             <div
               role="status"
@@ -102,14 +102,6 @@ const TurnoTicketPage = () => {
                   desactualizada.
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={() => void load(token)}
-                disabled={isLoading}
-                className="shrink-0 font-semibold underline hover:text-amber-700 dark:hover:text-amber-100 disabled:opacity-50"
-              >
-                Actualizar
-              </button>
             </div>
           ) : null}
 
@@ -129,7 +121,7 @@ const TurnoTicketPage = () => {
                     ticket.status === "LLAMADO" ? "assertive" : "polite"
                   }
                   className={clsx(
-                    "p-6 text-center rounded-2xl transition-all",
+                    "p-3 text-center rounded-xl transition-all",
                     ticket.status === "LLAMADO"
                       ? "text-emerald-950 bg-emerald-50 border-2 border-emerald-500 shadow-md ring-4 ring-emerald-500/10 dark:text-emerald-100 dark:bg-emerald-950/60 dark:border-emerald-400 dark:ring-emerald-400/20"
                       : "text-teal-900 bg-teal-50 border border-teal-100 dark:text-teal-200 dark:bg-teal-950/40 dark:border-teal-900",
@@ -147,7 +139,7 @@ const TurnoTicketPage = () => {
                       ? "¡Es tu turno! Dirígete a"
                       : "Te atienden en"}
                   </p>
-                  <p className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
+                  <p className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight">
                     {ticket.modulo.name}
                   </p>
                   {ticket.status === "LLAMADO" && ticket.callCount > 1 ? (
@@ -160,49 +152,6 @@ const TurnoTicketPage = () => {
                       Asesor: {ticket.advisorName}
                     </p>
                   ) : null}
-                </div>
-              ) : null}
-
-              {ticket.status === "PENDIENTE" || ticket.status === "LLAMADO" ? (
-                <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-xl dark:bg-gray-800/60 dark:border-gray-700">
-                  <div className="flex items-center gap-2.5">
-                    {soundEnabled ? (
-                      <Volume2
-                        className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <VolumeX
-                        className="h-5 w-5 text-slate-400 dark:text-gray-500 shrink-0"
-                        aria-hidden="true"
-                      />
-                    )}
-                    <div className="text-left">
-                      <p className="text-xs font-medium text-slate-900 dark:text-white">
-                        {soundEnabled
-                          ? "Avisos sonoros activados"
-                          : "Avisos sonoros desactivados"}
-                      </p>
-                      <p className="text-[11px] text-slate-500 dark:text-gray-400">
-                        {soundEnabled
-                          ? "Tu dispositivo sonará y vibrará cuando seas llamado"
-                          : "Activa los avisos para sonar y vibrar cuando seas llamado"}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={toggleSound}
-                    aria-pressed={soundEnabled}
-                    className={clsx(
-                      "px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0",
-                      soundEnabled
-                        ? "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                        : "bg-color text-white hover:bg-color/90 shadow-sm",
-                    )}
-                  >
-                    {soundEnabled ? "Desactivar" : "Activar avisos sonoros"}
-                  </button>
                 </div>
               ) : null}
 
@@ -313,25 +262,6 @@ const TurnoTicketPage = () => {
                 </div>
               ) : null}
 
-              {ticket.status === "PENDIENTE" || ticket.status === "LLAMADO" ? (
-                <div className="pt-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    fullWidth
-                    disabled={isCancelling}
-                    onClick={() => setIsCancelDialogOpen(true)}
-                    className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/40"
-                  >
-                    Cancelar turno
-                  </Button>
-                </div>
-              ) : null}
-
-              <p className="text-center text-xs leading-relaxed text-slate-500 dark:text-gray-400">
-                Usa «Actualizar estado» para consultar los cambios. Conserva
-                este enlace para volver a tu ticket.
-              </p>
             </>
           ) : !error ? (
             <p
@@ -346,16 +276,56 @@ const TurnoTicketPage = () => {
             </p>
           ) : null}
 
-          <Button
-            type="button"
-            variant="outline"
-            fullWidth
-            isLoading={isLoading}
-            onClick={() => void load(token)}
-            icon={<RefreshCw className="h-4 w-4" />}
-          >
-            Actualizar estado
-          </Button>
+          <div className="grid grid-cols-2 gap-2">
+            {sedeSlug ? (
+              <Link
+                replace
+                to={`/turnos/sede/${encodeURIComponent(sedeSlug)}`}
+                className="flex min-h-11 items-center justify-center gap-1 rounded-lg bg-color px-2 py-2 text-center text-sm font-semibold text-white hover:bg-color/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+              >
+                <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
+                Crear nuevo turno
+              </Link>
+            ) : null}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="min-h-11"
+              isLoading={isLoading}
+              onClick={() => void load(token)}
+              icon={<RefreshCw className="h-4 w-4" aria-hidden="true" />}
+            >
+              Actualizar estado
+            </Button>
+            {hasActiveActions ? (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="min-h-11"
+                  onClick={toggleSound}
+                  aria-pressed={soundEnabled}
+                  icon={soundEnabled
+                    ? <Volume2 className="h-4 w-4" aria-hidden="true" />
+                    : <VolumeX className="h-4 w-4" aria-hidden="true" />}
+                >
+                  {soundEnabled ? "Desactivar sonido" : "Activar sonido"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={isCancelling}
+                  onClick={() => setIsCancelDialogOpen(true)}
+                  className="min-h-11 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/40"
+                >
+                  Cancelar turno
+                </Button>
+              </>
+            ) : null}
+          </div>
         </div>
       </section>
 

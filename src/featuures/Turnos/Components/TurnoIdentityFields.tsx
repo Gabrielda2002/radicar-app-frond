@@ -1,9 +1,9 @@
-import type { ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import type { FormikProps } from "formik";
 import { IdCard } from "lucide-react";
-import Input from "@/components/common/Ui/Input";
 import Select from "@/components/common/Ui/Select";
 import type { ITurnoOption, ITurnoRequestForm } from "@/models/ITurnos";
+import TurnoKeyboardField from "./TurnoKeyboardField";
 
 interface TurnoIdentityFieldsProps {
   formik: FormikProps<ITurnoRequestForm>;
@@ -16,6 +16,7 @@ const TurnoIdentityFields = ({
   documentTypes,
   onIdentityChange,
 }: TurnoIdentityFieldsProps) => {
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -40,7 +41,14 @@ const TurnoIdentityFields = ({
         error={formik.errors.documentTypeId}
         selectSize="lg"
       />
-      <Input
+      <TurnoKeyboardField
+        keyboard="numeric"
+        open={keyboardOpen}
+        onOpenChange={setKeyboardOpen}
+        onValueChange={(value) => {
+          onIdentityChange();
+          void formik.setFieldValue("documentNumber", value);
+        }}
         name="documentNumber"
         label="Número de documento"
         aria-label="Número de documento"

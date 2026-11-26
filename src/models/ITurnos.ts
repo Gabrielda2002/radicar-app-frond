@@ -87,7 +87,7 @@ export interface ITurnoTicket {
   status: TurnoStatusType;
   priority: TurnoPriorityType;
   classification?: TurnoClassificationType | null;
-  headquarter: ITurnoOption;
+  headquarter: ITurnoOption & { slug?: string };
   service: ITurnoOption;
   patient: { name: string; documentNumber: string };
   modulo: (ITurnoOption & { code: string }) | null;
